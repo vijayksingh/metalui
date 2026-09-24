@@ -47,8 +47,8 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 | Order | Object | Status | Commit | Clients import |
 |---|---|---|---|---|
-| 1 | Selection frame (KAMUI-14) | shipped | see `feat(objects): selection frame` | React `import { SelectionFrame } from '@unlocalhosted/metalui'` (`state`, `variant`, `mode`, `radius`, `handles`, `count`, `copied`, `edge`, `onHandlePointerDown`); CSS `--mu-presence-*`; Swift `.metalSelectionFrame(_:variant:mode:radius:handles:readout:count:copied:edge:onHandleDrag:)`, `MetalSelectionFrame(size:)`, `MetalPresence` for Kamui's AppKit overlay. Derived value to confirm: graphite hover dot `rgba(255,255,255,.18)` (the prototype is bone-only). |
-| 2 | Cue family | pending | | |
+| 1 | Selection frame (KAMUI-14) | shipped | `5602645` | React `import { SelectionFrame } from '@unlocalhosted/metalui'` (`state`, `variant`, `mode`, `radius`, `handles`, `count`, `copied`, `edge`, `onHandlePointerDown`); CSS `--mu-presence-*`; Swift `.metalSelectionFrame(_:variant:mode:radius:handles:readout:count:copied:edge:onHandleDrag:)`, `MetalSelectionFrame(size:)`, `MetalPresence` for Kamui's AppKit overlay. Derived value to confirm: graphite hover dot `rgba(255,255,255,.18)` (the prototype is bone-only). |
+| 2 | Cue family | shipped | see `feat(objects): cue family` | React `Cue` (`kind`: date, duration, amount, measurement, tag, derived-tag, hex; `resolved`, `color`, `swatch`), `CueUrl`, `CueInferred`, `Dimple` (Base UI Checkbox; `doing`, `ghost`), `CueUrgency`, `CueLife` from `@unlocalhosted/metalui`; CSS `--mu-cue-*`, `--mu-type-<role>` vars; Swift `Text.metalCue(_:colorway:hex:)`, `MetalCueTag`, `MetalDimple`, `MetalCueURLPill`, `MetalCueInferred`, `MetalCueUrgency`, `MetalCueLife`, `MetalCue` tokens for the TextKit host. Finding: the demo's tabular figures in flow moved text by 1.09 px in Geist, so cues keep the text's own figures. Derived values to confirm: graphite cue-quiet, tag, derived, ghost and URL ink (the prototype is bone-only). |
 | 3 | Suggestion chip | pending | | |
 | 4 | Hover engraving | pending | | |
 | 5 | Provenance tooltip | pending | | |

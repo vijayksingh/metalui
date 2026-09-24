@@ -42,6 +42,31 @@
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
     },
     {
+      "name": "cue",
+      "type": "registry:ui",
+      "title": "Cue family",
+      "description": "Recognition made visible on the text: date, duration, amount, measurement, tag, derived tag and hex cues that never move a letter; the URL host pill and the inferred pill; the dimple, ghost dimple and urgency LED in the margin; the trailing life glyph.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/cue/cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/cue/cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/cue/cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/cue/cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/cue.md. SwiftUI: MetalDimple, MetalCueURLPill, MetalCueInferred, MetalCueUrgency, MetalCueLife, Text.metalCue(_:) in the MetalUI Swift package."
+    },
+    {
       "name": "selection-frame",
       "type": "registry:ui",
       "title": "Selection frame",

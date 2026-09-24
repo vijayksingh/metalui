@@ -40,6 +40,7 @@ export const NAV: NavGroup[] = [
     label: 'Objects',
     items: [
       { to: '/components/selection-frame', label: 'Selection frame' },
+      { to: '/components/cue', label: 'Cue family' },
     ],
   },
   {

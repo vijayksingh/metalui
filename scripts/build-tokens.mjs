@@ -136,6 +136,21 @@ const PR_KEYS = Object.keys(PR).filter((k) => !k.startsWith('$') && k !== 'ring-
 const UNITLESS = new Set(['enter-scale', 'readout-writing']);
 const prValue = (k, v) => (typeof v === 'number' ? (k.endsWith('-ms') ? `${v}ms` : UNITLESS.has(k) ? `${v}` : `${v}px`) : v);
 const presenceVars = PR_KEYS.map((k) => `  --mu-presence-${k}: ${prValue(k, PR[k])};`).join('\n');
+// ---------- cue (tokens.json cue): recognition cues on the text ----------
+const CU = T.cue;
+const CU_KEYS = Object.keys(CU).filter((k) => !k.startsWith('$'));
+const CU_UNITLESS = new Set(['doing-opacity']);
+const cueVars = CU_KEYS.map((k) => {
+  const v = CU[k];
+  return `  --mu-cue-${k}: ${typeof v === 'number' ? (k.endsWith('-ms') ? `${v}ms` : CU_UNITLESS.has(k) ? v : `${v}px`) : v};`;
+}).join('\n');
+
+// Type roles as custom properties too, for places a class cannot reach (::before, ::after):
+// font: var(--mu-type-label); letter-spacing: var(--mu-type-label-tracking).
+const typeVars = Object.entries(F.type).map(([role, r]) => [
+  `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
+  `  --mu-type-${role}-tracking: ${r.tracking};`,
+].join('\n')).join('\n');
 
 const typeClasses = Object.keys(F.type)
   .map((role) => `.mu-type-${role} { ${typeDecls(role).join('; ')}; }`)
@@ -152,6 +167,8 @@ ${swap}
 ${foundationVars}
 ${frostVars}
 ${presenceVars}
+${cueVars}
+${typeVars}
 ${travel}
 }
 
@@ -497,7 +514,19 @@ ${Object.keys(PR).filter((k) => !k.startsWith('$')).map((k) => {
     public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence);
+const swiftCue = `
+/// ${CU.$use}
+public enum MetalCue {
+${CU_KEYS.map((k) => {
+  const v = CU[k];
+  if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`;
+  if (/%$/.test(v)) return `    /// A fraction.\n    public static let ${camel(k)}: Double = ${num(parseFloat(v) / 100)}`;
+  const [type, val] = swiftValue(v);
+  return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`;
+}).join('\n')}
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

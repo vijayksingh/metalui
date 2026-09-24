@@ -118,4 +118,37 @@ final class MetalCaptures: XCTestCase {
             capture("selection-frame-\(colorway.rawValue)", selectionSheet(colorway))
         }
     }
+
+    private func cueSheet(_ colorway: MetalColorway) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 24) {
+                MetalDimple(isOn: .constant(false), label: "rest")
+                MetalDimple(isOn: .constant(true), label: "checked")
+                MetalDimple(isOn: .constant(false), doing: true, label: "doing")
+                MetalDimple(isOn: .constant(false), ghost: true, label: "ghost")
+                MetalCueUrgency()
+            }
+            (Text("Send ") + Text("tomorrow 4pm").metalCue(.date, colorway: colorway) + Text(", ") + Text("1h30").metalCue(.duration, colorway: colorway)
+                + Text(" for ") + Text("$40").metalCue(.amount, colorway: colorway) + Text(", slept ") + Text("6h").metalCue(.measurement, colorway: colorway)
+                + Text(" in ") + Text("#FF6B3D").metalCue(.hex, colorway: colorway, hex: MetalShared.orange))
+                .font(.metal(MetalType.content))
+                .foregroundColor(colorway.tokens.ink.color)
+            HStack(spacing: 8) {
+                MetalCueTag("#poster")
+                MetalCueTag("#studio", derived: true)
+                MetalCueURLPill(host: "figma.com") {}
+                MetalCueInferred("fri")
+                MetalCueLife(.coffee)
+            }
+        }
+        .padding(28)
+        .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+        .metalColorway(colorway)
+    }
+
+    func testCues() {
+        for colorway in MetalColorway.allCases {
+            capture("cue-\(colorway.rawValue)", cueSheet(colorway))
+        }
+    }
 }

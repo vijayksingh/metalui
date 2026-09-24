@@ -1,0 +1,221 @@
+import SwiftUI
+
+// The cue family (Kamui 03 §3). Mirrors components/cue from MetalCue and the colorway cue-* tokens.
+// In a TextKit editor the in-flow cues are rendering attributes drawn by the host from MetalCue; the
+// views here are for SwiftUI surfaces (lens rows, panels, previews) and the margin objects.
+
+/// An in-flow cue kind.
+public enum MetalCueKind: Sendable { case date, duration, amount, measurement, tag, derivedTag, hex }
+
+extension Text {
+    /// Marks recognised text with its cue. Underline cues keep the text's metrics; tags are drawn by
+    /// `MetalCueTag` (a pill needs a background, which `Text` cannot carry).
+    public func metalCue(_ kind: MetalCueKind, colorway: MetalColorway, hex: MetalRGBA? = nil) -> Text {
+        switch kind {
+        case .date:
+            return underline(pattern: .dot, color: MetalCue.dateUnderline.color)
+        case .duration, .amount:
+            return underline(pattern: .solid, color: colorway.tokens.cueQuiet.color)
+        case .measurement:
+            return underline(pattern: .solid, color: MetalCue.measureUnderline.color)
+        case .hex:
+            let base = hex ?? colorway.tokens.ink3
+            return underline(pattern: .solid, color: base.color.opacity(MetalCue.hexMix))
+        case .tag:
+            return foregroundColor(colorway.tokens.ink2.color)
+        case .derivedTag:
+            return foregroundColor(colorway.tokens.ink3.color)
+        }
+    }
+}
+
+/// A tag cue as a view: the soft pill (or the hollow derived pill).
+public struct MetalCueTag: View {
+    let text: String
+    let derived: Bool
+    @Environment(\.metalColorway) private var colorway
+
+    public init(_ text: String, derived: Bool = false) {
+        self.text = text
+        self.derived = derived
+    }
+
+    public var body: some View {
+        let t = colorway.tokens
+        Text(text)
+            .font(.metal(MetalType.content))
+            .foregroundColor((derived ? t.ink3 : t.ink2).color)
+            .padding(.horizontal, MetalCue.tagPadX)
+            .padding(.vertical, MetalCue.tagPadY)
+            .background {
+                let shape = Capsule(style: .continuous)
+                if derived {
+                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueDerivedSh), in: shape)
+                } else {
+                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(t.cueTagBg), shadows: t.cueTagSh), in: shape)
+                }
+            }
+            // The pill's padding is paid back, as on the web, so a row of text keeps its advance.
+            .padding(.horizontal, -MetalCue.tagPadX)
+    }
+}
+
+/// A task's checkbox: a 16 pt well that turns dark with a white tick drawn on (not sprung, DS-21).
+/// `doing` shows the half-filled green square; `ghost` the hollow dimple of a task Jev inferred.
+public struct MetalDimple: View {
+    @Binding var isOn: Bool
+    let doing: Bool
+    let ghost: Bool
+    let label: String
+
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var hovering = false
+    @State private var drawn: CGFloat = 1
+
+    public init(isOn: Binding<Bool>, doing: Bool = false, ghost: Bool = false, label: String) {
+        _isOn = isOn
+        self.doing = doing
+        self.ghost = ghost
+        self.label = label
+    }
+
+    public var body: some View {
+        let t = colorway.tokens
+        let side = ghost ? MetalCue.ghost : MetalCue.dimple
+        let shape = RoundedRectangle(cornerRadius: ghost ? MetalCue.ghostRadius : MetalRadius.key, style: .continuous)
+        Button {
+            isOn.toggle()
+            guard isOn else { return }
+            drawn = 0
+            // 220 ms after a 40 ms beat, ease-out; instant under Reduce Motion.
+            withAnimation(reduceMotion ? nil : .easeOut(duration: MetalCue.tickMs / 1000).delay(MetalCue.tickDelayMs / 1000)) { drawn = 1 }
+        } label: {
+            ZStack {
+                if isOn {
+                    Color.clear.metalRecipe(MetalRecipe(fill: MetalCue.dimpleOnBg, shadows: MetalCue.dimpleOnSh), in: shape)
+                    MetalTickShape()
+                        .trim(from: 0, to: drawn)
+                        .stroke(MetalCue.tick.color, style: StrokeStyle(lineWidth: MetalCue.tickWidth, lineCap: .round, lineJoin: .round))
+                        .padding(side * 0.3)
+                } else if ghost {
+                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueGhostSh), in: shape)
+                    if hovering { shape.strokeBorder(MetalCue.ghostHover.color, lineWidth: 1) }
+                } else {
+                    Color.clear.metalRecipe(MetalRecipe(fill: MetalGradient(angle: 180, stops: [.init(t.wellTop, 0), .init(t.wellBot, 1)]), shadows: t.well), in: shape)
+                        .brightness(hovering ? -0.02 : 0)
+                }
+                if doing && !isOn {
+                    let inner = side - 2 * MetalCue.doingInset
+                    RoundedRectangle(cornerRadius: MetalCue.doingRadius, style: .continuous)
+                        .fill(LinearGradient(stops: [.init(color: MetalShared.greenDeep.color, location: 0.5), .init(color: .clear, location: 0.5)], startPoint: .leading, endPoint: .trailing))
+                        .frame(width: inner, height: inner)
+                        .opacity(MetalCue.doingOpacity)
+                }
+            }
+            .frame(width: side, height: side)
+            .contentShape(shape)
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .opacity(isEnabled ? 1 : 0.4)
+        .accessibilityLabel(label)
+        .accessibilityValue(isOn ? "done" : doing ? "in progress" : "open")
+        .accessibilityAddTraits(.isToggle)
+    }
+}
+
+/// The dimple's tick, drawn with trim(0 → 1).
+struct MetalTickShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX, y: rect.minY + rect.height * 0.55))
+        p.addLine(to: CGPoint(x: rect.minX + rect.width * 0.38, y: rect.maxY))
+        p.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        return p
+    }
+}
+
+/// Urgency: a 5 pt amber LED in the margin of an open task that is due soon.
+public struct MetalCueUrgency: View {
+    public init() {}
+
+    public var body: some View {
+        Circle()
+            .fill(MetalShared.ledAmber.gradient(diameter: MetalCue.urgencyLed))
+            .frame(width: MetalCue.urgencyLed, height: MetalCue.urgencyLed)
+            .background { MetalOuterShadows(layers: MetalShared.ledRing, shape: Circle()) }
+            .accessibilityLabel("Due soon")
+    }
+}
+
+/// A URL at rest: a 20 pt host pill with the link glyph.
+public struct MetalCueURLPill: View {
+    let host: String
+    let action: () -> Void
+    @Environment(\.metalColorway) private var colorway
+    @State private var hovering = false
+
+    public init(host: String, action: @escaping () -> Void) {
+        self.host = host
+        self.action = action
+    }
+
+    public var body: some View {
+        Button(action: action) {
+            HStack(spacing: MetalCue.urlGap) {
+                MetalIcon(.link, size: MetalCue.urlGlyph)
+                Text(host).font(.metal(MetalType.ui))
+            }
+            .foregroundColor(colorway.tokens.cueUrlInk.color)
+            .padding(.leading, MetalCue.urlPadStart)
+            .padding(.trailing, MetalCue.urlPadEnd)
+            .frame(height: MetalCue.urlHeight)
+            .metalRecipe(MetalRecipe(fill: .solid(hovering ? MetalCue.urlBgHover : MetalCue.urlBg), shadows: MetalCue.urlRing), in: Capsule(style: .continuous))
+            .metalAnimation(.settle, value: hovering)
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .accessibilityLabel("Link, \(host)")
+    }
+}
+
+/// A value Jev read that is not in the text: a hollow pill in the label role.
+public struct MetalCueInferred: View {
+    let text: String
+    @Environment(\.metalColorway) private var colorway
+
+    public init(_ text: String) { self.text = text }
+
+    public var body: some View {
+        Text(text.uppercased())
+            .font(.metal(MetalType.label))
+            .tracking(MetalType.label.trackingPoints)
+            .foregroundColor(colorway.tokens.ink3.color)
+            .padding(.horizontal, MetalCue.inferredPad)
+            .frame(height: MetalCue.inferredHeight)
+            .metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: MetalCue.inferredRing), in: Capsule(style: .continuous))
+    }
+}
+
+/// The life glyph trailing a block: a middle dot, then the glyph at 16 (tuned cut), ink3 at rest.
+public struct MetalCueLife: View {
+    let icon: MetalLifeIconName
+    @Environment(\.metalColorway) private var colorway
+
+    public init(_ icon: MetalLifeIconName) { self.icon = icon }
+
+    public var body: some View {
+        HStack(spacing: 0) {
+            Text("·").foregroundColor(colorway.tokens.ink3.color)
+                .padding(.leading, MetalCue.lifeGapBefore)
+                .padding(.trailing, MetalCue.lifeGapAfter)
+                .accessibilityHidden(true)
+            MetalLifeIcon(icon, size: 16)
+                .foregroundStyle(colorway.tokens.ink3.color)
+                .offset(y: -MetalCue.lifeDrop)
+        }
+        .accessibilityLabel(icon.label)
+    }
+}

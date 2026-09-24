@@ -20,6 +20,24 @@
       "sheet": "KAMUI-15"
     },
     {
+      "name": "cue",
+      "title": "Cue family",
+      "status": "alpha",
+      "description": "Recognition made visible on the text: date, duration, amount, measurement, tag, derived tag and hex cues that never move a letter; the URL host pill and the inferred pill; the dimple, ghost dimple and urgency LED in the margin; the trailing life glyph.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Cue, CueUrl, CueInferred, CueUrgency, CueLife, Dimple",
+        "base": "@base-ui/react/checkbox"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDimple, MetalCueURLPill, MetalCueInferred, MetalCueUrgency, MetalCueLife, Text.metalCue(_:)"
+      },
+      "registry": "https://metalui.dev/r/cue.json",
+      "agent": "https://metalui.dev/r/cue.md",
+      "sheet": "KAMUI-08 (dimple), Kamui 03 §3"
+    },
+    {
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",

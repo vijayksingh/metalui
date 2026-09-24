@@ -23,6 +23,12 @@ public struct MetalColorwayTokens: Sendable {
     public let frostOpaque: MetalRGBA
     public let contrastEdge: MetalRGBA
     public let presenceDot: MetalRGBA
+    public let cueQuiet: MetalRGBA
+    public let cueTagBg: MetalRGBA
+    public let cueTagSh: [MetalShadow]
+    public let cueDerivedSh: [MetalShadow]
+    public let cueGhostSh: [MetalShadow]
+    public let cueUrlInk: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -73,6 +79,20 @@ public enum MetalTokens {
         frostOpaque: MetalRGBA(244, 243, 240, 1.0),
         contrastEdge: MetalRGBA(0, 0, 0, 0.45),
         presenceDot: MetalRGBA(40, 38, 32, 0.18),
+        cueQuiet: MetalRGBA(40, 38, 32, 0.16),
+        cueTagBg: MetalRGBA(40, 38, 32, 0.05),
+        cueTagSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 3.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.7)),
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.04)),
+        ],
+        cueDerivedSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(40, 38, 32, 0.18)),
+        ],
+        cueGhostSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, color: MetalRGBA(40, 38, 32, 0.16)),
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(60, 55, 40, 0.1)),
+        ],
+        cueUrlInk: MetalRGBA(53, 88, 201, 1.0),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -146,6 +166,20 @@ public enum MetalTokens {
         frostOpaque: MetalRGBA(37, 37, 40, 1.0),
         contrastEdge: MetalRGBA(255, 255, 255, 0.45),
         presenceDot: MetalRGBA(255, 255, 255, 0.18),
+        cueQuiet: MetalRGBA(255, 255, 255, 0.18),
+        cueTagBg: MetalRGBA(255, 255, 255, 0.06),
+        cueTagSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 3.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.04)),
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.3)),
+        ],
+        cueDerivedSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(255, 255, 255, 0.2)),
+        ],
+        cueGhostSh: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.18)),
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.5)),
+        ],
+        cueUrlInk: MetalRGBA(143, 176, 255, 1.0),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -492,4 +526,74 @@ public enum MetalPresence {
 
     /// The ring colour in a colorway: green-deep on bone, green on graphite.
     public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
+}
+
+/// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are Kamui's medium demo (prototypes/medium style.css); colorway-dependent ones live in the colorways as cue-*.
+public enum MetalCue {
+    public static let gutter: Double = 25.0
+    public static let dimple: Double = 16.0
+    public static let dimpleTop: Double = 2.5
+    public static let dimpleOnBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(48, 48, 51, 1.0), 0.0), .init(MetalRGBA(30, 30, 32, 1.0), 1.0)])
+    public static let dimpleOnSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.12)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.2)),
+    ]
+    public static let tick: MetalRGBA = MetalRGBA(255, 255, 255, 1.0)
+    public static let tickWidth: Double = 1.6
+    public static let tickMs: Double = 220.0
+    public static let tickDelayMs: Double = 40.0
+    public static let doingInset: Double = 4.5
+    public static let doingRadius: Double = 3.0
+    public static let doingOpacity: Double = 0.8
+    public static let ghost: Double = 14.0
+    public static let ghostRadius: Double = 5.0
+    public static let ghostReach: Double = 36.0
+    public static let ghostHover: MetalRGBA = MetalRGBA(63, 185, 122, 0.55)
+    public static let urgencyLed: Double = 5.0
+    public static let urgencyLeft: Double = 35.0
+    public static let dateUnderline: MetalRGBA = MetalRGBA(63, 185, 122, 0.7)
+    public static let dateThickness: Double = 1.5
+    public static let underlineOffset: Double = 3.5
+    public static let quietThickness: Double = 1.0
+    public static let measureUnderline: MetalRGBA = MetalRGBA(63, 185, 122, 0.42)
+    public static let measureThickness: Double = 1.5
+    public static let measureOffset: Double = 4.0
+    public static let tagPadY: Double = 1.0
+    public static let tagPadX: Double = 4.0
+    public static let hexThickness: Double = 3.0
+    public static let hexOffset: Double = 3.0
+    /// A fraction.
+    public static let hexMix: Double = 0.78
+    public static let swatch: Double = 11.0
+    public static let swatchRadius: Double = 4.0
+    public static let swatchSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.45)),
+        MetalShadow(inset: true, x: 0.0, y: -1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.15)),
+    ]
+    public static let urlHeight: Double = 20.0
+    public static let urlPadStart: Double = 6.0
+    public static let urlPadEnd: Double = 8.0
+    public static let urlGap: Double = 4.0
+    public static let urlGlyph: Double = 11.0
+    public static let urlBg: MetalRGBA = MetalRGBA(111, 155, 255, 0.09)
+    public static let urlBgHover: MetalRGBA = MetalRGBA(111, 155, 255, 0.15)
+    public static let urlRing: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(111, 155, 255, 0.25)),
+    ]
+    public static let inferredHeight: Double = 17.0
+    public static let inferredPad: Double = 6.0
+    public static let inferredGap: Double = 6.0
+    public static let inferredRing: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(63, 185, 122, 0.45)),
+    ]
+    public static let chipGap: Double = 6.0
+    public static let chipRise: Double = 3.0
+    public static let chipInk: MetalRGBA = MetalRGBA(233, 233, 235, 1.0)
+    public static let chipPadY: Double = 3.0
+    public static let chipPadX: Double = 8.0
+    public static let lifeGapBefore: Double = 7.0
+    public static let lifeGapAfter: Double = 6.0
+    public static let lifeDrop: Double = -2.5
+    public static let lifeMs: Double = 120.0
 }

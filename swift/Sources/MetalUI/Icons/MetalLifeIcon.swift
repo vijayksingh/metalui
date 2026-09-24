@@ -74,7 +74,7 @@ public struct MetalLifeIcon: View {
                 .symbolEffectsRemoved(reduceMotion)
         }
         .frame(width: size, height: size)
-        .foregroundStyle(tinted.map { AnyShapeStyle($0.color(in: colorway).color) } ?? AnyShapeStyle(.foreground))
+        .modifier(MetalLifeTintModifier(color: tinted?.color(in: colorway).color))
         .animation(.easeOut(duration: 0.15), value: duotone)
         .contentShape(Rectangle())
         .onHover { hovering in
@@ -83,5 +83,13 @@ public struct MetalLifeIcon: View {
         }
         .onChange(of: hovered) { _, now in if now { hoverCount += 1 } }
         .accessibilityHidden(true)
+    }
+}
+
+/// Tints the stroke when there is a tint; otherwise leaves the inherited foreground alone.
+private struct MetalLifeTintModifier: ViewModifier {
+    let color: Color?
+    func body(content: Content) -> some View {
+        if let color { content.foregroundStyle(color) } else { content }
     }
 }
