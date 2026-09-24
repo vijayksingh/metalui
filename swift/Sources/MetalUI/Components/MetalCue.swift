@@ -62,29 +62,38 @@ public struct MetalCueTag: View {
 
 /// A task's checkbox: a 16 pt well that turns dark with a white tick drawn on (not sprung, DS-21).
 /// `doing` shows the half-filled green square; `ghost` the hollow dimple of an inferred task.
+public enum MetalDimpleSize: Sendable { case margin, row }
+
 public struct MetalDimple: View {
     @Binding var isOn: Bool
     let doing: Bool
     let ghost: Bool
+    let size: MetalDimpleSize
     let label: String
 
-    @Environment(\.metalColorway) private var colorway
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.isFocused) private var isFocused
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var hovering = false
     @State private var drawn: CGFloat = 1
 
-    public init(isOn: Binding<Bool>, doing: Bool = false, ghost: Bool = false, label: String) {
+    public init(isOn: Binding<Bool>, doing: Bool = false, ghost: Bool = false,
+                size: MetalDimpleSize = .margin, label: String) {
         _isOn = isOn
         self.doing = doing
         self.ghost = ghost
+        self.size = size
         self.label = label
     }
 
     public var body: some View {
-        let t = colorway.tokens
-        let side = ghost ? MetalCue.ghost : MetalCue.dimple
-        let shape = RoundedRectangle(cornerRadius: ghost ? MetalCue.ghostRadius : MetalRadius.key, style: .continuous)
+        let recipe = MetalRecipes.checkbox
+        let row = size == .row && !ghost
+        let side = recipe.points(ghost ? "ghost.size" : row ? "row.size" : "self.size")
+        let radius = recipe.points(ghost ? "ghost.radius" : row ? "row.radius" : "self.radius")
+        let tick = row ? "row.tick-" : "tick."
+        let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
+        let fade = (Double(recipe.text("self.fade")?.replacingOccurrences(of: "ms", with: "") ?? "") ?? .zero) / 1000
         Button {
             isOn.toggle()
             guard isOn else { return }
@@ -94,26 +103,33 @@ public struct MetalDimple: View {
             let wait = MetalCue.tickDelayMs / 1000
             withAnimation(reduceMotion ? nil : .easeOut(duration: draw).delay(wait)) { drawn = 1 }
         } label: {
-            ZStack {
+            ZStack(alignment: .topLeading) {
+                Color.clear
+                    .frame(width: side, height: side)
+                    .metalObjectRecipe(recipe, part: "self",
+                                       state: isOn ? "on" : ghost ? "ghost" : hovering ? "hover" : nil,
+                                       in: shape)
+                if ghost && hovering && !isOn {
+                    MetalInnerShadows(layers: recipe.shadows("self", state: "ghost-hover"), shape: shape)
+                        .frame(width: side, height: side)
+                }
                 if isOn {
-                    Color.clear.metalRecipe(MetalRecipe(fill: MetalCue.dimpleOnBg, shadows: MetalCue.dimpleOnSh), in: shape)
                     MetalTickShape()
                         .trim(from: 0, to: drawn)
-                        .stroke(MetalCue.tick.color, style: StrokeStyle(lineWidth: MetalCue.tickWidth, lineCap: .round, lineJoin: .round))
-                        .padding(MetalRecipes.checkbox.points("tick.x"))
-                } else if ghost {
-                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueGhostSh), in: shape)
-                    if hovering { shape.strokeBorder(MetalCue.ghostHover.color, lineWidth: 1) }
-                } else {
-                    Color.clear.metalRecipe(MetalRecipe(fill: MetalGradient(angle: 180, stops: [.init(t.wellTop, 0), .init(t.wellBot, 1)]), shadows: t.well), in: shape)
-                        .brightness(hovering ? -0.02 : 0)
+                        .stroke((recipe.color("tick.color") ?? MetalCue.tick).color,
+                                style: StrokeStyle(lineWidth: recipe.points("tick.stroke"), lineCap: .round, lineJoin: .round))
+                        .frame(width: recipe.points(tick + "w"),
+                               height: recipe.points(tick + "h"))
+                        .offset(x: recipe.points(tick + "x"), y: recipe.points(tick + "y"))
                 }
                 if doing && !isOn {
-                    let inner = side - 2 * MetalCue.doingInset
-                    RoundedRectangle(cornerRadius: MetalCue.doingRadius, style: .continuous)
-                        .fill(LinearGradient(stops: [.init(color: MetalShared.greenDeep.color, location: 0.5), .init(color: .clear, location: 0.5)], startPoint: .leading, endPoint: .trailing))
+                    let inset = recipe.points("doing.inset")
+                    let inner = side - 2 * inset
+                    Color.clear
                         .frame(width: inner, height: inner)
-                        .opacity(MetalCue.doingOpacity)
+                        .metalObjectRecipe(recipe, part: "doing", in: RoundedRectangle(cornerRadius: recipe.points("doing.radius"), style: .continuous))
+                        .opacity(recipe.scalar("doing.opacity"))
+                        .offset(x: inset, y: inset)
                 }
             }
             .frame(width: side, height: side)
@@ -121,9 +137,16 @@ public struct MetalDimple: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
+        .animation(reduceMotion ? nil : .easeInOut(duration: fade), value: hovering)
+        .overlay {
+            if isFocused && isEnabled {
+                shape.inset(by: -(MetalButtonMetrics.focusOffset + MetalButtonMetrics.focusWidth / 2))
+                    .stroke(MetalShared.focus.color, lineWidth: MetalButtonMetrics.focusWidth)
+            }
+        }
         .opacity(isEnabled ? .one : MetalButtonMetrics.disabled)
         .accessibilityLabel(label)
-        .accessibilityValue(isOn ? "done" : doing ? "in progress" : "open")
+        .accessibilityValue(isOn ? "done" : doing ? "mixed" : "open")
         .accessibilityAddTraits(.isToggle)
     }
 }
