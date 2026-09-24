@@ -117,17 +117,19 @@ export function SpringPlot({ k, c, ms = 360, w = 220, h = 70 }: { k: number; c: 
 
 /** A zoom that keeps an isometric model of w×h inside the bench, leaving room for the callout columns. */
 export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number, h: number, active: boolean) {
-  const [room, setRoom] = React.useState(0);
+  const [room, setRoom] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
     if (!active) return;
     const el = bench.current; if (!el) return;
-    const read = () => setRoom(el.clientWidth);
+    const read = () => setRoom([el.clientWidth, el.clientHeight]);
     read();
     const ro = new ResizeObserver(read); ro.observe(el);
     return () => ro.disconnect();
   }, [bench, active]);
-  const footprint = w * 0.79 + h * 0.62;
-  return room ? Math.min(1, (room - 150) / footprint) : 1;
+  // the tilted model's footprint: rotateZ(-38°) then rotateX(58°) squashes its height by cos 58°
+  const wide = w * 0.79 + h * 0.62;
+  const tall = (w * 0.62 + h * 0.79) * 0.53 + 40;
+  return room[0] ? Math.min(1, (room[0] - 150) / wide, (room[1] - 150) / tall) : 1;
 }
 
 export type Side = Record<string, ['left' | 'right', number]>;

@@ -8,6 +8,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/menu/menu
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMenu.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { MenuXray } from '../../ui/xray/MenuXray';
 
 /* The demo's corrections: the heading is the cue's provenance, the rows what it is not. */
 function Corrections() {
@@ -30,9 +31,9 @@ function Corrections() {
         {on('date') ? <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cue> : <span>tomorrow 4pm</span>}
       </ContextMenu>
       {' for '}
-      <ContextMenu heading="Amount · jev 0.82" menu={<>
+      <ContextMenu heading="Amount · model 0.82" menu={<>
         <MenuItem onSelect={() => correct('amount')}>Not an Amount</MenuItem>
-        <MenuItem onSelect={() => {}}>Ask Jev Again</MenuItem>
+        <MenuItem onSelect={() => {}}>Ask the model again</MenuItem>
       </>}>
         {on('amount') ? <Cue kind="amount" resolved="$40.00">$40</Cue> : <span>$40</span>}
       </ContextMenu>
@@ -63,6 +64,9 @@ export default function MenuPage() {
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
       </Section>
+      <Section id="x-ray" title="X-ray" lede="See what the menu is made of. Click an icon to learn about one part and change it.">
+        <MenuXray />
+      </Section>
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
@@ -84,9 +88,9 @@ export default function MenuPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'M1', title: 'Corrections win, and are remembered', body: 'For that exact text. A toast with Undo follows every correction.', origin: 'Kamui 03 §5' },
-          { id: 'M2', title: 'Say what it acts on', body: 'A correction popover’s heading is the cue’s provenance: RULE, JEV 0.82, YOU.', origin: 'Kamui 04 §8' },
-          { id: 'M3', title: 'One highlight', body: 'Pointer and keyboard share one highlighted row; it is instant.', origin: 'Kamui 04 §18' },
+          { id: 'M1', title: 'Corrections win, and are remembered', body: 'For that exact text. A toast with Undo follows every correction.', origin: 'Reference design 03 §5' },
+          { id: 'M2', title: 'Say what it acts on', body: 'A correction popover’s heading is the cue’s provenance: RULE, MODEL 0.82, YOU.', origin: 'Reference design 04 §8' },
+          { id: 'M3', title: 'One highlight', body: 'Pointer and keyboard share one highlighted row; it is instant.', origin: 'Reference design 04 §18' },
           { id: 'M4', title: 'It nests', body: 'Radius 18 with padding 6 makes rows of radius 12.', origin: 'FOUNDATIONS containers' },
         ]} />
       </Section>

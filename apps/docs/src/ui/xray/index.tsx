@@ -5,6 +5,7 @@ import { ChipXray } from './ChipXray';
 import { FieldXray } from './FieldXray';
 import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
+import { MenuXray } from './MenuXray';
 import { SegmentedXray } from './SegmentedXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
@@ -28,6 +29,7 @@ export const XRAYS = {
   toolbar: { title: 'Toolbar', View: ToolbarXray },
   tooltip: { title: 'Tooltip', View: TooltipXray },
   toast: { title: 'Toast', View: ToastXray },
+  menu: { title: 'Menu', View: MenuXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;
