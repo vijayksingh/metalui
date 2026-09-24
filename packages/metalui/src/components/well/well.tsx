@@ -35,6 +35,7 @@ const RADII: Record<WellRadius, string> = {
 export const Well = React.forwardRef<HTMLElement, WellProps>(function Well({ variant, radius, over, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const look = variant === 'region' && over ? OVER : VARIANTS[variant];
-  const own = `mu-well box-border relative transition-well ${look}${radius ? ` ${RADII[radius]}` : ''}`;
+  const placed = /(^|\s)(fixed|absolute|sticky|static)(\s|$)/.test(typeof className === 'string' ? className : '');
+  const own = `mu-well box-border${placed ? '' : ' relative'} transition-well ${look}${radius ? ` ${RADII[radius]}` : ''}`;
   return <Tag ref={ref} data-variant={variant} data-radius={radius} data-over={over ? '' : undefined} className={className ? `${own} ${className}` : own} {...props} />;
 });

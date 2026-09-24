@@ -8,8 +8,7 @@
   "react": {
     "export": "Slider",
     "files": [
-      "slider.tsx",
-      "slider.css"
+      "slider.tsx"
     ]
   },
   "swift": {

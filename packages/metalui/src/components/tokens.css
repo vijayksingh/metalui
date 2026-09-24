@@ -1324,6 +1324,7 @@
   --mu-r-slider-track-height: 10px;
   --mu-r-slider-track-inset: 6px;
   --mu-r-slider-fill-opacity: 0.55;
+  --mu-r-slider-fill-transition: width var(--mu-spring-part-d) var(--mu-spring-part);
   --mu-r-slider-mark-w: 2px;
   --mu-r-slider-mark-h: 4px;
   --mu-r-slider-mark-radius: 1px;
@@ -1333,6 +1334,7 @@
   --mu-r-slider-tick-lift: 9px;
   --mu-r-slider-knob-size: 22px;
   --mu-r-slider-knob-rise: 6px;
+  --mu-r-slider-knob-transition: inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part);
   /* segmented: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-segmented-self-pad: 3px;
   --mu-r-segmented-self-gap: 6px;

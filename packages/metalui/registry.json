@@ -553,11 +553,6 @@
           "path": "packages/metalui/src/components/slider/slider.tsx",
           "type": "registry:ui",
           "target": "components/metalui/slider/slider.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/slider/slider.css",
-          "type": "registry:file",
-          "target": "components/metalui/slider/slider.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/slider.md. SwiftUI: MetalSlider in the MetalUI Swift package."

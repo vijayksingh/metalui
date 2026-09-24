@@ -15,6 +15,7 @@
 }
 
 @theme inline {
+  --radius-round: var(--mu-round);
   --color-ink: var(--mu-ink);
   --color-ink2: var(--mu-ink2);
   --color-ink3: var(--mu-ink3);
@@ -1299,8 +1300,23 @@
   background: var(--mu-r-slider-knob-background);
   box-shadow: var(--mu-r-slider-knob-shadow);
 }
+@utility slider-track-place {
+  top: calc(50% - var(--mu-r-slider-track-height) / 2); height: var(--mu-r-slider-track-height);
+}
+@utility slider-marks-place {
+  top: calc(50% - var(--mu-r-slider-mark-h) / 2); height: var(--mu-r-slider-mark-h);
+}
+@utility slider-ticks-place {
+  top: calc(50% + var(--mu-r-slider-tick-top));
+}
 @utility opacity-slider-fill-opacity {
   opacity: var(--mu-r-slider-fill-opacity);
+}
+@utility transition-slider-fill {
+  transition: var(--mu-r-slider-fill-transition);
+}
+@utility transition-slider-knob {
+  transition: var(--mu-r-slider-knob-transition);
 }
 @utility recipe-segmented {
   background: var(--mu-r-segmented-self-background);

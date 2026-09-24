@@ -1497,6 +1497,7 @@ public enum MetalRecipes {
             "track.height": .number(10.0),
             "track.inset": .number(6.0),
             "fill.opacity": .text("0.55"),
+            "fill.transition": .text("width var(--mu-spring-part-d) var(--mu-spring-part)"),
             "mark.w": .number(2.0),
             "mark.h": .number(4.0),
             "mark.radius": .number(1.0),
@@ -1508,6 +1509,7 @@ public enum MetalRecipes {
             "tick.color": .perColorway(bone: "rgba(40,38,32,.18)", graphite: "rgba(255,255,255,.18)"),
             "knob.size": .number(22.0),
             "knob.rise": .number(6.0),
+            "knob.transition": .text("inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part)"),
         ]
     )
 

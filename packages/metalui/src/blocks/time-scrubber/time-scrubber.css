@@ -1,5 +1,4 @@
 @import "../../components/tokens.css";
-@import "../../components/slider/slider.css";
 
 /* Time scrubber: a composition. It places the readout over the slider; every paint is Slider,
    Label, Glyph and Button(link). Layout values: --mu-scrubber-*. The slider fills the box, so its
