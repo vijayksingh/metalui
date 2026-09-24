@@ -5,21 +5,25 @@
 //          (or chord-closed) wire can hold a duotone tint
 //   bead   a solid dot: a wire of zero length, drawn at the dot's diameter
 //   plate  a filled body with no wire: tinted or solid, possibly with holes
-// Masks and clips are baked here, so the runtime never needs them:
-//   - a dashed wire becomes its visible runs
-//   - a masked or clipped plate, and a wire something in front keeps clear of, become exactly
-//     what is left of them on screen: plates (CoreGraphics booleans, scripts/lib/outline.swift)
-// Geometry comes from the same static bake as the SVG export, so every glyph at rest is the icon.
-// Needs macOS (xcrun swift) for the plate booleans.
-import { spawnSync } from 'node:child_process';
+// and of the depth between them (docs/MORPH.md, C9):
+//   behind a part is hidden where it falls within another part's ink widened by a clearance r
+//   inside a part is visible only within a frame's body narrowed by r
+// The authored masks and clips are read back into those relations, so the runtime draws a
+// clearance live and it travels with the object that casts it. A mask that is not a part's
+// clearance (or a knockout wholly inside a plate, which becomes a hole) fails the build.
+// Dashed wires become their visible runs. Geometry comes from the same static bake as the SVG
+// export, so every glyph at rest is the icon.
 import { ICONS } from '../packages/metalui/icons/src/icons.mjs';
-import { emit, finish, root } from './lib/emit.mjs';
+import { emit, finish } from './lib/emit.mjs';
 import { staticSvg, SW } from './lib/static-svg.mjs';
 import { ap, I, mul, parseSvg, parseTransform, scaleOf, shapeData, transformData } from './lib/svg-geometry.mjs';
 
 const BEAD_MAX_R = 2.2; // solid circles up to this radius are beads, larger ones are plates
 const DENSE = 0.02;     // sampling step (24u) for cutting dashed wires
-const SIMPLIFY = 0.008; // polyline tolerance (24u) for cut runs and plate outlines
+const SIMPLIFY = 0.008; // polyline tolerance (24u) for cut runs
+const PROBE = 0.05;     // sampling step for reading a mask back into a clearance
+const R_STEP = 0.05, R_MAX = 3; // clearances tried, in 24u
+const EDGE = 0.06;      // samples this close to a mask edge do not vote
 
 const INHERIT = ['fill', 'fill-opacity', 'stroke', 'stroke-width', 'opacity', 'stroke-dasharray'];
 const isNone = (p) => p == null || p === 'none';
@@ -40,19 +44,19 @@ function subpaths(cmds) {
 function dense(sub, step = DENSE) {
   const pts = [[sub.cmds[0][1], sub.cmds[0][2]]];
   let [x, y] = pts[0];
-  const seg = (nx, ny, at) => {
-    const n = Math.max(1, Math.ceil(nx / step));
+  const seg = (n0, at) => {
+    const n = Math.max(1, Math.ceil(n0 / step));
     for (let i = 1; i <= n; i++) pts.push(at(i / n));
   };
   for (const c of sub.cmds.slice(1)) {
     if (c[0] === 'L') {
       const [x0, y0] = [x, y], [x1, y1] = [c[1], c[2]];
-      seg(Math.hypot(x1 - x0, y1 - y0), 0, (t) => [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
+      seg(Math.hypot(x1 - x0, y1 - y0), (t) => [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
       [x, y] = [x1, y1];
     } else if (c[0] === 'C') {
       const p = [[x, y], [c[1], c[2]], [c[3], c[4]], [c[5], c[6]]];
       const hull = Math.hypot(p[1][0] - p[0][0], p[1][1] - p[0][1]) + Math.hypot(p[2][0] - p[1][0], p[2][1] - p[1][1]) + Math.hypot(p[3][0] - p[2][0], p[3][1] - p[2][1]);
-      seg(hull, 0, (t) => {
+      seg(hull, (t) => {
         const u = 1 - t, a = u * u * u, b = 3 * u * u * t, cc = 3 * u * t * t, d = t * t * t;
         return [a * p[0][0] + b * p[1][0] + cc * p[2][0] + d * p[3][0], a * p[0][1] + b * p[1][1] + cc * p[2][1] + d * p[3][1]];
       });
@@ -62,7 +66,7 @@ function dense(sub, step = DENSE) {
   if (sub.closed) {
     const [x0, y0] = [x, y], [x1, y1] = pts[0];
     const L = Math.hypot(x1 - x0, y1 - y0);
-    if (L > 1e-6) seg(L, 0, (t) => [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
+    if (L > 1e-6) seg(L, (t) => [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
   }
   return pts;
 }
@@ -79,7 +83,23 @@ function inPolygons(pt, polys) {
   }
   return c;
 }
-// ---------- the glyph → parts ----------
+/** Distance from a point to a polyline (or a lone point). */
+function distToLine(pt, line) {
+  let best = Infinity;
+  if (line.length === 1) return Math.hypot(pt[0] - line[0][0], pt[1] - line[0][1]);
+  for (let i = 1; i < line.length; i++) {
+    const [ax, ay] = line[i - 1], [bx, by] = line[i];
+    const dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy;
+    const t = L2 ? Math.max(0, Math.min(1, ((pt[0] - ax) * dx + (pt[1] - ay) * dy) / L2)) : 0;
+    const d = Math.hypot(pt[0] - (ax + dx * t), pt[1] - (ay + dy * t));
+    if (d < best) best = d;
+  }
+  return best;
+}
+const bbox = (pts) => pts.reduce((b, p) => [Math.min(b[0], p[0]), Math.min(b[1], p[1]), Math.max(b[2], p[0]), Math.max(b[3], p[1])], [Infinity, Infinity, -Infinity, -Infinity]);
+const sameCmds = (a, b) => a.length === b.length && a.every((c, i) => c[0] === b[i][0] && c.every((v, k) => k === 0 || Math.abs(v - b[i][k]) < 0.02));
+
+// ---------- the glyph → items ----------
 function collect(svgSrc) {
   const svg = parseSvg(svgSrc);
   const defs = {};
@@ -111,7 +131,7 @@ function collect(svgSrc) {
       if (c.attrs.opacity != null) st.opacity = String(+(style.opacity ?? 1) * +c.attrs.opacity);
       const cm = mul(m, parseTransform(c.attrs.transform));
       const ms = [...masks];
-      for (const [attr, op] of [['mask', 'subtract'], ['clip-path', 'intersect']]) {
+      for (const [attr, op] of [['mask', 'behind'], ['clip-path', 'inside']]) {
         const ref = c.attrs[attr]?.match(/url\(#([^)]+)\)/)?.[1];
         if (ref && defs[ref]) ms.push({ op, shapes: maskShapes(defs[ref], cm) });
       }
@@ -154,7 +174,6 @@ function cutDash(sub, dash, pathLength) {
   };
   const vis = cum.map(on);
   if (vis.every(Boolean)) return null;
-  // Walk the samples (from a hidden one, for a ring) and collect visible runs.
   let order = pts.map((_, i) => i);
   if (sub.closed) { const h = vis.indexOf(false); order = [...order.slice(h), ...order.slice(0, h)]; }
   const runs = [];
@@ -167,80 +186,144 @@ function cutDash(sub, dash, pathLength) {
   return runs.filter((r) => r.length > 1).map((r) => simplify(r));
 }
 
-const area = (pts) => pts.reduce((a, p, i) => { const q = pts[(i + 1) % pts.length]; return a + p[0] * q[1] - q[0] * p[1]; }, 0) / 2;
+// ---------- items → parts ----------
+/** A part's probe geometry: its outline polygon(s) when closed, and its centerline samples. */
+function probeOf(cmds, bead) {
+  if (bead) return { outer: null, line: [[cmds[0][1], cmds[0][2]]] };
+  const subs = subpaths(cmds).map((s) => ({ pts: dense(s, PROBE), closed: s.closed }));
+  return { outer: subs[0].closed ? subs.map((s) => s.pts) : null, line: subs[0].pts };
+}
 
-const glyphs = {};
-const plateJobs = [];
-for (const ic of ICONS) {
-  const parts = (glyphs[ic.name] = []);
-  for (const it of collect(staticSvg(ic))) {
-    const { node, st, masks, cm } = it;
-    const o = +(st.opacity ?? 1);
-    const fill = !isNone(st.fill), stroke = !isNone(st.stroke);
-    const fo = +(st['fill-opacity'] ?? 1);
-    const tint = fill && fo < 1 ? fo : 0, solid = fill && fo >= 1 ? 1 : 0;
-    const w = stroke ? +(st['stroke-width'] ?? SW) * scaleOf(cm) : 0;
-
-    if (node.tag === 'circle' && solid && !stroke && !masks.length && +node.attrs.r * scaleOf(cm) <= BEAD_MAX_R) {
-      const [cx, cy] = ap(cm, +node.attrs.cx, +node.attrs.cy), r = +node.attrs.r * scaleOf(cm);
-      parts.push({ d: `M${fmt(cx)} ${fmt(cy)}`, w: r2(2 * r), t: 0, s: 0, o, bead: true });
-      continue;
-    }
-    if (!stroke) {
-      if (masks.length) { plateJobs.push({ t: tint, s: solid, o, item: { layer: 'primary', shape: { d: it.d, stroke: null }, masks: masks.map((m) => ({ op: m.op, shapes: m.shapes })) } }); parts.push({ job: plateJobs.length - 1 }); }
-      else for (const sub of subpaths(it.d)) parts.push({ d: cmdsToD(sub.cmds) + 'Z', w: 0, t: tint, s: solid, o });
-      continue;
-    }
-    // A wire that something in front keeps clear of is drawn as exactly what is left of it: a
-    // plate cut from its outline (the cards' clearance can leave a sliver of the folder behind).
-    if (masks.length) {
-      const job = (shape, t, s) => { plateJobs.push({ t, s, o, item: { layer: 'primary', shape, masks: masks.map((m) => ({ op: m.op, shapes: m.shapes })) } }); parts.push({ job: plateJobs.length - 1 }); };
-      if (tint) job({ d: it.d, stroke: null }, tint, 0);
-      job({ d: it.d, stroke: w }, 0, 1);
-      continue;
-    }
-    const dash = st['stroke-dasharray'] && st['stroke-dasharray'] !== 'none' ? st['stroke-dasharray'].split(/[\s,]+/).map(Number) : null;
-    const pathLength = node.attrs.pathLength ? +node.attrs.pathLength : null;
-    for (const sub of subpaths(it.d)) {
-      const runs = dash ? cutDash(sub, dash, pathLength) : null;
-      if (!runs) parts.push({ d: cmdsToD(sub.cmds) + (sub.closed ? 'Z' : ''), w: r2(w), t: tint, s: solid, o });
-      else for (const run of runs) parts.push({ d: polyToD(run, false), w: r2(w), t: tint, s: solid, o });
+function partsOf(it) {
+  const { node, st, cm } = it;
+  const o = +(st.opacity ?? 1);
+  const fill = !isNone(st.fill), stroke = !isNone(st.stroke);
+  const fo = +(st['fill-opacity'] ?? 1);
+  const tint = fill && fo < 1 ? fo : 0, solid = fill && fo >= 1 ? 1 : 0;
+  const w = stroke ? +(st['stroke-width'] ?? SW) * scaleOf(cm) : 0;
+  if (node.tag === 'circle' && solid && !stroke && +node.attrs.r * scaleOf(cm) <= BEAD_MAX_R) {
+    const [cx, cy] = ap(cm, +node.attrs.cx, +node.attrs.cy), r = +node.attrs.r * scaleOf(cm);
+    const cmds = [['M', cx, cy]];
+    return [{ cmds, d: `M${fmt(cx)} ${fmt(cy)}`, w: r2(2 * r), t: 0, s: 0, o, bead: true, probe: probeOf(cmds, true) }];
+  }
+  const subs = subpaths(it.d);
+  if (!stroke) {
+    // A plate: one outer contour with its holes (every further subpath).
+    const cmds = subs.flatMap((s) => [...s.cmds, ['Z']]);
+    return [{ cmds, d: subs.map((s) => cmdsToD(s.cmds) + 'Z').join(''), w: 0, t: tint, s: solid, o, plate: true, probe: probeOf(cmds, false) }];
+  }
+  const dash = st['stroke-dasharray'] && st['stroke-dasharray'] !== 'none' ? st['stroke-dasharray'].split(/[\s,]+/).map(Number) : null;
+  const pathLength = node.attrs.pathLength ? +node.attrs.pathLength : null;
+  const parts = [];
+  for (const sub of subs) {
+    const runs = dash ? cutDash(sub, dash, pathLength) : null;
+    if (!runs) {
+      const cmds = [...sub.cmds, ...(sub.closed ? [['Z']] : [])];
+      parts.push({ cmds, d: cmdsToD(sub.cmds) + (sub.closed ? 'Z' : ''), w: r2(w), t: tint, s: solid, o, probe: probeOf(cmds, false) });
+    } else {
+      for (const run of runs) {
+        const cmds = run.map((p, i) => [i ? 'L' : 'M', p[0], p[1]]);
+        parts.push({ cmds, d: polyToD(run, false), w: r2(w), t: tint, s: solid, o, probe: probeOf(cmds, false) });
+      }
     }
   }
+  return parts;
 }
 
-// Masked and clipped plates: exact booleans through CoreGraphics.
-if (plateJobs.length) {
-  const res = spawnSync('xcrun', ['swift', root('scripts/lib/outline.swift')], {
-    input: JSON.stringify({ jobs: plateJobs.map((j, i) => ({ id: String(i), items: [j.item] })) }),
-    maxBuffer: 1 << 28,
-  });
-  if (res.status !== 0) { console.error(res.stderr.toString()); process.exit(1); }
-  const byId = Object.fromEntries(JSON.parse(res.stdout.toString()).jobs.map((j) => [j.id, j.layers.primary[0]]));
-  plateJobs.forEach((job, i) => {
-    const contours = byId[String(i)].map((c) => simplify([...c, c[0]]).slice(0, -1)).filter((c) => c.length >= 3 && Math.abs(area(c)) > 0.01);
-    // Nesting decides outer and hole; each outer contour becomes one plate carrying its holes.
-    const depth = contours.map((c, a) => contours.filter((o, b) => b !== a && Math.abs(area(o)) > Math.abs(area(c)) && inPolygons(c[0], [o])).length);
-    const plates = [];
-    contours.forEach((c, a) => {
-      if (depth[a] % 2) return;
-      const outer = area(c) > 0 ? c : [...c].reverse();
-      const holes = contours.filter((h, b) => depth[b] === depth[a] + 1 && inPolygons(h[0], [c])).map((h) => (area(h) < 0 ? h : [...h].reverse()));
-      plates.push({ d: [outer, ...holes].map((p) => polyToD(p, true)).join(''), w: 0, t: job.t, s: job.s, o: job.o });
-    });
-    job.plates = plates;
-  });
+// ---------- masks → relations ----------
+/** Sample points of a part that vote on what a mask hides: its line, and a grid over a plate. */
+function samplesOf(part) {
+  const pts = [...part.probe.line];
+  if (part.plate) {
+    const [x0, y0, x1, y1] = bbox(part.probe.line);
+    for (let y = y0; y <= y1; y += 0.4) for (let x = x0; x <= x1; x += 0.4) if (inPolygons([x, y], part.probe.outer)) pts.push([x, y]);
+  }
+  return pts;
+}
+/** How a mask shape covers a point: true (painted), false, or null on the edge (no vote). */
+function shapeCovers(shape, pt) {
+  const polys = (shape.polys ??= subpaths(shape.d).map((s) => dense(s, PROBE)));
+  if (shape.stroke == null) {
+    const near = polys.some((p) => distToLine(pt, [...p, p[0]]) < EDGE);
+    return near ? null : inPolygons(pt, polys);
+  }
+  const d = Math.min(...polys.map((p) => distToLine(pt, p)));
+  return Math.abs(d - shape.stroke / 2) < EDGE ? null : d <= shape.stroke / 2;
+}
+/** Whether a closed part's ink widened by r covers a point; `inside`: its body narrowed by r. */
+function partCovers(part, r, pt, inside) {
+  const within = inPolygons(pt, part.probe.outer), d = distToLine(pt, part.probe.line);
+  return inside ? within && d >= r : within || d <= r;
 }
 
-const rows = ICONS.map((ic) => `  ${JSON.stringify(ic.name)}: [\n${glyphs[ic.name].flatMap((p) => ('job' in p ? plateJobs[p.job].plates : [p])).map((p) => `    [${JSON.stringify(p.d)}, ${p.w}, ${p.t}, ${p.s}, ${p.o}]`).join(',\n')},\n  ],`);
+/** Reads one mask shape on a part back into a relation (or a hole), or throws. */
+function readMask(icon, part, partIndex, parts, shape, op) {
+  const others = parts.map((p, i) => ({ p, i })).filter(({ i }) => i !== partIndex);
+  const bare = (cmds) => cmds.filter((c) => c[0] !== 'Z');
+  // Direct: the mask is another part's own drawing, so the clearance is the mask's stroke.
+  const direct = others.find(({ p }) => !p.bead && sameCmds(bare(p.cmds), bare(shape.d)));
+  if (direct && op === 'behind') return { rel: [op, direct.i, r2((shape.stroke ?? 0) / 2)] };
+  // A knockout drawn wholly inside a plate is a hole in it.
+  if (op === 'behind' && shape.stroke == null && part.plate) {
+    const polys = subpaths(shape.d).map((s) => dense(s, PROBE));
+    if (polys.flat().every((q) => inPolygons(q, part.probe.outer))) return { hole: subpaths(shape.d) };
+  }
+  // Inferred: the smallest clearance of a closed part that hides (or shows) exactly what the mask does.
+  const voters = samplesOf(part).map((q) => [q, shapeCovers(shape, q)]).filter(([, v]) => v != null);
+  const slack = Math.max(1, Math.ceil(voters.length * 0.003));
+  // Every clearance that reproduces the mask passes; the relation takes the middle of that range.
+  let best = null;
+  for (const { p, i } of others) {
+    if (!p.probe.outer) continue;
+    const passing = [];
+    for (let r = 0; r <= R_MAX + 1e-9; r += R_STEP) {
+      let miss = 0;
+      for (const [q, v] of voters) if (partCovers(p, r, q, op === 'inside') !== v) { if (++miss > slack) break; }
+      if (miss <= slack) passing.push(r);
+    }
+    if (!passing.length || (best && passing[0] >= best.lo)) continue;
+    // An open-ended range (the mask never reaches this part's edge) assumes the least: its lower bound.
+    const hi = passing[passing.length - 1];
+    best = { i, lo: passing[0], r: r2(hi >= R_MAX - 1e-9 ? passing[0] : (passing[0] + hi) / 2) };
+  }
+  if (!best) throw new Error(`${icon}: a mask on part ${partIndex} is not another part's clearance, a window, or a knockout inside a plate (docs/MORPH.md, C9).`);
+  return { rel: [op, best.i, best.r] };
+}
+
+// ---------- the set ----------
+const glyphs = {};
+for (const ic of ICONS) {
+  const items = collect(staticSvg(ic));
+  const parts = [], owner = [];
+  items.forEach((it, k) => { for (const p of partsOf(it)) { parts.push(p); owner.push(k); } });
+  parts.forEach((part, pi) => {
+    const rels = new Map();
+    for (const m of items[owner[pi]].masks) {
+      for (const shape of m.shapes) {
+        const read = readMask(ic.name, part, pi, parts, shape, m.op);
+        if (read.hole) { part.d += read.hole.map((s) => cmdsToD(s.cmds) + 'Z').join(''); continue; }
+        const [op, i, r] = read.rel, key = `${op}${i}`;
+        rels.set(key, [op, i, Math.max(r, rels.get(key)?.[2] ?? 0)]);
+      }
+    }
+    part.rels = [...rels.values()];
+  });
+  glyphs[ic.name] = parts;
+}
+
+const row = (p) => `    [${JSON.stringify(p.d)}, ${p.w}, ${p.t}, ${p.s}, ${p.o}${p.rels.length ? `, ${JSON.stringify(p.rels)}` : ''}]`;
+const rows = ICONS.map((ic) => `  ${JSON.stringify(ic.name)}: [\n${glyphs[ic.name].map(row).join(',\n')},\n  ],`);
 emit('packages/metalui/src/icons/morph.generated.ts', `// Generated by scripts/build-morph.mjs from icons/src/icons.mjs. Do not edit.
-// Each glyph at rest as morphable parts: [path, weight, tint, solid, opacity].
-//   path    one wire (open, or closed with Z), a bead (a lone point), or a plate (outer + holes)
-//   weight  wire width in 24u; a bead's diameter; 0 for a plate
-//   tint    duotone fill opacity (scaled by the colorway's --mu-duo-k); solid is 1 for solid fills
+// Each glyph at rest as morphable parts: [path, weight, tint, solid, opacity, relations?].
+//   path      one wire (open, or closed with Z), a bead (a lone point), or a plate (outer + holes)
+//   weight    wire width in 24u; a bead's diameter; 0 for a plate
+//   tint      duotone fill opacity (scaled by the colorway's --mu-duo-k); solid is 1 for solid fills
+//   relations depth. ["behind", part, r]: hidden within that part's ink widened by r.
+//             ["inside", part, r]: visible only within that part's body narrowed by r.
 import type { IconName } from './catalog.generated';
 
-export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number];
+export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: number, r: number];
+export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 export const MORPH_PARTS: Record<IconName, readonly MorphPartSource[]> = {
 ${rows.join('\n')}

@@ -27,15 +27,20 @@ const PAIRS: [IconName, IconName][] = [
 ];
 const STEPS = [0, 0.2, 0.4, 0.6, 0.8, 1];
 
-/** Filmstrips: each pair at six points along its morph, so the in-between glyphs can be judged. */
+/** Filmstrips: each pair at six points along its morph, so the in-between glyphs can be judged,
+ *  with the plan's strain (under 1 reads as one object changing; docs/MORPH.md). */
 export function MorphFilmstrips() {
   return (
     <div className="grid w-full gap-x-32 gap-y-16 lg:grid-cols-2 [&>*]:min-w-0">
       {PAIRS.map(([a, b]) => {
         const plan = planMorph(morphParts(a), b);
+        const moves = [...new Set(plan.tracks.map((t) => t.move))].join(' · ');
         return (
           <div key={`${a}-${b}`} data-md="row" className="flex items-center gap-10 text-icon">
-            <span className="type-readout w-[140px] shrink-0 text-ink2">{a} → {b}</span>
+            <span className="flex w-[140px] shrink-0 flex-col gap-2">
+              <span className="type-readout text-ink2">{a} → {b}</span>
+              <span className="type-meta text-ink3">strain {plan.strain.total.toFixed(2)}{plan.turn !== undefined ? ' · turn' : ''} · {moves}</span>
+            </span>
             {STEPS.map((s) => <Still key={s} frame={s === 1 ? morphParts(b) : morphAt(plan, s)} />)}
           </div>
         );

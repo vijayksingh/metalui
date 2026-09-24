@@ -3,19 +3,21 @@
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
 import type { IconName } from './catalog.generated';
-import { morphAt, morphParts, morphPath, planMorph, springAt, type MorphFrame } from './morph';
+import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart } from './morph';
 
 /* ─────────────────────────────────────────────────────────
- * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set)
+ * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set; docs/MORPH.md)
  *
  *      0ms   every part of A pairs with the part of B it travels least to become
- *            wires bend to their new line at constant weight
+ *            each pair rides its carriage: rigid turn, scale and travel, bends in place
  *            beads draw out into wires (thinning), wires gather into beads
  *            a ring opens where it is nearest to its new ends; tint drains or fills
- *            parts B lacks gather into the nearest staying wire and vanish into it
- *            parts B gains bud from the nearest staying wire and grow out of it
+ *            clearances travel with the parts that cast them, gaps lerp
+ *            parts B lacks tuck behind a body or gather into a staying wire (done by ⅔)
+ *            parts B gains emerge from behind a body or bud from a staying wire (from ⅓)
+ *            a mirror pair turns over on its axis, edge-on at the half turn
  *    ~214ms  reads as done                     (settle k380 c36, one spring for all)
- *    ~400ms  at rest: the authored icon, exactly
+ *    ~440ms  at rest: the authored icon, exactly
  * Interrupted: the next morph starts from the in-between glyph on screen.
  * Reduced motion: the glyph changes in place.
  * ───────────────────────────────────────────────────────── */
@@ -34,20 +36,44 @@ export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'nam
 const prefersReduced = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/** The mask for one depth relation: what a caster's body hides (behind) or shows (inside), live. */
+function DepthMask({ id, caster, r, inside }: { id: string; caster: MorphPart; r: number; inside: boolean }) {
+  return (
+    <mask id={id} maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+      {!inside && <rect width="24" height="24" fill="#fff" stroke="none" />}
+      <path d={morphOutline(caster)} fill={inside ? '#fff' : caster.body ? '#000' : 'none'} stroke="#000" strokeWidth={Math.max(0, 2 * r)} />
+    </mask>
+  );
+}
+
 /** Draws one frame of parts. Shared by MorphIcon and static filmstrips. */
 export function MorphGlyph({ frame }: { frame: MorphFrame }) {
+  const id = React.useId().replace(/[^\w-]/g, '_');
+  const relations = frame.flatMap((part, i) => [
+    ...part.inside.map((rel, k) => ({ key: `${id}i${i}-${k}`, caster: frame[rel.part], r: rel.r, inside: true, part: i })),
+    ...part.behind.map((rel, k) => ({ key: `${id}b${i}-${k}`, caster: frame[rel.part], r: rel.r, inside: false, part: i })),
+  ]);
   return (
     <>
-      {frame.map((part, i) => (
-        <path
-          key={i}
-          d={morphPath(part)}
-          strokeWidth={part.weight}
-          fillRule={part.holes.length ? 'evenodd' : 'nonzero'}
-          opacity={part.opacity < 1 ? part.opacity : undefined}
-          style={{ fillOpacity: `calc(${part.tint.toFixed(4)} * var(--mu-duo-k, 1) + ${part.solid.toFixed(4)})` }}
-        />
-      ))}
+      {relations.length > 0 && (
+        <defs>
+          {relations.map((rel) => <DepthMask key={rel.key} id={rel.key} caster={rel.caster} r={rel.r} inside={rel.inside} />)}
+        </defs>
+      )}
+      {frame.map((part, i) => {
+        let node: React.ReactNode = (
+          <path
+            d={morphPath(part)}
+            strokeWidth={part.weight}
+            fillRule={part.holes.length ? 'evenodd' : 'nonzero'}
+            opacity={part.opacity < 1 ? part.opacity : undefined}
+            style={{ fillOpacity: `calc(${part.tint.toFixed(4)} * var(--mu-duo-k, 1) + ${part.solid.toFixed(4)})` }}
+          />
+        );
+        // Each relation wraps the part in its own mask, innermost first.
+        for (const rel of relations) if (rel.part === i) node = <g mask={`url(#${rel.key})`}>{node}</g>;
+        return <React.Fragment key={i}>{node}</React.Fragment>;
+      })}
     </>
   );
 }
