@@ -804,6 +804,26 @@ export const ICON_CATALOG = {
     body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path class=\"hd\" d=\"M12 7.4V12l3.2 2\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * ME · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the trend redraws to its last point
+   * PRESS one-shot (from the current pose)
+   *          the last point pulses
+   *     0ms   .lp plays me-p (300ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "me": {
+    label: "Me",
+    category: "Tools",
+    hover: "the trend redraws to its last point",
+    press: "the last point pulses",
+    pressMs: 300,
+    defs: "",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3.5\"/><path class=\"tr\" pathLength=\"1\" d=\"M7.2 15.2l2.8-3.2 2.6 2 3.4-4.2\"/><circle class=\"lp s\" cx=\"16\" cy=\"9.8\" r=\"1.2\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

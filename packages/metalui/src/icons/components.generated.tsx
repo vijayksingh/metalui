@@ -77,3 +77,5 @@ export const CalendarIcon = createIcon("calendar", "CalendarIcon");
 export const DocumentIcon = createIcon("document", "DocumentIcon");
 /** Time. Hover: the minute hand sweeps on. Press: the face ticks. */
 export const ClockIcon = createIcon("clock", "ClockIcon");
+/** Me. Hover: the trend redraws to its last point. Press: the last point pulses. */
+export const MeIcon = createIcon("me", "MeIcon");

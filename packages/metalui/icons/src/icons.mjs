@@ -345,4 +345,12 @@ export const ICONS = [
   mo: `@H .hd{transform:rotate(60deg)}
        @P .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}`,
   shape: 'Face r8.5, tinted .08; hands 4.6 and 3.8 about the centre.' },
+
+// Me: the trend over your own days. Body: the screen. Marks: the trace and its last point.
+{ name: 'me', cat: 'Tools', label: 'Me', hover: 'the trend redraws to its last point', press: 'the last point pulses',
+  body: `<rect class="f" style="--duo:.08" x="4" y="4" width="16" height="16" rx="3.5"/><path class="tr" pathLength="1" d="M7.2 15.2l2.8-3.2 2.6 2 3.4-4.2"/><circle class="lp s" cx="16" cy="9.8" r="1.2"/>`,
+  base: `& .tr{stroke-dasharray:1 2} & .lp{transform-origin:16px 9.8px}`,
+  mo: `@H .tr{animation:me-h .5s cubic-bezier(.3,.1,.2,1) both} @keyframes me-h{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}
+       @P .lp{animation:me-p .3s cubic-bezier(.3,0,.2,1)} @keyframes me-p{40%{transform:scale(1.5)}}`,
+  shape: 'Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead.' },
 ];

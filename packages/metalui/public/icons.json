@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 38,
+  "count": 39,
   "icons": [
     {
       "name": "select",
@@ -419,6 +419,17 @@
       "pressMs": 340,
       "tuned16": false,
       "construction": "Face r8.5, tinted .08; hands 4.6 and 3.8 about the centre."
+    },
+    {
+      "name": "me",
+      "component": "MeIcon",
+      "label": "Me",
+      "category": "Tools",
+      "hover": "the trend redraws to its last point",
+      "press": "the last point pulses",
+      "pressMs": 300,
+      "tuned16": false,
+      "construction": "Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead."
     }
   ]
 }

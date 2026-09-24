@@ -121,3 +121,6 @@
 /* clock */
 .mu-icon.mu-ic-clock .hd{transform-origin:12px 12px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-clock,.mu-ic-clock:is(:hover,[data-hover])):not([data-static]) .hd{transform:rotate(60deg)} .mu-icon.mu-ic-clock[data-press] .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}}
+/* me */
+.mu-icon.mu-ic-me .tr{stroke-dasharray:1 2} .mu-icon.mu-ic-me .lp{transform-origin:16px 9.8px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-me,.mu-ic-me:is(:hover,[data-hover])):not([data-static]) .tr{animation:me-h .5s cubic-bezier(.3,.1,.2,1) both} @keyframes me-h{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}} .mu-icon.mu-ic-me[data-press] .lp{animation:me-p .3s cubic-bezier(.3,0,.2,1)} @keyframes me-p{40%{transform:scale(1.5)}}}
