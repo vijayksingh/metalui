@@ -1,0 +1,20 @@
+{
+  "name": "label",
+  "title": "Label",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.",
+  "base": "none",
+  "react": {
+    "export": "Label",
+    "files": [
+      "label.tsx",
+      "label.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalLabel",
+    "file": "swift/Sources/MetalUI/Components/MetalLabel.swift"
+  },
+  "agent": "label.agent.md"
+}

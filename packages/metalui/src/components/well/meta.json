@@ -1,0 +1,20 @@
+{
+  "name": "well",
+  "title": "Well",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A sunk field or track: field, track, region (with a drop-target state) and graphite.",
+  "base": "none",
+  "react": {
+    "export": "Well",
+    "files": [
+      "well.tsx",
+      "well.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalWell",
+    "file": "swift/Sources/MetalUI/Components/MetalWell.swift"
+  },
+  "agent": "well.agent.md"
+}

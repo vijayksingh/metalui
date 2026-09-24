@@ -1,0 +1,14 @@
+@import "../tokens.css";
+
+/* Well: a sunk field or track. Its look is the well recipe (--mu-r-well-*). */
+.mu-well { box-sizing: border-box; position: relative; transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle); }
+.mu-well[data-variant="field"] { background: var(--mu-r-well-self-field-background); box-shadow: var(--mu-r-well-self-field-shadow); }
+.mu-well[data-variant="track"] { background: var(--mu-r-well-self-track-background); box-shadow: var(--mu-r-well-self-track-shadow); }
+.mu-well[data-variant="region"] { background: var(--mu-r-well-self-region-background); box-shadow: var(--mu-r-well-self-region-shadow); }
+.mu-well[data-variant="graphite"] { background: var(--mu-r-well-self-graphite-background); box-shadow: var(--mu-r-well-self-graphite-shadow); }
+.mu-well[data-variant="region"][data-over] { background: var(--mu-r-well-self-region-over-background); box-shadow: var(--mu-r-well-self-region-over-shadow); }
+.mu-well[data-radius="pill"] { border-radius: var(--mu-r-well-radius-pill); }
+.mu-well[data-radius="field"] { border-radius: var(--mu-r-well-radius-field); }
+.mu-well[data-radius="region"] { border-radius: var(--mu-r-well-radius-region); }
+.mu-well[data-radius="strip"] { border-radius: var(--mu-r-well-radius-strip); }
+.mu-well[data-radius="row"] { border-radius: var(--mu-r-well-radius-row); }

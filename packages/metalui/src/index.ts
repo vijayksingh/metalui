@@ -1,4 +1,8 @@
 // @unlocalhosted/metalui: React components on Base UI. Import '@unlocalhosted/metalui/styles.css' once.
+export { Surface, type SurfaceProps, type SurfaceMaterial, type SurfaceRadius } from './components/surface/surface';
+export { Well, type WellProps, type WellVariant, type WellRadius } from './components/well/well';
+export { Label, type LabelProps, type LabelVariant } from './components/label/label';
+export { Rule, type RuleProps } from './components/rule/rule';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';

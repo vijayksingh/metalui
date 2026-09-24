@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/label/label.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/label/label.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './label.css';\n\n/* LABEL: text in a set role. engraved (the mono label with a lip, uppercase), small (the same at\n * 8.5), title (an object's name), heading (a page title), count (a mono number), readout (mono on\n * graphite), dark (an engraving on dark chrome). */\n\nexport type LabelVariant = 'engraved' | 'small' | 'title' | 'heading' | 'count' | 'readout' | 'dark';\n\nexport interface LabelProps extends React.HTMLAttributes<HTMLElement> {\n  variant?: LabelVariant;\n  as?: 'span' | 'b' | 'div' | 'h2' | 'h3' | 'p';\n}\n\nexport const Label = React.forwardRef<HTMLElement, LabelProps>(function Label({ variant = 'engraved', as = 'span', className, ...props }, ref) {\n  const Tag = as as React.ElementType;\n  return <Tag ref={ref} data-variant={variant} className={className ? `mu-label ${className}` : 'mu-label'} {...props} />;\n});\n"
+    },
+    {
+      "path": "packages/metalui/src/components/label/label.css",
+      "type": "registry:file",
+      "target": "components/metalui/label/label.css",
+      "content": "@import \"../tokens.css\";\n\n/* Label: text in a set role. Its look is the label recipe (--mu-r-label-*). */\n.mu-label { white-space: nowrap; }\n.mu-label:is([data-variant=\"engraved\"], [data-variant=\"small\"], [data-variant=\"dark\"]) { font: var(--mu-r-label-engraved-font); letter-spacing: var(--mu-r-label-engraved-tracking); text-transform: var(--mu-r-label-engraved-transform); color: var(--mu-r-label-engraved-color); text-shadow: var(--mu-r-label-engraved-text-shadow); }\n.mu-label[data-variant=\"small\"] { font-size: var(--mu-r-label-small-font-size); }\n.mu-label[data-variant=\"dark\"] { color: var(--mu-r-label-dark-color); text-shadow: var(--mu-r-label-dark-text-shadow); }\n.mu-label[data-variant=\"title\"] { font: var(--mu-r-label-title-font); letter-spacing: var(--mu-r-label-title-tracking); color: var(--mu-r-label-title-color); }\n.mu-label[data-variant=\"heading\"] { font: var(--mu-r-label-heading-font); letter-spacing: var(--mu-r-label-heading-tracking); color: var(--mu-r-label-heading-color); }\n.mu-label[data-variant=\"count\"] { font: var(--mu-r-label-count-font); letter-spacing: var(--mu-r-label-count-tracking); color: var(--mu-r-label-count-color); }\n.mu-label[data-variant=\"readout\"] { font: var(--mu-r-label-readout-font); letter-spacing: var(--mu-r-label-readout-tracking); color: var(--mu-r-label-readout-color); }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
+}

@@ -92,6 +92,23 @@
       "sheet": "KAMUI keycap (Kamui 04 §9)"
     },
     {
+      "name": "label",
+      "title": "Label",
+      "status": "alpha",
+      "description": "Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Label",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLabel"
+      },
+      "registry": "https://metalui.dev/r/label.json",
+      "agent": "https://metalui.dev/r/label.md"
+    },
+    {
       "name": "lens-bar",
       "title": "Lens bar",
       "status": "alpha",
@@ -200,6 +217,23 @@
       "sheet": "Kamui 04 §7"
     },
     {
+      "name": "rule",
+      "title": "Rule",
+      "status": "alpha",
+      "description": "An engraved groove between groups; graphite on dark chrome.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Rule",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRule"
+      },
+      "registry": "https://metalui.dev/r/rule.json",
+      "agent": "https://metalui.dev/r/rule.md"
+    },
+    {
       "name": "segmented",
       "title": "Segmented control",
       "status": "alpha",
@@ -290,6 +324,23 @@
       "sheet": "Kamui 03 §4"
     },
     {
+      "name": "surface",
+      "title": "Surface",
+      "status": "alpha",
+      "description": "A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Surface",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSurface"
+      },
+      "registry": "https://metalui.dev/r/surface.json",
+      "agent": "https://metalui.dev/r/surface.md"
+    },
+    {
       "name": "toast",
       "title": "Toast",
       "status": "alpha",
@@ -360,6 +411,23 @@
       "registry": "https://metalui.dev/r/tooltip.json",
       "agent": "https://metalui.dev/r/tooltip.md",
       "sheet": "KAMUI-01/02 tooltips"
+    },
+    {
+      "name": "well",
+      "title": "Well",
+      "status": "alpha",
+      "description": "A sunk field or track: field, track, region (with a drop-target state) and graphite.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Well",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalWell"
+      },
+      "registry": "https://metalui.dev/r/well.json",
+      "agent": "https://metalui.dev/r/well.md"
     }
   ]
 }

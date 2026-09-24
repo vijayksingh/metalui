@@ -1,0 +1,20 @@
+{
+  "name": "rule",
+  "title": "Rule",
+  "status": "alpha",
+  "layer": "component",
+  "description": "An engraved groove between groups; graphite on dark chrome.",
+  "base": "none",
+  "react": {
+    "export": "Rule",
+    "files": [
+      "rule.tsx",
+      "rule.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalRule",
+    "file": "swift/Sources/MetalUI/Components/MetalRule.swift"
+  },
+  "agent": "rule.agent.md"
+}

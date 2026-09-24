@@ -1061,6 +1061,91 @@
   --mu-r-kbd-small-radius: 6px;
   --mu-r-kbd-strip-ink: #A6A6A9;
   --mu-r-kbd-sunk-ink: #9A9A9E;
+  /* surface: reference style.css --raised, --raised-lite, --raised-sm, --graphite-bg, --graphite-sh; #empty, .gcard, #lensBar, .pal, #panel, #pop, .meta, .region.lensr, #toolbar, #selTools, #pastBanner, #tip, .readout, #toast */
+  --mu-r-surface-self-graphite-background:
+    /* mu-recipe:surface:146 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+  --mu-r-surface-self-graphite-shadow:
+    /* mu-recipe:surface:147 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:148 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:149 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:150 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:151 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:152 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:surface:153 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-surface-self-graphite-deep-background:
+    /* mu-recipe:surface:154 */ linear-gradient(#2A2A2D, #1B1B1D);
+  --mu-r-surface-self-graphite-deep-shadow:
+    /* mu-recipe:surface:155 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:156 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:157 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:158 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:159 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:160 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:surface:161 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-surface-self-graphite-glass-background:
+    /* mu-recipe:surface:162 */ rgba(30,30,33,.92);
+  --mu-r-surface-self-graphite-glass-shadow:
+    /* mu-recipe:surface:163 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:164 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:165 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:166 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:167 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:168 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:surface:169 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-surface-radius-pill: 99px;
+  --mu-r-surface-radius-hero: 30px;
+  --mu-r-surface-radius-card: 24px;
+  --mu-r-surface-radius-plate: 18px;
+  --mu-r-surface-radius-strip: 16px;
+  --mu-r-surface-radius-region: 26px;
+  --mu-r-surface-radius-tip: 11px;
+  --mu-r-surface-radius-row: 12px;
+  --mu-r-surface-blur-frost: blur(22px) saturate(1.6);
+  --mu-r-surface-blur-plate: blur(24px) saturate(1.6);
+  --mu-r-surface-blur-panel: blur(24px) saturate(1.6);
+  --mu-r-surface-blur-pop: blur(22px) saturate(1.6);
+  --mu-r-surface-blur-tip: blur(12px);
+  --mu-r-surface-blur-lens: blur(10px);
+  --mu-r-surface-blur-graphite: blur(22px) saturate(1.6);
+  --mu-r-surface-blur-graphite-glass: blur(22px);
+  /* well: reference style.css --well; .pal-field, .seg, .sc-track, .region, .region.over, .tb-search */
+  --mu-r-well-self-region-over-background:
+    /* mu-recipe:well:24 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));
+  --mu-r-well-self-graphite-background:
+    /* mu-recipe:well:29 */ linear-gradient(#121213, #171718);
+  --mu-r-well-self-graphite-shadow:
+    /* mu-recipe:well:30 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:well:31 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:well:32 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-well-radius-pill: 99px;
+  --mu-r-well-radius-field: 17px;
+  --mu-r-well-radius-region: 26px;
+  --mu-r-well-radius-strip: 15px;
+  --mu-r-well-radius-row: 12px;
+  /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip */
+  --mu-r-label-dark-text-shadow:
+    /* mu-recipe:label:2 */ 0 -1px 0 rgba(0,0,0,.6);
+  --mu-r-label-engraved-font: 400 9px/1.36 var(--mu-mono);
+  --mu-r-label-engraved-tracking: 0.11em;
+  --mu-r-label-engraved-transform: uppercase;
+  --mu-r-label-small-font-size: 8.5px;
+  --mu-r-label-title-font: 640 13.5px/1.2 var(--mu-sans);
+  --mu-r-label-title-tracking: -0.01em;
+  --mu-r-label-heading-font: 660 15px/1 var(--mu-sans);
+  --mu-r-label-heading-tracking: -0.015em;
+  --mu-r-label-count-font: 500 10px/1 var(--mu-mono);
+  --mu-r-label-count-tracking: 0;
+  --mu-r-label-readout-font: 500 10.5px/1 var(--mu-mono);
+  --mu-r-label-readout-tracking: 0.04em;
+  --mu-r-label-readout-color: #EDEDEF;
+  --mu-r-label-dark-color: rgba(255,255,255,.4);
+  /* rule: reference style.css .tb-sep, #selTools .sep, .pal-foot, .ptable th, .tl-day::after */
+  --mu-r-rule-self-graphite-background:
+    /* mu-recipe:rule:4 */ rgba(0,0,0,.55);
+  --mu-r-rule-self-graphite-shadow:
+    /* mu-recipe:rule:5 */ 1px 0 0 rgba(255,255,255,.055);
+  --mu-r-rule-self-thickness: 1px;
+  --mu-r-rule-self-margin: 3px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1167,6 +1252,128 @@
     /* mu-recipe:kbd:4 */ 0 0 0 .5px rgba(24,22,16,.05),
     /* mu-recipe:kbd:5 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:kbd:6 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-surface-self-raise-background:
+    /* mu-recipe:surface:0 */ linear-gradient(#FCFBF9, #F6F5F2 55%, #F0EFEB);
+  --mu-r-surface-self-raise-shadow:
+    /* mu-recipe:surface:2 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:3 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:4 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:5 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:surface:6 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:surface:7 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:surface:8 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:surface:9 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-surface-self-raise-lite-background:
+    /* mu-recipe:surface:18 */ linear-gradient(#FCFBF9, #F6F5F2 55%, #F0EFEB);
+  --mu-r-surface-self-raise-lite-shadow:
+    /* mu-recipe:surface:20 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:21 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:22 */ inset -1px -3px 5px -2px rgba(110,100,80,.06),
+    /* mu-recipe:surface:23 */ 0 0 0 .5px rgba(24,22,16,.04),
+    /* mu-recipe:surface:24 */ 0 1px 2px rgba(24,22,16,.04),
+    /* mu-recipe:surface:25 */ 0 8px 18px -8px rgba(24,22,16,.08),
+    /* mu-recipe:surface:26 */ 0 22px 40px -18px rgba(24,22,16,.10);
+  --mu-r-surface-self-raise-sm-background:
+    /* mu-recipe:surface:34 */ linear-gradient(#FFFFFF, #F2F1EE);
+  --mu-r-surface-self-raise-sm-shadow:
+    /* mu-recipe:surface:36 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:surface:37 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:surface:38 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:surface:39 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:surface:40 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-surface-self-frost-background:
+    /* mu-recipe:surface:46 */ rgba(251,250,248,.82);
+  --mu-r-surface-self-frost-shadow:
+    /* mu-recipe:surface:48 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:49 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:50 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:51 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:surface:52 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:surface:53 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:surface:54 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:surface:55 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-surface-self-plate-background:
+    /* mu-recipe:surface:64 */ rgba(251,250,248,.84);
+  --mu-r-surface-self-plate-shadow:
+    /* mu-recipe:surface:66 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:67 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:68 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:69 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:surface:70 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:surface:71 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:surface:72 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:surface:73 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-surface-self-panel-background:
+    /* mu-recipe:surface:82 */ rgba(251,250,248,.86);
+  --mu-r-surface-self-panel-shadow:
+    /* mu-recipe:surface:84 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:85 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:86 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:87 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:surface:88 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:surface:89 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:surface:90 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:surface:91 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-surface-self-pop-background:
+    /* mu-recipe:surface:100 */ rgba(251,250,248,.92);
+  --mu-r-surface-self-pop-shadow:
+    /* mu-recipe:surface:102 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:103 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:104 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:105 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:surface:106 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:surface:107 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:surface:108 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:surface:109 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-surface-self-tip-background:
+    /* mu-recipe:surface:118 */ rgba(252,251,249,.92);
+  --mu-r-surface-self-tip-shadow:
+    /* mu-recipe:surface:120 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:surface:121 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:surface:122 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:surface:123 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:surface:124 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-surface-self-lens-background:
+    /* mu-recipe:surface:130 */ linear-gradient(rgba(252,251,249,.55), rgba(246,245,242,.45));
+  --mu-r-surface-self-lens-shadow:
+    /* mu-recipe:surface:132 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:133 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:134 */ inset -1px -3px 5px -2px rgba(110,100,80,.06),
+    /* mu-recipe:surface:135 */ 0 0 0 .5px rgba(24,22,16,.04),
+    /* mu-recipe:surface:136 */ 0 1px 2px rgba(24,22,16,.04),
+    /* mu-recipe:surface:137 */ 0 8px 18px -8px rgba(24,22,16,.08),
+    /* mu-recipe:surface:138 */ 0 22px 40px -18px rgba(24,22,16,.10);
+  --mu-r-well-self-field-background:
+    /* mu-recipe:well:0 */ linear-gradient(#E6E5E1, #EDECE8);
+  --mu-r-well-self-field-shadow:
+    /* mu-recipe:well:2 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
+    /* mu-recipe:well:3 */ inset 0 0 0 .5px rgba(0,0,0,.03),
+    /* mu-recipe:well:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
+  --mu-r-well-self-track-background:
+    /* mu-recipe:well:8 */ linear-gradient(#E1E0DC, #EAE9E5);
+  --mu-r-well-self-track-shadow:
+    /* mu-recipe:well:10 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
+    /* mu-recipe:well:11 */ inset 0 0 0 .5px rgba(0,0,0,.03),
+    /* mu-recipe:well:12 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
+  --mu-r-well-self-region-background:
+    /* mu-recipe:well:16 */ linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012));
+  --mu-r-well-self-region-shadow:
+    /* mu-recipe:well:18 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
+    /* mu-recipe:well:19 */ inset 0 0 0 .5px rgba(0,0,0,.035),
+    /* mu-recipe:well:20 */ inset 0 -2px 4px -2px rgba(255,255,255,.9);
+  --mu-r-well-self-region-over-shadow:
+    /* mu-recipe:well:25 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
+    /* mu-recipe:well:26 */ inset 0 0 0 1px rgba(63,185,122,.45);
+  --mu-r-label-engraved-text-shadow:
+    /* mu-recipe:label:0 */ 0 1px 0 rgba(255,255,255,.95);
+  --mu-r-label-engraved-color: rgba(40,38,32,.46);
+  --mu-r-label-title-color: #1B1B1D;
+  --mu-r-label-heading-color: #1B1B1D;
+  --mu-r-label-count-color: #9A9A9D;
+  --mu-r-rule-self-background:
+    /* mu-recipe:rule:0 */ rgba(0,0,0,.075);
+  --mu-r-rule-self-shadow:
+    /* mu-recipe:rule:2 */ 1px 0 0 rgba(255,255,255,.8);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-dimple-self-background:
@@ -1258,6 +1465,128 @@
     /* mu-recipe:kbd:9 */ 0 0 0 .5px rgba(0,0,0,.55),
     /* mu-recipe:kbd:10 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:kbd:11 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-surface-self-raise-background:
+    /* mu-recipe:surface:1 */ linear-gradient(#2C2C2F, #252527 55%, #202022);
+  --mu-r-surface-self-raise-shadow:
+    /* mu-recipe:surface:10 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:11 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:12 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:13 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:14 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:surface:15 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:surface:16 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:surface:17 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-surface-self-raise-lite-background:
+    /* mu-recipe:surface:19 */ linear-gradient(#2C2C2F, #252527 55%, #202022);
+  --mu-r-surface-self-raise-lite-shadow:
+    /* mu-recipe:surface:27 */ inset 0 0 6px 2px rgba(255,255,255,.05),
+    /* mu-recipe:surface:28 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.09),
+    /* mu-recipe:surface:29 */ inset -1px -3px 5px -2px rgba(0,0,0,.3),
+    /* mu-recipe:surface:30 */ 0 0 0 .5px rgba(0,0,0,.4),
+    /* mu-recipe:surface:31 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:32 */ 0 8px 18px -8px rgba(0,0,0,.2),
+    /* mu-recipe:surface:33 */ 0 22px 40px -18px rgba(0,0,0,.28);
+  --mu-r-surface-self-raise-sm-background:
+    /* mu-recipe:surface:35 */ linear-gradient(#313134, #28282B);
+  --mu-r-surface-self-raise-sm-shadow:
+    /* mu-recipe:surface:41 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:surface:42 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:surface:43 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:surface:44 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:surface:45 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-surface-self-frost-background:
+    /* mu-recipe:surface:47 */ rgba(36,36,39,.82);
+  --mu-r-surface-self-frost-shadow:
+    /* mu-recipe:surface:56 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:57 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:58 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:59 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:60 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:surface:61 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:surface:62 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:surface:63 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-surface-self-plate-background:
+    /* mu-recipe:surface:65 */ rgba(34,34,37,.84);
+  --mu-r-surface-self-plate-shadow:
+    /* mu-recipe:surface:74 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:75 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:76 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:77 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:78 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:surface:79 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:surface:80 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:surface:81 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-surface-self-panel-background:
+    /* mu-recipe:surface:83 */ rgba(34,34,37,.86);
+  --mu-r-surface-self-panel-shadow:
+    /* mu-recipe:surface:92 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:93 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:94 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:95 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:96 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:surface:97 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:surface:98 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:surface:99 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-surface-self-pop-background:
+    /* mu-recipe:surface:101 */ rgba(34,34,37,.92);
+  --mu-r-surface-self-pop-shadow:
+    /* mu-recipe:surface:110 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:111 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:112 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:113 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:114 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:surface:115 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:surface:116 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:surface:117 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-surface-self-tip-background:
+    /* mu-recipe:surface:119 */ rgba(34,34,37,.92);
+  --mu-r-surface-self-tip-shadow:
+    /* mu-recipe:surface:125 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:surface:126 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:surface:127 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:surface:128 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:surface:129 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-surface-self-lens-background:
+    /* mu-recipe:surface:131 */ linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
+  --mu-r-surface-self-lens-shadow:
+    /* mu-recipe:surface:139 */ inset 0 0 6px 2px rgba(255,255,255,.05),
+    /* mu-recipe:surface:140 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.09),
+    /* mu-recipe:surface:141 */ inset -1px -3px 5px -2px rgba(0,0,0,.3),
+    /* mu-recipe:surface:142 */ 0 0 0 .5px rgba(0,0,0,.4),
+    /* mu-recipe:surface:143 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:144 */ 0 8px 18px -8px rgba(0,0,0,.2),
+    /* mu-recipe:surface:145 */ 0 22px 40px -18px rgba(0,0,0,.28);
+  --mu-r-well-self-field-background:
+    /* mu-recipe:well:1 */ linear-gradient(#141415, #18181A);
+  --mu-r-well-self-field-shadow:
+    /* mu-recipe:well:5 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:well:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:well:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-well-self-track-background:
+    /* mu-recipe:well:9 */ linear-gradient(#121213, #161617);
+  --mu-r-well-self-track-shadow:
+    /* mu-recipe:well:13 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:well:14 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:well:15 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-well-self-region-background:
+    /* mu-recipe:well:17 */ linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
+  --mu-r-well-self-region-shadow:
+    /* mu-recipe:well:21 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
+    /* mu-recipe:well:22 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:well:23 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-well-self-region-over-shadow:
+    /* mu-recipe:well:27 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
+    /* mu-recipe:well:28 */ inset 0 0 0 1px rgba(63,185,122,.45);
+  --mu-r-label-engraved-text-shadow:
+    /* mu-recipe:label:1 */ 0 .5px 0 rgba(0,0,0,.35);
+  --mu-r-label-engraved-color: rgba(255,255,255,.38);
+  --mu-r-label-title-color: #F2F2F0;
+  --mu-r-label-heading-color: #F2F2F0;
+  --mu-r-label-count-color: #77777B;
+  --mu-r-rule-self-background:
+    /* mu-recipe:rule:1 */ rgba(0,0,0,.45);
+  --mu-r-rule-self-shadow:
+    /* mu-recipe:rule:3 */ 1px 0 0 rgba(255,255,255,.035);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -1350,5 +1679,127 @@
       0 0 0 .5px rgba(0,0,0,.55),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-surface-self-raise-background:
+      linear-gradient(#2C2C2F, #252527 55%, #202022);
+    --mu-r-surface-self-raise-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-surface-self-raise-lite-background:
+      linear-gradient(#2C2C2F, #252527 55%, #202022);
+    --mu-r-surface-self-raise-lite-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.05),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.09),
+      inset -1px -3px 5px -2px rgba(0,0,0,.3),
+      0 0 0 .5px rgba(0,0,0,.4),
+      0 1px 2px rgba(0,0,0,.2),
+      0 8px 18px -8px rgba(0,0,0,.2),
+      0 22px 40px -18px rgba(0,0,0,.28);
+    --mu-r-surface-self-raise-sm-background:
+      linear-gradient(#313134, #28282B);
+    --mu-r-surface-self-raise-sm-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-surface-self-frost-background:
+      rgba(36,36,39,.82);
+    --mu-r-surface-self-frost-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-surface-self-plate-background:
+      rgba(34,34,37,.84);
+    --mu-r-surface-self-plate-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-surface-self-panel-background:
+      rgba(34,34,37,.86);
+    --mu-r-surface-self-panel-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-surface-self-pop-background:
+      rgba(34,34,37,.92);
+    --mu-r-surface-self-pop-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-surface-self-tip-background:
+      rgba(34,34,37,.92);
+    --mu-r-surface-self-tip-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-surface-self-lens-background:
+      linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
+    --mu-r-surface-self-lens-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.05),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.09),
+      inset -1px -3px 5px -2px rgba(0,0,0,.3),
+      0 0 0 .5px rgba(0,0,0,.4),
+      0 1px 2px rgba(0,0,0,.2),
+      0 8px 18px -8px rgba(0,0,0,.2),
+      0 22px 40px -18px rgba(0,0,0,.28);
+    --mu-r-well-self-field-background:
+      linear-gradient(#141415, #18181A);
+    --mu-r-well-self-field-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.6),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-well-self-track-background:
+      linear-gradient(#121213, #161617);
+    --mu-r-well-self-track-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.6),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-well-self-region-background:
+      linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
+    --mu-r-well-self-region-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.5),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-well-self-region-over-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.5),
+      inset 0 0 0 1px rgba(63,185,122,.45);
+    --mu-r-label-engraved-text-shadow:
+      0 .5px 0 rgba(0,0,0,.35);
+    --mu-r-label-engraved-color: rgba(255,255,255,.38);
+    --mu-r-label-title-color: #F2F2F0;
+    --mu-r-label-heading-color: #F2F2F0;
+    --mu-r-label-count-color: #77777B;
+    --mu-r-rule-self-background:
+      rgba(0,0,0,.45);
+    --mu-r-rule-self-shadow:
+      1px 0 0 rgba(255,255,255,.035);
   }
 }

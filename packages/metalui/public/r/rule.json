@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rule",
+  "type": "registry:ui",
+  "title": "Rule",
+  "description": "An engraved groove between groups; graphite on dark chrome.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/rule/rule.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/rule/rule.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './rule.css';\n\n/* RULE: an engraved groove between groups; graphite on dark chrome. */\n\nexport interface RuleProps extends React.HTMLAttributes<HTMLSpanElement> {\n  orientation?: 'vertical' | 'horizontal';\n  tone?: 'default' | 'graphite';\n}\n\nexport function Rule({ orientation = 'vertical', tone = 'default', className, ...props }: RuleProps) {\n  return <span role=\"separator\" aria-orientation={orientation} data-tone={tone} className={className ? `mu-rule ${className}` : 'mu-rule'} {...props} />;\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/rule/rule.css",
+      "type": "registry:file",
+      "target": "components/metalui/rule/rule.css",
+      "content": "@import \"../tokens.css\";\n\n/* Rule: an engraved groove. Its look is the rule recipe (--mu-r-rule-*). */\n.mu-rule { display: block; flex: none; background: var(--mu-r-rule-self-background); box-shadow: var(--mu-r-rule-self-shadow); }\n.mu-rule[aria-orientation=\"vertical\"] { width: var(--mu-r-rule-self-thickness); align-self: center; margin: var(--mu-zero) var(--mu-r-rule-self-margin); }\n.mu-rule[aria-orientation=\"horizontal\"] { height: var(--mu-r-rule-self-thickness); }\n.mu-rule[data-tone=\"graphite\"] { background: var(--mu-r-rule-self-graphite-background); box-shadow: var(--mu-r-rule-self-graphite-shadow); }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."
+}

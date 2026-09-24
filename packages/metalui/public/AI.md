@@ -360,6 +360,21 @@ A key's glyph on a small raised cap. React: `Kbd` from `@unlocalhosted/metalui`.
 
 ---
 
+# Label
+
+Text in a set role. React: `Label`. SwiftUI: `MetalLabel`.
+
+## Use it for
+
+- Engravings (`engraved`, `small`): counts, rules, sections, units, provenance; uppercase mono with a lip.
+- Names (`title`), page titles (`heading`), mono numbers (`count`), readouts on graphite (`readout`), engravings on dark chrome (`dark`).
+
+## Behaviour
+
+- Plain text: no role. An engraving that is the only name of a control is not an accessible name; give the control an `aria-label`.
+
+---
+
 # Lens bar
 
 Names the question a lens asks and switches how the answer is shown. React: `LensBar` from `@unlocalhosted/metalui` (Base UI Toolbar, with the `Segmented` control inside). SwiftUI: `MetalLensBar`. Kamui brief: 04 §4, 03 §8.
@@ -730,6 +745,20 @@ A drawn rectangle with a name that carries a rule. React: `Region` and `RegionRo
 
 ---
 
+# Rule
+
+An engraved groove between groups. React: `Rule`. SwiftUI: `MetalRule`.
+
+## Use it for
+
+- Separating groups of tools or footer keys; `tone="graphite"` on dark strips. The caller sets the length (height of a vertical rule) through layout.
+
+## Behaviour
+
+- `role="separator"` with its orientation.
+
+---
+
 # Segmented control
 
 A pill of pills: one of a few options, always visible. React: `Segmented` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSegmented`. Sheet reference: KAMUI-04.
@@ -1048,6 +1077,31 @@ A 20 tall pill: `suggestion-bg` with a .5 green-deep ring at .4 over `raise-sm`;
 
 ---
 
+# Surface
+
+A raised plate or card from a material. React: `Surface` from `@unlocalhosted/metalui`. SwiftUI: `MetalSurface`.
+
+## Use it for
+
+- Anything that floats or is raised: pills, cards, panels, popovers, strips, banners, readouts.
+
+## Don't use it for
+
+- Sunk fields and tracks: use `Well`. Pressable caps: use `Button` or `IconButton`.
+
+## Props
+
+- `material`: `raise` (a card), `raise-lite` (a lighter card), `raise-sm` (a pill), `frost` (a floating bar), `plate` (a palette), `panel` (a gathered panel), `pop` (a menu), `tip` (a hover label), `lens` (a pinned query plate), `graphite` (dark chrome), `graphite-deep` (a readout), `graphite-glass` (a notice).
+- `radius`: `pill`, `hero` (30), `card` (24), `plate` (18), `strip` (16), `region` (26), `tip` (11), `row` (12).
+- `as`: the element (default `div`).
+
+## Behaviour
+
+- No role, no focus: it is a surface. Give it the role its content needs (`role="dialog"`, `role="status"`).
+- Reduce Transparency: frosted materials turn opaque and lose their backdrop blur.
+
+---
+
 # Toast
 
 The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToast` and `.metalToast(_:)`. Sheet reference: KAMUI-20; Kamui brief: 04 §12.
@@ -1276,6 +1330,25 @@ Button(action: undo) { MetalIcon(.undo, size: 16) }
 ## Tokens
 
 `--mu-tooltip-*`, `--mu-frost-graphite-*`, `--mu-spring-settle`. Swift: `MetalTooltipMetrics`.
+
+---
+
+# Well
+
+A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
+
+## Use it for
+
+- The field behind an input, the track of a slider or segmented control, a drawn region on a canvas, a well in a dark strip.
+
+## Props
+
+- `variant`: `field`, `track`, `region`, `graphite`. `over` lights a region well green (a drop target).
+- `radius`: `pill`, `field` (17), `region` (26), `strip` (15), `row` (12).
+
+## Behaviour
+
+- No role of its own; the control inside carries it. The over state changes on settle.
 
 ---
 

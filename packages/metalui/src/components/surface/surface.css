@@ -1,0 +1,35 @@
+@import "../tokens.css";
+
+/* Surface: a raised plate or card from a material. Its look is the surface recipe (--mu-r-surface-*). */
+.mu-surface { box-sizing: border-box; position: relative; }
+.mu-surface[data-material="raise"] { background: var(--mu-r-surface-self-raise-background); box-shadow: var(--mu-r-surface-self-raise-shadow); }
+.mu-surface[data-material="raise-lite"] { background: var(--mu-r-surface-self-raise-lite-background); box-shadow: var(--mu-r-surface-self-raise-lite-shadow); }
+.mu-surface[data-material="raise-sm"] { background: var(--mu-r-surface-self-raise-sm-background); box-shadow: var(--mu-r-surface-self-raise-sm-shadow); }
+.mu-surface[data-material="frost"] { background: var(--mu-r-surface-self-frost-background); box-shadow: var(--mu-r-surface-self-frost-shadow); }
+.mu-surface[data-material="plate"] { background: var(--mu-r-surface-self-plate-background); box-shadow: var(--mu-r-surface-self-plate-shadow); }
+.mu-surface[data-material="panel"] { background: var(--mu-r-surface-self-panel-background); box-shadow: var(--mu-r-surface-self-panel-shadow); }
+.mu-surface[data-material="pop"] { background: var(--mu-r-surface-self-pop-background); box-shadow: var(--mu-r-surface-self-pop-shadow); }
+.mu-surface[data-material="tip"] { background: var(--mu-r-surface-self-tip-background); box-shadow: var(--mu-r-surface-self-tip-shadow); }
+.mu-surface[data-material="lens"] { background: var(--mu-r-surface-self-lens-background); box-shadow: var(--mu-r-surface-self-lens-shadow); }
+.mu-surface[data-material="graphite"] { background: var(--mu-r-surface-self-graphite-background); box-shadow: var(--mu-r-surface-self-graphite-shadow); }
+.mu-surface[data-material="graphite-deep"] { background: var(--mu-r-surface-self-graphite-deep-background); box-shadow: var(--mu-r-surface-self-graphite-deep-shadow); }
+.mu-surface[data-material="graphite-glass"] { background: var(--mu-r-surface-self-graphite-glass-background); box-shadow: var(--mu-r-surface-self-graphite-glass-shadow); }
+.mu-surface[data-material="frost"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-frost); backdrop-filter: var(--mu-r-surface-blur-frost); }
+.mu-surface[data-material="plate"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-plate); backdrop-filter: var(--mu-r-surface-blur-plate); }
+.mu-surface[data-material="panel"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-panel); backdrop-filter: var(--mu-r-surface-blur-panel); }
+.mu-surface[data-material="pop"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-pop); backdrop-filter: var(--mu-r-surface-blur-pop); }
+.mu-surface[data-material="tip"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-tip); backdrop-filter: var(--mu-r-surface-blur-tip); }
+.mu-surface[data-material="lens"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-lens); backdrop-filter: var(--mu-r-surface-blur-lens); }
+.mu-surface[data-material="graphite"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite); backdrop-filter: var(--mu-r-surface-blur-graphite); }
+.mu-surface[data-material="graphite-glass"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite-glass); backdrop-filter: var(--mu-r-surface-blur-graphite-glass); }
+.mu-surface[data-radius="pill"] { border-radius: var(--mu-r-surface-radius-pill); }
+.mu-surface[data-radius="hero"] { border-radius: var(--mu-r-surface-radius-hero); }
+.mu-surface[data-radius="card"] { border-radius: var(--mu-r-surface-radius-card); }
+.mu-surface[data-radius="plate"] { border-radius: var(--mu-r-surface-radius-plate); }
+.mu-surface[data-radius="strip"] { border-radius: var(--mu-r-surface-radius-strip); }
+.mu-surface[data-radius="region"] { border-radius: var(--mu-r-surface-radius-region); }
+.mu-surface[data-radius="tip"] { border-radius: var(--mu-r-surface-radius-tip); }
+.mu-surface[data-radius="row"] { border-radius: var(--mu-r-surface-radius-row); }
+@media (prefers-reduced-transparency: reduce) {
+  .mu-surface:is([data-material="frost"], [data-material="plate"], [data-material="panel"], [data-material="pop"], [data-material="tip"], [data-material="lens"]) { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

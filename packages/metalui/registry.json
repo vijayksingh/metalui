@@ -138,6 +138,29 @@
       "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
     },
     {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/label/label.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/label/label.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/label/label.css",
+          "type": "registry:file",
+          "target": "components/metalui/label/label.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
+    },
+    {
       "name": "lens-bar",
       "type": "registry:ui",
       "title": "Lens bar",
@@ -286,6 +309,29 @@
       "docs": "Agent guide: https://metalui.dev/r/region.md. SwiftUI: MetalRegion, MetalRegionRow in the MetalUI Swift package."
     },
     {
+      "name": "rule",
+      "type": "registry:ui",
+      "title": "Rule",
+      "description": "An engraved groove between groups; graphite on dark chrome.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/rule/rule.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/rule/rule.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/rule/rule.css",
+          "type": "registry:file",
+          "target": "components/metalui/rule/rule.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."
+    },
+    {
       "name": "segmented",
       "type": "registry:ui",
       "title": "Segmented control",
@@ -407,6 +453,29 @@
       "docs": "Agent guide: https://metalui.dev/r/suggestion-chip.md. SwiftUI: MetalSuggestionChip in the MetalUI Swift package."
     },
     {
+      "name": "surface",
+      "type": "registry:ui",
+      "title": "Surface",
+      "description": "A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/surface/surface.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/surface/surface.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/surface/surface.css",
+          "type": "registry:file",
+          "target": "components/metalui/surface/surface.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/surface.md. SwiftUI: MetalSurface in the MetalUI Swift package."
+    },
+    {
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
@@ -505,6 +574,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
+    },
+    {
+      "name": "well",
+      "type": "registry:ui",
+      "title": "Well",
+      "description": "A sunk field or track: field, track, region (with a drop-target state) and graphite.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/well/well.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/well/well.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/well/well.css",
+          "type": "registry:file",
+          "target": "components/metalui/well/well.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/well.md. SwiftUI: MetalWell in the MetalUI Swift package."
     }
   ]
 }

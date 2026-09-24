@@ -1,0 +1,11 @@
+@import "../tokens.css";
+
+/* Label: text in a set role. Its look is the label recipe (--mu-r-label-*). */
+.mu-label { white-space: nowrap; }
+.mu-label:is([data-variant="engraved"], [data-variant="small"], [data-variant="dark"]) { font: var(--mu-r-label-engraved-font); letter-spacing: var(--mu-r-label-engraved-tracking); text-transform: var(--mu-r-label-engraved-transform); color: var(--mu-r-label-engraved-color); text-shadow: var(--mu-r-label-engraved-text-shadow); }
+.mu-label[data-variant="small"] { font-size: var(--mu-r-label-small-font-size); }
+.mu-label[data-variant="dark"] { color: var(--mu-r-label-dark-color); text-shadow: var(--mu-r-label-dark-text-shadow); }
+.mu-label[data-variant="title"] { font: var(--mu-r-label-title-font); letter-spacing: var(--mu-r-label-title-tracking); color: var(--mu-r-label-title-color); }
+.mu-label[data-variant="heading"] { font: var(--mu-r-label-heading-font); letter-spacing: var(--mu-r-label-heading-tracking); color: var(--mu-r-label-heading-color); }
+.mu-label[data-variant="count"] { font: var(--mu-r-label-count-font); letter-spacing: var(--mu-r-label-count-tracking); color: var(--mu-r-label-count-color); }
+.mu-label[data-variant="readout"] { font: var(--mu-r-label-readout-font); letter-spacing: var(--mu-r-label-readout-tracking); color: var(--mu-r-label-readout-color); }
