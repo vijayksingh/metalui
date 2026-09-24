@@ -1,0 +1,27 @@
+{
+  "name": "time-scrubber",
+  "title": "Time scrubber",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "slider",
+    "label",
+    "glyph",
+    "button"
+  ],
+  "description": "Time as a dimension of the surface: a Slider (track, moment marks, day ticks, knurled knob) under an engraved readout with NOW as Button(link) while in the past. Formerly MemoryScrubber.",
+  "base": "@base-ui/react/slider",
+  "react": {
+    "export": "TimeScrubber, MemoryScrubber",
+    "files": [
+      "time-scrubber.tsx",
+      "time-scrubber.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalTimeScrubber",
+    "file": "swift/Sources/MetalUI/Blocks/MetalTimeScrubber.swift"
+  },
+  "agent": "time-scrubber.agent.md"
+}

@@ -2178,6 +2178,8 @@ public enum MetalScrubberMetrics {
     public static let stepMs: Double = 3600000.0
     public static let largeStepMs: Double = 86400000.0
     public static let snap: Double = 0.01
+    public static let glyphGap: Double = 5.0
+    public static let glyphDrop: Double = -1.0
     public static let knobSh: [MetalShadow] = [
         MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.35)),
         MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.12)),

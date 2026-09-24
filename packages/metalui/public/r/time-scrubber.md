@@ -1,6 +1,6 @@
-# Memory scrubber
+# Time scrubber
 
-Time as a dimension of the surface: drag or step back through what was written. React: `MemoryScrubber` from `@unlocalhosted/metalui` (Base UI Slider). SwiftUI: `MetalMemoryScrubber`. Kamui brief: 04 §5, 03 §9.
+Time as a dimension of the surface: drag or step back through what was written. A composition block. React: `TimeScrubber` (earlier `MemoryScrubber`) from `@unlocalhosted/metalui`. SwiftUI: `MetalTimeScrubber` (earlier `MetalMemoryScrubber`).
 
 ## Use it for
 
@@ -14,11 +14,8 @@ Time as a dimension of the surface: drag or step back through what was written. 
 ## Anatomy
 
 330 × 50, bottom left of the canvas:
-- a **readout** above in the `label` role, engraved: the clock glyph at 10, `MEMORY · NOW` or `MEMORY · TUE 23 SEP · 14:10`, and a green `NOW` button while in the past;
-- a 10 tall pill **track** (`well`), with the **intent fill** (`#9BE6BF → #5FC894` at .55) up to the knob;
-- **tick marks** (2 × 4) for blocks and edits;
-- **day labels** beneath (`MON` … `TODAY`, at most seven), each with a 1 × 5 tick;
-- a 22 pt knurled anodized **knob** (a conic sweep from 200°, an inner ring, a contact shadow; grab cursor).
+- a **readout** above: `Label variant="engraved"` with a tiny `Glyph` (the clock at 10, in the engraving's ink), `MEMORY · NOW` or `MEMORY · TUE 23 SEP · 14:10`, and `Button cap="link"` NOW while in the past;
+- a `Slider` filling the box: its **track** well (10 tall) with the intent fill up to the knob, **marks** (2 × 4) for moments, **ticks** beneath with the day names (`MON` … `TODAY`, at most seven) as engraved labels, and the knurled 22 pt **knob**.
 
 ## States and motion
 
@@ -40,6 +37,7 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 | `value`, `onValueChange` | `selection:` (Binding<Date?>) | `null`/`nil` is now |
 | `marks` | `marks:` | block and edit moments |
 | `format` | `format:` | the readout for a past moment |
+| `title` | `title:` | the word before the moment, default MEMORY |
 | `glyph` | (MetalIcon built in) | the clock at 10 |
 
 ## Rules
@@ -55,4 +53,4 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 
 ## Tokens
 
-`--mu-scrubber-*`, per colorway `--mu-scrubber-mark`, `--mu-scrubber-day-tick`; `--mu-well*`, `--mu-green-deep`, `--mu-spring-part`, `--mu-type-label`. Swift: `MetalScrubberMetrics`.
+Layout and timing: `--mu-scrubber-*` (box, readout gap, glyph spacing, steps, snap). Look: the slider, label, glyph and button recipes. Swift: `MetalScrubberMetrics`.

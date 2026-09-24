@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { MemoryScrubber } from '@unlocalhosted/metalui';
 import { ClockIcon } from '@unlocalhosted/metalui/icons';
-import reactSource from '../../../../../packages/metalui/src/components/memory-scrubber/memory-scrubber.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/memory-scrubber/memory-scrubber.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/memory-scrubber/memory-scrubber.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMemoryScrubber.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -40,9 +40,9 @@ export default function MemoryScrubberPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'M1', title: 'Scrubbing only looks', body: 'It changes nothing; ⎋ or NOW returns to the present.', origin: 'Kamui 03 §9' },
-          { id: 'M2', title: 'A drag follows, a jump springs', body: 'Under the pointer the knob is exact; a click or a key moves it on the part spring.', origin: 'Kamui 04 §5' },
-          { id: 'M3', title: 'The scrubber keeps its arrows', body: 'While the knob has focus, arrows are time, never a selection nudge.', origin: 'Kamui demo polish log' },
+          { id: 'M1', title: 'Scrubbing only looks', body: 'It changes nothing; ⎋ or NOW returns to the present.', origin: 'reference brief' },
+          { id: 'M2', title: 'A drag follows, a jump springs', body: 'Under the pointer the knob is exact; a click or a key moves it on the part spring.', origin: 'reference brief' },
+          { id: 'M3', title: 'The scrubber keeps its arrows', body: 'While the knob has focus, arrows are time, never a selection nudge.', origin: 'reference brief' },
         ]} />
       </Section>
     </>

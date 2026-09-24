@@ -1,0 +1,13 @@
+@import "../../components/tokens.css";
+@import "../../components/slider/slider.css";
+@import "../../components/label/label.css";
+@import "../../components/glyph/glyph.css";
+@import "../../components/button/button.css";
+
+/* Time scrubber: a composition. It places the readout over the slider; every paint is Slider,
+   Label, Glyph and Button(link). Layout values: --mu-scrubber-*. The slider fills the box, so its
+   track sits on the box's centre line (25 of 50), as the reference's does. */
+.mu-scrubber { position: relative; width: var(--mu-scrubber-width); height: var(--mu-scrubber-height); }
+.mu-scrubber-read { position: absolute; z-index: 1; left: var(--mu-zero); top: var(--mu-zero); display: flex; align-items: center; gap: var(--mu-scrubber-readout-gap); }
+.mu-scrubber-glyph { display: inline-grid; margin-right: var(--mu-scrubber-glyph-gap); vertical-align: var(--mu-scrubber-glyph-drop); }
+.mu-scrubber-slider { position: absolute; inset: var(--mu-zero); }

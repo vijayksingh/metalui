@@ -283,6 +283,8 @@
   --mu-scrubber-step-ms: 3600000;
   --mu-scrubber-large-step-ms: 86400000;
   --mu-scrubber-snap: 0.01;
+  --mu-scrubber-glyph-gap: 5px;
+  --mu-scrubber-glyph-drop: -1px;
   --mu-pastbanner-height: 34px;
   --mu-pastbanner-pad-start: 14px;
   --mu-pastbanner-pad-end: 6px;
