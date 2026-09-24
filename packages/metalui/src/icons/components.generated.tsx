@@ -65,3 +65,5 @@ export const PasteIcon = createIcon("paste", "PasteIcon");
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
 /** New. Hover: the plus turns a quarter. Press: the tile presses in. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
+/** Region. Hover: the name writes across the head. Press: the frame settles. */
+export const RegionIcon = createIcon("region", "RegionIcon");

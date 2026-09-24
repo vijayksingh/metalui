@@ -103,3 +103,6 @@
 /* plus */
 .mu-icon.mu-ic-plus .pa{transform-origin:12px 12px} .mu-icon.mu-ic-plus .pt{transform-origin:12px 12px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-plus,.mu-ic-plus:is(:hover,[data-hover])):not([data-static]) .pa{transform:rotate(90deg)} .mu-icon.mu-ic-plus[data-press] .pt{animation:pl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes pl-p{40%{transform:scale(.92)}}}
+/* region */
+.mu-icon.mu-ic-region .rn{transform-origin:6.8px 7.3px} .mu-icon.mu-ic-region .rb{transform-origin:12px 12px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-region,.mu-ic-region:is(:hover,[data-hover])):not([data-static]) .rn{transform:scaleX(2.1)} .mu-icon.mu-ic-region[data-press] .rb{animation:rg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes rg-p{40%{transform:scale(.95)}}}

@@ -105,7 +105,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 32 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 33 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -154,3 +154,4 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PasteIcon` | `paste` | Status | clip lifts | contents land on the board |
 | `KeeperIcon` | `keeper` | Status | blinks | ring tips, eyes look up |
 | `PlusIcon` | `plus` | Actions | the plus turns a quarter | the tile presses in |
+| `RegionIcon` | `region` | Tools | the name writes across the head | the frame settles |

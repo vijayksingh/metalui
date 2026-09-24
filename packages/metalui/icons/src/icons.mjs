@@ -296,4 +296,12 @@ export const ICONS = [
   mo: `@H .pa{transform:rotate(90deg)}
        @P .pt{animation:pl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes pl-p{40%{transform:scale(.92)}}`,
   shape: 'Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre.' },
+
+// A region: a drawn frame whose head carries its name. Body: the frame. Marks: the head rule, the name.
+{ name: 'region', cat: 'Tools', label: 'Region', hover: 'the name writes across the head', press: 'the frame settles',
+  body: `<rect class="rb f" style="--duo:.08" x="3.5" y="5" width="17" height="14" rx="3.5"/><path d="M3.5 9.6h17"/><path class="rn" d="M6.8 7.3h3.6"/>`,
+  base: `& .rn{transform-origin:6.8px 7.3px} & .rb{transform-origin:12px 12px}`,
+  mo: `@H .rn{transform:scaleX(2.1)}
+       @P .rb{animation:rg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes rg-p{40%{transform:scale(.95)}}`,
+  shape: 'Frame 17 × 14 r3.5, tinted .08; head rule on the 9.6 line; the name a 3.6 wire in the head.' },
 ];

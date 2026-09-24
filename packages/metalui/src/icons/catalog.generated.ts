@@ -683,6 +683,26 @@ export const ICON_CATALOG = {
     body: "<rect class=\"pt f\" style=\"--duo:.12\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3.5\"/><path class=\"pa\" d=\"M8.8 12h6.4\"/><path class=\"pa\" d=\"M12 8.8v6.4\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * REGION · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the name writes across the head
+   * PRESS one-shot (from the current pose)
+   *          the frame settles
+   *     0ms   .rb plays rg-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "region": {
+    label: "Region",
+    category: "Tools",
+    hover: "the name writes across the head",
+    press: "the frame settles",
+    pressMs: 340,
+    defs: "",
+    body: "<rect class=\"rb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5\" width=\"17\" height=\"14\" rx=\"3.5\"/><path d=\"M3.5 9.6h17\"/><path class=\"rn\" d=\"M6.8 7.3h3.6\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
