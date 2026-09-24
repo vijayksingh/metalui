@@ -135,7 +135,7 @@ html[data-mu-colorway="graphite"] .head { color: #6A6A6D; }
 .comp-h h3 { font-size: 18px; font-weight: 620; letter-spacing: -.022em; }
 .comp-h p { max-width: 70ch; font-size: 12.5px; line-height: 1.45; color: var(--mu-ink2); }
 
-.stages { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.stages { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-bottom: 18px; }
 .stage {
   position: relative;
   display: flex;
@@ -277,8 +277,11 @@ html[data-mu-colorway="graphite"] .head { color: #6A6A6D; }
 @media (max-width: 720px) {
   .sheet { padding: 40px 16px 56px; }
   .head { flex-direction: column; align-items: flex-start; }
-  .stages { grid-template-columns: 1fr; }
-  .wells { grid-template-columns: 1fr; }
+  .stages { grid-template-columns: minmax(0, 1fr); }
+  .install div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .code-bar { flex-wrap: wrap; }
+  .tabs { max-width: 100%; overflow-x: auto; }
+  .wells { grid-template-columns: minmax(0, 1fr); }
   .comp-h { flex-direction: column; gap: 6px; }
   .picked { grid-template-columns: 1fr; justify-items: start; }
 }
