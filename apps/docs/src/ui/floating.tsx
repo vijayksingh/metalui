@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Segmented, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Segmented, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
 
@@ -96,6 +96,7 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
+  { id: 'status', table: ['62%', '40%'], space: ['40%', '8%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray }) => <span onClick={() => openXray('status')}><StatusBadge led="live">Sync live</StatusBadge></span> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray
