@@ -30,8 +30,8 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 | 3.6 | SF Symbols + `MetalIcon` / `MetalLifeIcon` | shipped | `730ff1f` | Swift `MetalIcon(.sendAway, size: 16)`, `MetalLifeIcon(.coffee, size: 16)` / `(… tint:)`, `Image(metal:)`, `Image(metalLife:)`, `MetalIconName`, `MetalLifeIconName`, `.metalIconInteraction(_:)` (MetalButton sets it); symbols `mu.<name>`, `mu.<name>.16`, `mu.life.<name>`, `mu.life.<name>.16` in the package bundle. Limitation: native life hovers are one `.bounce.byLayer`, not the authored per-glyph interactions; one part (`mu.life.cycle.16` primary #2) keeps Regular geometry at every weight. |
 | 3.2 | Life gallery page | shipped | `a50af15` | metalui.dev/icons/life; `searchLifeIcons(query)` for synonym search |
 | 3.3 | Feelings construction and lint | shipped | `a8077b3` (hopeful under K1), `d932a52` | `node scripts/icon-lint.mjs --feelings` / `--life`; ICON-GRAMMAR §K; composer on /icons/life |
-| 3.4 | Feelings grid | shipped | see `docs(icons): feelings grid` | metalui.dev/icons/life#the-feelings-grid (docs only) |
-| 3.5 | Grammar (K3 fixes, one per glyph) and life morph pairs | pending | | |
+| 3.4 | Feelings grid | shipped | `6bcb380` | metalui.dev/icons/life#the-feelings-grid (docs only) |
+| 3.5 | Grammar (K3 fixes, one per glyph) and life morph pairs | partial | see `feat(icons): score the life morph pairs` | Scored: all 30 declared feelings pairs are under 1 (the feelings are a morph space by construction); nap ↔ bad-night .25; weather 1.36–1.88; sleep ↔ nap 2.62; time markers, tired/rested are out of the family (the sun and the battery bars are solid plates, K0). Pending: the 19 K3 redraws (docs/icon-grammar/LIFE-LINT.md) and the time-marker suns as beads, one glyph per commit after owner review; a life `MorphIcon` runtime (life morph geometry is not generated yet). |
 | 3.7 | Medium chrome glyphs (one per commit) | pending | | |
 | Gate 3 | Owner review: life gallery, feelings grid, SF Symbols preview | awaiting owner | | |
 
