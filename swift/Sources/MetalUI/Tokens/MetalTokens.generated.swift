@@ -1335,7 +1335,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A small pill with an optional leading LED or glyph and trailing actions: suggestion (frosted with a green hairline), glass (a dark tag on a glass screen) and glass-action (a light cap on glass). (reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open)
+    /// A small pill with an optional leading LED or glyph and trailing actions: suggestion (frosted with a green hairline), glass (a dark tag on a glass screen) and glass-action (a light cap on glass). (reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open, .meta .derived-tags span)
     public static let chip = MetalObjectRecipe(
         name: "chip",
         layers: [
@@ -1357,6 +1357,8 @@ public enum MetalRecipes {
             .init(part: "glass-action", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:15 rgba(255,255,255,.16)
             .init(part: "led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:chip:16 radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0)
             .init(part: "led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:chip:17 radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8)
+            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:chip:18 inset 0 0 0 .5px rgba(40,38,32,.2)
+            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:19 inset 0 0 0 .5px rgba(255,255,255,.16)
         ],
         props: [
             "suggestion.height": .number(20.0),
@@ -1376,6 +1378,10 @@ public enum MetalRecipes {
             "glass.blur": .text("blur(8px) saturate(1.4)"),
             "glass-action.ink": .text("rgba(255,255,255,.75)"),
             "led.size": .number(5.0),
+            "tag.pad-x": .number(6.0),
+            "tag.font": .text("400 9px/15px mono"),
+            "tag.tracking": .text("0.06em"),
+            "tag.ink": .perColorway(bone: "rgba(40,38,32,.46)", graphite: "rgba(255,255,255,.38)"),
         ]
     )
 

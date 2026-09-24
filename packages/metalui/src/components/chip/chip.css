@@ -29,6 +29,14 @@
 }
 .mu-chip[data-variant="glass-action"] { color: var(--mu-r-chip-glass-action-ink); background: var(--mu-r-chip-glass-action-background); cursor: pointer; }
 .mu-chip[data-variant="glass-action"]:hover { background: var(--mu-r-chip-glass-action-hover-background); }
+.mu-chip[data-variant="tag"] {
+  padding: var(--mu-zero) var(--mu-r-chip-tag-pad-x);
+  border-radius: var(--mu-radius-pill);
+  font: var(--mu-r-chip-tag-font);
+  letter-spacing: var(--mu-r-chip-tag-tracking);
+  color: var(--mu-r-chip-tag-ink);
+  box-shadow: var(--mu-r-chip-tag-shadow);
+}
 .mu-chip-lead { display: inline-grid; place-items: center; flex: none; }
 .mu-chip-lead[data-led] { width: var(--mu-r-chip-led-size); height: var(--mu-r-chip-led-size); border-radius: var(--mu-round); }
 .mu-chip-lead[data-led="link"] { background: var(--mu-r-chip-led-link-background); }

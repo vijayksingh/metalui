@@ -7,10 +7,11 @@ import './chip.css';
  *   suggestion     frosted with a green hairline (a question with its confidence and ✓ ×)
  *   glass          a dark tag on a glass screen (an LED and a kind)
  *   glass-action   a light cap on glass (OPEN ↗), brighter on hover
+ *   tag            an engraved tag in a hairline pill (a derived #tag)
  * Slots: Chip.Root, Chip.Lead, Chip.Text, Chip.Actions. */
 
 export interface ChipRootProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: 'suggestion' | 'glass' | 'glass-action';
+  variant?: 'suggestion' | 'glass' | 'glass-action' | 'tag';
   as?: 'span' | 'div' | 'a' | 'button';
   href?: string;
   target?: string;

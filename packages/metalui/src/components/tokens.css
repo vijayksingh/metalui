@@ -1154,7 +1154,7 @@
   --mu-r-icon-button-mini-font: 500 11px/1 var(--mu-sans);
   --mu-r-icon-button-mini-accept-ink: #3FB97A;
   --mu-r-icon-button-self-fade: 160ms;
-  /* chip: reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open */
+  /* chip: reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open, .meta .derived-tags span */
   --mu-r-chip-glass-background:
     /* mu-recipe:chip:13 */ rgba(20,20,22,.5);
   --mu-r-chip-glass-action-background:
@@ -1181,6 +1181,9 @@
   --mu-r-chip-glass-blur: blur(8px) saturate(1.4);
   --mu-r-chip-glass-action-ink: rgba(255,255,255,.75);
   --mu-r-chip-led-size: 5px;
+  --mu-r-chip-tag-pad-x: 6px;
+  --mu-r-chip-tag-font: 400 9px/15px var(--mu-mono);
+  --mu-r-chip-tag-tracking: 0.06em;
   /* field: reference style.css .pal-field, .pal-field input, .tb-search */
   --mu-r-field-field-height: 44px;
   --mu-r-field-field-radius: 17px;
@@ -1610,7 +1613,10 @@
     /* mu-recipe:chip:5 */ 0 0 0 .5px rgba(24,22,16,.05),
     /* mu-recipe:chip:6 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:chip:7 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-chip-tag-shadow:
+    /* mu-recipe:chip:18 */ inset 0 0 0 .5px rgba(40,38,32,.2);
   --mu-r-chip-suggestion-ink: #5C5C60;
+  --mu-r-chip-tag-ink: rgba(40,38,32,.46);
   --mu-r-field-field-ink: #1B1B1D;
   --mu-r-field-field-hint: #9A9A9D;
   --mu-r-sparkline-line-color: #5C5C60;
@@ -1921,7 +1927,10 @@
     /* mu-recipe:chip:10 */ 0 0 0 .5px rgba(0,0,0,.55),
     /* mu-recipe:chip:11 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:chip:12 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-chip-tag-shadow:
+    /* mu-recipe:chip:19 */ inset 0 0 0 .5px rgba(255,255,255,.16);
   --mu-r-chip-suggestion-ink: #A6A6A9;
+  --mu-r-chip-tag-ink: rgba(255,255,255,.38);
   --mu-r-field-field-ink: #F2F2F0;
   --mu-r-field-field-hint: #77777B;
   --mu-r-sparkline-line-color: #A6A6A9;
@@ -2233,7 +2242,10 @@
       0 0 0 .5px rgba(0,0,0,.55),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-chip-tag-shadow:
+      inset 0 0 0 .5px rgba(255,255,255,.16);
     --mu-r-chip-suggestion-ink: #A6A6A9;
+    --mu-r-chip-tag-ink: rgba(255,255,255,.38);
     --mu-r-field-field-ink: #F2F2F0;
     --mu-r-field-field-hint: #77777B;
     --mu-r-sparkline-line-color: #A6A6A9;

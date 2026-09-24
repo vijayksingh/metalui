@@ -70,7 +70,7 @@
       "name": "chip",
       "type": "registry:ui",
       "title": "Chip",
-      "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass and glass-action.",
+      "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
