@@ -1,8 +1,8 @@
 import SwiftUI
 
-// Menu and the correction popover (Kamui 03 §5, 04 §8, §18). Mirrors components/menu from
-// MetalMenuMetrics. A native `.contextMenu` cannot take this material, so the panel is drawn here and
-// the host presents it: `.metalMenu(isPresented:at:…)` over a SwiftUI view, or Kamui's AppKit canvas
+// Menu and the correction popover, painted from the generated menu recipe.
+// A native `.contextMenu` cannot take this material, so the panel is drawn here and
+// the host presents it: `.metalMenu(isPresented:at:…)` over a SwiftUI view, or an AppKit canvas
 // shows `MetalMenuPanel` at the right-click point from its own input controller.
 
 /// One row, or a separator.
@@ -50,6 +50,7 @@ public struct MetalMenuPanel: View {
     let onClose: () -> Void
 
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var highlighted: Int?
     @FocusState private var focused: Bool
 
@@ -62,34 +63,45 @@ public struct MetalMenuPanel: View {
     private var choosable: [Int] { items.indices.filter { !items[$0].isSeparator && !items[$0].disabled } }
 
     public var body: some View {
+        let recipe = MetalRecipes.menu
         let t = colorway.tokens
+        let shape = RoundedRectangle(cornerRadius: recipe.points("self.radius"), style: .continuous)
         VStack(alignment: .leading, spacing: 0) {
             if let heading {
-                Text(heading.uppercased())
-                    .font(.metal(MetalType.label)).tracking(MetalType.label.trackingPoints)
-                    .foregroundColor(t.engrave.color)
-                    .shadow(color: t.lip.color, radius: 0, x: 0, y: 0.5)
-                    .padding(.top, MetalMenuMetrics.headingPadTop)
-                    .padding(.horizontal, MetalMenuMetrics.headingPadX)
-                    .padding(.bottom, MetalMenuMetrics.headingPadBottom)
+                MetalLabel(heading, style: .engraved)
+                    .padding(.top, recipe.points("heading.pad-top"))
+                    .padding(.horizontal, recipe.points("heading.pad-x"))
+                    .padding(.bottom, recipe.points("heading.pad-bottom"))
                     .accessibilityAddTraits(.isHeader)
             }
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 if item.isSeparator {
-                    VStack(spacing: 0) { Rectangle().fill(t.rule.color).frame(height: 1); Rectangle().fill(t.ruleLip.color).frame(height: 1) }
-                        .padding(.vertical, MetalMenuMetrics.sepInsetY)
-                        .padding(.horizontal, MetalMenuMetrics.sepInsetX)
+                    Color.clear
+                        .frame(height: recipe.points("sep.thickness"))
+                        .metalObjectRecipe(recipe, part: "sep", in: Rectangle())
+                        .padding(.vertical, recipe.points("sep.inset-y"))
+                        .padding(.horizontal, recipe.points("sep.inset-x"))
                         .accessibilityHidden(true)
                 } else {
-                    row(item, index: index, t)
+                    row(item, index: index, recipe)
                 }
             }
         }
-        .padding(MetalMenuMetrics.pad)
-        .frame(minWidth: MetalMenuMetrics.minWidth, alignment: .leading)
+        .padding(recipe.points("self.pad"))
+        .frame(minWidth: recipe.points("self.min-width"), alignment: .leading)
         .fixedSize()
-        .metalRecipe(MetalRecipe(fill: .solid(t.menuBg), shadows: t.raise, backdrop: MetalBackdrop(blur: MetalFrost.blur, saturation: MetalFrost.saturation, dark: colorway == .graphite), opaqueFill: .solid(t.frostOpaque), contrastEdge: t.contrastEdge),
-                     in: RoundedRectangle(cornerRadius: MetalRadius.plate, style: .continuous))
+        .metalObjectRecipe(recipe, part: "self", in: shape)
+        .background {
+            if reduceTransparency {
+                shape.fill(t.frostOpaque.color)
+            } else {
+                MetalBackdropView(backdrop: MetalBackdrop(
+                    blur: recipe.filterNumber("self.blur", function: "blur") ?? .zero,
+                    saturation: recipe.filterNumber("self.blur", function: "saturate") ?? .one,
+                    dark: colorway == .graphite))
+                    .clipShape(shape)
+            }
+        }
         .focusable()
         .focusEffectDisabled()
         .focused($focused)
@@ -120,25 +132,33 @@ public struct MetalMenuPanel: View {
         action()
     }
 
-    private func row(_ item: MetalMenuItem, index: Int, _ t: MetalColorwayTokens) -> some View {
+    private func row(_ item: MetalMenuItem, index: Int, _ recipe: MetalObjectRecipe) -> some View {
+        let t = colorway.tokens
         let ink = item.danger ? MetalShared.red : t.ink
         let on = highlighted == index
-        return HStack(spacing: MetalMenuMetrics.rowGap) {
+        return HStack(spacing: recipe.points("row.gap")) {
             if let icon = item.icon {
-                MetalIcon(icon, size: MetalMenuMetrics.rowGlyph).foregroundStyle((item.danger ? MetalShared.red : t.ink2).color)
+                MetalIcon(icon, size: recipe.points("row.glyph"))
+                    .foregroundStyle((item.danger ? MetalShared.red : t.ink2).color)
             }
-            Text(item.label).font(.metal(MetalType.ui)).foregroundColor(ink.color).lineLimit(1)
-            Spacer(minLength: 12)
+            Text(item.label)
+                .font(recipe.font("row.font"))
+                .tracking(recipe.tracking("row.tracking", size: recipe.fontSize("row.font")))
+                .foregroundColor(ink.color).lineLimit(1)
+            Spacer(minLength: recipe.points("row.key-gap"))
             if let key = item.shortcut { MetalKbd(key, size: .small) }
         }
-        .padding(.horizontal, MetalMenuMetrics.rowPad)
-        .frame(height: MetalMenuMetrics.rowHeight)
+        .padding(.horizontal, recipe.points("row.pad"))
+        .frame(height: recipe.points("row.height"))
         .background {
-            if on { RoundedRectangle(cornerRadius: MetalRadius.row, style: .continuous).fill(t.menuRowHover.color) }
+            if on {
+                Color.clear.metalObjectRecipe(recipe, part: "row", state: "hover",
+                    in: RoundedRectangle(cornerRadius: recipe.points("row.radius"), style: .continuous))
+            }
         }
         .contentShape(Rectangle())
         .metalIconInteraction(MetalIconInteraction(isHovered: on, isPressed: false))
-        .opacity(item.disabled ? 0.4 : 1)
+        .opacity(item.disabled ? recipe.scalar("row.disabled") : .one)
         .onHover { hovering in
             guard !item.disabled else { return }
             if hovering { highlighted = index } else if highlighted == index { highlighted = nil }
@@ -154,7 +174,7 @@ extension View {
     /// Presents a menu over this view: at `point` (a right-click, in this view's space), or 6 below its
     /// leading edge. It fades in on settle and out on release; a click elsewhere (focus leaving) closes it.
     ///
-    ///     cue.metalMenu(isPresented: $correcting, at: clickPoint, heading: "NOTE · TASK BY JEV 0.82", items: [
+    ///     cue.metalMenu(isPresented: $correcting, at: clickPoint, heading: "NOTE · TASK BY RECOGNIZER 0.82", items: [
     ///         MetalMenuItem("Not a Task") { correct(.task(false)) },
     ///         .separator,
     ///         MetalMenuItem("Gather Similar", icon: .search) { gather() },
