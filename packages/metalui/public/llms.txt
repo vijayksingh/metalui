@@ -34,7 +34,7 @@
 - [Slider](https://metalui.dev/r/slider.md): A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.
 - [Sparkline](https://metalui.dev/r/sparkline.md): A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.
 - [LED and status badge](https://metalui.dev/r/status.md): A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.
-- [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.
+- [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.
 - [Surface](https://metalui.dev/r/surface.md): A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.
 - [Toast](https://metalui.dev/r/toast.md): The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.
 - [Tool strip](https://metalui.dev/r/tool-strip.md): A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.

@@ -1,0 +1,26 @@
+{
+  "name": "suggestion-chip",
+  "title": "Suggestion chip",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "chip",
+    "label",
+    "icon-button"
+  ],
+  "description": "One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.",
+  "base": "none",
+  "react": {
+    "export": "SuggestionChip",
+    "files": [
+      "suggestion-chip.tsx",
+      "suggestion-chip.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSuggestionChip",
+    "file": "swift/Sources/MetalUI/Components/MetalSuggestionChip.swift"
+  },
+  "agent": "suggestion-chip.agent.md"
+}

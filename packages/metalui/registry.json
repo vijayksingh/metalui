@@ -642,23 +642,21 @@
       "name": "suggestion-chip",
       "type": "registry:ui",
       "title": "Suggestion chip",
-      "description": "One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.",
-      "dependencies": [
-        "@base-ui/react@^1.8.0"
-      ],
+      "description": "One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.",
+      "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/suggestion-chip/suggestion-chip.tsx",
+          "path": "packages/metalui/src/blocks/suggestion-chip/suggestion-chip.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/suggestion-chip/suggestion-chip.tsx"
+          "target": "components/metalui/blocks/suggestion-chip/suggestion-chip.tsx"
         },
         {
-          "path": "packages/metalui/src/components/suggestion-chip/suggestion-chip.css",
+          "path": "packages/metalui/src/blocks/suggestion-chip/suggestion-chip.css",
           "type": "registry:file",
-          "target": "components/metalui/suggestion-chip/suggestion-chip.css"
+          "target": "components/metalui/blocks/suggestion-chip/suggestion-chip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/suggestion-chip.md. SwiftUI: MetalSuggestionChip in the MetalUI Swift package."

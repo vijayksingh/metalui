@@ -65,7 +65,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 ${icons.icons.map((i) => `| \`${i.component}\` | \`${i.name}\` | ${i.category} | ${i.hover} | ${i.press} |`).join('\n')}
 `;
 
-const guides = list.map((m) => readFileSync(root('packages/metalui/src/components', m.name, `${m.name}.agent.md`), 'utf8').trim()).join('\n\n---\n\n');
+const guides = list.map((m) => readFileSync(root('packages/metalui/src', m.dir, m.agent ?? `${m.name}.agent.md`), 'utf8').trim()).join('\n\n---\n\n');
 emit('packages/metalui/public/AI.md', `${intro}\n${guides}\n${iconsDoc}`);
 
 emit('packages/metalui/public/llms.txt', `# MetalUI

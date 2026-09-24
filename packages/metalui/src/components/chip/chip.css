@@ -42,3 +42,4 @@
 .mu-chip-lead[data-led="link"] { background: var(--mu-r-chip-led-link-background); }
 .mu-chip-lead[data-led="code"] { background: var(--mu-r-chip-led-code-background); }
 .mu-chip-actions { display: inline-flex; align-items: center; }
+.mu-chip[data-variant="suggestion"] .mu-chip-actions { gap: var(--mu-r-chip-suggestion-gap); }

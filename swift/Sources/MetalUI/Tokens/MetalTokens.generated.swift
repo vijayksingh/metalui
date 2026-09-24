@@ -638,44 +638,6 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A suggestion chip beside its block: a small frosted pill with a green hairline, the question, its confidence, accept and dismiss. (reference style.css .suggs, .sugg, .sugg .eng, .sugg button)
-    public static let suggestionChip = MetalObjectRecipe(
-        name: "suggestion-chip",
-        layers: [
-            .init(part: "self", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(252.0, 251.0, 249.0, 0.7)))), // mu-recipe:suggestion-chip:0 rgba(252,251,249,.7)
-            .init(part: "self", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(44.0, 44.0, 47.0, 0.7)))), // mu-recipe:suggestion-chip:1 rgba(44,44,47,.7)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.4)))), // mu-recipe:suggestion-chip:2 inset 0 0 0 .5px rgba(63,185,122,.4)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:suggestion-chip:3 inset 0 0 4px 1px rgba(255,255,255,.85)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:suggestion-chip:4 inset 1px 2px 2px -1px #FFFFFF
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:suggestion-chip:5 0 0 0 .5px rgba(24,22,16,.05)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:suggestion-chip:6 0 1px 2px rgba(24,22,16,.07)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:suggestion-chip:7 0 5px 12px -4px rgba(24,22,16,.09)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:suggestion-chip:8 inset 0 0 4px 1px rgba(255,255,255,.06)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:suggestion-chip:9 inset 1px 2px 2px -1px rgba(255,255,255,.12)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:suggestion-chip:10 0 0 0 .5px rgba(0,0,0,.55)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:suggestion-chip:11 0 1px 2px rgba(0,0,0,.3)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:suggestion-chip:12 0 5px 12px -4px rgba(0,0,0,.3)
-            .init(part: "button", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:suggestion-chip:13 rgba(0,0,0,.06)
-            .init(part: "button", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:suggestion-chip:14 rgba(255,255,255,.08)
-        ],
-        props: [
-            "self.height": .number(20.0),
-            "self.pad-left": .number(9.0),
-            "self.pad-right": .number(3.0),
-            "self.gap": .number(2.0),
-            "self.font": .text("500 11.5px/20px sans"),
-            "self.rest-opacity": .text("0.62"),
-            "conf.font-size": .number(8.5),
-            "conf.margin-left": .number(2.0),
-            "conf.margin-right": .number(3.0),
-            "button.w": .number(18.0),
-            "button.h": .number(16.0),
-            "button.font": .text("500 11px/1 sans"),
-            "row.gap": .number(6.0),
-            "row.offset": .number(12.0),
-        ]
-    )
-
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
@@ -1389,7 +1351,7 @@ public enum MetalRecipes {
             "suggestion.pad-right": .number(3.0),
             "suggestion.gap": .number(2.0),
             "suggestion.font": .text("500 11.5px/20px sans"),
-            "suggestion.tracking": .text("-0.012em"),
+            "suggestion.tracking": .text("-0.18px"),
             "suggestion.ink": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
             "glass.height": .number(18.0),
             "glass.pad-x": .number(7.0),
@@ -1932,6 +1894,8 @@ public enum MetalSuggestion {
     public static let buttonHeight: Double = 16.0
     public static let offsetX: Double = -2.0
     public static let offsetY: Double = 10.0
+    public static let confMarginStart: Double = 2.0
+    public static let confMarginEnd: Double = 3.0
 }
 
 /// The hover engraving: a block's identity, shown on a dwell, never on a pass. A frosted pill beside the first line of a text block (below a material one) in the label role, engraved: kind · time · edits · other life events · derived tags · the recognizer's status, with an LED. Hidden while selected or writing. Values are the reference design's .meta.

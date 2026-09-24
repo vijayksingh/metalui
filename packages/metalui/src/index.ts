@@ -30,7 +30,7 @@ export { Segmented, type SegmentedProps, type SegmentedOption } from './componen
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './components/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './components/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './components/hover-engraving/hover-engraving';
-export { SuggestionChip, type SuggestionChipProps } from './components/suggestion-chip/suggestion-chip';
+export { SuggestionChip, type SuggestionChipProps } from './blocks/suggestion-chip/suggestion-chip';
 export { SizeReadout, type SizeReadoutProps } from './components/size-readout/size-readout';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';

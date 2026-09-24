@@ -1187,7 +1187,7 @@ A lamp for a state, and a badge that names it. React: `Led`, `StatusBadge` from 
 
 # Suggestion chip
 
-One question the recognizer asks at middle confidence, beside its block. React: `SuggestionChip` from `@unlocalhosted/metalui` (Base UI Button for accept and dismiss). SwiftUI: `MetalSuggestionChip`. Kamui brief: 03 §4, DS-30.
+One question the recognizer asks at middle confidence, beside its block. A composition block: `Chip` (suggestion) › `Chip.Text` + `Label` (small) + `Chip.Actions` › `IconButton` (mini) × 2. React: `SuggestionChip` from `@unlocalhosted/metalui`. SwiftUI: `MetalSuggestionChip`.
 
 ## Use it for
 
@@ -1201,7 +1201,7 @@ One question the recognizer asks at middle confidence, beside its block. React: 
 
 ## Confidence routing (a docs table, not props)
 
-| Confidence | Nouls (p) | Choices | Life glyph | Lens | The surface |
+| Confidence | Numbers (p) | Choices | Life glyph | Lens | The surface |
 |---|---|---|---|---|---|
 | Apply (quiet) | p ≥ .85 | ≥ .70 | Layer 1, or ≥ .85 | p ≥ .5 | the cue appears, provenance on hover |
 | Suggest | .60 ≤ p < .85 | .40 ≤ c < .70 | named in the engraving only | .3–.5: "maybe" at .5 | one suggestion chip |
@@ -1209,7 +1209,7 @@ One question the recognizer asks at middle confidence, beside its block. React: 
 
 ## Anatomy
 
-A 20 tall pill: `suggestion-bg` with a .5 green-deep ring at .4 over `raise-sm`; the label in the `ui` role, ink2; the confidence in the `label` role (`0.72`); ✓ and × as 18 × 16 round buttons (✓ turns green-deep on hover). It sits beside the first line of its block (`offset-x` −2, `offset-y` 10 from the block's right edge).
+`Chip variant="suggestion"`: a 20 tall frosted pill with a .5 green ring at .4 over a small raise, the question in ink2. `Label variant="small"`: the confidence (`0.72`), 2 after the question and 3 before the actions. `IconButton variant="mini"`: ✓ (`accept`, green on hover) and ×, 18 × 16. It sits beside the first line of its block (`offset-x` −2, `offset-y` 10 from the block's right edge).
 
 ## States and motion
 
@@ -1251,7 +1251,7 @@ A 20 tall pill: `suggestion-bg` with a .5 green-deep ring at .4 over `raise-sm`;
 
 ## Tokens
 
-`--mu-suggestion-*`, per colorway `--mu-suggestion-bg`, `--mu-suggestion-button-hover`; `--mu-raise-sm`, `--mu-spring-settle`, `--mu-travel-settle`. Swift: `MetalSuggestion`, `MetalTokens.<colorway>.suggestionBg`.
+Layout: `--mu-suggestion-*` (rest opacity, arrival, the confidence's margins). Look: the chip, label and icon-button recipes. Motion: `--mu-spring-settle`, `--mu-travel-settle`.
 
 ---
 
