@@ -24,7 +24,7 @@
   position: absolute;
   width: var(--mu-r-slider-mark-w);
   height: var(--mu-r-slider-mark-h);
-  transform: translateX(-50%);
+  /* From its moment rightwards, as the reference draws it (not centred on it). */
   border-radius: var(--mu-r-slider-mark-radius);
   background: var(--mu-r-slider-mark-color);
 }
