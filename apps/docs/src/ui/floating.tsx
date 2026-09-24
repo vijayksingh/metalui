@@ -69,8 +69,9 @@ const ITEMS: Item[] = [
     node: ({ openXray }) => <div style={{ zoom: 1.6 }}><Button cap="primary" onClick={() => openXray('button')}>New Canvas</Button></div>,
   },
   {
-    id: 'chip', table: ['10%', '62%'], space: ['14%', '62%', -60, 10], dur: '28s', drift: ['22px', '-22px'],
-    node: ({ chip, setChip }) => chip ? <SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /> : null,
+    id: 'chip', table: ['10%', '62%'], space: ['14%', '62%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
+    // the words open the x-ray; ✓ and × still answer
+    node: ({ chip, setChip, openXray }) => chip ? <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openXray('chip'); }}><SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /></span> : null,
   },
   {
     id: 'seg', table: ['66%', '58%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
