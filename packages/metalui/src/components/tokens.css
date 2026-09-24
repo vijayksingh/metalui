@@ -1505,6 +1505,16 @@
   --mu-r-link-card-path-tracking: 0.06em;
   --mu-r-link-card-path-ink: rgba(255,255,255,.5);
   --mu-r-link-card-chip-inset: 10px;
+  --mu-r-link-card-title-font: 620 14px/1.3 var(--mu-sans);
+  --mu-r-link-card-title-tracking: -0.01em;
+  --mu-r-link-card-title-ink: #EDEDEF;
+  --mu-r-link-card-title-lines: 2;
+  --mu-r-link-card-meta-gap: 5px;
+  --mu-r-link-card-meta-icon: 12px;
+  --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
+  --mu-r-link-card-preview-height: 128px;
+  --mu-r-link-card-preview-fade: 220ms;
+  --mu-r-link-card-preview-image-opacity: 0.55;
   /* code-card: reference style.css .codeobj, .codeobj .screen, .codeobj pre, .ln, .kw, .ty, .st, .cm, .nu */
   --mu-r-code-card-screen-background:
     /* mu-recipe:code-card:0 */ radial-gradient(120% 80% at 20% 0, #26282C, #151618 60%, #0F1011);

@@ -1775,7 +1775,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A link as a glass object: the site's host and path on a screen tinted by the host, a LINK tag and one OPEN action. The card is not a click target; only OPEN is. (reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open)
+    /// A link as a glass object: the site's host and path on a screen tinted by the host, a LINK tag and one OPEN action. The card is not a click target; only OPEN is. With a preview (the backend's title, image and icon; never for a secret block or in the past) the title becomes the big line (2 lines at most), the host and path move into a small line with the site icon, and the image sits behind the tinted glow, shaded to the bottom so the words stay readable; the preview fades in on settle and the card grows to the preview height. (reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open)
     public static let linkCard = MetalObjectRecipe(
         name: "link-card",
         layers: [
@@ -1796,6 +1796,16 @@ public enum MetalRecipes {
             "path.tracking": .text("0.06em"),
             "path.ink": .text("rgba(255,255,255,.5)"),
             "chip.inset": .number(10.0),
+            "title.font": .text("620 14px/1.3 sans"),
+            "title.tracking": .text("-0.01em"),
+            "title.ink": .text("#EDEDEF"),
+            "title.lines": .text("2"),
+            "meta.gap": .number(5.0),
+            "meta.icon": .number(12.0),
+            "meta.ink": .text("rgba(255,255,255,.6)"),
+            "preview.height": .number(128.0),
+            "preview.fade": .text("220ms"),
+            "preview.image-opacity": .text("0.55"),
         ]
     )
 

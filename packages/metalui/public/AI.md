@@ -715,6 +715,10 @@ The tinted screen and its type are drawn by no component. Everything else is `Gl
 
 The link-card recipe (screen, host, path, chip inset), the glass-face and chip recipes.
 
+## Preview
+
+Pass `preview` (the backend's `GET /preview` result: `title`, `description`, `image`, `icon`) once it arrives. With a title, the title becomes the big line (2 lines at most); the host and path move into a small line with the site icon; the image sits behind the tinted glow, shaded to the bottom; the card grows from 92 to 128 on settle and the preview fades in. Never request or pass a preview for a secret block or while looking at the past. Without a title the card stays as it was: the preview is decoration, the URL is the text.
+
 ---
 
 # Mark

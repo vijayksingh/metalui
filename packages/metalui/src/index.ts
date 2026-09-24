@@ -41,6 +41,6 @@ export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from 
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
-export { LinkCard, linkHueDegrees, type LinkCardProps } from './blocks/link-card/link-card';
+export { LinkCard, linkHueDegrees, type LinkCardProps, type LinkPreview } from './blocks/link-card/link-card';
 export { Settings, type SettingsRowProps } from './blocks/settings/settings';
 export { CodeCard, tintCode, diffClasses, type CodeCardProps, type DiffClass } from './blocks/code-card/code-card';

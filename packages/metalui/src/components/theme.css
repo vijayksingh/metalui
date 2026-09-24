@@ -673,6 +673,12 @@
   --tracking-link-card-path-tracking: var(--mu-r-link-card-path-tracking);
   --color-link-card-path-ink: var(--mu-r-link-card-path-ink);
   --spacing-link-card-chip-inset: var(--mu-r-link-card-chip-inset);
+  --tracking-link-card-title-tracking: var(--mu-r-link-card-title-tracking);
+  --color-link-card-title-ink: var(--mu-r-link-card-title-ink);
+  --spacing-link-card-meta-gap: var(--mu-r-link-card-meta-gap);
+  --spacing-link-card-meta-icon: var(--mu-r-link-card-meta-icon);
+  --color-link-card-meta-ink: var(--mu-r-link-card-meta-ink);
+  --spacing-link-card-preview-height: var(--mu-r-link-card-preview-height);
   --spacing-code-card-min-width: var(--mu-r-code-card-self-min-width);
   --spacing-code-card-max-width: var(--mu-r-code-card-self-max-width);
   --spacing-code-card-screen-pad-top: var(--mu-r-code-card-screen-pad-top);
@@ -1615,6 +1621,18 @@
 @utility link-card-tint {
   --mu-self: var(--mu-r-link-card-screen-tint);
 }
+@utility link-card-image-shade {
+  background: linear-gradient(180deg, rgba(18,19,22,.15) 0%, rgba(18,19,22,.55) 45%, #121316 100%);
+}
+@utility link-card-title-clamp {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--mu-r-link-card-title-lines); overflow: hidden;
+}
+@utility link-card-preview-in {
+  animation: mu-link-card-in var(--mu-r-link-card-preview-fade) var(--mu-spring-settle, ease-out) both;
+}
+@utility link-card-grow {
+  transition: height var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
 @utility stroke-width-link-card-width {
   stroke-width: var(--mu-r-link-card-self-width);
 }
@@ -1625,6 +1643,20 @@
 @utility type-link-card-path {
   font: var(--mu-r-link-card-path-font);
   letter-spacing: var(--mu-r-link-card-path-tracking);
+}
+@utility type-link-card-title {
+  font: var(--mu-r-link-card-title-font);
+  letter-spacing: var(--mu-r-link-card-title-tracking);
+}
+@utility opacity-link-card-title-lines {
+  opacity: var(--mu-r-link-card-title-lines);
+}
+@utility duration-link-card-preview-fade {
+  --tw-duration: var(--mu-r-link-card-preview-fade);
+  transition-duration: var(--mu-r-link-card-preview-fade);
+}
+@utility opacity-link-card-preview-image-opacity {
+  opacity: var(--mu-r-link-card-preview-image-opacity);
 }
 @utility recipe-code-card-screen {
   background: var(--mu-r-code-card-screen-background);
@@ -1742,6 +1774,9 @@
   from { opacity: 0; transform: translate(-50%, calc(var(--mu-cue-chip-rise) * var(--mu-travel-part))); }
 }
 @keyframes mu-cue-life {
+  from { opacity: 0; }
+}
+@keyframes mu-link-card-in {
   from { opacity: 0; }
 }
 @keyframes mu-silhouette-in {
