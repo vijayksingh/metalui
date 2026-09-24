@@ -22,8 +22,8 @@ Run against current `main` while component migration was active:
 
 | Gate | Findings by rule |
 | --- | --- |
-| Literal lint | spacing 82; radius 39; shadow 20; duration 7; font 3; color 1; opacity 20. Total 172. |
+| Literal lint | spacing 84; radius 39; shadow 17; duration 7; font 3; color 1; opacity 20. Total 171. |
 | Recipe parity | component without recipe 34 (17 React, 17 Swift); generated layer mismatches 0. |
-| `npm run check` | failed on four stale generated registry files during concurrent edits (`tokens.json`, command palette, hover engraving, menu); direct lint and recipe checks reported above. |
+| `npm run check` | failed on seven stale generated registry files during concurrent edits (`tokens.json`, command palette, hover engraving, menu, region, suggestion chip, toolbar); direct lint and recipe checks reported above. |
 
 To reach green: move each reported literal into `tokens.json`, generate CSS and Swift, add one recipe entry per component and generated layer markers, then rerun commands. Counts are a dated snapshot; the other agent is editing these sources concurrently.
