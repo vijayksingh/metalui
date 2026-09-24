@@ -409,6 +409,18 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
   color: var(--mu-engrave);
   text-shadow: var(--mu-lip-shadow);
 }
+@utility tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
+   px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],
+   durations duration-<object>-<part>-<key>, and each layered look (fills and shadow stacks, per state)
+   is recipe-<object>[-<part>][-<state>]. They read the --mu-r-* variables, so they follow the colorway. */
+@theme inline {
+${RECIPES.theme.vars}
+}
+${RECIPES.theme.utilities}
 `;
 emit('packages/metalui/src/components/theme.css', theme);
 

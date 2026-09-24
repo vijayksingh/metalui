@@ -142,6 +142,10 @@ export function buildRecipes(recipes) {
   const selfish = [];
   const cw = { bone: [], graphite: [] };
   const swift = [];
+  // Tailwind v4: every recipe as theme values (sizes, inks, tracking) and utilities (its layered looks,
+  // its type, durations, opacities), all reading the --mu-r-* variables so they follow the colorway.
+  const themeVars = [];
+  const utilities = [];
   for (const [obj, r] of Object.entries(recipes ?? {})) {
     if (obj.startsWith('$')) continue;
     if (!Array.isArray(r.layers)) throw new Error(`recipes.${obj}: needs an ordered layers array`);
@@ -173,6 +177,50 @@ export function buildRecipes(recipes) {
       }
       else for (const c of ['bone', 'graphite']) emitTo(cw[c], list.filter((l) => !l.colorway || l.colorway === c), c);
     }
+    const stem = (part) => `${obj}${part === 'self' ? '' : '-' + part}`;
+    // the layered looks: recipe-<object>[-<part>][-<state>]
+    const looks = new Map();
+    for (const list of groups.values()) {
+      const { part, state, prop } = list[0];
+      const u = `recipe-${stem(part)}${state ? '-' + state : ''}`;
+      if (!looks.has(u)) looks.set(u, []);
+      const css = { background: 'background', shadow: 'box-shadow', 'text-shadow': 'text-shadow' }[prop];
+      looks.get(u).push(`  ${css}: var(${varName(obj, part, state, PROP_CSS[prop])});`);
+    }
+    for (const [u, decls] of looks) utilities.push(`@utility ${u} {\n${decls.join('\n')}\n}`);
+    for (const [part, props] of Object.entries(r.props ?? {})) {
+      const v0 = (v) => (v && typeof v === 'object' ? v.bone ?? v.graphite : v);
+      const ref = (k) => `var(--mu-r-${obj}-${part}-${k})`;
+      if (props.font !== undefined) {
+        const decls = [`  font: ${ref('font')};`];
+        if (props.tracking !== undefined) decls.push(`  letter-spacing: ${ref('tracking')};`);
+        if (props.transform !== undefined) decls.push(`  text-transform: ${ref('transform')};`);
+        utilities.push(`@utility type-${stem(part)} {\n${decls.join('\n')}\n}`);
+      }
+      for (const [k, raw] of Object.entries(props)) {
+        if (k.startsWith('$')) continue;
+        const v = v0(raw);
+        const n = `${stem(part)}-${k}`;
+        if (typeof v === 'number') {
+          themeVars.push(`  --spacing-${n}: ${ref(k)};`);
+          if (/radius/.test(k)) themeVars.push(`  --radius-${n}: ${ref(k)};`);
+          if (k === 'font-size') themeVars.push(`  --text-${n}: ${ref(k)};`);
+          continue;
+        }
+        const str = String(v);
+        if (k === 'font' || k === 'transform') continue;
+        if (k === 'tracking') themeVars.push(`  --tracking-${n}: ${ref(k)};`);
+        else if (/^\d+(\.\d+)?ms$/.test(str)) utilities.push(`@utility duration-${n} {\n  transition-duration: ${ref(k)};\n}`);
+        else if (/^(#|rgba?\(|hsla?\(|transparent$|white$|black$)/.test(str)) themeVars.push(`  --color-${n}: ${ref(k)};`);
+        else if (/^blur\(/.test(str)) utilities.push(`@utility backdrop-${n} {\n  -webkit-backdrop-filter: ${ref(k)};\n  backdrop-filter: ${ref(k)};\n}`);
+        else if (k === 'transition') utilities.push(`@utility transition-${n} {\n  transition: ${ref(k)};\n}`);
+        else if (/^-?\d*\.?\d+$/.test(str)) {
+          if (k === 'z' || /-z$/.test(k)) utilities.push(`@utility z-${n} {\n  z-index: ${ref(k)};\n}`);
+          else if (/weight/.test(k)) utilities.push(`@utility weight-${n} {\n  font-weight: ${ref(k)};\n}`);
+          else utilities.push(`@utility opacity-${n} {\n  opacity: ${ref(k)};\n}`);
+        }
+      }
+    }
     for (const [part, props] of Object.entries(r.props ?? {}))
       for (const [k, v] of Object.entries(props)) {
         if (k.startsWith('$')) continue;
@@ -203,6 +251,7 @@ ${props.join('\n') || '            :'}
     )`);
   }
   return {
+    theme: { vars: themeVars.join('\n'), utilities: utilities.join('\n') },
     css: { root: root.join('\n'), self: selfish.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
     swift: `
 /// Object recipes (tokens.json \`recipes\`): every layer of each object's look, per part and state,

@@ -186,3 +186,1028 @@
   color: var(--mu-engrave);
   text-shadow: var(--mu-lip-shadow);
 }
+@utility tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
+   px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],
+   durations duration-<object>-<part>-<key>, and each layered look (fills and shadow stacks, per state)
+   is recipe-<object>[-<part>][-<state>]. They read the --mu-r-* variables, so they follow the colorway. */
+@theme inline {
+  --spacing-swatch-size: var(--mu-r-swatch-self-size);
+  --spacing-swatch-radius: var(--mu-r-swatch-self-radius);
+  --radius-swatch-radius: var(--mu-r-swatch-self-radius);
+  --tracking-swatch-label-tracking: var(--mu-r-swatch-label-tracking);
+  --spacing-swatch-label-x: var(--mu-r-swatch-label-x);
+  --spacing-swatch-label-y: var(--mu-r-swatch-label-y);
+  --color-swatch-label-ink-dark: var(--mu-r-swatch-label-ink-dark);
+  --color-swatch-label-ink-light: var(--mu-r-swatch-label-ink-light);
+  --spacing-swatch-led-size: var(--mu-r-swatch-led-size);
+  --spacing-swatch-led-inset: var(--mu-r-swatch-led-inset);
+  --spacing-checkbox-size: var(--mu-r-checkbox-self-size);
+  --spacing-checkbox-radius: var(--mu-r-checkbox-self-radius);
+  --radius-checkbox-radius: var(--mu-r-checkbox-self-radius);
+  --spacing-checkbox-x: var(--mu-r-checkbox-self-x);
+  --spacing-checkbox-y: var(--mu-r-checkbox-self-y);
+  --spacing-checkbox-tick-x: var(--mu-r-checkbox-tick-x);
+  --spacing-checkbox-tick-y: var(--mu-r-checkbox-tick-y);
+  --spacing-checkbox-tick-w: var(--mu-r-checkbox-tick-w);
+  --spacing-checkbox-tick-h: var(--mu-r-checkbox-tick-h);
+  --spacing-checkbox-tick-stroke: var(--mu-r-checkbox-tick-stroke);
+  --color-checkbox-tick-color: var(--mu-r-checkbox-tick-color);
+  --spacing-checkbox-ghost-x: var(--mu-r-checkbox-ghost-x);
+  --spacing-checkbox-ghost-y: var(--mu-r-checkbox-ghost-y);
+  --spacing-checkbox-ghost-size: var(--mu-r-checkbox-ghost-size);
+  --spacing-checkbox-ghost-radius: var(--mu-r-checkbox-ghost-radius);
+  --radius-checkbox-ghost-radius: var(--mu-r-checkbox-ghost-radius);
+  --spacing-checkbox-doing-inset: var(--mu-r-checkbox-doing-inset);
+  --spacing-checkbox-doing-radius: var(--mu-r-checkbox-doing-radius);
+  --radius-checkbox-doing-radius: var(--mu-r-checkbox-doing-radius);
+  --spacing-checkbox-row-size: var(--mu-r-checkbox-row-size);
+  --spacing-checkbox-row-radius: var(--mu-r-checkbox-row-radius);
+  --radius-checkbox-row-radius: var(--mu-r-checkbox-row-radius);
+  --spacing-checkbox-row-tick-x: var(--mu-r-checkbox-row-tick-x);
+  --spacing-checkbox-row-tick-y: var(--mu-r-checkbox-row-tick-y);
+  --spacing-checkbox-row-tick-w: var(--mu-r-checkbox-row-tick-w);
+  --spacing-checkbox-row-tick-h: var(--mu-r-checkbox-row-tick-h);
+  --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
+  --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
+  --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
+  --radius-toolbar-radius: var(--mu-r-toolbar-self-radius);
+  --spacing-toolbar-tool-size: var(--mu-r-toolbar-tool-size);
+  --spacing-toolbar-tool-radius: var(--mu-r-toolbar-tool-radius);
+  --radius-toolbar-tool-radius: var(--mu-r-toolbar-tool-radius);
+  --spacing-toolbar-tool-glyph: var(--mu-r-toolbar-tool-glyph);
+  --color-toolbar-tool-ink: var(--mu-r-toolbar-tool-ink);
+  --spacing-toolbar-tool-press: var(--mu-r-toolbar-tool-press);
+  --spacing-toolbar-led-size: var(--mu-r-toolbar-led-size);
+  --spacing-toolbar-led-inset: var(--mu-r-toolbar-led-inset);
+  --spacing-toolbar-sep-width: var(--mu-r-toolbar-sep-width);
+  --spacing-toolbar-sep-height: var(--mu-r-toolbar-sep-height);
+  --spacing-toolbar-sep-margin: var(--mu-r-toolbar-sep-margin);
+  --spacing-toolbar-search-height: var(--mu-r-toolbar-search-height);
+  --spacing-toolbar-search-min-width: var(--mu-r-toolbar-search-min-width);
+  --spacing-toolbar-search-radius: var(--mu-r-toolbar-search-radius);
+  --radius-toolbar-search-radius: var(--mu-r-toolbar-search-radius);
+  --spacing-toolbar-search-pad-left: var(--mu-r-toolbar-search-pad-left);
+  --spacing-toolbar-search-pad-right: var(--mu-r-toolbar-search-pad-right);
+  --spacing-toolbar-search-gap: var(--mu-r-toolbar-search-gap);
+  --color-toolbar-search-ink: var(--mu-r-toolbar-search-ink);
+  --spacing-toolbar-search-glyph: var(--mu-r-toolbar-search-glyph);
+  --color-toolbar-kbd-ink: var(--mu-r-toolbar-kbd-ink);
+  --spacing-glass-face-radius: var(--mu-r-glass-face-self-radius);
+  --radius-glass-face-radius: var(--mu-r-glass-face-self-radius);
+  --spacing-glass-face-pad: var(--mu-r-glass-face-self-pad);
+  --spacing-glass-face-screen-radius: var(--mu-r-glass-face-screen-radius);
+  --radius-glass-face-screen-radius: var(--mu-r-glass-face-screen-radius);
+  --spacing-hover-engraving-height: var(--mu-r-hover-engraving-self-height);
+  --spacing-hover-engraving-pad: var(--mu-r-hover-engraving-self-pad);
+  --spacing-hover-engraving-gap: var(--mu-r-hover-engraving-self-gap);
+  --spacing-hover-engraving-rise: var(--mu-r-hover-engraving-self-rise);
+  --spacing-hover-engraving-slide: var(--mu-r-hover-engraving-self-slide);
+  --spacing-hover-engraving-beside-gap: var(--mu-r-hover-engraving-self-beside-gap);
+  --spacing-hover-engraving-beside-top: var(--mu-r-hover-engraving-self-beside-top);
+  --spacing-hover-engraving-below-gap: var(--mu-r-hover-engraving-self-below-gap);
+  --color-hover-engraving-emphasis-color: var(--mu-r-hover-engraving-emphasis-color);
+  --tracking-hover-engraving-tag-tracking: var(--mu-r-hover-engraving-tag-tracking);
+  --spacing-hover-engraving-tag-height: var(--mu-r-hover-engraving-tag-height);
+  --spacing-hover-engraving-tag-pad: var(--mu-r-hover-engraving-tag-pad);
+  --spacing-hover-engraving-tag-gap: var(--mu-r-hover-engraving-tag-gap);
+  --spacing-hover-engraving-led-size: var(--mu-r-hover-engraving-led-size);
+  --spacing-hover-engraving-led-gap: var(--mu-r-hover-engraving-led-gap);
+  --spacing-hover-engraving-led-lift: var(--mu-r-hover-engraving-led-lift);
+  --spacing-status-led-size: var(--mu-r-status-led-size);
+  --spacing-status-led-size-small: var(--mu-r-status-led-size-small);
+  --spacing-status-badge-height: var(--mu-r-status-badge-height);
+  --spacing-status-badge-pad: var(--mu-r-status-badge-pad);
+  --spacing-status-badge-gap: var(--mu-r-status-badge-gap);
+  --tracking-status-badge-tracking: var(--mu-r-status-badge-tracking);
+  --spacing-button-height: var(--mu-r-button-self-height);
+  --spacing-button-pad: var(--mu-r-button-self-pad);
+  --spacing-button-gap: var(--mu-r-button-self-gap);
+  --spacing-button-glyph: var(--mu-r-button-self-glyph);
+  --spacing-button-travel: var(--mu-r-button-self-travel);
+  --spacing-button-focus-width: var(--mu-r-button-self-focus-width);
+  --spacing-button-focus-offset: var(--mu-r-button-self-focus-offset);
+  --spacing-button-compact-height: var(--mu-r-button-compact-height);
+  --spacing-button-compact-pad: var(--mu-r-button-compact-pad);
+  --spacing-button-compact-gap: var(--mu-r-button-compact-gap);
+  --spacing-button-compact-glyph: var(--mu-r-button-compact-glyph);
+  --tracking-button-compact-tracking: var(--mu-r-button-compact-tracking);
+  --tracking-button-link-tracking: var(--mu-r-button-link-tracking);
+  --color-button-link-ink: var(--mu-r-button-link-ink);
+  --spacing-button-graphite-height: var(--mu-r-button-graphite-height);
+  --spacing-button-graphite-pad: var(--mu-r-button-graphite-pad);
+  --tracking-button-graphite-tracking: var(--mu-r-button-graphite-tracking);
+  --color-button-graphite-ink: var(--mu-r-button-graphite-ink);
+  --spacing-button-strip-height: var(--mu-r-button-strip-height);
+  --spacing-button-strip-pad: var(--mu-r-button-strip-pad);
+  --spacing-button-strip-radius: var(--mu-r-button-strip-radius);
+  --radius-button-strip-radius: var(--mu-r-button-strip-radius);
+  --tracking-button-strip-tracking: var(--mu-r-button-strip-tracking);
+  --color-button-strip-ink: var(--mu-r-button-strip-ink);
+  --color-button-strip-ink-hover: var(--mu-r-button-strip-ink-hover);
+  --spacing-button-strip-focus-width: var(--mu-r-button-strip-focus-width);
+  --color-button-strip-danger-ink: var(--mu-r-button-strip-danger-ink);
+  --spacing-kbd-height: var(--mu-r-kbd-self-height);
+  --spacing-kbd-min: var(--mu-r-kbd-self-min);
+  --spacing-kbd-pad: var(--mu-r-kbd-self-pad);
+  --spacing-kbd-radius: var(--mu-r-kbd-self-radius);
+  --radius-kbd-radius: var(--mu-r-kbd-self-radius);
+  --tracking-kbd-tracking: var(--mu-r-kbd-self-tracking);
+  --spacing-kbd-gap: var(--mu-r-kbd-self-gap);
+  --spacing-kbd-small-height: var(--mu-r-kbd-small-height);
+  --spacing-kbd-small-min: var(--mu-r-kbd-small-min);
+  --spacing-kbd-small-pad: var(--mu-r-kbd-small-pad);
+  --spacing-kbd-small-radius: var(--mu-r-kbd-small-radius);
+  --radius-kbd-small-radius: var(--mu-r-kbd-small-radius);
+  --color-kbd-strip-ink: var(--mu-r-kbd-strip-ink);
+  --color-kbd-sunk-ink: var(--mu-r-kbd-sunk-ink);
+  --spacing-surface-radius-pill: var(--mu-r-surface-radius-pill);
+  --spacing-surface-radius-hero: var(--mu-r-surface-radius-hero);
+  --spacing-surface-radius-card: var(--mu-r-surface-radius-card);
+  --spacing-surface-radius-plate: var(--mu-r-surface-radius-plate);
+  --spacing-surface-radius-strip: var(--mu-r-surface-radius-strip);
+  --spacing-surface-radius-region: var(--mu-r-surface-radius-region);
+  --spacing-surface-radius-tip: var(--mu-r-surface-radius-tip);
+  --spacing-surface-radius-row: var(--mu-r-surface-radius-row);
+  --spacing-well-radius-pill: var(--mu-r-well-radius-pill);
+  --spacing-well-radius-field: var(--mu-r-well-radius-field);
+  --spacing-well-radius-region: var(--mu-r-well-radius-region);
+  --spacing-well-radius-strip: var(--mu-r-well-radius-strip);
+  --spacing-well-radius-row: var(--mu-r-well-radius-row);
+  --tracking-label-engraved-tracking: var(--mu-r-label-engraved-tracking);
+  --color-label-engraved-color: var(--mu-r-label-engraved-color);
+  --spacing-label-small-font-size: var(--mu-r-label-small-font-size);
+  --text-label-small-font-size: var(--mu-r-label-small-font-size);
+  --tracking-label-title-tracking: var(--mu-r-label-title-tracking);
+  --color-label-title-color: var(--mu-r-label-title-color);
+  --tracking-label-heading-tracking: var(--mu-r-label-heading-tracking);
+  --color-label-heading-color: var(--mu-r-label-heading-color);
+  --tracking-label-count-tracking: var(--mu-r-label-count-tracking);
+  --color-label-count-color: var(--mu-r-label-count-color);
+  --tracking-label-readout-tracking: var(--mu-r-label-readout-tracking);
+  --color-label-readout-color: var(--mu-r-label-readout-color);
+  --color-label-dark-color: var(--mu-r-label-dark-color);
+  --tracking-label-query-tracking: var(--mu-r-label-query-tracking);
+  --color-label-query-color: var(--mu-r-label-query-color);
+  --tracking-label-value-tracking: var(--mu-r-label-value-tracking);
+  --color-label-value-color: var(--mu-r-label-value-color);
+  --tracking-label-value-small-tracking: var(--mu-r-label-value-small-tracking);
+  --color-label-value-small-color: var(--mu-r-label-value-small-color);
+  --tracking-label-cell-tracking: var(--mu-r-label-cell-tracking);
+  --color-label-cell-color: var(--mu-r-label-cell-color);
+  --tracking-label-display-tracking: var(--mu-r-label-display-tracking);
+  --color-label-display-color: var(--mu-r-label-display-color);
+  --tracking-label-display-quiet-tracking: var(--mu-r-label-display-quiet-tracking);
+  --color-label-display-quiet-color: var(--mu-r-label-display-quiet-color);
+  --tracking-label-on-graphite-tracking: var(--mu-r-label-on-graphite-tracking);
+  --color-label-on-graphite-color: var(--mu-r-label-on-graphite-color);
+  --color-label-readout-dim-color: var(--mu-r-label-readout-dim-color);
+  --color-label-accent-color: var(--mu-r-label-accent-color);
+  --color-label-placeholder-color: var(--mu-r-label-placeholder-color);
+  --color-label-emphasis-color: var(--mu-r-label-emphasis-color);
+  --spacing-rule-thickness: var(--mu-r-rule-self-thickness);
+  --spacing-rule-margin: var(--mu-r-rule-self-margin);
+  --color-mark-match-underline: var(--mu-r-mark-match-underline);
+  --spacing-mark-match-thickness: var(--mu-r-mark-match-thickness);
+  --spacing-mark-match-offset: var(--mu-r-mark-match-offset);
+  --spacing-icon-button-tool-size: var(--mu-r-icon-button-tool-size);
+  --spacing-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
+  --radius-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
+  --spacing-icon-button-tool-glyph: var(--mu-r-icon-button-tool-glyph);
+  --color-icon-button-tool-ink: var(--mu-r-icon-button-tool-ink);
+  --spacing-icon-button-tool-press: var(--mu-r-icon-button-tool-press);
+  --spacing-icon-button-led-size: var(--mu-r-icon-button-led-size);
+  --spacing-icon-button-led-inset: var(--mu-r-icon-button-led-inset);
+  --spacing-icon-button-ghost-size: var(--mu-r-icon-button-ghost-size);
+  --spacing-icon-button-ghost-glyph: var(--mu-r-icon-button-ghost-glyph);
+  --color-icon-button-ghost-ink: var(--mu-r-icon-button-ghost-ink);
+  --color-icon-button-ghost-ink-hover: var(--mu-r-icon-button-ghost-ink-hover);
+  --spacing-icon-button-mini-w: var(--mu-r-icon-button-mini-w);
+  --spacing-icon-button-mini-h: var(--mu-r-icon-button-mini-h);
+  --color-icon-button-mini-ink: var(--mu-r-icon-button-mini-ink);
+  --color-icon-button-mini-ink-hover: var(--mu-r-icon-button-mini-ink-hover);
+  --color-icon-button-mini-accept-ink: var(--mu-r-icon-button-mini-accept-ink);
+  --spacing-chip-suggestion-height: var(--mu-r-chip-suggestion-height);
+  --spacing-chip-suggestion-pad-left: var(--mu-r-chip-suggestion-pad-left);
+  --spacing-chip-suggestion-pad-right: var(--mu-r-chip-suggestion-pad-right);
+  --spacing-chip-suggestion-gap: var(--mu-r-chip-suggestion-gap);
+  --tracking-chip-suggestion-tracking: var(--mu-r-chip-suggestion-tracking);
+  --color-chip-suggestion-ink: var(--mu-r-chip-suggestion-ink);
+  --spacing-chip-glass-height: var(--mu-r-chip-glass-height);
+  --spacing-chip-glass-pad-x: var(--mu-r-chip-glass-pad-x);
+  --spacing-chip-glass-radius: var(--mu-r-chip-glass-radius);
+  --radius-chip-glass-radius: var(--mu-r-chip-glass-radius);
+  --spacing-chip-glass-gap: var(--mu-r-chip-glass-gap);
+  --tracking-chip-glass-tracking: var(--mu-r-chip-glass-tracking);
+  --color-chip-glass-ink: var(--mu-r-chip-glass-ink);
+  --color-chip-glass-action-ink: var(--mu-r-chip-glass-action-ink);
+  --spacing-chip-led-size: var(--mu-r-chip-led-size);
+  --spacing-chip-tag-pad-x: var(--mu-r-chip-tag-pad-x);
+  --tracking-chip-tag-tracking: var(--mu-r-chip-tag-tracking);
+  --color-chip-tag-ink: var(--mu-r-chip-tag-ink);
+  --spacing-field-field-height: var(--mu-r-field-field-height);
+  --spacing-field-field-radius: var(--mu-r-field-field-radius);
+  --radius-field-field-radius: var(--mu-r-field-field-radius);
+  --spacing-field-field-pad-left: var(--mu-r-field-field-pad-left);
+  --spacing-field-field-pad-right: var(--mu-r-field-field-pad-right);
+  --spacing-field-field-gap: var(--mu-r-field-field-gap);
+  --spacing-field-field-glyph: var(--mu-r-field-field-glyph);
+  --tracking-field-field-tracking: var(--mu-r-field-field-tracking);
+  --color-field-field-ink: var(--mu-r-field-field-ink);
+  --color-field-field-hint: var(--mu-r-field-field-hint);
+  --color-field-field-caret: var(--mu-r-field-field-caret);
+  --spacing-field-search-height: var(--mu-r-field-search-height);
+  --spacing-field-search-min-width: var(--mu-r-field-search-min-width);
+  --spacing-field-search-radius: var(--mu-r-field-search-radius);
+  --radius-field-search-radius: var(--mu-r-field-search-radius);
+  --spacing-field-search-pad-left: var(--mu-r-field-search-pad-left);
+  --spacing-field-search-pad-right: var(--mu-r-field-search-pad-right);
+  --spacing-field-search-gap: var(--mu-r-field-search-gap);
+  --spacing-field-search-glyph: var(--mu-r-field-search-glyph);
+  --tracking-field-search-tracking: var(--mu-r-field-search-tracking);
+  --color-field-search-ink: var(--mu-r-field-search-ink);
+  --spacing-sparkline-line-width: var(--mu-r-sparkline-line-width);
+  --color-sparkline-line-color: var(--mu-r-sparkline-line-color);
+  --spacing-sparkline-dot-r: var(--mu-r-sparkline-dot-r);
+  --spacing-sparkline-dot-r-last: var(--mu-r-sparkline-dot-r-last);
+  --spacing-sparkline-dot-stroke: var(--mu-r-sparkline-dot-stroke);
+  --color-sparkline-dot-fill: var(--mu-r-sparkline-dot-fill);
+  --color-sparkline-dot-ring: var(--mu-r-sparkline-dot-ring);
+  --color-sparkline-dot-last-fill: var(--mu-r-sparkline-dot-last-fill);
+  --color-sparkline-dot-last-ring: var(--mu-r-sparkline-dot-last-ring);
+  --color-sparkline-base-color: var(--mu-r-sparkline-base-color);
+  --spacing-sparkline-base-width: var(--mu-r-sparkline-base-width);
+  --spacing-sparkline-height: var(--mu-r-sparkline-self-height);
+  --spacing-sparkline-height-mini: var(--mu-r-sparkline-self-height-mini);
+  --color-dialog-scrim-color: var(--mu-r-dialog-scrim-color);
+  --spacing-dialog-enter-y: var(--mu-r-dialog-self-enter-y);
+  --spacing-slider-track-height: var(--mu-r-slider-track-height);
+  --spacing-slider-track-inset: var(--mu-r-slider-track-inset);
+  --spacing-slider-mark-w: var(--mu-r-slider-mark-w);
+  --spacing-slider-mark-h: var(--mu-r-slider-mark-h);
+  --spacing-slider-mark-radius: var(--mu-r-slider-mark-radius);
+  --radius-slider-mark-radius: var(--mu-r-slider-mark-radius);
+  --color-slider-mark-color: var(--mu-r-slider-mark-color);
+  --spacing-slider-tick-w: var(--mu-r-slider-tick-w);
+  --spacing-slider-tick-h: var(--mu-r-slider-tick-h);
+  --spacing-slider-tick-top: var(--mu-r-slider-tick-top);
+  --spacing-slider-tick-lift: var(--mu-r-slider-tick-lift);
+  --color-slider-tick-color: var(--mu-r-slider-tick-color);
+  --spacing-slider-knob-size: var(--mu-r-slider-knob-size);
+  --spacing-slider-knob-rise: var(--mu-r-slider-knob-rise);
+  --spacing-segmented-pad: var(--mu-r-segmented-self-pad);
+  --spacing-segmented-gap: var(--mu-r-segmented-self-gap);
+  --spacing-segmented-segment-height: var(--mu-r-segmented-segment-height);
+  --spacing-segmented-segment-height-regular: var(--mu-r-segmented-segment-height-regular);
+  --spacing-segmented-segment-pad-x: var(--mu-r-segmented-segment-pad-x);
+  --tracking-segmented-segment-tracking: var(--mu-r-segmented-segment-tracking);
+  --color-segmented-segment-ink: var(--mu-r-segmented-segment-ink);
+  --color-segmented-segment-ink-on: var(--mu-r-segmented-segment-ink-on);
+  --spacing-segmented-segment-focus-width: var(--mu-r-segmented-segment-focus-width);
+  --spacing-tooltip-max-width: var(--mu-r-tooltip-self-max-width);
+  --spacing-tooltip-pad-y: var(--mu-r-tooltip-self-pad-y);
+  --spacing-tooltip-pad-x: var(--mu-r-tooltip-self-pad-x);
+  --spacing-tooltip-radius: var(--mu-r-tooltip-self-radius);
+  --radius-tooltip-radius: var(--mu-r-tooltip-self-radius);
+  --tracking-tooltip-tracking: var(--mu-r-tooltip-self-tracking);
+  --color-tooltip-ink: var(--mu-r-tooltip-self-ink);
+  --color-tooltip-key-ink: var(--mu-r-tooltip-key-ink);
+  --spacing-menu-min-width: var(--mu-r-menu-self-min-width);
+  --spacing-menu-pad: var(--mu-r-menu-self-pad);
+  --spacing-menu-radius: var(--mu-r-menu-self-radius);
+  --radius-menu-radius: var(--mu-r-menu-self-radius);
+  --spacing-menu-heading-pad-top: var(--mu-r-menu-heading-pad-top);
+  --spacing-menu-heading-pad-x: var(--mu-r-menu-heading-pad-x);
+  --spacing-menu-heading-pad-bottom: var(--mu-r-menu-heading-pad-bottom);
+  --spacing-menu-row-height: var(--mu-r-menu-row-height);
+  --spacing-menu-row-pad: var(--mu-r-menu-row-pad);
+  --spacing-menu-row-gap: var(--mu-r-menu-row-gap);
+  --spacing-menu-row-radius: var(--mu-r-menu-row-radius);
+  --radius-menu-row-radius: var(--mu-r-menu-row-radius);
+  --spacing-menu-row-glyph: var(--mu-r-menu-row-glyph);
+  --tracking-menu-row-tracking: var(--mu-r-menu-row-tracking);
+  --spacing-menu-row-key-gap: var(--mu-r-menu-row-key-gap);
+  --spacing-menu-sep-thickness: var(--mu-r-menu-sep-thickness);
+  --spacing-menu-sep-inset-y: var(--mu-r-menu-sep-inset-y);
+  --spacing-menu-sep-inset-x: var(--mu-r-menu-sep-inset-x);
+  --spacing-toast-height: var(--mu-r-toast-self-height);
+  --spacing-toast-pad-left: var(--mu-r-toast-self-pad-left);
+  --spacing-toast-pad-right: var(--mu-r-toast-self-pad-right);
+  --spacing-toast-gap: var(--mu-r-toast-self-gap);
+  --tracking-toast-tracking: var(--mu-r-toast-self-tracking);
+  --color-toast-ink: var(--mu-r-toast-self-ink);
+  --spacing-toast-bottom: var(--mu-r-toast-self-bottom);
+  --spacing-toast-rise: var(--mu-r-toast-self-rise);
+  --spacing-toast-text-gap: var(--mu-r-toast-text-gap);
+  --color-toast-sub-ink: var(--mu-r-toast-sub-ink);
+  --spacing-toast-undo-height: var(--mu-r-toast-undo-height);
+  --spacing-toast-undo-pad-left: var(--mu-r-toast-undo-pad-left);
+  --spacing-toast-undo-pad-right: var(--mu-r-toast-undo-pad-right);
+  --spacing-toast-undo-gap: var(--mu-r-toast-undo-gap);
+  --color-toast-kbd-ink: var(--mu-r-toast-kbd-ink);
+  --spacing-row-list-pad-y: var(--mu-r-row-list-pad-y);
+  --spacing-row-list-pad-x: var(--mu-r-row-list-pad-x);
+  --spacing-row-list-gap: var(--mu-r-row-list-gap);
+  --spacing-row-list-radius: var(--mu-r-row-list-radius);
+  --radius-row-list-radius: var(--mu-r-row-list-radius);
+  --spacing-row-panel-pad-y: var(--mu-r-row-panel-pad-y);
+  --spacing-row-panel-pad-x: var(--mu-r-row-panel-pad-x);
+  --spacing-row-panel-gap: var(--mu-r-row-panel-gap);
+  --spacing-row-panel-radius: var(--mu-r-row-panel-radius);
+  --radius-row-panel-radius: var(--mu-r-row-panel-radius);
+  --spacing-row-option-height: var(--mu-r-row-option-height);
+  --spacing-row-option-pad-x: var(--mu-r-row-option-pad-x);
+  --spacing-row-option-gap: var(--mu-r-row-option-gap);
+  --spacing-row-option-radius: var(--mu-r-row-option-radius);
+  --radius-row-option-radius: var(--mu-r-row-option-radius);
+  --spacing-row-option-glyph: var(--mu-r-row-option-glyph);
+  --spacing-row-rail-w: var(--mu-r-row-rail-w);
+  --spacing-row-rail-inset: var(--mu-r-row-rail-inset);
+  --spacing-row-rail-radius: var(--mu-r-row-rail-radius);
+  --radius-row-rail-radius: var(--mu-r-row-rail-radius);
+  --spacing-row-rail-offset: var(--mu-r-row-rail-offset);
+  --color-row-rail-color: var(--mu-r-row-rail-color);
+  --color-row-text-checked: var(--mu-r-row-text-checked);
+  --spacing-glyph-size-small: var(--mu-r-glyph-size-small);
+  --spacing-glyph-size-regular: var(--mu-r-glyph-size-regular);
+  --spacing-glyph-size-tiny: var(--mu-r-glyph-size-tiny);
+  --color-glyph-ink-ink: var(--mu-r-glyph-ink-ink);
+  --color-glyph-ink-ink2: var(--mu-r-glyph-ink-ink2);
+  --color-glyph-ink-ink3: var(--mu-r-glyph-ink-ink3);
+  --spacing-link-card-width: var(--mu-r-link-card-self-width);
+  --spacing-link-card-screen-height: var(--mu-r-link-card-screen-height);
+  --spacing-link-card-screen-pad-y: var(--mu-r-link-card-screen-pad-y);
+  --spacing-link-card-screen-pad-x: var(--mu-r-link-card-screen-pad-x);
+  --color-link-card-screen-tint: var(--mu-r-link-card-screen-tint);
+  --tracking-link-card-host-tracking: var(--mu-r-link-card-host-tracking);
+  --color-link-card-host-ink: var(--mu-r-link-card-host-ink);
+  --tracking-link-card-path-tracking: var(--mu-r-link-card-path-tracking);
+  --color-link-card-path-ink: var(--mu-r-link-card-path-ink);
+  --spacing-link-card-chip-inset: var(--mu-r-link-card-chip-inset);
+  --spacing-code-card-min-width: var(--mu-r-code-card-self-min-width);
+  --spacing-code-card-max-width: var(--mu-r-code-card-self-max-width);
+  --spacing-code-card-screen-pad-top: var(--mu-r-code-card-screen-pad-top);
+  --spacing-code-card-screen-pad-x: var(--mu-r-code-card-screen-pad-x);
+  --spacing-code-card-screen-pad-bottom: var(--mu-r-code-card-screen-pad-bottom);
+  --tracking-code-card-code-tracking: var(--mu-r-code-card-code-tracking);
+  --color-code-card-code-ink: var(--mu-r-code-card-code-ink);
+  --spacing-code-card-code-number: var(--mu-r-code-card-code-number);
+  --color-code-card-tint-line: var(--mu-r-code-card-tint-line);
+  --color-code-card-tint-keyword: var(--mu-r-code-card-tint-keyword);
+  --color-code-card-tint-type: var(--mu-r-code-card-tint-type);
+  --color-code-card-tint-string: var(--mu-r-code-card-tint-string);
+  --color-code-card-tint-comment: var(--mu-r-code-card-tint-comment);
+  --color-code-card-tint-number: var(--mu-r-code-card-tint-number);
+  --spacing-code-card-chip-inset: var(--mu-r-code-card-chip-inset);
+}
+@utility recipe-swatch {
+  background: var(--mu-r-swatch-self-background);
+  box-shadow: var(--mu-r-swatch-self-shadow);
+}
+@utility recipe-swatch-led {
+  background: var(--mu-r-swatch-led-background);
+  box-shadow: var(--mu-r-swatch-led-shadow);
+}
+@utility type-swatch-label {
+  font: var(--mu-r-swatch-label-font);
+  letter-spacing: var(--mu-r-swatch-label-tracking);
+}
+@utility recipe-checkbox {
+  background: var(--mu-r-checkbox-self-background);
+  box-shadow: var(--mu-r-checkbox-self-shadow);
+}
+@utility recipe-checkbox-hover {
+  background: var(--mu-r-checkbox-self-hover-background);
+}
+@utility recipe-checkbox-on {
+  background: var(--mu-r-checkbox-self-on-background);
+  box-shadow: var(--mu-r-checkbox-self-on-shadow);
+}
+@utility recipe-checkbox-ghost {
+  background: var(--mu-r-checkbox-self-ghost-background);
+  box-shadow: var(--mu-r-checkbox-self-ghost-shadow);
+}
+@utility recipe-checkbox-ghost-hover {
+  box-shadow: var(--mu-r-checkbox-self-ghost-hover-shadow);
+}
+@utility recipe-checkbox-doing {
+  background: var(--mu-r-checkbox-doing-background);
+}
+@utility duration-checkbox-fade {
+  transition-duration: var(--mu-r-checkbox-self-fade);
+}
+@utility opacity-checkbox-disabled {
+  opacity: var(--mu-r-checkbox-self-disabled);
+}
+@utility duration-checkbox-tick-draw {
+  transition-duration: var(--mu-r-checkbox-tick-draw);
+}
+@utility duration-checkbox-tick-delay {
+  transition-duration: var(--mu-r-checkbox-tick-delay);
+}
+@utility opacity-checkbox-doing-opacity {
+  opacity: var(--mu-r-checkbox-doing-opacity);
+}
+@utility recipe-toolbar {
+  background: var(--mu-r-toolbar-self-background);
+  box-shadow: var(--mu-r-toolbar-self-shadow);
+}
+@utility recipe-toolbar-tool {
+  background: var(--mu-r-toolbar-tool-background);
+  box-shadow: var(--mu-r-toolbar-tool-shadow);
+}
+@utility recipe-toolbar-tool-pressed {
+  background: var(--mu-r-toolbar-tool-pressed-background);
+  box-shadow: var(--mu-r-toolbar-tool-pressed-shadow);
+}
+@utility recipe-toolbar-led {
+  background: var(--mu-r-toolbar-led-background);
+  box-shadow: var(--mu-r-toolbar-led-shadow);
+}
+@utility recipe-toolbar-sep {
+  background: var(--mu-r-toolbar-sep-background);
+  box-shadow: var(--mu-r-toolbar-sep-shadow);
+}
+@utility recipe-toolbar-search {
+  background: var(--mu-r-toolbar-search-background);
+  box-shadow: var(--mu-r-toolbar-search-shadow);
+}
+@utility recipe-toolbar-kbd {
+  background: var(--mu-r-toolbar-kbd-background);
+  box-shadow: var(--mu-r-toolbar-kbd-shadow);
+}
+@utility backdrop-toolbar-blur {
+  -webkit-backdrop-filter: var(--mu-r-toolbar-self-blur);
+  backdrop-filter: var(--mu-r-toolbar-self-blur);
+}
+@utility duration-toolbar-tool-press-time {
+  transition-duration: var(--mu-r-toolbar-tool-press-time);
+}
+@utility duration-toolbar-tool-shadow-time {
+  transition-duration: var(--mu-r-toolbar-tool-shadow-time);
+}
+@utility type-toolbar-search {
+  font: var(--mu-r-toolbar-search-font);
+}
+@utility recipe-glass-face {
+  background: var(--mu-r-glass-face-self-background);
+  box-shadow: var(--mu-r-glass-face-self-shadow);
+}
+@utility recipe-glass-face-screen {
+  background: var(--mu-r-glass-face-screen-background);
+}
+@utility recipe-glass-face-glare {
+  background: var(--mu-r-glass-face-glare-background);
+  box-shadow: var(--mu-r-glass-face-glare-shadow);
+}
+@utility recipe-hover-engraving {
+  background: var(--mu-r-hover-engraving-self-background);
+  box-shadow: var(--mu-r-hover-engraving-self-shadow);
+}
+@utility recipe-hover-engraving-tag {
+  box-shadow: var(--mu-r-hover-engraving-tag-shadow);
+}
+@utility recipe-hover-engraving-led {
+  box-shadow: var(--mu-r-hover-engraving-led-shadow);
+}
+@utility backdrop-hover-engraving-blur {
+  -webkit-backdrop-filter: var(--mu-r-hover-engraving-self-blur);
+  backdrop-filter: var(--mu-r-hover-engraving-self-blur);
+}
+@utility duration-hover-engraving-dwell {
+  transition-duration: var(--mu-r-hover-engraving-self-dwell);
+}
+@utility duration-hover-engraving-fade {
+  transition-duration: var(--mu-r-hover-engraving-self-fade);
+}
+@utility duration-hover-engraving-move {
+  transition-duration: var(--mu-r-hover-engraving-self-move);
+}
+@utility weight-hover-engraving-emphasis-weight {
+  font-weight: var(--mu-r-hover-engraving-emphasis-weight);
+}
+@utility type-hover-engraving-tag {
+  font: var(--mu-r-hover-engraving-tag-font);
+  letter-spacing: var(--mu-r-hover-engraving-tag-tracking);
+}
+@utility recipe-status-led {
+  box-shadow: var(--mu-r-status-led-shadow);
+}
+@utility recipe-status-led-live {
+  box-shadow: var(--mu-r-status-led-live-shadow);
+  background: var(--mu-r-status-led-live-background);
+}
+@utility recipe-status-led-waiting {
+  background: var(--mu-r-status-led-waiting-background);
+}
+@utility recipe-status-led-failed {
+  background: var(--mu-r-status-led-failed-background);
+}
+@utility recipe-status-led-link {
+  background: var(--mu-r-status-led-link-background);
+}
+@utility recipe-status-led-off {
+  background: var(--mu-r-status-led-off-background);
+  box-shadow: var(--mu-r-status-led-off-shadow);
+}
+@utility recipe-status-badge {
+  background: var(--mu-r-status-badge-background);
+  box-shadow: var(--mu-r-status-badge-shadow);
+}
+@utility type-status-badge {
+  font: var(--mu-r-status-badge-font);
+  letter-spacing: var(--mu-r-status-badge-tracking);
+}
+@utility recipe-button {
+  background: var(--mu-r-button-self-background);
+  box-shadow: var(--mu-r-button-self-shadow);
+}
+@utility recipe-button-pressed {
+  background: var(--mu-r-button-self-pressed-background);
+  box-shadow: var(--mu-r-button-self-pressed-shadow);
+}
+@utility recipe-button-compact {
+  background: var(--mu-r-button-compact-background);
+  box-shadow: var(--mu-r-button-compact-shadow);
+}
+@utility recipe-button-compact-pressed {
+  box-shadow: var(--mu-r-button-compact-pressed-shadow);
+}
+@utility recipe-button-graphite {
+  background: var(--mu-r-button-graphite-background);
+}
+@utility recipe-button-strip-hover {
+  background: var(--mu-r-button-strip-hover-background);
+}
+@utility recipe-button-strip-pressed {
+  background: var(--mu-r-button-strip-pressed-background);
+}
+@utility duration-button-press {
+  transition-duration: var(--mu-r-button-self-press);
+}
+@utility duration-button-fade {
+  transition-duration: var(--mu-r-button-self-fade);
+}
+@utility opacity-button-disabled {
+  opacity: var(--mu-r-button-self-disabled);
+}
+@utility type-button-compact {
+  font: var(--mu-r-button-compact-font);
+  letter-spacing: var(--mu-r-button-compact-tracking);
+}
+@utility duration-button-compact-move {
+  transition-duration: var(--mu-r-button-compact-move);
+}
+@utility type-button-link {
+  font: var(--mu-r-button-link-font);
+  letter-spacing: var(--mu-r-button-link-tracking);
+}
+@utility type-button-graphite {
+  font: var(--mu-r-button-graphite-font);
+  letter-spacing: var(--mu-r-button-graphite-tracking);
+}
+@utility type-button-strip {
+  font: var(--mu-r-button-strip-font);
+  letter-spacing: var(--mu-r-button-strip-tracking);
+}
+@utility recipe-kbd {
+  background: var(--mu-r-kbd-self-background);
+  box-shadow: var(--mu-r-kbd-self-shadow);
+}
+@utility recipe-kbd-strip {
+  background: var(--mu-r-kbd-strip-background);
+  box-shadow: var(--mu-r-kbd-strip-shadow);
+}
+@utility recipe-kbd-sunk {
+  background: var(--mu-r-kbd-sunk-background);
+  box-shadow: var(--mu-r-kbd-sunk-shadow);
+}
+@utility type-kbd {
+  font: var(--mu-r-kbd-self-font);
+  letter-spacing: var(--mu-r-kbd-self-tracking);
+}
+@utility recipe-surface-raise {
+  background: var(--mu-r-surface-self-raise-background);
+  box-shadow: var(--mu-r-surface-self-raise-shadow);
+}
+@utility recipe-surface-raise-lite {
+  background: var(--mu-r-surface-self-raise-lite-background);
+  box-shadow: var(--mu-r-surface-self-raise-lite-shadow);
+}
+@utility recipe-surface-raise-sm {
+  background: var(--mu-r-surface-self-raise-sm-background);
+  box-shadow: var(--mu-r-surface-self-raise-sm-shadow);
+}
+@utility recipe-surface-frost {
+  background: var(--mu-r-surface-self-frost-background);
+  box-shadow: var(--mu-r-surface-self-frost-shadow);
+}
+@utility recipe-surface-plate {
+  background: var(--mu-r-surface-self-plate-background);
+  box-shadow: var(--mu-r-surface-self-plate-shadow);
+}
+@utility recipe-surface-panel {
+  background: var(--mu-r-surface-self-panel-background);
+  box-shadow: var(--mu-r-surface-self-panel-shadow);
+}
+@utility recipe-surface-pop {
+  background: var(--mu-r-surface-self-pop-background);
+  box-shadow: var(--mu-r-surface-self-pop-shadow);
+}
+@utility recipe-surface-tip {
+  background: var(--mu-r-surface-self-tip-background);
+  box-shadow: var(--mu-r-surface-self-tip-shadow);
+}
+@utility recipe-surface-lens {
+  background: var(--mu-r-surface-self-lens-background);
+  box-shadow: var(--mu-r-surface-self-lens-shadow);
+}
+@utility recipe-surface-graphite {
+  background: var(--mu-r-surface-self-graphite-background);
+  box-shadow: var(--mu-r-surface-self-graphite-shadow);
+}
+@utility recipe-surface-graphite-deep {
+  background: var(--mu-r-surface-self-graphite-deep-background);
+  box-shadow: var(--mu-r-surface-self-graphite-deep-shadow);
+}
+@utility recipe-surface-graphite-glass {
+  background: var(--mu-r-surface-self-graphite-glass-background);
+  box-shadow: var(--mu-r-surface-self-graphite-glass-shadow);
+}
+@utility backdrop-surface-blur-frost {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-frost);
+  backdrop-filter: var(--mu-r-surface-blur-frost);
+}
+@utility backdrop-surface-blur-plate {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-plate);
+  backdrop-filter: var(--mu-r-surface-blur-plate);
+}
+@utility backdrop-surface-blur-panel {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-panel);
+  backdrop-filter: var(--mu-r-surface-blur-panel);
+}
+@utility backdrop-surface-blur-pop {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-pop);
+  backdrop-filter: var(--mu-r-surface-blur-pop);
+}
+@utility backdrop-surface-blur-tip {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-tip);
+  backdrop-filter: var(--mu-r-surface-blur-tip);
+}
+@utility backdrop-surface-blur-lens {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-lens);
+  backdrop-filter: var(--mu-r-surface-blur-lens);
+}
+@utility backdrop-surface-blur-graphite {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite);
+  backdrop-filter: var(--mu-r-surface-blur-graphite);
+}
+@utility backdrop-surface-blur-graphite-glass {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite-glass);
+  backdrop-filter: var(--mu-r-surface-blur-graphite-glass);
+}
+@utility backdrop-surface-blur-graphite-strip {
+  -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite-strip);
+  backdrop-filter: var(--mu-r-surface-blur-graphite-strip);
+}
+@utility recipe-well-field {
+  background: var(--mu-r-well-self-field-background);
+  box-shadow: var(--mu-r-well-self-field-shadow);
+}
+@utility recipe-well-track {
+  background: var(--mu-r-well-self-track-background);
+  box-shadow: var(--mu-r-well-self-track-shadow);
+}
+@utility recipe-well-region {
+  background: var(--mu-r-well-self-region-background);
+  box-shadow: var(--mu-r-well-self-region-shadow);
+}
+@utility recipe-well-region-over {
+  background: var(--mu-r-well-self-region-over-background);
+  box-shadow: var(--mu-r-well-self-region-over-shadow);
+}
+@utility recipe-well-graphite {
+  background: var(--mu-r-well-self-graphite-background);
+  box-shadow: var(--mu-r-well-self-graphite-shadow);
+}
+@utility recipe-label-engraved {
+  text-shadow: var(--mu-r-label-engraved-text-shadow);
+}
+@utility recipe-label-dark {
+  text-shadow: var(--mu-r-label-dark-text-shadow);
+}
+@utility type-label-engraved {
+  font: var(--mu-r-label-engraved-font);
+  letter-spacing: var(--mu-r-label-engraved-tracking);
+  text-transform: var(--mu-r-label-engraved-transform);
+}
+@utility type-label-title {
+  font: var(--mu-r-label-title-font);
+  letter-spacing: var(--mu-r-label-title-tracking);
+}
+@utility type-label-heading {
+  font: var(--mu-r-label-heading-font);
+  letter-spacing: var(--mu-r-label-heading-tracking);
+}
+@utility type-label-count {
+  font: var(--mu-r-label-count-font);
+  letter-spacing: var(--mu-r-label-count-tracking);
+}
+@utility type-label-readout {
+  font: var(--mu-r-label-readout-font);
+  letter-spacing: var(--mu-r-label-readout-tracking);
+}
+@utility type-label-query {
+  font: var(--mu-r-label-query-font);
+  letter-spacing: var(--mu-r-label-query-tracking);
+}
+@utility type-label-value {
+  font: var(--mu-r-label-value-font);
+  letter-spacing: var(--mu-r-label-value-tracking);
+}
+@utility type-label-value-small {
+  font: var(--mu-r-label-value-small-font);
+  letter-spacing: var(--mu-r-label-value-small-tracking);
+}
+@utility type-label-cell {
+  font: var(--mu-r-label-cell-font);
+  letter-spacing: var(--mu-r-label-cell-tracking);
+}
+@utility type-label-display {
+  font: var(--mu-r-label-display-font);
+  letter-spacing: var(--mu-r-label-display-tracking);
+}
+@utility type-label-display-quiet {
+  font: var(--mu-r-label-display-quiet-font);
+  letter-spacing: var(--mu-r-label-display-quiet-tracking);
+}
+@utility type-label-on-graphite {
+  font: var(--mu-r-label-on-graphite-font);
+  letter-spacing: var(--mu-r-label-on-graphite-tracking);
+}
+@utility weight-label-placeholder-weight {
+  font-weight: var(--mu-r-label-placeholder-weight);
+}
+@utility weight-label-emphasis-weight {
+  font-weight: var(--mu-r-label-emphasis-weight);
+}
+@utility recipe-rule {
+  background: var(--mu-r-rule-self-background);
+  box-shadow: var(--mu-r-rule-self-shadow);
+}
+@utility recipe-rule-graphite {
+  background: var(--mu-r-rule-self-graphite-background);
+  box-shadow: var(--mu-r-rule-self-graphite-shadow);
+}
+@utility recipe-mark-tag {
+  background: var(--mu-r-mark-tag-background);
+  box-shadow: var(--mu-r-mark-tag-shadow);
+}
+@utility recipe-mark-derived {
+  box-shadow: var(--mu-r-mark-derived-shadow);
+}
+@utility recipe-mark-url {
+  background: var(--mu-r-mark-url-background);
+  box-shadow: var(--mu-r-mark-url-shadow);
+}
+@utility recipe-mark-url-hover {
+  background: var(--mu-r-mark-url-hover-background);
+}
+@utility recipe-mark-inferred {
+  box-shadow: var(--mu-r-mark-inferred-shadow);
+}
+@utility recipe-mark-swatch {
+  box-shadow: var(--mu-r-mark-swatch-shadow);
+}
+@utility recipe-mark-urgency {
+  background: var(--mu-r-mark-urgency-background);
+  box-shadow: var(--mu-r-mark-urgency-shadow);
+}
+@utility weight-mark-match-weight {
+  font-weight: var(--mu-r-mark-match-weight);
+}
+@utility recipe-icon-button-tool {
+  background: var(--mu-r-icon-button-tool-background);
+  box-shadow: var(--mu-r-icon-button-tool-shadow);
+}
+@utility recipe-icon-button-tool-pressed {
+  background: var(--mu-r-icon-button-tool-pressed-background);
+  box-shadow: var(--mu-r-icon-button-tool-pressed-shadow);
+}
+@utility recipe-icon-button-led {
+  background: var(--mu-r-icon-button-led-background);
+  box-shadow: var(--mu-r-icon-button-led-shadow);
+}
+@utility recipe-icon-button-ghost-hover {
+  background: var(--mu-r-icon-button-ghost-hover-background);
+}
+@utility recipe-icon-button-mini-hover {
+  background: var(--mu-r-icon-button-mini-hover-background);
+}
+@utility duration-icon-button-tool-press-time {
+  transition-duration: var(--mu-r-icon-button-tool-press-time);
+}
+@utility duration-icon-button-tool-shadow-time {
+  transition-duration: var(--mu-r-icon-button-tool-shadow-time);
+}
+@utility type-icon-button-mini {
+  font: var(--mu-r-icon-button-mini-font);
+}
+@utility duration-icon-button-fade {
+  transition-duration: var(--mu-r-icon-button-self-fade);
+}
+@utility recipe-chip-suggestion {
+  background: var(--mu-r-chip-suggestion-background);
+  box-shadow: var(--mu-r-chip-suggestion-shadow);
+}
+@utility recipe-chip-glass {
+  background: var(--mu-r-chip-glass-background);
+}
+@utility recipe-chip-glass-action {
+  background: var(--mu-r-chip-glass-action-background);
+}
+@utility recipe-chip-glass-action-hover {
+  background: var(--mu-r-chip-glass-action-hover-background);
+}
+@utility recipe-chip-led-link {
+  background: var(--mu-r-chip-led-link-background);
+}
+@utility recipe-chip-led-code {
+  background: var(--mu-r-chip-led-code-background);
+}
+@utility recipe-chip-tag {
+  box-shadow: var(--mu-r-chip-tag-shadow);
+}
+@utility type-chip-suggestion {
+  font: var(--mu-r-chip-suggestion-font);
+  letter-spacing: var(--mu-r-chip-suggestion-tracking);
+}
+@utility type-chip-glass {
+  font: var(--mu-r-chip-glass-font);
+  letter-spacing: var(--mu-r-chip-glass-tracking);
+}
+@utility backdrop-chip-glass-blur {
+  -webkit-backdrop-filter: var(--mu-r-chip-glass-blur);
+  backdrop-filter: var(--mu-r-chip-glass-blur);
+}
+@utility type-chip-tag {
+  font: var(--mu-r-chip-tag-font);
+  letter-spacing: var(--mu-r-chip-tag-tracking);
+}
+@utility type-field-field {
+  font: var(--mu-r-field-field-font);
+  letter-spacing: var(--mu-r-field-field-tracking);
+}
+@utility type-field-search {
+  font: var(--mu-r-field-search-font);
+  letter-spacing: var(--mu-r-field-search-tracking);
+}
+@utility z-dialog-scrim-z {
+  z-index: var(--mu-r-dialog-scrim-z);
+}
+@utility opacity-dialog-enter-scale {
+  opacity: var(--mu-r-dialog-self-enter-scale);
+}
+@utility recipe-slider-fill {
+  background: var(--mu-r-slider-fill-background);
+}
+@utility recipe-slider-knob {
+  background: var(--mu-r-slider-knob-background);
+  box-shadow: var(--mu-r-slider-knob-shadow);
+}
+@utility opacity-slider-fill-opacity {
+  opacity: var(--mu-r-slider-fill-opacity);
+}
+@utility recipe-segmented {
+  background: var(--mu-r-segmented-self-background);
+  box-shadow: var(--mu-r-segmented-self-shadow);
+}
+@utility recipe-segmented-thumb {
+  background: var(--mu-r-segmented-thumb-background);
+  box-shadow: var(--mu-r-segmented-thumb-shadow);
+}
+@utility type-segmented-segment {
+  font: var(--mu-r-segmented-segment-font);
+  letter-spacing: var(--mu-r-segmented-segment-tracking);
+}
+@utility duration-segmented-segment-fade {
+  transition-duration: var(--mu-r-segmented-segment-fade);
+}
+@utility opacity-segmented-segment-disabled {
+  opacity: var(--mu-r-segmented-segment-disabled);
+}
+@utility recipe-tooltip {
+  background: var(--mu-r-tooltip-self-background);
+  box-shadow: var(--mu-r-tooltip-self-shadow);
+}
+@utility type-tooltip {
+  font: var(--mu-r-tooltip-self-font);
+  letter-spacing: var(--mu-r-tooltip-self-tracking);
+}
+@utility z-tooltip-z {
+  z-index: var(--mu-r-tooltip-self-z);
+}
+@utility recipe-menu {
+  background: var(--mu-r-menu-self-background);
+  box-shadow: var(--mu-r-menu-self-shadow);
+}
+@utility recipe-menu-row-hover {
+  background: var(--mu-r-menu-row-hover-background);
+}
+@utility recipe-menu-sep {
+  background: var(--mu-r-menu-sep-background);
+  box-shadow: var(--mu-r-menu-sep-shadow);
+}
+@utility z-menu-z {
+  z-index: var(--mu-r-menu-self-z);
+}
+@utility backdrop-menu-blur {
+  -webkit-backdrop-filter: var(--mu-r-menu-self-blur);
+  backdrop-filter: var(--mu-r-menu-self-blur);
+}
+@utility type-menu-row {
+  font: var(--mu-r-menu-row-font);
+  letter-spacing: var(--mu-r-menu-row-tracking);
+}
+@utility opacity-menu-row-disabled {
+  opacity: var(--mu-r-menu-row-disabled);
+}
+@utility recipe-toast {
+  background: var(--mu-r-toast-self-background);
+  box-shadow: var(--mu-r-toast-self-shadow);
+}
+@utility recipe-toast-undo {
+  background: var(--mu-r-toast-undo-background);
+  box-shadow: var(--mu-r-toast-undo-shadow);
+}
+@utility recipe-toast-kbd {
+  background: var(--mu-r-toast-kbd-background);
+}
+@utility type-toast {
+  font: var(--mu-r-toast-self-font);
+  letter-spacing: var(--mu-r-toast-self-tracking);
+}
+@utility z-toast-z {
+  z-index: var(--mu-r-toast-self-z);
+}
+@utility backdrop-toast-blur {
+  -webkit-backdrop-filter: var(--mu-r-toast-self-blur);
+  backdrop-filter: var(--mu-r-toast-self-blur);
+}
+@utility opacity-toast-scale {
+  opacity: var(--mu-r-toast-self-scale);
+}
+@utility type-toast-undo {
+  font: var(--mu-r-toast-undo-font);
+}
+@utility duration-toast-undo-press {
+  transition-duration: var(--mu-r-toast-undo-press);
+}
+@utility recipe-row-list-hover {
+  background: var(--mu-r-row-list-hover-background);
+  box-shadow: var(--mu-r-row-list-hover-shadow);
+}
+@utility recipe-row-panel-hover {
+  background: var(--mu-r-row-panel-hover-background);
+  box-shadow: var(--mu-r-row-panel-hover-shadow);
+}
+@utility recipe-row-option-on {
+  background: var(--mu-r-row-option-on-background);
+  box-shadow: var(--mu-r-row-option-on-shadow);
+}
+@utility type-row-list {
+  font: var(--mu-r-row-list-font);
+}
+@utility type-row-panel {
+  font: var(--mu-r-row-panel-font);
+}
+@utility type-row-option {
+  font: var(--mu-r-row-option-font);
+}
+@utility opacity-row-maybe {
+  opacity: var(--mu-r-row-self-maybe);
+}
+@utility duration-row-fade {
+  transition-duration: var(--mu-r-row-self-fade);
+}
+@utility recipe-link-card-screen {
+  background: var(--mu-r-link-card-screen-background);
+}
+@utility type-link-card-host {
+  font: var(--mu-r-link-card-host-font);
+  letter-spacing: var(--mu-r-link-card-host-tracking);
+}
+@utility type-link-card-path {
+  font: var(--mu-r-link-card-path-font);
+  letter-spacing: var(--mu-r-link-card-path-tracking);
+}
+@utility recipe-code-card-screen {
+  background: var(--mu-r-code-card-screen-background);
+}
+@utility type-code-card-code {
+  font: var(--mu-r-code-card-code-font);
+  letter-spacing: var(--mu-r-code-card-code-tracking);
+}
