@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 35,
+  "count": 36,
   "icons": [
     {
       "name": "select",
@@ -386,6 +386,17 @@
       "pressMs": 340,
       "tuned16": false,
       "construction": "Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line."
+    },
+    {
+      "name": "calendar",
+      "component": "CalendarIcon",
+      "label": "Calendar",
+      "category": "Tools",
+      "hover": "the rings lift",
+      "press": "the page turns in",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "Page 17 × 15 r3.2, tinted .08; header rule on the 10 line; binding rings at the 8 and 16 detents."
     }
   ]
 }

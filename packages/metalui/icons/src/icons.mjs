@@ -320,4 +320,12 @@ export const ICONS = [
   mo: `@H .tg{transform:rotate(-9deg)}
        @P .tg{animation:tg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes tg-p{40%{transform:scale(.93)}}`,
   shape: 'Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line.' },
+
+// A calendar: the page with its binding. Body: the page. Marks: the header rule and the two rings.
+{ name: 'calendar', cat: 'Tools', label: 'Calendar', hover: 'the rings lift', press: 'the page turns in',
+  body: `<rect class="cb f" style="--duo:.08" x="3.5" y="5.2" width="17" height="15" rx="3.2"/><path d="M3.5 10h17"/><path class="cr" d="M8.2 3.4v3.4M15.8 3.4v3.4"/>`,
+  base: `& .cb{transform-origin:12px 20.2px}`,
+  mo: `@H .cr{transform:translateY(-.9px)}
+       @P .cb{animation:cl-p .34s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:scaleY(.94)}}`,
+  shape: 'Page 17 × 15 r3.2, tinted .08; header rule on the 10 line; binding rings at the 8 and 16 detents.' },
 ];

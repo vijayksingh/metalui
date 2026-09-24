@@ -71,3 +71,5 @@ export const RegionIcon = createIcon("region", "RegionIcon");
 export const TaskIcon = createIcon("task", "TaskIcon");
 /** Tag. Hover: the tag swings on its eyelet. Press: the tag stamps. */
 export const TagIcon = createIcon("tag", "TagIcon");
+/** Calendar. Hover: the rings lift. Press: the page turns in. */
+export const CalendarIcon = createIcon("calendar", "CalendarIcon");

@@ -743,6 +743,26 @@ export const ICON_CATALOG = {
     body: "<g class=\"tg\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.2 5h7.6a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2h-7.6a2.2 2.2 0 0 1-1.7-.8L4.6 13.4a2.2 2.2 0 0 1 0-2.8l3.9-4.8a2.2 2.2 0 0 1 1.7-.8Z\"/><circle class=\"s\" cx=\"9.4\" cy=\"12\" r=\"1.3\"/></g>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * CALENDAR · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the rings lift
+   * PRESS one-shot (from the current pose)
+   *          the page turns in
+   *     0ms   .cb plays cl-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "calendar": {
+    label: "Calendar",
+    category: "Tools",
+    hover: "the rings lift",
+    press: "the page turns in",
+    pressMs: 340,
+    defs: "",
+    body: "<rect class=\"cb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5.2\" width=\"17\" height=\"15\" rx=\"3.2\"/><path d=\"M3.5 10h17\"/><path class=\"cr\" d=\"M8.2 3.4v3.4M15.8 3.4v3.4\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
