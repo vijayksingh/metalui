@@ -7,3 +7,6 @@ site-dist/
 .DS_Store
 test-results/
 playwright-report/
+
+# Local review captures (apps/docs/scripts/capture.mjs)
+docs/captures/review/
