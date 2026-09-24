@@ -479,8 +479,7 @@
         "symbol": "MetalLED, MetalStatusBadge"
       },
       "registry": "https://metalui.dev/r/status.json",
-      "agent": "https://metalui.dev/r/status.md",
-      "sheet": "KAMUI-16"
+      "agent": "https://metalui.dev/r/status.md"
     },
     {
       "name": "suggestion-chip",

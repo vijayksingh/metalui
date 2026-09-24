@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../status/status.css";
 
 /* Size readout: Surface(graphite-deep), Led and Label arranged. Layout values: --mu-presence-readout-*. */
 .mu-readout {

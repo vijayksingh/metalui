@@ -1,5 +1,4 @@
 @import "../../components/tokens.css";
-@import "../../components/status/status.css";
 @import "../../components/segmented/segmented.css";
 
 /* Filter bar: a composition. It lays out its parts and brings the bar in; every paint is

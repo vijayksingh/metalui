@@ -636,11 +636,6 @@
           "path": "packages/metalui/src/components/status/status.tsx",
           "type": "registry:ui",
           "target": "components/metalui/status/status.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/status/status.css",
-          "type": "registry:file",
-          "target": "components/metalui/status/status.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/status.md. SwiftUI: MetalLED, MetalStatusBadge in the MetalUI Swift package."

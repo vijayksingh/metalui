@@ -1,6 +1,6 @@
 import { Led, StatusBadge } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/status/status.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/status/status.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/status/status.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalStatus.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
@@ -21,9 +21,9 @@ export default function StatusPage() {
               ))}
             </div>
             <div className="flex flex-wrap justify-center gap-12">
-              <StatusBadge led="live">JEV LIVE</StatusBadge>
-              <StatusBadge led="waiting" hint="security add-generic-password -s kamui-jev -a default -w">JEV OFFLINE · ADD KEY TO KEYCHAIN</StatusBadge>
-              <StatusBadge led="failed">JEV · NO CONNECTION</StatusBadge>
+              <StatusBadge led="live">SYNC LIVE</StatusBadge>
+              <StatusBadge led="waiting" hint="security add-generic-password -s example-service -a default -w">SYNC OFFLINE · ADD KEY TO KEYCHAIN</StatusBadge>
+              <StatusBadge led="failed">SYNC · NO CONNECTION</StatusBadge>
             </div>
           </div>
         </Bench>
@@ -39,9 +39,9 @@ export default function StatusPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'D1', title: 'Never colour alone', body: 'An LED sits beside the words that name the state.', origin: 'Kamui 02 §12' },
-          { id: 'D2', title: 'One LED per object', body: 'Green live, amber waiting, red failed, blue link, off idle; nothing else.', origin: 'Kamui 04 §10' },
-          { id: 'D3', title: 'Not pressable', body: 'The badge is a state; the fix is its hint, shown on hover and focus.', origin: 'Kamui demo' },
+          { id: 'D1', title: 'Never colour alone', body: 'An LED sits beside the words that name the state.', origin: 'reference brief' },
+          { id: 'D2', title: 'One LED per object', body: 'Green live, amber waiting, red failed, blue link, off idle; nothing else.', origin: 'reference brief' },
+          { id: 'D3', title: 'Not pressable', body: 'The badge is a state; the fix is its hint, shown on hover and focus.', origin: 'reference design' },
         ]} />
       </Section>
     </>

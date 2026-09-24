@@ -19,7 +19,7 @@
       "path": "packages/metalui/src/components/size-readout/size-readout.css",
       "type": "registry:file",
       "target": "components/metalui/size-readout/size-readout.css",
-      "content": "@import \"../tokens.css\";\n@import \"../status/status.css\";\n\n/* Size readout: Surface(graphite-deep), Led and Label arranged. Layout values: --mu-presence-readout-*. */\n.mu-readout {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--mu-presence-readout-gap-inner);\n  height: var(--mu-presence-readout-height);\n  padding: var(--mu-zero) var(--mu-presence-readout-pad-end) var(--mu-zero) var(--mu-presence-readout-pad-start);\n  white-space: nowrap;\n  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);\n}\n"
+      "content": "@import \"../tokens.css\";\n\n/* Size readout: Surface(graphite-deep), Led and Label arranged. Layout values: --mu-presence-readout-*. */\n.mu-readout {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--mu-presence-readout-gap-inner);\n  height: var(--mu-presence-readout-height);\n  padding: var(--mu-zero) var(--mu-presence-readout-pad-end) var(--mu-zero) var(--mu-presence-readout-pad-start);\n  white-space: nowrap;\n  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);\n}\n"
     }
   ],
   "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
