@@ -84,8 +84,7 @@
         "symbol": "MetalCommandPalette, MetalCommandPaletteItem"
       },
       "registry": "https://metalui.dev/r/command-palette.json",
-      "agent": "https://metalui.dev/r/command-palette.md",
-      "sheet": "KAMUI-06"
+      "agent": "https://metalui.dev/r/command-palette.md"
     },
     {
       "name": "dialog",

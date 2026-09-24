@@ -1622,8 +1622,10 @@
   --spacing-cue-tick-width: var(--mu-cue-tick-width);
   --spacing-cue-doing-inset: var(--mu-cue-doing-inset);
   --spacing-cue-doing-radius: var(--mu-cue-doing-radius);
+  --radius-cue-doing-radius: var(--mu-cue-doing-radius);
   --spacing-cue-ghost: var(--mu-cue-ghost);
   --spacing-cue-ghost-radius: var(--mu-cue-ghost-radius);
+  --radius-cue-ghost-radius: var(--mu-cue-ghost-radius);
   --spacing-cue-ghost-reach: var(--mu-cue-ghost-reach);
   --color-cue-ghost-hover: var(--mu-cue-ghost-hover);
   --spacing-cue-urgency-led: var(--mu-cue-urgency-led);
@@ -1641,6 +1643,7 @@
   --spacing-cue-hex-offset: var(--mu-cue-hex-offset);
   --spacing-cue-swatch: var(--mu-cue-swatch);
   --spacing-cue-swatch-radius: var(--mu-cue-swatch-radius);
+  --radius-cue-swatch-radius: var(--mu-cue-swatch-radius);
   --spacing-cue-url-height: var(--mu-cue-url-height);
   --spacing-cue-url-pad-start: var(--mu-cue-url-pad-start);
   --spacing-cue-url-pad-end: var(--mu-cue-url-pad-end);
@@ -1689,6 +1692,7 @@
   --spacing-provenance-offset: var(--mu-provenance-offset);
   --spacing-provenance-chip-offset: var(--mu-provenance-chip-offset);
   --spacing-provenance-radius: var(--mu-provenance-radius);
+  --radius-provenance-radius: var(--mu-provenance-radius);
   --spacing-provenance-pad-y: var(--mu-provenance-pad-y);
   --spacing-provenance-pad-x: var(--mu-provenance-pad-x);
   --spacing-provenance-max-width: var(--mu-provenance-max-width);
@@ -1793,6 +1797,7 @@
   --spacing-palette-pad: var(--mu-palette-pad);
   --spacing-palette-field-height: var(--mu-palette-field-height);
   --spacing-palette-field-radius: var(--mu-palette-field-radius);
+  --radius-palette-field-radius: var(--mu-palette-field-radius);
   --spacing-palette-field-pad-start: var(--mu-palette-field-pad-start);
   --spacing-palette-field-pad-end: var(--mu-palette-field-pad-end);
   --spacing-palette-field-gap: var(--mu-palette-field-gap);
@@ -1817,6 +1822,7 @@
   --spacing-palette-list-pad-bottom: var(--mu-palette-list-pad-bottom);
   --spacing-palette-hint-gap: var(--mu-palette-hint-gap);
   --spacing-palette-bar-radius: var(--mu-palette-bar-radius);
+  --radius-palette-bar-radius: var(--mu-palette-bar-radius);
   --spacing-palette-empty-pad-y: var(--mu-palette-empty-pad-y);
   --spacing-palette-foot-margin-top: var(--mu-palette-foot-margin-top);
   --spacing-palette-foot-key-gap: var(--mu-palette-foot-key-gap);
@@ -1958,6 +1964,39 @@
 }
 @utility region-motion {
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+@utility palette-scrim {
+  background: var(--mu-scrim);
+}
+@utility palette-at {
+  top: calc(var(--mu-palette-top) * 100vh); left: 50%; width: min(var(--mu-palette-width), calc(100vw - 32px)); translate: -50% 0;
+}
+@utility palette-motion {
+  transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface);
+}
+@utility palette-motion-release {
+  transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), transform var(--mu-spring-release-d) var(--mu-spring-release);
+}
+@utility palette-away {
+  opacity: 0; transform: translateY(calc(var(--mu-palette-enter-rise) * -1 * var(--mu-travel-surface))) scale(calc(1 - (1 - var(--mu-palette-enter-scale)) * var(--mu-travel-surface)));
+}
+@utility palette-list-max {
+  max-height: calc(var(--mu-palette-list-max) * 100vh);
+}
+@utility palette-eng {
+  color: var(--mu-engrave); text-shadow: 0 .5px 0 var(--mu-lip);
+}
+@utility palette-row-on {
+  background: var(--mu-row-on-bg); box-shadow: var(--mu-raise-sm); @media (prefers-contrast: more) { box-shadow: inset var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-palette-edge) var(--mu-contrast-edge), var(--mu-raise-sm); }
+}
+@utility palette-row-bar {
+  content: ""; position: absolute; left: var(--mu-palette-bar-left); top: var(--mu-palette-bar-inset); bottom: var(--mu-palette-bar-inset); width: var(--mu-palette-bar-width); border-radius: var(--mu-palette-bar-radius); background: var(--mu-green-deep);
+}
+@utility palette-mark {
+  background: none; color: inherit; font-weight: var(--mu-palette-mark-weight); text-decoration: underline; text-decoration-color: var(--mu-palette-mark-color); text-decoration-thickness: var(--mu-palette-mark-underline); text-underline-offset: var(--mu-palette-mark-offset);
+}
+@utility palette-foot-rule {
+  border-top: var(--mu-palette-edge) solid var(--mu-rule); box-shadow: inset var(--mu-zero) var(--mu-palette-edge) var(--mu-zero) var(--mu-rule-lip);
 }
 @utility duration-part {
   --tw-duration: var(--mu-spring-part-d);

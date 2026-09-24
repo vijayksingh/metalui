@@ -108,11 +108,6 @@
           "path": "packages/metalui/src/components/command-palette/command-palette.tsx",
           "type": "registry:ui",
           "target": "components/metalui/command-palette/command-palette.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/command-palette/command-palette.css",
-          "type": "registry:file",
-          "target": "components/metalui/command-palette/command-palette.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."

@@ -4,10 +4,9 @@ import * as React from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import { Combobox } from '@base-ui/react/combobox';
 import { Kbd } from '../kbd/kbd';
-import './command-palette.css';
 
 /* ─────────────────────────────────────────────────────────
- * COMMAND PALETTE (KAMUI-06; Kamui 04 §3; the medium demo's openPalette)
+ * COMMAND PALETTE (the reference's openPalette)
  * Base UI Dialog around an inline Combobox (the list is always open inside the plate).
  *   open      rises one nest (y −6, scale .985) on the surface spring over a page scrim at .25;
  *             focus lands in the field with the query already there (initial query)
@@ -18,12 +17,38 @@ import './command-palette.css';
  *   selected  a raised cap with a 2.5 green-deep bar; instant (the list is scanned, not watched)
  * ───────────────────────────────────────────────────────── */
 
+/* Every value is the palette group. The plate rises one nest from its trigger on the surface spring over
+ * a page scrim, and closes on release. */
+const SCRIM = 'mu-palette-scrim fixed inset-0 palette-scrim transition-opacity duration-surface ease-surface data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:duration-release data-ending-style:ease-release';
+const POPUP = 'mu-palette fixed palette-at p-palette-pad rounded-card outline-none material-frost-plate palette-motion data-starting-style:palette-away data-ending-style:palette-away data-ending-style:palette-motion-release';
+/* The field: a 44 well in the content role, caret green-deep. */
+const FIELD = 'mu-palette-field flex items-center gap-palette-field-gap h-palette-field-height pl-palette-field-pad-start pr-palette-field-pad-end rounded-palette-field-radius material-well cursor-text';
+const FIELD_GLYPH = 'mu-palette-field-glyph inline-grid flex-none text-ink3 [&>svg]:size-palette-field-glyph';
+const INPUT = 'mu-palette-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent text-ink caret-green-deep placeholder:text-ink3 type-content';
+/* The list: sections of 36 rows; scrolls past 52 % of the window. The selected row's bar sits 2 outside
+ * the row: room for it inside the scroll clip. */
+const LIST = 'mu-palette-list palette-list-max overflow-auto mx-palette-bar-left pt-palette-list-pad-top px-palette-bar-outset pb-palette-list-pad-bottom scroll-py-palette-list-pad-top scroll-px-0 outline-none empty:hidden';
+const ENG = 'mu-palette-eng palette-eng';
+const SEC = 'mu-palette-sec flex justify-between pt-palette-sec-pad-top px-palette-row-pad pb-palette-sec-pad-bottom type-label';
+/* Selected: a raised cap with a green-deep bar at the left. Instant: the list is scanned, not watched. */
+const ROW = 'mu-palette-row group/prow relative flex items-center gap-palette-row-gap h-palette-row-height px-palette-row-pad rounded-row text-ink cursor-pointer outline-none select-none type-ui data-highlighted:palette-row-on data-highlighted:before:palette-row-bar data-danger:text-red data-disabled:opacity-40 data-disabled:cursor-default';
+const ROW_GLYPH = 'mu-palette-row-glyph inline-grid flex-none text-ink2 group-data-danger/prow:text-red [&>svg]:size-palette-row-glyph';
+const ROW_TEXT = 'mu-palette-row-text min-w-0 overflow-hidden text-ellipsis whitespace-nowrap';
+const ROW_HINT = 'mu-palette-row-hint flex flex-none items-center gap-palette-hint-gap ml-auto';
+const HINT_TEXT = 'mu-palette-eng palette-eng type-label';
+const MARK = 'mu-palette-mark palette-mark';
+const EMPTY = 'mu-palette-empty type-ui not-empty:py-palette-empty-pad-y not-empty:px-palette-row-pad not-empty:text-ink3';
+/* The footer: keys above an engraved rule. */
+const FOOT = 'mu-palette-foot flex items-center gap-palette-foot-gap mt-palette-foot-margin-top pt-palette-foot-pad-top px-palette-row-pad pb-palette-foot-pad-bottom palette-foot-rule type-label';
+const FOOT_KEYS = 'flex items-center gap-palette-foot-key-gap';
+const STATUS = 'mu-palette-status palette-eng flex items-center gap-palette-foot-key-gap ml-auto';
+
 export interface CommandPaletteItem {
   /** Unique within the palette. */
   id: string;
   /** What the row says. Matches of the query are marked in it. */
   label: string;
-  /** The section heading this row sits under: LENS, LENSES, FRAGMENTS, ACTIONS. Rows of one section must be adjacent. */
+  /** The section heading this row sits under: LENS, LENSES, BLOCKS, ACTIONS. Rows of one section must be adjacent. */
   section: string;
   /** The 14 glyph at the left, e.g. <LensIcon size={14} />. */
   icon?: React.ReactNode;
@@ -52,7 +77,7 @@ export interface CommandPaletteProps {
   placeholder?: string;
   /** The 15 search glyph in the field. */
   icon?: React.ReactNode;
-  /** Right of the footer keys: where answers come from, e.g. "NATURAL LANGUAGE VIA JEV". */
+  /** Right of the footer keys: where answers come from, e.g. "NATURAL LANGUAGE". */
   status?: string;
   /** Whether ⇧↩ pins (shows in the footer). */
   pinnable?: boolean;
@@ -70,7 +95,7 @@ function Marked({ text, query }: { text: string; query: string }) {
   const words = query.trim().split(/\s+/).filter(Boolean);
   if (!words.length) return <>{text}</>;
   const parts = text.split(new RegExp(`(${words.map(escape).join('|')})`, 'gi'));
-  return <>{parts.map((p, i) => (i % 2 ? <mark key={i} className="mu-palette-mark">{p}</mark> : p))}</>;
+  return <>{parts.map((p, i) => (i % 2 ? <mark key={i} className={MARK}>{p}</mark> : p))}</>;
 }
 
 function matches(item: CommandPaletteItem, query: string) {
@@ -128,8 +153,8 @@ export function CommandPalette({
   return (
     <Dialog.Root open={open} onOpenChange={(o) => onOpenChange(o)}>
       <Dialog.Portal>
-        <Dialog.Backdrop className="mu-palette-scrim" />
-        <Dialog.Popup aria-label={ariaLabel} className="mu-palette mu-frost-plate">
+        <Dialog.Backdrop className={SCRIM} />
+        <Dialog.Popup aria-label={ariaLabel} className={POPUP}>
           <Combobox.Root
             inline
             open
@@ -147,10 +172,10 @@ export function CommandPalette({
             onValueChange={(v) => run(v ?? undefined, false)}
             onItemHighlighted={(v) => { highlighted.current = v; }}
           >
-            <label className="mu-palette-field">
-              {icon && <span aria-hidden className="mu-palette-field-glyph">{icon}</span>}
+            <label className={FIELD}>
+              {icon && <span aria-hidden className={FIELD_GLYPH}>{icon}</span>}
               <Combobox.Input
-                className="mu-palette-input mu-type-content"
+                className={INPUT}
                 placeholder={placeholder}
                 autoComplete="off"
                 spellCheck={false}
@@ -166,20 +191,20 @@ export function CommandPalette({
               />
               <Kbd size="small" label="Escape closes">⎋</Kbd>
             </label>
-            <Combobox.List className="mu-palette-list">
+            <Combobox.List className={LIST}>
               {sections.map((sec) => (
                 <Combobox.Group key={sec.name} className="mu-palette-group">
-                  <Combobox.GroupLabel className="mu-palette-sec mu-type-label">
-                    <span className="mu-palette-eng">{sec.name}</span>
-                    <span className="mu-palette-eng" aria-hidden>{sec.rows.length}</span>
+                  <Combobox.GroupLabel className={SEC}>
+                    <span className={ENG}>{sec.name}</span>
+                    <span className={ENG} aria-hidden>{sec.rows.length}</span>
                   </Combobox.GroupLabel>
                   {sec.rows.map(({ item, index }) => (
-                    <Combobox.Item key={item.id} value={item} index={index} className="mu-palette-row mu-type-ui mu-icon-trigger" data-danger={item.danger ? '' : undefined}>
-                      {item.icon && <span aria-hidden className="mu-palette-row-glyph">{item.icon}</span>}
-                      <span className="mu-palette-row-text"><Marked text={item.label} query={query} /></span>
+                    <Combobox.Item key={item.id} value={item} index={index} className={`${ROW} mu-icon-trigger`} data-danger={item.danger ? '' : undefined}>
+                      {item.icon && <span aria-hidden className={ROW_GLYPH}>{item.icon}</span>}
+                      <span className={ROW_TEXT}><Marked text={item.label} query={query} /></span>
                       {item.hint != null && (
-                        <span className="mu-palette-row-hint">
-                          {typeof item.hint === 'string' ? <span className="mu-palette-eng mu-type-label">{item.hint}</span> : item.hint}
+                        <span className={ROW_HINT}>
+                          {typeof item.hint === 'string' ? <span className={HINT_TEXT}>{item.hint}</span> : item.hint}
                         </span>
                       )}
                     </Combobox.Item>
@@ -187,12 +212,12 @@ export function CommandPalette({
                 </Combobox.Group>
               ))}
             </Combobox.List>
-            <Combobox.Empty className="mu-palette-empty mu-type-ui">{empty}</Combobox.Empty>
-            <div className="mu-palette-foot mu-type-label" aria-hidden>
-              <span><Kbd size="small">↑</Kbd><Kbd size="small">↓</Kbd><span className="mu-palette-eng">MOVE</span></span>
-              <span><Kbd size="small">↩</Kbd><span className="mu-palette-eng">OPEN</span></span>
-              {pinnable && <span><Kbd size="small">⇧↩</Kbd><span className="mu-palette-eng">PIN</span></span>}
-              {status && <span className="mu-palette-status mu-palette-eng">{status}</span>}
+            <Combobox.Empty className={EMPTY}>{empty}</Combobox.Empty>
+            <div className={FOOT} aria-hidden>
+              <span className={FOOT_KEYS}><Kbd size="small">↑</Kbd><Kbd size="small">↓</Kbd><span className={ENG}>MOVE</span></span>
+              <span className={FOOT_KEYS}><Kbd size="small">↩</Kbd><span className={ENG}>OPEN</span></span>
+              {pinnable && <span className={FOOT_KEYS}><Kbd size="small">⇧↩</Kbd><span className={ENG}>PIN</span></span>}
+              {status && <span className={STATUS}>{status}</span>}
             </div>
           </Combobox.Root>
         </Dialog.Popup>

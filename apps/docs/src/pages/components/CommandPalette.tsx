@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Button, CommandPalette, Kbd, type CommandPaletteItem } from '@unlocalhosted/metalui';
 import { CalendarIcon, DocumentIcon, DrawIcon, MeIcon, RegionIcon, SearchIcon, SeedIcon, TagIcon, TaskIcon, TrashIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/command-palette/command-palette.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/command-palette/command-palette.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/command-palette/command-palette.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCommandPalette.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';

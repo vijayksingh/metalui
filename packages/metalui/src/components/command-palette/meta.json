@@ -3,9 +3,17 @@
   "title": "Command palette",
   "status": "alpha",
   "description": "⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.",
-  "sheet": "KAMUI-06",
   "base": "@base-ui/react/combobox",
-  "react": { "export": "CommandPalette", "files": ["command-palette.tsx", "command-palette.css"] },
-  "swift": { "symbol": "MetalCommandPalette, MetalCommandPaletteItem", "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift" },
-  "agent": "command-palette.agent.md"
+  "react": {
+    "export": "CommandPalette",
+    "files": [
+      "command-palette.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCommandPalette, MetalCommandPaletteItem",
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift"
+  },
+  "agent": "command-palette.agent.md",
+  "layer": "component"
 }
