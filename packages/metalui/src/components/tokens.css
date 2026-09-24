@@ -1578,6 +1578,11 @@
   --mu-r-switch-small-height: 20px;
   --mu-r-switch-small-thumb: 16px;
   --mu-r-switch-small-travel: 12px;
+  /* brush: the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring */
+  --mu-r-brush-self-min: 6px;
+  --mu-r-brush-self-ring: 0.5px;
+  --mu-r-brush-eraser-width: 1px;
+  --mu-r-brush-eraser-dash: 3 2;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1924,6 +1929,9 @@
     /* mu-recipe:switch:15 */ 0 0 0 .5px rgba(24,22,16,.05),
     /* mu-recipe:switch:16 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:switch:17 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-brush-self-ring-ink: rgba(255,255,255,.75);
+  --mu-r-brush-self-edge-ink: rgba(27,27,29,.35);
+  --mu-r-brush-eraser-ink: rgba(27,27,29,.45);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2248,6 +2256,9 @@
     /* mu-recipe:switch:20 */ 0 0 0 .5px rgba(0,0,0,.55),
     /* mu-recipe:switch:21 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:switch:22 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-brush-self-ring-ink: rgba(255,255,255,.6);
+  --mu-r-brush-self-edge-ink: rgba(0,0,0,.5);
+  --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2573,5 +2584,8 @@
       0 0 0 .5px rgba(0,0,0,.55),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-brush-self-ring-ink: rgba(255,255,255,.6);
+    --mu-r-brush-self-edge-ink: rgba(0,0,0,.5);
+    --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
   }
 }

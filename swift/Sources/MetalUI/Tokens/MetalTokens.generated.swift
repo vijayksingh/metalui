@@ -1916,6 +1916,23 @@ public enum MetalRecipes {
             "small.travel": .number(12.0),
         ]
     )
+
+    /// The brush under the pointer while drawing or erasing on the canvas, in screen space: the pen is a disc in the ink colour at the stroke width times the zoom (never under min), with a hairline ring so it reads on any ink; the eraser is a dashed ring of the eraser width. It follows the pointer in the same frame and grows with pressure while drawing. (the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring)
+    public static let brush = MetalObjectRecipe(
+        name: "brush",
+        layers: [
+
+        ],
+        props: [
+            "self.min": .number(6.0),
+            "self.ring": .number(0.5),
+            "self.ring-ink": .perColorway(bone: "rgba(255,255,255,.75)", graphite: "rgba(255,255,255,.6)"),
+            "self.edge-ink": .perColorway(bone: "rgba(27,27,29,.35)", graphite: "rgba(0,0,0,.5)"),
+            "eraser.width": .number(1.0),
+            "eraser.dash": .text("3 2"),
+            "eraser.ink": .perColorway(bone: "rgba(27,27,29,.45)", graphite: "rgba(255,255,255,.45)"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

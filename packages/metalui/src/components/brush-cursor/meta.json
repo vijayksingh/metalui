@@ -1,0 +1,19 @@
+{
+  "name": "brush-cursor",
+  "title": "Brush cursor",
+  "status": "alpha",
+  "description": "The pointer while drawing or erasing: a disc in the ink colour at the stroke width times the zoom, or a dashed ring the size of what the eraser removes; it follows the pointer in the same frame.",
+  "base": "none (decorative; aria-hidden)",
+  "react": {
+    "export": "BrushCursor",
+    "files": [
+      "brush-cursor.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBrushCursor",
+    "file": "swift/Sources/MetalUI/Components/MetalBrushCursor.swift"
+  },
+  "agent": "brush-cursor.agent.md",
+  "layer": "component"
+}

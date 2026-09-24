@@ -35,6 +35,24 @@
       "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
     },
     {
+      "name": "brush-cursor",
+      "type": "registry:ui",
+      "title": "Brush cursor",
+      "description": "The pointer while drawing or erasing: a disc in the ink colour at the stroke width times the zoom, or a dashed ring the size of what the eraser removes; it follows the pointer in the same frame.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/brush-cursor/brush-cursor.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/brush-cursor/brush-cursor.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/brush-cursor.md. SwiftUI: MetalBrushCursor in the MetalUI Swift package."
+    },
+    {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",

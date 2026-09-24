@@ -9,6 +9,7 @@
 ## Components
 
 - [Block silhouette](https://metalui.dev/r/block-silhouette.md): A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).
+- [Brush cursor](https://metalui.dev/r/brush-cursor.md): The pointer while drawing or erasing: a disc in the ink colour at the stroke width times the zoom, or a dashed ring the size of what the eraser removes; it follows the pointer in the same frame.
 - [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release: standard, primary and destructive caps at 32 or compact 26, and the link, graphite and strip caps. Tailwind v4 utilities from the theme.
 - [Checkbox](https://metalui.dev/r/checkbox.md): The dimple checkbox: a recessed well that turns into a dark pressed key with a drawn tick; doing (half green) and ghost (an inferred task's hollow ring) states.
 - [Chip](https://metalui.dev/r/chip.md): A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.

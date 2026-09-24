@@ -726,6 +726,12 @@
   --spacing-switch-small-height: var(--mu-r-switch-small-height);
   --spacing-switch-small-thumb: var(--mu-r-switch-small-thumb);
   --spacing-switch-small-travel: var(--mu-r-switch-small-travel);
+  --spacing-brush-min: var(--mu-r-brush-self-min);
+  --spacing-brush-ring: var(--mu-r-brush-self-ring);
+  --color-brush-ring-ink: var(--mu-r-brush-self-ring-ink);
+  --color-brush-edge-ink: var(--mu-r-brush-self-edge-ink);
+  --spacing-brush-eraser-width: var(--mu-r-brush-eraser-width);
+  --color-brush-eraser-ink: var(--mu-r-brush-eraser-ink);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1710,6 +1716,21 @@
 }
 @utility stroke-width-switch-small-width {
   stroke-width: var(--mu-r-switch-small-width);
+}
+@utility brush-ring {
+  fill: none; stroke: var(--mu-r-brush-self-ring-ink); stroke-width: var(--mu-r-brush-self-ring);
+}
+@utility brush-edge {
+  fill: none; stroke: var(--mu-r-brush-self-edge-ink); stroke-width: var(--mu-r-brush-self-ring);
+}
+@utility brush-eraser {
+  fill: none; stroke: var(--mu-r-brush-eraser-ink); stroke-width: var(--mu-r-brush-eraser-width); stroke-dasharray: var(--mu-r-brush-eraser-dash);
+}
+@utility stroke-width-brush-eraser-width {
+  stroke-width: var(--mu-r-brush-eraser-width);
+}
+@utility dash-brush-eraser-dash {
+  stroke-dasharray: var(--mu-r-brush-eraser-dash);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
