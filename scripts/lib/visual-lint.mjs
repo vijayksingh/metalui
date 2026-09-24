@@ -54,6 +54,30 @@ export function lintFile(path, display, sourceOverride) {
         findings.push({ file: display, line: i + 1, rule: 'duration', text: line.trim().slice(0, 180) });
     }
   });
+  // Scan complete declarations and Swift modifier calls too: visual arguments often span lines.
+  const lineAt = (offset) => source.slice(0, offset).split('\n').length;
+  const add = (offset, rule, snippet) => {
+    const line = lineAt(offset);
+    if (!findings.some((f) => f.line === line && f.rule === rule)) findings.push({ file: display, line, rule, text: snippet.replace(/\s+/g, ' ').trim().slice(0, 180) });
+  };
+  const scanSource = source.replace(/\/\*[\s\S]*?\*\//g, (s) => s.replace(/[^\n]/g, ' ')).replace(/\/\/[^\n]*/g, (s) => ' '.repeat(s.length));
+  const visual = /\b(?:box-shadow|border-radius|font-size|font-weight|padding(?:-[\w-]+)?|margin(?:-[\w-]+)?|gap|transition(?:-[\w-]+)?|animation(?:-[\w-]+)?)\s*:\s*([\s\S]*?);/gi;
+  for (const m of extension === '.css' ? scanSource.matchAll(visual) : []) {
+    const value = m[1].replace(/var\(\s*--mu-[\w-]+\s*\)/g, 'TOKEN');
+    if (!new RegExp(String.raw`(?:${numeric})(?:px|pt|rem|em|ms|s)?\b`).test(value) && !/\b(?:ease|ease-in|ease-out|ease-in-out|cubic-bezier|steps)\b/.test(value)) continue;
+    const key = m[0].split(':', 1)[0].trim().toLowerCase();
+    const rule = key === 'box-shadow' ? 'shadow' : key === 'border-radius' ? 'radius' : key.startsWith('font') ? 'font' : /^(?:transition|animation)/.test(key) ? 'duration' : 'spacing';
+    add(m.index, rule, m[0]);
+  }
+  const calls = /\.(shadow|cornerRadius|opacity|padding|frame|font|fontWeight|animation|transition)\s*\(/g;
+  for (const m of extension === '.code' ? scanSource.matchAll(calls) : []) {
+    let depth = 1, at = m.index + m[0].length;
+    while (at < scanSource.length && depth > 0) { if (scanSource[at] === '(') depth++; else if (scanSource[at] === ')') depth--; at++; }
+    const body = scanSource.slice(m.index, at);
+    if (!/(?<![\w.])-?(?:\d*\.\d+|\d+(?:\.\d+)?)(?![\w])/.test(body)) continue;
+    const rule = ({ shadow: 'shadow', cornerRadius: 'radius', opacity: 'opacity', font: 'font', fontWeight: 'font', animation: 'duration', transition: 'duration' })[m[1]] ?? 'spacing';
+    add(m.index, rule, body);
+  }
   return findings;
 }
 
