@@ -47,6 +47,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/provenance-tooltip', label: 'Provenance tooltip' },
       { to: '/components/region', label: 'Region' },
       { to: '/components/lens-bar', label: 'Lens bar' },
+      { to: '/components/memory-scrubber', label: 'Memory scrubber' },
     ],
   },
   {

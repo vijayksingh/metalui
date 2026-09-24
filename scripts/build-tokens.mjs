@@ -178,6 +178,12 @@ const LB = T.lensbar;
 const LB_KEYS = Object.keys(LB).filter((k) => !k.startsWith('$'));
 const lensbarVars = LB_KEYS.map((k) => `  --mu-lensbar-${k}: ${k === 'enter-scale' ? LB[k] : `${LB[k]}px`};`).join('\n');
 
+// ---------- scrubber (tokens.json scrubber) ----------
+const SC = T.scrubber;
+const SC_KEYS = Object.keys(SC).filter((k) => !k.startsWith('$'));
+const SC_UNITLESS = new Set(['fill-opacity', 'snap', 'step-ms', 'large-step-ms']);
+const scrubberVars = SC_KEYS.map((k) => `  --mu-scrubber-${k}: ${typeof SC[k] === 'number' ? (SC_UNITLESS.has(k) ? SC[k] : `${SC[k]}px`) : SC[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -205,6 +211,7 @@ ${provenanceVars}
 ${regionVars}
 ${segmentedVars}
 ${lensbarVars}
+${scrubberVars}
 ${typeVars}
 ${travel}
 }
@@ -588,6 +595,15 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${LB.$use}
+public enum MetalScrubberMetrics {
+${SC_KEYS.filter((k) => typeof SC[k] === 'number').map((k) => `    public static let ${camel(k)}: Double = ${num(SC[k])}`).join('\n')}
+    public static let knobSh: [MetalShadow] = ${swiftValue(SC['knob-sh'])[1].replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}
+    public static let fill: MetalGradient = ${swiftValue(SC.fill)[1]}
+    /// The knob's anodized sweep, as colours around a conic gradient from 200°.
+    public static let knobSweep: [MetalRGBA] = [${SC['knob-bg'].match(/#[0-9A-F]{6}/gi).map((h) => swiftValue(h)[1]).join(', ')}]
+}
+
 /// ${LB.$use}
 public enum MetalLensBarMetrics {
 ${LB_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(LB[k])}`).join('\n')}

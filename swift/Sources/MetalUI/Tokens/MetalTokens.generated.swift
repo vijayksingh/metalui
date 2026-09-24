@@ -40,6 +40,8 @@ public struct MetalColorwayTokens: Sendable {
     public let regionOverShade: [MetalShadow]
     public let raiseLite: [MetalShadow]
     public let rowHover: MetalRGBA
+    public let scrubberMark: MetalRGBA
+    public let scrubberDayTick: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -129,6 +131,8 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(24, 22, 16, 0.1)),
         ],
         rowHover: MetalRGBA(255, 255, 255, 0.7),
+        scrubberMark: MetalRGBA(40, 38, 32, 0.28),
+        scrubberDayTick: MetalRGBA(40, 38, 32, 0.18),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -241,6 +245,8 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(0, 0, 0, 0.28)),
         ],
         rowHover: MetalRGBA(255, 255, 255, 0.06),
+        scrubberMark: MetalRGBA(255, 255, 255, 0.28),
+        scrubberDayTick: MetalRGBA(255, 255, 255, 0.18),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -727,6 +733,35 @@ public enum MetalRegion {
     public static let rowPadX: Double = 8.0
     public static let rowGap: Double = 9.0
     public static let rowDimple: Double = 14.0
+}
+
+/// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalScrubberMetrics {
+    public static let width: Double = 330.0
+    public static let height: Double = 50.0
+    public static let trackTop: Double = 20.0
+    public static let track: Double = 10.0
+    public static let inset: Double = 6.0
+    public static let markWidth: Double = 2.0
+    public static let markHeight: Double = 4.0
+    public static let daysTop: Double = 36.0
+    public static let dayTick: Double = 5.0
+    public static let knob: Double = 22.0
+    public static let knobTop: Double = 14.0
+    public static let fillOpacity: Double = 0.55
+    public static let readoutGap: Double = 8.0
+    public static let readoutGlyph: Double = 10.0
+    public static let stepMs: Double = 3600000.0
+    public static let largeStepMs: Double = 86400000.0
+    public static let snap: Double = 0.01
+    public static let knobSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.35)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.12)),
+        MetalShadow(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
+    ]
+    public static let fill: MetalGradient = MetalGradient(angle: 90.0, stops: [.init(MetalRGBA(155, 230, 191, 1.0), 0.0), .init(MetalRGBA(95, 200, 148, 1.0), 1.0)])
+    /// The knob's anodized sweep, as colours around a conic gradient from 200°.
+    public static let knobSweep: [MetalRGBA] = [MetalRGBA(250, 250, 248, 1.0), MetalRGBA(201, 201, 197, 1.0), MetalRGBA(242, 242, 239, 1.0), MetalRGBA(184, 184, 180, 1.0), MetalRGBA(250, 250, 248, 1.0)]
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.

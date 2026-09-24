@@ -1,6 +1,7 @@
 // @unlocalhosted/metalui: React components on Base UI. Import '@unlocalhosted/metalui/styles.css' once.
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Cue, CueUrl, CueInferred, CueUrgency, CueLife, Dimple, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps, type DimpleProps } from './components/cue/cue';
+export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-scrubber/memory-scrubber';
 export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './components/region/region';

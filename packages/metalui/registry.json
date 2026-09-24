@@ -115,6 +115,31 @@
       "docs": "Agent guide: https://metalui.dev/r/lens-bar.md. SwiftUI: MetalLensBar in the MetalUI Swift package."
     },
     {
+      "name": "memory-scrubber",
+      "type": "registry:ui",
+      "title": "Memory scrubber",
+      "description": "Time as a dimension of the surface: a well track with an intent fill, tick marks for blocks and edits, day labels and a knurled knob on Base UI Slider, with a MEMORY readout and NOW.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/memory-scrubber/memory-scrubber.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/memory-scrubber/memory-scrubber.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/memory-scrubber/memory-scrubber.css",
+          "type": "registry:file",
+          "target": "components/metalui/memory-scrubber/memory-scrubber.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/memory-scrubber.md. SwiftUI: MetalMemoryScrubber in the MetalUI Swift package."
+    },
+    {
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",

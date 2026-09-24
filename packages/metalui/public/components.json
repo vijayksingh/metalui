@@ -74,6 +74,24 @@
       "sheet": "Kamui 04 §4"
     },
     {
+      "name": "memory-scrubber",
+      "title": "Memory scrubber",
+      "status": "alpha",
+      "description": "Time as a dimension of the surface: a well track with an intent fill, tick marks for blocks and edits, day labels and a knurled knob on Base UI Slider, with a MEMORY readout and NOW.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "MemoryScrubber",
+        "base": "@base-ui/react/slider"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMemoryScrubber"
+      },
+      "registry": "https://metalui.dev/r/memory-scrubber.json",
+      "agent": "https://metalui.dev/r/memory-scrubber.md",
+      "sheet": "Kamui 04 §5 (a Dial/Slider skin)"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

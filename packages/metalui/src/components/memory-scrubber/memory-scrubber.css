@@ -1,0 +1,69 @@
+@import "../tokens.css";
+
+/* Memory scrubber (Kamui 04 §5, the medium demo's #scrub) on Base UI Slider. */
+.mu-scrubber { position: relative; width: var(--mu-scrubber-width); height: var(--mu-scrubber-height); }
+.mu-scrubber-read { position: absolute; z-index: 1; left: 0; top: 0; display: flex; align-items: center; gap: var(--mu-scrubber-readout-gap); }
+.mu-scrubber-label { display: inline-flex; align-items: center; gap: 5px; }
+.mu-scrubber-glyph { display: inline-flex; }
+.mu-scrubber-glyph > svg { width: var(--mu-scrubber-readout-glyph); height: var(--mu-scrubber-readout-glyph); }
+.mu-scrubber-now {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mu-green-deep);
+  cursor: pointer;
+}
+.mu-scrubber-now:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 2px; }
+.mu-scrubber-root, .mu-scrubber-control { position: absolute; inset: 0; touch-action: none; }
+.mu-scrubber-control { cursor: pointer; }
+.mu-scrubber-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--mu-scrubber-track-top);
+  height: var(--mu-scrubber-track);
+  border-radius: 999px;
+  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
+  box-shadow: var(--mu-well);
+}
+.mu-scrubber-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--mu-scrubber-fill);
+  opacity: var(--mu-scrubber-fill-opacity);
+}
+.mu-scrubber-marks, .mu-scrubber-days { position: absolute; left: var(--mu-scrubber-inset); right: var(--mu-scrubber-inset); pointer-events: none; }
+.mu-scrubber-marks { top: calc(var(--mu-scrubber-track-top) + (var(--mu-scrubber-track) - var(--mu-scrubber-mark-height)) / 2); height: var(--mu-scrubber-mark-height); }
+.mu-scrubber-marks > i {
+  position: absolute;
+  width: var(--mu-scrubber-mark-width);
+  height: var(--mu-scrubber-mark-height);
+  margin-left: calc(var(--mu-scrubber-mark-width) / -2);
+  border-radius: 1px;
+  background: var(--mu-scrubber-mark);
+}
+.mu-scrubber-days { top: var(--mu-scrubber-days-top); height: 12px; }
+.mu-scrubber-days > span { position: absolute; transform: translateX(-50%); }
+.mu-scrubber-days > span::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--mu-scrubber-day-tick) * -1 - 4px);
+  width: 1px;
+  height: var(--mu-scrubber-day-tick);
+  background: var(--mu-scrubber-day-tick);
+}
+.mu-scrubber-knob {
+  top: calc(var(--mu-scrubber-knob-top) + var(--mu-scrubber-knob) / 2);
+  width: var(--mu-scrubber-knob);
+  height: var(--mu-scrubber-knob);
+  border-radius: 50%;
+  cursor: grab;
+  background: var(--mu-scrubber-knob-bg);
+  box-shadow: var(--mu-scrubber-knob-sh);
+}
+.mu-scrubber-root[data-dragging] .mu-scrubber-knob { cursor: grabbing; }
+.mu-scrubber-knob:has(:focus-visible) { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+/* A jump (a click, a key) rides the part spring; a drag follows the pointer exactly. */
+.mu-scrubber-root:not([data-dragging]) .mu-scrubber-knob { transition: inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part); }
+.mu-scrubber-root:not([data-dragging]) .mu-scrubber-fill { transition: width var(--mu-spring-part-d) var(--mu-spring-part); }

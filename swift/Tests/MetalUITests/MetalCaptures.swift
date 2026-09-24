@@ -239,4 +239,20 @@ final class MetalCaptures: XCTestCase {
             capture("lens-bar-\(colorway.rawValue)", view)
         }
     }
+
+    func testMemoryScrubber() {
+        let end = Date(timeIntervalSince1970: 1_790_000_000)
+        let start = end.addingTimeInterval(-6 * 86400)
+        let marks = (0..<20).map { start.addingTimeInterval(Double($0) * 6 * 86400 / 20 + 3600) }
+        for colorway in MetalColorway.allCases {
+            let view = VStack(alignment: .leading, spacing: 24) {
+                MetalMemoryScrubber(range: start...end, selection: .constant(nil), marks: marks)
+                MetalMemoryScrubber(range: start...end, selection: .constant(end.addingTimeInterval(-2.4 * 86400)), marks: marks)
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("memory-scrubber-\(colorway.rawValue)", view)
+        }
+    }
 }
