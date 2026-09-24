@@ -93,4 +93,29 @@ final class MetalCaptures: XCTestCase {
             capture("icons-\(colorway.rawValue)", iconSheet(colorway))
         }
     }
+
+    private func selectionSheet(_ colorway: MetalColorway) -> some View {
+        let object = RoundedRectangle(cornerRadius: MetalRadius.plate, style: .continuous)
+        return HStack(alignment: .top, spacing: 40) {
+            Color.clear.frame(width: 150, height: 88).metalRecipe(MetalRecipe(fill: colorway.tokens.btnBg, shadows: colorway.tokens.raiseSm), in: object)
+                .metalSelectionFrame(.selected, radius: MetalRadius.plate)
+            Color.clear.frame(width: 150, height: 88).metalRecipe(MetalRecipe(fill: colorway.tokens.btnBg, shadows: colorway.tokens.raiseSm), in: object)
+                .metalSelectionFrame(.selected, mode: .writing, radius: MetalRadius.plate, handles: .text)
+            Color.clear.frame(width: 150, height: 88).metalRecipe(MetalRecipe(fill: colorway.tokens.btnBg, shadows: colorway.tokens.raiseSm), in: object)
+                .metalSelectionFrame(.selected, variant: .lite, radius: MetalRadius.plate, readout: false)
+            Color.clear.frame(width: 150, height: 88).metalRecipe(MetalRecipe(fill: colorway.tokens.btnBg, shadows: colorway.tokens.raiseSm), in: object)
+                .metalSelectionFrame(.selected, variant: .lite, radius: MetalRadius.plate, count: 3)
+        }
+        .padding(.horizontal, 32)
+        .padding(.top, 32)
+        .padding(.bottom, 64)
+        .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+        .metalColorway(colorway)
+    }
+
+    func testSelectionFrame() {
+        for colorway in MetalColorway.allCases {
+            capture("selection-frame-\(colorway.rawValue)", selectionSheet(colorway))
+        }
+    }
 }

@@ -40,6 +40,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
+    },
+    {
+      "name": "selection-frame",
+      "type": "registry:ui",
+      "title": "Selection frame",
+      "description": "KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/selection-frame/selection-frame.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/selection-frame/selection-frame.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/selection-frame/selection-frame.css",
+          "type": "registry:file",
+          "target": "components/metalui/selection-frame/selection-frame.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/selection-frame.md. SwiftUI: MetalSelectionFrame in the MetalUI Swift package."
     }
   ]
 }

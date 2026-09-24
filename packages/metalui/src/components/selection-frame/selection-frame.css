@@ -1,0 +1,138 @@
+@import "../tokens.css";
+
+/* KAMUI-14 · Selection frame. Every value is a --mu-presence-* token (tokens.json presence).
+   The frame is an overlay laid over its host: the host is position: relative, the frame fills it,
+   and every part is placed from the host's box, so the ring tracks the object in the same frame. */
+.mu-selection-frame {
+  --o: var(--mu-select-offset);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ---- ring: 1.25 green at offset 6, a flat 3.5 collar outside it, never a blur ---- */
+.mu-selection-frame > .mu-sf-ring {
+  position: absolute;
+  inset: calc(var(--o) * -1);
+  border-radius: calc(var(--mu-sf-radius, 0px) + var(--o));
+  opacity: 0;
+  box-shadow:
+    0 0 0 var(--mu-presence-ring-width) var(--mu-presence-ring),
+    0 0 0 calc(var(--mu-presence-ring-width) + var(--mu-presence-collar-width)) var(--mu-presence-collar);
+}
+.mu-selection-frame[data-state="selected"] > .mu-sf-ring { opacity: 1; }
+/* Entrance: 1.02 → 1 on the part spring, once; resizing never replays it. */
+.mu-selection-frame[data-state="selected"][data-variant="ring"][data-entrance] > .mu-sf-ring {
+  animation: mu-sf-in var(--mu-spring-part-d) var(--mu-spring-part) both;
+}
+@keyframes mu-sf-in {
+  from { opacity: 0; transform: scale(var(--mu-presence-enter-scale)); }
+}
+/* Lite: a quiet ring for a multi-selection member or a selection made by finishing. */
+.mu-selection-frame[data-variant="lite"] > .mu-sf-ring {
+  box-shadow: 0 0 0 var(--mu-presence-lite-width) var(--mu-presence-lite);
+}
+
+/* ---- handles: on the ring line; round caps at corners, capsules at edge midpoints ---- */
+.mu-sf-handle {
+  position: absolute;
+  width: var(--mu-presence-handle);
+  height: var(--mu-presence-handle);
+  margin: calc(var(--mu-presence-handle) / -2) 0 0 calc(var(--mu-presence-handle) / -2);
+  border-radius: 999px;
+  background: var(--mu-presence-handle-bg);
+  box-shadow: var(--mu-presence-handle-sh);
+  pointer-events: auto;
+  touch-action: none;
+}
+.mu-sf-handle::after { content: ""; position: absolute; inset: calc(var(--mu-presence-handle-hit) * -1); border-radius: 999px; }
+.mu-sf-handle[data-handle="e"], .mu-sf-handle[data-handle="w"] {
+  width: var(--mu-presence-capsule-thickness);
+  height: var(--mu-presence-capsule-length);
+  margin: calc(var(--mu-presence-capsule-length) / -2) 0 0 calc(var(--mu-presence-capsule-thickness) / -2);
+}
+.mu-sf-handle[data-handle="n"], .mu-sf-handle[data-handle="s"] {
+  width: var(--mu-presence-capsule-length);
+  height: var(--mu-presence-capsule-thickness);
+  margin: calc(var(--mu-presence-capsule-thickness) / -2) 0 0 calc(var(--mu-presence-capsule-length) / -2);
+}
+.mu-sf-handle[data-grip] { background: var(--mu-presence-grip-bg); box-shadow: var(--mu-presence-grip-sh); cursor: grab; }
+.mu-sf-handle[data-handle="nw"], .mu-sf-handle[data-handle="se"] { cursor: nwse-resize; }
+.mu-sf-handle[data-handle="ne"], .mu-sf-handle[data-handle="sw"] { cursor: nesw-resize; }
+.mu-sf-handle[data-handle="e"], .mu-sf-handle[data-handle="w"] { cursor: ew-resize; }
+.mu-sf-handle[data-handle="n"]:not([data-grip]), .mu-sf-handle[data-handle="s"]:not([data-grip]) { cursor: ns-resize; }
+.mu-selection-frame[data-state="selected"][data-variant="ring"][data-entrance] .mu-sf-handle {
+  animation: mu-sf-fade var(--mu-spring-part-d) var(--mu-spring-part) both;
+}
+@keyframes mu-sf-fade { from { opacity: 0; } }
+
+/* ---- hover: only the faint corner dots, where the handles will be ---- */
+.mu-sf-dot {
+  position: absolute;
+  width: var(--mu-presence-hover-dot);
+  height: var(--mu-presence-hover-dot);
+  margin: calc(var(--mu-presence-hover-dot) / -2) 0 0 calc(var(--mu-presence-hover-dot) / -2);
+  border-radius: 50%;
+  background: var(--mu-presence-dot);
+  opacity: 0;
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-selection-frame[data-state="hover"] .mu-sf-dot { opacity: 1; }
+
+/* ---- edge light: the pointer entered the band on one edge ---- */
+.mu-sf-edge {
+  position: absolute;
+  opacity: 0;
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-sf-edge[data-on] { opacity: 1; }
+.mu-sf-edge[data-edge="n"], .mu-sf-edge[data-edge="s"] {
+  left: 0; right: 0; height: var(--mu-presence-edge-light-width);
+  background: linear-gradient(90deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
+.mu-sf-edge[data-edge="n"] { top: calc(var(--mu-presence-edge-light-width) / -2); }
+.mu-sf-edge[data-edge="s"] { bottom: calc(var(--mu-presence-edge-light-width) / -2); }
+.mu-sf-edge[data-edge="e"], .mu-sf-edge[data-edge="w"] {
+  top: 0; bottom: 0; width: var(--mu-presence-edge-light-width);
+  background: linear-gradient(180deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
+.mu-sf-edge[data-edge="e"] { right: calc(var(--mu-presence-edge-light-width) / -2); }
+.mu-sf-edge[data-edge="w"] { left: calc(var(--mu-presence-edge-light-width) / -2); }
+
+/* ---- readout: the measured frame, a graphite pill under the object ---- */
+.mu-sf-readout {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--mu-presence-readout-gap));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--mu-presence-readout-gap-inner);
+  height: var(--mu-presence-readout-height);
+  padding: 0 var(--mu-presence-readout-pad-end) 0 var(--mu-presence-readout-pad-start);
+  border-radius: 999px;
+  white-space: nowrap;
+  /* The readout type role (mu-type-readout on the element), tracked open as the sheet sets it. */
+  line-height: 1;
+  letter-spacing: var(--mu-presence-readout-tracking);
+  color: var(--mu-presence-readout-ink);
+  background: var(--mu-presence-readout-bg);
+  box-shadow: var(--mu-presence-readout-sh);
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-sf-readout .mu-sf-x { color: var(--mu-presence-readout-dim); }
+.mu-sf-readout .mu-sf-led {
+  width: var(--mu-presence-readout-led);
+  height: var(--mu-presence-readout-led);
+  flex: none;
+  border-radius: 50%;
+  background: var(--mu-led-green);
+  box-shadow: var(--mu-led-ring);
+}
+.mu-selection-frame[data-mode="writing"] .mu-sf-readout { opacity: var(--mu-presence-readout-writing); }
+.mu-selection-frame[data-mode="moving"] .mu-sf-readout { opacity: 1; }
+
+@media (prefers-contrast: more) {
+  .mu-selection-frame[data-variant="lite"] > .mu-sf-ring { box-shadow: 0 0 0 var(--mu-presence-ring-width) var(--mu-presence-ring); }
+}

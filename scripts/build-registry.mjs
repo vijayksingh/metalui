@@ -25,7 +25,7 @@ const items = components().map((meta) => ({
   type: 'registry:ui',
   title: meta.title,
   description: meta.description,
-  dependencies: [`@base-ui/react@${BASE_UI}`],
+  dependencies: meta.base?.startsWith('@base-ui') ? [`@base-ui/react@${BASE_UI}`] : [],
   registryDependencies: [`${ORIGIN}/r/tokens.json`],
   files: meta.react.files.map((f) => file(`packages/metalui/src/components/${meta.name}/${f}`, f.endsWith('.css') ? 'registry:file' : 'registry:ui', `components/metalui/${meta.name}/${f}`)),
   docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.symbol} in the MetalUI Swift package.`,

@@ -130,6 +130,13 @@ ${FROSTS.map((r) => `[data-mu-transparency="reduce"] .mu-frost-${r}, .mu-frost-$
 ${FROSTS.map((r) => `  .mu-frost-${r} { ${edgeDecl(r)}; }`).join('\n')}
 }`;
 
+// ---------- presence (tokens.json presence): KAMUI-14 selection and hover presence ----------
+const PR = T.presence;
+const PR_KEYS = Object.keys(PR).filter((k) => !k.startsWith('$') && k !== 'ring-dark');
+const UNITLESS = new Set(['enter-scale', 'readout-writing']);
+const prValue = (k, v) => (typeof v === 'number' ? (k.endsWith('-ms') ? `${v}ms` : UNITLESS.has(k) ? `${v}` : `${v}px`) : v);
+const presenceVars = PR_KEYS.map((k) => `  --mu-presence-${k}: ${prValue(k, PR[k])};`).join('\n');
+
 const typeClasses = Object.keys(F.type)
   .map((role) => `.mu-type-${role} { ${typeDecls(role).join('; ')}; }`)
   .join('\n');
@@ -144,6 +151,7 @@ ${motion}
 ${swap}
 ${foundationVars}
 ${frostVars}
+${presenceVars}
 ${travel}
 }
 
@@ -161,12 +169,14 @@ ${decl(CW.bone)}
 [data-mu-colorway="graphite"] {
   color-scheme: dark;
 ${decl(CW.graphite)}
+  --mu-presence-ring: ${PR['ring-dark']};
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
     color-scheme: dark;
 ${decl(CW.graphite).replace(/^/gm, '  ')}
+    --mu-presence-ring: ${PR['ring-dark']};
   }
 }
 
@@ -472,7 +482,22 @@ ${FROSTS.map((r) => {
     }
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost);
+const swiftPresence = `
+/// ${PR.$use}
+public enum MetalPresence {
+${Object.keys(PR).filter((k) => !k.startsWith('$')).map((k) => {
+  const v = PR[k];
+  if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`;
+  if (/em$/.test(v)) return `    /// In em.\n    public static let ${camel(k)}: Double = ${num(parseFloat(v))}`;
+  const [type, val] = swiftValue(v);
+  return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`;
+}).join('\n')}
+
+    /// The ring colour in a colorway: green-deep on bone, green on graphite.
+    public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

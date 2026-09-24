@@ -22,6 +22,7 @@ public struct MetalColorwayTokens: Sendable {
     public let frostStrong: MetalRGBA
     public let frostOpaque: MetalRGBA
     public let contrastEdge: MetalRGBA
+    public let presenceDot: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -71,6 +72,7 @@ public enum MetalTokens {
         frostStrong: MetalRGBA(251, 250, 248, 0.8),
         frostOpaque: MetalRGBA(244, 243, 240, 1.0),
         contrastEdge: MetalRGBA(0, 0, 0, 0.45),
+        presenceDot: MetalRGBA(40, 38, 32, 0.18),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -143,6 +145,7 @@ public enum MetalTokens {
         frostStrong: MetalRGBA(34, 34, 37, 0.78),
         frostOpaque: MetalRGBA(37, 37, 40, 1.0),
         contrastEdge: MetalRGBA(255, 255, 255, 0.45),
+        presenceDot: MetalRGBA(255, 255, 255, 0.18),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -210,6 +213,9 @@ public enum MetalShared {
     public static let ledAmber: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(255, 241, 207, 1.0), 0.18), .init(MetalRGBA(245, 191, 85, 1.0), 0.45), .init(MetalRGBA(201, 138, 24, 1.0), 1.0)])
     public static let ledBlue: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(216, 230, 255, 1.0), 0.18), .init(MetalRGBA(111, 155, 255, 1.0), 0.45), .init(MetalRGBA(36, 87, 242, 1.0), 1.0)])
     public static let ledOff: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(139, 139, 142, 1.0), 0.18), .init(MetalRGBA(106, 106, 109, 1.0), 0.5), .init(MetalRGBA(74, 74, 77, 1.0), 1.0)])
+    public static let ledRing: [MetalShadow] = [
+            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.25)),
+        ]
     public static let success: MetalRGBA = MetalRGBA(170, 212, 124, 1.0)
     public static let warning: MetalRGBA = MetalRGBA(228, 178, 94, 1.0)
     public static let photon: MetalRGBA = MetalRGBA(243, 217, 164, 1.0)
@@ -430,4 +436,60 @@ public enum MetalFrost: String, CaseIterable, Sendable {
             )
         }
     }
+}
+
+/// KAMUI-14, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and Kamui's KamuiSoftHardware.Presence.
+public enum MetalPresence {
+    public static let ringWidth: Double = 1.25
+    public static let ring: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
+    public static let ringDark: MetalRGBA = MetalRGBA(120, 214, 165, 1.0)
+    public static let collarWidth: Double = 3.5
+    public static let collar: MetalRGBA = MetalRGBA(120, 214, 165, 0.16)
+    public static let liteWidth: Double = 1.0
+    public static let lite: MetalRGBA = MetalRGBA(63, 185, 122, 0.55)
+    public static let enterScale: Double = 1.02
+    public static let bandOutside: Double = 10.0
+    public static let bandInside: Double = 6.0
+    public static let edgeLightWidth: Double = 1.5
+    public static let edgeLight: MetalRGBA = MetalRGBA(120, 214, 165, 0.55)
+    public static let hoverDot: Double = 5.0
+    public static let handle: Double = 10.0
+    public static let handleBg: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.38, y: 0.32), stops: [.init(MetalRGBA(255, 255, 255, 1.0), 0.0), .init(MetalRGBA(237, 237, 234, 1.0), 0.7)])
+    public static let handleSh: [MetalShadow] = [
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, color: MetalRGBA(63, 185, 122, 1.0)),
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 2.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.9)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
+        MetalShadow(inset: false, x: 0.0, y: 3.0, blur: 6.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.14)),
+    ]
+    public static let capsuleLength: Double = 18.0
+    public static let capsuleThickness: Double = 6.0
+    public static let gripBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(255, 255, 255, 1.0), 0.0), .init(MetalRGBA(237, 236, 232, 1.0), 1.0)])
+    public static let gripSh: [MetalShadow] = [
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, color: MetalRGBA(63, 185, 122, 0.75)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
+    ]
+    public static let handleHit: Double = 7.0
+    public static let readoutHeight: Double = 24.0
+    public static let readoutGap: Double = 16.0
+    public static let readoutPadStart: Double = 10.0
+    public static let readoutPadEnd: Double = 11.0
+    public static let readoutGapInner: Double = 7.0
+    public static let readoutBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(42, 42, 45, 1.0), 0.0), .init(MetalRGBA(27, 27, 29, 1.0), 1.0)])
+    public static let readoutSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 5.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.06)),
+        MetalShadow(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.14)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.4)),
+        MetalShadow(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.14)),
+        MetalShadow(inset: false, x: 0.0, y: 8.0, blur: 16.0, spread: -6.0, color: MetalRGBA(0, 0, 0, 0.2)),
+    ]
+    public static let readoutInk: MetalRGBA = MetalRGBA(233, 233, 231, 1.0)
+    public static let readoutDim: MetalRGBA = MetalRGBA(110, 110, 114, 1.0)
+    /// In em.
+    public static let readoutTracking: Double = 0.04
+    public static let readoutLed: Double = 4.0
+    public static let readoutWriting: Double = 0.78
+    public static let copiedMs: Double = 900.0
+
+    /// The ring colour in a colorway: green-deep on bone, green on graphite.
+    public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
 }

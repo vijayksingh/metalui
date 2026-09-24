@@ -14,6 +14,7 @@
   --mu-led-amber: radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18 100%);
   --mu-led-blue: radial-gradient(circle at 40% 35%, #D8E6FF 0 18%, #6F9BFF 45%, #2457F2 100%);
   --mu-led-off: radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D 100%);
+  --mu-led-ring: 0 0 0 .5px rgba(0,0,0,.25);
   --mu-success: #AAD47C;
   --mu-warning: #E4B25E;
   --mu-photon: #F3D9A4;
@@ -98,6 +99,39 @@
   --mu-frost-graphite-fill: linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
   --mu-frost-graphite-opaque: linear-gradient(180deg, #28282B, #1B1B1D);
   --mu-frost-graphite-shadow: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.2), 0 12px 28px -10px rgba(0,0,0,.34), 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-presence-ring-width: 1.25px;
+  --mu-presence-ring: #3FB97A;
+  --mu-presence-collar-width: 3.5px;
+  --mu-presence-collar: rgba(120,214,165,.16);
+  --mu-presence-lite-width: 1px;
+  --mu-presence-lite: rgba(63,185,122,.55);
+  --mu-presence-enter-scale: 1.02;
+  --mu-presence-band-outside: 10px;
+  --mu-presence-band-inside: 6px;
+  --mu-presence-edge-light-width: 1.5px;
+  --mu-presence-edge-light: rgba(120,214,165,.55);
+  --mu-presence-hover-dot: 5px;
+  --mu-presence-handle: 10px;
+  --mu-presence-handle-bg: radial-gradient(circle at 38% 32%, #FFFFFF, #EDEDEA 70%);
+  --mu-presence-handle-sh: 0 0 0 1px #3FB97A, inset 0 0 2px 1px rgba(255,255,255,.9), 0 1px 2px rgba(0,0,0,.18), 0 3px 6px -2px rgba(0,0,0,.14);
+  --mu-presence-capsule-length: 18px;
+  --mu-presence-capsule-thickness: 6px;
+  --mu-presence-grip-bg: linear-gradient(#FFFFFF, #EDECE8);
+  --mu-presence-grip-sh: 0 0 0 1px rgba(63,185,122,.75), 0 1px 2px rgba(0,0,0,.18);
+  --mu-presence-handle-hit: 7px;
+  --mu-presence-readout-height: 24px;
+  --mu-presence-readout-gap: 16px;
+  --mu-presence-readout-pad-start: 10px;
+  --mu-presence-readout-pad-end: 11px;
+  --mu-presence-readout-gap-inner: 7px;
+  --mu-presence-readout-bg: linear-gradient(#2A2A2D, #1B1B1D);
+  --mu-presence-readout-sh: inset 0 0 5px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.14), 0 0 0 .5px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.14), 0 8px 16px -6px rgba(0,0,0,.2);
+  --mu-presence-readout-ink: #E9E9E7;
+  --mu-presence-readout-dim: #6E6E72;
+  --mu-presence-readout-tracking: 0.04em;
+  --mu-presence-readout-led: 4px;
+  --mu-presence-readout-writing: 0.78;
+  --mu-presence-copied-ms: 900ms;
   --mu-travel-part: 1;
   --mu-travel-object: 1;
   --mu-travel-hinge: 1;
@@ -170,6 +204,7 @@
   --mu-frost-strong: rgba(251,250,248,.80);
   --mu-frost-opaque: #F4F3F0;
   --mu-contrast-edge: rgba(0,0,0,.45);
+  --mu-presence-dot: rgba(40,38,32,.18);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.75), inset 2px 3px 3px -1px rgba(255,255,255,.95), inset -1px -3px 5px -2px rgba(110,100,80,.07), 0 0 0 .5px rgba(24,22,16,.045), 0 1px 2px rgba(24,22,16,.05), 0 8px 18px -6px rgba(24,22,16,.08), 0 26px 50px -16px rgba(24,22,16,.13), 0 52px 96px -36px rgba(24,22,16,.13);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.85), inset 1px 2px 2px -1px #FFFFFF, 0 0 0 .5px rgba(24,22,16,.05), 0 1px 2px rgba(24,22,16,.07), 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-well: inset 0 2px 6px -1px rgba(60,55,40,.10), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px rgba(255,255,255,.95);
@@ -210,6 +245,7 @@
   --mu-frost-strong: rgba(34,34,37,.78);
   --mu-frost-opaque: #252528;
   --mu-contrast-edge: rgba(255,255,255,.45);
+  --mu-presence-dot: rgba(255,255,255,.18);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);
@@ -227,6 +263,7 @@
   --mu-tint-graphite: #A6A6A9;
   --mu-tint-dusk: #3E9BFA;
   --mu-tint-iris: #8986FA;
+  --mu-presence-ring: #78D6A5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -251,6 +288,7 @@
     --mu-frost-strong: rgba(34,34,37,.78);
     --mu-frost-opaque: #252528;
     --mu-contrast-edge: rgba(255,255,255,.45);
+    --mu-presence-dot: rgba(255,255,255,.18);
     --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
     --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
     --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);
@@ -268,6 +306,7 @@
     --mu-tint-graphite: #A6A6A9;
     --mu-tint-dusk: #3E9BFA;
     --mu-tint-iris: #8986FA;
+    --mu-presence-ring: #78D6A5;
   }
 }
 

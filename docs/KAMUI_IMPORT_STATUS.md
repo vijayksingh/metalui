@@ -41,13 +41,13 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 | Step | What | Status | Commit |
 |---|---|---|---|
-| 4 | T5 split into hover lift (`settle`) and land (`object`); Button anatomy reads Geist 12.5 | shipped | see `docs(motion): split lift into hover lift and land` (Button already read Geist 12.5 from `6e55d35`) |
+| 4 | T5 split into hover lift (`settle`) and land (`object`); Button anatomy reads Geist 12.5 | shipped | `b58264e` (Button already read Geist 12.5 from `6e55d35`) |
 
 ## 5. Objects, one at a time
 
 | Order | Object | Status | Commit | Clients import |
 |---|---|---|---|---|
-| 1 | Selection frame (KAMUI-14) | pending | | |
+| 1 | Selection frame (KAMUI-14) | shipped | see `feat(objects): selection frame` | React `import { SelectionFrame } from '@unlocalhosted/metalui'` (`state`, `variant`, `mode`, `radius`, `handles`, `count`, `copied`, `edge`, `onHandlePointerDown`); CSS `--mu-presence-*`; Swift `.metalSelectionFrame(_:variant:mode:radius:handles:readout:count:copied:edge:onHandleDrag:)`, `MetalSelectionFrame(size:)`, `MetalPresence` for Kamui's AppKit overlay. Derived value to confirm: graphite hover dot `rgba(255,255,255,.18)` (the prototype is bone-only). |
 | 2 | Cue family | pending | | |
 | 3 | Suggestion chip | pending | | |
 | 4 | Hover engraving | pending | | |

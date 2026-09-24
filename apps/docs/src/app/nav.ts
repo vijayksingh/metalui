@@ -32,7 +32,15 @@ export const NAV: NavGroup[] = [
   },
   {
     label: 'Components',
-    items: [{ to: '/components/button', label: 'Button' }],
+    items: [
+      { to: '/components/button', label: 'Button' },
+    ],
+  },
+  {
+    label: 'Objects',
+    items: [
+      { to: '/components/selection-frame', label: 'Selection frame' },
+    ],
   },
   {
     label: 'Assets',

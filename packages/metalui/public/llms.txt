@@ -9,3 +9,4 @@
 ## Components
 
 - [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.
+- [Selection frame](https://metalui.dev/r/selection-frame.md): KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.
