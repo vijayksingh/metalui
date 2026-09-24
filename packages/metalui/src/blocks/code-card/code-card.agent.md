@@ -32,3 +32,7 @@ The tinted code is drawn by no component. The bezel, glare and tag are `GlassFac
 ## Tokens
 
 The code-card recipe (screen, code, tint, chip inset), the glass-face and chip recipes.
+
+## Diff fences
+
+A fence tagged `diff` tints whole lines: added lines a faint green band with a green `+`, removed lines a faint red band with a red `-`, context lines plain; `+++` and `---` headers are context. Pass the core's classes (`diff`, one per line, from the fence's `classes`) so both clients tint the same lines; without them the card classes the lines the core's way.

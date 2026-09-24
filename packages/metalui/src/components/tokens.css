@@ -1511,6 +1511,10 @@
   --mu-r-code-card-tint-comment: #6D6E73;
   --mu-r-code-card-tint-number: #9EC2FF;
   --mu-r-code-card-chip-inset: 10px;
+  --mu-r-code-card-diff-add-bg: rgba(63,185,122,.14);
+  --mu-r-code-card-diff-add-ink: #9FE3BF;
+  --mu-r-code-card-diff-remove-bg: rgba(255,122,102,.12);
+  --mu-r-code-card-diff-remove-ink: #E8A89E;
   /* silhouette: the native reference layer-only LOD (CanvasScene lodColor), re-authored per block kind */
   --mu-r-silhouette-code-background:
     /* mu-recipe:silhouette:0 */ linear-gradient(#232326, #1A1A1C);

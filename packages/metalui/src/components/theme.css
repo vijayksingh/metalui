@@ -684,6 +684,10 @@
   --color-code-card-tint-comment: var(--mu-r-code-card-tint-comment);
   --color-code-card-tint-number: var(--mu-r-code-card-tint-number);
   --spacing-code-card-chip-inset: var(--mu-r-code-card-chip-inset);
+  --color-code-card-diff-add-bg: var(--mu-r-code-card-diff-add-bg);
+  --color-code-card-diff-add-ink: var(--mu-r-code-card-diff-add-ink);
+  --color-code-card-diff-remove-bg: var(--mu-r-code-card-diff-remove-bg);
+  --color-code-card-diff-remove-ink: var(--mu-r-code-card-diff-remove-ink);
   --spacing-silhouette-text-radius: var(--mu-r-silhouette-text-radius);
   --radius-silhouette-text-radius: var(--mu-r-silhouette-text-radius);
   --spacing-silhouette-text-bar: var(--mu-r-silhouette-text-bar);

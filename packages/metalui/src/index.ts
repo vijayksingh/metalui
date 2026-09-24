@@ -40,4 +40,4 @@ export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type Se
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { LinkCard, linkHueDegrees, type LinkCardProps } from './blocks/link-card/link-card';
-export { CodeCard, tintCode, type CodeCardProps } from './blocks/code-card/code-card';
+export { CodeCard, tintCode, diffClasses, type CodeCardProps, type DiffClass } from './blocks/code-card/code-card';

@@ -1793,7 +1793,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag. (reference style.css .codeobj, .codeobj .screen, .codeobj pre, .ln, .kw, .ty, .st, .cm, .nu)
+    /// Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag. A diff fence tints whole lines by the core's class per line: added lines a faint green band with a green sign, removed lines a faint red band with a red sign; context lines stay plain. (reference style.css .codeobj, .codeobj .screen, .codeobj pre, .ln, .kw, .ty, .st, .cm, .nu)
     public static let codeCard = MetalObjectRecipe(
         name: "code-card",
         layers: [
@@ -1816,6 +1816,10 @@ public enum MetalRecipes {
             "tint.comment": .text("#6D6E73"),
             "tint.number": .text("#9EC2FF"),
             "chip.inset": .number(10.0),
+            "diff.add-bg": .text("rgba(63,185,122,.14)"),
+            "diff.add-ink": .text("#9FE3BF"),
+            "diff.remove-bg": .text("rgba(255,122,102,.12)"),
+            "diff.remove-ink": .text("#E8A89E"),
         ]
     )
 
