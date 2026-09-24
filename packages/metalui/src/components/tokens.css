@@ -267,6 +267,8 @@
 .mu-tint-graphite { color: var(--mu-tint-graphite); } /* neutral */
 .mu-tint-dusk { color: var(--mu-tint-dusk); } /* low */
 .mu-tint-iris { color: var(--mu-tint-iris); } /* tension */
+/* A tinted glyph is stroke only: its vessel (.v, the feelings circle) is not filled. */
+:is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) .v:is(.d, .f) { fill-opacity: 0; }
 [data-mu-untinted] :is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris),
 [data-mu-untinted]:is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) { color: inherit; }
 @media (prefers-contrast: more) {

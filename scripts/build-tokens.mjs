@@ -89,6 +89,8 @@ function typeDecls(role) {
 const tintSel = TINTS.map((t) => `.mu-tint-${t}`).join(', ');
 const tintClasses = `/* Feelings tints (foundations.tint): the stroke carries the feeling. Glyphs only, never words. */
 ${TINTS.map((t) => `.mu-tint-${t} { color: var(--mu-tint-${t}); } /* ${TINT[t].kind} */`).join('\n')}
+/* A tinted glyph is stroke only: its vessel (.v, the feelings circle) is not filled. */
+:is(${tintSel}) .v:is(.d, .f) { fill-opacity: 0; }
 [data-mu-untinted] :is(${tintSel}),
 [data-mu-untinted]:is(${tintSel}) { color: inherit; }
 @media (prefers-contrast: more) {

@@ -38,7 +38,7 @@ const TINT = tokens.foundations.tint;
 const TINTS = Object.entries(TINT).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [string, Tint][];
 
 // One real glyph per family, drawn from Kamui's life set (design/medium-icons) until the set
-// itself lands in MetalUI (import plan 3.1). The tint colors the stroke; the vessel is its duotone.
+// itself lands in MetalUI (import plan 3.1). The tint colors the stroke; a tinted vessel is not filled.
 const VESSEL = '<circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/>';
 const SPECIMEN: Record<string, { name: string; body: string }> = {
   ember: { name: 'happy', body: `${VESSEL}<path d="M6.8 13.2c2.2 0 2.8-4.6 5.2-4.6s3 4.6 5.2 4.6"/>` },
@@ -255,7 +255,7 @@ export default function Color() {
 
       <Section
         title="Feelings tints"
-        lede="A tint colors the glyph’s stroke, and its duotone body follows, so the line itself evokes the feeling. The tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength: energy lives in the glyph’s shape and valence in its position, so a quiet feeling is never muted into brown or gray. Every stroke speaks at the orange’s voice and clears 3.3:1 on bone and 4.5:1 on graphite."
+        lede="A tint colors the glyph’s stroke, so the line itself evokes the feeling. A tinted glyph is stroke only: its vessel is not filled. The tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength: energy lives in the glyph’s shape and valence in its position, so a quiet feeling is never muted into brown or gray. Every stroke speaks at the orange’s voice and clears 3.3:1 on bone and 4.5:1 on graphite."
       >
         <Bench caption="One real glyph per family, plus a moment · the switch, or Increase Contrast, returns every glyph to ink">
           <TintBench />
@@ -274,7 +274,7 @@ export default function Color() {
         />
         <Rules
           rules={[
-            { id: 'C4', title: 'The stroke carries the feeling', body: 'A tint colors the glyph’s line; its duotone body follows at the usual opacity. Strokes are mixed at the orange’s chroma, deep enough for 3.3:1 on bone and light enough for 4.5:1 on graphite. No family sits on yellow, because a yellow deep enough to read on bone is brown. Words never take a tint.', origin: 'Ours · the Kamui life set’s stroke tint, with new pigments' },
+            { id: 'C4', title: 'The stroke carries the feeling', body: 'A tint colors the glyph’s line, and a tinted glyph is stroke only: the vessel is not filled; any other duotone part follows the line at its usual opacity. Strokes are mixed at the orange’s chroma, deep enough for 3.3:1 on bone and light enough for 4.5:1 on graphite. No family sits on yellow, because a yellow deep enough to read on bone is brown. Words never take a tint.', origin: 'Ours · the Kamui life set’s stroke tint, with new pigments' },
             { id: 'C5', title: 'Color names the kind, never the strength', body: 'Joy, affection, calm, wonder, low and tension each have one pigment. How strong a feeling is shows in its shape. Moments that carry an unmistakable feeling take it too: a date, a friend, family and a gift are affection; a party is joy.', origin: 'Ours · replaces hue-is-valence, saturation-is-energy (Kamui 02 §3)' },
             { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns every body to ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language reads without color.', origin: 'Ours' },
           ]}
