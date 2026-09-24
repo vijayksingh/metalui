@@ -1,6 +1,7 @@
 import type * as React from 'react';
 import { ButtonXray } from './ButtonXray';
 import { CheckboxXray } from './CheckboxXray';
+import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
 import { SegmentedXray } from './SegmentedXray';
 import { SliderXray } from './SliderXray';
@@ -14,6 +15,7 @@ export const XRAYS = {
   swatch: { title: 'Swatch', View: SwatchXray },
   checkbox: { title: 'Checkbox', View: CheckboxXray },
   slider: { title: 'Slider', View: SliderXray },
+  'icon-button': { title: 'Icon button', View: IconButtonXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;

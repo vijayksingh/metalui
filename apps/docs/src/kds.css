@@ -693,3 +693,4 @@ html.rm .xr-thumb, html.rm .xr-thumb * { transition: none !important; }
 html.rm .xr-tick { animation: none; }
 .xr-actions-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .xr-actions-row .status { cursor: pointer; }
+.xr-led { position: absolute; border-radius: 50%; animation: xr-pop .2s ease-out both; }
