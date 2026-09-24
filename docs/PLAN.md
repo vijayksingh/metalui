@@ -54,7 +54,7 @@ Registry targets mirror the repository layout (`components/metalui/<name>/…`, 
 
 ## Styling contract
 
-- Plain CSS, no Tailwind requirement. Class names are `mu-<name>` and variants are data attributes (`data-cap`, `data-size`). State comes from Base UI attributes (`data-disabled`, `data-pressed`, `data-checked`, `data-open`, …).
+- Tailwind v4. The foundation tokens become an `@theme` (radius ladder, spacing, heights, type roles, inks, materials), so components use utilities like `rounded-r-4`, `h-32` and `text-ui`. Variants are data attributes (`data-cap`), and Base UI state is styled with data variants (`data-[pressed]:`, `data-[checked]:`, `data-[disabled]:`). Button currently uses plain CSS and will move to Tailwind when it is refitted.
 - Colorways use `data-mu-colorway="bone" | "graphite"` on any ancestor. With no attribute set, `prefers-color-scheme` decides.
 - Materials are recipes: a fill gradient plus an ordered shadow stack. The same recipe renders as CSS `box-shadow` and as SwiftUI layered shadows, both generated from `tokens.json`.
 - Springs are analytic damped springs. CSS gets them as sampled `linear()` curves; SwiftUI gets them as `.interpolatingSpring(stiffness:damping:)`.
@@ -99,7 +99,7 @@ Card (soft-touch, borderless at rest) · Glass screen (bezel + smoked glass) · 
 
 - Keyboard, focus, and ARIA behavior come from Base UI. Every component's agent guide states its accessibility contract.
 - Both colorways, reduced motion, reduced transparency, and increased contrast.
-- React tests (server render and state attributes) and Playwright visual snapshots in both colorways.
+- Integration and e2e tests only: Playwright feature slices (a real page, real interactions) plus visual snapshots in both colorways. No unit tests.
 - Swift snapshot tests.
 - A token-parity check: the generated CSS and Swift must match `tokens.json` (`npm run check`).
 - A size budget per component.
