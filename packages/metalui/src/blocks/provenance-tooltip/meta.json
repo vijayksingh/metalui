@@ -12,8 +12,7 @@
   "react": {
     "export": "ProvenanceTooltip, ProvenanceProvider",
     "files": [
-      "provenance-tooltip.tsx",
-      "provenance-tooltip.css"
+      "provenance-tooltip.tsx"
     ]
   },
   "swift": {

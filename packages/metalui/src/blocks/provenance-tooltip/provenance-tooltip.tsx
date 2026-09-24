@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Tooltip, TooltipProvider } from '../../components/tooltip/tooltip';
-import './provenance-tooltip.css';
 
 /* ─────────────────────────────────────────────────────────
  * PROVENANCE TOOLTIP (the reference design's #tip): a composition
