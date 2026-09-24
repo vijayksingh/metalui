@@ -7,16 +7,19 @@ public struct MetalTimeScrubber: View {
     @Binding var selection: Date?
     let marks: [Date]
     let format: (Date) -> String
+    let onFocusChange: ((Bool) -> Void)?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(range: ClosedRange<Date>, selection: Binding<Date?>,
                 marks: [Date] = [],
-                format: @escaping (Date) -> String = MetalTimeScrubber.defaultFormat) {
+                format: @escaping (Date) -> String = MetalTimeScrubber.defaultFormat,
+                onFocusChange: ((Bool) -> Void)? = nil) {
         self.range = range
         _selection = selection
         self.marks = marks
         self.format = format
+        self.onFocusChange = onFocusChange
     }
 
     public static func defaultFormat(_ date: Date) -> String {
@@ -71,7 +74,8 @@ public struct MetalTimeScrubber: View {
                 step: MetalScrubberMetrics.stepMs / 1000,
                 largeStep: MetalScrubberMetrics.largeStepMs / 1000,
                 marks: marks.map(fraction), ticks: dayTicks,
-                label: "Memory", valueText: { _ in "MEMORY · \(readout)" }
+                label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
+                onFocusChange: onFocusChange
             )
             HStack(spacing: MetalScrubberMetrics.readoutGap) {
                 HStack(spacing: MetalScrubberMetrics.glyphGap) {

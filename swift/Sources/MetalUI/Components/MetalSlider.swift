@@ -22,6 +22,7 @@ public struct MetalSlider: View {
     let ticks: [MetalSliderTick]
     let label: String
     let valueText: (Double) -> String
+    let onFocusChange: ((Bool) -> Void)?
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -31,7 +32,8 @@ public struct MetalSlider: View {
     public init(value: Binding<Double>, in range: ClosedRange<Double>,
                 step: Double, largeStep: Double, marks: [Double] = [],
                 ticks: [MetalSliderTick] = [], label: String,
-                valueText: @escaping (Double) -> String) {
+                valueText: @escaping (Double) -> String,
+                onFocusChange: ((Bool) -> Void)? = nil) {
         _value = value
         self.range = range
         self.step = step
@@ -40,6 +42,7 @@ public struct MetalSlider: View {
         self.ticks = ticks
         self.label = label
         self.valueText = valueText
+        self.onFocusChange = onFocusChange
     }
 
     private var span: Double { max(.leastNonzeroMagnitude, range.upperBound - range.lowerBound) }
@@ -106,6 +109,7 @@ public struct MetalSlider: View {
         }
         .focusable()
         .focused($focused)
+        .onChange(of: focused) { _, isFocused in onFocusChange?(isFocused) }
         .onKeyPress(.leftArrow, phases: .down) { press in
             set(value - (press.modifiers.contains(.shift) ? largeStep : step))
             return .handled
