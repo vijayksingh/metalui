@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { LensBar, type LensMode } from '@unlocalhosted/metalui';
 import { CloseIcon, PinIcon, SearchIcon } from '@unlocalhosted/metalui/icons';
-import reactSource from '../../../../../packages/metalui/src/components/lens-bar/lens-bar.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/lens-bar/lens-bar.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/lens-bar/lens-bar.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalLensBar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -17,7 +17,7 @@ export default function LensBarPage() {
   const d = useDialKit('Lens bar', {
     query: 'open tasks about the poster',
     count: [6, 0, 40, 1],
-    source: { type: 'select', options: ['none', 'asking', 'jev', 'local'], default: 'jev' },
+    source: { type: 'select', options: ['none', 'asking', 'model', 'local'], default: 'model' },
     reopen: { type: 'action', label: 'Open again' },
   }, { onAction: () => { setOpen(false); requestAnimationFrame(() => setOpen(true)); } });
   return (
@@ -29,7 +29,7 @@ export default function LensBarPage() {
       <Section title="Playground" lede="Switch views, pin, close. Dials: the query, the count, the source, and Open again to replay the drop-in on the surface spring.">
         <Bench caption={`${mode} · ${d.source}`} className="min-h-[200px]">
           {open ? (
-            <LensBar query={d.query} count={d.count} source={d.source === 'none' ? null : (d.source as 'jev')} mode={mode} onModeChange={setMode} onPin={() => setOpen(false)} onClose={() => setOpen(false)} glyphs={GLYPHS} />
+            <LensBar query={d.query} count={d.count} source={d.source === 'none' ? null : (d.source as string)} mode={mode} onModeChange={setMode} onPin={() => setOpen(false)} onClose={() => setOpen(false)} glyphs={GLYPHS} />
           ) : (
             <span className="type-meta text-ink2">Closed. Use Open again in the dial panel.</span>
           )}
@@ -53,8 +53,8 @@ export default function LensBarPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'L1', title: 'A lens never moves anything', body: 'In place dims what does not match; the other views gather matches in a panel without moving them.', origin: 'Kamui 03 §8' },
-          { id: 'L2', title: 'Say where the answer came from', body: 'ASKING JEV while pending; VIA JEV or LOCAL when words beyond the rules were judged.', origin: 'Kamui demo' },
+          { id: 'L1', title: 'A lens never moves anything', body: 'In place dims what does not match; the other views gather matches in a panel without moving them.', origin: 'reference brief' },
+          { id: 'L2', title: 'Say where the answer came from', body: 'ASKING… while pending; VIA MODEL or LOCAL when words beyond the rules were judged.', origin: 'reference design' },
           { id: 'L3', title: 'It drops in, it does not bounce', body: 'A floating surface on the surface spring: one step from above, from .98.', origin: 'MetalUI T6' },
         ]} />
       </Section>

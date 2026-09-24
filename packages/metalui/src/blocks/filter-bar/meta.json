@@ -1,0 +1,29 @@
+{
+  "name": "filter-bar",
+  "title": "Filter bar",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "surface",
+    "glyph",
+    "label",
+    "status",
+    "segmented",
+    "icon-button"
+  ],
+  "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+  "base": "@base-ui/react/toolbar",
+  "react": {
+    "export": "FilterBar, LensBar",
+    "files": [
+      "filter-bar.tsx",
+      "filter-bar.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalFilterBar",
+    "file": "swift/Sources/MetalUI/Blocks/MetalFilterBar.swift"
+  },
+  "agent": "filter-bar.agent.md"
+}

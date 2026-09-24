@@ -1,0 +1,27 @@
+@import "../../components/tokens.css";
+@import "../../components/surface/surface.css";
+@import "../../components/glyph/glyph.css";
+@import "../../components/label/label.css";
+@import "../../components/status/status.css";
+@import "../../components/segmented/segmented.css";
+@import "../../components/icon-button/icon-button.css";
+
+/* Filter bar: a composition. It lays out its parts and brings the bar in; every paint is
+   Surface(frost), Glyph, Label, Led, Segmented and IconButton(ghost). Layout values: --mu-lensbar-*. */
+.mu-filterbar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-lensbar-gap);
+  height: var(--mu-lensbar-height);
+  padding: var(--mu-zero) var(--mu-lensbar-pad-end) var(--mu-zero) var(--mu-lensbar-pad-start);
+  /* Drops in one step from above, from .98, on the surface spring (a floating surface: no overshoot). */
+  animation: mu-filterbar-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}
+@keyframes mu-filterbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--mu-lensbar-enter-drop) * -1 * var(--mu-travel-surface))) scale(calc(1 - (1 - var(--mu-lensbar-enter-scale)) * var(--mu-travel-surface)));
+  }
+}
+.mu-filterbar-query { max-width: var(--mu-lensbar-query-max); overflow: hidden; text-overflow: ellipsis; }
+.mu-filterbar-note > .mu-led { display: inline-block; margin-right: var(--mu-lensbar-note-led-gap); }

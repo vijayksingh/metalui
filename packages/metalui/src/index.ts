@@ -26,7 +26,7 @@ export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch'
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-scrubber/memory-scrubber';
-export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';
+export { FilterBar, LensBar, type FilterBarProps, type FilterView, type LensBarProps, type LensMode } from './blocks/filter-bar/filter-bar';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './blocks/provenance-tooltip/provenance-tooltip';

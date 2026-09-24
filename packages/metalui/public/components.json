@@ -106,6 +106,23 @@
       "agent": "https://metalui.dev/r/field.md"
     },
     {
+      "name": "filter-bar",
+      "title": "Filter bar",
+      "status": "alpha",
+      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "FilterBar, LensBar",
+        "base": "@base-ui/react/toolbar"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalFilterBar"
+      },
+      "registry": "https://metalui.dev/r/filter-bar.json",
+      "agent": "https://metalui.dev/r/filter-bar.md"
+    },
+    {
       "name": "glass-face",
       "title": "Glass face",
       "status": "alpha",
@@ -207,24 +224,6 @@
       },
       "registry": "https://metalui.dev/r/label.json",
       "agent": "https://metalui.dev/r/label.md"
-    },
-    {
-      "name": "lens-bar",
-      "title": "Lens bar",
-      "status": "alpha",
-      "description": "A floating frosted pill that names a lens's question, counts its matches, says where the answer came from and switches views with a compact segmented control; pin keeps it as a live region, close ends it.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "LensBar",
-        "base": "@base-ui/react/toolbar"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalLensBar"
-      },
-      "registry": "https://metalui.dev/r/lens-bar.json",
-      "agent": "https://metalui.dev/r/lens-bar.md",
-      "sheet": "Kamui 04 §4"
     },
     {
       "name": "mark",

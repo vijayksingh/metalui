@@ -2022,7 +2022,7 @@ public enum MetalPaletteMetrics {
     public static let enterScale: Double = 0.985
 }
 
-/// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Segmented and IconButton(ghost).
 public enum MetalToolbarMetrics {
     public static let tool: Double = 36.0
     public static let pad: Double = 6.0
@@ -2187,9 +2187,9 @@ public enum MetalScrubberMetrics {
     public static let knobSweep: [MetalRGBA] = [MetalRGBA(250, 250, 248, 1.0), MetalRGBA(201, 201, 197, 1.0), MetalRGBA(242, 242, 239, 1.0), MetalRGBA(184, 184, 180, 1.0), MetalRGBA(250, 250, 248, 1.0)]
 }
 
-/// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Segmented and IconButton(ghost).
 public enum MetalLensBarMetrics {
-    public static let height: Double = 36.0
+    public static let height: Double = 38.0
     public static let padStart: Double = 14.0
     public static let padEnd: Double = 6.0
     public static let gap: Double = 8.0
@@ -2198,6 +2198,7 @@ public enum MetalLensBarMetrics {
     public static let iconButton: Double = 28.0
     public static let enterDrop: Double = 8.0
     public static let enterScale: Double = 0.98
+    public static let noteLedGap: Double = 5.0
 }
 
 /// The segmented control (object sheet): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.

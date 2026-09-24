@@ -163,6 +163,31 @@
       "docs": "Agent guide: https://metalui.dev/r/field.md. SwiftUI: MetalField, MetalSearchField in the MetalUI Swift package."
     },
     {
+      "name": "filter-bar",
+      "type": "registry:ui",
+      "title": "Filter bar",
+      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/filter-bar/filter-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/filter-bar/filter-bar.tsx"
+        },
+        {
+          "path": "packages/metalui/src/blocks/filter-bar/filter-bar.css",
+          "type": "registry:file",
+          "target": "components/metalui/blocks/filter-bar/filter-bar.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/filter-bar.md. SwiftUI: MetalFilterBar in the MetalUI Swift package."
+    },
+    {
       "name": "glass-face",
       "type": "registry:ui",
       "title": "Glass face",
@@ -299,31 +324,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
-    },
-    {
-      "name": "lens-bar",
-      "type": "registry:ui",
-      "title": "Lens bar",
-      "description": "A floating frosted pill that names a lens's question, counts its matches, says where the answer came from and switches views with a compact segmented control; pin keeps it as a live region, close ends it.",
-      "dependencies": [
-        "@base-ui/react@^1.8.0"
-      ],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/lens-bar/lens-bar.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/lens-bar/lens-bar.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/lens-bar/lens-bar.css",
-          "type": "registry:file",
-          "target": "components/metalui/lens-bar/lens-bar.css"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/lens-bar.md. SwiftUI: MetalLensBar in the MetalUI Swift package."
     },
     {
       "name": "mark",

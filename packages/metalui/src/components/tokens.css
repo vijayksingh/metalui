@@ -253,7 +253,7 @@
   --mu-segmented-compact: 24px;
   --mu-segmented-regular: 28px;
   --mu-segmented-focus-width: 1.5px;
-  --mu-lensbar-height: 36px;
+  --mu-lensbar-height: 38px;
   --mu-lensbar-pad-start: 14px;
   --mu-lensbar-pad-end: 6px;
   --mu-lensbar-gap: 8px;
@@ -262,6 +262,7 @@
   --mu-lensbar-icon-button: 28px;
   --mu-lensbar-enter-drop: 8px;
   --mu-lensbar-enter-scale: 0.98;
+  --mu-lensbar-note-led-gap: 5px;
   --mu-scrubber-width: 330px;
   --mu-scrubber-height: 50px;
   --mu-scrubber-track-top: 20px;
