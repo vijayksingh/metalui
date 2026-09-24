@@ -1,6 +1,6 @@
 # Toolbar and tool button
 
-A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSearch` from `@unlocalhosted/metalui` (Base UI Toolbar, Toggle and Tooltip). SwiftUI: `MetalToolbar`, `MetalToolButton`, `MetalToolbarSeparator`. Sheet reference: KAMUI-01/02; Kamui brief: 04 §2.
+A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSearch` from `@unlocalhosted/metalui` (Base UI Toolbar, Toggle and Tooltip). SwiftUI: `MetalToolbar`, `MetalToolButton`, `MetalToolbarSeparator`. Sheet reference: the object sheet; 
 
 ## Use it for
 
@@ -13,7 +13,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 
 ## Anatomy
 
-- **Strip**: 48 tall (36 tools in a 6 nest), radius 24, so a true capsule; the strip frost in the colorway, or graphite (`variant="graphite"`) as the medium uses in both colorways.
+- **Strip**: 48 tall (36 tools in a 6 nest), radius 24, so a true capsule; the strip frost in the colorway, or graphite (`variant="graphite"`) as the canvas uses in both colorways.
 - **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with a 4 pt green LED 5 in from its top right.
 - **Separator**: a 1 × 22 engraved rule.
 - **Search well**: a 36 tall pill well with the placeholder in ink3 and a `⌘K` keycap.

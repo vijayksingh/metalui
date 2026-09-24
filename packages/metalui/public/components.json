@@ -579,8 +579,7 @@
         "symbol": "MetalToolbar, MetalToolButton, MetalToolbarSeparator"
       },
       "registry": "https://metalui.dev/r/toolbar.json",
-      "agent": "https://metalui.dev/r/toolbar.md",
-      "sheet": "KAMUI-01/02"
+      "agent": "https://metalui.dev/r/toolbar.md"
     },
     {
       "name": "tooltip",

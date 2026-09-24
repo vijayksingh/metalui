@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Toolbar, ToolbarSearch, ToolbarSeparator, ToolButton } from '@unlocalhosted/metalui';
 import { DrawIcon, RegionIcon, SearchIcon, SelectIcon, TextIcon, UndoIcon, ZoomInIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/toolbar/toolbar.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/toolbar/toolbar.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/toolbar/toolbar.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToolbar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';

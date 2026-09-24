@@ -5,7 +5,6 @@ import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { Toggle } from '@base-ui/react/toggle';
 import { Tooltip, TooltipProvider } from '../tooltip/tooltip';
 import { Kbd } from '../kbd/kbd';
-import './toolbar.css';
 
 /* ─────────────────────────────────────────────────────────
  * TOOLBAR and TOOL BUTTON on Base UI Toolbar + Toggle + Tooltip
@@ -24,6 +23,16 @@ export interface ToolbarProps {
   children: React.ReactNode;
 }
 
+/* Styled with the theme's utilities (the toolbar recipe's own drawings): the frosted strip or the graphite
+ * dock, and its tools, separators and search well per variant through a group variant. */
+const STRIP = {
+  frost: 'mu-toolbar group/toolbar inline-flex items-center toolbar-enter toolbar-frost material-frost-strip',
+  graphite: 'mu-toolbar group/toolbar inline-flex items-center toolbar-enter gap-toolbar-gap p-toolbar-pad rounded-toolbar-radius recipe-toolbar backdrop-toolbar-blur',
+};
+const TOOL = 'mu-tool mu-icon-trigger relative grid place-items-center p-0 border-0 cursor-pointer tap-highlight-none toolbar-frost-tool group-data-[variant=graphite]/toolbar:toolbar-graphite-tool data-disabled:opacity-button-disabled data-disabled:cursor-default';
+const SEP = 'mu-toolbar-sep toolbar-frost-sep group-data-[variant=graphite]/toolbar:toolbar-graphite-sep';
+const SEARCH = 'mu-toolbar-search flex items-center border-0 cursor-text [&>.mu-kbd]:ml-auto toolbar-frost-search group-data-[variant=graphite]/toolbar:toolbar-graphite-search';
+
 /** A strip of tools: 48 tall, a capsule. */
 export function Toolbar({ variant = 'frost', className, children, ...props }: ToolbarProps) {
   return (
@@ -31,7 +40,7 @@ export function Toolbar({ variant = 'frost', className, children, ...props }: To
       <BaseToolbar.Root
         aria-label={props['aria-label']}
         data-variant={variant}
-        className={['mu-toolbar', variant === 'graphite' ? 'mu-frost-graphite' : 'mu-frost-strip', className].filter(Boolean).join(' ')}
+        className={className ? `${STRIP[variant]} ${className}` : STRIP[variant]}
       >
         {children}
       </BaseToolbar.Root>
@@ -56,13 +65,13 @@ export interface ToolButtonProps {
 /** A circular tool cap. Latched tools sit pressed with a green LED. */
 export function ToolButton({ label, shortcut, icon, pressed, onPressedChange, onClick, disabled }: ToolButtonProps) {
   const button = pressed === undefined ? (
-    <BaseToolbar.Button className="mu-tool mu-icon-trigger" aria-label={label} aria-keyshortcuts={shortcut} disabled={disabled} onClick={onClick}>
+    <BaseToolbar.Button className={TOOL} aria-label={label} aria-keyshortcuts={shortcut} disabled={disabled} onClick={onClick}>
       {icon}
     </BaseToolbar.Button>
   ) : (
     <BaseToolbar.Button
       render={<Toggle pressed={pressed} onPressedChange={(p) => onPressedChange?.(p)} />}
-      className="mu-tool mu-icon-trigger"
+      className={TOOL}
       aria-label={label}
       aria-keyshortcuts={shortcut}
       disabled={disabled}
@@ -76,7 +85,7 @@ export function ToolButton({ label, shortcut, icon, pressed, onPressedChange, on
 
 /** An engraved rule between groups of tools. */
 export function ToolbarSeparator() {
-  return <BaseToolbar.Separator className="mu-toolbar-sep" />;
+  return <BaseToolbar.Separator className={SEP} />;
 }
 
 export interface ToolbarSearchProps {
@@ -90,10 +99,10 @@ export interface ToolbarSearchProps {
 /** The search well in the strip: opens the palette. */
 export function ToolbarSearch({ onOpen, placeholder = 'Search or ask', icon, shortcut = '⌘K' }: ToolbarSearchProps) {
   return (
-    <BaseToolbar.Button className="mu-toolbar-search" onClick={onOpen} aria-keyshortcuts="Meta+K">
+    <BaseToolbar.Button className={SEARCH} onClick={onOpen} aria-keyshortcuts="Meta+K">
       {icon}
       {placeholder}
-      <Kbd surface="strip">{shortcut}</Kbd>
+      <Kbd surface="plain">{shortcut}</Kbd>
     </BaseToolbar.Button>
   );
 }
