@@ -67,8 +67,8 @@ From `kamui/docs/architecture/medium/LLD/WEB_CLIENT.md` §2 (`src/chrome/*`) and
 | Order | Object | Kamui brief | Status | Commit | Clients import |
 |---|---|---|---|---|---|
 | 12 | Kbd (keycap) | 04 §9 | shipped | `5995723` | React `Kbd` (`size: 'default'\|'small'`, `surface: 'default'\|'strip'\|'sunk'`, `label`); CSS `--mu-kbd-*`; Swift `MetalKbd(_:size:surface:label:)`. |
-| 13 | LED and status pill | 04 §10 | shipped | see `feat(components): LED and status badge` | React `Led` (`kind: 'live'\|'waiting'\|'failed'\|'link'\|'off'`, `size`), `StatusBadge` (`led`, `hint`); CSS `--mu-status-*`; Swift `MetalLED(_:size:)`, `MetalStatusBadge(_:led:hint:)`. |
-| 14 | Toast | 04 §12 | pending | | |
+| 13 | LED and status pill | 04 §10 | shipped | `5bef3ec` | React `Led` (`kind: 'live'\|'waiting'\|'failed'\|'link'\|'off'`, `size`), `StatusBadge` (`led`, `hint`); CSS `--mu-status-*`; Swift `MetalLED(_:size:)`, `MetalStatusBadge(_:led:hint:)`. |
+| 14 | Toast | 04 §12 | shipped | see `feat(components): toast` | React `ToastProvider` (once at the root) + `useToast().show({ title, sub, undo, tone: 'default'\|'success'\|'error', timeout })` (Base UI Toast); CSS `--mu-toast-*`; Swift `MetalToast`, `MetalToastModel`, `.metalToast($toast)`. |
 | 15 | Toolbar and tool button | 04 §2 | pending | | |
 | 16 | Command palette | 04 §3 | pending | | |
 | 17 | Tooltip and popover / correction menu | 04 §8, §18 | pending | | |

@@ -254,6 +254,24 @@
       "sheet": "Kamui 03 §4"
     },
     {
+      "name": "toast",
+      "title": "Toast",
+      "status": "alpha",
+      "description": "The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ToastProvider, useToast",
+        "base": "@base-ui/react/toast"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalToast, .metalToast(_:)"
+      },
+      "registry": "https://metalui.dev/r/toast.json",
+      "agent": "https://metalui.dev/r/toast.md",
+      "sheet": "KAMUI-20"
+    },
+    {
       "name": "tool-strip",
       "title": "Tool strip",
       "status": "alpha",

@@ -1,0 +1,11 @@
+{
+  "name": "toast",
+  "title": "Toast",
+  "status": "alpha",
+  "description": "The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.",
+  "sheet": "KAMUI-20",
+  "base": "@base-ui/react/toast",
+  "react": { "export": "ToastProvider, useToast", "files": ["toast.tsx", "toast.css"] },
+  "swift": { "symbol": "MetalToast, .metalToast(_:)", "file": "swift/Sources/MetalUI/Components/MetalToast.swift" },
+  "agent": "toast.agent.md"
+}

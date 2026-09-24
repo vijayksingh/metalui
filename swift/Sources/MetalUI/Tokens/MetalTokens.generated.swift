@@ -736,6 +736,39 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalToastMetrics {
+    public static let height: Double = 44.0
+    public static let padStart: Double = 16.0
+    public static let padEnd: Double = 6.0
+    public static let gap: Double = 12.0
+    public static let bg: MetalRGBA = MetalRGBA(30, 30, 33, 0.92)
+    public static let sh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.05)),
+        MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.12)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.4)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
+        MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -8.0, color: MetalRGBA(0, 0, 0, 0.25)),
+        MetalShadow(inset: false, x: 0.0, y: 28.0, blur: 50.0, spread: -18.0, color: MetalRGBA(0, 0, 0, 0.3)),
+    ]
+    public static let ink: MetalRGBA = MetalRGBA(242, 242, 240, 1.0)
+    public static let sub: MetalRGBA = MetalRGBA(154, 154, 160, 1.0)
+    public static let undoHeight: Double = 28.0
+    public static let undoPadStart: Double = 11.0
+    public static let undoPadEnd: Double = 6.0
+    public static let undoGap: Double = 7.0
+    public static let undoBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(58, 58, 62, 1.0), 0.0), .init(MetalRGBA(44, 44, 47, 1.0), 1.0)])
+    public static let undoSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.1)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.6)),
+    ]
+    public static let bottom: Double = 92.0
+    public static let enterRise: Double = 8.0
+    public static let enterScale: Double = 0.97
+    public static let undoMs: Double = 5000.0
+    public static let plainMs: Double = 2600.0
+}
+
+/// LEDs and the status badge (KAMUI-16). An LED is 4 or 5 pt, a radial recipe lit from the top left, a .5 dark ring, and (green only) a bloom of at most 2 pt at 55 %: green live, amber waiting or urgent, red failed, blue link kind, off idle. The status badge is a 24 tall cap-material pill with an LED and the state in the label role; it is not pressable, and its hint (the command that fixes it) shows as a tooltip.
 public enum MetalStatusMetrics {
     public static let led: Double = 5.0
     public static let ledSmall: Double = 4.0

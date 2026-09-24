@@ -357,6 +357,31 @@
       "docs": "Agent guide: https://metalui.dev/r/suggestion-chip.md. SwiftUI: MetalSuggestionChip in the MetalUI Swift package."
     },
     {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/toast/toast.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/toast/toast.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/toast/toast.css",
+          "type": "registry:file",
+          "target": "components/metalui/toast/toast.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToast, .metalToast(_:) in the MetalUI Swift package."
+    },
+    {
       "name": "tool-strip",
       "type": "registry:ui",
       "title": "Tool strip",

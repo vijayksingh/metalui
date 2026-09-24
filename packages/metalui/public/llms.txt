@@ -22,4 +22,5 @@
 - [Size readout](https://metalui.dev/r/size-readout.md): A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. The KAMUI-14 readout on its own.
 - [LED and status badge](https://metalui.dev/r/status.md): A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.
+- [Toast](https://metalui.dev/r/toast.md): The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.
 - [Tool strip](https://metalui.dev/r/tool-strip.md): A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.

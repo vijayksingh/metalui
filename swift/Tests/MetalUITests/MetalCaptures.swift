@@ -320,4 +320,17 @@ final class MetalCaptures: XCTestCase {
             capture("status-\(colorway.rawValue)", view)
         }
     }
+
+    func testToast() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 16) {
+                MetalToast(MetalToastModel("Moved 3 blocks", undo: {}))
+                MetalToast(MetalToastModel("Pinned as a live region", sub: "it updates as you write", tone: .success))
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("toast-\(colorway.rawValue)", view)
+        }
+    }
 }

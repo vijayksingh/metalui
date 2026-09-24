@@ -37,6 +37,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/segmented', label: 'Segmented control' },
       { to: '/components/kbd', label: 'Keycap' },
       { to: '/components/status', label: 'LED and status badge' },
+      { to: '/components/toast', label: 'Toast' },
     ],
   },
   {
