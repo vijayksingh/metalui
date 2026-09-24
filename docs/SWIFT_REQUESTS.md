@@ -1,5 +1,11 @@
 # Swift parity requests
 
+## Checkbox disabled state
+
+- **Object:** `checkbox` recipe.
+- **Missing:** a `self.disabled` opacity property. Swift currently reads the shared button disabled token for the same 0.4 value; the checkbox should own it in the generated recipe.
+- **Reference CSS:** `packages/metalui/src/components/checkbox/checkbox.css:23` sets opacity 0.4 for `[data-disabled]`.
+
 ## Lens symbol
 
 - **Object:** `MetalIcon(.lens)` with regular and 16 point symbol assets in the generated catalog.
