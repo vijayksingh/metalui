@@ -25,6 +25,9 @@
   --color-green: var(--mu-green);
   --color-green-deep: var(--mu-green-deep);
   --color-red: var(--mu-red);
+  --color-success: var(--mu-success);
+  --color-warning: var(--mu-warning);
+  --color-photon: var(--mu-photon);
   --color-tint-ember: var(--mu-tint-ember);
   --color-tint-sand: var(--mu-tint-sand);
   --color-tint-graphite: var(--mu-tint-graphite);

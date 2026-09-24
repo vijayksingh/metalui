@@ -12,6 +12,11 @@
   --mu-led-green: radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673 100%);
   --mu-led-red: radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A 100%);
   --mu-led-amber: radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18 100%);
+  --mu-led-blue: radial-gradient(circle at 40% 35%, #D8E6FF 0 18%, #6F9BFF 45%, #2457F2 100%);
+  --mu-led-off: radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D 100%);
+  --mu-success: #AAD47C;
+  --mu-warning: #E4B25E;
+  --mu-photon: #F3D9A4;
   --mu-mono: "Martian Mono", "Martian Mono Variable", "SF Mono", ui-monospace, monospace;
   --mu-mono-stretch: 87.5%;
   --mu-mono-code-stretch: 75%;

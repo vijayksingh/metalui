@@ -31,7 +31,7 @@ SwiftUI: add the package \`https://github.com/vijayksingh/metalui\` and \`import
 ## Global rules
 
 - **Colorway:** set \`data-mu-colorway="bone" | "graphite"\` on any ancestor, or use \`.metalColorway(.bone)\` in SwiftUI. Without it, the system color scheme decides. Don't restyle materials with custom backgrounds, borders or shadows.
-- **Signal color:** one per object, at most. Phosphor green marks intent (focus, selection, live state), never a call to action.
+- **Signal color:** one per object, at most. Phosphor green marks intent (focus, selection, live state), never a call to action. Red is destructive only. \`--mu-success\` always sits beside a check glyph and \`--mu-warning\` beside a label or glyph, never hue alone. \`--mu-photon\` is for its listed places only. Status LEDs: green on, amber waiting, red failed, blue capture or link kind, off idle.
 - **Valence tints** (\`.mu-tint-ember | sand | graphite | dusk | iris\`, SwiftUI \`.metalTint(.ember)\`): only on glyphs that carry a feeling or an energy. Hue is valence (warm pleasant, cool unpleasant), saturation is energy (vivid activated, muted settled). Never red or green, never on words (the label stays ink), and never for status or intent. They switch off under Increase Contrast and inside \`data-mu-untinted\` (\`.metalUntinted()\`), so the glyph must read without its tint.
 - **Motion:** it comes from the component, and reduced motion is built in. Don't add your own transitions on top.
 - **Choose by component name.** Only use exports listed in \`components.json\` and \`icons.json\`. Never invent names.

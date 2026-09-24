@@ -196,6 +196,11 @@ public enum MetalShared {
     public static let ledGreen: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(217, 255, 233, 1.0), 0.18), .init(MetalRGBA(123, 234, 174, 1.0), 0.42), .init(MetalRGBA(47, 182, 115, 1.0), 1.0)])
     public static let ledRed: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(255, 217, 210, 1.0), 0.18), .init(MetalRGBA(255, 122, 102, 1.0), 0.45), .init(MetalRGBA(213, 57, 42, 1.0), 1.0)])
     public static let ledAmber: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(255, 241, 207, 1.0), 0.18), .init(MetalRGBA(245, 191, 85, 1.0), 0.45), .init(MetalRGBA(201, 138, 24, 1.0), 1.0)])
+    public static let ledBlue: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(216, 230, 255, 1.0), 0.18), .init(MetalRGBA(111, 155, 255, 1.0), 0.45), .init(MetalRGBA(36, 87, 242, 1.0), 1.0)])
+    public static let ledOff: MetalRadialGradient = MetalRadialGradient(center: .init(x: 0.4, y: 0.35), stops: [.init(MetalRGBA(139, 139, 142, 1.0), 0.18), .init(MetalRGBA(106, 106, 109, 1.0), 0.5), .init(MetalRGBA(74, 74, 77, 1.0), 1.0)])
+    public static let success: MetalRGBA = MetalRGBA(170, 212, 124, 1.0)
+    public static let warning: MetalRGBA = MetalRGBA(228, 178, 94, 1.0)
+    public static let photon: MetalRGBA = MetalRGBA(243, 217, 164, 1.0)
     public static let focus: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
 }
 

@@ -130,6 +130,9 @@ ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
   --color-green: var(--mu-green);
   --color-green-deep: var(--mu-green-deep);
   --color-red: var(--mu-red);
+  --color-success: var(--mu-success);
+  --color-warning: var(--mu-warning);
+  --color-photon: var(--mu-photon);
 ${TINTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
   --shadow-raise: var(--mu-raise);
   --shadow-raise-sm: var(--mu-raise-sm);

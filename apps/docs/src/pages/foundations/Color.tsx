@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { CheckIcon } from '@unlocalhosted/metalui/icons';
 import { tokens, worstContrast } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 
@@ -27,6 +28,10 @@ function Led({ ok }: { ok: boolean }) {
     </span>
   );
 }
+
+const SIGNAL = tokens.foundations.signal;
+const SWATCHES = ['green', 'green-deep', 'red', 'success', 'warning', 'photon', 'blue', 'gold'] as const;
+const LEDS = ['led-green', 'led-amber', 'led-red', 'led-blue', 'led-off'] as const;
 
 const TINTS = Object.entries(tokens.foundations.tint).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [
   string,
@@ -189,38 +194,35 @@ export default function Color() {
         />
       </Section>
 
-      <Section title="Signals" lede="One signal per object at most. Phosphor green marks intent; red is reserved for destruction; LEDs are radial, lit from the same top-left light.">
-        <Bench caption="Phosphor · green-deep · destructive · capture blue · keeper gold · LEDs">
-          <div className="flex flex-wrap items-end justify-center gap-24">
-            {[
-              ['green', SHARED.green],
-              ['green-deep', SHARED['green-deep']],
-              ['red', SHARED.red],
-              ['blue', SHARED.blue],
-              ['gold', SHARED.gold],
-            ].map(([name, hex]) => (
-              <div key={name} className="flex flex-col items-center gap-8">
-                <div className="size-56 rounded-plate shadow-[inset_0_0_0_.5px_rgba(0,0,0,.12)]" style={{ background: hex }} />
-                <span className="type-label engraved">{name}</span>
-                <span className="type-readout text-ink2">{hex}</span>
-              </div>
-            ))}
-            {(['led-green', 'led-amber', 'led-red'] as const).map((led) => (
-              <div key={led} className="flex flex-col items-center gap-8">
-                <div className="grid size-56 place-items-center">
-                  <span className="size-12 rounded-full shadow-[0_0_0_.5px_rgba(0,0,0,.25)]" style={{ background: SHARED[led] }} />
+      <Section title="Signals" lede="Signals say something about the system’s state. One signal per object at most. Phosphor green marks intent, red is reserved for destruction, success always carries its check, and LEDs are radial, lit from the same top-left light. None of them carries meaning by hue alone.">
+        <Bench caption="Phosphor · green-deep · destructive · success with its check · warning · photon · capture blue · keeper gold · LEDs">
+          <div className="flex flex-col items-center gap-24">
+            <div className="flex flex-wrap items-end justify-center gap-24">
+              {SWATCHES.map((name) => (
+                <div key={name} className="flex flex-col items-center gap-8">
+                  <div className="grid size-56 place-items-center rounded-plate text-[#1B1B1D] shadow-[inset_0_0_0_.5px_rgba(0,0,0,.12)]" style={{ background: SHARED[name] }}>
+                    {name === 'success' && <CheckIcon size={20} animate={false} title="Done" />}
+                  </div>
+                  <span className="type-label engraved">{name}</span>
+                  <span className="type-readout text-ink2">{SHARED[name]}</span>
                 </div>
-                <span className="type-label engraved">{led}</span>
-                <span className="type-readout text-ink2">radial</span>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex flex-wrap items-end justify-center gap-24">
+              {LEDS.map((led) => (
+                <div key={led} className="flex flex-col items-center gap-8">
+                  <span className="size-12 rounded-full shadow-[0_0_0_.5px_rgba(0,0,0,.25)]" style={{ background: SHARED[led] }} />
+                  <span className="type-label engraved">{led}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </Bench>
         <TokenTable
           rows={[
-            ['--mu-green', SHARED.green, 'Intent: focus ring fills, live state, toggle on.'],
-            ['--mu-green-deep', SHARED['green-deep'], 'Rings, carets and ticks on light surfaces; the focus outline.'],
-            ['--mu-red', SHARED.red, 'Destructive only.'],
+            ...Object.entries(SIGNAL)
+              .filter(([k]) => !k.startsWith('$'))
+              .map(([k, use]) => [`--mu-${k}`, k.startsWith('led-') ? 'radial' : SHARED[k as keyof typeof SHARED], use]),
             ['--mu-blue', SHARED.blue, 'The capture card, the one saturated hero surface.'],
             ['--mu-gold', SHARED.gold, 'Keeper ring, as a hairline only.'],
           ]}
