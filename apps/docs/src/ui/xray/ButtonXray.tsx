@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Button, Segmented, Slider } from '@unlocalhosted/metalui';
-import { useColorway } from '../../app/colorway';
+import { Button, Segmented } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
+import { Callouts, Dial, Glyph, SpringPlot, Switch, alphaK, scalePx, useRecipeLayers, type SpotDef } from './kit';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · BUTTON
@@ -26,7 +26,7 @@ const S = 2.6;
 const WALL = 7;
 
 type Spot = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers';
-const SPOTS: { id: Spot; title: string; word: string }[] = [
+const SPOTS: SpotDef<Spot>[] = [
   { id: 'type', title: 'Type', word: 'The label' },
   { id: 'shape', title: 'Shape', word: 'Size and corners' },
   { id: 'light', title: 'Light', word: 'Where the light comes from' },
@@ -57,39 +57,8 @@ const INITIAL: Model = {
   lift: 1, on: LAYERS.map(() => true),
 };
 
-function Glyph({ id, size = 15 }: { id: Spot; size?: number }) {
-  const c = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true };
-  switch (id) {
-    case 'type': return <svg {...c}><path d="M4 18 9 6l5 12M5.8 14h6.4" /><path d="M16 11.5a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6ZM18.8 11.5V18" /></svg>;
-    case 'shape': return <svg {...c}><rect x="3.5" y="7" width="17" height="10" rx="5" /><path d="M3.5 20.5h17M3.5 19v3M20.5 19v3" /></svg>;
-    case 'light': return <svg {...c}><circle cx="12" cy="12" r="3.6" /><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6" /></svg>;
-    case 'shadow': return <svg {...c}><rect x="6" y="4" width="12" height="7" rx="3.5" /><ellipse cx="12" cy="18.5" rx="8" ry="2.5" fill="currentColor" fillOpacity=".25" stroke="none" /><path d="M12 11v4" strokeDasharray="1.5 2" /></svg>;
-    case 'press': return <svg {...c}><path d="M12 3v4" /><path d="m9.5 5.5 2.5 2.5 2.5-2.5" /><path d="M5 10h14" /><path d="M7 13c1.2 0 1.2 3 2.5 3s1.3-3 2.5-3 1.2 3 2.5 3 1.3-3 2.5-3" /><path d="M5 20h14" /></svg>;
-    case 'layers': return <svg {...c}><path d="m12 4 8 4-8 4-8-4 8-4Z" /><path d="m4 12 8 4 8-4" /><path d="m4 16 8 4 8-4" /></svg>;
-  }
-}
-
-/** The recipe's layers for the current colorway, in recipe order: fill, then shadows. */
-function useRecipe() {
-  const { colorway } = useColorway();
-  const ls = RECIPE.layers.filter((l: { part: string; colorway?: string; state?: string }) => l.part === 'self' && l.colorway === colorway && !l.state) as { prop: string; value: string }[];
-  const fill = ls.find((l) => l.prop === 'background')?.value ?? 'linear-gradient(#FFFFFF,#F4F3F0)';
-  const shadows = ls.filter((l) => l.prop === 'shadow').map((l) => l.value);
-  const stops = (fill.match(/linear-gradient\((.*)\)/)?.[1] ?? '#FFFFFF,#F4F3F0').split(/,(?![^(]*\))/).map((x) => x.trim());
-  return { fill, stops, shadows, colorway };
-}
-
-const scalePx = (v: string, k: number) => v.replace(/(-?[\d.]+)px/g, (_, n) => `${(Number(n) * k).toFixed(2)}px`);
-const alphaK = (v: string, k: number) => v.replace(/rgba\(([^)]*),\s*([\d.]+)\)/g, (_, rgb, a) => `rgba(${rgb},${Math.min(1, Number(a) * k).toFixed(3)})`);
-
-function springCurve(k: number, c: number, ms = 360, step = 4) {
-  let x = 0, v = 0; const pts: [number, number][] = []; const dt = step / 1000;
-  for (let t = 0; t <= ms; t += step) { pts.push([t, x]); for (let s = 0; s < 8; s++) { const a = -k * (x - 1) - c * v; v += a * (dt / 8); x += v * (dt / 8); } }
-  return pts;
-}
-
 /** Everything a view of the cap needs, derived from the model. */
-function derive(m: Model, recipe: ReturnType<typeof useRecipe>, textW: number) {
+function derive(m: Model, recipe: ReturnType<typeof useRecipeLayers>, textW: number) {
   const pad = m.padAuto ? m.h / 2 - 1 : m.pad;
   const radius = (m.h / 2) * m.corners;
   const shadows = recipe.shadows;
@@ -110,7 +79,7 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
   const [pressed, setPressed] = React.useState(false);
   const [focusLayer, setFocusLayer] = React.useState<number | null>(null);
   const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const recipe = useRecipe();
+  const recipe = useRecipeLayers('button');
   const measure = React.useRef<HTMLSpanElement>(null);
   const bench = React.useRef<HTMLDivElement>(null);
   const [textW, setTextW] = React.useState(76);
@@ -196,7 +165,7 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
           </div>
         )}
 
-        {xray && <Callouts bench={bench} spot={spot} setSpot={setSpot} deps={[spot, m, pressed, textW]} />}
+        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, pressed, textW]} />}
         <div className="xr-hint eng">{xray ? 'Pick an icon to learn about that part' : 'Click the button to see inside it'}</div>
         {xray && (
           <div className="xr-actions">
@@ -218,29 +187,6 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
         </div>
       )}
     </div>
-  );
-}
-
-/* ───────────────────────── dials ───────────────────────── */
-
-function Dial({ label, value, min, max, step, fmt, onChange }: { label: string; value: number; min: number; max: number; step: number; fmt?: (v: number) => string; onChange: (v: number) => void }) {
-  return (
-    <div className="xr-dial">
-      <span className="xr-dial-head"><span>{label}</span><span className="readout-t">{fmt ? fmt(value) : value}</span></span>
-      <Slider.Root value={value} min={min} max={max} step={step} onValueChange={onChange}>
-        <Slider.Track />
-        <Slider.Knob aria-label={label} />
-      </Slider.Root>
-    </div>
-  );
-}
-
-function Switch({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <label className="xr-switch">
-      <span>{label}</span>
-      <span className="tog sm"><input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)} aria-label={label} /><span className="tr" /><span className="th" /></span>
-    </label>
   );
 }
 
@@ -308,15 +254,12 @@ function ShadowCard({ m, set, shadows }: { m: Model; set: (p: Partial<Model>) =>
 }
 
 function PressCard({ onPress }: { onPress: () => void }) {
-  const curve = React.useMemo(() => springCurve(SPRING.stiffness, SPRING.damping), []);
-  const Wd = 220, Ht = 70, T = 360;
-  const path = curve.map(([t, x], i) => `${i ? 'L' : 'M'}${((t / T) * Wd).toFixed(1)} ${(Ht - 8 - x * (Ht - 16)).toFixed(1)}`).join('');
   return (
     <>
       <p>When you hold it, the button moves down {String(P.travel)} pt in {String(P.press)} and its shadow shrinks. When you let go, a spring brings it back (stiffness {SPRING.stiffness}, damping {SPRING.damping}). Press it and watch.</p>
       <div className="xr-proof">
         <span onPointerDown={onPress}><Button tabIndex={0}>Press me</Button></span>
-        <svg viewBox={`0 0 ${Wd} ${Ht}`} width={Wd} height={Ht} aria-hidden><path d={`M0 ${Ht - 8}H${Wd}`} stroke="var(--rule)" /><path d={path} fill="none" stroke="var(--green-deep)" strokeWidth="1.5" /></svg>
+        <SpringPlot k={SPRING.stiffness} c={SPRING.damping} />
       </div>
     </>
   );
@@ -342,62 +285,7 @@ function LayersCard({ m, set, focus, setFocus, d }: { m: Model; set: (p: Partial
   );
 }
 
-/* ───────────────────────── callouts ───────────────────────── */
-
 const SIDE: Record<Spot, ['left' | 'right', number]> = {
   light: ['left', 0.2], shape: ['left', 0.48], type: ['left', 0.76],
   layers: ['right', 0.2], press: ['right', 0.48], shadow: ['right', 0.76],
 };
-
-function Callouts({ bench, spot, setSpot, deps }: { bench: React.RefObject<HTMLDivElement | null>; spot: Spot; setSpot: (s: Spot) => void; deps: unknown[] }) {
-  const [pts, setPts] = React.useState<Partial<Record<Spot, [number, number]>>>({});
-  const [box, setBox] = React.useState({ w: 0, h: 0 });
-  React.useLayoutEffect(() => {
-    let raf = 0; const until = performance.now() + 1100;
-    const measure = () => {
-      const el = bench.current;
-      if (!el) { raf = requestAnimationFrame(measure); return; }
-      const b = el.getBoundingClientRect();
-      const next: Partial<Record<Spot, [number, number]>> = {};
-      el.querySelectorAll<HTMLElement>('.xr-anchor').forEach((a) => {
-        const r = a.getBoundingClientRect();
-        next[a.dataset.spot as Spot] = [r.left + r.width / 2 - b.left, r.top + r.height / 2 - b.top];
-      });
-      setPts(next); setBox({ w: b.width, h: b.height });
-      if (performance.now() < until) raf = requestAnimationFrame(measure);
-    };
-    raf = requestAnimationFrame(measure);
-    const ro = new ResizeObserver(() => { raf = requestAnimationFrame(measure); });
-    const start = requestAnimationFrame(() => { if (bench.current) ro.observe(bench.current); });
-    return () => { cancelAnimationFrame(raf); cancelAnimationFrame(start); ro.disconnect(); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
-  const colX = (side: 'left' | 'right') => (side === 'left' ? 28 : box.w - 28);
-  return (
-    <>
-      <svg className="xr-leaders" width={box.w} height={box.h} aria-hidden>
-        {SPOTS.map((s) => {
-          const p = pts[s.id]; if (!p) return null;
-          const [side, fy] = SIDE[s.id];
-          const cx = side === 'left' ? colX('left') + 36 : colX('right') - 36, cy = box.h * fy;
-          const knee = side === 'left' ? cx + 24 : cx - 24;
-          return (
-            <g key={s.id} className={spot === s.id ? 'is-on' : ''}>
-              <path d={`M${cx} ${cy}H${knee}L${p[0]} ${p[1]}`} />
-              <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
-            </g>
-          );
-        })}
-      </svg>
-      {SPOTS.map((s) => {
-        const [side, fy] = SIDE[s.id];
-        const style = side === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy };
-        return (
-          <button key={s.id} type="button" className={['xr-callout', side, spot === s.id ? 'is-on' : ''].join(' ')} style={style} onClick={() => setSpot(s.id)} aria-pressed={spot === s.id} aria-label={`${s.title}: ${s.word}`} title={s.title}>
-            <span className="xr-callout-ico"><Glyph id={s.id} /></span>
-          </button>
-        );
-      })}
-    </>
-  );
-}
