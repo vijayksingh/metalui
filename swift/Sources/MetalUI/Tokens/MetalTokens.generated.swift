@@ -576,6 +576,7 @@ public enum MetalRecipes {
             "self.x": .number(-25.0),
             "self.y": .number(2.5),
             "self.fade": .text("160ms"),
+            "self.disabled": .text("0.4"),
             "tick.x": .number(5.0),
             "tick.y": .number(2.5),
             "tick.w": .number(4.0),

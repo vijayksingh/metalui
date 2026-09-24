@@ -773,6 +773,7 @@
   --mu-r-checkbox-self-x: -25px;
   --mu-r-checkbox-self-y: 2.5px;
   --mu-r-checkbox-self-fade: 160ms;
+  --mu-r-checkbox-self-disabled: 0.4;
   --mu-r-checkbox-tick-x: 5px;
   --mu-r-checkbox-tick-y: 2.5px;
   --mu-r-checkbox-tick-w: 4px;
