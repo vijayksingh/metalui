@@ -13,7 +13,7 @@ export interface NavGroup {
 export const NAV: NavGroup[] = [
   {
     label: 'Start',
-    items: [{ to: '/', label: 'Overview' }],
+    items: [{ to: '/overview', label: 'Overview' }],
   },
   {
     label: 'Foundations',

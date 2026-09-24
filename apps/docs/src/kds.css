@@ -606,3 +606,31 @@ html.rm .drift-item { animation: none; }
 .xr-overlay { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 24px; background: color-mix(in srgb, var(--page) 70%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); animation: rise var(--spring-surface-d) var(--spring-surface) both; }
 .xr-overlay > .xr-sheet { width: min(980px, 100%); }
+
+/* ============================================================ LANDING: objects hanging in space, no shell */
+.landing { position: fixed; inset: 0; overflow: hidden; z-index: 1;
+  background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, var(--s-hi) 90%, transparent), transparent 60%), var(--page); }
+[data-mu-colorway="graphite"] .landing { background: radial-gradient(90% 80% at 30% 10%, rgba(255,255,255,.05), transparent 60%), var(--page); }
+.landing-corners { position: absolute; z-index: 5; top: 24px; left: 28px; right: 28px; display: flex; align-items: center; justify-content: space-between; }
+.landing-foot { position: absolute; z-index: 5; left: 0; right: 0; bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; pointer-events: none; }
+.landing-foot > * { pointer-events: auto; }
+.landing-foot .mu-button { zoom: 1.25; }
+.landing-line { margin: 0; font: 600 28px/34px var(--sans); letter-spacing: -.03em; color: var(--ink); }
+.landing-line span { color: var(--ink3); }
+.space { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 40%; }
+.space-camera { position: absolute; inset: 0; transform-style: preserve-3d;
+  transform: rotateX(var(--lean-x, 0deg)) rotateY(var(--lean-y, 0deg));
+  transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.drift-item.in-space { transform-style: preserve-3d; animation-name: drift-space; filter: blur(var(--blur, 0px)); }
+.drift-item.in-space:hover, .drift-item.in-space:focus-within { filter: none; }
+@keyframes drift-space {
+  from { transform: translate3d(0, 0, var(--z, 0px)) rotateY(var(--turn, 0deg)) rotateX(2deg); }
+  to { transform: translate3d(var(--dx, 40px), var(--dy, -24px), var(--z, 0px)) rotateY(calc(var(--turn, 0deg) * .6)) rotateX(-2deg); }
+}
+html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var(--z, 0px)) rotateY(var(--turn, 0deg)); }
+@media (max-width: 700px) { .drift-item.in-space { zoom: .72; } .landing-line { font-size: 22px; line-height: 28px; } }
+
+/* "Read the docs": each object flies from space to its place on the table */
+::view-transition-group(*) { animation-duration: .75s; animation-timing-function: var(--mu-spring-surface, cubic-bezier(.2,.7,.2,1)); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }

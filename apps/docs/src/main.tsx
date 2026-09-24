@@ -9,11 +9,12 @@ import { NotFound } from './pages/NotFound';
 const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
 
 const router = createBrowserRouter([
+  { path: '/', lazy: lazy(() => import('./pages/Landing')), errorElement: <NotFound /> },
   {
     Component: Shell,
     errorElement: <NotFound />,
     children: [
-      { index: true, lazy: lazy(() => import('./pages/Home')) },
+      { path: 'overview', lazy: lazy(() => import('./pages/Home')) },
       { path: 'foundations', lazy: lazy(() => import('./pages/foundations/Principles')) },
       { path: 'foundations/color', lazy: lazy(() => import('./pages/foundations/Color')) },
       { path: 'foundations/typography', lazy: lazy(() => import('./pages/foundations/Typography')) },
