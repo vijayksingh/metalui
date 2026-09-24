@@ -703,6 +703,26 @@ export const ICON_CATALOG = {
     body: "<rect class=\"rb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5\" width=\"17\" height=\"14\" rx=\"3.5\"/><path d=\"M3.5 9.6h17\"/><path class=\"rn\" d=\"M6.8 7.3h3.6\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * TASK · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the tick lifts
+   * PRESS one-shot (from the current pose)
+   *          the tick redraws
+   *     0ms   .tk plays tk-p (300ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "task": {
+    label: "Task",
+    category: "Tools",
+    hover: "the tick lifts",
+    press: "the tick redraws",
+    pressMs: 300,
+    defs: "",
+    body: "<rect class=\"tb f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><path class=\"tk\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

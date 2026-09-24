@@ -304,4 +304,12 @@ export const ICONS = [
   mo: `@H .rn{transform:scaleX(2.1)}
        @P .rb{animation:rg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes rg-p{40%{transform:scale(.95)}}`,
   shape: 'Frame 17 × 14 r3.5, tinted .08; head rule on the 9.6 line; the name a 3.6 wire in the head.' },
+
+// A task: the dimple with its tick. Body: the dimple. Mark: the tick (the check glyph's, smaller).
+{ name: 'task', cat: 'Tools', label: 'Task', hover: 'the tick lifts', press: 'the tick redraws',
+  body: `<rect class="tb f" style="--duo:.12" x="5" y="5" width="14" height="14" rx="3.5"/><path class="tk" pathLength="1" d="M8.7 12.2l2.3 2.3 4.4-4.9"/>`,
+  base: `& .tk{stroke-dasharray:1 2;transform-origin:11px 14.5px}`,
+  mo: `@H .tk{transform:translateY(-.5px) rotate(-4deg)}
+       @P .tk{animation:tk-p .3s cubic-bezier(.3,.1,.2,1) both} @keyframes tk-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
+  shape: 'Dimple 14 × 14 r3.5, tinted .12; the tick draws with trim(0→1).' },
 ];
