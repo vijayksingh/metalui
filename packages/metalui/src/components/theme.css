@@ -25,6 +25,11 @@
   --color-green: var(--mu-green);
   --color-green-deep: var(--mu-green-deep);
   --color-red: var(--mu-red);
+  --color-tint-ember: var(--mu-tint-ember);
+  --color-tint-sand: var(--mu-tint-sand);
+  --color-tint-graphite: var(--mu-tint-graphite);
+  --color-tint-dusk: var(--mu-tint-dusk);
+  --color-tint-iris: var(--mu-tint-iris);
   --shadow-raise: var(--mu-raise);
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);

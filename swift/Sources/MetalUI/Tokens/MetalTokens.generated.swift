@@ -30,6 +30,11 @@ public struct MetalColorwayTokens: Sendable {
     public let pressedBg: MetalGradient
     public let pressedSh: [MetalShadow]
     public let duoK: Double
+    public let tintEmber: MetalRGBA
+    public let tintSand: MetalRGBA
+    public let tintGraphite: MetalRGBA
+    public let tintDusk: MetalRGBA
+    public let tintIris: MetalRGBA
 }
 
 /// A signal cap (primary, destructive) that looks the same in both colorways.
@@ -102,7 +107,12 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.035)),
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
         ],
-        duoK: 1.0
+        duoK: 1.0,
+        tintEmber: MetalRGBA(176, 118, 26, 1.0),
+        tintSand: MetalRGBA(148, 113, 74, 1.0),
+        tintGraphite: MetalRGBA(92, 92, 96, 1.0),
+        tintDusk: MetalRGBA(98, 112, 142, 1.0),
+        tintIris: MetalRGBA(95, 87, 201, 1.0)
     )
 
     public static let graphite = MetalColorwayTokens(
@@ -165,7 +175,12 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.5)),
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
         ],
-        duoK: 1.3
+        duoK: 1.3,
+        tintEmber: MetalRGBA(230, 181, 94, 1.0),
+        tintSand: MetalRGBA(209, 181, 142, 1.0),
+        tintGraphite: MetalRGBA(166, 166, 169, 1.0),
+        tintDusk: MetalRGBA(158, 169, 194, 1.0),
+        tintIris: MetalRGBA(169, 163, 243, 1.0)
     )
 }
 
@@ -234,4 +249,49 @@ public enum MetalSprings {
     public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
     /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
     public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
+}
+
+/// Valence tints color feelings and energy glyphs only: hue carries valence (warm pleasant, cool unpleasant), saturation carries energy (vivid activated, muted settled). Never red or green, never on words, off under Increase Contrast and by one setting (data-mu-untinted).
+public enum MetalTint: String, CaseIterable, Sendable {
+    /// pleasant · activated: happy, excited, energised, proud
+    case ember
+    /// pleasant · settled: calm, hopeful, grateful, loved, rested
+    case sand
+    /// neutral · either: curious, focused, distracted, bored
+    case graphite
+    /// unpleasant · settled: dull, lonely, sad, drained, tired
+    case dusk
+    /// unpleasant · activated: anxious, angry, stressed, frustrated, overwhelmed
+    case iris
+
+    /// The tint's color in a colorway.
+    public func color(in colorway: MetalColorway) -> MetalRGBA {
+        switch self {
+        case .ember: return colorway.tokens.tintEmber
+        case .sand: return colorway.tokens.tintSand
+        case .graphite: return colorway.tokens.tintGraphite
+        case .dusk: return colorway.tokens.tintDusk
+        case .iris: return colorway.tokens.tintIris
+        }
+    }
+
+    public var valence: String {
+        switch self {
+        case .ember: return "pleasant"
+        case .sand: return "pleasant"
+        case .graphite: return "neutral"
+        case .dusk: return "unpleasant"
+        case .iris: return "unpleasant"
+        }
+    }
+
+    public var energy: String {
+        switch self {
+        case .ember: return "activated"
+        case .sand: return "settled"
+        case .graphite: return "either"
+        case .dusk: return "settled"
+        case .iris: return "activated"
+        }
+    }
 }

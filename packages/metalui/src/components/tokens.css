@@ -132,6 +132,11 @@
   --mu-pressed-bg: linear-gradient(#E9E8E4,#EFEEEA);
   --mu-pressed-sh: inset 0 2px 5px -1px rgba(60,55,40,.14), inset 0 0 0 .5px rgba(0,0,0,.035), inset 0 -2px 3px -2px rgba(255,255,255,.9);
   --mu-duo-k: 1;
+  --mu-tint-ember: #B0761A;
+  --mu-tint-sand: #94714A;
+  --mu-tint-graphite: #5C5C60;
+  --mu-tint-dusk: #62708E;
+  --mu-tint-iris: #5F57C9;
 }
 
 [data-mu-colorway="graphite"] {
@@ -163,6 +168,11 @@
   --mu-pressed-bg: linear-gradient(#18181A,#1C1C1E);
   --mu-pressed-sh: inset 0 2px 5px -1px rgba(0,0,0,.65), inset 0 0 0 .5px rgba(0,0,0,.5), inset 0 -2px 3px -2px rgba(255,255,255,.05);
   --mu-duo-k: 1.3;
+  --mu-tint-ember: #E6B55E;
+  --mu-tint-sand: #D1B58E;
+  --mu-tint-graphite: #A6A6A9;
+  --mu-tint-dusk: #9EA9C2;
+  --mu-tint-iris: #A9A3F3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -195,5 +205,22 @@
     --mu-pressed-bg: linear-gradient(#18181A,#1C1C1E);
     --mu-pressed-sh: inset 0 2px 5px -1px rgba(0,0,0,.65), inset 0 0 0 .5px rgba(0,0,0,.5), inset 0 -2px 3px -2px rgba(255,255,255,.05);
     --mu-duo-k: 1.3;
+    --mu-tint-ember: #E6B55E;
+    --mu-tint-sand: #D1B58E;
+    --mu-tint-graphite: #A6A6A9;
+    --mu-tint-dusk: #9EA9C2;
+    --mu-tint-iris: #A9A3F3;
   }
+}
+
+/* Valence tints (foundations.tint): feelings and energy glyphs only, never words. */
+.mu-tint-ember { color: var(--mu-tint-ember); }
+.mu-tint-sand { color: var(--mu-tint-sand); }
+.mu-tint-graphite { color: var(--mu-tint-graphite); }
+.mu-tint-dusk { color: var(--mu-tint-dusk); }
+.mu-tint-iris { color: var(--mu-tint-iris); }
+[data-mu-untinted] :is(.mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris),
+[data-mu-untinted]:is(.mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) { color: inherit; }
+@media (prefers-contrast: more) {
+  .mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris { color: inherit; }
 }

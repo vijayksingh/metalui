@@ -28,6 +28,52 @@ function Led({ ok }: { ok: boolean }) {
   );
 }
 
+const TINTS = Object.entries(tokens.foundations.tint).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [
+  string,
+  { valence: string; energy: string; feelings: string[] },
+][];
+
+/** The feelings vessel (r 9.3 on the 24 grid, 1.7 wire, duotone body), standing in for a feelings glyph. */
+function Vessel({ tint }: { tint: string }) {
+  return (
+    <svg viewBox="0 0 24 24" width={32} height={32} aria-hidden="true" className={`mu-tint-${tint}`} fill="none" stroke="currentColor" strokeWidth={1.7}>
+      <circle cx="12" cy="12" r="9.3" fill="currentColor" fillOpacity="calc(.14 * var(--mu-duo-k, 1))" />
+    </svg>
+  );
+}
+
+/** Five tints in both colorways, with a switch that turns them off the way Increase Contrast does. */
+function TintBench() {
+  const [off, setOff] = React.useState(false);
+  return (
+    <div className="flex w-full flex-col items-center gap-20" data-mu-untinted={off ? '' : undefined}>
+      <div className="grid w-full gap-16 md:grid-cols-2">
+        {(['bone', 'graphite'] as CW[]).map((cw) => (
+          <div key={cw} data-mu-colorway={cw} className="material-raised flex flex-col gap-16 rounded-card p-24">
+            <span className="type-label engraved">{cw}</span>
+            <div className="grid grid-cols-5 gap-8 text-icon">
+              {TINTS.map(([t]) => (
+                <div key={t} className="flex flex-col items-center gap-6">
+                  <Vessel tint={t} />
+                  <span className="type-meta text-ink2">{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        aria-pressed={off}
+        onClick={() => setOff((v) => !v)}
+        className={['type-ui h-28 cursor-pointer rounded-pill px-13 text-ink', off ? 'material-pressed' : 'material-cap'].join(' ')}
+      >
+        {off ? 'Tints off' : 'Tints on'}
+      </button>
+    </div>
+  );
+}
+
 export default function Color() {
   const d = useDialKit(
     'Color & ink',
@@ -99,7 +145,7 @@ export default function Color() {
                 <span className="type-title text-ink">{cw === 'bone' ? 'Bone' : 'Graphite'}</span>
                 <span className="type-readout text-ink2">{cw === 'bone' ? SHARED.page : SHARED['page-dark']}</span>
               </div>
-              <div className="grid grid-cols-5 gap-8">
+              <div className="grid grid-cols-5 gap-8 text-icon">
                 {SURFACE_KEYS.map((k) => (
                   <div key={k} className="flex flex-col gap-6">
                     <div className="h-48 rounded-row shadow-[inset_0_0_0_.5px_rgba(0,0,0,.08)]" style={{ background: C[cw][k] }} />
@@ -177,6 +223,31 @@ export default function Color() {
             ['--mu-red', SHARED.red, 'Destructive only.'],
             ['--mu-blue', SHARED.blue, 'The capture card, the one saturated hero surface.'],
             ['--mu-gold', SHARED.gold, 'Keeper ring, as a hairline only.'],
+          ]}
+        />
+      </Section>
+
+      <Section
+        title="Valence tints"
+        lede="Five tints color the glyphs that carry a feeling or an energy, and nothing else. Hue carries valence: warm is pleasant, cool is unpleasant. Saturation carries energy: vivid is activated, muted is settled. Neutral is graphite, which is ink2 by design. There is no red and no green, so a feeling never reads as destructive or as intent."
+      >
+        <Bench caption="The feelings vessel in each tint · Increase Contrast, or the switch, returns every glyph to ink">
+          <TintBench />
+        </Bench>
+        <TokenTable
+          rows={TINTS.map(([t, q]) => [
+            `--mu-tint-${t}`,
+            `${C.bone[`tint-${t}` as keyof (typeof C)['bone']]} · ${C.graphite[`tint-${t}` as keyof (typeof C)['bone']]}`,
+            `${q.valence} · ${q.energy}: ${q.feelings.join(', ')}. Glyph at ${(['bone', 'graphite'] as CW[])
+              .map((cw) => `${worstContrast(C[cw][`tint-${t}` as keyof (typeof C)['bone']], surfaces(cw)).toFixed(1)}:1`)
+              .join(' / ')} on the worst surface.`,
+          ])}
+        />
+        <Rules
+          rules={[
+            { id: 'C4', title: 'Glyphs only, never words', body: 'Apply .mu-tint-<name> (or .metalTint(_:) in SwiftUI) to the glyph. The duotone body follows through currentColor. The label beside it stays ink.' },
+            { id: 'C5', title: 'Feelings and energy only', body: 'A tint says how something feels, never what state it is in. Status is an LED, intent is phosphor, destruction is red.' },
+            { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns tinted glyphs to the surrounding ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language has to read without color.' },
           ]}
         />
       </Section>

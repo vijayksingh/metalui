@@ -57,6 +57,18 @@ function typeDecls(role) {
   if (r.tabular) out.push('font-variant-numeric: tabular-nums');
   return out;
 }
+// Valence tints: color only the glyphs that carry a feeling or energy, and fall back to the
+// surrounding ink under Increase Contrast or inside [data-mu-untinted].
+const TINTS = Object.keys(F.tint).filter((k) => !k.startsWith('$') && k !== 'field-shift');
+const tintSel = TINTS.map((t) => `.mu-tint-${t}`).join(', ');
+const tintClasses = `/* Valence tints (foundations.tint): feelings and energy glyphs only, never words. */
+${TINTS.map((t) => `.mu-tint-${t} { color: var(--mu-tint-${t}); }`).join('\n')}
+[data-mu-untinted] :is(${tintSel}),
+[data-mu-untinted]:is(${tintSel}) { color: inherit; }
+@media (prefers-contrast: more) {
+  ${tintSel} { color: inherit; }
+}`;
+
 const typeClasses = Object.keys(F.type)
   .map((role) => `.mu-type-${role} { ${typeDecls(role).join('; ')}; }`)
   .join('\n');
@@ -92,6 +104,8 @@ ${decl(T.colorways.graphite)}
 ${decl(T.colorways.graphite).replace(/^/gm, '  ')}
   }
 }
+
+${tintClasses}
 `;
 emit('packages/metalui/src/components/tokens.css', css);
 
@@ -116,6 +130,7 @@ ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
   --color-green: var(--mu-green);
   --color-green-deep: var(--mu-green-deep);
   --color-red: var(--mu-red);
+${TINTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
   --shadow-raise: var(--mu-raise);
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
@@ -284,6 +299,30 @@ ${swiftCaps}
 
 public enum MetalSprings {
 ${swiftSprings}
+}
+
+/// ${F.tint.$use}
+public enum MetalTint: String, CaseIterable, Sendable {
+${TINTS.map((t) => `    /// ${F.tint[t].valence} · ${F.tint[t].energy}: ${F.tint[t].feelings.join(', ')}\n    case ${t}`).join('\n')}
+
+    /// The tint's color in a colorway.
+    public func color(in colorway: MetalColorway) -> MetalRGBA {
+        switch self {
+${TINTS.map((t) => `        case .${t}: return colorway.tokens.tint${t[0].toUpperCase() + t.slice(1)}`).join('\n')}
+        }
+    }
+
+    public var valence: String {
+        switch self {
+${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(F.tint[t].valence)}`).join('\n')}
+        }
+    }
+
+    public var energy: String {
+        switch self {
+${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(F.tint[t].energy)}`).join('\n')}
+        }
+    }
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift);
