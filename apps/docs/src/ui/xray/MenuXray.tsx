@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Kbd, Menu, MenuItem, MenuSeparator } from '@unlocalhosted/metalui';
+import { Button, Kbd, Menu, MenuItem, MenuSeparator, menuParts as M } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
@@ -60,11 +60,11 @@ const rowIndexes = ROWS.map((r, i) => (r ? i : -1)).filter((i) => i >= 0);
 /** A still of the menu, drawn with its own classes (the live one lives in a portal). */
 export function MenuStill({ lit = 0 }: { lit?: number }) {
   return (
-    <div className="mu-menu" style={{ position: 'static', width: 220 }}>
-      <div className="mu-menu-heading mu-type-label">{HEADING}</div>
+    <div className={M.PLATE} style={{ position: 'static', width: 220 }}>
+      <div className={M.HEADING}>{HEADING}</div>
       {ROWS.map((r, i) => r
-        ? <div key={i} className="mu-menu-row mu-type-ui" data-highlighted={i === lit ? '' : undefined} data-danger={'danger' in r ? '' : undefined}><span className="mu-menu-glyph"><Icon name={r.icon} size={14} /></span><span className="mu-menu-label">{r.label}</span><Kbd size="small" className="mu-menu-key">{r.key}</Kbd></div>
-        : <div key={i} className="mu-menu-sep" />)}
+        ? <div key={i} className={M.ROW} data-highlighted={i === lit ? '' : undefined} data-danger={'danger' in r ? '' : undefined}><span className={M.GLYPH}><Icon name={r.icon} size={14} /></span><span className={M.LABEL}>{r.label}</span><Kbd size="small" className={M.KEY}>{r.key}</Kbd></div>
+        : <div key={i} className={M.SEP} />)}
     </div>
   );
 }

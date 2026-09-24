@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Kbd } from '@unlocalhosted/metalui';
+import { Kbd, paletteParts as P } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { Exploded, IsoCap, IsoTray, LayerList, Proof, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
 
@@ -197,13 +197,13 @@ export function PaletteXray({ startOpen = false }: { startOpen?: boolean }) {
 /** A small still of the palette, drawn with its own classes (the live one lives in a dialog). */
 export function PaletteStill() {
   return (
-    <div className="mu-palette mu-frost-plate" style={{ position: 'static', transform: 'none', translate: 'none', margin: 0, width: 300 }}>
-      <label className="mu-palette-field"><span className="mu-palette-field-glyph"><Icon name="search" size={15} /></span><span className="mu-palette-input mu-type-content">tidy</span></label>
-      <div className="mu-palette-list" style={{ maxHeight: 'none' }}>
-        <div className="mu-palette-sec mu-type-label"><span className="mu-palette-eng">ACTIONS</span><span className="mu-palette-eng">1</span></div>
-        <div className="mu-palette-row mu-type-ui" data-highlighted=""><span className="mu-palette-row-glyph"><Icon name="tidy" size={14} /></span><span className="mu-palette-row-text"><mark className="mu-palette-mark">Tidy</mark> the canvas</span><span className="mu-palette-row-hint"><Kbd size="small">⌘T</Kbd></span></div>
+    <div className={P.POPUP} style={{ position: 'static', transform: 'none', translate: 'none', margin: 0, width: 300, opacity: 1 }}>
+      <label className={P.FIELD}><span className={P.FIELD_GLYPH}><Icon name="search" size={15} /></span><span className={P.INPUT}>tidy</span></label>
+      <div className={P.LIST} style={{ maxHeight: 'none' }}>
+        <div className={P.SEC}><span className={P.ENG}>ACTIONS</span><span className={P.ENG}>1</span></div>
+        <div className={P.ROW} data-highlighted=""><span className={P.ROW_GLYPH}><Icon name="tidy" size={14} /></span><span className={P.ROW_TEXT}><mark className={P.MARK}>Tidy</mark> the canvas</span><span className={P.ROW_HINT}><Kbd size="small">⌘T</Kbd></span></div>
       </div>
-      <div className="mu-palette-foot mu-type-label"><span><Kbd size="small">↩</Kbd><span className="mu-palette-eng">OPEN</span></span></div>
+      <div className={P.FOOT}><span className={P.FOOT_KEYS}><Kbd size="small">↩</Kbd><span className={P.ENG}>OPEN</span></span></div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Kbd, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { Button, Kbd, ToastProvider, toastParts as T, useToast } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, type LayerDef, type SpotDef } from './kit';
 
@@ -189,9 +189,9 @@ export function ToastXray({ startOpen = false }: { startOpen?: boolean }) {
 /** A still of the toast, drawn with its own classes (the live one lives in a portal). */
 export function ToastStill() {
   return (
-    <div className="mu-toast" style={{ display: 'inline-flex' }}>
-      <span className="mu-toast-text">Moved 3 blocks<span className="mu-toast-sub">· undo it any time</span></span>
-      <span className="mu-toast-undo">Undo <Kbd surface="sunk">⌘Z</Kbd></span>
+    <div className={T.TOAST} style={{ display: 'inline-flex' }}>
+      <span className={T.TEXT}>Moved 3 blocks<span className={T.SUB}>· undo it any time</span></span>
+      <span className={T.UNDO}>Undo <Kbd surface="plain" className={T.KEY}>⌘Z</Kbd></span>
     </div>
   );
 }

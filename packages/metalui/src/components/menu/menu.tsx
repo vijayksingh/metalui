@@ -25,6 +25,9 @@ const LABEL = 'mu-menu-label flex-1 min-w-0 overflow-hidden text-ellipsis whites
 const KEY = 'mu-menu-key ml-menu-row-key-gap';
 const SEP = 'mu-menu-sep h-menu-sep-thickness my-menu-sep-inset-y mx-menu-sep-inset-x recipe-menu-sep';
 
+/** The menu's part classes, for stills of it outside a popup (docs, previews). */
+export const menuParts = { PLATE, HEADING, ROW, GLYPH, LABEL, KEY, SEP } as const;
+
 function offset() {
   if (typeof window === 'undefined') return 6;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-menu-offset')) || 6;

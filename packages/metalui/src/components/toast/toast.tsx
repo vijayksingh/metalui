@@ -57,6 +57,9 @@ const CHECK = 'mu-toast-check text-success';
 const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
 
+/** The toast's part classes, for stills of it outside the toast region (docs, previews). */
+export const toastParts = { TOAST, TEXT, SUB, UNDO, KEY } as const;
+
 function ToastList() {
   const { toasts } = Toast.useToastManager();
   return (

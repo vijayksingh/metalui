@@ -43,6 +43,9 @@ const FOOT = 'mu-palette-foot flex items-center gap-palette-foot-gap mt-palette-
 const FOOT_KEYS = 'flex items-center gap-palette-foot-key-gap';
 const STATUS = 'mu-palette-status palette-eng flex items-center gap-palette-foot-key-gap ml-auto';
 
+/** The palette's part classes, for stills of it outside its dialog (docs, previews). */
+export const paletteParts = { POPUP, FIELD, FIELD_GLYPH, INPUT, LIST, ENG, SEC, ROW, ROW_GLYPH, ROW_TEXT, ROW_HINT, MARK, FOOT, FOOT_KEYS } as const;
+
 export interface CommandPaletteItem {
   /** Unique within the palette. */
   id: string;
