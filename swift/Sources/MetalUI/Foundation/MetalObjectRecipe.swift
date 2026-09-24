@@ -38,6 +38,8 @@ public enum MetalRecipeFill: Equatable, Sendable {
     case linear(angle: Double, stops: [MetalRecipeStop])
     /// Center in unit coordinates of the part's box.
     case radial(center: CGPoint, stops: [MetalRecipeStop])
+    /// CSS `conic-gradient(from <angle>deg, …)`: a knurled knob.
+    case conic(from: Double, stops: [MetalRecipeStop])
 }
 
 public struct MetalRecipeShadow: Equatable, Sendable {
@@ -206,6 +208,16 @@ extension MetalRecipeFill {
                         .gradient(diameter: max(geo.size.width, geo.size.height))
                 )
             }
+        case .conic(let from, let stops):
+            // CSS starts a conic gradient at 12 o'clock and turns clockwise; SwiftUI's angular gradient
+            // starts at 3 o'clock, so turn it back a quarter.
+            shape.fill(
+                AngularGradient(
+                    stops: stops.map { Gradient.Stop(color: $0.paint.resolved(self: own).color, location: $0.location) },
+                    center: .center,
+                    angle: .degrees(from - 90)
+                )
+            )
         }
     }
 
@@ -213,7 +225,7 @@ extension MetalRecipeFill {
         func clear(_ p: MetalRecipePaint) -> Bool { if case .color(let c) = p { return c.alpha < 1 } else { return false } }
         switch self {
         case .solid(let p): return clear(p)
-        case .linear(_, let s), .radial(_, let s): return s.contains { clear($0.paint) }
+        case .linear(_, let s), .radial(_, let s), .conic(_, let s): return s.contains { clear($0.paint) }
         }
     }
 }

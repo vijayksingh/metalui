@@ -6,7 +6,7 @@ import { Kbd } from '../kbd/kbd';
 import './toast.css';
 
 /* ─────────────────────────────────────────────────────────
- * TOAST (KAMUI-20) on Base UI Toast
+ * TOAST (object sheet) on Base UI Toast
  *   show     one at a time; arrives one nest from below from .97 on settle
  *   undo     a cap with ⌘Z; the toast stays 5 s (plain 2.6 s); errors stay until resolved
  *   leave    on release, the way it came (a crossfade under Reduce Motion)
@@ -54,14 +54,14 @@ function ToastList() {
     <Toast.Portal>
       <Toast.Viewport className="mu-toast-viewport">
         {toasts.map((t) => (
-          <Toast.Root key={t.id} toast={t} className="mu-toast type-ui" data-type={t.type}>
+          <Toast.Root key={t.id} toast={t} className="mu-toast" data-type={t.type}>
             <span className="mu-toast-text">
               {t.type === 'success' && <span aria-hidden className="mu-toast-check">✓</span>}
               <Toast.Title render={<span />}>{t.title}</Toast.Title>
               {t.description && <Toast.Description render={<span className="mu-toast-sub" />}>· {t.description}</Toast.Description>}
             </span>
             {t.actionProps && (
-              <Toast.Action className="mu-toast-undo type-ui" aria-keyshortcuts="Meta+Z">
+              <Toast.Action className="mu-toast-undo" aria-keyshortcuts="Meta+Z">
                 Undo <Kbd surface="sunk">⌘Z</Kbd>
               </Toast.Action>
             )}

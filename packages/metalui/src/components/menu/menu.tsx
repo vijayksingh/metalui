@@ -7,9 +7,9 @@ import { Kbd } from '../kbd/kbd';
 import './menu.css';
 
 /* ─────────────────────────────────────────────────────────
- * MENU and CORRECTION POPOVER (Kamui 03 §5, 04 §8, §18; the medium demo's #pop) on Base UI Menu
+ * MENU and CORRECTION POPOVER (the brief, 04 §8, §18; the reference design's #pop) on Base UI Menu
  *   open      from a trigger (6 below it) or at the pointer (right-click): fades in on settle
- *   heading   what the menu acts on, engraved: "NOTE · TASK BY JEV 0.82"
+ *   heading   what the menu acts on, engraved: "NOTE · TASK BY RECOGNIZER 0.82"
  *   rows      pointer and keyboard share one highlighted state; ↑ ↓ and type-ahead; ↩ chooses
  *   choose    the row runs and the menu closes (fades on release); focus returns to the trigger
  *   ⎋ / click outside  closes, nothing runs

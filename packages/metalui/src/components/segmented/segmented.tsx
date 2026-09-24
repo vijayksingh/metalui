@@ -7,7 +7,7 @@ import { SlidingIndicator } from '../../motion/indicator';
 import './segmented.css';
 
 /* ─────────────────────────────────────────────────────────
- * SEGMENTED CONTROL (KAMUI-04) on Base UI RadioGroup
+ * SEGMENTED CONTROL (object sheet) on Base UI RadioGroup
  *
  *   rest      a well track; segments in ink2, the selected one a raised thumb in ink
  *   hover     the label turns ink (settle)
@@ -52,7 +52,7 @@ export function Segmented<V extends string = string>({ options, value, defaultVa
     >
       <SlidingIndicator className="mu-segmented-thumb" />
       {options.map((o) => (
-        <Radio.Root key={o.value} value={o.value} disabled={o.disabled} className="mu-segment type-ui">
+        <Radio.Root key={o.value} value={o.value} disabled={o.disabled} className="mu-segment">
           {o.icon}
           {o.label}
         </Radio.Root>

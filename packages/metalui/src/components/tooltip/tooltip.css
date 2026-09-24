@@ -1,28 +1,27 @@
 @import "../tokens.css";
 
-/* Tooltip (Kamui 04 §2, §8; the medium demo's #tip) on Base UI Tooltip. */
+/* Tooltip (the reference design's #tip) on Base UI Tooltip. Its look is the tooltip recipe (--mu-r-tooltip-*). */
 /* Above menus and toasts: it names what is under the pointer. */
-.mu-tooltip-positioner { z-index: 70; }
+.mu-tooltip-positioner { z-index: var(--mu-r-tooltip-self-z); }
 .mu-tooltip {
-  max-width: var(--mu-tooltip-max-width);
-  padding: var(--mu-tooltip-pad-y) var(--mu-tooltip-pad-x);
-  border-radius: var(--mu-radius-pill);
+  max-width: var(--mu-r-tooltip-self-max-width);
+  padding: var(--mu-r-tooltip-self-pad-y) var(--mu-r-tooltip-self-pad-x);
+  border-radius: var(--mu-r-tooltip-self-radius);
   white-space: nowrap;
   pointer-events: none;
-  color: var(--mu-tooltip-ink);
-  background: var(--mu-frost-graphite-fill);
-  box-shadow: var(--mu-frost-graphite-shadow);
-  -webkit-backdrop-filter: var(--mu-backdrop);
-  backdrop-filter: var(--mu-backdrop);
+  font: var(--mu-r-tooltip-self-font);
+  letter-spacing: var(--mu-r-tooltip-self-tracking);
+  color: var(--mu-r-tooltip-self-ink);
+  background: var(--mu-r-tooltip-self-background);
+  box-shadow: var(--mu-r-tooltip-self-shadow);
+  -webkit-backdrop-filter: var(--mu-r-tooltip-self-blur);
+  backdrop-filter: var(--mu-r-tooltip-self-blur);
   /* A fade on settle: it is information, not an arrival. */
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
-.mu-tooltip[data-starting-style], .mu-tooltip[data-ending-style] { opacity: 0; }
+.mu-tooltip[data-starting-style], .mu-tooltip[data-ending-style] { opacity: var(--mu-zero); }
 .mu-tooltip[data-instant] { transition: none; }
-.mu-tooltip-key { color: var(--mu-tooltip-key-ink); }
+.mu-tooltip-key { color: var(--mu-r-tooltip-key-ink); }
 @media (prefers-reduced-transparency: reduce) {
   .mu-tooltip { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
-@media (prefers-contrast: more) {
-  .mu-tooltip { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), var(--mu-frost-graphite-shadow); }
 }

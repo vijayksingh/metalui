@@ -1,0 +1,29 @@
+{
+  "name": "slider",
+  "title": "Slider",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.",
+  "base": "@base-ui/react/slider",
+  "react": {
+    "export": "Slider",
+    "files": [
+      "slider.tsx",
+      "slider.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSlider",
+    "file": "swift/Sources/MetalUI/Components/MetalSlider.swift"
+  },
+  "agent": "slider.agent.md",
+  "slots": {
+    "Slider": [
+      "Root",
+      "Track",
+      "Marks",
+      "Ticks",
+      "Knob"
+    ]
+  }
+}

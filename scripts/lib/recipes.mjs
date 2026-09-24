@@ -71,7 +71,7 @@ function shadow(layer) {
 }
 
 function gradient(v) {
-  const kind = v.startsWith('radial') ? 'radial' : 'linear';
+  const kind = v.startsWith('radial') ? 'radial' : v.startsWith('conic') ? 'conic' : 'linear';
   const inner = v.slice(v.indexOf('(') + 1, v.lastIndexOf(')'));
   const parts = splitTop(inner);
   let angle = 180;
@@ -80,6 +80,13 @@ function gradient(v) {
   else if (kind === 'linear' && /^to /.test(parts[0])) {
     const dir = parts.shift();
     angle = { 'to top': 0, 'to right': 90, 'to bottom': 180, 'to left': 270 }[dir] ?? 180;
+  }
+  if (kind === 'conic') {
+    const m = parts[0].match(/from ([-\d.]+)deg/);
+    if (m) {
+      angle = parseFloat(m[1]);
+      parts.shift();
+    } else angle = 0;
   }
   if (kind === 'radial') {
     const head = parts[0];
@@ -100,9 +107,10 @@ function gradient(v) {
 }
 
 function swiftFill(v) {
-  if (/^(linear|radial)-gradient/.test(v)) {
+  if (/^(linear|radial|conic)-gradient/.test(v)) {
     const g = gradient(v);
     const stops = g.stops.map((s) => `.init(${swiftPaintColor(s.color)}, ${num(s.loc)})`).join(', ');
+    if (g.kind === 'conic') return `.conic(from: ${num(g.angle)}, stops: [${stops}])`;
     return g.kind === 'linear' ? `.linear(angle: ${num(g.angle)}, stops: [${stops}])` : `.radial(center: .init(x: ${num(g.center[0])}, y: ${num(g.center[1])}), stops: [${stops}])`;
   }
   return `.solid(${swiftPaintColor(color(v))})`;

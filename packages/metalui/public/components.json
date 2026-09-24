@@ -389,6 +389,23 @@
       "sheet": "KAMUI-14 readout, Kamui 04 §10"
     },
     {
+      "name": "slider",
+      "title": "Slider",
+      "status": "alpha",
+      "description": "A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Slider",
+        "base": "@base-ui/react/slider"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSlider"
+      },
+      "registry": "https://metalui.dev/r/slider.json",
+      "agent": "https://metalui.dev/r/slider.md"
+    },
+    {
       "name": "sparkline",
       "title": "Sparkline",
       "status": "alpha",

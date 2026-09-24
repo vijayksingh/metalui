@@ -1,43 +1,42 @@
 @import "../tokens.css";
 
-/* Segmented control (KAMUI-04): a pill of pills on Base UI RadioGroup. */
+/* Segmented control: a pill of pills on Base UI RadioGroup. Its look is the segmented recipe (--mu-r-segmented-*). */
 .mu-segmented {
   position: relative;
   display: inline-flex;
-  padding: var(--mu-segmented-track-pad);
-  border-radius: 999px;
-  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
-  box-shadow: var(--mu-well);
+  padding: var(--mu-r-segmented-self-pad);
+  border-radius: var(--mu-radius-pill);
+  background: var(--mu-r-segmented-self-background);
+  box-shadow: var(--mu-r-segmented-self-shadow);
 }
 .mu-segment {
-  --h: var(--mu-segmented-regular);
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: var(--h);
-  /* The pill rule: text first, h/2 − 1. */
-  padding: 0 calc(var(--h) / 2 - 1px);
-  margin: 0;
-  border: 0;
-  border-radius: 999px;
+  gap: var(--mu-r-segmented-self-gap);
+  height: var(--mu-r-segmented-segment-height-regular);
+  padding: var(--mu-zero) var(--mu-r-segmented-segment-pad-x);
+  margin: var(--mu-zero);
+  border: var(--mu-zero);
+  border-radius: var(--mu-radius-pill);
   background: transparent;
   white-space: nowrap;
-  color: var(--mu-ink2);
+  font: var(--mu-r-segmented-segment-font);
+  letter-spacing: var(--mu-r-segmented-segment-tracking);
+  color: var(--mu-r-segmented-segment-ink);
   cursor: pointer;
-  transition: color var(--mu-spring-settle-d) var(--mu-spring-settle);
+  transition: color var(--mu-r-segmented-segment-fade);
   -webkit-tap-highlight-color: transparent;
 }
-.mu-segmented[data-size="compact"] .mu-segment { --h: var(--mu-segmented-compact); }
-.mu-segment:hover { color: var(--mu-ink); }
-.mu-segment[data-checked] { color: var(--mu-ink); }
-.mu-segment:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
-.mu-segment[data-disabled] { opacity: .4; cursor: default; }
-.mu-segmented[data-disabled] { opacity: .4; }
+.mu-segmented[data-size="compact"] .mu-segment { height: var(--mu-r-segmented-segment-height); }
+.mu-segment:hover, .mu-segment[data-checked] { color: var(--mu-r-segmented-segment-ink-on); }
+.mu-segment:focus-visible { outline: var(--mu-r-segmented-segment-focus-width) solid var(--mu-focus); outline-offset: var(--mu-zero); }
+.mu-segment[data-disabled], .mu-segmented[data-disabled] { opacity: var(--mu-r-segmented-segment-disabled); }
+.mu-segment[data-disabled] { cursor: default; }
 /* The thumb: a raised cap that glides on the part spring (SlidingIndicator). */
 .mu-segmented > .mu-segmented-thumb {
-  border-radius: 999px;
-  background: linear-gradient(var(--mu-thumb-hi), var(--mu-thumb-lo));
-  box-shadow: var(--mu-raise-sm);
+  border-radius: var(--mu-radius-pill);
+  background: var(--mu-r-segmented-thumb-background);
+  box-shadow: var(--mu-r-segmented-thumb-shadow);
 }

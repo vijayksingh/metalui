@@ -1,0 +1,55 @@
+@import "../tokens.css";
+@import "../well/well.css";
+
+/* Slider. Its look is the slider recipe (--mu-r-slider-*) on the track well. The root fills its box;
+   the host sets the box (the track sits on the root's centre line). */
+.mu-slider, .mu-slider-control { position: relative; width: 100%; height: 100%; touch-action: none; }
+.mu-slider-control { cursor: pointer; }
+.mu-slider-track {
+  position: absolute;
+  left: var(--mu-zero);
+  right: var(--mu-zero);
+  top: calc(50% - var(--mu-r-slider-track-height) / 2);
+  height: var(--mu-r-slider-track-height);
+}
+.mu-slider-fill {
+  height: 100%;
+  border-radius: var(--mu-radius-pill);
+  background: var(--mu-r-slider-fill-background);
+  opacity: var(--mu-r-slider-fill-opacity);
+}
+.mu-slider-marks, .mu-slider-ticks { position: absolute; left: var(--mu-r-slider-track-inset); right: var(--mu-r-slider-track-inset); pointer-events: none; }
+.mu-slider-marks { top: calc(50% - var(--mu-r-slider-mark-h) / 2); height: var(--mu-r-slider-mark-h); }
+.mu-slider-marks > i {
+  position: absolute;
+  width: var(--mu-r-slider-mark-w);
+  height: var(--mu-r-slider-mark-h);
+  transform: translateX(-50%);
+  border-radius: var(--mu-r-slider-mark-radius);
+  background: var(--mu-r-slider-mark-color);
+}
+.mu-slider-ticks { top: calc(50% + var(--mu-r-slider-tick-top)); }
+.mu-slider-ticks > span { position: absolute; transform: translateX(-50%); }
+.mu-slider-ticks > span::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--mu-zero) - var(--mu-r-slider-tick-lift));
+  width: var(--mu-r-slider-tick-w);
+  height: var(--mu-r-slider-tick-h);
+  background: var(--mu-r-slider-tick-color);
+}
+.mu-slider-knob {
+  top: 50%;
+  width: var(--mu-r-slider-knob-size);
+  height: var(--mu-r-slider-knob-size);
+  border-radius: var(--mu-round);
+  cursor: grab;
+  background: var(--mu-r-slider-knob-background);
+  box-shadow: var(--mu-r-slider-knob-shadow);
+}
+.mu-slider[data-dragging] .mu-slider-knob { cursor: grabbing; }
+.mu-slider-knob:has(:focus-visible) { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+/* A jump (a click, a key) rides the part spring; a drag follows the pointer exactly. */
+.mu-slider:not([data-dragging]) .mu-slider-knob { transition: inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part); }
+.mu-slider:not([data-dragging]) .mu-slider-fill { transition: width var(--mu-spring-part-d) var(--mu-spring-part); }

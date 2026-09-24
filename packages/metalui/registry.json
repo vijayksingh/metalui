@@ -543,6 +543,31 @@
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
     },
     {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/slider/slider.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/slider/slider.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/slider/slider.css",
+          "type": "registry:file",
+          "target": "components/metalui/slider/slider.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/slider.md. SwiftUI: MetalSlider in the MetalUI Swift package."
+    },
+    {
       "name": "sparkline",
       "type": "registry:ui",
       "title": "Sparkline",

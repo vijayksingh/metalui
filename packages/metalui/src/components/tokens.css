@@ -1201,6 +1201,119 @@
   --mu-r-dialog-self-top: 16vh;
   --mu-r-dialog-self-enter-y: -6px;
   --mu-r-dialog-self-enter-scale: 0.985;
+  /* slider: reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob */
+  --mu-r-slider-fill-background:
+    /* mu-recipe:slider:0 */ linear-gradient(#9BE6BF, #5FC894);
+  --mu-r-slider-knob-background:
+    /* mu-recipe:slider:1 */ conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8);
+  --mu-r-slider-knob-shadow:
+    /* mu-recipe:slider:2 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:3 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:4 */ 0 2px 4px rgba(0,0,0,.18);
+  --mu-r-slider-track-height: 10px;
+  --mu-r-slider-track-inset: 6px;
+  --mu-r-slider-fill-opacity: 0.55;
+  --mu-r-slider-mark-w: 2px;
+  --mu-r-slider-mark-h: 4px;
+  --mu-r-slider-mark-radius: 1px;
+  --mu-r-slider-tick-w: 1px;
+  --mu-r-slider-tick-h: 5px;
+  --mu-r-slider-tick-top: 11px;
+  --mu-r-slider-tick-lift: 9px;
+  --mu-r-slider-knob-size: 22px;
+  --mu-r-slider-knob-rise: 6px;
+  /* segmented: reference style.css .seg, .seg button, .seg button.on */
+  --mu-r-segmented-self-pad: 3px;
+  --mu-r-segmented-self-gap: 6px;
+  --mu-r-segmented-segment-height: 24px;
+  --mu-r-segmented-segment-height-regular: 28px;
+  --mu-r-segmented-segment-pad-x: 10px;
+  --mu-r-segmented-segment-font: 500 11.5px/1 var(--mu-sans);
+  --mu-r-segmented-segment-tracking: 0;
+  --mu-r-segmented-segment-fade: 160ms;
+  --mu-r-segmented-segment-disabled: 0.4;
+  --mu-r-segmented-segment-focus-width: 1.5px;
+  /* tooltip: reference style.css #tip, #tip .dim, .tb-tip */
+  --mu-r-tooltip-self-background:
+    /* mu-recipe:tooltip:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+  --mu-r-tooltip-self-shadow:
+    /* mu-recipe:tooltip:1 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:tooltip:2 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:tooltip:3 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:tooltip:4 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:tooltip:5 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:tooltip:6 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:tooltip:7 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-tooltip-self-max-width: 280px;
+  --mu-r-tooltip-self-pad-y: 6px;
+  --mu-r-tooltip-self-pad-x: 10px;
+  --mu-r-tooltip-self-radius: 11px;
+  --mu-r-tooltip-self-font: 500 10px/1.45 var(--mu-mono);
+  --mu-r-tooltip-self-tracking: 0.05em;
+  --mu-r-tooltip-self-ink: #E9E9EB;
+  --mu-r-tooltip-self-z: 70;
+  --mu-r-tooltip-self-blur: blur(22px) saturate(1.6);
+  --mu-r-tooltip-key-ink: #8E8E93;
+  /* menu: reference style.css #pop, #pop .ph, #pop button, #pop button:hover */
+  --mu-r-menu-self-min-width: 200px;
+  --mu-r-menu-self-pad: 6px;
+  --mu-r-menu-self-radius: 16px;
+  --mu-r-menu-self-z: 60;
+  --mu-r-menu-self-blur: blur(22px) saturate(1.6);
+  --mu-r-menu-heading-pad-top: 6px;
+  --mu-r-menu-heading-pad-x: 8px;
+  --mu-r-menu-heading-pad-bottom: 8px;
+  --mu-r-menu-row-height: 30px;
+  --mu-r-menu-row-pad: 10px;
+  --mu-r-menu-row-gap: 8px;
+  --mu-r-menu-row-radius: 10px;
+  --mu-r-menu-row-glyph: 14px;
+  --mu-r-menu-row-font: 500 13px/1 var(--mu-sans);
+  --mu-r-menu-row-tracking: 0;
+  --mu-r-menu-row-key-gap: 12px;
+  --mu-r-menu-row-disabled: 0.4;
+  --mu-r-menu-sep-thickness: 1px;
+  --mu-r-menu-sep-inset-y: 4px;
+  --mu-r-menu-sep-inset-x: 8px;
+  /* toast: reference style.css #toast, #toast .sub, #toast button, #toast button kbd */
+  --mu-r-toast-self-background:
+    /* mu-recipe:toast:0 */ rgba(30,30,33,.92);
+  --mu-r-toast-self-shadow:
+    /* mu-recipe:toast:1 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:toast:2 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:toast:3 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:toast:4 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:toast:5 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:toast:6 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:toast:7 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-toast-undo-background:
+    /* mu-recipe:toast:8 */ linear-gradient(#3A3A3E, #2C2C2F);
+  --mu-r-toast-undo-shadow:
+    /* mu-recipe:toast:9 */ inset 0 1px 0 rgba(255,255,255,.1),
+    /* mu-recipe:toast:10 */ 0 0 0 .5px rgba(0,0,0,.6);
+  --mu-r-toast-kbd-background:
+    /* mu-recipe:toast:11 */ rgba(0,0,0,.3);
+  --mu-r-toast-self-height: 40px;
+  --mu-r-toast-self-pad-left: 16px;
+  --mu-r-toast-self-pad-right: 6px;
+  --mu-r-toast-self-gap: 12px;
+  --mu-r-toast-self-font: 500 13px/1 var(--mu-sans);
+  --mu-r-toast-self-tracking: -0.012em;
+  --mu-r-toast-self-ink: #F2F2F0;
+  --mu-r-toast-self-bottom: 92px;
+  --mu-r-toast-self-z: 50;
+  --mu-r-toast-self-blur: blur(22px);
+  --mu-r-toast-self-rise: 8px;
+  --mu-r-toast-self-scale: 0.97;
+  --mu-r-toast-text-gap: 6px;
+  --mu-r-toast-sub-ink: #9A9AA0;
+  --mu-r-toast-undo-height: 28px;
+  --mu-r-toast-undo-pad-left: 11px;
+  --mu-r-toast-undo-pad-right: 6px;
+  --mu-r-toast-undo-gap: 7px;
+  --mu-r-toast-undo-font: 500 12.5px/1 var(--mu-sans);
+  --mu-r-toast-undo-press: 50ms;
+  --mu-r-toast-kbd-ink: #BDBDC2;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1459,6 +1572,41 @@
   --mu-r-sparkline-dot-ring: #5C5C60;
   --mu-r-sparkline-base-color: rgba(40,38,32,.1);
   --mu-r-dialog-scrim-color: rgba(243,243,241,.25);
+  --mu-r-slider-mark-color: rgba(40,38,32,.28);
+  --mu-r-slider-tick-color: rgba(40,38,32,.18);
+  --mu-r-segmented-self-background:
+    /* mu-recipe:segmented:0 */ linear-gradient(#E1E0DC, #EAE9E5);
+  --mu-r-segmented-self-shadow:
+    /* mu-recipe:segmented:2 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
+    /* mu-recipe:segmented:3 */ inset 0 0 0 .5px rgba(0,0,0,.03),
+    /* mu-recipe:segmented:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
+  --mu-r-segmented-thumb-background:
+    /* mu-recipe:segmented:8 */ linear-gradient(#FFFFFF, #F4F3F0);
+  --mu-r-segmented-thumb-shadow:
+    /* mu-recipe:segmented:10 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:segmented:11 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:segmented:12 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:segmented:13 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:segmented:14 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-segmented-segment-ink: #5C5C60;
+  --mu-r-segmented-segment-ink-on: #1B1B1D;
+  --mu-r-menu-self-background:
+    /* mu-recipe:menu:0 */ rgba(251,250,248,.92);
+  --mu-r-menu-self-shadow:
+    /* mu-recipe:menu:2 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:menu:3 */ inset 2px 3px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:menu:4 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:menu:5 */ 0 0 0 .5px rgba(24,22,16,.045),
+    /* mu-recipe:menu:6 */ 0 1px 2px rgba(24,22,16,.05),
+    /* mu-recipe:menu:7 */ 0 8px 18px -6px rgba(24,22,16,.08),
+    /* mu-recipe:menu:8 */ 0 26px 50px -16px rgba(24,22,16,.13),
+    /* mu-recipe:menu:9 */ 0 52px 96px -36px rgba(24,22,16,.13);
+  --mu-r-menu-row-hover-background:
+    /* mu-recipe:menu:18 */ rgba(0,0,0,.05);
+  --mu-r-menu-sep-background:
+    /* mu-recipe:menu:20 */ rgba(0,0,0,.075);
+  --mu-r-menu-sep-shadow:
+    /* mu-recipe:menu:22 */ 0 1px 0 rgba(255,255,255,.5);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -1704,6 +1852,41 @@
   --mu-r-sparkline-dot-ring: #A6A6A9;
   --mu-r-sparkline-base-color: rgba(255,255,255,.12);
   --mu-r-dialog-scrim-color: rgba(14,14,15,.25);
+  --mu-r-slider-mark-color: rgba(255,255,255,.28);
+  --mu-r-slider-tick-color: rgba(255,255,255,.18);
+  --mu-r-segmented-self-background:
+    /* mu-recipe:segmented:1 */ linear-gradient(#121213, #161617);
+  --mu-r-segmented-self-shadow:
+    /* mu-recipe:segmented:5 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:segmented:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:segmented:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-segmented-thumb-background:
+    /* mu-recipe:segmented:9 */ linear-gradient(#3A3A3D, #2E2E31);
+  --mu-r-segmented-thumb-shadow:
+    /* mu-recipe:segmented:15 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:segmented:16 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:segmented:17 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:segmented:18 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:segmented:19 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-segmented-segment-ink: #A6A6A9;
+  --mu-r-segmented-segment-ink-on: #F2F2F0;
+  --mu-r-menu-self-background:
+    /* mu-recipe:menu:1 */ rgba(34,34,37,.92);
+  --mu-r-menu-self-shadow:
+    /* mu-recipe:menu:10 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:menu:11 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:menu:12 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:menu:13 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:menu:14 */ 0 1px 2px rgba(0,0,0,.22),
+    /* mu-recipe:menu:15 */ 0 8px 18px -6px rgba(0,0,0,.2),
+    /* mu-recipe:menu:16 */ 0 26px 50px -16px rgba(0,0,0,.34),
+    /* mu-recipe:menu:17 */ 0 52px 96px -36px rgba(0,0,0,.3);
+  --mu-r-menu-row-hover-background:
+    /* mu-recipe:menu:19 */ rgba(255,255,255,.06);
+  --mu-r-menu-sep-background:
+    /* mu-recipe:menu:21 */ rgba(0,0,0,.45);
+  --mu-r-menu-sep-shadow:
+    /* mu-recipe:menu:23 */ 0 1px 0 rgba(255,255,255,.035);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -1950,5 +2133,40 @@
     --mu-r-sparkline-dot-ring: #A6A6A9;
     --mu-r-sparkline-base-color: rgba(255,255,255,.12);
     --mu-r-dialog-scrim-color: rgba(14,14,15,.25);
+    --mu-r-slider-mark-color: rgba(255,255,255,.28);
+    --mu-r-slider-tick-color: rgba(255,255,255,.18);
+    --mu-r-segmented-self-background:
+      linear-gradient(#121213, #161617);
+    --mu-r-segmented-self-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.6),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-segmented-thumb-background:
+      linear-gradient(#3A3A3D, #2E2E31);
+    --mu-r-segmented-thumb-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-segmented-segment-ink: #A6A6A9;
+    --mu-r-segmented-segment-ink-on: #F2F2F0;
+    --mu-r-menu-self-background:
+      rgba(34,34,37,.92);
+    --mu-r-menu-self-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.22),
+      0 8px 18px -6px rgba(0,0,0,.2),
+      0 26px 50px -16px rgba(0,0,0,.34),
+      0 52px 96px -36px rgba(0,0,0,.3);
+    --mu-r-menu-row-hover-background:
+      rgba(255,255,255,.06);
+    --mu-r-menu-sep-background:
+      rgba(0,0,0,.45);
+    --mu-r-menu-sep-shadow:
+      0 1px 0 rgba(255,255,255,.035);
   }
 }

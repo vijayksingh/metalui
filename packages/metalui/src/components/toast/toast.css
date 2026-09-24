@@ -1,12 +1,12 @@
 @import "../tokens.css";
 @import "../kbd/kbd.css";
 
-/* Toast (KAMUI-20; Kamui 04 §12) on Base UI Toast. */
+/* Toast (the reference design's #toast) on Base UI Toast. Its look is the toast recipe (--mu-r-toast-*). */
 .mu-toast-viewport {
   position: fixed;
   left: 50%;
-  bottom: var(--mu-toast-bottom);
-  z-index: 50;
+  bottom: var(--mu-r-toast-self-bottom);
+  z-index: var(--mu-r-toast-self-z);
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
@@ -16,50 +16,54 @@
 .mu-toast {
   display: flex;
   align-items: center;
-  gap: var(--mu-toast-gap);
-  height: var(--mu-toast-height);
-  padding: 0 var(--mu-toast-pad-end) 0 var(--mu-toast-pad-start);
-  border-radius: 999px;
+  gap: var(--mu-r-toast-self-gap);
+  height: var(--mu-r-toast-self-height);
+  padding: var(--mu-zero) var(--mu-r-toast-self-pad-right) var(--mu-zero) var(--mu-r-toast-self-pad-left);
+  border-radius: var(--mu-radius-pill);
   white-space: nowrap;
-  color: var(--mu-toast-ink);
-  background: var(--mu-toast-bg);
-  box-shadow: var(--mu-toast-sh);
-  -webkit-backdrop-filter: var(--mu-backdrop);
-  backdrop-filter: var(--mu-backdrop);
+  font: var(--mu-r-toast-self-font);
+  letter-spacing: var(--mu-r-toast-self-tracking);
+  color: var(--mu-r-toast-self-ink);
+  background: var(--mu-r-toast-self-background);
+  box-shadow: var(--mu-r-toast-self-shadow);
+  -webkit-backdrop-filter: var(--mu-r-toast-self-blur);
+  backdrop-filter: var(--mu-r-toast-self-blur);
   /* Arrives one nest from below from .97 on settle; leaves the way it came on release. */
   transition:
     opacity var(--mu-spring-settle-d) var(--mu-spring-settle),
     transform var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
-.mu-toast:not(:has(.mu-toast-undo)) { padding-right: var(--mu-toast-pad-start); }
+.mu-toast:not(:has(.mu-toast-undo)) { padding-right: var(--mu-r-toast-self-pad-left); }
 .mu-toast[data-starting-style] {
-  opacity: 0;
-  transform: translateY(calc(var(--mu-toast-enter-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-toast-enter-scale)) * var(--mu-travel-settle)));
+  opacity: var(--mu-zero);
+  transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-settle)));
 }
 .mu-toast[data-ending-style] {
-  opacity: 0;
-  transform: translateY(calc(var(--mu-toast-enter-rise) * var(--mu-travel-release))) scale(calc(1 - (1 - var(--mu-toast-enter-scale)) * var(--mu-travel-release)));
+  opacity: var(--mu-zero);
+  transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-release))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-release)));
   transition-duration: var(--mu-spring-release-d);
   transition-timing-function: var(--mu-spring-release);
 }
 @media (prefers-reduced-transparency: reduce) { .mu-toast { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; } }
-.mu-toast-text { display: inline-flex; align-items: center; gap: 6px; }
-.mu-toast-sub { color: var(--mu-toast-sub); }
+.mu-toast-text { display: inline-flex; align-items: center; gap: var(--mu-r-toast-text-gap); }
+.mu-toast-sub { color: var(--mu-r-toast-sub-ink); }
 .mu-toast-check { color: var(--mu-success); }
 .mu-toast[data-type="error"] .mu-toast-mark { color: var(--mu-red); }
 .mu-toast-undo {
   display: inline-flex;
   align-items: center;
-  gap: var(--mu-toast-undo-gap);
-  height: var(--mu-toast-undo-height);
-  padding: 0 var(--mu-toast-undo-pad-end) 0 var(--mu-toast-undo-pad-start);
-  border: 0;
-  border-radius: 999px;
+  gap: var(--mu-r-toast-undo-gap);
+  height: var(--mu-r-toast-undo-height);
+  padding: var(--mu-zero) var(--mu-r-toast-undo-pad-right) var(--mu-zero) var(--mu-r-toast-undo-pad-left);
+  border: var(--mu-zero);
+  border-radius: var(--mu-radius-pill);
+  font: var(--mu-r-toast-undo-font);
   color: inherit;
-  background: var(--mu-toast-undo-bg);
-  box-shadow: var(--mu-toast-undo-sh);
+  background: var(--mu-r-toast-undo-background);
+  box-shadow: var(--mu-r-toast-undo-shadow);
   cursor: pointer;
   transition: transform var(--mu-spring-release-d) var(--mu-spring-release);
 }
-.mu-toast-undo:active { transform: translateY(var(--mu-motion-press)); transition-duration: 50ms; }
+.mu-toast-undo:active { transform: translateY(var(--mu-motion-press)); transition-duration: var(--mu-r-toast-undo-press); }
 .mu-toast-undo:focus-visible { outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset); }
+.mu-toast-undo .mu-kbd { color: var(--mu-r-toast-kbd-ink); background: var(--mu-r-toast-kbd-background); box-shadow: none; }

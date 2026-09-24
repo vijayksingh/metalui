@@ -5,7 +5,7 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import './tooltip.css';
 
 /* ─────────────────────────────────────────────────────────
- * TOOLTIP (Kamui 04 §2, §8; the medium demo's #tip and .tb[data-tip]) on Base UI Tooltip
+ * TOOLTIP (the brief; the reference design's #tip and .tb[data-tip]) on Base UI Tooltip
  *   rest      nothing
  *   120 ms    hovered or focused: a graphite label chip fades in on settle, 10 from the trigger
  *   group     inside one TooltipProvider, moving to the next trigger shows the next at once
@@ -43,7 +43,7 @@ export function Tooltip({ label, shortcut, side = 'top', children, open }: Toolt
       <BaseTooltip.Trigger render={children} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={gap()} collisionPadding={8}>
-          <BaseTooltip.Popup className="mu-tooltip mu-type-label">
+          <BaseTooltip.Popup className="mu-tooltip">
             {label}
             {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}
           </BaseTooltip.Popup>
