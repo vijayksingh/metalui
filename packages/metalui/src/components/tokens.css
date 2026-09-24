@@ -753,7 +753,7 @@
   --mu-r-swatch-label-ink-light: rgba(255,255,255,.8);
   --mu-r-swatch-led-size: 8px;
   --mu-r-swatch-led-inset: 10px;
-  /* checkbox: reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
+  /* checkbox: reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after */
   --mu-r-checkbox-self-on-background:
     /* mu-recipe:checkbox:10 */ linear-gradient(#303033, #1E1E20);
   --mu-r-checkbox-self-on-shadow:
@@ -769,8 +769,6 @@
   --mu-r-checkbox-self-radius: 6px;
   --mu-r-checkbox-self-x: -25px;
   --mu-r-checkbox-self-y: 2.5px;
-  --mu-r-checkbox-self-row-size: 14px;
-  --mu-r-checkbox-self-row-radius: 5px;
   --mu-r-checkbox-self-fade: 160ms;
   --mu-r-checkbox-tick-x: 5px;
   --mu-r-checkbox-tick-y: 2.5px;
@@ -788,6 +786,12 @@
   --mu-r-checkbox-doing-inset: 4.5px;
   --mu-r-checkbox-doing-radius: 3px;
   --mu-r-checkbox-doing-opacity: 0.8;
+  --mu-r-checkbox-row-size: 14px;
+  --mu-r-checkbox-row-radius: 5px;
+  --mu-r-checkbox-row-tick-x: 4.5px;
+  --mu-r-checkbox-row-tick-y: 2px;
+  --mu-r-checkbox-row-tick-w: 3.5px;
+  --mu-r-checkbox-row-tick-h: 7px;
   /* region: reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
   --mu-r-region-self-over-background:
     /* mu-recipe:region:8 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));

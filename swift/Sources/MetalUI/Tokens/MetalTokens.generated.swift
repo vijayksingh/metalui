@@ -545,7 +545,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing)
+    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after)
     public static let checkbox = MetalObjectRecipe(
         name: "checkbox",
         layers: [
@@ -575,8 +575,6 @@ public enum MetalRecipes {
             "self.radius": .number(6.0),
             "self.x": .number(-25.0),
             "self.y": .number(2.5),
-            "self.row-size": .number(14.0),
-            "self.row-radius": .number(5.0),
             "self.fade": .text("160ms"),
             "tick.x": .number(5.0),
             "tick.y": .number(2.5),
@@ -594,6 +592,12 @@ public enum MetalRecipes {
             "doing.inset": .number(4.5),
             "doing.radius": .number(3.0),
             "doing.opacity": .text("0.8"),
+            "row.size": .number(14.0),
+            "row.radius": .number(5.0),
+            "row.tick-x": .number(4.5),
+            "row.tick-y": .number(2.0),
+            "row.tick-w": .number(3.5),
+            "row.tick-h": .number(7.0),
         ]
     )
 

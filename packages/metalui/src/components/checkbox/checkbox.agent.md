@@ -17,6 +17,7 @@ The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/m
 | checked | a dark pressed key; the white tick draws on | the tick: 220 ms ease-out after a 40 ms beat (not sprung); instant under Reduce Motion |
 | doing | a half-filled green square inside the well | – |
 | ghost | a hollow 14 ring, radius 5; hover: a green ring | 160 ms |
+| row (`size="row"`) | 14, radius 5, a smaller tick; in flow at the start of a list row | as above |
 | disabled | 40 % | – |
 
 ## Keyboard and accessibility

@@ -36,6 +36,9 @@
 @keyframes mu-dimple-tick { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); } }
 @media (prefers-reduced-motion: reduce) { .mu-dimple-tick { animation: none; } }
 [data-mu-motion="reduce"] .mu-dimple-tick { animation: none; }
+/* Row: the smaller dimple at the start of a list row. */
+.mu-dimple[data-size="row"]:not([data-ghost]) { width: var(--mu-r-checkbox-row-size); height: var(--mu-r-checkbox-row-size); border-radius: var(--mu-r-checkbox-row-radius); }
+.mu-dimple[data-size="row"] .mu-dimple-tick { left: var(--mu-r-checkbox-row-tick-x); top: var(--mu-r-checkbox-row-tick-y); width: var(--mu-r-checkbox-row-tick-w); height: var(--mu-r-checkbox-row-tick-h); }
 /* Doing: a half-filled green square. */
 .mu-dimple[data-indeterminate]::before {
   content: "";
