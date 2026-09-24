@@ -9,6 +9,7 @@ export { Field, SearchField, type SearchFieldProps } from './components/field/fi
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { GlassFace } from './components/glass-face/glass-face';
+export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps } from './components/slider/slider';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';

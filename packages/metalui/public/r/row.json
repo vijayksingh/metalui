@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "row",
+  "type": "registry:ui",
+  "title": "Row",
+  "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/row/row.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/row/row.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './row.css';\n\n/* ROW: a row in a list.\n *   list     a compact row of a pinned query (5 / 8, radius 12, 13 pt); hover raises it\n *   panel    a row of a gathered panel (8 / 12, radius 14, 14 pt); hover raises it\n *   option   a palette row (36 tall, radius 12); the active one raises with a green rail\n * checked strikes the text in ink3; maybe fades a weak match. Slots: Row.Root, Row.Lead, Row.Text, Row.Trail. */\n\nexport interface RowRootProps extends React.HTMLAttributes<HTMLElement> {\n  variant?: 'list' | 'panel' | 'option';\n  checked?: boolean;\n  /** option: the active row. */\n  active?: boolean;\n  /** a weak match, faded. */\n  maybe?: boolean;\n  as?: 'div' | 'li' | 'tr' | 'button';\n}\n\nconst Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, maybe, as = 'div', className, ...props }, ref) {\n  const Tag = as as React.ElementType;\n  return (\n    <Tag\n      ref={ref}\n      data-variant={variant}\n      data-checked={checked ? '' : undefined}\n      data-active={active ? '' : undefined}\n      data-maybe={maybe ? '' : undefined}\n      className={className ? `mu-row ${className}` : 'mu-row'}\n      {...props}\n    />\n  );\n});\nfunction Lead({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {\n  return <span className={className ? `mu-row-lead ${className}` : 'mu-row-lead'} {...props} />;\n}\nfunction Text({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {\n  return <span className={className ? `mu-row-text ${className}` : 'mu-row-text'} {...props} />;\n}\nfunction Trail({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {\n  return <span className={className ? `mu-row-trail ${className}` : 'mu-row-trail'} {...props} />;\n}\n\nexport const Row = Object.assign(Root, { Root, Lead, Text, Trail });\nexport type RowProps = RowRootProps;\n"
+    },
+    {
+      "path": "packages/metalui/src/components/row/row.css",
+      "type": "registry:file",
+      "target": "components/metalui/row/row.css",
+      "content": "@import \"../tokens.css\";\n\n/* Row: a row in a list. Its look is the row recipe (--mu-r-row-*). */\n.mu-row {\n  position: relative;\n  box-sizing: border-box;\n  display: flex;\n  align-items: flex-start;\n  color: var(--mu-ink);\n  cursor: pointer;\n  outline: var(--mu-zero);\n  transition: background var(--mu-r-row-self-fade), box-shadow var(--mu-r-row-self-fade);\n}\n.mu-row[data-variant=\"list\"] { gap: var(--mu-r-row-list-gap); padding: var(--mu-r-row-list-pad-y) var(--mu-r-row-list-pad-x); border-radius: var(--mu-r-row-list-radius); font: var(--mu-r-row-list-font); }\n.mu-row[data-variant=\"list\"]:is(:hover, :focus-visible) { background: var(--mu-r-row-list-hover-background); box-shadow: var(--mu-r-row-list-hover-shadow); }\n.mu-row[data-variant=\"panel\"] { gap: var(--mu-r-row-panel-gap); padding: var(--mu-r-row-panel-pad-y) var(--mu-r-row-panel-pad-x); border-radius: var(--mu-r-row-panel-radius); font: var(--mu-r-row-panel-font); }\n.mu-row[data-variant=\"panel\"]:is(:hover, :focus-visible) { background: var(--mu-r-row-panel-hover-background); box-shadow: var(--mu-r-row-panel-hover-shadow); }\n.mu-row[data-variant=\"option\"] { align-items: center; gap: var(--mu-r-row-option-gap); height: var(--mu-r-row-option-height); padding: var(--mu-zero) var(--mu-r-row-option-pad-x); border-radius: var(--mu-r-row-option-radius); font: var(--mu-r-row-option-font); transition: none; }\n.mu-row[data-variant=\"option\"] > svg, .mu-row[data-variant=\"option\"] > .mu-row-lead > svg { width: var(--mu-r-row-option-glyph); height: var(--mu-r-row-option-glyph); color: var(--mu-ink2); flex: none; }\n.mu-row[data-variant=\"option\"]:is([data-active], [data-highlighted]) { background: var(--mu-r-row-option-on-background); box-shadow: var(--mu-r-row-option-on-shadow); }\n.mu-row[data-variant=\"option\"]:is([data-active], [data-highlighted])::before {\n  content: \"\";\n  position: absolute;\n  left: var(--mu-r-row-rail-offset);\n  top: var(--mu-r-row-rail-inset);\n  bottom: var(--mu-r-row-rail-inset);\n  width: var(--mu-r-row-rail-w);\n  border-radius: var(--mu-r-row-rail-radius);\n  background: var(--mu-r-row-rail-color);\n}\n.mu-row[data-maybe] { opacity: var(--mu-r-row-self-maybe); }\n.mu-row-lead { display: inline-flex; flex: none; }\n.mu-row-text { flex: 1; min-width: var(--mu-zero); }\n.mu-row[data-checked] .mu-row-text { color: var(--mu-r-row-text-checked); text-decoration: line-through; }\n.mu-row-trail { display: inline-flex; align-items: center; gap: var(--mu-r-row-option-gap); margin-left: auto; }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/row.md. SwiftUI: MetalRow in the MetalUI Swift package."
+}

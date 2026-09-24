@@ -1617,6 +1617,75 @@ public enum MetalRecipes {
             "kbd.ink": .text("#BDBDC2"),
         ]
     )
+
+    /// A row in a list: list (a compact row of a pinned query), panel (a row of a gathered panel) and option (a palette row that raises when it is the active one, with a green rail). Checked rows strike their text. (reference style.css .lrow, .lrow:hover, .prow, .prow:hover, .pal-row, .pal-row.on, .pal-row.on::before, .lrow.checked .lt)
+    public static let row = MetalObjectRecipe(
+        name: "row",
+        layers: [
+            .init(part: "list", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.7)))), // mu-recipe:row:0 rgba(255,255,255,.7)
+            .init(part: "list", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:row:1 rgba(255,255,255,.06)
+            .init(part: "list", state: "hover", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:row:2 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "list", state: "hover", colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:row:3 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "list", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:row:4 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "list", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:row:5 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "list", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:row:6 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "list", state: "hover", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:row:7 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "list", state: "hover", colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:row:8 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "list", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:row:9 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "list", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:10 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "list", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:11 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "panel", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:row:12 rgba(255,255,255,.75)
+            .init(part: "panel", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:row:13 rgba(255,255,255,.06)
+            .init(part: "panel", state: "hover", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:row:14 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "panel", state: "hover", colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:row:15 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "panel", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:row:16 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "panel", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:row:17 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "panel", state: "hover", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:row:18 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "panel", state: "hover", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:row:19 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "panel", state: "hover", colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:row:20 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "panel", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:row:21 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "panel", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:22 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "panel", state: "hover", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:23 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "option", state: "on", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(246.0, 245.0, 242.0, 1.0)), 1.0)])), // mu-recipe:row:24 linear-gradient(#FFFFFF, #F6F5F2)
+            .init(part: "option", state: "on", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(51.0, 51.0, 55.0, 1.0)), 0.0), .init(.color(MetalRGBA(42.0, 42.0, 45.0, 1.0)), 1.0)])), // mu-recipe:row:25 linear-gradient(#333337, #2A2A2D)
+            .init(part: "option", state: "on", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:row:26 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "option", state: "on", colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:row:27 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "option", state: "on", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:row:28 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "option", state: "on", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:row:29 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "option", state: "on", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:row:30 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "option", state: "on", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:row:31 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "option", state: "on", colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:row:32 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "option", state: "on", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:row:33 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "option", state: "on", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:34 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "option", state: "on", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:row:35 0 5px 12px -4px rgba(0,0,0,.3)
+        ],
+        props: [
+            "list.pad-y": .number(5.0),
+            "list.pad-x": .number(8.0),
+            "list.gap": .number(9.0),
+            "list.radius": .number(12.0),
+            "list.font": .text("500 13px/1.35 sans"),
+            "panel.pad-y": .number(8.0),
+            "panel.pad-x": .number(12.0),
+            "panel.gap": .number(10.0),
+            "panel.radius": .number(14.0),
+            "panel.font": .text("500 14px/1.36 sans"),
+            "option.height": .number(36.0),
+            "option.pad-x": .number(12.0),
+            "option.gap": .number(10.0),
+            "option.radius": .number(12.0),
+            "option.font": .text("500 13.5px/1 sans"),
+            "option.glyph": .number(14.0),
+            "rail.w": .number(2.5),
+            "rail.inset": .number(10.0),
+            "rail.radius": .number(2.0),
+            "rail.offset": .number(-2.0),
+            "rail.color": .text("#3FB97A"),
+            "text.checked": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "self.maybe": .text("0.55"),
+            "self.fade": .text("160ms"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

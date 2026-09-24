@@ -1,0 +1,28 @@
+{
+  "name": "row",
+  "title": "Row",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+  "base": "none",
+  "react": {
+    "export": "Row",
+    "files": [
+      "row.tsx",
+      "row.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalRow",
+    "file": "swift/Sources/MetalUI/Components/MetalRow.swift"
+  },
+  "agent": "row.agent.md",
+  "slots": {
+    "Row": [
+      "Root",
+      "Lead",
+      "Text",
+      "Trail"
+    ]
+  }
+}

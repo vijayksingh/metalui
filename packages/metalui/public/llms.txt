@@ -26,6 +26,7 @@
 - [Past banner](https://metalui.dev/r/past-banner.md): The only chrome that changes while the canvas is scrubbed into the past: a graphite pill with the MEMORY engraving, the moment viewed, and Back to Now.
 - [Provenance tooltip](https://metalui.dev/r/provenance-tooltip.md): One hover away from every cue: a graphite tooltip on Base UI Tooltip that says where the cue came from (RULE · DATE PARSER, JEV · 0.82, YOU), with the number whenever the app guessed.
 - [Region](https://metalui.dev/r/region.md): A drawn rectangle with a name that carries a rule: a sunk well with a head (name, rule, count), a drop-target state, dim and past states, renaming, and a pinned-lens form as a frosted plate with rows.
+- [Row](https://metalui.dev/r/row.md): A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.
 - [Rule](https://metalui.dev/r/rule.md): An engraved groove between groups; graphite on dark chrome.
 - [Segmented control](https://metalui.dev/r/segmented.md): A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.
 - [Selection frame](https://metalui.dev/r/selection-frame.md): KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.

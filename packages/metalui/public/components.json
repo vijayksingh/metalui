@@ -318,6 +318,23 @@
       "sheet": "Kamui 04 §7"
     },
     {
+      "name": "row",
+      "title": "Row",
+      "status": "alpha",
+      "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Row",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRow"
+      },
+      "registry": "https://metalui.dev/r/row.json",
+      "agent": "https://metalui.dev/r/row.md"
+    },
+    {
       "name": "rule",
       "title": "Rule",
       "status": "alpha",

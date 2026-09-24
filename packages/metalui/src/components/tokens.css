@@ -1314,6 +1314,30 @@
   --mu-r-toast-undo-font: 500 12.5px/1 var(--mu-sans);
   --mu-r-toast-undo-press: 50ms;
   --mu-r-toast-kbd-ink: #BDBDC2;
+  /* row: reference style.css .lrow, .lrow:hover, .prow, .prow:hover, .pal-row, .pal-row.on, .pal-row.on::before, .lrow.checked .lt */
+  --mu-r-row-list-pad-y: 5px;
+  --mu-r-row-list-pad-x: 8px;
+  --mu-r-row-list-gap: 9px;
+  --mu-r-row-list-radius: 12px;
+  --mu-r-row-list-font: 500 13px/1.35 var(--mu-sans);
+  --mu-r-row-panel-pad-y: 8px;
+  --mu-r-row-panel-pad-x: 12px;
+  --mu-r-row-panel-gap: 10px;
+  --mu-r-row-panel-radius: 14px;
+  --mu-r-row-panel-font: 500 14px/1.36 var(--mu-sans);
+  --mu-r-row-option-height: 36px;
+  --mu-r-row-option-pad-x: 12px;
+  --mu-r-row-option-gap: 10px;
+  --mu-r-row-option-radius: 12px;
+  --mu-r-row-option-font: 500 13.5px/1 var(--mu-sans);
+  --mu-r-row-option-glyph: 14px;
+  --mu-r-row-rail-w: 2.5px;
+  --mu-r-row-rail-inset: 10px;
+  --mu-r-row-rail-radius: 2px;
+  --mu-r-row-rail-offset: -2px;
+  --mu-r-row-rail-color: #3FB97A;
+  --mu-r-row-self-maybe: 0.55;
+  --mu-r-row-self-fade: 160ms;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1607,6 +1631,31 @@
     /* mu-recipe:menu:20 */ rgba(0,0,0,.075);
   --mu-r-menu-sep-shadow:
     /* mu-recipe:menu:22 */ 0 1px 0 rgba(255,255,255,.5);
+  --mu-r-row-list-hover-background:
+    /* mu-recipe:row:0 */ rgba(255,255,255,.7);
+  --mu-r-row-list-hover-shadow:
+    /* mu-recipe:row:2 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:row:3 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:row:4 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:row:5 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:row:6 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-row-panel-hover-background:
+    /* mu-recipe:row:12 */ rgba(255,255,255,.75);
+  --mu-r-row-panel-hover-shadow:
+    /* mu-recipe:row:14 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:row:15 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:row:16 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:row:17 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:row:18 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-row-option-on-background:
+    /* mu-recipe:row:24 */ linear-gradient(#FFFFFF, #F6F5F2);
+  --mu-r-row-option-on-shadow:
+    /* mu-recipe:row:26 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:row:27 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:row:28 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:row:29 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:row:30 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-row-text-checked: #9A9A9D;
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -1887,6 +1936,31 @@
     /* mu-recipe:menu:21 */ rgba(0,0,0,.45);
   --mu-r-menu-sep-shadow:
     /* mu-recipe:menu:23 */ 0 1px 0 rgba(255,255,255,.035);
+  --mu-r-row-list-hover-background:
+    /* mu-recipe:row:1 */ rgba(255,255,255,.06);
+  --mu-r-row-list-hover-shadow:
+    /* mu-recipe:row:7 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:row:8 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:row:9 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:row:10 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:row:11 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-row-panel-hover-background:
+    /* mu-recipe:row:13 */ rgba(255,255,255,.06);
+  --mu-r-row-panel-hover-shadow:
+    /* mu-recipe:row:19 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:row:20 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:row:21 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:row:22 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:row:23 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-row-option-on-background:
+    /* mu-recipe:row:25 */ linear-gradient(#333337, #2A2A2D);
+  --mu-r-row-option-on-shadow:
+    /* mu-recipe:row:31 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:row:32 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:row:33 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:row:34 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:row:35 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-row-text-checked: #77777B;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2168,5 +2242,30 @@
       rgba(0,0,0,.45);
     --mu-r-menu-sep-shadow:
       0 1px 0 rgba(255,255,255,.035);
+    --mu-r-row-list-hover-background:
+      rgba(255,255,255,.06);
+    --mu-r-row-list-hover-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-row-panel-hover-background:
+      rgba(255,255,255,.06);
+    --mu-r-row-panel-hover-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-row-option-on-background:
+      linear-gradient(#333337, #2A2A2D);
+    --mu-r-row-option-on-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-row-text-checked: #77777B;
   }
 }
