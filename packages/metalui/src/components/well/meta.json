@@ -8,8 +8,7 @@
   "react": {
     "export": "Well",
     "files": [
-      "well.tsx",
-      "well.css"
+      "well.tsx"
     ]
   },
   "swift": {

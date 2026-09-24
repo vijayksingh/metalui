@@ -1014,6 +1014,9 @@
   background: var(--mu-r-well-self-graphite-background);
   box-shadow: var(--mu-r-well-self-graphite-shadow);
 }
+@utility transition-well {
+  transition: var(--mu-r-well-self-transition);
+}
 @utility recipe-label-engraved {
   text-shadow: var(--mu-r-label-engraved-text-shadow);
 }

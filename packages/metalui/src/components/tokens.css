@@ -1131,6 +1131,7 @@
   --mu-r-well-radius-region: 26px;
   --mu-r-well-radius-strip: 15px;
   --mu-r-well-radius-row: 12px;
+  --mu-r-well-self-transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
   /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before, .meta .eng b */
   --mu-r-label-dark-text-shadow:
     /* mu-recipe:label:2 */ 0 -1px 0 rgba(0,0,0,.6);

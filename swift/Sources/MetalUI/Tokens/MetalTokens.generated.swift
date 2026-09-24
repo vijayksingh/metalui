@@ -1203,6 +1203,7 @@ public enum MetalRecipes {
             "radius.region": .number(26.0),
             "radius.strip": .number(15.0),
             "radius.row": .number(12.0),
+            "self.transition": .text("background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle)"),
         ]
     )
 

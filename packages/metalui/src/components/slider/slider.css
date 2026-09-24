@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../well/well.css";
 
 /* Slider. Its look is the slider recipe (--mu-r-slider-*) on the track well. The root fills its box;
    the host sets the box (the track sits on the root's centre line). */

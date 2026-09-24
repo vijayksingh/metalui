@@ -840,11 +840,6 @@
           "path": "packages/metalui/src/components/well/well.tsx",
           "type": "registry:ui",
           "target": "components/metalui/well/well.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/well/well.css",
-          "type": "registry:file",
-          "target": "components/metalui/well/well.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/well.md. SwiftUI: MetalWell in the MetalUI Swift package."
