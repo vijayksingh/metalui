@@ -1180,7 +1180,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text in a set role: engraved mono label (with a lip), titles, headings, a query, values, table cells, display lines, readouts and text on graphite chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i)
+    /// Text in a set role: engraved mono label (with a lip), titles, headings, a query, values, table cells, display lines, readouts and text on graphite chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before)
     public static let label = MetalObjectRecipe(
         name: "label",
         layers: [
@@ -1229,6 +1229,9 @@ public enum MetalRecipes {
             "on-graphite.tracking": .text("0"),
             "on-graphite.color": .text("#EDEDEF"),
             "readout-dim.color": .text("#7C7D82"),
+            "accent.color": .perColorway(bone: "#2F9E63", graphite: "#5FCB93"),
+            "placeholder.color": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "placeholder.weight": .text("500"),
         ]
     )
 

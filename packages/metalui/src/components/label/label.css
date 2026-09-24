@@ -18,5 +18,11 @@
 .mu-label[data-variant="on-graphite"] { font: var(--mu-r-label-on-graphite-font); letter-spacing: var(--mu-r-label-on-graphite-tracking); color: var(--mu-r-label-on-graphite-color); }
 .mu-label[data-variant="readout-dim"] { font-style: normal; color: var(--mu-r-label-readout-dim-color); }
 .mu-label[data-variant="display"], .mu-label[data-variant="display-quiet"] { white-space: normal; }
+/* Accent: green, no lip; it cross-fades on settle when a host toggles it. */
+.mu-label { transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); }
+.mu-label[data-tone="accent"] { color: var(--mu-r-label-accent-color); text-shadow: none; }
+/* An empty label shows its placeholder. */
+.mu-label[data-placeholder]:empty::before { content: attr(data-placeholder); color: var(--mu-r-label-placeholder-color); font-weight: var(--mu-r-label-placeholder-weight); }
+input.mu-label::placeholder { color: var(--mu-r-label-placeholder-color); font-weight: var(--mu-r-label-placeholder-weight); opacity: 1; }
 /* An editable label: an input that keeps the look and draws no field of its own. */
-input.mu-label { box-sizing: content-box; min-width: var(--mu-zero); padding: var(--mu-zero); margin: var(--mu-zero); border: var(--mu-zero); outline: var(--mu-zero); background: transparent; caret-color: var(--mu-green-deep); }
+input.mu-label { box-sizing: content-box; min-width: var(--mu-zero); padding: var(--mu-zero); margin: var(--mu-zero); border: var(--mu-zero); outline: var(--mu-zero); background: transparent; caret-color: var(--mu-green-deep); cursor: text; field-sizing: content; }
