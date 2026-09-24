@@ -1,18 +1,18 @@
 import SwiftUI
 
-// LED and status badge (KAMUI-16). Mirrors components/status from MetalStatusMetrics and MetalShared.
+// LED and status badge painted from the generated status recipe.
 
 /// What an LED says.
 public enum MetalLEDKind: Sendable {
     case live, waiting, failed, link, off
 
-    var gradient: MetalRadialGradient {
+    var recipeState: String {
         switch self {
-        case .live: return MetalShared.ledGreen
-        case .waiting: return MetalShared.ledAmber
-        case .failed: return MetalShared.ledRed
-        case .link: return MetalShared.ledBlue
-        case .off: return MetalShared.ledOff
+        case .live: return "live"
+        case .waiting: return "waiting"
+        case .failed: return "failed"
+        case .link: return "link"
+        case .off: return "off"
         }
     }
 }
@@ -29,16 +29,16 @@ public struct MetalLED: View {
     }
 
     public var body: some View {
-        let d = size == .small ? MetalStatusMetrics.ledSmall : MetalStatusMetrics.led
-        Circle()
-            .fill(kind.gradient.gradient(diameter: d))
+        let recipe = MetalRecipes.status
+        let d = recipe.points(size == .small ? "led.size-small" : "led.size")
+        Color.clear
             .frame(width: d, height: d)
-            .background { MetalOuterShadows(layers: MetalShared.ledRing + (kind == .live ? MetalStatusMetrics.bloom : []), shape: Circle()) }
+            .metalObjectRecipe(recipe, part: "led", state: kind.recipeState, in: Circle())
             .accessibilityHidden(true)
     }
 }
 
-/// A state the system is in, with its LED: "JEV LIVE". Not a button; the hint is its help.
+/// A state the system is in, with its LED. Not a button; the hint is its help.
 public struct MetalStatusBadge: View {
     let text: String
     let led: MetalLEDKind
@@ -52,15 +52,17 @@ public struct MetalStatusBadge: View {
     }
 
     public var body: some View {
-        let t = colorway.tokens
-        HStack(spacing: MetalStatusMetrics.badgeGap) {
+        let recipe = MetalRecipes.status
+        HStack(spacing: recipe.points("badge.gap")) {
             MetalLED(led)
-            Text(text.uppercased()).font(.metal(MetalType.label)).tracking(MetalType.label.trackingPoints).foregroundColor(t.ink2.color)
+            Text(text.uppercased())
+                .font(recipe.font("badge.font"))
+                .tracking(recipe.tracking("badge.tracking", size: recipe.fontSize("badge.font")))
+                .foregroundColor(colorway.tokens.ink2.color)
         }
-        .padding(.leading, MetalStatusMetrics.badgePadStart)
-        .padding(.trailing, MetalStatusMetrics.badgePadEnd)
-        .frame(height: MetalStatusMetrics.badgeHeight)
-        .metalRecipe(MetalRecipe(fill: t.btnBg, shadows: t.btnSh), in: Capsule(style: .continuous))
+        .padding(.horizontal, recipe.points("badge.pad"))
+        .frame(height: recipe.points("badge.height"))
+        .metalObjectRecipe(recipe, part: "badge", in: Capsule(style: .continuous))
         .fixedSize()
         .help(hint ?? "")
         .accessibilityElement(children: .combine)
