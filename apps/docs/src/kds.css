@@ -487,3 +487,56 @@ td:first-child strong { white-space: nowrap; }
 .rx-card .eng { display: block; color: rgba(255,255,255,.42); margin-bottom: 2px; }
 .rx-card .v { font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .rx-card { transition: opacity .12s linear; transform: none; } }
+
+/* home (reference objects.css) */
+.hero { position: relative; margin: 0 0 56px; }
+.hero-copy { max-width: 720px; margin: 0 0 40px; }
+.hero-copy .eng { display: block; margin-bottom: 14px; }
+.hero-copy h1 { margin: 0 0 16px; font: 600 44px/48px var(--sans); letter-spacing: -.04em; text-wrap: balance; }
+.hero-copy h1 span { color: var(--ink3); }
+.hero-copy p { margin: 0; max-width: 620px; font: 400 17px/27px var(--sans); color: var(--ink2); letter-spacing: -.014em; text-wrap: pretty; }
+.hero-table { position: relative; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 40px 44px; align-items: center; padding: 48px 40px 40px; border-radius: 36px;
+  background: linear-gradient(color-mix(in srgb, var(--ink) 1.6%, transparent), color-mix(in srgb, var(--ink) .6%, transparent)); box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.06), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px var(--rule-lip); }
+[data-mu-colorway="graphite"] .hero-table { background: rgba(255,255,255,.012); box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4), inset 0 -2px 4px -2px rgba(255,255,255,.04); }
+.hero-frags { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.hero-frags .frag { margin: -10px -14px; }
+.hero-objs { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: center; }
+.hero-side { display: flex; flex-direction: column; gap: 28px; align-items: center; }
+.hero-dock { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.hero-strip { display: flex; gap: 6px; align-items: center; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0 0 48px; }
+.card { position: relative; display: flex; flex-direction: column; gap: 10px; min-height: 172px; padding: 18px 20px 18px; border-radius: 24px; text-decoration: none; color: var(--ink);
+  transition: transform var(--spring-object-d) var(--spring-object), box-shadow .4s ease; }
+.card:hover { transform: translateY(-3px); }
+.card .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); color: var(--icon); }
+.card .ico svg { width: 20px; height: 20px; }
+.card b { font: 600 15px/20px var(--sans); letter-spacing: -.015em; }
+.card p { margin: 0; font: 400 13px/19px var(--sans); color: var(--ink2); }
+.card .eng { margin-top: auto; }
+.two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0 0 24px; }
+.panel { border-radius: 24px; padding: 18px 20px; }
+.panel h4 { margin: 0 0 8px; }
+.panel p, .panel li { font: 400 13px/20px var(--sans); color: var(--ink2); }
+.panel ul { margin: 0; padding-left: 18px; }
+.panel p:last-child { margin: 0; }
+
+/* demo layouts */
+.demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.demo-note { font: 400 12.5px/18px var(--sans); color: var(--ink2); margin: 0 0 12px; }
+.regions3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.lens-set { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; width: 100%; padding: 0 16px; }
+@media (max-width: 1100px) {
+  .hero-table { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hero-side { grid-column: 1 / -1; flex-direction: row; justify-content: center; }
+}
+@media (max-width: 900px) {
+  .cards, .two-col { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .hero-copy h1 { font-size: 32px; line-height: 38px; letter-spacing: -.035em; }
+  .hero-copy p { font-size: 15.5px; line-height: 25px; }
+  .hero-table { grid-template-columns: minmax(0, 1fr); padding: 32px 16px 24px; gap: 32px; border-radius: 30px; }
+  .hero-table > * { min-width: 0; }
+  .hero-dock { flex-direction: column; align-items: stretch; }
+  .hero-side { flex-wrap: wrap; }
+}

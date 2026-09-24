@@ -1,82 +1,118 @@
+import * as React from 'react';
 import { Link } from 'react-router';
-import { Button } from '@unlocalhosted/metalui';
-import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
-import { Bench, Code, PageHeader, Section } from '../ui/doc';
+import { Checkbox, Kbd, LinkCard, Mark, SelectionFrame, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSearch, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Icon } from '@unlocalhosted/metalui/icons';
 
-const TOOLS: { name: IconName; label: string }[] = [
-  { name: 'select', label: 'Select' },
-  { name: 'note', label: 'Note' },
-  { name: 'image', label: 'Image' },
-  { name: 'link', label: 'Link' },
-  { name: 'draw', label: 'Draw' },
-  { name: 'tidy', label: 'Tidy' },
-];
+/* The overview, laid out like the reference design-language site's home:
+ *   hero        engraved kicker · two-tone title · lede
+ *   hero-table  real objects on the table: written lines with marks, a link card, a swatch, a selection, the toolbar
+ *   two halves  the material and the mechanics
+ *   explore     cards into the system */
 
-const PLACES = [
-  { to: '/foundations', title: 'Foundations', body: 'The rules the objects are built from: ink, type, a ×6 radius ladder, a 4-point spacing base, control heights, five elevation levels, springs and transitions.', meta: '9 pages' },
-  { to: '/components/button', title: 'Components', body: 'Base UI primitives dressed in Soft Hardware. Each ships as React, SwiftUI and an agent guide. They land one at a time, each reviewed against the object sheet.', meta: '1 · Button' },
-  { to: '/icons', title: 'Icons', body: 'Monoline and duotone glyphs on a 24 grid. Each one has its own hover pose and press animation.', meta: '31 glyphs' },
-];
+function Line({ children, task }: { children: React.ReactNode; task?: 'open' | 'done' }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, font: '500 15px/22px var(--sans)', letterSpacing: '-.015em' }}>
+      {task && <Checkbox defaultChecked={task === 'done'} aria-label="Task" />}
+      <span style={task === 'done' ? { color: 'var(--ink3)', textDecoration: 'line-through' } : undefined}>{children}</span>
+    </div>
+  );
+}
 
 export default function Home() {
+  const [chip, setChip] = React.useState(true);
   return (
     <>
-      <PageHeader
-        title="MetalUI"
-        lede="Interface controls that behave like small, well-made objects: bone and graphite soft-touch plastic, smoked glass and knurled metal. Buttons press in and spring back. Every component ships as React on Base UI and as SwiftUI, with a guide for coding agents."
-      />
+      <section className="hero" aria-labelledby="hero-h">
+        <div className="hero-copy">
+          <span className="eng">MetalUI · Soft Hardware · Rev B · React and SwiftUI</span>
+          <h1 id="hero-h">Small, well-made objects <span>on a quiet table.</span></h1>
+          <p>
+            Controls that behave like objects: bone and graphite soft-touch plastic, smoked glass, rubber and anodized metal, lit by one key
+            light from the top-left. <b>Caps press in and spring back.</b> Every piece ships as React on Base UI and as SwiftUI from one set of
+            recipes, with a guide for coding agents.
+          </p>
+        </div>
 
-      <Bench caption="Soft Hardware · a strip of tools and three caps">
-        <div className="flex flex-col items-center gap-32">
-          <div role="toolbar" aria-label="Tools" className="material-raised flex items-center gap-6 rounded-pill p-6">
-            {TOOLS.map((t, i) => (
-              <button
-                key={t.name}
-                type="button"
-                aria-label={t.label}
-                aria-pressed={i === 0}
-                className="mu-icon-trigger relative grid size-36 cursor-pointer place-items-center rounded-pill text-icon transition-[transform,background,box-shadow] duration-200 hover:text-ink material-cap aria-pressed:translate-y-px aria-pressed:text-ink aria-pressed:material-pressed active:translate-y-px active:material-pressed"
-              >
-                <Icon name={t.name} size={16} />
-                {i === 0 && <span aria-hidden className="absolute right-6 top-6 size-4 rounded-full bg-[image:var(--mu-led-green)] shadow-[0_0_0_.5px_rgba(0,0,0,.3)]" />}
-              </button>
-            ))}
+        <div className="hero-table">
+          <div className="hero-frags">
+            <Line><b>poster</b></Line>
+            <Line task="open">call printer about paper stock <Mark kind="date" resolved="Fri 25 Sep · 16:00">tomorrow 4pm</Mark></Line>
+            <Line task="done">pick the grotesk <Mark kind="tag">#type</Mark></Line>
+            <Line><Mark kind="measurement">slept 6h</Mark> · <Mark kind="measurement">mood 3</Mark></Line>
+            <Line>felt pretty low after lunch</Line>
+            {chip && <div style={{ marginLeft: 16 }}><SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /></div>}
+            <div style={{ position: 'relative', marginTop: 10, padding: '10px 14px' }}>
+              <Line>accent <Mark kind="hex" color="#FF6B3D">#FF6B3D</Mark> · ink <Mark kind="hex" color="#1B1B1D">#1B1B1D</Mark></Line>
+              <SelectionFrame state="selected" handles="text" readout size={{ width: 231, height: 40 }} />
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-8">
-            <Button cap="primary">New Canvas</Button>
-            <Button>Cancel</Button>
-            <Button cap="destructive">Delete</Button>
+          <div className="hero-objs">
+            <LinkCard href="https://lanterns.photo/night-market" />
+          </div>
+          <div className="hero-side">
+            <Swatch hex="#FF6B3D" label="Colour" />
+          </div>
+          <div className="hero-dock">
+            <Toolbar variant="graphite" aria-label="Tools">
+              <ToolButton label="Select" shortcut="V" icon={<Icon name="select" size={16} />} pressed />
+              <ToolButton label="Note" shortcut="T" icon={<Icon name="note" size={16} />} />
+              <ToolButton label="Image" icon={<Icon name="image" size={16} />} />
+              <ToolButton label="Link" icon={<Icon name="link" size={16} />} />
+              <ToolButton label="Draw" shortcut="P" icon={<Icon name="draw" size={16} />} />
+              <ToolbarSeparator />
+              <ToolButton label="Tidy" icon={<Icon name="tidy" size={16} />} />
+              <ToolbarSearch onOpen={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }))} />
+            </Toolbar>
+            <span className="eng">Press <Kbd>⌘K</Kbd> anywhere to search the system</span>
           </div>
         </div>
-      </Bench>
+      </section>
 
-      <div className="h-64" />
+      <section className="sec" id="two-halves">
+        <h2>Two halves</h2>
+        <p className="sec-sub">The material says what a thing is made of. The mechanics say how it answers your hand. Neither is a theme; both are closed sets.</p>
+        <div className="two-col">
+          <div className="panel raised">
+            <span className="eng">The material</span>
+            <h3 style={{ margin: '6px 0 10px' }}>Soft Hardware</h3>
+            <ul>
+              <li><b>Materials, not colours.</b> Bone, graphite, smoked glass, rubber, anodized metal. One material per object, plus at most one signal colour.</li>
+              <li><b>One light.</b> A soft key light from the top-left. Light lives inside the material; nothing glows.</li>
+              <li><b>Recipes, not styles.</b> Every look is layered data in one file; CSS and Swift are generated from it, so they cannot drift.</li>
+            </ul>
+            <p style={{ marginTop: 12 }}><Link to="/foundations/materials">Materials</Link></p>
+          </div>
+          <div className="panel raised">
+            <span className="eng">The mechanics</span>
+            <h3 style={{ margin: '6px 0 10px' }}>Things you can press</h3>
+            <ul>
+              <li><b>Travel.</b> Caps sink one point and spring back; thumbs slide; dials have detents.</li>
+              <li><b>Mass.</b> Seven spring classes from stiffness and damping, so a thumb and a panel move like what they are.</li>
+              <li><b>Nothing snaps.</b> A label that changes turns on a drum; an icon that changes morphs.</li>
+            </ul>
+            <p style={{ marginTop: 12 }}><Link to="/foundations/motion">Motion</Link></p>
+          </div>
+        </div>
+      </section>
 
-      <Section title="Where to go">
-        <ul className="flex flex-col">
-          {PLACES.map((p) => (
-            <li key={p.to} className="border-b border-[var(--mu-rule)] last:border-0">
-              <Link to={p.to} className="group grid grid-cols-[1fr_auto] items-baseline gap-16 py-20 text-ink no-underline">
-                <span className="flex flex-col gap-6">
-                  <span className="type-title group-hover:underline">{p.title}</span>
-                  <span className="type-doc-prose max-w-[64ch] text-ink2">{p.body}</span>
-                </span>
-                <span className="type-readout text-ink2">{p.meta}</span>
-              </Link>
-            </li>
+      <section className="sec" id="explore">
+        <h2>Explore the system</h2>
+        <div className="cards">
+          {[
+            { to: '/foundations', icon: 'layout', title: 'Foundations', body: 'Colorways, ink, type, space, radius, materials, elevation, springs and transitions.', eng: 'Tokens · live' },
+            { to: '/components/button', icon: 'board', title: 'Components', body: 'Primitives with one job each: button, segmented control, keycap, slider, field, menu, tooltip, toast.', eng: 'React · SwiftUI' },
+            { to: '/components/tool-strip', icon: 'text', title: 'Blocks', body: 'Things made of components: toolbar, filter bar, time scrubber, region, cards and the selection frame.', eng: 'Compositions' },
+            { to: '/icons', icon: 'seed', title: 'Icons', body: 'Monoline glyphs on a 24 grid, each with its own hover pose, plus the life set and its tints.', eng: 'Glyphs' },
+          ].map((c) => (
+            <Link key={c.title} className="card raised obj" to={c.to}>
+              <span className="ico"><Icon name={c.icon as never} size={20} /></span>
+              <b>{c.title}</b>
+              <p>{c.body}</p>
+              <span className="eng">{c.eng}</span>
+            </Link>
           ))}
-        </ul>
-      </Section>
-
-      <Section title="Install" lede="React components come from npm, or you can copy their source into your project with the shadcn CLI. SwiftUI comes from the Swift package.">
-        <div className="flex max-w-[640px] flex-col gap-16">
-          <Code label="npm" code={'npm install @unlocalhosted/metalui'} />
-          <Code label="shadcn" code={'npx shadcn@latest add \\\n  https://metalui.dev/r/button.json'} />
-          <Code label="SwiftPM" code={'.package(\n  url: "https://github.com/vijayksingh/metalui",\n  from: "0.1.0"\n)'} />
         </div>
-      </Section>
-
-      <Section title="Status" lede="Alpha. The foundations are proposed and waiting for review. Button and all 31 icons are built. Everything else lands one component at a time, each checked against the Soft Hardware object sheet in both colorways." />
+      </section>
     </>
   );
 }
