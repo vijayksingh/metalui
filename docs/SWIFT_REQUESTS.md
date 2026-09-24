@@ -6,6 +6,12 @@
 - **Mismatch:** the generated `status.badge.font` is `500 9.5px/1 mono`, but the paired isolated React crop is 7 physical pixels narrower than Swift's recipe-driven badge at 2×. Headless computed style confirms React renders `9px/12px` with `0.99px` tracking from `.mu-type-label`. `StatusBadge` applies both `mu-badge` and `mu-type-label`; give the badge recipe priority in the React cascade so both render the same declared font. Swift keeps the generated recipe.
 - **Reference CSS:** `packages/metalui/src/components/status/status.css:19-34` declares the badge font and tracking; `packages/metalui/src/components/tokens.css:506` declares `.mu-type-label` with a different font and tracking.
 
+## Suggestion chip composition metadata
+
+- **Object:** `MetalSuggestionChip`, now composed from `MetalChip(.suggestion)`, `MetalLabel(.small)` and two `MetalIconButton(.mini)` controls in `swift/Sources/MetalUI/Blocks/`.
+- **Missing:** `packages/metalui/src/blocks/suggestion-chip/meta.json` still points to `swift/Sources/MetalUI/Components/MetalSuggestionChip.swift`. Point it to the block path so the registry and recipe checker treat this as a composition block without its own recipe.
+- **Reference CSS:** `packages/metalui/src/blocks/suggestion-chip/suggestion-chip.css:5-23` owns only layout and arrival; paint comes from `packages/metalui/src/components/chip/chip.css:5-14`, the label recipe, and icon-button utilities.
+
 ## Placement marker and twin outline
 
 - **Object:** generated `placement` recipe for a transcluded block's marker and `twin` presence state.
