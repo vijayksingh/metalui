@@ -428,6 +428,26 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
 @utility tap-highlight-none {
   -webkit-tap-highlight-color: transparent;
 }
+/* Reduce Transparency (the system setting, or data-mu-transparency="reduce" on an ancestor): frosted
+   surfaces turn opaque and lose their backdrop. */
+@custom-variant reduce-transparency {
+  @media (prefers-reduced-transparency: reduce) {
+    @slot;
+  }
+  [data-mu-transparency="reduce"] & {
+    @slot;
+  }
+}
+@utility opaque-frost {
+  background: var(--mu-frost-opaque);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@utility opaque-frost-graphite {
+  background: var(--mu-frost-graphite-opaque);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
 /* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
 @utility focus-ring {
   outline: var(--mu-focus-width) solid var(--mu-focus);

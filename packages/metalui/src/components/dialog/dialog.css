@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../surface/surface.css";
 
 /* Dialog: a scrim behind a surface. Its look is the dialog recipe (--mu-r-dialog-*) and the surface. */
 .mu-dialog-scrim {

@@ -1,5 +1,4 @@
 @import "../../components/tokens.css";
-@import "../../components/surface/surface.css";
 
 /* Selection tool strip: a composition. It lays out its caps and brings the strip in; every paint is
    Surface(graphite-strip), Button(strip) and Rule(graphite). Layout values: --mu-toolstrip-*. */

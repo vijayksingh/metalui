@@ -8,8 +8,7 @@
   "react": {
     "export": "Surface",
     "files": [
-      "surface.tsx",
-      "surface.css"
+      "surface.tsx"
     ]
   },
   "swift": {

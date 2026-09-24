@@ -242,6 +242,26 @@
 @utility tap-highlight-none {
   -webkit-tap-highlight-color: transparent;
 }
+/* Reduce Transparency (the system setting, or data-mu-transparency="reduce" on an ancestor): frosted
+   surfaces turn opaque and lose their backdrop. */
+@custom-variant reduce-transparency {
+  @media (prefers-reduced-transparency: reduce) {
+    @slot;
+  }
+  [data-mu-transparency="reduce"] & {
+    @slot;
+  }
+}
+@utility opaque-frost {
+  background: var(--mu-frost-opaque);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@utility opaque-frost-graphite {
+  background: var(--mu-frost-graphite-opaque);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
 /* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
 @utility focus-ring {
   outline: var(--mu-focus-width) solid var(--mu-focus);
@@ -388,18 +408,31 @@
   --color-kbd-strip-ink: var(--mu-r-kbd-strip-ink);
   --color-kbd-sunk-ink: var(--mu-r-kbd-sunk-ink);
   --spacing-surface-radius-pill: var(--mu-r-surface-radius-pill);
+  --radius-surface-radius-pill: var(--mu-r-surface-radius-pill);
   --spacing-surface-radius-hero: var(--mu-r-surface-radius-hero);
+  --radius-surface-radius-hero: var(--mu-r-surface-radius-hero);
   --spacing-surface-radius-card: var(--mu-r-surface-radius-card);
+  --radius-surface-radius-card: var(--mu-r-surface-radius-card);
   --spacing-surface-radius-plate: var(--mu-r-surface-radius-plate);
+  --radius-surface-radius-plate: var(--mu-r-surface-radius-plate);
   --spacing-surface-radius-strip: var(--mu-r-surface-radius-strip);
+  --radius-surface-radius-strip: var(--mu-r-surface-radius-strip);
   --spacing-surface-radius-region: var(--mu-r-surface-radius-region);
+  --radius-surface-radius-region: var(--mu-r-surface-radius-region);
   --spacing-surface-radius-tip: var(--mu-r-surface-radius-tip);
+  --radius-surface-radius-tip: var(--mu-r-surface-radius-tip);
   --spacing-surface-radius-row: var(--mu-r-surface-radius-row);
+  --radius-surface-radius-row: var(--mu-r-surface-radius-row);
   --spacing-well-radius-pill: var(--mu-r-well-radius-pill);
+  --radius-well-radius-pill: var(--mu-r-well-radius-pill);
   --spacing-well-radius-field: var(--mu-r-well-radius-field);
+  --radius-well-radius-field: var(--mu-r-well-radius-field);
   --spacing-well-radius-region: var(--mu-r-well-radius-region);
+  --radius-well-radius-region: var(--mu-r-well-radius-region);
   --spacing-well-radius-strip: var(--mu-r-well-radius-strip);
+  --radius-well-radius-strip: var(--mu-r-well-radius-strip);
   --spacing-well-radius-row: var(--mu-r-well-radius-row);
+  --radius-well-radius-row: var(--mu-r-well-radius-row);
   --tracking-label-engraved-tracking: var(--mu-r-label-engraved-tracking);
   --color-label-engraved-color: var(--mu-r-label-engraved-color);
   --spacing-label-small-font-size: var(--mu-r-label-small-font-size);

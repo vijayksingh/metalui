@@ -697,11 +697,6 @@
           "path": "packages/metalui/src/components/surface/surface.tsx",
           "type": "registry:ui",
           "target": "components/metalui/surface/surface.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/surface/surface.css",
-          "type": "registry:file",
-          "target": "components/metalui/surface/surface.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/surface.md. SwiftUI: MetalSurface in the MetalUI Swift package."

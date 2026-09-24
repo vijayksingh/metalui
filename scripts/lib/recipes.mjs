@@ -205,7 +205,7 @@ export function buildRecipes(recipes) {
         const n = `${stem(part)}-${k}`;
         if (typeof v === 'number') {
           themeVars.push(`  --spacing-${n}: ${ref(k)};`);
-          if (/radius/.test(k)) themeVars.push(`  --radius-${n}: ${ref(k)};`);
+          if (/radius/.test(k) || /radius/.test(part)) themeVars.push(`  --radius-${n}: ${ref(k)};`);
           if (k === 'font-size') themeVars.push(`  --text-${n}: ${ref(k)};`);
           continue;
         }
