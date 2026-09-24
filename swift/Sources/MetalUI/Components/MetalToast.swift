@@ -65,8 +65,8 @@ public struct MetalToast: View {
         .padding(.trailing, model.undo != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
         .frame(height: recipe.points("self.height"))
         .fixedSize()
-        .background(.ultraThinMaterial, in: Capsule(style: .continuous))
         .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
+        .background(.ultraThinMaterial, in: Capsule(style: .continuous))
         .accessibilityElement(children: .contain)
     }
 }
