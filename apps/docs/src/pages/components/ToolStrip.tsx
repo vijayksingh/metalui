@@ -3,7 +3,7 @@ import { SelectionFrame, ToolStrip } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.agent.md?raw';
-import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToolStrip.swift?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalToolStrip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 

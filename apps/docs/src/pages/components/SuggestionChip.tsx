@@ -4,9 +4,10 @@ import { Dimple, SuggestionChip } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.agent.md?raw';
-import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSuggestionChip.swift?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalSuggestionChip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { ChipXray } from '../../ui/xray/ChipXray';
 
 const QUESTIONS = ['Task?', 'Date friday?', 'Track as sleep?', 'Move to Done?'];
 
@@ -49,6 +50,10 @@ export default function SuggestionChipPage() {
         <Bench caption={`${d.question} · ${d.confidence.toFixed(2)} · settle in from 3 above`} className="min-h-[220px]">
           <Block key={nonce} label={d.question} confidence={d.confidence} />
         </Bench>
+      </Section>
+
+      <Section id="x-ray" title="X-ray" lede="See what the chip is made of. Click an icon to learn about one part and change it.">
+        <ChipXray />
       </Section>
 
       <Section title="States">

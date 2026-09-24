@@ -4,7 +4,7 @@ import { ClockIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.agent.md?raw';
-import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMemoryScrubber.swift?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalTimeScrubber.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 

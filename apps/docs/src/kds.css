@@ -778,3 +778,4 @@ html.rm .xr-dialogwrap { animation: none; }
 @container (max-width: 559px) { .xr-scene { margin-bottom: 120px; } .xr-callout.right { flex-direction: row; } }
 .xr-overlay { z-index: 100; overflow-y: auto; place-items: safe center; }
 .xr-overlay > .xr-sheet { margin: auto; }
+@container (max-width: 559px) { .xr-solid-fit { zoom: .6; } }

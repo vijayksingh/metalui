@@ -319,7 +319,7 @@ export function XrayFrame<T extends GlyphName>(props: {
   return (
     <div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
       <div className="xr-bench" ref={bench}>
-        {!xray && <div className="xr-solid" onClick={() => setXray(true)}>{props.solid}</div>}
+        {!xray && <div className="xr-solid" onClick={() => setXray(true)}><div className="xr-solid-fit">{props.solid}</div></div>}
         {xray && (
           <div className="xr-scene" style={{ width: W, height: H, zoom: fit }}>
             <div className="xr-iso">

@@ -1,0 +1,46 @@
+import * as React from 'react';
+import { Bench, PageHeader, Rules, Section, SourceTabs, type Rule } from './doc';
+import { SwiftCapture } from './SwiftCapture';
+
+/* ─────────────────────────────────────────────────────────
+ * COMPONENT PAGE · the shape every component page shares
+ *
+ *   head        title and one plain line
+ *   playground  the real thing to try, and what to try
+ *   x-ray       what it is made of
+ *   source      React, CSS, SwiftUI (or a note that there is none yet), agent guide
+ *   rules       what to do and not do with it
+ * ───────────────────────────────────────────────────────── */
+
+export interface ComponentPageProps {
+  title: string;
+  lede: React.ReactNode;
+  play: { lede: string; caption?: string; node: React.ReactNode };
+  xray: React.ReactNode;
+  /** The name of its SwiftUI capture, when it has one. */
+  capture?: string;
+  sources: { id: 'react' | 'css' | 'swift' | 'agent'; label: string; code: string }[];
+  rules: Rule[];
+}
+
+export function ComponentPage({ title, lede, play, xray, capture, sources, rules }: ComponentPageProps) {
+  const hasSwift = sources.some((s) => s.id === 'swift');
+  return (
+    <>
+      <PageHeader title={title} lede={lede} tags={[{ label: 'React', led: 'green' }, { label: hasSwift ? 'SwiftUI' : 'SwiftUI not yet', led: hasSwift ? 'green' : 'off' }]} />
+      <Section title="Playground" lede={play.lede}>
+        <Bench caption={play.caption}>{play.node}</Bench>
+        {capture && <SwiftCapture name={capture} maxWidth={520} />}
+      </Section>
+      <Section id="x-ray" title="X-ray" lede="See what it is made of. Click an icon to learn about one part and change it.">
+        {xray}
+      </Section>
+      <Section title="Source">
+        <SourceTabs tabs={sources} />
+      </Section>
+      <Section title="Rules">
+        <Rules rules={rules} />
+      </Section>
+    </>
+  );
+}
