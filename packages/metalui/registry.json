@@ -90,6 +90,29 @@
       "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
     },
     {
+      "name": "code-card",
+      "type": "registry:ui",
+      "title": "Code card",
+      "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/code-card/code-card.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/code-card/code-card.tsx"
+        },
+        {
+          "path": "packages/metalui/src/blocks/code-card/code-card.css",
+          "type": "registry:file",
+          "target": "components/metalui/blocks/code-card/code-card.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/code-card.md. SwiftUI: MetalCodeCard in the MetalUI Swift package."
+    },
+    {
       "name": "command-palette",
       "type": "registry:ui",
       "title": "Command palette",
@@ -324,6 +347,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
+    },
+    {
+      "name": "link-card",
+      "type": "registry:ui",
+      "title": "Link card",
+      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/link-card/link-card.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/link-card/link-card.tsx"
+        },
+        {
+          "path": "packages/metalui/src/blocks/link-card/link-card.css",
+          "type": "registry:file",
+          "target": "components/metalui/blocks/link-card/link-card.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/link-card.md. SwiftUI: MetalLinkCard in the MetalUI Swift package."
     },
     {
       "name": "mark",

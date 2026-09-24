@@ -11,6 +11,7 @@
 - [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps, at 32 or compact 28.
 - [Checkbox](https://metalui.dev/r/checkbox.md): The dimple checkbox: a recessed well that turns into a dark pressed key with a drawn tick; doing (half green) and ghost (an inferred task's hollow ring) states.
 - [Chip](https://metalui.dev/r/chip.md): A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.
+- [Code card](https://metalui.dev/r/code-card.md): Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.
 - [Command palette](https://metalui.dev/r/command-palette.md): ⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.
 - [Dialog](https://metalui.dev/r/dialog.md): A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.
 - [Field](https://metalui.dev/r/field.md): Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.
@@ -21,6 +22,7 @@
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
+- [Link card](https://metalui.dev/r/link-card.md): A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.
 - [Mark](https://metalui.dev/r/mark.md): Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.
 - [Menu and correction popover](https://metalui.dev/r/menu.md): A frosted plate of 30 rows (frost-strong at .92, radius 18, padding 6, at least 200 wide) from a trigger or at the pointer: an engraved heading says what it acts on, pointer and keyboard share one highlight, keys at the right, destructive rows red, engraved separators; fades on settle. The correction popover is its right-click form. Built on Base UI Menu and Context Menu.
 - [Past banner](https://metalui.dev/r/past-banner.md): The only chrome that changes while the canvas is scrubbed into the past: Surface(graphite-plain) with the MEMORY engraving, the moment viewed, and a Back to Now cap with its key.

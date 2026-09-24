@@ -1,0 +1,28 @@
+@import "../../components/tokens.css";
+@import "../../components/glass-face/glass-face.css";
+@import "../../components/chip/chip.css";
+
+/* Link card: a custom block. The tinted screen and its type are the link-card recipe (--mu-r-link-card-*);
+   the bezel and glare are GlassFace, the tag and action Chip. */
+.mu-linkcard { --mu-self: var(--mu-r-link-card-screen-tint); width: var(--mu-r-link-card-self-width); }
+.mu-linkcard-screen {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: var(--mu-r-link-card-screen-height);
+  padding: var(--mu-r-link-card-screen-pad-y) var(--mu-r-link-card-screen-pad-x);
+  background: var(--mu-r-link-card-screen-background);
+}
+.mu-linkcard-tag { position: absolute; left: var(--mu-r-link-card-chip-inset); top: var(--mu-r-link-card-chip-inset); }
+.mu-linkcard-open { position: absolute; right: var(--mu-r-link-card-chip-inset); top: var(--mu-r-link-card-chip-inset); z-index: 2; }
+.mu-linkcard-host { font: var(--mu-r-link-card-host-font); letter-spacing: var(--mu-r-link-card-host-tracking); color: var(--mu-r-link-card-host-ink); }
+.mu-linkcard-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font: var(--mu-r-link-card-path-font);
+  letter-spacing: var(--mu-r-link-card-path-tracking);
+  color: var(--mu-r-link-card-path-ink);
+}

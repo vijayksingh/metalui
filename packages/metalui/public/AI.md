@@ -160,6 +160,43 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 
 ---
 
+# Code card
+
+Code as a glass object. A custom block: `GlassFace` with a dark screen of numbered, tinted lines and a `Chip` tag. React: `CodeCard` (and `tintCode`) from `@unlocalhosted/metalui`. SwiftUI: `MetalCodeCard`.
+
+## Use it for
+
+- A fenced block of code placed on a canvas: `● CODE · SWIFT · 6 LINES` over the lines.
+
+## Don't use it for
+
+- Inline code in prose, or an editor. It shows code; it does not edit it.
+
+## Anatomy
+
+260 to 460 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen pads 30 / 14 / 12 over a radial of `#26282C` into `#0F1011`. `Chip variant="glass"` with a code `Led` at 10 / 10. The code is 11 mono at 1.62, tracked -.01em, `#D7D8DB`; numbers 18 wide in `#48494E`; keywords `#E7A6D9`, types `#E7C98A`, strings `#9FE3BF`, comments `#6D6E73`, numbers `#9EC2FF`. At most 18 lines show; the tag counts all.
+
+## Why custom
+
+The tinted code is drawn by no component. The bezel, glare and tag are `GlassFace` and `Chip`.
+
+## API
+
+| React | SwiftUI | Notes |
+|---|---|---|
+| `code` | `code:` | |
+| `lang` | `lang:` | in the tag, uppercase |
+| `maxLines` | `maxLines:` | default 18 |
+| `tag` | `tag:` | the host's words; default CODE · LANG · N LINES |
+
+`tintCode(code, maxLines)` returns the escaped, tinted HTML the card renders.
+
+## Tokens
+
+The code-card recipe (screen, code, tint, chip inset), the glass-face and chip recipes.
+
+---
+
 # Command palette
 
 ⌘K: lenses and actions in one field. React: `CommandPalette` from `@unlocalhosted/metalui` (Base UI Dialog around an inline Base UI Combobox). SwiftUI: `MetalCommandPalette` with `MetalCommandPaletteItem`. Sheet reference: KAMUI-06; Kamui brief: 04 §3; behaviour: the medium demo's `openPalette()`.
@@ -500,6 +537,46 @@ Text in a set role. React: `Label`. SwiftUI: `MetalLabel`.
 
 - Plain text: no role. An engraving that is the only name of a control is not an accessible name; give the control an `aria-label`.
 - `as="input"`: an editable label (a region's name) that keeps the look, with the green caret and no field, sized to its content; give it an `aria-label`.
+
+---
+
+# Link card
+
+A link as a glass object. A custom block: `GlassFace` with a screen tinted by the host, a `Chip` tag and a `Chip` action. React: `LinkCard` (and `linkHueDegrees`) from `@unlocalhosted/metalui`. SwiftUI: `MetalLinkCard`.
+
+## Use it for
+
+- A lone URL placed on a canvas: `figma.com` over `/FILE/POSTER-V3`, with `● LINK` and `OPEN ↗`.
+
+## Don't use it for
+
+- A link inside text: that is a `MarkUrl` host pill. A navigation control: a link or a button.
+
+## Anatomy
+
+250 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen is 92 tall, padding 12 / 14, the host and path set at its foot; its tint is a radial of the host's hue into `#121316`. `Chip variant="glass"` with a link `Led` and LINK at 10 / 10; `Chip variant="glass-action"` OPEN ↗ at 10 from the top right. The host is 620 15 / 1.2 in `#EDEDEF`; the path 9.5 mono uppercase at .5 white, ellipsised.
+
+## Why custom
+
+The tinted screen and its type are drawn by no component. Everything else is `GlassFace` and `Chip`.
+
+## Behaviour
+
+- The card is not a click target. Only OPEN is: a real link, `target="_blank"`, `rel="noopener noreferrer"`.
+- The host lifts it on hover (2, on part); the card itself does not move.
+
+## API
+
+| React | SwiftUI | Notes |
+|---|---|---|
+| `href` | `url:` | |
+| `host`, `path` | `host:`, `path:` | default from the URL |
+| `hue` | `hue:` | any colour; default the recipe's tint. The reference tints by host: `hsl(linkHueDegrees(host), 38%, 32%)` (the recipe's tint-saturation and tint-lightness) |
+| `tag`, `openLabel` | `tag:`, `openLabel:` | the host's words (LINK, OPEN ↗) |
+
+## Tokens
+
+The link-card recipe (screen, host, path, chip inset), the glass-face and chip recipes.
 
 ---
 

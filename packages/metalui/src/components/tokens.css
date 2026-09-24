@@ -1371,6 +1371,42 @@
   --mu-r-glyph-size-small: 14px;
   --mu-r-glyph-size-regular: 16px;
   --mu-r-glyph-size-tiny: 10px;
+  /* link-card: reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open */
+  --mu-r-link-card-screen-background:
+    /* mu-recipe:link-card:0 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-link-card-self-width: 250px;
+  --mu-r-link-card-screen-height: 92px;
+  --mu-r-link-card-screen-pad-y: 12px;
+  --mu-r-link-card-screen-pad-x: 14px;
+  --mu-r-link-card-screen-tint: #36406A;
+  --mu-r-link-card-screen-tint-saturation: 38%;
+  --mu-r-link-card-screen-tint-lightness: 32%;
+  --mu-r-link-card-host-font: 620 15px/1.2 var(--mu-sans);
+  --mu-r-link-card-host-tracking: -0.015em;
+  --mu-r-link-card-host-ink: #EDEDEF;
+  --mu-r-link-card-path-font: 400 9.5px/1.4 var(--mu-mono);
+  --mu-r-link-card-path-tracking: 0.06em;
+  --mu-r-link-card-path-ink: rgba(255,255,255,.5);
+  --mu-r-link-card-chip-inset: 10px;
+  /* code-card: reference style.css .codeobj, .codeobj .screen, .codeobj pre, .ln, .kw, .ty, .st, .cm, .nu */
+  --mu-r-code-card-screen-background:
+    /* mu-recipe:code-card:0 */ radial-gradient(120% 80% at 20% 0, #26282C, #151618 60%, #0F1011);
+  --mu-r-code-card-self-min-width: 260px;
+  --mu-r-code-card-self-max-width: 460px;
+  --mu-r-code-card-screen-pad-top: 30px;
+  --mu-r-code-card-screen-pad-x: 14px;
+  --mu-r-code-card-screen-pad-bottom: 12px;
+  --mu-r-code-card-code-font: 400 11px/1.62 var(--mu-mono);
+  --mu-r-code-card-code-tracking: -0.01em;
+  --mu-r-code-card-code-ink: #D7D8DB;
+  --mu-r-code-card-code-number: 18px;
+  --mu-r-code-card-tint-line: #48494E;
+  --mu-r-code-card-tint-keyword: #E7A6D9;
+  --mu-r-code-card-tint-type: #E7C98A;
+  --mu-r-code-card-tint-string: #9FE3BF;
+  --mu-r-code-card-tint-comment: #6D6E73;
+  --mu-r-code-card-tint-number: #9EC2FF;
+  --mu-r-code-card-chip-inset: 10px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1383,6 +1419,8 @@
     inset 0 0 6px 2px rgba(255,255,255,.12),
     0 1px 2px rgba(0,0,0,.12),
     0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
+  --mu-r-link-card-screen-background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
 }
 :root,
 [data-mu-colorway="bone"] {

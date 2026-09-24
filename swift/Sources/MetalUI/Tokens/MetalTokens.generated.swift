@@ -1684,6 +1684,56 @@ public enum MetalRecipes {
             "ink.ink3": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
         ]
     )
+
+    /// A link as a glass object: the site's host and path on a screen tinted by the host, a LINK tag and one OPEN action. The card is not a click target; only OPEN is. (reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open)
+    public static let linkCard = MetalObjectRecipe(
+        name: "link-card",
+        layers: [
+            .init(part: "screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:link-card:0 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
+        ],
+        props: [
+            "self.width": .number(250.0),
+            "screen.height": .number(92.0),
+            "screen.pad-y": .number(12.0),
+            "screen.pad-x": .number(14.0),
+            "screen.tint": .text("#36406A"),
+            "screen.tint-saturation": .text("38%"),
+            "screen.tint-lightness": .text("32%"),
+            "host.font": .text("620 15px/1.2 sans"),
+            "host.tracking": .text("-0.015em"),
+            "host.ink": .text("#EDEDEF"),
+            "path.font": .text("400 9.5px/1.4 mono"),
+            "path.tracking": .text("0.06em"),
+            "path.ink": .text("rgba(255,255,255,.5)"),
+            "chip.inset": .number(10.0),
+        ]
+    )
+
+    /// Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag. (reference style.css .codeobj, .codeobj .screen, .codeobj pre, .ln, .kw, .ty, .st, .cm, .nu)
+    public static let codeCard = MetalObjectRecipe(
+        name: "code-card",
+        layers: [
+            .init(part: "screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.2, y: 0.0), stops: [.init(.color(MetalRGBA(38.0, 40.0, 44.0, 1.0)), 0.0), .init(.color(MetalRGBA(21.0, 22.0, 24.0, 1.0)), 0.6), .init(.color(MetalRGBA(15.0, 16.0, 17.0, 1.0)), 1.0)])), // mu-recipe:code-card:0 radial-gradient(120% 80% at 20% 0, #26282C, #151618 60%, #0F1011)
+        ],
+        props: [
+            "self.min-width": .number(260.0),
+            "self.max-width": .number(460.0),
+            "screen.pad-top": .number(30.0),
+            "screen.pad-x": .number(14.0),
+            "screen.pad-bottom": .number(12.0),
+            "code.font": .text("400 11px/1.62 mono"),
+            "code.tracking": .text("-0.01em"),
+            "code.ink": .text("#D7D8DB"),
+            "code.number": .number(18.0),
+            "tint.line": .text("#48494E"),
+            "tint.keyword": .text("#E7A6D9"),
+            "tint.type": .text("#E7C98A"),
+            "tint.string": .text("#9FE3BF"),
+            "tint.comment": .text("#6D6E73"),
+            "tint.number": .text("#9EC2FF"),
+            "chip.inset": .number(10.0),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

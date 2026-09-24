@@ -1,0 +1,26 @@
+{
+  "name": "code-card",
+  "title": "Code card",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "custom",
+  "reason": "The numbered, tinted code on its own dark screen is drawn by no component. The bezel, glare and tag are still GlassFace and Chip.",
+  "uses": [
+    "glass-face",
+    "chip"
+  ],
+  "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
+  "base": "none",
+  "react": {
+    "export": "CodeCard, tintCode",
+    "files": [
+      "code-card.tsx",
+      "code-card.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCodeCard",
+    "file": "swift/Sources/MetalUI/Blocks/MetalCodeCard.swift"
+  },
+  "agent": "code-card.agent.md"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "link-card",
+  "title": "Link card",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "custom",
+  "reason": "The screen is tinted by the link's host and carries the host and path in their own type; no component draws a tinted glass screen. The bezel, glare, tag and action are still GlassFace and Chip.",
+  "uses": [
+    "glass-face",
+    "chip"
+  ],
+  "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+  "base": "none (a group; OPEN is the only link)",
+  "react": {
+    "export": "LinkCard, linkHueDegrees",
+    "files": [
+      "link-card.tsx",
+      "link-card.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalLinkCard",
+    "file": "swift/Sources/MetalUI/Blocks/MetalLinkCard.swift"
+  },
+  "agent": "link-card.agent.md"
+}

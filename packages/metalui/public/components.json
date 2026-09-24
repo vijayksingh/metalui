@@ -54,6 +54,23 @@
       "agent": "https://metalui.dev/r/chip.md"
     },
     {
+      "name": "code-card",
+      "title": "Code card",
+      "status": "alpha",
+      "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "CodeCard, tintCode",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCodeCard"
+      },
+      "registry": "https://metalui.dev/r/code-card.json",
+      "agent": "https://metalui.dev/r/code-card.md"
+    },
+    {
       "name": "command-palette",
       "title": "Command palette",
       "status": "alpha",
@@ -224,6 +241,23 @@
       },
       "registry": "https://metalui.dev/r/label.json",
       "agent": "https://metalui.dev/r/label.md"
+    },
+    {
+      "name": "link-card",
+      "title": "Link card",
+      "status": "alpha",
+      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "LinkCard, linkHueDegrees",
+        "base": "none (a group; OPEN is the only link)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLinkCard"
+      },
+      "registry": "https://metalui.dev/r/link-card.json",
+      "agent": "https://metalui.dev/r/link-card.md"
     },
     {
       "name": "mark",
