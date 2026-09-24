@@ -67,6 +67,12 @@
 - **Missing:** the panel's layout values are not generated: 10 px inset, 760 px width cap and 230 px viewport height reserve. `MetalSurface(.panel, radius: .card)` now supplies the correct 24 px blur, translucent fill and raised shadow stack; `MetalRow(.panel)` supplies the rows. The Mac client temporarily owns only the panel placement and layout.
 - **Demo CSS:** reference `style.css:428-439` defines `#panel`, `.prow`, checked text and weak-match opacity. The other projections follow at lines 440-454.
 
+## Timeline result row
+
+- **Object:** a generated timeline row recipe or `MetalRow` timeline variant, including the day rule.
+- **Missing:** the vertical rule and rounded hover fill are still assembled from generic color tokens; the 42 px time column, 12 px gap, 6 px vertical inset, 14 px horizontal inset and day header spacing are client-owned.
+- **Demo CSS:** reference `style.css:445-450` defines `.tl-day`, its trailing rule, `.tl-item`, hover and time engraving.
+
 ## Composition refactor (docs/COMPOSITION.md)
 
 Primitives and blocks the React side now has. Mirror each with the same name (Metal prefix), slots and recipe; the recipe parity check lists what is still missing.
