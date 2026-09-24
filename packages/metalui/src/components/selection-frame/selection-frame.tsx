@@ -10,6 +10,8 @@ import { SizeReadout } from '../size-readout/size-readout';
  * rest      nothing: a borderless object has no edge at rest
  * hover     faint corner dots where the handles will be (settle fade);
  *           an edge light on the side the pointer entered the band
+ *           a soft glow behind the corner under the pointer (also while selected:
+ *           it says "resize from here" behind the handle)
  * selected  ring 1.25 + collar 3.5 at offset 6 (radius + 6)
  *     0ms   ring and handles enter from 1.02, opacity 0, on the part spring
  *           (Reduce Motion: part resolves instant)
@@ -50,6 +52,8 @@ export interface SelectionFrameProps extends Omit<React.HTMLAttributes<HTMLDivEl
   copied?: string | null;
   /** The band edge under the pointer: its edge light shows. */
   edge?: SelectionEdge | null;
+  /** The band corner under the pointer: a soft glow shows behind it. */
+  corner?: 'nw' | 'ne' | 'se' | 'sw' | null;
   /** Play the ring's entrance when it becomes selected (default true). */
   entrance?: boolean;
   /** A handle was pressed. The host resizes or moves the object; the frame follows its box. */
@@ -68,6 +72,8 @@ const DOT = 'mu-sf-dot absolute size-presence-hover-dot -translate-1/2 rounded-r
 /* The edge light: the pointer entered the band on one edge. */
 const EDGE = 'mu-sf-edge absolute opacity-0 transition-opacity duration-settle ease-settle data-on:opacity-100';
 const EDGE_AT = { n: 'presence-edge-n', e: 'presence-edge-e', s: 'presence-edge-s', w: 'presence-edge-w' };
+/* The corner glow: the pointer is over a corner of the band, selected or not. */
+const GLOW = 'mu-sf-glow absolute -translate-1/2 presence-corner-glow opacity-0 transition-opacity duration-settle ease-settle data-on:opacity-presence-corner-glow';
 /* Handles on the ring line: round caps at the corners, capsules at the edge midpoints, each with a hit
  * area 7 wider; on text the n and s capsules are grips. */
 const HANDLE = 'mu-sf-handle absolute -translate-1/2 rounded-pill pointer-events-auto touch-none after:absolute after:-inset-presence-handle-hit after:rounded-pill group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-fade';
@@ -127,7 +133,7 @@ function useHostSize(ref: React.RefObject<HTMLDivElement | null>, enabled: boole
 export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFrameProps>(function SelectionFrame(
   {
     state = 'rest', variant = 'ring', mode = 'idle', radius = 0, handles = 'object', readout = true, count, size,
-    copied, edge = null, entrance = true, onHandlePointerDown, className, style, ...props
+    copied, edge = null, corner = null, entrance = true, onHandlePointerDown, className, style, ...props
   },
   forwardedRef,
 ) {
@@ -164,6 +170,9 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
       {state === 'hover' || state === 'rest'
         ? (['nw', 'ne', 'se', 'sw'] as SelectionHandle[]).map((c) => <span key={c} className={DOT} style={place(c)} />)
         : null}
+      {(['nw', 'ne', 'se', 'sw'] as const).map((c) => (
+        <span key={`g-${c}`} className={GLOW} data-corner={c} data-on={corner === c ? '' : undefined} style={place(c)} />
+      ))}
       {(['n', 'e', 's', 'w'] as SelectionEdge[]).map((e) => (
         <span key={e} className={`${EDGE} ${EDGE_AT[e]}`} data-edge={e} data-on={edge === e && state !== 'selected' ? '' : undefined} />
       ))}

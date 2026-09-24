@@ -23,6 +23,14 @@ function edgeAt(e: React.PointerEvent<HTMLElement>, band: number): SelectionEdge
   return v <= band ? k : null;
 }
 
+/** The band corner under the pointer: within the band of two edges at once. */
+function cornerAt(e: React.PointerEvent<HTMLElement>, band: number): 'nw' | 'ne' | 'se' | 'sw' | null {
+  const r = e.currentTarget.getBoundingClientRect();
+  const v = e.clientY - r.top <= band ? 'n' : r.bottom - e.clientY <= band ? 's' : null;
+  const h = e.clientX - r.left <= band ? 'w' : r.right - e.clientX <= band ? 'e' : null;
+  return v && h ? (`${v}${h}` as 'nw' | 'ne' | 'se' | 'sw') : null;
+}
+
 /* A text block as the canvas draws it: words only at rest, the frosted plate on hover and while writing.
  * Click selects; a second click writes; ⎋ finishes and selects quietly; e/w and corner dots set the width. */
 function TextBlock({ radius, handles, entrance }: { radius: number; handles: 'object' | 'text' | 'none'; entrance: boolean }) {
@@ -30,6 +38,7 @@ function TextBlock({ radius, handles, entrance }: { radius: number; handles: 'ob
   const [editing, setEditing] = React.useState(false);
   const [hover, setHover] = React.useState(false);
   const [edge, setEdge] = React.useState<SelectionEdge | null>(null);
+  const [corner, setCorner] = React.useState<'nw' | 'ne' | 'se' | 'sw' | null>(null);
   const [width, setWidth] = React.useState<number | null>(null);
   const [copied, setCopied] = React.useState<string | null>(null);
   const host = React.useRef<HTMLDivElement>(null);
@@ -60,8 +69,8 @@ function TextBlock({ radius, handles, entrance }: { radius: number; handles: 'ob
         aria-selected={sel !== 'none'}
         tabIndex={0}
         onPointerEnter={() => setHover(true)}
-        onPointerLeave={() => { setHover(false); setEdge(null); }}
-        onPointerMove={(e) => setEdge(sel === 'none' ? edgeAt(e, 6) : null)}
+        onPointerLeave={() => { setHover(false); setEdge(null); setCorner(null); }}
+        onPointerMove={(e) => { const c = cornerAt(e, 10); setCorner(c); setEdge(sel === 'none' && !c ? edgeAt(e, 6) : null); }}
         onClick={() => { if (sel === 'click' && !editing) setEditing(true); else if (!editing) setSel('click'); }}
         onKeyDown={(e) => {
           if (e.key === 'Escape') { setEditing(false); setSel(editing ? 'quiet' : 'none'); host.current?.focus(); }
@@ -96,6 +105,7 @@ function TextBlock({ radius, handles, entrance }: { radius: number; handles: 'ob
           radius={radius}
           handles={handles}
           edge={edge}
+          corner={corner}
           copied={copied?.trim() ?? null}
           entrance={entrance}
           onHandlePointerDown={onHandle}

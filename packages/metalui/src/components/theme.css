@@ -1990,6 +1990,9 @@
 @utility presence-lasso-readout {
   position: absolute; left: 50%; top: calc(100% + var(--mu-presence-readout-gap) / 2 / var(--mu-canvas-scale, 1)); transform: translateX(-50%) scale(calc(1 / var(--mu-canvas-scale, 1))); transform-origin: 50% 0;
 }
+@utility presence-corner-glow {
+  width: calc(var(--mu-presence-handle) * 2); height: calc(var(--mu-presence-handle) * 2); border-radius: 50%; background: var(--mu-presence-edge-light); box-shadow: 0 0 calc(var(--mu-presence-handle) / 3) var(--mu-presence-edge-light);
+}
 @utility region-motion {
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
