@@ -736,6 +736,19 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalStatusMetrics {
+    public static let led: Double = 5.0
+    public static let ledSmall: Double = 4.0
+    public static let bloom: [MetalShadow] = [
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 2.0, spread: 0.0, color: MetalRGBA(80, 220, 150, 0.55)),
+    ]
+    public static let badgeHeight: Double = 24.0
+    public static let badgePadStart: Double = 9.0
+    public static let badgePadEnd: Double = 10.0
+    public static let badgeGap: Double = 7.0
+}
+
+/// A keycap: a key's glyph on a small raised cap, in the readout role, ink2. 20 tall on the height ladder (16 in a dense footer), radius key (6). On a graphite strip it is a dark cap; inside a toast's Undo it is sunk.
 public enum MetalKbdMetrics {
     public static let height: Double = 20.0
     public static let small: Double = 16.0

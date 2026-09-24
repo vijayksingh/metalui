@@ -309,6 +309,13 @@
   --mu-kbd-sunk-bg: linear-gradient(#232326, #1C1C1E);
   --mu-kbd-sunk-sh: inset 0 1px 1.5px rgba(0,0,0,.5), 0 .5px 0 rgba(255,255,255,.06);
   --mu-kbd-sunk-ink: #9A9A9E;
+  --mu-status-led: 5px;
+  --mu-status-led-small: 4px;
+  --mu-status-bloom: 0 0 2px rgba(80,220,150,.55);
+  --mu-status-badge-height: 24px;
+  --mu-status-badge-pad-start: 9px;
+  --mu-status-badge-pad-end: 10px;
+  --mu-status-badge-gap: 7px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);

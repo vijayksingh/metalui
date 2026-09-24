@@ -307,6 +307,31 @@
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
     },
     {
+      "name": "status",
+      "type": "registry:ui",
+      "title": "LED and status badge",
+      "description": "A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/status/status.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/status/status.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/status/status.css",
+          "type": "registry:file",
+          "target": "components/metalui/status/status.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/status.md. SwiftUI: MetalLED, MetalStatusBadge in the MetalUI Swift package."
+    },
+    {
       "name": "suggestion-chip",
       "type": "registry:ui",
       "title": "Suggestion chip",

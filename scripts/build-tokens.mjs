@@ -199,6 +199,11 @@ const KB = T.kbd;
 const KB_KEYS = Object.keys(KB).filter((k) => !k.startsWith('$'));
 const kbdVars = KB_KEYS.map((k) => `  --mu-kbd-${k}: ${typeof KB[k] === 'number' ? `${KB[k]}px` : KB[k]};`).join('\n');
 
+// ---------- status (tokens.json status): LEDs and the status badge ----------
+const ST = T.status;
+const ST_KEYS = Object.keys(ST).filter((k) => !k.startsWith('$'));
+const statusVars = ST_KEYS.map((k) => `  --mu-status-${k}: ${typeof ST[k] === 'number' ? `${ST[k]}px` : ST[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -230,6 +235,7 @@ ${scrubberVars}
 ${pastbannerVars}
 ${toolstripVars}
 ${kbdVars}
+${statusVars}
 ${typeVars}
 ${travel}
 }
@@ -614,6 +620,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
 /// ${LB.$use}
+public enum MetalStatusMetrics {
+${ST_KEYS.map((k) => { const v = ST[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`; }).join('\n')}
+}
+
+/// ${KB.$use}
 public enum MetalKbdMetrics {
 ${KB_KEYS.map((k) => { const v = KB[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`; }).join('\n')}
 }

@@ -303,4 +303,21 @@ final class MetalCaptures: XCTestCase {
             capture("kbd-\(colorway.rawValue)", view)
         }
     }
+
+    func testStatus() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 20) {
+                HStack(spacing: 24) { MetalLED(.live); MetalLED(.waiting); MetalLED(.failed); MetalLED(.link); MetalLED(.off) }
+                HStack(spacing: 12) {
+                    MetalStatusBadge("Jev live", led: .live)
+                    MetalStatusBadge("Jev offline · add key to keychain", led: .waiting)
+                    MetalStatusBadge("Jev · no connection", led: .failed)
+                }
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("status-\(colorway.rawValue)", view)
+        }
+    }
 }

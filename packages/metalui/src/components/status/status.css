@@ -1,0 +1,33 @@
+@import "../tokens.css";
+@import "../provenance-tooltip/provenance-tooltip.css";
+
+/* LED and status badge (KAMUI-16; Kamui 04 §10). */
+.mu-led {
+  display: inline-block;
+  flex: none;
+  width: var(--mu-status-led);
+  height: var(--mu-status-led);
+  border-radius: 50%;
+  box-shadow: var(--mu-led-ring);
+}
+.mu-led[data-size="small"] { width: var(--mu-status-led-small); height: var(--mu-status-led-small); }
+.mu-led[data-kind="live"] { background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom); }
+.mu-led[data-kind="waiting"] { background: var(--mu-led-amber); }
+.mu-led[data-kind="failed"] { background: var(--mu-led-red); }
+.mu-led[data-kind="link"] { background: var(--mu-led-blue); }
+.mu-led[data-kind="off"] { background: var(--mu-led-off); }
+
+.mu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-status-badge-gap);
+  height: var(--mu-status-badge-height);
+  padding: 0 var(--mu-status-badge-pad-end) 0 var(--mu-status-badge-pad-start);
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--mu-ink2);
+  background: var(--mu-btn-bg);
+  box-shadow: var(--mu-btn-sh);
+  cursor: default;
+}
+.mu-badge:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
