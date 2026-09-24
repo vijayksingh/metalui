@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { Checkbox } from '@base-ui/react/checkbox';
 import './cue.css';
 
 /* ─────────────────────────────────────────────────────────
@@ -73,35 +72,7 @@ export const CueInferred = React.forwardRef<HTMLSpanElement, CueInferredProps>(f
   return <span ref={ref} data-chip={resolved} className={['mu-cue', 'mu-cue-inferred', 'mu-type-label', className].filter(Boolean).join(' ')} {...props} />;
 });
 
-export interface DimpleProps extends Omit<Checkbox.Root.Props, 'className' | 'indeterminate'> {
-  /** The task is in progress: a half-filled green square (announced as mixed). */
-  doing?: boolean;
-  /** A task Jev inferred and nobody wrote: the hollow ghost dimple, hanging in the margin. */
-  ghost?: boolean;
-  className?: string;
-}
-
-/**
- * A task's checkbox: a 16 pt well in the margin (Base UI Checkbox). Checked, it turns dark and the
- * tick draws on. Ticking it is a person's action: the host writes `[x]` into the text, with Undo.
- */
-export const Dimple = React.forwardRef<HTMLButtonElement, DimpleProps>(function Dimple({ doing, ghost, className, ...props }, ref) {
-  // The slot carries placement (the margin at −25): Base UI renders a hidden form input beside the
-  // checkbox, and the slot keeps both out of the line's flow.
-  return (
-    <span className={className ? `mu-dimple-slot ${className}` : 'mu-dimple-slot'}>
-      <Checkbox.Root
-        ref={ref}
-        indeterminate={doing && !props.checked ? true : undefined}
-        data-ghost={ghost ? '' : undefined}
-        className="mu-dimple"
-        {...props}
-      >
-        <Checkbox.Indicator render={(p, state) => (state.checked ? <span {...p} className="mu-dimple-tick" /> : <span {...p} hidden />)} />
-      </Checkbox.Root>
-    </span>
-  );
-});
+export { Dimple, type DimpleProps } from '../dimple/dimple';
 
 /** Urgency: a 5 pt amber LED in the margin of an open task that is due soon. */
 export function CueUrgency({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {

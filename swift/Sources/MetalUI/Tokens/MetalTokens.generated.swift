@@ -16,6 +16,7 @@ public struct MetalColorwayTokens: Sendable {
     public let lip: MetalRGBA
     public let lipShadow: [MetalShadow]
     public let rule: MetalRGBA
+    public let ruleLipShadow: [MetalShadow]
     public let ruleLip: MetalRGBA
     public let thumbHi: MetalRGBA
     public let thumbLo: MetalRGBA
@@ -92,6 +93,9 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.95)),
         ],
         rule: MetalRGBA(0, 0, 0, 0.075),
+        ruleLipShadow: [
+            MetalShadow(inset: false, x: 1.0, y: 0.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.5)),
+        ],
         ruleLip: MetalRGBA(255, 255, 255, 0.5),
         thumbHi: MetalRGBA(255, 255, 255, 1.0),
         thumbLo: MetalRGBA(247, 246, 243, 1.0),
@@ -213,6 +217,9 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.35)),
         ],
         rule: MetalRGBA(0, 0, 0, 0.45),
+        ruleLipShadow: [
+            MetalShadow(inset: false, x: 1.0, y: 0.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.035)),
+        ],
         ruleLip: MetalRGBA(255, 255, 255, 0.035),
         thumbHi: MetalRGBA(58, 58, 61, 1.0),
         thumbLo: MetalRGBA(46, 46, 49, 1.0),
@@ -619,10 +626,14 @@ public enum MetalRecipes {
             "head.gap": .number(10.0),
             "name.font": .text("640 13.5px/1.2 sans"),
             "name.tracking": .text("-0.01em"),
+            "name.placeholder-weight": .text("500"),
             "count.font": .text("500 10px/1 mono"),
             "rule-over.color": .text("#2F9E63"),
             "body.inset": .number(12.0),
             "body.top": .number(46.0),
+            "row.meta-top": .number(3.0),
+            "empty.pad-y": .number(10.0),
+            "empty.pad-x": .number(8.0),
             "lens.blur": .number(10.0),
         ]
     )
@@ -713,6 +724,7 @@ public enum MetalRecipes {
             "tool.shadow-time": .text("90ms"),
             "led.size": .number(4.0),
             "led.inset": .number(5.0),
+            "sep.width": .number(1.0),
             "sep.height": .number(22.0),
             "sep.margin": .number(3.0),
             "search.height": .number(38.0),

@@ -503,6 +503,7 @@
   --mu-lip: rgba(255,255,255,.95);
   --mu-lip-shadow: 0 1px 0 rgba(255,255,255,.95);
   --mu-rule: rgba(0,0,0,.075);
+  --mu-rule-lip-shadow: 1px 0 0 rgba(255,255,255,.5);
   --mu-rule-lip: rgba(255,255,255,.5);
   --mu-thumb-hi: #FFFFFF;
   --mu-thumb-lo: #F7F6F3;
@@ -568,6 +569,7 @@
   --mu-lip: rgba(0,0,0,.35);
   --mu-lip-shadow: 0 .5px 0 rgba(0,0,0,.35);
   --mu-rule: rgba(0,0,0,.45);
+  --mu-rule-lip-shadow: 1px 0 0 rgba(255,255,255,.035);
   --mu-rule-lip: rgba(255,255,255,.035);
   --mu-thumb-hi: #3A3A3D;
   --mu-thumb-lo: #2E2E31;
@@ -635,6 +637,7 @@
     --mu-lip: rgba(0,0,0,.35);
     --mu-lip-shadow: 0 .5px 0 rgba(0,0,0,.35);
     --mu-rule: rgba(0,0,0,.45);
+    --mu-rule-lip-shadow: 1px 0 0 rgba(255,255,255,.035);
     --mu-rule-lip: rgba(255,255,255,.035);
     --mu-thumb-hi: #3A3A3D;
     --mu-thumb-lo: #2E2E31;
@@ -795,10 +798,14 @@
   --mu-r-region-head-gap: 10px;
   --mu-r-region-name-font: 640 13.5px/1.2 var(--mu-sans);
   --mu-r-region-name-tracking: -0.01em;
+  --mu-r-region-name-placeholder-weight: 500;
   --mu-r-region-count-font: 500 10px/1 var(--mu-mono);
   --mu-r-region-rule-over-color: #2F9E63;
   --mu-r-region-body-inset: 12px;
   --mu-r-region-body-top: 46px;
+  --mu-r-region-row-meta-top: 3px;
+  --mu-r-region-empty-pad-y: 10px;
+  --mu-r-region-empty-pad-x: 8px;
   --mu-r-region-lens-blur: 10px;
   /* suggestion-chip: prototypes/medium/style.css .suggs, .sugg, .sugg .eng, .sugg button */
   --mu-r-suggestion-chip-self-height: 20px;
@@ -872,6 +879,7 @@
   --mu-r-toolbar-tool-shadow-time: 90ms;
   --mu-r-toolbar-led-size: 4px;
   --mu-r-toolbar-led-inset: 5px;
+  --mu-r-toolbar-sep-width: 1px;
   --mu-r-toolbar-sep-height: 22px;
   --mu-r-toolbar-sep-margin: 3px;
   --mu-r-toolbar-search-height: 38px;

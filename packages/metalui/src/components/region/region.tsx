@@ -68,7 +68,7 @@ export const Region = React.forwardRef<HTMLDivElement, RegionProps>(function Reg
           <input
             autoFocus
             aria-label="Region name"
-            className="mu-region-name type-title"
+            className="mu-region-name"
             value={draft}
             placeholder="name this region"
             onChange={(e) => setDraft(e.target.value)}
@@ -79,10 +79,10 @@ export const Region = React.forwardRef<HTMLDivElement, RegionProps>(function Reg
             }}
           />
         ) : (
-          <span className="mu-region-name type-title" data-placeholder="name this region" data-empty={name ? undefined : ''}>{name}</span>
+          <span className="mu-region-name" data-placeholder="name this region" data-empty={name ? undefined : ''}>{name}</span>
         )}
         <span className="mu-region-rule mu-type-label engraved">{over && dropRule ? dropRule : rule}</span>
-        {count ? <span className="mu-region-count type-readout">{count}</span> : null}
+        {count ? <span className="mu-region-count">{count}</span> : null}
       </div>
       {lens && <div className="mu-region-body">{children}</div>}
     </div>

@@ -39,7 +39,7 @@ export const SuggestionChip = React.forwardRef<HTMLSpanElement, SuggestionChipPr
       role="group"
       aria-label={`Suggestion: ${label} Confidence ${conf}`}
       data-host-hover={hostHovered ? '' : undefined}
-      className={className ? `mu-suggestion type-ui ${className}` : 'mu-suggestion type-ui'}
+      className={className ? `mu-suggestion ${className}` : 'mu-suggestion'}
       {...props}
     >
       {label}

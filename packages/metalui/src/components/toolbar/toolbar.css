@@ -19,9 +19,9 @@
   place-items: center;
   width: var(--mu-toolbar-tool);
   height: var(--mu-toolbar-tool);
-  padding: 0;
+  padding: var(--mu-zero);
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--mu-round);
   color: var(--mu-icon);
   background: var(--mu-btn-bg);
   box-shadow: var(--mu-btn-sh);
@@ -33,7 +33,7 @@
 .mu-tool > svg { width: var(--mu-toolbar-glyph); height: var(--mu-toolbar-glyph); }
 .mu-tool:hover { color: var(--mu-ink); }
 .mu-tool:active, .mu-tool[data-pressed] { transform: translateY(var(--mu-motion-press)); background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); color: var(--mu-ink); }
-.mu-tool:active { transition-duration: 50ms; }
+.mu-tool:active { transition-duration: var(--mu-r-toolbar-tool-press-time); }
 .mu-tool[data-pressed]::after {
   content: "";
   position: absolute;
@@ -41,22 +41,24 @@
   right: var(--mu-toolbar-led-inset);
   width: var(--mu-toolbar-led);
   height: var(--mu-toolbar-led);
-  border-radius: 50%;
+  border-radius: var(--mu-round);
   background: var(--mu-led-green);
   box-shadow: var(--mu-led-ring), var(--mu-status-bloom);
 }
 .mu-tool:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
 .mu-tool[data-disabled] { opacity: .4; cursor: default; }
-.mu-toolbar-sep { width: 1px; height: var(--mu-toolbar-sep-height); margin: 0 3px; background: var(--mu-rule); box-shadow: 1px 0 0 var(--mu-rule-lip); }
+.mu-toolbar-sep { width: var(--mu-r-toolbar-sep-width); height: var(--mu-toolbar-sep-height); margin: var(--mu-zero) var(--mu-r-toolbar-sep-margin); background: var(--mu-rule); box-shadow: var(--mu-rule-lip-shadow); }
 .mu-toolbar-search {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--mu-r-toolbar-search-gap);
   height: var(--mu-toolbar-tool);
   min-width: var(--mu-toolbar-search-min);
-  padding: 0 7px 0 12px;
+  padding: var(--mu-zero) var(--mu-r-toolbar-search-pad-right) var(--mu-zero) var(--mu-r-toolbar-search-pad-left);
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--mu-radius-pill);
+  font: var(--mu-type-ui);
+  letter-spacing: var(--mu-type-ui-tracking);
   color: var(--mu-ink3);
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
@@ -66,12 +68,61 @@
 .mu-toolbar-search > .mu-kbd { margin-left: auto; }
 .mu-toolbar-search:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
 
-/* Graphite: the medium's strip, dark in both colorways. */
-.mu-toolbar[data-variant="graphite"] .mu-tool { color: var(--mu-toolbar-graphite-ink); background: var(--mu-toolbar-graphite-cap-bg); box-shadow: var(--mu-toolbar-graphite-cap-sh); }
-.mu-toolbar[data-variant="graphite"] .mu-tool:hover { color: var(--mu-toolstrip-ink-hover); }
-.mu-toolbar[data-variant="graphite"] .mu-tool:is(:active, [data-pressed]) { background: var(--mu-toolbar-graphite-pressed-bg); box-shadow: var(--mu-toolbar-graphite-pressed-sh); color: var(--mu-toolstrip-ink-hover); }
-.mu-toolbar[data-variant="graphite"] .mu-toolbar-sep { background: var(--mu-toolstrip-sep); box-shadow: 1px 0 0 var(--mu-toolstrip-sep-lip); }
-.mu-toolbar[data-variant="graphite"] .mu-toolbar-search { color: var(--mu-toolbar-graphite-hint); background: var(--mu-toolbar-graphite-well); box-shadow: var(--mu-toolbar-graphite-well-sh); }
+/* Graphite: the medium's dock, dark in both colorways; its look is the toolbar recipe (--mu-r-toolbar-*, the demo's #toolbar). */
+.mu-toolbar[data-variant="graphite"] {
+  gap: var(--mu-r-toolbar-self-gap);
+  padding: var(--mu-r-toolbar-self-pad);
+  border-radius: var(--mu-r-toolbar-self-radius);
+  background: var(--mu-r-toolbar-self-background);
+  box-shadow: var(--mu-r-toolbar-self-shadow);
+  -webkit-backdrop-filter: var(--mu-r-toolbar-self-blur);
+  backdrop-filter: var(--mu-r-toolbar-self-blur);
+}
+.mu-toolbar[data-variant="graphite"] .mu-tool {
+  width: var(--mu-r-toolbar-tool-size);
+  height: var(--mu-r-toolbar-tool-size);
+  border-radius: var(--mu-r-toolbar-tool-radius);
+  color: var(--mu-r-toolbar-tool-ink);
+  background: var(--mu-r-toolbar-tool-background);
+  box-shadow: var(--mu-r-toolbar-tool-shadow);
+  transition: transform var(--mu-r-toolbar-tool-press-time) linear, box-shadow var(--mu-r-toolbar-tool-shadow-time) var(--mu-ease-press);
+}
+.mu-toolbar[data-variant="graphite"] .mu-tool > svg { width: var(--mu-r-toolbar-tool-glyph); height: var(--mu-r-toolbar-tool-glyph); }
+.mu-toolbar[data-variant="graphite"] .mu-tool:hover { color: var(--mu-r-toolbar-tool-ink); }
+.mu-toolbar[data-variant="graphite"] .mu-tool:is(:active, [data-pressed]) {
+  transform: translateY(var(--mu-r-toolbar-tool-press));
+  background: var(--mu-r-toolbar-tool-pressed-background);
+  box-shadow: var(--mu-r-toolbar-tool-pressed-shadow);
+  color: var(--mu-r-toolbar-tool-ink);
+}
+.mu-toolbar[data-variant="graphite"] .mu-tool[data-pressed]::after {
+  top: var(--mu-r-toolbar-led-inset);
+  right: var(--mu-r-toolbar-led-inset);
+  width: var(--mu-r-toolbar-led-size);
+  height: var(--mu-r-toolbar-led-size);
+  background: var(--mu-r-toolbar-led-background);
+  box-shadow: var(--mu-r-toolbar-led-shadow);
+}
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-sep {
+  height: var(--mu-r-toolbar-sep-height);
+  margin: var(--mu-zero) var(--mu-r-toolbar-sep-margin);
+  background: var(--mu-r-toolbar-sep-background);
+  box-shadow: var(--mu-r-toolbar-sep-shadow);
+}
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-search {
+  height: var(--mu-r-toolbar-search-height);
+  min-width: var(--mu-r-toolbar-search-min-width);
+  padding: var(--mu-zero) var(--mu-r-toolbar-search-pad-right) var(--mu-zero) var(--mu-r-toolbar-search-pad-left);
+  gap: var(--mu-r-toolbar-search-gap);
+  border-radius: var(--mu-r-toolbar-search-radius);
+  font: var(--mu-r-toolbar-search-font);
+  letter-spacing: var(--mu-type-content-tracking);
+  color: var(--mu-r-toolbar-search-ink);
+  background: var(--mu-r-toolbar-search-background);
+  box-shadow: var(--mu-r-toolbar-search-shadow);
+}
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-search > svg { width: var(--mu-r-toolbar-search-glyph); height: var(--mu-r-toolbar-search-glyph); }
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-search .mu-kbd { color: var(--mu-r-toolbar-kbd-ink); background: var(--mu-r-toolbar-kbd-background); box-shadow: var(--mu-r-toolbar-kbd-shadow); }
 
 /* On the frost strip the search well's keycap is the light cap. */
 .mu-toolbar[data-variant="frost"] .mu-toolbar-search .mu-kbd { color: var(--mu-ink2); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); }

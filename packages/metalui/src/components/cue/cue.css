@@ -25,8 +25,8 @@
 /* Tag: a soft pill whose padding is paid back by an equal negative margin, so the words do not move. */
 .mu-cue:is([data-kind="tag"], [data-kind="derived-tag"]) {
   padding: var(--mu-cue-tag-pad-y) var(--mu-cue-tag-pad-x);
-  margin: 0 calc(var(--mu-cue-tag-pad-x) * -1);
-  border-radius: 999px;
+  margin: var(--mu-zero) calc(var(--mu-zero) - var(--mu-cue-tag-pad-x));
+  border-radius: var(--mu-radius-pill);
   color: var(--mu-ink2);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -59,7 +59,7 @@
   bottom: calc(100% + var(--mu-cue-chip-gap));
   transform: translateX(-50%);
   padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x);
-  border-radius: 999px;
+  border-radius: var(--mu-radius-pill);
   white-space: nowrap;
   pointer-events: none;
   z-index: 30;
@@ -83,8 +83,8 @@
   align-items: center;
   gap: var(--mu-cue-url-gap);
   height: var(--mu-cue-url-height);
-  padding: 0 var(--mu-cue-url-pad-end) 0 var(--mu-cue-url-pad-start);
-  border-radius: 999px;
+  padding: var(--mu-zero) var(--mu-cue-url-pad-end) var(--mu-zero) var(--mu-cue-url-pad-start);
+  border-radius: var(--mu-radius-pill);
   vertical-align: 1px;
   color: var(--mu-cue-url-ink);
   text-decoration: none;
@@ -101,85 +101,28 @@
   position: relative;
   display: inline-block;
   margin-left: var(--mu-cue-inferred-gap);
-  padding: 0 var(--mu-cue-inferred-pad);
+  padding: var(--mu-zero) var(--mu-cue-inferred-pad);
   height: var(--mu-cue-inferred-height);
-  border-radius: 999px;
+  border-radius: var(--mu-radius-pill);
   vertical-align: 1px;
   line-height: var(--mu-cue-inferred-height);
   color: var(--mu-ink3);
   box-shadow: var(--mu-cue-inferred-ring);
 }
 
-/* ---- the dimple: a task's checkbox, a well in the margin ---- */
-.mu-dimple-slot { display: inline-flex; width: max-content; height: max-content; line-height: 0; }
-.mu-dimple {
-  position: relative;
-  box-sizing: border-box;
-  display: inline-block;
-  width: var(--mu-cue-dimple);
-  height: var(--mu-cue-dimple);
-  padding: 0;
-  border: 0;
-  border-radius: var(--mu-radius-key);
-  cursor: pointer;
-  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
-  box-shadow: var(--mu-well);
-  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
-  -webkit-tap-highlight-color: transparent;
-}
-.mu-dimple:hover:not([data-checked]) {
-  background: linear-gradient(color-mix(in srgb, var(--mu-well-top), var(--mu-ink) 3%), color-mix(in srgb, var(--mu-well-bot), var(--mu-ink) 3%));
-}
-.mu-dimple[data-checked] { background: var(--mu-cue-dimple-on-bg); box-shadow: var(--mu-cue-dimple-on-sh); }
-.mu-dimple:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
-.mu-dimple[data-disabled] { opacity: .4; cursor: default; }
-/* The tick draws on with an ease-out after a short beat: not sprung (DS-21). */
-.mu-dimple-tick {
-  position: absolute;
-  left: 5px;
-  top: 2.5px;
-  width: 4px;
-  height: 8px;
-  border: solid var(--mu-cue-tick);
-  border-width: 0 var(--mu-cue-tick-width) var(--mu-cue-tick-width) 0;
-  transform: rotate(42deg);
-  animation: mu-dimple-tick var(--mu-cue-tick-ms) var(--mu-cue-tick-delay-ms) var(--mu-ease-slide) both;
-}
-@keyframes mu-dimple-tick { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); } }
-@media (prefers-reduced-motion: reduce) { .mu-dimple-tick { animation: none; } }
-[data-mu-motion="reduce"] .mu-dimple-tick { animation: none; }
-/* Doing: a half-filled green square. */
-.mu-dimple[data-indeterminate]::before {
-  content: "";
-  position: absolute;
-  inset: var(--mu-cue-doing-inset);
-  border-radius: var(--mu-cue-doing-radius);
-  background: linear-gradient(90deg, var(--mu-green-deep) 50%, transparent 50%);
-  opacity: var(--mu-cue-doing-opacity);
-}
-/* Ghost: a task Jev inferred, not written. Hangs in the margin; the band grows left instead of the words moving. */
-.mu-dimple[data-ghost] {
-  width: var(--mu-cue-ghost);
-  height: var(--mu-cue-ghost);
-  border-radius: var(--mu-cue-ghost-radius);
-  background: transparent;
-  box-shadow: var(--mu-cue-ghost-sh);
-}
-.mu-dimple[data-ghost]:hover { background: transparent; box-shadow: inset 0 0 0 1px var(--mu-cue-ghost-hover); }
-
 /* ---- urgency: a 5 pt amber LED in the margin ---- */
 .mu-cue-urgency {
   display: inline-block;
   width: var(--mu-cue-urgency-led);
   height: var(--mu-cue-urgency-led);
-  border-radius: 50%;
+  border-radius: var(--mu-round);
   background: var(--mu-led-amber);
   box-shadow: var(--mu-led-ring);
 }
 
 /* ---- the life glyph on a line: after a middle dot, ink3 at rest, ink2 when the host is hovered ---- */
 .mu-cue-life { white-space: nowrap; }
-.mu-cue-life > .mu-cue-md { color: var(--mu-ink3); margin: 0 var(--mu-cue-life-gap-after) 0 var(--mu-cue-life-gap-before); }
+.mu-cue-life > .mu-cue-md { color: var(--mu-ink3); margin: var(--mu-zero) var(--mu-cue-life-gap-after) var(--mu-zero) var(--mu-cue-life-gap-before); }
 .mu-cue-life > .mu-cue-lg {
   display: inline-block;
   vertical-align: var(--mu-cue-life-drop);

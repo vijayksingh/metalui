@@ -90,7 +90,7 @@ export interface ToolbarSearchProps {
 /** The search well in the strip: opens the palette. */
 export function ToolbarSearch({ onOpen, placeholder = 'Search or ask', icon, shortcut = '⌘K' }: ToolbarSearchProps) {
   return (
-    <BaseToolbar.Button className="mu-toolbar-search type-ui" onClick={onOpen} aria-keyshortcuts="Meta+K">
+    <BaseToolbar.Button className="mu-toolbar-search" onClick={onOpen} aria-keyshortcuts="Meta+K">
       {icon}
       {placeholder}
       <Kbd surface="strip">{shortcut}</Kbd>

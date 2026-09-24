@@ -1,0 +1,34 @@
+@import "../tokens.css";
+
+/* Swatch (the medium demo's .swatchobj). Its look is the swatch recipe (--mu-r-swatch-*); --mu-self is its colour. */
+.mu-swatch {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--mu-r-swatch-self-size);
+  height: var(--mu-r-swatch-self-size);
+  border-radius: var(--mu-r-swatch-self-radius);
+  background: var(--mu-r-swatch-self-background);
+  box-shadow: var(--mu-r-swatch-self-shadow);
+  cursor: pointer;
+}
+.mu-swatch:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+.mu-swatch-label {
+  position: absolute;
+  left: var(--mu-r-swatch-label-x);
+  bottom: var(--mu-r-swatch-label-y);
+  font: var(--mu-r-swatch-label-font);
+  letter-spacing: var(--mu-r-swatch-label-tracking);
+  color: var(--mu-r-swatch-label-ink-light);
+  white-space: nowrap;
+}
+.mu-swatch[data-ink="dark"] .mu-swatch-label { color: var(--mu-r-swatch-label-ink-dark); }
+.mu-swatch-led {
+  position: absolute;
+  right: var(--mu-r-swatch-led-inset);
+  top: var(--mu-r-swatch-led-inset);
+  width: var(--mu-r-swatch-led-size);
+  height: var(--mu-r-swatch-led-size);
+  border-radius: var(--mu-round);
+  background: var(--mu-r-swatch-led-background);
+  box-shadow: var(--mu-r-swatch-led-shadow);
+}
