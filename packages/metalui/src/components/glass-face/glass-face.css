@@ -1,14 +1,15 @@
 @import "../tokens.css";
 
-/* Glass face. Its look is the glass-face recipe (--mu-r-glass-face-*). */
-.mu-glass-face {
+/* Glass face. Its look is the glass-face recipe (--mu-r-glass-face-*). The base rules have zero
+   specificity, so a block that tints the screen or sizes the face wins whatever the stylesheet order. */
+:where(.mu-glass-face) {
   box-sizing: border-box;
   padding: var(--mu-r-glass-face-self-pad);
   border-radius: var(--mu-r-glass-face-self-radius);
   background: var(--mu-r-glass-face-self-background);
   box-shadow: var(--mu-r-glass-face-self-shadow);
 }
-.mu-glass-screen { position: relative; overflow: hidden; border-radius: var(--mu-r-glass-face-screen-radius); background: var(--mu-r-glass-face-screen-background); }
+:where(.mu-glass-screen) { position: relative; overflow: hidden; border-radius: var(--mu-r-glass-face-screen-radius); background: var(--mu-r-glass-face-screen-background); }
 .mu-glass-screen::after {
   content: "";
   position: absolute;
