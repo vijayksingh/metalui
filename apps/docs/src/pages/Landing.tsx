@@ -35,7 +35,7 @@ export default function Landing() {
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
         <Button cap="primary" onClick={enter}>Read the docs</Button>
-        <span className="eng">⏎ read the docs · click the dark button, the Day/Week control or ⌘K to see inside · <Kbd size="small">esc</Kbd> back</span>
+        <span className="eng">⏎ read the docs · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
       {xray && <XrayOverlay kind={xray} onClose={() => setXray(null)} />}

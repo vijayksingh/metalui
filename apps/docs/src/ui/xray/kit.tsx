@@ -220,12 +220,12 @@ export function IsoTray({ x = 0, y = 0, w, h, r, depth = 8, fill, shadow, colorw
 export interface LayerDef { name: string; why: string }
 
 /** Layers pulled apart: one flat face per layer, stacked upward. */
-export function Exploded({ layers, on, fill, shadows, x = 0, y = 0, w, h, r, z0 = 0, gap = 14, focus, scale }: { layers: LayerDef[]; on: boolean[]; fill: string; shadows: string[]; x?: number; y?: number; w: number; h: number; r: number; z0?: number; gap?: number; focus: string | null; scale: number }) {
+export function Exploded({ layers, on, fill, shadows, backgrounds, x = 0, y = 0, w, h, r, z0 = 0, gap = 14, focus, scale }: { layers: LayerDef[]; on: boolean[]; fill: string; shadows: string[]; backgrounds?: (string | undefined)[]; x?: number; y?: number; w: number; h: number; r: number; z0?: number; gap?: number; focus: string | null; scale: number }) {
   return (
     <>
       {layers.map((l, i) => (
         <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', on[i] ? '' : 'is-off'].join(' ')}
-          style={{ width: w, height: h, borderRadius: r, transform: `translate(${x}px, ${y}px) translateZ(${z0 + i * gap}px)`, background: i === 0 ? fill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(shadows[i - 1] ?? '', scale) }}>
+          style={{ width: w, height: h, borderRadius: r, transform: `translate(${x}px, ${y}px) translateZ(${z0 + i * gap}px)`, background: backgrounds?.[i] ?? (i === 0 ? fill : 'transparent'), boxShadow: i === 0 ? 'none' : scalePx(shadows[i - 1] ?? '', scale) }}>
           <span className="xr-tag eng">{l.name}</span>
         </div>
       ))}

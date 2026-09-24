@@ -2,12 +2,14 @@ import type * as React from 'react';
 import { ButtonXray } from './ButtonXray';
 import { KbdXray } from './KbdXray';
 import { SegmentedXray } from './SegmentedXray';
+import { SwatchXray } from './SwatchXray';
 
 /* Every x-ray, by the name the floating table and the overlays use. */
 export const XRAYS = {
   button: { title: 'Button', View: ButtonXray },
   segmented: { title: 'Segmented control', View: SegmentedXray },
   kbd: { title: 'Keycap', View: KbdXray },
+  swatch: { title: 'Swatch', View: SwatchXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;
