@@ -6,6 +6,12 @@
 - **Missing:** `stroke.width`, `stroke.opacity`, `live.opacity`, round cap/join and the transparent 6 px outset hit path. The client can store and smooth paths, but its paint cannot be exact without these values.
 - **Demo CSS:** `style.css:108-109` draws the live path at 1.8 px and .85 opacity; `style.css:307-309` draws the settled path at 1.8 px and .82 opacity with round caps and joins.
 
+## File card
+
+- **Object:** `file-card` recipe and matching Swift component.
+- **Missing:** the raised slab, extension tile, name and size engraving as one generated composition, including both colorways. The native file face still draws this locally because no component recipe exists.
+- **Demo CSS:** `style.css:303-306` sets the slab's 18 px radius, 10/14 px padding, 10 px gap, 32 by 38 px tile, type roles and layered raised shadows.
+
 ## Image glass face
 
 - **Object:** `glass-face` image screen.
