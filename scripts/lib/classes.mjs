@@ -39,4 +39,4 @@ export function utilityOf(token) {
 }
 
 /** Paint: what a composition block may not set (it arranges; its components paint). */
-export const PAINT_UTILITY = /^(recipe-|type-|text-|bg-|shadow|inset-shadow|border|rounded|font-|tracking-|leading-|outline|ring|backdrop-|blur|drop-shadow|fill-|stroke-|decoration|underline|antialiased|uppercase|lowercase|capitalize|engraved|material-)/;
+export const PAINT_UTILITY = /^(recipe-|type-|text-(?!ellipsis$|clip$|nowrap$|wrap$)|bg-|shadow|inset-shadow|border|rounded|font-|tracking-|leading-|outline|ring|backdrop-|blur|drop-shadow|fill-|stroke-|decoration|underline|antialiased|uppercase|lowercase|capitalize|engraved|material-)/;
