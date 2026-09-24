@@ -1,7 +1,6 @@
 import SwiftUI
 
-// KAMUI-15 · Button. Mirrors components/button/button.css: a 32 pt pill cap
-// that sinks 1 pt into a well while held and springs back on release.
+// A pill cap from the generated button recipe; it sinks while held and springs back.
 
 /// Which cap a button wears. `standard` is soft-touch in the colorway,
 /// `primary` is the dark cap, `destructive` the one red cap.
@@ -26,7 +25,7 @@ public struct MetalButtonStyle: ButtonStyle {
     }
 }
 
-/// Which size a button is: 32, or compact 28 (the medium's pills).
+/// Which size a button is: the regular or compact recipe.
 public enum MetalButtonSize: Sendable {
     case `default`
     case compact
@@ -45,61 +44,49 @@ private struct MetalButtonBody: View {
     var body: some View {
         let isDown = isEnabled && configuration.isPressed
         let shape = Capsule(style: .continuous)
-        let recipes = recipes(for: colorway.tokens)
+        let recipe = MetalRecipes.button
         let compact = size == .compact
+        let part = compact && cap == .standard ? "compact" : cap == .standard ? "self" : cap == .primary ? "primary" : "destructive"
 
         configuration.label
             // The button is its icons' trigger: a MetalIcon inside plays its hover pose and press.
             .metalIconInteraction(MetalIconInteraction(isHovered: hovering && isEnabled, isPressed: isDown))
-            .metalType(MetalType.ui, scale: compact ? MetalButtonMetrics.compactSize / MetalType.ui.size : 1)
+            .font(compact ? recipe.font("compact.font") : .metal(MetalType.ui))
+            .tracking(compact ? recipe.tracking("compact.tracking", size: recipe.fontSize("compact.font")) : MetalType.ui.trackingPoints)
             .lineLimit(1)
             // A button is as wide as its label: it never truncates it.
             .fixedSize(horizontal: true, vertical: false)
             .foregroundStyle(foreground(colorway.tokens))
-            .padding(.horizontal, compact ? MetalButtonMetrics.compactPad : MetalButtonMetrics.pad)
-            .frame(height: compact ? MetalButtonMetrics.compactHeight : MetalButtonMetrics.height)
+            .padding(.horizontal, recipe.points(compact ? "compact.pad" : "self.pad"))
+            .frame(height: recipe.points(compact ? "compact.height" : "self.height"))
             .contentShape(shape)
             .onHover { hovering = $0 }
             .background {
                 ZStack {
-                    Color.clear.metalRecipe(recipes.up, in: shape).opacity(isDown ? 0 : 1)
-                    Color.clear.metalRecipe(recipes.down, in: shape).opacity(isDown ? 1 : 0)
+                    Color.clear.metalObjectRecipe(recipe, part: part, in: shape).opacity(isDown ? Double.zero : .one)
+                    Color.clear.metalObjectRecipe(recipe, part: part, state: "pressed", in: shape).opacity(isDown ? Double.one : .zero)
                 }
                 // A color change, not motion: it stays under Reduce Motion, like the CSS .18s.
-                .animation(.easeInOut(duration: MetalButtonMetrics.fadeMs / 1000), value: isDown)
+                .animation(.easeInOut(duration: Measurement(value: MetalButtonMetrics.fadeMs, unit: UnitDuration.milliseconds).converted(to: .seconds).value), value: isDown)
             }
             .overlay {
                 if isFocused && isEnabled {
                     shape
-                        .inset(by: -(MetalButtonMetrics.focusOffset + MetalButtonMetrics.focusWidth / 2))
-                        .stroke(MetalShared.focus.color, lineWidth: MetalButtonMetrics.focusWidth)
+                        .inset(by: -(recipe.points("self.focus-offset") + recipe.points("self.focus-width") / 2))
+                        .stroke(MetalShared.focus.color, lineWidth: recipe.points("self.focus-width"))
                 }
             }
-            .offset(y: isDown ? MetalButtonMetrics.travel : 0)
+            .offset(y: isDown ? recipe.points("self.travel") : 0)
             // The press rides release, which Reduce Motion keeps unchanged (MetalMotion).
             .metalAnimation(.release, value: isDown)
-            .opacity(isEnabled ? 1 : MetalButtonMetrics.disabled)
-    }
-
-    private func recipes(for tokens: MetalColorwayTokens) -> (up: MetalRecipe, down: MetalRecipe) {
-        switch cap {
-        case .standard:
-            return (MetalRecipe(fill: tokens.btnBg, shadows: size == .compact ? tokens.raiseSm : tokens.btnSh),
-                    MetalRecipe(fill: tokens.pressedBg, shadows: tokens.pressedSh))
-        case .primary:
-            let c = MetalCaps.primary
-            return (MetalRecipe(fill: c.bg, shadows: c.sh), MetalRecipe(fill: c.pressedBg, shadows: c.pressedSh))
-        case .destructive:
-            let c = MetalCaps.destructive
-            return (MetalRecipe(fill: c.bg, shadows: c.sh), MetalRecipe(fill: c.pressedBg, shadows: c.pressedSh))
-        }
+            .opacity(isEnabled ? Double.one : recipe.scalar("self.disabled"))
     }
 
     private func foreground(_ tokens: MetalColorwayTokens) -> Color {
         switch cap {
         case .standard: return (size == .compact && !hovering ? tokens.ink2 : tokens.ink).color
-        case .primary: return MetalCaps.primary.ink.color
-        case .destructive: return MetalCaps.destructive.ink.color
+        case .primary: return (MetalRecipes.button.color("primary.ink") ?? MetalCaps.primary.ink).color
+        case .destructive: return (MetalRecipes.button.color("destructive.ink") ?? MetalCaps.destructive.ink).color
         }
     }
 }
@@ -134,9 +121,10 @@ public struct MetalButton<Icon: View>: View {
 
     public var body: some View {
         let compact = size == .compact
-        let glyph = compact ? MetalButtonMetrics.compactGlyph : MetalButtonMetrics.glyph
+        let recipe = MetalRecipes.button
+        let glyph = recipe.points(compact ? "compact.glyph" : "self.glyph")
         Button(action: action) {
-            HStack(spacing: compact ? MetalButtonMetrics.compactGap : MetalButtonMetrics.gap) {
+            HStack(spacing: recipe.points(compact ? "compact.gap" : "self.gap")) {
                 if let icon { icon.frame(width: glyph, height: glyph) }
                 Text(title)
             }
