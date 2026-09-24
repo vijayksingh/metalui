@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { MemoryScrubber, PastBanner } from '@unlocalhosted/metalui';
 import { ClockIcon } from '@unlocalhosted/metalui/icons';
-import reactSource from '../../../../../packages/metalui/src/components/past-banner/past-banner.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/past-banner/past-banner.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/past-banner/past-banner.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/past-banner/past-banner.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/past-banner/past-banner.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/past-banner/past-banner.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalPastBanner.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -41,8 +41,8 @@ export default function PastBannerPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'P1', title: 'Only in the past', body: 'The banner exists only while a past moment is viewed; nothing else in the chrome changes.', origin: 'Kamui 03 §9' },
-          { id: 'P2', title: '⎋ is Back to Now', body: 'The cap shows the key; the host listens for it.', origin: 'Kamui 04 §13' },
+          { id: 'P1', title: 'Only in the past', body: 'The banner exists only while a past moment is viewed; nothing else in the chrome changes.', origin: 'reference brief' },
+          { id: 'P2', title: '⎋ is Back to Now', body: 'The cap shows the key; the host listens for it.', origin: 'reference brief' },
         ]} />
       </Section>
     </>

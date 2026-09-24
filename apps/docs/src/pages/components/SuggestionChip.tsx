@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Dimple, SuggestionChip } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/suggestion-chip/suggestion-chip.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/suggestion-chip/suggestion-chip.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/suggestion-chip/suggestion-chip.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSuggestionChip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -64,7 +64,7 @@ export default function SuggestionChipPage() {
         <SwiftCapture name="suggestion-chip" />
       </Section>
 
-      <Section title="Confidence routing" lede="The thresholds decide whether a chip appears at all (Kamui DS-30). They are the recognizer's, not props.">
+      <Section title="Confidence routing" lede="The thresholds decide whether a chip appears at all (the reference brief). They are the recognizer's, not props.">
         <TokenTable
           head={['Outcome', 'Nouls p', 'Choices', 'Life glyph', 'Lens', 'The surface']}
           mono={[0, 1, 2]}
@@ -88,10 +88,10 @@ export default function SuggestionChipPage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'G1', title: 'One question, only when it changes behaviour', body: 'Task, measurement, date, region. Never a kind or a glyph; never two chips on one block.', origin: 'Kamui 03 §4, DS-30' },
-            { id: 'G2', title: 'Faint until asked', body: 'At .62 until its block is hovered or the chip has focus.', origin: 'Kamui demo' },
-            { id: 'G3', title: 'Accepting finishes first', body: 'The block is finished, then the answer applies with Undo. A dismissal is stored for the exact text and never asked again.', origin: 'Kamui 03 §4' },
-            { id: 'G4', title: 'Confidence is always printed', body: 'Hidden confidence is a bug.', origin: 'Kamui 03 §5' },
+            { id: 'G1', title: 'One question, only when it changes behaviour', body: 'Task, measurement, date, region. Never a kind or a glyph; never two chips on one block.', origin: 'reference brief' },
+            { id: 'G2', title: 'Faint until asked', body: 'At .62 until its block is hovered or the chip has focus.', origin: 'reference design' },
+            { id: 'G3', title: 'Accepting finishes first', body: 'The block is finished, then the answer applies with Undo. A dismissal is stored for the exact text and never asked again.', origin: 'reference brief' },
+            { id: 'G4', title: 'Confidence is always printed', body: 'Hidden confidence is a bug.', origin: 'reference brief' },
           ]}
         />
       </Section>

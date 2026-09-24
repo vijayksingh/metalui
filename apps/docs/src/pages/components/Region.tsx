@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Dimple, Region, RegionRow } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/region/region.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/region/region.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/region/region.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/region/region.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/region/region.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/region/region.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalRegionView.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -127,8 +127,8 @@ export default function RegionPage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'R1', title: 'Placement is meaning, and reversible', body: 'A drop applies the rule with a toast that names it and offers Undo; dragging out takes it off.', origin: 'Kamui 03 §6' },
-            { id: 'R2', title: 'The over state says what the drop will do', body: 'The rule is rewritten as its drop: drop to mark tasks done. Colour is never alone.', origin: 'Kamui demo' },
+            { id: 'R1', title: 'Placement is meaning, and reversible', body: 'A drop applies the rule with a toast that names it and offers Undo; dragging out takes it off.', origin: 'reference brief' },
+            { id: 'R2', title: 'The over state says what the drop will do', body: 'The rule is rewritten as its drop: drop to mark tasks done. Colour is never alone.', origin: 'reference design' },
             { id: 'R3', title: 'A drop is a landing', body: 'The block settles inside the edges on the object spring, a stop; it never lands on a neighbour.', origin: 'DS-20, T5b' },
             { id: 'R4', title: 'Radius by size', body: '30 when the short side is at least 240, else 24: always on the ladder.', origin: 'DS-14' },
           ]}

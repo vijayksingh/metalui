@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Cue, ProvenanceProvider, ProvenanceTooltip } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/provenance-tooltip/provenance-tooltip.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/provenance-tooltip/provenance-tooltip.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/provenance-tooltip/provenance-tooltip.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -16,7 +16,7 @@ export default function ProvenanceTooltipPage() {
       />
 
       <Section title="On a block" lede="Hover or tab to a cue. The first tooltip waits 380 ms; moving to the next cue shows it at once. A cue that shows its own value chip keeps its tooltip clear above it.">
-        <Bench caption="rule · jev · region · you" className="min-h-[220px]">
+        <Bench caption="rule · recognizer · region · you" className="min-h-[220px]">
           <ProvenanceProvider>
             <p className="type-content text-ink" data-testid="prov-block">
               Send{' '}
@@ -27,7 +27,7 @@ export default function ProvenanceTooltipPage() {
                 <Cue kind="date" resolved="TUE 30 SEP · 16:00" tabIndex={0}>tomorrow 4pm</Cue>
               </ProvenanceTooltip>
               , slept{' '}
-              <ProvenanceTooltip source="Jev" detail={['0.82']} clearsChip>
+              <ProvenanceTooltip source="Recognizer" detail={['0.82']} clearsChip>
                 <Cue kind="measurement" resolved="SLEEP · 6 H" tabIndex={0}>6h</Cue>
               </ProvenanceTooltip>{' '}
               in{' '}
@@ -43,7 +43,7 @@ export default function ProvenanceTooltipPage() {
         </Bench>
         <Bench tone="page" caption="Stills">
           <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(200px,1fr))] justify-items-center gap-y-72 pt-48">
-            {([['Rule', ['Hex']], ['Jev', ['0.91']], ['Region', ['Done']], ['Cluster', ['Poster']], ['Formula', []], ['You', []]] as [string, string[]][]).map(([s, d]) => (
+            {([['Rule', ['Hex']], ['Recognizer', ['0.91']], ['Region', ['Done']], ['Cluster', ['Poster']], ['Formula', []], ['You', []]] as [string, string[]][]).map(([s, d]) => (
               <ProvenanceTooltip key={s} source={s} detail={d} open>
                 <span className="type-meta text-ink2">{s.toLowerCase()}</span>
               </ProvenanceTooltip>
@@ -68,8 +68,8 @@ export default function ProvenanceTooltipPage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'V1', title: 'Every applied cue has provenance', body: 'One hover or one Tab away. A guess shows its number.', origin: 'Kamui 03 §5' },
-            { id: 'V2', title: 'Clear of the value chip', body: 'A cue that shows its own resolved value on hover keeps its tooltip 34 above it.', origin: 'Kamui demo' },
+            { id: 'V1', title: 'Every applied cue has provenance', body: 'One hover or one Tab away. A guess shows its number.', origin: 'reference brief' },
+            { id: 'V2', title: 'Clear of the value chip', body: 'A cue that shows its own resolved value on hover keeps its tooltip 34 above it.', origin: 'reference design' },
             { id: 'V3', title: 'Information in the readout role', body: 'Provenance carries meaning on its own, so it is 10.5 mono, never the 9 pt label role.', origin: 'DS-06' },
           ]}
         />

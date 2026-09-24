@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SelectionFrame, ToolStrip } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/tool-strip/tool-strip.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/tool-strip/tool-strip.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/tool-strip/tool-strip.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToolStrip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -35,7 +35,7 @@ export default function ToolStripPage() {
       <Section title="Rules">
         <Rules rules={[
           { id: 'T1', title: 'Only for a click selection', body: 'A selection made by finishing is quiet; never while dragging, resizing, in the past or with the palette open.', origin: 'DS-31' },
-          { id: 'T2', title: 'Every verb says what it did', body: 'A toast names the result and offers Undo: Made 3 tasks, Sent away 3 blocks.', origin: 'Kamui 03 §11' },
+          { id: 'T2', title: 'Every verb says what it did', body: 'A toast names the result and offers Undo: Made 3 tasks, Sent away 3 blocks.', origin: 'reference brief' },
           { id: 'T3', title: 'One destructive verb, last', body: 'After the engraved separator, in the warm red. Canvas delete is send away.', origin: 'DS-33' },
         ]} />
       </Section>

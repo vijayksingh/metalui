@@ -20,7 +20,7 @@ const TABS = [
 ] as const;
 
 const CAPS: ButtonCap[] = ['standard', 'primary', 'destructive'];
-const PRESSED: Record<ButtonCap, React.CSSProperties> = {
+const PRESSED: Partial<Record<ButtonCap, React.CSSProperties>> = {
   standard: { background: 'var(--mu-pressed-bg)', boxShadow: 'var(--mu-pressed-sh)' },
   primary: { background: 'var(--mu-primary-pressed-bg)', boxShadow: 'var(--mu-primary-pressed-sh)' },
   destructive: { background: 'var(--mu-destructive-pressed-bg)', boxShadow: 'var(--mu-destructive-pressed-sh)' },
@@ -95,7 +95,7 @@ export default function ButtonPage() {
         </Bench>
       </Section>
 
-      <Section title="Compact" lede="The medium's pills, refit to 28 on the height ladder: 12 pt, a 14 glyph, the button fill on raise-sm, ink2 until hover. For inline actions beside content (an empty canvas, a lens row), never a dialog's footer.">
+      <Section title="Compact" lede="The canvas pills, 26 on the height ladder: 12 pt, a 14 glyph, the button fill on raise-sm, ink2 until hover. For inline actions beside content (an empty canvas, a lens row), never a dialog's footer.">
         <Bench tone="page" caption="compact · 28 · standard, with a glyph, with a key, primary, disabled">
           <div className="flex items-center gap-12" data-testid="compact">
             <Button size="compact">seed a sample day</Button>
