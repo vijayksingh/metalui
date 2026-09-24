@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { Tooltip } from '@base-ui/react/tooltip';
+import { Tooltip } from '../tooltip/tooltip';
 import './status.css';
 
-/* LED and STATUS BADGE (KAMUI-16).
+/* LED and STATUS BADGE (the reference design's .led-*, .pill.status).
  * An LED says one state by colour and never alone: it sits beside words (a badge, a readout, an engraving).
  * The badge is not pressable; its hint (the command that fixes it) shows as a tooltip on hover and focus. */
 
@@ -23,29 +23,24 @@ export function Led({ kind, size = 'default', className, ...props }: LedProps) {
 
 export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   led: LedKind;
-  /** The state, short, uppercase in the label role: "JEV LIVE", "JEV OFFLINE · ADD KEY TO KEYCHAIN". */
+  /** The state, short, uppercase in the label role: "SYNC LIVE", "OFFLINE · ADD KEY TO KEYCHAIN". */
   children: React.ReactNode;
-  /** What fixes it, shown on hover and focus: "security add-generic-password -s kamui-jev …". */
+  /** What fixes it, shown on hover and focus: "security add-generic-password -s example-service …". */
   hint?: string;
 }
 
 /** A state the system is in, with its LED. Not a button. */
 export const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(function StatusBadge({ led, children, hint, className, ...props }, ref) {
   const badge = (
-    <span ref={ref} role="status" tabIndex={hint ? 0 : undefined} className={['mu-badge', 'mu-type-label', className].filter(Boolean).join(' ')} {...props}>
+    <span ref={ref} role="status" tabIndex={hint ? 0 : undefined} aria-description={hint} className={['mu-badge', 'mu-type-label', className].filter(Boolean).join(' ')} {...props}>
       <Led kind={led} />
       {children}
     </span>
   );
   if (!hint) return badge;
   return (
-    <Tooltip.Root>
-      <Tooltip.Trigger render={badge} aria-description={hint} />
-      <Tooltip.Portal>
-        <Tooltip.Positioner side="bottom" sideOffset={8} collisionPadding={8}>
-          <Tooltip.Popup className="mu-provenance mu-type-readout" style={{ textTransform: 'none' }}>{hint}</Tooltip.Popup>
-        </Tooltip.Positioner>
-      </Tooltip.Portal>
-    </Tooltip.Root>
+    <Tooltip label={hint} side="bottom" offset={8} wrap>
+      {badge}
+    </Tooltip>
   );
 });

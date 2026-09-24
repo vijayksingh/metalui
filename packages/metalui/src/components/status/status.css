@@ -1,5 +1,5 @@
 @import "../tokens.css";
-@import "../provenance-tooltip/provenance-tooltip.css";
+@import "../tooltip/tooltip.css";
 
 /* LED and status badge (the reference design's .led-*, .pill.status). Its look is the status recipe (--mu-r-status-*). */
 .mu-led {
