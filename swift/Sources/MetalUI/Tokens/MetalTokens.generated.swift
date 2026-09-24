@@ -58,6 +58,17 @@ public struct MetalColorwayTokens: Sendable {
     public let pressedBg: MetalGradient
     public let pressedSh: [MetalShadow]
     public let duoK: Double
+    public let synText: MetalRGBA
+    public let synKeyword: MetalRGBA
+    public let synType: MetalRGBA
+    public let synMember: MetalRGBA
+    public let synString: MetalRGBA
+    public let synNumber: MetalRGBA
+    public let synComment: MetalRGBA
+    public let synPunct: MetalRGBA
+    public let synLine: MetalRGBA
+    public let stageSh: [MetalShadow]
+    public let stageBar: MetalRGBA
     public let tintEmber: MetalRGBA
     public let tintBlush: MetalRGBA
     public let tintTide: MetalRGBA
@@ -192,6 +203,22 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
         ],
         duoK: 1.0,
+        synText: MetalRGBA(42, 42, 45, 1.0),
+        synKeyword: MetalRGBA(160, 53, 127, 1.0),
+        synType: MetalRGBA(138, 98, 18, 1.0),
+        synMember: MetalRGBA(45, 93, 181, 1.0),
+        synString: MetalRGBA(43, 122, 82, 1.0),
+        synNumber: MetalRGBA(45, 93, 181, 1.0),
+        synComment: MetalRGBA(142, 142, 146, 1.0),
+        synPunct: MetalRGBA(123, 123, 128, 1.0),
+        synLine: MetalRGBA(185, 184, 179, 1.0),
+        stageSh: [
+            MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.9)),
+            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(24, 22, 16, 0.1)),
+            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(24, 22, 16, 0.04)),
+            MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(24, 22, 16, 0.1)),
+        ],
+        stageBar: MetalRGBA(24, 22, 16, 0.022),
         tintEmber: MetalRGBA(208, 86, 14, 1.0),
         tintBlush: MetalRGBA(213, 68, 135, 1.0),
         tintTide: MetalRGBA(16, 138, 139, 1.0),
@@ -316,6 +343,22 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
         ],
         duoK: 1.3,
+        synText: MetalRGBA(215, 216, 219, 1.0),
+        synKeyword: MetalRGBA(231, 166, 217, 1.0),
+        synType: MetalRGBA(231, 201, 138, 1.0),
+        synMember: MetalRGBA(158, 194, 255, 1.0),
+        synString: MetalRGBA(159, 227, 191, 1.0),
+        synNumber: MetalRGBA(158, 194, 255, 1.0),
+        synComment: MetalRGBA(109, 110, 115, 1.0),
+        synPunct: MetalRGBA(124, 125, 130, 1.0),
+        synLine: MetalRGBA(72, 73, 78, 1.0),
+        stageSh: [
+            MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.05)),
+            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.6)),
+            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.25)),
+            MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(0, 0, 0, 0.45)),
+        ],
+        stageBar: MetalRGBA(0, 0, 0, 0.16),
         tintEmber: MetalRGBA(251, 121, 74, 1.0),
         tintBlush: MetalRGBA(237, 107, 162, 1.0),
         tintTide: MetalRGBA(37, 194, 195, 1.0),
