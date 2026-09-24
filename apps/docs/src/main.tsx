@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'foundations/motion', lazy: lazy(() => import('./pages/foundations/Motion')) },
       { path: 'foundations/transitions', lazy: lazy(() => import('./pages/foundations/Transitions')) },
       { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },
+      { path: 'components/suggestion-chip', lazy: lazy(() => import('./pages/components/SuggestionChip')) },
       { path: 'components/cue', lazy: lazy(() => import('./pages/components/CueFamily')) },
       { path: 'components/selection-frame', lazy: lazy(() => import('./pages/components/SelectionFrame')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },

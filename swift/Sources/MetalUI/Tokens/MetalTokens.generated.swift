@@ -29,6 +29,8 @@ public struct MetalColorwayTokens: Sendable {
     public let cueDerivedSh: [MetalShadow]
     public let cueGhostSh: [MetalShadow]
     public let cueUrlInk: MetalRGBA
+    public let suggestionBg: MetalRGBA
+    public let suggestionButtonHover: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -93,6 +95,8 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(60, 55, 40, 0.1)),
         ],
         cueUrlInk: MetalRGBA(53, 88, 201, 1.0),
+        suggestionBg: MetalRGBA(252, 251, 249, 0.7),
+        suggestionButtonHover: MetalRGBA(0, 0, 0, 0.06),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -180,6 +184,8 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.5)),
         ],
         cueUrlInk: MetalRGBA(143, 176, 255, 1.0),
+        suggestionBg: MetalRGBA(44, 44, 47, 0.7),
+        suggestionButtonHover: MetalRGBA(255, 255, 255, 0.08),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -596,4 +602,20 @@ public enum MetalCue {
     public static let lifeGapAfter: Double = 6.0
     public static let lifeDrop: Double = -2.5
     public static let lifeMs: Double = 120.0
+}
+
+/// A suggestion chip: one question the recognizer asks at middle confidence (Kamui DS-30), at most one per block and only for cues that change behaviour (task, measurement, date, region). Faint until its block is hovered; hidden while writing; accepting finishes the block first. Values are the medium demo's .sugg.
+public enum MetalSuggestion {
+    public static let height: Double = 20.0
+    public static let padStart: Double = 9.0
+    public static let padEnd: Double = 3.0
+    public static let gap: Double = 2.0
+    public static let ring: MetalRGBA = MetalRGBA(63, 185, 122, 0.4)
+    public static let restOpacity: Double = 0.62
+    public static let enterRise: Double = 3.0
+    public static let enterScale: Double = 0.96
+    public static let buttonWidth: Double = 18.0
+    public static let buttonHeight: Double = 16.0
+    public static let offsetX: Double = -2.0
+    public static let offsetY: Double = 10.0
 }

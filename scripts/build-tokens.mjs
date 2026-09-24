@@ -147,6 +147,12 @@ const cueVars = CU_KEYS.map((k) => {
 
 // Type roles as custom properties too, for places a class cannot reach (::before, ::after):
 // font: var(--mu-type-label); letter-spacing: var(--mu-type-label-tracking).
+// ---------- suggestion (tokens.json suggestion) ----------
+const SG = T.suggestion;
+const SG_KEYS = Object.keys(SG).filter((k) => !k.startsWith('$'));
+const SG_UNITLESS = new Set(['rest-opacity', 'enter-scale']);
+const suggestionVars = SG_KEYS.map((k) => `  --mu-suggestion-${k}: ${typeof SG[k] === 'number' ? (SG_UNITLESS.has(k) ? SG[k] : `${SG[k]}px`) : SG[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -168,6 +174,7 @@ ${foundationVars}
 ${frostVars}
 ${presenceVars}
 ${cueVars}
+${suggestionVars}
 ${typeVars}
 ${travel}
 }
@@ -526,7 +533,13 @@ ${CU_KEYS.map((k) => {
 }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue);
+const swiftSuggestion = `
+/// ${SG.$use}
+public enum MetalSuggestion {
+${SG_KEYS.map((k) => { const v = SG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

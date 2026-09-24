@@ -151,4 +151,17 @@ final class MetalCaptures: XCTestCase {
             capture("cue-\(colorway.rawValue)", cueSheet(colorway))
         }
     }
+
+    func testSuggestionChip() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalSuggestionChip(label: "Task?", confidence: 0.72, onAccept: {}, onDismiss: {})
+                MetalSuggestionChip(label: "Track as sleep?", confidence: 0.64, hostHovered: true, onAccept: {}, onDismiss: {})
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("suggestion-chip-\(colorway.rawValue)", view)
+        }
+    }
 }

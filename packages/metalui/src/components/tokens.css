@@ -186,6 +186,18 @@
   --mu-cue-life-gap-after: 6px;
   --mu-cue-life-drop: -2.5px;
   --mu-cue-life-ms: 120ms;
+  --mu-suggestion-height: 20px;
+  --mu-suggestion-pad-start: 9px;
+  --mu-suggestion-pad-end: 3px;
+  --mu-suggestion-gap: 2px;
+  --mu-suggestion-ring: rgba(63,185,122,.4);
+  --mu-suggestion-rest-opacity: 0.62;
+  --mu-suggestion-enter-rise: 3px;
+  --mu-suggestion-enter-scale: 0.96;
+  --mu-suggestion-button-width: 18px;
+  --mu-suggestion-button-height: 16px;
+  --mu-suggestion-offset-x: -2px;
+  --mu-suggestion-offset-y: 10px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
@@ -287,6 +299,8 @@
   --mu-cue-derived-sh: inset 0 0 0 .5px rgba(40,38,32,.18);
   --mu-cue-ghost-sh: inset 0 0 0 1px rgba(40,38,32,.16), inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-cue-url-ink: #3558C9;
+  --mu-suggestion-bg: rgba(252,251,249,.7);
+  --mu-suggestion-button-hover: rgba(0,0,0,.06);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.75), inset 2px 3px 3px -1px rgba(255,255,255,.95), inset -1px -3px 5px -2px rgba(110,100,80,.07), 0 0 0 .5px rgba(24,22,16,.045), 0 1px 2px rgba(24,22,16,.05), 0 8px 18px -6px rgba(24,22,16,.08), 0 26px 50px -16px rgba(24,22,16,.13), 0 52px 96px -36px rgba(24,22,16,.13);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.85), inset 1px 2px 2px -1px #FFFFFF, 0 0 0 .5px rgba(24,22,16,.05), 0 1px 2px rgba(24,22,16,.07), 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-well: inset 0 2px 6px -1px rgba(60,55,40,.10), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px rgba(255,255,255,.95);
@@ -334,6 +348,8 @@
   --mu-cue-derived-sh: inset 0 0 0 .5px rgba(255,255,255,.2);
   --mu-cue-ghost-sh: inset 0 0 0 1px rgba(255,255,255,.18), inset 0 2px 4px -2px rgba(0,0,0,.5);
   --mu-cue-url-ink: #8FB0FF;
+  --mu-suggestion-bg: rgba(44,44,47,.7);
+  --mu-suggestion-button-hover: rgba(255,255,255,.08);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);
@@ -383,6 +399,8 @@
     --mu-cue-derived-sh: inset 0 0 0 .5px rgba(255,255,255,.2);
     --mu-cue-ghost-sh: inset 0 0 0 1px rgba(255,255,255,.18), inset 0 2px 4px -2px rgba(0,0,0,.5);
     --mu-cue-url-ink: #8FB0FF;
+    --mu-suggestion-bg: rgba(44,44,47,.7);
+    --mu-suggestion-button-hover: rgba(255,255,255,.08);
     --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
     --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
     --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);

@@ -1,0 +1,11 @@
+{
+  "name": "suggestion-chip",
+  "title": "Suggestion chip",
+  "status": "alpha",
+  "description": "One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.",
+  "sheet": "Kamui 03 §4",
+  "base": "@base-ui/react/button",
+  "react": { "export": "SuggestionChip", "files": ["suggestion-chip.tsx", "suggestion-chip.css"] },
+  "swift": { "symbol": "MetalSuggestionChip", "file": "swift/Sources/MetalUI/Components/MetalSuggestionChip.swift" },
+  "agent": "suggestion-chip.agent.md"
+}

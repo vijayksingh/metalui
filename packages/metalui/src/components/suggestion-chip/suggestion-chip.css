@@ -1,0 +1,48 @@
+@import "../tokens.css";
+
+/* Suggestion chip (Kamui 03 §4, the medium demo's .sugg). Every value is --mu-suggestion-* or a colorway token. */
+.mu-suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-suggestion-gap);
+  height: var(--mu-suggestion-height);
+  padding: 0 var(--mu-suggestion-pad-end) 0 var(--mu-suggestion-pad-start);
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--mu-ink2);
+  background: var(--mu-suggestion-bg);
+  box-shadow: inset 0 0 0 .5px var(--mu-suggestion-ring), var(--mu-raise-sm);
+  /* Faint until its block (the host, .mu-icon-trigger) is hovered or it holds focus. */
+  opacity: var(--mu-suggestion-rest-opacity);
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+  /* Arrives on settle from 3 above and .96: a footprint, no overshoot. */
+  animation: mu-suggestion-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+.mu-icon-trigger:hover .mu-suggestion,
+.mu-suggestion:hover,
+.mu-suggestion:focus-within,
+.mu-suggestion[data-host-hover] { opacity: 1; }
+@keyframes mu-suggestion-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--mu-suggestion-enter-rise) * -1 * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-suggestion-enter-scale)) * var(--mu-travel-settle)));
+  }
+}
+.mu-suggestion-conf { margin: 0 3px 0 2px; }
+.mu-suggestion-btn {
+  display: grid;
+  place-items: center;
+  width: var(--mu-suggestion-button-width);
+  height: var(--mu-suggestion-button-height);
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mu-ink3);
+  cursor: pointer;
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), color var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-suggestion-btn:hover { background: var(--mu-suggestion-button-hover); color: var(--mu-ink); }
+.mu-suggestion-btn[data-accept]:hover { color: var(--mu-green-deep); }
+.mu-suggestion-btn:focus-visible { outline: 1.5px solid var(--mu-focus); outline-offset: 0; }
+.mu-suggestion-btn:active { transform: translateY(var(--mu-motion-press)); }

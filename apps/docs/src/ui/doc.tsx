@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
-import { Button, SwapText } from '@unlocalhosted/metalui';
+import { Button, SlidingIndicator, SwapText } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
 
@@ -192,4 +192,30 @@ export async function copyJSON(value: unknown) {
   try {
     await navigator.clipboard.writeText(JSON.stringify(value, null, 2));
   } catch {}
+}
+
+/** A component's source, three ways plus its agent guide, behind a segmented tab strip. */
+export function SourceTabs({ tabs }: { tabs: { id: string; label: string; code: string }[] }) {
+  const [tab, setTab] = React.useState(tabs[0].id);
+  const code = tabs.find((t) => t.id === tab)!;
+  return (
+    <div className="flex flex-col gap-12">
+      <div role="tablist" aria-label="Source" data-md="skip" className="material-well relative inline-flex w-fit rounded-pill p-2">
+        <SlidingIndicator className="material-thumb rounded-pill" />
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            type="button"
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
+            className={['type-ui relative z-10 h-28 cursor-pointer rounded-pill px-13 transition-colors duration-150', tab === t.id ? 'text-ink' : 'text-ink2 hover:text-ink'].join(' ')}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <Code label={code.label} code={code.code} />
+    </div>
+  );
 }
