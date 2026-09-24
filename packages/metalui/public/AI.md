@@ -1063,7 +1063,7 @@ note
 
 # Size readout
 
-A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Kamui brief: 04 §10, 03 §7.
+A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Built from `Surface`, `Led` and `Label`; a component rather than a block because the Selection frame block uses it.
 
 ## Use it for
 
@@ -1075,7 +1075,7 @@ A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocal
 
 ## Anatomy
 
-A 24 tall pill (`presence-readout-bg`, its stack), padding 0 11 0 10, gap 7: a 4 pt green LED, then the value in the `readout` role (Martian Mono 10.5, tabular), tracked .04em, `#E9E9E7`; the `×` and `·` in `#6E6E72`.
+`Surface material="graphite-deep" radius="pill"`, 22 tall, padding 0 10, gap 6: `Led kind="live"` (5 pt), then the value in `Label variant="readout"` (10.5 mono at 1, tracked .04em, `#EDEDEF`); the `×` and `·` in `Label variant="readout-dim"` (`#7C7D82`).
 
 ## States and motion
 
@@ -1086,7 +1086,7 @@ A 24 tall pill (`presence-readout-bg`, its stack), padding 0 11 0 10, gap 7: a 4
 | moving | 1 |
 | copied | `COPIED · PNG …` for 900 ms |
 
-Opacity changes ride settle. The value changes in place without motion (figures are tabular, so the pill does not jitter).
+Opacity changes ride settle. The value changes in place without motion; the pill's width follows the figures, as the reference's does.
 
 ## API
 

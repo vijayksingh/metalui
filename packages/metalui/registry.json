@@ -544,7 +544,7 @@
       "name": "size-readout",
       "type": "registry:ui",
       "title": "Size readout",
-      "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. The KAMUI-14 readout on its own.",
+      "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(graphite-deep) with a live Led and the value in Label(readout).",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"

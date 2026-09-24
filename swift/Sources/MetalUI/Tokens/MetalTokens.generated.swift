@@ -1751,24 +1751,26 @@ public enum MetalPresence {
         MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
     ]
     public static let handleHit: Double = 7.0
-    public static let readoutHeight: Double = 24.0
+    public static let readoutHeight: Double = 22.0
     public static let readoutGap: Double = 16.0
     public static let readoutPadStart: Double = 10.0
-    public static let readoutPadEnd: Double = 11.0
-    public static let readoutGapInner: Double = 7.0
+    public static let readoutPadEnd: Double = 10.0
+    public static let readoutGapInner: Double = 6.0
     public static let readoutBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(42, 42, 45, 1.0), 0.0), .init(MetalRGBA(27, 27, 29, 1.0), 1.0)])
     public static let readoutSh: [MetalShadow] = [
-        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 5.0, spread: 1.0, color: MetalRGBA(255, 255, 255, 0.06)),
-        MetalShadow(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.14)),
-        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.4)),
-        MetalShadow(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.14)),
-        MetalShadow(inset: false, x: 0.0, y: 8.0, blur: 16.0, spread: -6.0, color: MetalRGBA(0, 0, 0, 0.2)),
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
+        MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
+        MetalShadow(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.35)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.45)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.2)),
+        MetalShadow(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, color: MetalRGBA(0, 0, 0, 0.34)),
+        MetalShadow(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, color: MetalRGBA(0, 0, 0, 0.3)),
     ]
-    public static let readoutInk: MetalRGBA = MetalRGBA(233, 233, 231, 1.0)
-    public static let readoutDim: MetalRGBA = MetalRGBA(110, 110, 114, 1.0)
+    public static let readoutInk: MetalRGBA = MetalRGBA(237, 237, 239, 1.0)
+    public static let readoutDim: MetalRGBA = MetalRGBA(124, 125, 130, 1.0)
     /// In em.
     public static let readoutTracking: Double = 0.04
-    public static let readoutLed: Double = 4.0
+    public static let readoutLed: Double = 5.0
     public static let readoutWriting: Double = 0.78
     public static let copiedMs: Double = 900.0
 

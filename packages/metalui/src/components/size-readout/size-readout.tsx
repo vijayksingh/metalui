@@ -1,14 +1,18 @@
 'use client';
 
 import * as React from 'react';
+import { Surface } from '../surface/surface';
+import { Led } from '../status/status';
+import { Label } from '../label/label';
 import './size-readout.css';
 
-/* ─────────────────────────────────────────────────────────
- * SIZE READOUT (the KAMUI-14 readout, Kamui 04 §10)
- *   reads   ● 320 × 214 · ● 3 · 540 × 180 · ● COPIED · PNG 130 × 215 · or any short value (● 100 %)
- *   always  the measured value, never a constant; tabular figures (the readout role)
- * The Selection frame places one under its object; use this one on its own for zoom and other readouts.
- * ───────────────────────────────────────────────────────── */
+/* SIZE READOUT (the reference design's .readout): Surface(graphite-deep, pill) › Led(live) + Label(readout)
+ * with its × and · in Label(readout-dim). A component, not a block: the Selection frame places one
+ * under its object, and blocks never import blocks.
+ *   ● 320 × 214     an object's size
+ *   ● 3 · 540 × 180 a multi-selection
+ *   ● COPIED · PNG 130 × 215   a copy, for 900 ms (the host times it)
+ *   ● 100 %         any other short value */
 
 export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   width?: number;
@@ -23,24 +27,27 @@ export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElem
   led?: boolean;
 }
 
-/** A graphite pill that reads a measured value: a size, a count, a zoom. */
+// Each figure and mark is its own flex item, 6 apart, as the reference's text runs are.
+const V = ({ children }: { children: React.ReactNode }) => <Label variant="readout">{children}</Label>;
+const Mark = ({ children }: { children: React.ReactNode }) => (
+  <Label as="i" variant="readout-dim" className="mu-readout-x">{children}</Label>
+);
+
 export const SizeReadout = React.forwardRef<HTMLSpanElement, SizeReadoutProps>(function SizeReadout(
   { width = 0, height = 0, count, copied, value, led = true, className, ...props },
   ref,
 ) {
   const w = Math.round(width), h = Math.round(height);
-  const X = <span className="mu-readout-x">×</span>;
-  const dot = <span className="mu-readout-x">·</span>;
   return (
-    <span ref={ref} className={['mu-readout', 'mu-type-readout', className].filter(Boolean).join(' ')} {...props}>
-      {led && <span aria-hidden className="mu-readout-led" />}
-      {value !== undefined ? value : copied ? (
-        <>COPIED {dot} {copied} {w} {X} {h}</>
+    <Surface ref={ref} as="span" material="graphite-deep" radius="pill" className={className ? `mu-readout ${className}` : 'mu-readout'} {...props}>
+      {led && <Led kind="live" />}
+      {value !== undefined ? <V>{value}</V> : copied ? (
+        <><V>COPIED</V><Mark>·</Mark><V>{copied} {w}</V><Mark>×</Mark><V>{h}</V></>
       ) : count && count > 1 ? (
-        <>{count} {dot} {w} {X} {h}</>
+        <><V>{count}</V><Mark>·</Mark><V>{w}</V><Mark>×</Mark><V>{h}</V></>
       ) : (
-        <>{w} {X} {h}</>
+        <><V>{w}</V><Mark>×</Mark><V>{h}</V></>
       )}
-    </span>
+    </Surface>
   );
 });

@@ -2,10 +2,19 @@
   "name": "size-readout",
   "title": "Size readout",
   "status": "alpha",
-  "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. The KAMUI-14 readout on its own.",
-  "sheet": "KAMUI-14 readout, Kamui 04 §10",
+  "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(graphite-deep) with a live Led and the value in Label(readout).",
   "base": "none (a readout; aria-hidden where it repeats what the object states)",
-  "react": { "export": "SizeReadout", "files": ["size-readout.tsx", "size-readout.css"] },
-  "swift": { "symbol": "MetalSizeReadout", "file": "swift/Sources/MetalUI/Components/MetalSizeReadout.swift" },
-  "agent": "size-readout.agent.md"
+  "react": {
+    "export": "SizeReadout",
+    "files": [
+      "size-readout.tsx",
+      "size-readout.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSizeReadout",
+    "file": "swift/Sources/MetalUI/Components/MetalSizeReadout.swift"
+  },
+  "agent": "size-readout.agent.md",
+  "layer": "component"
 }
