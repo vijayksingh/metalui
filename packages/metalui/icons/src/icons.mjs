@@ -337,4 +337,12 @@ export const ICONS = [
        @P .dl{animation:dc-p .36s cubic-bezier(.3,.1,.2,1) both} @P .d2{animation-delay:.06s}
        @keyframes dc-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
   shape: 'Page 13.4 × 17 with a 5-unit fold, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines.' },
+
+// A clock: the face and its hands. Body: the face ring. Mark: the hands, one wire.
+{ name: 'clock', cat: 'Status', label: 'Time', hover: 'the minute hand sweeps on', press: 'the face ticks',
+  body: `<path class="f" style="--duo:.08" d="M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z"/><path class="hd" d="M12 7.4V12l3.2 2"/>`,
+  base: `& .hd{transform-origin:12px 12px}`,
+  mo: `@H .hd{transform:rotate(60deg)}
+       @P .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}`,
+  shape: 'Face r8.5, tinted .08; hands 4.6 and 3.8 about the centre.' },
 ];

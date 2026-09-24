@@ -118,3 +118,6 @@
 /* document */
 .mu-icon.mu-ic-document .dl{stroke-dasharray:1 2} .mu-icon.mu-ic-document .d2{transform-origin:8.6px 15.8px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-document,.mu-ic-document:is(:hover,[data-hover])):not([data-static]) .d2{transform:scaleX(1.7)} .mu-icon.mu-ic-document[data-press] .dl{animation:dc-p .36s cubic-bezier(.3,.1,.2,1) both} .mu-icon.mu-ic-document[data-press] .d2{animation-delay:.06s} @keyframes dc-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}
+/* clock */
+.mu-icon.mu-ic-clock .hd{transform-origin:12px 12px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-clock,.mu-ic-clock:is(:hover,[data-hover])):not([data-static]) .hd{transform:rotate(60deg)} .mu-icon.mu-ic-clock[data-press] .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}}

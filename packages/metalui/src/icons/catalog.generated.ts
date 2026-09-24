@@ -784,6 +784,26 @@ export const ICON_CATALOG = {
     body: "<path class=\"f\" style=\"--duo:.1\" d=\"M7.2 3.5h6.4l5 5v10a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z\"/><path class=\"dl\" pathLength=\"1\" d=\"M8.6 12.4h6.8\"/><path class=\"dl d2\" pathLength=\"1\" d=\"M8.6 15.8h4\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * TIME · Status
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the minute hand sweeps on
+   * PRESS one-shot (from the current pose)
+   *          the face ticks
+   *     0ms   .hd plays ck2-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "clock": {
+    label: "Time",
+    category: "Status",
+    hover: "the minute hand sweeps on",
+    press: "the face ticks",
+    pressMs: 340,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path class=\"hd\" d=\"M12 7.4V12l3.2 2\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

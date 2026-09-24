@@ -75,3 +75,5 @@ export const TagIcon = createIcon("tag", "TagIcon");
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");
 /** Document. Hover: the second line writes on. Press: the lines redraw. */
 export const DocumentIcon = createIcon("document", "DocumentIcon");
+/** Time. Hover: the minute hand sweeps on. Press: the face ticks. */
+export const ClockIcon = createIcon("clock", "ClockIcon");
