@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Segmented, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
+import { ToastStill } from './xray/ToastXray';
 
 export type { XrayKind };
 
@@ -106,6 +107,7 @@ const ITEMS: Item[] = [
       </span>
     ),
   },
+  { id: 'toast', table: ['30%', '93%'], space: ['36%', '86%', -260, 4], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray; the strip opens the toolbar's

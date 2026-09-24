@@ -6,6 +6,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/toast/toa
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToast.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { ToastXray } from '../../ui/xray/ToastXray';
 
 function Triggers() {
   const toast = useToast();
@@ -33,6 +34,9 @@ export default function ToastPage() {
         </Bench>
         <SwiftCapture name="toast" maxWidth={560} />
       </Section>
+      <Section id="x-ray" title="X-ray" lede="See what the toast is made of. Click an icon to learn about one part and change it.">
+        <ToastXray />
+      </Section>
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
@@ -43,9 +47,9 @@ export default function ToastPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'O1', title: 'Your actions, never recognition', body: 'No toast, badge or sound when the surface recognises something.', origin: 'Kamui 03 §13' },
-          { id: 'O2', title: 'Undo whenever it can be undone', body: 'The Undo cap and ⌘Z do the same thing.', origin: 'Kamui 04 §12' },
-          { id: 'O3', title: 'One at a time', body: 'The next replaces the last: the old leaves on release as the new arrives on settle.', origin: 'Kamui demo' },
+          { id: 'O1', title: 'Your actions, never recognition', body: 'No toast, badge or sound when the surface recognises something.', origin: 'Reference design 03 §13' },
+          { id: 'O2', title: 'Undo whenever it can be undone', body: 'The Undo cap and ⌘Z do the same thing.', origin: 'Reference design 04 §12' },
+          { id: 'O3', title: 'One at a time', body: 'The next replaces the last: the old leaves on release as the new arrives on settle.', origin: 'Reference demo' },
           { id: 'O4', title: 'Success carries its check; errors stay', body: 'Never colour alone; an error waits until it is resolved.', origin: 'DS-34' },
         ]} />
       </Section>

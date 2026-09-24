@@ -726,3 +726,10 @@ html.rm .xr-caret { animation: none; }
 .xr-tipwrap:not(.is-shown) > * { opacity: 0; }
 .xr-tipface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .05em; }
 .xr-stem { position: absolute; width: 0; border-left: 2px dashed color-mix(in srgb, var(--green-deep) 60%, transparent); transform-origin: 0 0; transition: opacity .3s; }
+/* x-ray, toast */
+.xr-toastwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
+.xr-toastwrap.is-arriving { animation: xr-toast-in var(--spring-settle-d, .44s) var(--spring-settle, ease-out) both; }
+@keyframes xr-toast-in { from { transform: translate3d(0, 19px, 0) scale(.97); } }
+.xr-toasttext { display: inline-flex; align-items: center; font-weight: 500; letter-spacing: -.012em; white-space: nowrap; }
+.xr-undoface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-weight: 500; white-space: nowrap; }
+html.rm .xr-toastwrap { animation: none; }

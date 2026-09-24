@@ -9,6 +9,7 @@ import { SegmentedXray } from './SegmentedXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
 import { SwatchXray } from './SwatchXray';
+import { ToastXray } from './ToastXray';
 import { ToolbarXray } from './ToolbarXray';
 import { TooltipXray } from './TooltipXray';
 
@@ -26,6 +27,7 @@ export const XRAYS = {
   status: { title: 'Status badge', View: StatusXray },
   toolbar: { title: 'Toolbar', View: ToolbarXray },
   tooltip: { title: 'Tooltip', View: TooltipXray },
+  toast: { title: 'Toast', View: ToastXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;
