@@ -8,8 +8,7 @@
   "react": {
     "export": "Label",
     "files": [
-      "label.tsx",
-      "label.css"
+      "label.tsx"
     ]
   },
   "swift": {

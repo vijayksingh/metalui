@@ -206,7 +206,7 @@ export function buildRecipes(recipes) {
         if (typeof v === 'number') {
           themeVars.push(`  --spacing-${n}: ${ref(k)};`);
           if (/radius/.test(k) || /radius/.test(part)) themeVars.push(`  --radius-${n}: ${ref(k)};`);
-          if (k === 'font-size') themeVars.push(`  --text-${n}: ${ref(k)};`);
+          if (k === 'font-size') utilities.push(`@utility font-size-${n} {\n  font-size: ${ref(k)};\n}`);
           continue;
         }
         const str = String(v);

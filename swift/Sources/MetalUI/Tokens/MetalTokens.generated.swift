@@ -1216,11 +1216,14 @@ public enum MetalRecipes {
             .init(part: "dark", state: nil, colorway: nil, textShadow: .init(inset: false, x: 0.0, y: -1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:label:2 0 -1px 0 rgba(0,0,0,.6)
         ],
         props: [
+            "self.transition": .text("color var(--mu-spring-settle-d) var(--mu-spring-settle)"),
             "engraved.font": .text("400 9px/1.36 mono"),
             "engraved.tracking": .text("0.11em"),
             "engraved.transform": .text("uppercase"),
             "engraved.color": .perColorway(bone: "rgba(40,38,32,.46)", graphite: "rgba(255,255,255,.38)"),
-            "small.font-size": .number(8.5),
+            "small.font": .text("400 8.5px/1.36 mono"),
+            "small.tracking": .text("0.11em"),
+            "small.transform": .text("uppercase"),
             "title.font": .text("640 13.5px/1.2 sans"),
             "title.tracking": .text("-0.01em"),
             "title.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),

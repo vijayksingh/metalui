@@ -262,6 +262,19 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
+/* An empty label shows its placeholder (data-placeholder), as an input shows its own. */
+@utility label-placeholder {
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: var(--mu-r-label-placeholder-color);
+    font-weight: var(--mu-r-label-placeholder-weight);
+  }
+  &::placeholder {
+    color: var(--mu-r-label-placeholder-color);
+    font-weight: var(--mu-r-label-placeholder-weight);
+    opacity: 1;
+  }
+}
 /* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
 @utility focus-ring {
   outline: var(--mu-focus-width) solid var(--mu-focus);
@@ -435,8 +448,7 @@
   --radius-well-radius-row: var(--mu-r-well-radius-row);
   --tracking-label-engraved-tracking: var(--mu-r-label-engraved-tracking);
   --color-label-engraved-color: var(--mu-r-label-engraved-color);
-  --spacing-label-small-font-size: var(--mu-r-label-small-font-size);
-  --text-label-small-font-size: var(--mu-r-label-small-font-size);
+  --tracking-label-small-tracking: var(--mu-r-label-small-tracking);
   --tracking-label-title-tracking: var(--mu-r-label-title-tracking);
   --color-label-title-color: var(--mu-r-label-title-color);
   --tracking-label-heading-tracking: var(--mu-r-label-heading-tracking);
@@ -1023,10 +1035,18 @@
 @utility recipe-label-dark {
   text-shadow: var(--mu-r-label-dark-text-shadow);
 }
+@utility transition-label {
+  transition: var(--mu-r-label-self-transition);
+}
 @utility type-label-engraved {
   font: var(--mu-r-label-engraved-font);
   letter-spacing: var(--mu-r-label-engraved-tracking);
   text-transform: var(--mu-r-label-engraved-transform);
+}
+@utility type-label-small {
+  font: var(--mu-r-label-small-font);
+  letter-spacing: var(--mu-r-label-small-tracking);
+  text-transform: var(--mu-r-label-small-transform);
 }
 @utility type-label-title {
   font: var(--mu-r-label-title-font);

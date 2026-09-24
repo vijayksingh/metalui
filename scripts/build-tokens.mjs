@@ -448,6 +448,19 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
+/* An empty label shows its placeholder (data-placeholder), as an input shows its own. */
+@utility label-placeholder {
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: var(--mu-r-label-placeholder-color);
+    font-weight: var(--mu-r-label-placeholder-weight);
+  }
+  &::placeholder {
+    color: var(--mu-r-label-placeholder-color);
+    font-weight: var(--mu-r-label-placeholder-weight);
+    opacity: 1;
+  }
+}
 /* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
 @utility focus-ring {
   outline: var(--mu-focus-width) solid var(--mu-focus);

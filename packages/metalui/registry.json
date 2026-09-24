@@ -324,11 +324,6 @@
           "path": "packages/metalui/src/components/label/label.tsx",
           "type": "registry:ui",
           "target": "components/metalui/label/label.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/label/label.css",
-          "type": "registry:file",
-          "target": "components/metalui/label/label.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."

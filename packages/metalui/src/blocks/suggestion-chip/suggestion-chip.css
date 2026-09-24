@@ -1,6 +1,5 @@
 @import "../../components/tokens.css";
 @import "../../components/chip/chip.css";
-@import "../../components/label/label.css";
 
 /* Suggestion chip: a composition. It only arranges its parts, fades them and brings them in;
    every paint is Chip(suggestion), Label(small) and IconButton(mini). Layout values: --mu-suggestion-*. */
