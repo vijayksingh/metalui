@@ -5,6 +5,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/status/st
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalStatus.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { StatusXray } from '../../ui/xray/StatusXray';
 
 const KINDS = [['live', 'live · ok'], ['waiting', 'waiting · urgent'], ['failed', 'failed'], ['link', 'link kind'], ['off', 'off']] as const;
 
@@ -28,6 +29,9 @@ export default function StatusPage() {
           </div>
         </Bench>
         <SwiftCapture name="status" maxWidth={620} />
+      </Section>
+      <Section id="x-ray" title="X-ray" lede="See what the lamp and the badge are made of. Click an icon to learn about one part and change it.">
+        <StatusXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[
