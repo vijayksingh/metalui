@@ -28,20 +28,20 @@ const WALL = 7;
 type Spot = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers';
 const SPOTS: { id: Spot; title: string; word: string }[] = [
   { id: 'type', title: 'Type', word: 'The label' },
-  { id: 'shape', title: 'Shape', word: 'The pill rule' },
-  { id: 'light', title: 'Light', word: 'One key light' },
+  { id: 'shape', title: 'Shape', word: 'Size and corners' },
+  { id: 'light', title: 'Light', word: 'Where the light comes from' },
   { id: 'shadow', title: 'Shadow', word: 'Height above the page' },
-  { id: 'press', title: 'Press', word: 'Travel and spring' },
-  { id: 'layers', title: 'Layers', word: 'What each layer does' },
+  { id: 'press', title: 'Press', word: 'What happens when you press' },
+  { id: 'layers', title: 'Layers', word: 'What it is made of' },
 ];
 
 const LAYERS = [
-  { name: 'Fill', kind: 'fill', why: 'The body. A flat colour reads as a sticker, so the fill is a gentle gradient: a little lighter where the light lands. Switch it off and there is nothing left to hold.' },
-  { name: 'Inner glow', kind: 'inset', why: 'A soft light just inside the edge. Real plastic scatters light near its surface, so the edges look a touch brighter than the middle. It is what makes the material feel soft rather than painted.' },
-  { name: 'Top light', kind: 'inset', why: 'A thin highlight along the top edge. Your eye reads a bright top rim as "this edge is rounded and faces the light". That is the moment a flat shape starts to look like an object.' },
-  { name: 'Rim', kind: 'outer', why: 'A hairline outline you barely notice. It keeps the edge crisp when the button sits on a background of almost the same colour, which happens all the time in a light interface.' },
-  { name: 'Contact', kind: 'outer', why: 'A small, dark, tight shadow right at the edge. It says "I am touching the surface". Without it, objects look weightless, as if they hover.' },
-  { name: 'Drop', kind: 'outer', why: 'A larger, softer shadow, pushed down and pulled in. It tells you how high the object sits: the bigger and blurrier, the higher it feels. That is elevation.' },
+  { name: 'Fill', kind: 'fill', why: 'The main colour. It is a little lighter at the top, where the light hits. Turn it off and the button has no body.' },
+  { name: 'Inner glow', kind: 'inset', why: 'A soft light just inside the edge. It makes the button look like soft plastic instead of flat paint.' },
+  { name: 'Top light', kind: 'inset', why: 'A thin bright line on the top edge. It makes the top look rounded, so the button looks like a real object.' },
+  { name: 'Rim', kind: 'outer', why: 'A very thin outline. It keeps the edge sharp when the background is almost the same colour as the button.' },
+  { name: 'Contact', kind: 'outer', why: 'A small dark shadow right under the edge. It shows the button is sitting on the page. Without it, the button seems to float.' },
+  { name: 'Drop', kind: 'outer', why: 'A bigger, softer shadow. It shows how high the button is. A bigger, blurrier shadow looks higher.' },
 ] as const;
 
 interface Model {
@@ -197,7 +197,7 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
         )}
 
         {xray && <Callouts bench={bench} spot={spot} setSpot={setSpot} deps={[spot, m, pressed, textW]} />}
-        <div className="xr-hint eng">{xray ? 'Click a part, then play with it' : 'Click the button to see inside it'}</div>
+        <div className="xr-hint eng">{xray ? 'Pick an icon to learn about that part' : 'Click the button to see inside it'}</div>
         {xray && (
           <div className="xr-actions">
             <button type="button" className="status" onClick={() => setM(INITIAL)}><span className="led off" />Reset</button>
@@ -247,10 +247,10 @@ function Switch({ label, on, onChange }: { label: string; on: boolean; onChange:
 function ShapeCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; d: D }) {
   return (
     <>
-      <p>A pill's ends are half-circles, so its corner radius is half its height. The side padding follows the pill rule, half the height less one, so the text never crowds the curve. Break the rule and watch it turn into a lozenge.</p>
+      <p>The ends are half circles, so the corner radius is half the height. The side space is half the height minus one, so the text never touches the curve. Change the numbers and see what happens.</p>
       <div className="xr-dials">
         <Dial label="Height" value={m.h} min={20} max={48} step={2} fmt={(v) => `${v} pt`} onChange={(h) => set({ h })} />
-        <Switch label="Padding follows the pill rule" on={m.padAuto} onChange={(padAuto) => set({ padAuto })} />
+        <Switch label="Space = half the height minus one" on={m.padAuto} onChange={(padAuto) => set({ padAuto })} />
         {!m.padAuto && <Dial label="Padding" value={m.pad} min={2} max={32} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />}
         <Dial label="Corners" value={m.corners} min={0} max={1} step={0.05} fmt={(v) => (v === 1 ? 'pill' : `${Math.round(v * 100)}%`)} onChange={(corners) => set({ corners })} />
       </div>
@@ -264,7 +264,7 @@ function ShapeCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; 
 function LightCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; d: D }) {
   return (
     <>
-      <p>Everything is lit by one light. Where it lands, the fill is lighter and the edge catches a bright lip; away from it, the fill darkens. Move the light and every object in the system would follow, which is why it is one decision, not one per component.</p>
+      <p>There is one light for everything. The side facing it is lighter, and its edge gets a bright line. Move the light and the button changes with it.</p>
       <div className="xr-dials">
         <Dial label="Direction" value={m.lightDeg} min={-90} max={90} step={5} fmt={(v) => (v === 0 ? 'top' : v < 0 ? `${-v}° left` : `${v}° right`)} onChange={(lightDeg) => set({ lightDeg })} />
         <Dial label="Strength" value={m.lightK} min={0} max={1.5} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(lightK) => set({ lightK })} />
@@ -279,7 +279,7 @@ function LightCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; 
 function TypeCard({ m, set }: { m: Model; set: (p: Partial<Model>) => void }) {
   return (
     <>
-      <p>The label sets the button's width. Size and weight carry emphasis; letter-spacing opens or tightens it. Centre the box and the words look low, because capitals sit high in their line: centring on the letters fixes that.</p>
+      <p>The text sets how wide the button is. Try the size, weight and letter spacing. Centring the box makes the text look too low, so we centre the letters instead.</p>
       <div className="xr-dials">
         <Dial label="Size" value={m.size} min={10} max={16} step={0.5} fmt={(v) => `${v} pt`} onChange={(size) => set({ size })} />
         <div className="xr-dial"><span className="xr-dial-head"><span>Weight</span></span><Segmented size="compact" aria-label="Weight" value={String(m.weight)} onValueChange={(v) => set({ weight: Number(v) })} options={[{ value: '400', label: '400' }, { value: '500', label: '500' }, { value: '600', label: '600' }]} /></div>
@@ -296,7 +296,7 @@ function TypeCard({ m, set }: { m: Model; set: (p: Partial<Model>) => void }) {
 function ShadowCard({ m, set, shadows }: { m: Model; set: (p: Partial<Model>) => void; shadows: string[] }) {
   return (
     <>
-      <p>Two shadows on the floor. The dark, tight one is where the cap touches; the soft, wide one says how high it is. Raise the cap and watch them part.</p>
+      <p>There are two shadows. The small dark one is where the button touches the page. The big soft one shows how high it is. Raise the button and watch them change.</p>
       <div className="xr-dials">
         <Dial label="Height above the page" value={m.lift} min={0} max={3} step={0.1} fmt={(v) => v.toFixed(1)} onChange={(lift) => set({ lift })} />
       </div>
@@ -313,7 +313,7 @@ function PressCard({ onPress }: { onPress: () => void }) {
   const path = curve.map(([t, x], i) => `${i ? 'L' : 'M'}${((t / T) * Wd).toFixed(1)} ${(Ht - 8 - x * (Ht - 16)).toFixed(1)}`).join('');
   return (
     <>
-      <p>Held, the cap sinks {String(P.travel)} pt in {String(P.press)}, linear, and its shadow tucks under. Released, it rides the release spring: stiffness {SPRING.stiffness}, damping {SPRING.damping}, halfway back in {SPRING.half}. Press it and watch the model.</p>
+      <p>When you hold it, the button moves down {String(P.travel)} pt in {String(P.press)} and its shadow shrinks. When you let go, a spring brings it back (stiffness {SPRING.stiffness}, damping {SPRING.damping}). Press it and watch.</p>
       <div className="xr-proof">
         <span onPointerDown={onPress}><Button tabIndex={0}>Press me</Button></span>
         <svg viewBox={`0 0 ${Wd} ${Ht}`} width={Wd} height={Ht} aria-hidden><path d={`M0 ${Ht - 8}H${Wd}`} stroke="var(--rule)" /><path d={path} fill="none" stroke="var(--green-deep)" strokeWidth="1.5" /></svg>
@@ -326,7 +326,7 @@ function LayersCard({ m, set, focus, setFocus, d }: { m: Model; set: (p: Partial
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
   return (
     <>
-      <p>Six layers, stacked. None of them is decoration: each one tells your eye one fact about the object. Switch one off and see what the button loses.</p>
+      <p>The button is six layers stacked on top of each other. Turn one off to see what it adds.</p>
       <div className="xr-proof" style={{ justifyContent: 'center' }}>
         <Button tabIndex={-1} style={{ background: d.fill, boxShadow: d.cssShadow }}>New Canvas</Button>
       </div>
