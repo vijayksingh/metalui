@@ -8,8 +8,7 @@
   "react": {
     "export": "Dialog",
     "files": [
-      "dialog.tsx",
-      "dialog.css"
+      "dialog.tsx"
     ]
   },
   "swift": {

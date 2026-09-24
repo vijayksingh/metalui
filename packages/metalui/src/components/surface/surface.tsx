@@ -51,6 +51,8 @@ const RADII: Record<SurfaceRadius, string> = {
 
 export const Surface = React.forwardRef<HTMLElement, SurfaceProps>(function Surface({ material, radius, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
-  const own = `mu-surface box-border relative ${MATERIALS[material]}${radius ? ` ${RADII[radius]}` : ''}`;
+  // relative, unless the host places the surface itself (a dialog is fixed, an engraving absolute)
+  const placed = /(^|\s)(fixed|absolute|sticky|static)(\s|$)/.test(typeof className === 'string' ? className : '');
+  const own = `mu-surface box-border${placed ? '' : ' relative'} ${MATERIALS[material]}${radius ? ` ${RADII[radius]}` : ''}`;
   return <Tag ref={ref} data-material={material} data-radius={radius} className={className ? `${own} ${className}` : own} {...props} />;
 });

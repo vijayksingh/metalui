@@ -1277,11 +1277,20 @@
 @utility stroke-width-sparkline-base-width {
   stroke-width: var(--mu-r-sparkline-base-width);
 }
+@utility dialog-top {
+  top: var(--mu-r-dialog-self-top);
+}
+@utility dialog-enter {
+  opacity: 0; transform: translateY(calc(var(--mu-r-dialog-self-enter-y) * var(--mu-travel-surface))) scale(calc(1 - (1 - var(--mu-r-dialog-self-enter-scale)) * var(--mu-travel-surface)));
+}
 @utility z-dialog-scrim-z {
   z-index: var(--mu-r-dialog-scrim-z);
 }
 @utility opacity-dialog-enter-scale {
   opacity: var(--mu-r-dialog-self-enter-scale);
+}
+@utility transition-dialog {
+  transition: var(--mu-r-dialog-self-transition);
 }
 @utility recipe-slider-fill {
   background: var(--mu-r-slider-fill-background);

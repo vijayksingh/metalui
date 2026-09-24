@@ -1311,6 +1311,7 @@
   --mu-r-dialog-self-top: 16vh;
   --mu-r-dialog-self-enter-y: -6px;
   --mu-r-dialog-self-enter-scale: 0.985;
+  --mu-r-dialog-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface);
   /* slider: reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob */
   --mu-r-slider-fill-background:
     /* mu-recipe:slider:0 */ linear-gradient(#9BE6BF, #5FC894);

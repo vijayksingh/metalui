@@ -1479,6 +1479,7 @@ public enum MetalRecipes {
             "self.top": .text("16vh"),
             "self.enter-y": .number(-6.0),
             "self.enter-scale": .text("0.985"),
+            "self.transition": .text("opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface)"),
         ]
     )
 

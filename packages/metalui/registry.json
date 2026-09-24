@@ -138,11 +138,6 @@
           "path": "packages/metalui/src/components/dialog/dialog.tsx",
           "type": "registry:ui",
           "target": "components/metalui/dialog/dialog.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/dialog/dialog.css",
-          "type": "registry:file",
-          "target": "components/metalui/dialog/dialog.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
