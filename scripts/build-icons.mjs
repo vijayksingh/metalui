@@ -25,9 +25,9 @@ const SW16 = 1.85;
 const BASE_CSS = `
 .mu-icon{--sw:${SW};--k-spring:${K_SPRING};--k-soft:${K_SOFT};--k-dur:.46s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
 .mu-icon *{transform-box:view-box}
-.mu-icon .f{fill:var(--mu-duo-fill,currentColor);fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1) * var(--mu-duo-tint,1))}
+.mu-icon .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
 .mu-icon .s{fill:currentColor;stroke:none}
-.mu-icon .d{fill:var(--mu-duo-fill,currentColor);fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1) * var(--mu-duo-tint,1));stroke:none}
+.mu-icon .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
 @media (prefers-reduced-motion:no-preference){
 .mu-icon *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .2s ease var(--dl,0s),d var(--k-dur) var(--k-spring) var(--dl,0s),stroke-dashoffset var(--k-dur) var(--k-spring) var(--dl,0s),fill-opacity .2s ease}
 }`;

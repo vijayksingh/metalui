@@ -30,8 +30,13 @@ public struct MetalColorwayTokens: Sendable {
     public let pressedBg: MetalGradient
     public let pressedSh: [MetalShadow]
     public let duoK: Double
-    public let tintLine: Double
-    public let tintBody: Double
+    public let tintEmber: MetalRGBA
+    public let tintBlush: MetalRGBA
+    public let tintTide: MetalRGBA
+    public let tintSpark: MetalRGBA
+    public let tintGraphite: MetalRGBA
+    public let tintDusk: MetalRGBA
+    public let tintIris: MetalRGBA
 }
 
 /// A signal cap (primary, destructive) that looks the same in both colorways.
@@ -105,8 +110,13 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
         ],
         duoK: 1.0,
-        tintLine: 0.0,
-        tintBody: 3.5
+        tintEmber: MetalRGBA(208, 86, 14, 1.0),
+        tintBlush: MetalRGBA(213, 68, 135, 1.0),
+        tintTide: MetalRGBA(16, 138, 139, 1.0),
+        tintSpark: MetalRGBA(182, 83, 197, 1.0),
+        tintGraphite: MetalRGBA(92, 92, 96, 1.0),
+        tintDusk: MetalRGBA(15, 125, 220, 1.0),
+        tintIris: MetalRGBA(115, 106, 236, 1.0)
     )
 
     public static let graphite = MetalColorwayTokens(
@@ -170,8 +180,13 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
         ],
         duoK: 1.3,
-        tintLine: 1.0,
-        tintBody: 0.6
+        tintEmber: MetalRGBA(251, 121, 74, 1.0),
+        tintBlush: MetalRGBA(237, 107, 162, 1.0),
+        tintTide: MetalRGBA(37, 194, 195, 1.0),
+        tintSpark: MetalRGBA(206, 118, 220, 1.0),
+        tintGraphite: MetalRGBA(166, 166, 169, 1.0),
+        tintDusk: MetalRGBA(62, 155, 250, 1.0),
+        tintIris: MetalRGBA(137, 134, 250, 1.0)
     )
 }
 
@@ -302,7 +317,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
     public static let crossfade: MetalSpringClass = .settle
 }
 
-/// Feelings tints name the kind of feeling a glyph carries: joy, affection, calm, wonder, neutral, low, tension. Energy lives in the glyph's shape and valence in its position, so no tint is muted to say it; every pigment speaks at the orange's voice. On bone the pigment is enamel: the body takes it (tint-body times the duotone) and the line stays engraved ink. On graphite the pigment is light: the line glows in it (tint-line) and the body is its soft duotone. Glyphs only, never words, never status or intent; off under Increase Contrast and inside data-mu-untinted.
+/// Feelings tints color the glyph's stroke, and its duotone body follows at the usual opacity, so the line itself evokes the feeling. A tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength, which the glyph's shape shows. Every stroke speaks at the orange's voice (chroma about 0.19) and clears 3.3:1 on bone and 4.5:1 on graphite. Glyphs only, never words, never status or intent; off under Increase Contrast and inside data-mu-untinted.
 public enum MetalTint: String, CaseIterable, Sendable {
     /// joy: happy, excited, energised, proud, party
     case ember
@@ -319,16 +334,16 @@ public enum MetalTint: String, CaseIterable, Sendable {
     /// tension: anxious, angry, stressed, frustrated, overwhelmed
     case iris
 
-    /// The family's pigment, the same in both colorways; nil for neutral, whose body stays ink.
-    public var pigment: MetalRGBA? {
+    /// The stroke color in a colorway; the glyph's duotone body follows it.
+    public func color(in colorway: MetalColorway) -> MetalRGBA {
         switch self {
-        case .ember: return MetalRGBA(255, 107, 61, 1.0)
-        case .blush: return MetalRGBA(234, 80, 152, 1.0)
-        case .tide: return MetalRGBA(20, 188, 188, 1.0)
-        case .spark: return MetalRGBA(245, 164, 32, 1.0)
-        case .graphite: return nil
-        case .dusk: return MetalRGBA(29, 132, 245, 1.0)
-        case .iris: return MetalRGBA(149, 91, 227, 1.0)
+        case .ember: return colorway.tokens.tintEmber
+        case .blush: return colorway.tokens.tintBlush
+        case .tide: return colorway.tokens.tintTide
+        case .spark: return colorway.tokens.tintSpark
+        case .graphite: return colorway.tokens.tintGraphite
+        case .dusk: return colorway.tokens.tintDusk
+        case .iris: return colorway.tokens.tintIris
         }
     }
 

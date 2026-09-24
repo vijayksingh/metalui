@@ -33,12 +33,12 @@ const SIGNAL = tokens.foundations.signal;
 const SWATCHES = ['green', 'green-deep', 'red', 'success', 'warning', 'photon', 'blue', 'gold'] as const;
 const LEDS = ['led-green', 'led-amber', 'led-red', 'led-blue', 'led-off'] as const;
 
-type Tint = { base: string | null; kind: string; valence: string; feelings: string[]; moments: string[] };
+type Tint = { bone: string; graphite: string; kind: string; valence: string; feelings: string[]; moments: string[] };
 const TINT = tokens.foundations.tint;
 const TINTS = Object.entries(TINT).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [string, Tint][];
 
 // One real glyph per family, drawn from Kamui's life set (design/medium-icons) until the set
-// itself lands in MetalUI (import plan 3.1). The vessel is the duotone body; the marks are ink.
+// itself lands in MetalUI (import plan 3.1). The tint colors the stroke; the vessel is its duotone.
 const VESSEL = '<circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/>';
 const SPECIMEN: Record<string, { name: string; body: string }> = {
   ember: { name: 'happy', body: `${VESSEL}<path d="M6.8 13.2c2.2 0 2.8-4.6 5.2-4.6s3 4.6 5.2 4.6"/>` },
@@ -255,22 +255,26 @@ export default function Color() {
 
       <Section
         title="Feelings tints"
-        lede="Color names the kind of feeling a glyph carries: joy, affection, calm, wonder, low or tension, with neutral left in ink. Energy already lives in the glyph’s shape and valence in its position, so no feeling is muted to say how strong it is, and a quiet one is never brown or gray. Every pigment speaks at the orange’s voice. On bone it is enamel: the body takes the pigment and the line stays engraved ink. On graphite it is light, like the device’s LEDs: the line glows in the pigment over a faint body."
+        lede="A tint colors the glyph’s stroke, and its duotone body follows, so the line itself evokes the feeling. The tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength: energy lives in the glyph’s shape and valence in its position, so a quiet feeling is never muted into brown or gray. Every stroke speaks at the orange’s voice and clears 3.3:1 on bone and 4.5:1 on graphite."
       >
-        <Bench caption="One real glyph per family, plus a moment · the switch, or Increase Contrast, returns every body to ink">
+        <Bench caption="One real glyph per family, plus a moment · the switch, or Increase Contrast, returns every glyph to ink">
           <TintBench />
         </Bench>
         <TokenTable
-          head={['Token', 'Pigment', 'Kind · carried by']}
+          head={['Token', 'Bone · graphite', 'Kind · carried by']}
           rows={TINTS.map(([t, q]) => [
-            q.base ? `--mu-tint-${t}` : `.mu-tint-${t}`,
-            q.base ?? 'ink',
+            `--mu-tint-${t}`,
+            <span key={t} className="inline-flex items-center gap-6 whitespace-nowrap">
+              <span className="size-10 rounded-full" style={{ background: q.bone }} />
+              <span className="size-10 rounded-full" style={{ background: q.graphite }} />
+              {q.bone} · {q.graphite}
+            </span>,
             `${q.kind} · ${[...q.feelings, ...q.moments.map((m) => `${m} (moment)`)].join(', ')}`,
           ])}
         />
         <Rules
           rules={[
-            { id: 'C4', title: 'Enamel on bone, light on graphite', body: 'On bone the pigment is the glyph’s body and the line stays ink, so contrast never depends on shading a pigment darker, which would turn orange red and amber brown. On graphite the line glows in the pigment itself (each clears 3:1 on the dark surfaces), because a dark enamel would be brown. Words never take a tint.', origin: 'Ours' },
+            { id: 'C4', title: 'The stroke carries the feeling', body: 'A tint colors the glyph’s line; its duotone body follows at the usual opacity. Strokes are mixed at the orange’s chroma, deep enough for 3.3:1 on bone and light enough for 4.5:1 on graphite. No family sits on yellow, because a yellow deep enough to read on bone is brown. Words never take a tint.', origin: 'Ours · the Kamui life set’s stroke tint, with new pigments' },
             { id: 'C5', title: 'Color names the kind, never the strength', body: 'Joy, affection, calm, wonder, low and tension each have one pigment. How strong a feeling is shows in its shape. Moments that carry an unmistakable feeling take it too: a date, a friend, family and a gift are affection; a party is joy.', origin: 'Ours · replaces hue-is-valence, saturation-is-energy (Kamui 02 §3)' },
             { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns every body to ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language reads without color.', origin: 'Ours' },
           ]}

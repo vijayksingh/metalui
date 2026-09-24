@@ -6,12 +6,10 @@ import { root, emit, finish } from './lib/emit.mjs';
 const T = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8'));
 
 // ---------- feelings tints (foundations.tint) ----------
-// One pigment per family, the same in both colorways (a finish never changes with the colorway).
-// The neutral family has no pigment: its body stays ink.
+// Each family has a stroke color per colorway; they join the colorway blocks as --mu-tint-<family>.
 const TINT = T.foundations.tint;
 const TINTS = Object.keys(TINT).filter((k) => !k.startsWith('$') && k !== 'field-shift');
-const PIGMENTS = TINTS.filter((t) => TINT[t].base);
-const tintVars = PIGMENTS.map((t) => `  --mu-tint-${t}: ${TINT[t].base}; /* ${TINT[t].kind} */`).join('\n');
+const CW = Object.fromEntries(Object.entries(T.colorways).map(([cw, c]) => [cw, { ...c, ...Object.fromEntries(TINTS.map((t) => [`tint-${t}`, TINT[t][cw]])) }]));
 
 // ---------- CSS ----------
 const decl = (obj, prefix = '') =>
@@ -86,18 +84,15 @@ function typeDecls(role) {
   if (r.tabular) out.push('font-variant-numeric: tabular-nums');
   return out;
 }
-// Feelings tints: how the pigment sits on a glyph comes from the colorway (tint-line, tint-body).
-// Increase Contrast and [data-mu-untinted] return the glyph to ink.
+// Feelings tints: the glyph takes the family's stroke color; its duotone body follows through
+// currentColor. Increase Contrast and [data-mu-untinted] return the glyph to the surrounding ink.
 const tintSel = TINTS.map((t) => `.mu-tint-${t}`).join(', ');
-const tintClasses = `/* Feelings tints (foundations.tint). Bone: ink line, enamel body. Graphite: the line glows in
-   the pigment (--mu-tint-line 1), the body is its duotone (--mu-tint-body 1). Glyphs only. */
-${TINTS.map((t) => (TINT[t].base
-    ? `.mu-tint-${t} { color: color-mix(in srgb, var(--mu-tint-${t}) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-${t}); --mu-duo-tint: var(--mu-tint-body); }`
-    : `.mu-tint-${t} { --mu-duo-fill: currentColor; --mu-duo-tint: 1; } /* ${TINT[t].kind}: no pigment, the glyph stays ink */`)).join('\n')}
+const tintClasses = `/* Feelings tints (foundations.tint): the stroke carries the feeling. Glyphs only, never words. */
+${TINTS.map((t) => `.mu-tint-${t} { color: var(--mu-tint-${t}); } /* ${TINT[t].kind} */`).join('\n')}
 [data-mu-untinted] :is(${tintSel}),
-[data-mu-untinted]:is(${tintSel}) { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
+[data-mu-untinted]:is(${tintSel}) { color: inherit; }
 @media (prefers-contrast: more) {
-  ${tintSel} { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
+  ${tintSel} { color: inherit; }
 }`;
 
 const typeClasses = Object.keys(F.type)
@@ -114,7 +109,6 @@ ${motion}
 ${swap}
 ${foundationVars}
 ${travel}
-${tintVars}
 }
 
 ${reducedMotion}
@@ -125,18 +119,18 @@ ${typeClasses}
 :root,
 [data-mu-colorway="bone"] {
   color-scheme: light;
-${decl(T.colorways.bone)}
+${decl(CW.bone)}
 }
 
 [data-mu-colorway="graphite"] {
   color-scheme: dark;
-${decl(T.colorways.graphite)}
+${decl(CW.graphite)}
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
     color-scheme: dark;
-${decl(T.colorways.graphite).replace(/^/gm, '  ')}
+${decl(CW.graphite).replace(/^/gm, '  ')}
   }
 }
 
@@ -168,7 +162,7 @@ ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
   --color-success: var(--mu-success);
   --color-warning: var(--mu-warning);
   --color-photon: var(--mu-photon);
-${PIGMENTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
+${TINTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
   --shadow-raise: var(--mu-raise);
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
@@ -293,9 +287,9 @@ function swiftValue(v) {
 const camel = (k) => k.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
 
 // ---------- Swift ----------
-const cwKeys = Object.keys(T.colorways.bone);
-const cwFields = cwKeys.map((k) => `    public let ${camel(k)}: ${swiftValue(T.colorways.bone[k])[0]}`).join('\n');
-const cwInstance = (cw) => `MetalColorwayTokens(\n${cwKeys.map((k) => `        ${camel(k)}: ${swiftValue(T.colorways[cw][k])[1]}`).join(',\n')}\n    )`;
+const cwKeys = Object.keys(CW.bone);
+const cwFields = cwKeys.map((k) => `    public let ${camel(k)}: ${swiftValue(CW.bone[k])[0]}`).join('\n');
+const cwInstance = (cw) => `MetalColorwayTokens(\n${cwKeys.map((k) => `        ${camel(k)}: ${swiftValue(CW[cw][k])[1]}`).join(',\n')}\n    )`;
 
 const swiftShared = Object.entries(T.shared)
   .filter(([, v]) => !/^cubic-bezier|"|,\s*sans-serif|monospace|%$/.test(v))
@@ -373,10 +367,10 @@ ${Object.entries(T.springs).map(([k, s]) => `        case .${k}: return .${s.red
 public enum MetalTint: String, CaseIterable, Sendable {
 ${TINTS.map((t) => `    /// ${TINT[t].kind}: ${[...TINT[t].feelings, ...TINT[t].moments].join(', ')}\n    case ${t}`).join('\n')}
 
-    /// The family's pigment, the same in both colorways; nil for neutral, whose body stays ink.
-    public var pigment: MetalRGBA? {
+    /// The stroke color in a colorway; the glyph's duotone body follows it.
+    public func color(in colorway: MetalColorway) -> MetalRGBA {
         switch self {
-${TINTS.map((t) => `        case .${t}: return ${TINT[t].base ? swiftValue(TINT[t].base)[1] : 'nil'}`).join('\n')}
+${TINTS.map((t) => `        case .${t}: return colorway.tokens.${camel(`tint-${t}`)}`).join('\n')}
         }
     }
 
