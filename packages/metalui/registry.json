@@ -512,11 +512,6 @@
           "path": "packages/metalui/src/components/rule/rule.tsx",
           "type": "registry:ui",
           "target": "components/metalui/rule/rule.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/rule/rule.css",
-          "type": "registry:file",
-          "target": "components/metalui/rule/rule.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."

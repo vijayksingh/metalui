@@ -1,7 +1,0 @@
-@import "../tokens.css";
-
-/* Rule: an engraved groove. Its look is the rule recipe (--mu-r-rule-*). */
-.mu-rule { display: block; flex: none; background: var(--mu-r-rule-self-background); box-shadow: var(--mu-r-rule-self-shadow); }
-.mu-rule[aria-orientation="vertical"] { width: var(--mu-r-rule-self-thickness); align-self: center; margin: var(--mu-zero) var(--mu-r-rule-self-margin); }
-.mu-rule[aria-orientation="horizontal"] { height: var(--mu-r-rule-self-thickness); }
-.mu-rule[data-tone="graphite"] { background: var(--mu-r-rule-self-graphite-background); box-shadow: var(--mu-r-rule-self-graphite-shadow); }

@@ -8,8 +8,7 @@
   "react": {
     "export": "Rule",
     "files": [
-      "rule.tsx",
-      "rule.css"
+      "rule.tsx"
     ]
   },
   "swift": {
