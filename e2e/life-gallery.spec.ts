@@ -52,3 +52,20 @@ test('the composer draws every feeling the four variables name', async ({ page }
   }
   await page.locator('section', { hasText: 'The feelings language' }).first().screenshot({ path: 'docs/captures/web/feelings-composer-bone.png' });
 });
+
+// Feelings grid (import plan §3.4): every feeling in its cell, tinted; in ink under Increase Contrast.
+for (const colorway of ['bone', 'graphite'] as const) {
+  test(`feelings grid in ${colorway}, then under Increase Contrast`, async ({ page }) => {
+    await open(page, '/icons/life', colorway);
+    const grid = page.getByTestId(`feelings-grid-${colorway}`);
+    await expect(grid.locator('[data-feeling]')).toHaveCount(23);
+    const angry = grid.locator('[data-feeling="angry"] svg');
+    const tinted = await angry.evaluate((el) => getComputedStyle(el).color);
+    await page.locator('section', { hasText: 'The feelings grid' }).first().screenshot({ path: `docs/captures/web/feelings-grid-${colorway}.png` });
+    await page.emulateMedia({ contrast: 'more' });
+    const ink = await angry.evaluate((el) => getComputedStyle(el).color);
+    const icon = await grid.evaluate((el) => getComputedStyle(el).color);
+    expect(ink).not.toBe(tinted);
+    expect(ink).toBe(icon);
+  });
+}

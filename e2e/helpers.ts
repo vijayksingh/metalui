@@ -9,6 +9,8 @@ export async function open(page: Page, path: string, colorway: Colorway) {
   await page.goto(path);
   await page.waitForSelector('main h1');
   await page.evaluate(() => document.fonts.ready);
+  // Captures are of the page, not the sticky header scrolled over it.
+  await page.addStyleTag({ content: 'body > #root header { position: static !important; }' });
 }
 
 /** Emulates a media feature Playwright has no option for, through the DevTools protocol. */

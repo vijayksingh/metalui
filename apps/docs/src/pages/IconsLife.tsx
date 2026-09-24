@@ -3,6 +3,7 @@ import { useDialKit } from 'dialkit';
 import { LifeIcon, LIFE_CATALOG, LIFE_CATEGORIES, LIFE_ICON_NAMES, searchLifeIcons, type LifeCategory, type LifeIconName } from '@unlocalhosted/metalui/icons/life';
 import { Bench, Code, CopyButton, PageHeader, Rules, Section, TokenTable } from '../ui/doc';
 import { FeelingsComposer } from '../demos/FeelingsComposer';
+import { FeelingsGrid } from '../demos/FeelingsGrid';
 
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 const CATS = Object.keys(LIFE_CATEGORIES) as LifeCategory[];
@@ -155,6 +156,15 @@ export default function IconsLife() {
       >
         <Bench caption="Composer · the dials are the four variables and the tint">
           <FeelingsComposer />
+        </Bench>
+      </Section>
+
+      <Section
+        title="The feelings grid"
+        lede="The circumplex: pleasantness across, activation up. Every feeling and the two energy states sit at their valence and energy, each in the tint that names its kind. The field behind a glyph may shift toward its tint (the optional field shift, off at 0); the glyph's stroke stays the carrier."
+      >
+        <Bench tone="page" caption="Both colorways · dials: tints, field shift and every family's stroke">
+          <FeelingsGrid />
         </Bench>
       </Section>
 
