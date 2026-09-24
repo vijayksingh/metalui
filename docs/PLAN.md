@@ -18,6 +18,8 @@ MetalUI publishes Kamui's approved "Soft Hardware" direction as an open-source c
 | Kamui-specific objects | Generalized. Keeper (mascot) and the canvas widget skins stay in Kamui. The `keeper` *icon* stays, since it is one of the 31 approved glyphs. |
 | Visual source of truth | The object sheet (`sheet/index.html`, Rev B) is the spec. Tokens are its resolved CSS values, copied verbatim. A component is done only when its computed styles match the sheet. Kamui's app must match the same sheet, which it will by consuming MetalUI (phase 8). |
 | Icon workflow | Every icon goes through `/interface-craft` (storyboard: a storyboard comment and timing per icon, generated into `catalog.generated.ts`) and `/impeccable` (craft floor). No critique cycles. |
+| Styling (component layer) | Tailwind v4, the styling Base UI documents: an `@theme` generated from the Soft Hardware foundations, with Base UI state attributes styled through data-attribute variants. The foundations are approved first (kamui `design/soft-hardware/FOUNDATIONS.md`). |
+| Tests | Integration and e2e only (Playwright feature slices). No unit tests; the current render tests will be replaced. |
 
 ## Source material
 
