@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import './swatch.css';
 
 /* ─────────────────────────────────────────────────────────
  * SWATCH (the reference design's .swatchobj)
@@ -27,21 +26,30 @@ export function swatchInk(hex: string): 'dark' | 'light' {
   return luma > 150 ? 'dark' : 'light';
 }
 
+/* Styled with the theme's utilities (the swatch recipe, in the object's own colour, --mu-self). */
+const SWATCH = 'mu-swatch relative box-border size-swatch-size rounded-swatch-radius recipe-swatch cursor-pointer focus-visible:focus-ring';
+const LABEL = {
+  dark: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-dark',
+  light: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-light',
+};
+const LED = 'mu-swatch-led absolute right-swatch-led-inset top-swatch-led-inset size-swatch-led-size rounded-full recipe-swatch-led';
+
 export const Swatch = React.forwardRef<HTMLDivElement, SwatchProps>(function Swatch({ hex, label, className, style, ...props }, ref) {
+  const ink = swatchInk(hex);
   return (
     <div
       ref={ref}
       role={props.onClick ? 'button' : undefined}
       tabIndex={props.onClick ? 0 : undefined}
       aria-label={props['aria-label'] ?? `Colour ${hex}`}
-      data-ink={swatchInk(hex)}
+      data-ink={ink}
       data-mu-self=""
-      className={className ? `mu-swatch ${className}` : 'mu-swatch'}
+      className={className ? `${SWATCH} ${className}` : SWATCH}
       style={{ '--mu-self': hex, ...style } as React.CSSProperties}
       {...props}
     >
-      <span className="mu-swatch-label">{label ?? hex}</span>
-      <span aria-hidden className="mu-swatch-led" />
+      <span className={LABEL[ink]}>{label ?? hex}</span>
+      <span aria-hidden className={LED} />
     </div>
   );
 });
