@@ -27,7 +27,7 @@ export default function Home() {
           <span className="eng">MetalUI · Soft Hardware · Rev B · React and SwiftUI</span>
           <h1 id="hero-h">UI components that look <span>and feel like real objects.</span></h1>
           <p>
-            Buttons, switches and cards made to look like soft plastic, glass, rubber and metal. They all share one light from the top left.
+            Buttons, switches and cards made to look like soft plastic, glass, rubber and metal. They all share one light from the top left.{' '}
             <b>Buttons move down when you press them and spring back.</b> Every component works in React and in SwiftUI, and both are built from
             the same files. There is also a guide for coding agents.
           </p>

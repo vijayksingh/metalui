@@ -3,6 +3,7 @@ import { ButtonXray } from './ButtonXray';
 import { CheckboxXray } from './CheckboxXray';
 import { KbdXray } from './KbdXray';
 import { SegmentedXray } from './SegmentedXray';
+import { SliderXray } from './SliderXray';
 import { SwatchXray } from './SwatchXray';
 
 /* Every x-ray, by the name the floating table and the overlays use. */
@@ -12,6 +13,7 @@ export const XRAYS = {
   kbd: { title: 'Keycap', View: KbdXray },
   swatch: { title: 'Swatch', View: SwatchXray },
   checkbox: { title: 'Checkbox', View: CheckboxXray },
+  slider: { title: 'Slider', View: SliderXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;

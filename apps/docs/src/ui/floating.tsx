@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Checkbox, Kbd, LinkCard, Mark, Segmented, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Kbd, LinkCard, Mark, Segmented, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
 
@@ -21,6 +21,19 @@ function Line({ children, task }: { children: React.ReactNode; task?: 'open' | '
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, font: '500 15px/22px var(--sans)', letterSpacing: '-.015em' }}>
       {task && <Checkbox defaultChecked={task === 'done'} aria-label="Task" />}
       <span style={task === 'done' ? { color: 'var(--ink3)', textDecoration: 'line-through' } : undefined}>{children}</span>
+    </div>
+  );
+}
+
+function FloatSlider() {
+  const [v, setV] = React.useState(62);
+  return (
+    <div style={{ width: 200, height: 40 }}>
+      <Slider.Root value={v} min={0} max={100} step={1} onValueChange={setV}>
+        <Slider.Track />
+        <Slider.Marks at={[0.2, 0.45, 0.8]} />
+        <Slider.Knob aria-label="Amount" />
+      </Slider.Root>
     </div>
   );
 }
@@ -69,6 +82,7 @@ const ITEMS: Item[] = [
     ),
   },
   { id: 'key', table: ['84%', '72%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
+  { id: 'slider', table: ['54%', '84%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'],
     node: () => (
