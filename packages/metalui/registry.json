@@ -455,6 +455,31 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toolbar.md. SwiftUI: MetalToolbar, MetalToolButton, MetalToolbarSeparator in the MetalUI Swift package."
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tooltip/tooltip.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/tooltip/tooltip.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/tooltip/tooltip.css",
+          "type": "registry:file",
+          "target": "components/metalui/tooltip/tooltip.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
     }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/tooltip/tooltip.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/tooltip/tooltip.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';\nimport './tooltip.css';\n\n/* ─────────────────────────────────────────────────────────\n * TOOLTIP (Kamui 04 §2, §8; the medium demo's #tip and .tb[data-tip]) on Base UI Tooltip\n *   rest      nothing\n *   120 ms    hovered or focused: a graphite label chip fades in on settle, 10 from the trigger\n *   group     inside one TooltipProvider, moving to the next trigger shows the next at once\n *   edge      flips to the other side near the edge (Base UI collision avoidance)\n *   leave     fades out on settle; a press hides it\n * \"SELECT · V\": the name, then the key dimmed. Never interactive: pointer passes through.\n * ───────────────────────────────────────────────────────── */\n\nconst delayMs = () => {\n  if (typeof window === 'undefined') return 120;\n  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-tooltip-delay-ms')) || 120;\n};\nconst gap = () => {\n  if (typeof window === 'undefined') return 10;\n  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-tooltip-gap')) || 10;\n};\n\nexport interface TooltipProps {\n  /** What the control is: \"Select\". The trigger still needs its own accessible name (aria-label). */\n  label: string;\n  /** The key, shown dimmed after the name: \"V\", \"⌘Z\". */\n  shortcut?: string;\n  /** Where it sits. Default top; it flips near the edge. */\n  side?: 'top' | 'bottom' | 'left' | 'right';\n  /** The trigger. It must accept a ref and props (a button, a ToolButton's cap). */\n  children: React.ReactElement;\n  /** Controlled open state (a docs still, a test). */\n  open?: boolean;\n}\n\n/** Names an icon-only control and its key, one hover away. */\nexport function Tooltip({ label, shortcut, side = 'top', children, open }: TooltipProps) {\n  return (\n    <BaseTooltip.Root open={open}>\n      <BaseTooltip.Trigger render={children} />\n      <BaseTooltip.Portal>\n        <BaseTooltip.Positioner side={side} sideOffset={gap()} collisionPadding={8}>\n          <BaseTooltip.Popup className=\"mu-tooltip mu-type-label\">\n            {label}\n            {shortcut && <span className=\"mu-tooltip-key\"> · {shortcut}</span>}\n          </BaseTooltip.Popup>\n        </BaseTooltip.Positioner>\n      </BaseTooltip.Portal>\n    </BaseTooltip.Root>\n  );\n}\n\n/** Groups tooltips: after one shows, the next trigger shows its own at once. Wrap a toolbar or a panel. */\nexport function TooltipProvider({ children }: { children: React.ReactNode }) {\n  return <BaseTooltip.Provider delay={delayMs()}>{children}</BaseTooltip.Provider>;\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/tooltip/tooltip.css",
+      "type": "registry:file",
+      "target": "components/metalui/tooltip/tooltip.css",
+      "content": "@import \"../tokens.css\";\n\n/* Tooltip (Kamui 04 §2, §8; the medium demo's #tip) on Base UI Tooltip. */\n.mu-tooltip {\n  max-width: var(--mu-tooltip-max-width);\n  padding: var(--mu-tooltip-pad-y) var(--mu-tooltip-pad-x);\n  border-radius: var(--mu-radius-pill);\n  white-space: nowrap;\n  pointer-events: none;\n  color: var(--mu-tooltip-ink);\n  background: var(--mu-frost-graphite-fill);\n  box-shadow: var(--mu-frost-graphite-shadow);\n  -webkit-backdrop-filter: var(--mu-backdrop);\n  backdrop-filter: var(--mu-backdrop);\n  /* A fade on settle: it is information, not an arrival. */\n  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);\n}\n.mu-tooltip[data-starting-style], .mu-tooltip[data-ending-style] { opacity: 0; }\n.mu-tooltip[data-instant] { transition: none; }\n.mu-tooltip-key { color: var(--mu-tooltip-key-ink); }\n@media (prefers-reduced-transparency: reduce) {\n  .mu-tooltip { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }\n}\n@media (prefers-contrast: more) {\n  .mu-tooltip { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), var(--mu-frost-graphite-shadow); }\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
+}

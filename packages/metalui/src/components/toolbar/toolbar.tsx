@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { Toggle } from '@base-ui/react/toggle';
-import { Tooltip } from '@base-ui/react/tooltip';
+import { Tooltip, TooltipProvider } from '../tooltip/tooltip';
 import { Kbd } from '../kbd/kbd';
 import './toolbar.css';
 
@@ -27,7 +27,7 @@ export interface ToolbarProps {
 /** A strip of tools: 48 tall, a capsule. */
 export function Toolbar({ variant = 'frost', className, children, ...props }: ToolbarProps) {
   return (
-    <Tooltip.Provider delay={parseFloat(typeof window === 'undefined' ? '120' : getComputedStyle(document.documentElement).getPropertyValue('--mu-toolbar-tip-delay-ms')) || 120}>
+    <TooltipProvider>
       <BaseToolbar.Root
         aria-label={props['aria-label']}
         data-variant={variant}
@@ -35,20 +35,7 @@ export function Toolbar({ variant = 'frost', className, children, ...props }: To
       >
         {children}
       </BaseToolbar.Root>
-    </Tooltip.Provider>
-  );
-}
-
-function Tip({ label, shortcut, children }: { label: string; shortcut?: string; children: React.ReactElement }) {
-  return (
-    <Tooltip.Root>
-      <Tooltip.Trigger render={children} />
-      <Tooltip.Portal>
-        <Tooltip.Positioner side="top" sideOffset={10}>
-          <Tooltip.Popup className="mu-tool-tip mu-type-label">{shortcut ? `${label} · ${shortcut}` : label}</Tooltip.Popup>
-        </Tooltip.Positioner>
-      </Tooltip.Portal>
-    </Tooltip.Root>
+    </TooltipProvider>
   );
 }
 
@@ -84,7 +71,7 @@ export function ToolButton({ label, shortcut, icon, pressed, onPressedChange, on
       {icon}
     </BaseToolbar.Button>
   );
-  return <Tip label={label} shortcut={shortcut}>{button}</Tip>;
+  return <Tooltip label={label} shortcut={shortcut}>{button}</Tooltip>;
 }
 
 /** An engraved rule between groups of tools. */

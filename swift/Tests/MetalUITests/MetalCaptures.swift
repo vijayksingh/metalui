@@ -373,4 +373,22 @@ final class MetalCaptures: XCTestCase {
             capture("command-palette-\(colorway.rawValue)", view)
         }
     }
+    func testTooltip() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 40) {
+                MetalToolbar("Tools", variant: .graphite) {
+                    MetalToolButton("Select", icon: .select, latched: true) {}.metalTooltipChip("Select", shortcut: "V")
+                    MetalToolButton("Undo", icon: .undo) {}
+                }
+                MetalToolbar("Tools", variant: .frost) {
+                    MetalToolButton("Region", icon: .region) {}
+                    MetalToolButton("Undo", icon: .undo) {}.metalTooltipChip("Undo", shortcut: "⌘Z")
+                }
+            }
+            .padding(.horizontal, 28).padding(.top, 60).padding(.bottom, 28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("tooltip-\(colorway.rawValue)", view)
+        }
+    }
 }

@@ -1,5 +1,6 @@
 @import "../tokens.css";
 @import "../kbd/kbd.css";
+@import "../tooltip/tooltip.css";
 
 /* Toolbar and tool button (KAMUI-01/02; Kamui 04 §2) on Base UI Toolbar and Toggle. */
 .mu-toolbar {
@@ -72,16 +73,5 @@
 .mu-toolbar[data-variant="graphite"] .mu-toolbar-sep { background: var(--mu-toolstrip-sep); box-shadow: 1px 0 0 var(--mu-toolstrip-sep-lip); }
 .mu-toolbar[data-variant="graphite"] .mu-toolbar-search { color: var(--mu-toolbar-graphite-hint); background: var(--mu-toolbar-graphite-well); box-shadow: var(--mu-toolbar-graphite-well-sh); }
 
-/* The tool tooltip: a graphite label chip with the key, above, after 120 ms. */
-.mu-tool-tip {
-  padding: 5px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
-  color: var(--mu-cue-chip-ink);
-  background: var(--mu-frost-graphite-fill);
-  box-shadow: var(--mu-frost-graphite-shadow);
-  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
-}
-.mu-tool-tip[data-starting-style], .mu-tool-tip[data-ending-style] { opacity: 0; }
 /* On the frost strip the search well's keycap is the light cap. */
 .mu-toolbar[data-variant="frost"] .mu-toolbar-search .mu-kbd { color: var(--mu-ink2); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); }

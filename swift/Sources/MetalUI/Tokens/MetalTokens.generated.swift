@@ -741,6 +741,17 @@ public enum MetalRegion {
     public static let rowDimple: Double = 14.0
 }
 
+/// The tooltip: every icon-only control names itself and its key, one hover away. A graphite chip in the label role (uppercase mono), the key dimmed after a middle dot: SELECT · V. 10 above its trigger after 120 ms (moving to the next trigger shows the next at once), flipping below near the top edge; a fade on settle. Information, never an action: it takes no pointer and holds nothing to click.
+public enum MetalTooltipMetrics {
+    public static let delayMs: Double = 120.0
+    public static let gap: Double = 10.0
+    public static let padY: Double = 5.0
+    public static let padX: Double = 9.0
+    public static let maxWidth: Double = 280.0
+    public static let ink: MetalRGBA = MetalRGBA(233, 233, 235, 1.0)
+    public static let keyInk: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
+}
+
 /// The command palette (KAMUI-06): a 560 wide frost plate at the card radius, raise, padding 6, 16 % down the window over a page scrim at .25. A 44 tall field well (content role 15, caret green-deep, a 15 search glyph in ink3); sections as label engravings with a count (LENS, LENSES, FRAGMENTS, ACTIONS); rows 36 tall at the row radius in the ui role with a 14 glyph and keycaps or a readout on the right. Matches weigh 650 with a 1.5 green underline. The selected row is a raised cap (row-on-bg, raise-sm) with a 2.5 green-deep bar at the left; hover moves the selection; destructive rows are red. A footer of keycaps above an engraved rule. It rises one nest (y −6, scale .985) on the surface spring and closes on release.
 public enum MetalPaletteMetrics {
     public static let width: Double = 560.0
@@ -782,8 +793,6 @@ public enum MetalToolbarMetrics {
     public static let led: Double = 4.0
     public static let ledInset: Double = 5.0
     public static let sepHeight: Double = 22.0
-    public static let tipDelayMs: Double = 120.0
-    public static let tipGap: Double = 10.0
     public static let searchMin: Double = 196.0
     public static let graphiteCapBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(48, 48, 51, 1.0), 0.0), .init(MetalRGBA(38, 38, 40, 1.0), 1.0)])
     public static let graphiteCapSh: [MetalShadow] = [

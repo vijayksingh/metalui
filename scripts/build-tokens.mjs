@@ -214,6 +214,11 @@ const TB = T.toolbar;
 const TB_KEYS = Object.keys(TB).filter((k) => !k.startsWith('$'));
 const toolbarVars = TB_KEYS.map((k) => `  --mu-toolbar-${k}: ${typeof TB[k] === 'number' ? (k.endsWith('-ms') ? `${TB[k]}ms` : `${TB[k]}px`) : TB[k]};`).join('\n');
 
+// ---------- tooltip (tokens.json tooltip) ----------
+const TP = T.tooltip;
+const TP_KEYS = Object.keys(TP).filter((k) => !k.startsWith("$"));
+const tooltipVars = TP_KEYS.map((k) => `  --mu-tooltip-${k}: ${typeof TP[k] === "number" ? (k.endsWith("-ms") ? `${TP[k]}ms` : `${TP[k]}px`) : TP[k]};`).join("\n");
+
 // ---------- palette (tokens.json palette): the command palette ----------
 const PL = T.palette;
 const PL_KEYS = Object.keys(PL).filter((k) => !k.startsWith("$"));
@@ -254,6 +259,7 @@ ${kbdVars}
 ${statusVars}
 ${toastVars}
 ${toolbarVars}
+${tooltipVars}
 ${paletteVars}
 ${typeVars}
 ${travel}
@@ -638,6 +644,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${TP.$use}
+public enum MetalTooltipMetrics {
+${TP_KEYS.map((k) => { const v = TP[k]; if (typeof v === "number") return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join("\n")}
+}
+
 /// ${PL.$use}
 public enum MetalPaletteMetrics {
 ${PL_KEYS.map((k) => { const v = PL[k]; if (typeof v === "number") return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join("\n")}

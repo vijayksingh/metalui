@@ -40,6 +40,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/toast', label: 'Toast' },
       { to: '/components/toolbar', label: 'Toolbar' },
       { to: '/components/command-palette', label: 'Command palette' },
+      { to: '/components/tooltip', label: 'Tooltip' },
     ],
   },
   {

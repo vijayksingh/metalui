@@ -59,7 +59,7 @@ public struct MetalToolButton: View {
     public var body: some View {
         let button = Button(action: action) { MetalIcon(icon, size: MetalToolbarMetrics.glyph) }
             .buttonStyle(MetalToolButtonStyle(latched: latched))
-            .help(shortcut.map { "\(label) · \(String($0.character).uppercased())" } ?? label)
+            .metalTooltip(label, shortcut: shortcut.map { String($0.character).uppercased() })
             .accessibilityLabel(label)
             .accessibilityAddTraits(latched ? [.isSelected] : [])
         if let shortcut { button.keyboardShortcut(shortcut, modifiers: []) } else { button }
