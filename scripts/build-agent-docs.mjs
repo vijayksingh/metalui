@@ -5,7 +5,7 @@ import { components } from './lib/components.mjs';
 
 const ORIGIN = 'https://metalui.dev';
 const list = components();
-const icons = JSON.parse(readFileSync(root('public/icons.json'), 'utf8'));
+const icons = JSON.parse(readFileSync(root('packages/metalui/public/icons.json'), 'utf8'));
 
 const intro = `# MetalUI: agent integration guide
 
@@ -63,10 +63,10 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 ${icons.icons.map((i) => `| \`${i.component}\` | \`${i.name}\` | ${i.category} | ${i.hover} | ${i.press} |`).join('\n')}
 `;
 
-const guides = list.map((m) => readFileSync(root('components', m.name, `${m.name}.agent.md`), 'utf8').trim()).join('\n\n---\n\n');
-emit('public/AI.md', `${intro}\n${guides}\n${iconsDoc}`);
+const guides = list.map((m) => readFileSync(root('packages/metalui/src/components', m.name, `${m.name}.agent.md`), 'utf8').trim()).join('\n\n---\n\n');
+emit('packages/metalui/public/AI.md', `${intro}\n${guides}\n${iconsDoc}`);
 
-emit('public/llms.txt', `# MetalUI
+emit('packages/metalui/public/llms.txt', `# MetalUI
 
 > Soft Hardware components for React (on Base UI) and SwiftUI, with animated duotone icons. Every component ships React, SwiftUI and an agent guide.
 
@@ -79,7 +79,7 @@ emit('public/llms.txt', `# MetalUI
 ${list.map((m) => `- [${m.title}](${ORIGIN}/r/${m.name}.md): ${m.description}`).join('\n')}
 `);
 
-emit('public/components.json', JSON.stringify({
+emit('packages/metalui/public/components.json', JSON.stringify({
   $description: 'MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.',
   components: list.map((m) => ({
     name: m.name,

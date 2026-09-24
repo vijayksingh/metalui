@@ -1,0 +1,38 @@
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import './styles.css';
+import { ColorwayProvider } from './app/colorway';
+import { Shell } from './app/Shell';
+import { NotFound } from './pages/NotFound';
+
+const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
+
+const router = createBrowserRouter([
+  {
+    Component: Shell,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, lazy: lazy(() => import('./pages/Home')) },
+      { path: 'foundations', lazy: lazy(() => import('./pages/foundations/Principles')) },
+      { path: 'foundations/color', lazy: lazy(() => import('./pages/foundations/Color')) },
+      { path: 'foundations/typography', lazy: lazy(() => import('./pages/foundations/Typography')) },
+      { path: 'foundations/radius', lazy: lazy(() => import('./pages/foundations/Radius')) },
+      { path: 'foundations/spacing', lazy: lazy(() => import('./pages/foundations/Spacing')) },
+      { path: 'foundations/sizing', lazy: lazy(() => import('./pages/foundations/Sizing')) },
+      { path: 'foundations/elevation', lazy: lazy(() => import('./pages/foundations/Elevation')) },
+      { path: 'foundations/motion', lazy: lazy(() => import('./pages/foundations/Motion')) },
+      { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },
+      { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
+      { path: '*', Component: NotFound },
+    ],
+  },
+]);
+
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <ColorwayProvider>
+      <RouterProvider router={router} />
+    </ColorwayProvider>
+  </React.StrictMode>,
+);

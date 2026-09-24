@@ -10,9 +10,9 @@ MetalUI looks like small, well-made physical objects: bone and graphite soft-tou
 
 Icons come too: Soft Hardware monoline + duotone glyphs, each with its own hover pose and press animation.
 
-[metalui.dev](https://metalui.dev) · [Agent guide](public/AI.md) · [Plan](docs/PLAN.md) · MIT
+[metalui.dev](https://metalui.dev) · [Agent guide](packages/metalui/public/AI.md) · [Plan](docs/PLAN.md) · MIT
 
-> Status: early. The token pipeline, Button, and all 31 icons are in. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
+> Status: alpha. The foundations are proposed, and Button and all 31 icons are built. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
 
 ## React
 
@@ -56,19 +56,20 @@ macOS 14+ and iOS 17+.
 
 ## For agents
 
-- [`public/AI.md`](public/AI.md): the full integration guide
-- [`public/components.json`](public/components.json) and [`public/icons.json`](public/icons.json): exact export names
-- `components/<name>/<name>.agent.md`: one guide per component, also served at `metalui.dev/r/<name>.md`
+- [`AI.md`](packages/metalui/public/AI.md): the full integration guide
+- [`components.json`](packages/metalui/public/components.json) and [`icons.json`](packages/metalui/public/icons.json): exact export names
+- `packages/metalui/src/components/<name>/<name>.agent.md`: one guide per component, also served at `metalui.dev/r/<name>.md`
 
 ## Develop
 
 ```sh
 npm ci
-npm run dev        # http://127.0.0.1:4193
+npm run dev        # the docs site on http://127.0.0.1:4193
 npm run generate   # tokens, icons, registry, agent docs
-npm test
 npm run build
-swift test
+swift build
 ```
 
-Tokens live in `tokens/tokens.json`, lifted verbatim from the approved Soft Hardware object sheet. Icons live in `icons/src/icons.mjs`. Everything else is generated from those two files. See [AGENTS.md](AGENTS.md).
+The docs site (`apps/docs`) is the design system reference: foundations (color, type, radius, spacing, sizing, elevation, motion), components and icons. Every page has a DialKit panel for tuning its values live.
+
+Tokens live in `tokens/tokens.json`, lifted verbatim from the approved Soft Hardware object sheet. Icons live in `packages/metalui/icons/src/icons.mjs`. Everything else is generated from those two files. See [AGENTS.md](AGENTS.md).

@@ -1,0 +1,80 @@
+{
+  "name": "@unlocalhosted/metalui",
+  "version": "0.0.0",
+  "description": "Soft Hardware components for React (on Base UI) and SwiftUI, with animated duotone icons and agent guides",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "src/components/tokens.css",
+    "src/components/theme.css",
+    "public/AI.md",
+    "public/components.json",
+    "public/icons.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./icons": {
+      "types": "./dist/icons.d.ts",
+      "import": "./dist/icons.js"
+    },
+    "./styles.css": "./dist/index.css",
+    "./icons.css": "./dist/icons.css",
+    "./tokens.css": "./src/components/tokens.css",
+    "./theme.css": "./src/components/theme.css",
+    "./components.json": "./public/components.json",
+    "./icons.json": "./public/icons.json"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayksingh/metalui.git"
+  },
+  "homepage": "https://metalui.dev",
+  "bugs": {
+    "url": "https://github.com/vijayksingh/metalui/issues"
+  },
+  "keywords": [
+    "react",
+    "swiftui",
+    "base-ui",
+    "components",
+    "design-system",
+    "icons",
+    "skeuomorphic"
+  ]
+}

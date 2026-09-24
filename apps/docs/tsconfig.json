@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@unlocalhosted/metalui": ["../../packages/metalui/src/index.ts"],
+      "@unlocalhosted/metalui/icons": ["../../packages/metalui/src/icons.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

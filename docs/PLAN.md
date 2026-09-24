@@ -33,24 +33,14 @@ This comes from the Kamui repository, `design/soft-hardware/`, which the owner a
 
 ## Repository layout
 
-```
-Package.swift              SwiftPM at the root, so apps can install from the git URL
-tokens/tokens.json         the single source for colorways, materials, signals, radii, type, and springs
-components/tokens.css      generated CSS custom properties (--mu-*)
-components/<name>/         one folder per component:
-  <name>.tsx               React on Base UI; self-contained and copyable
-  <name>.css               plain CSS keyed off Base UI data attributes; imports ../tokens.css
-  <name>.demo.tsx          live demo on the site
-  <name>.agent.md          agent guide
-  meta.json                manifest: Base UI part, Swift symbol, sheet reference, status
-swift/Sources/MetalUI/     SwiftUI: Foundation (recipe renderer, colorway), Tokens (generated), Components
-src/index.ts               the npm entry, re-exporting components/*
-site/                      metalui.dev (Vite + React)
-scripts/                   generators for tokens, the registry, and agent docs
-public/                    generated registry (r/*.json), AI.md, llms.txt, components.json
-```
+See `AGENTS.md` for the full map. In short, this is an npm workspace:
+- `apps/docs`: metalui.dev
+- `packages/metalui`: the published package
+- `tokens/tokens.json`: the single token source
+- `swift/` with a root `Package.swift`: the SwiftUI package
+- `scripts/`: generators
 
-Registry targets mirror the repository layout (`components/metalui/<name>/…`, `components/metalui/tokens.css`), so the relative CSS imports keep working in a consumer's project.
+Registry targets mirror the package layout (`components/metalui/<name>/…`, `components/metalui/tokens.css`), so the relative CSS imports keep working in a consumer's project.
 
 ## Styling contract
 

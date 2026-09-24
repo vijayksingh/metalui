@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "metalui",
+  "homepage": "https://metalui.dev",
+  "items": [
+    {
+      "name": "tokens",
+      "type": "registry:style",
+      "title": "MetalUI tokens",
+      "description": "Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties. Every component imports it.",
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tokens.css",
+          "type": "registry:file",
+          "target": "components/metalui/tokens.css"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/button/button.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/button/button.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/button/button.css",
+          "type": "registry:file",
+          "target": "components/metalui/button/button.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
+    }
+  ]
+}
