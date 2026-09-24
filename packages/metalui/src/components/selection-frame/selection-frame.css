@@ -1,7 +1,7 @@
 @import "../tokens.css";
 @import "../size-readout/size-readout.css";
 
-/* KAMUI-14 · Selection frame. Every value is a --mu-presence-* token (tokens.json presence).
+/* Selection frame (the reference design's .selring, .nub and .readout). Every value is a --mu-presence-* token (tokens.json presence).
    The frame is an overlay laid over its host: the host is position: relative, the frame fills it,
    and every part is placed from the host's box, so the ring tracks the object in the same frame. */
 .mu-selection-frame {
@@ -16,11 +16,11 @@
 .mu-selection-frame > .mu-sf-ring {
   position: absolute;
   inset: calc(var(--o) * -1);
-  border-radius: calc(var(--mu-sf-radius, 0px) + var(--o));
+  border-radius: calc(var(--mu-sf-radius, var(--mu-zero)) + var(--o));
   opacity: 0;
   box-shadow:
-    0 0 0 var(--mu-presence-ring-width) var(--mu-presence-ring),
-    0 0 0 calc(var(--mu-presence-ring-width) + var(--mu-presence-collar-width)) var(--mu-presence-collar);
+    var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-ring-width) var(--mu-presence-ring),
+    var(--mu-zero) var(--mu-zero) var(--mu-zero) calc(var(--mu-presence-ring-width) + var(--mu-presence-collar-width)) var(--mu-presence-collar);
 }
 .mu-selection-frame[data-state="selected"] > .mu-sf-ring { opacity: 1; }
 /* Entrance: 1.02 → 1 on the part spring, once; resizing never replays it. */
@@ -32,7 +32,7 @@
 }
 /* Lite: a quiet ring for a multi-selection member or a selection made by finishing. */
 .mu-selection-frame[data-variant="lite"] > .mu-sf-ring {
-  box-shadow: 0 0 0 var(--mu-presence-lite-width) var(--mu-presence-lite);
+  box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-lite-width) var(--mu-presence-lite);
 }
 
 /* ---- handles: on the ring line; round caps at corners, capsules at edge midpoints ---- */
@@ -40,23 +40,21 @@
   position: absolute;
   width: var(--mu-presence-handle);
   height: var(--mu-presence-handle);
-  margin: calc(var(--mu-presence-handle) / -2) 0 0 calc(var(--mu-presence-handle) / -2);
-  border-radius: 999px;
+  translate: -50% -50%;
+  border-radius: var(--mu-radius-pill);
   background: var(--mu-presence-handle-bg);
   box-shadow: var(--mu-presence-handle-sh);
   pointer-events: auto;
   touch-action: none;
 }
-.mu-sf-handle::after { content: ""; position: absolute; inset: calc(var(--mu-presence-handle-hit) * -1); border-radius: 999px; }
+.mu-sf-handle::after { content: ""; position: absolute; inset: calc(var(--mu-presence-handle-hit) * -1); border-radius: var(--mu-radius-pill); }
 .mu-sf-handle[data-handle="e"], .mu-sf-handle[data-handle="w"] {
   width: var(--mu-presence-capsule-thickness);
   height: var(--mu-presence-capsule-length);
-  margin: calc(var(--mu-presence-capsule-length) / -2) 0 0 calc(var(--mu-presence-capsule-thickness) / -2);
 }
 .mu-sf-handle[data-handle="n"], .mu-sf-handle[data-handle="s"] {
   width: var(--mu-presence-capsule-length);
   height: var(--mu-presence-capsule-thickness);
-  margin: calc(var(--mu-presence-capsule-thickness) / -2) 0 0 calc(var(--mu-presence-capsule-length) / -2);
 }
 .mu-sf-handle[data-grip] { background: var(--mu-presence-grip-bg); box-shadow: var(--mu-presence-grip-sh); cursor: grab; }
 .mu-sf-handle[data-handle="nw"], .mu-sf-handle[data-handle="se"] { cursor: nwse-resize; }
@@ -73,8 +71,8 @@
   position: absolute;
   width: var(--mu-presence-hover-dot);
   height: var(--mu-presence-hover-dot);
-  margin: calc(var(--mu-presence-hover-dot) / -2) 0 0 calc(var(--mu-presence-hover-dot) / -2);
-  border-radius: 50%;
+  translate: -50% -50%;
+  border-radius: var(--mu-round);
   background: var(--mu-presence-dot);
   opacity: 0;
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
@@ -107,5 +105,5 @@
 .mu-selection-frame[data-mode="moving"] .mu-readout { opacity: 1; }
 
 @media (prefers-contrast: more) {
-  .mu-selection-frame[data-variant="lite"] > .mu-sf-ring { box-shadow: 0 0 0 var(--mu-presence-ring-width) var(--mu-presence-ring); }
+  .mu-selection-frame[data-variant="lite"] > .mu-sf-ring { box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-ring-width) var(--mu-presence-ring); }
 }
