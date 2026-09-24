@@ -739,15 +739,132 @@ public enum MetalRecipes {
             "kbd.ink": .text("#A6A6A9"),
         ]
     )
+
+    /// A dark glass object for a link or a block of code: a bezel, a screen with a glare and a shaded rim, a tag with an LED; a link's screen glows in a hue taken from its host. (reference style.css .glass, .glass .screen, .glass .screen::after, .glass-tag, .linkobj, .codeobj)
+    public static let glassFace = MetalObjectRecipe(
+        name: "glass-face",
+        layers: [
+            .init(part: "self", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(42.0, 42.0, 45.0, 1.0)), 0.0), .init(.color(MetalRGBA(29.0, 29.0, 31.0, 1.0)), 0.4), .init(.color(MetalRGBA(22.0, 22.0, 24.0, 1.0)), 1.0)])), // mu-recipe:glass-face:0 linear-gradient(#2A2A2D, #1D1D1F 40%, #161618)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.13)))), // mu-recipe:glass-face:1 inset 0 1px 0 rgba(255,255,255,.13)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.04)))), // mu-recipe:glass-face:2 inset 0 0 6px 2px rgba(255,255,255,.04)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:glass-face:3 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:glass-face:4 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 16.0, blur: 30.0, spread: -12.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.35)))), // mu-recipe:glass-face:5 0 16px 30px -12px rgba(20,20,20,.35)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 36.0, blur: 70.0, spread: -30.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.3)))), // mu-recipe:glass-face:6 0 36px 70px -30px rgba(20,20,20,.3)
+            .init(part: "screen", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(11.0, 11.0, 12.0, 1.0)))), // mu-recipe:glass-face:7 #0B0B0C
+            .init(part: "glare", state: nil, colorway: nil, fill: .linear(angle: 115.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.12)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.035)), 0.28), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.0)), 0.285)])), // mu-recipe:glass-face:8 linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%)
+            .init(part: "glare", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.0)), 0.55), .init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.25)), 1.0)])), // mu-recipe:glass-face:9 linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25))
+            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:glass-face:10 inset 0 1px 0 rgba(255,255,255,.14)
+            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:glass-face:11 inset 0 0 0 1px rgba(0,0,0,.5)
+            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:glass-face:12 inset 0 8px 18px -8px rgba(0,0,0,.45)
+            .init(part: "link-screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:glass-face:13 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
+            .init(part: "code-screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.2, y: 0.0), stops: [.init(.color(MetalRGBA(38.0, 40.0, 44.0, 1.0)), 0.0), .init(.color(MetalRGBA(21.0, 22.0, 24.0, 1.0)), 0.6), .init(.color(MetalRGBA(15.0, 16.0, 17.0, 1.0)), 1.0)])), // mu-recipe:glass-face:14 radial-gradient(120% 80% at 20% 0%, #26282C 0%, #151618 60%, #0F1011 100%)
+            .init(part: "tag", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(20.0, 20.0, 22.0, 0.5)))), // mu-recipe:glass-face:15 rgba(20,20,22,.5)
+            .init(part: "tag-led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:glass-face:16 radial-gradient(circle at 40% 35%, #E6EEFF 18%, #9DB9FF 45%, #4B78F0 100%)
+            .init(part: "tag-led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:glass-face:17 radial-gradient(circle at 40% 35%, #F6E4FF 18%, #D4A6F0 45%, #9B5CC8 100%)
+            .init(part: "open", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:glass-face:18 rgba(255,255,255,.08)
+            .init(part: "open", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:glass-face:19 rgba(255,255,255,.16)
+        ],
+        props: [
+            "self.radius": .number(22.0),
+            "self.pad": .number(6.0),
+            "screen.radius": .number(16.0),
+            "link.width": .number(250.0),
+            "link.height": .number(92.0),
+            "link.pad-x": .number(14.0),
+            "link.pad-y": .number(12.0),
+            "tag.height": .number(18.0),
+            "tag.pad-x": .number(7.0),
+            "tag.radius": .number(7.0),
+            "tag.gap": .number(5.0),
+            "tag.inset": .number(10.0),
+            "tag.led": .number(5.0),
+            "tag.font": .text("500 9px/1 mono"),
+            "tag.tracking": .text("0.1em"),
+            "tag.ink": .text("rgba(255,255,255,.8)"),
+            "open.ink": .text("rgba(255,255,255,.75)"),
+            "domain.font": .text("620 15px/1.2 sans"),
+            "domain.tracking": .text("-0.015em"),
+            "domain.ink": .text("#EDEDEF"),
+            "path.font": .text("400 9.5px/1.4 mono"),
+            "path.tracking": .text("0.06em"),
+            "path.ink": .text("rgba(255,255,255,.5)"),
+            "code.min-width": .number(260.0),
+            "code.max-width": .number(460.0),
+            "code.pad-top": .number(30.0),
+            "code.pad-x": .number(14.0),
+            "code.pad-bottom": .number(12.0),
+            "code.font": .text("400 11px/1.62 mono"),
+            "code.tracking": .text("-0.01em"),
+            "code.line": .number(17.82),
+            "code.ink": .text("#D7D8DB"),
+            "code.number-ink": .text("#48494E"),
+            "code.number-width": .number(18.0),
+            "code.max-lines": .number(18.0),
+            "code.keyword": .text("#E7A6D9"),
+            "code.type": .text("#E7C98A"),
+            "code.string": .text("#9FE3BF"),
+            "code.comment": .text("#6D6E73"),
+            "code.number": .text("#9EC2FF"),
+            "link-screen.reach": .number(1.2),
+            "code-screen.reach": .number(1.2),
+        ]
+    )
+
+    /// A block's identity on a dwell, never on a pass: a frosted pill beside the first line (below a material) with the kind, time, edits, derived tags and the recognizer's status with an LED. (reference style.css .meta, .meta .eng b, .meta .led, .meta .derived-tags span)
+    public static let hoverEngraving = MetalObjectRecipe(
+        name: "hover-engraving",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(252.0, 251.0, 249.0, 0.92)))), // mu-recipe:hover-engraving:0 rgba(252,251,249,.92)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(34.0, 34.0, 37.0, 0.92)))), // mu-recipe:hover-engraving:1 rgba(34,34,37,.92)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:hover-engraving:2 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:hover-engraving:3 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:hover-engraving:4 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:hover-engraving:5 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:hover-engraving:6 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:hover-engraving:7 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:hover-engraving:8 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:hover-engraving:9 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:hover-engraving:10 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:hover-engraving:11 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:hover-engraving:12 inset 0 0 0 .5px rgba(40,38,32,.2)
+            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.2)))), // mu-recipe:hover-engraving:13 inset 0 0 0 .5px rgba(255,255,255,.2)
+            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.25)))), // mu-recipe:hover-engraving:14 0 0 0 .5px rgba(0,0,0,.25)
+        ],
+        props: [
+            "self.height": .number(22.0),
+            "self.pad": .number(10.0),
+            "self.gap": .number(8.0),
+            "self.blur": .text("blur(12px)"),
+            "self.dwell": .text("420ms"),
+            "self.rise": .number(2.0),
+            "self.slide": .number(3.0),
+            "self.beside-gap": .number(4.0),
+            "self.beside-top": .number(9.0),
+            "self.below-gap": .number(8.0),
+            "self.fade": .text("160ms"),
+            "self.move": .text("200ms"),
+            "emphasis.weight": .text("500"),
+            "emphasis.color": .perColorway(bone: "rgba(40,38,32,.62)", graphite: "rgba(255,255,255,.55)"),
+            "tag.font": .text("400 9px/15px mono"),
+            "tag.tracking": .text("0.06em"),
+            "tag.height": .number(15.0),
+            "tag.pad": .number(6.0),
+            "tag.gap": .number(4.0),
+            "led.size": .number(5.0),
+            "led.gap": .number(4.0),
+            "led.lift": .number(1.0),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.
 public enum MetalFrost: String, CaseIterable, Sendable {
-    /// A frosted toolbar strip in the colorway (KAMUI-01/02).
+    /// A frosted toolbar strip in the colorway (object sheet).
     case strip
-    /// Floating plates: command palette, menus, popovers, the lens bar and panel (KAMUI-06).
+    /// Floating plates: command palette, menus, popovers, the lens bar and panel (object sheet).
     case plate
-    /// Dense dark chrome that stays graphite in both colorways: the selection tool strip, the medium toolbar, tooltips, the past banner.
+    /// Dense dark chrome that stays graphite in both colorways: the selection tool strip, the graphite toolbar, tooltips, the past banner.
     case graphite
 
     /// The blur behind every frosted recipe (CSS `--mu-backdrop`).
@@ -794,7 +911,7 @@ public enum MetalFrost: String, CaseIterable, Sendable {
     }
 }
 
-/// KAMUI-14, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and Kamui's KamuiSoftHardware.Presence.
+/// object sheet, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and the native reference.
 public enum MetalPresence {
     public static let ringWidth: Double = 1.25
     public static let ring: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
@@ -850,7 +967,7 @@ public enum MetalPresence {
     public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
 }
 
-/// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are Kamui's reference design (prototypes/medium style.css); colorway-dependent ones live in the colorways as cue-*.
+/// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are the reference design (the reference design style.css); colorway-dependent ones live in the colorways as cue-*.
 public enum MetalCue {
     public static let gutter: Double = 25.0
     public static let dimple: Double = 16.0
@@ -954,7 +1071,7 @@ public enum MetalEngraving {
     public static let led: Double = 5.0
 }
 
-/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, JEV · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the reference design's #tip.
+/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, RECOGNIZER · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the reference design's #tip.
 public enum MetalProvenance {
     public static let delayMs: Double = 380.0
     public static let offset: Double = 8.0
@@ -990,7 +1107,7 @@ public enum MetalRegion {
     public static let rowDimple: Double = 14.0
 }
 
-/// The press-in pill button (KAMUI-15): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the medium pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.
+/// The press-in pill button (object sheet): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the canvas pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.
 public enum MetalButtonMetrics {
     public static let height: Double = 32.0
     public static let pad: Double = 15.0
@@ -1009,7 +1126,7 @@ public enum MetalButtonMetrics {
     public static let disabled: Double = 0.4
 }
 
-/// Menus and the correction popover (04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY JEV 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
+/// Menus and the correction popover (04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY RECOGNIZER 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
 public enum MetalMenuMetrics {
     public static let minWidth: Double = 200.0
     public static let pad: Double = 6.0
@@ -1036,7 +1153,7 @@ public enum MetalTooltipMetrics {
     public static let keyInk: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
 }
 
-/// The command palette (KAMUI-06): a 560 wide frost plate at the card radius, raise, padding 6, 16 % down the window over a page scrim at .25. A 44 tall field well (content role 15, caret green-deep, a 15 search glyph in ink3); sections as label engravings with a count (LENS, LENSES, FRAGMENTS, ACTIONS); rows 36 tall at the row radius in the ui role with a 14 glyph and keycaps or a readout on the right. Matches weigh 650 with a 1.5 green underline. The selected row is a raised cap (row-on-bg, raise-sm) with a 2.5 green-deep bar at the left; hover moves the selection; destructive rows are red. A footer of keycaps above an engraved rule. It rises one nest (y −6, scale .985) on the surface spring and closes on release.
+/// The command palette (object sheet): a 560 wide frost plate at the card radius, raise, padding 6, 16 % down the window over a page scrim at .25. A 44 tall field well (content role 15, caret green-deep, a 15 search glyph in ink3); sections as label engravings with a count (LENS, LENSES, BLOCKS, ACTIONS); rows 36 tall at the row radius in the ui role with a 14 glyph and keycaps or a readout on the right. Matches weigh 650 with a 1.5 green underline. The selected row is a raised cap (row-on-bg, raise-sm) with a 2.5 green-deep bar at the left; hover moves the selection; destructive rows are red. A footer of keycaps above an engraved rule. It rises one nest (y −6, scale .985) on the surface spring and closes on release.
 public enum MetalPaletteMetrics {
     public static let width: Double = 560.0
     public static let pad: Double = 6.0
@@ -1102,7 +1219,7 @@ public enum MetalToolbarMetrics {
     public static let graphiteHint: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
 }
 
-/// The toast (KAMUI-20): the result of a person's own action, with Undo, never recognition. A 44 tall smoked pill at the bottom centre, 92 above the dock, in the ui role: the result, a dimmed detail after a middle dot, and an Undo cap with its key. One at a time. It arrives one nest from below from .97 on settle and leaves on release. Undoable results stay 5 s, plain ones 2.6 s; errors stay until resolved; success always carries its check.
+/// The toast (object sheet): the result of a person's own action, with Undo, never recognition. A 44 tall smoked pill at the bottom centre, 92 above the dock, in the ui role: the result, a dimmed detail after a middle dot, and an Undo cap with its key. One at a time. It arrives one nest from below from .97 on settle and leaves on release. Undoable results stay 5 s, plain ones 2.6 s; errors stay until resolved; success always carries its check.
 public enum MetalToastMetrics {
     public static let height: Double = 44.0
     public static let padStart: Double = 16.0
@@ -1135,7 +1252,7 @@ public enum MetalToastMetrics {
     public static let plainMs: Double = 2600.0
 }
 
-/// LEDs and the status badge (KAMUI-16). An LED is 4 or 5 pt, a radial recipe lit from the top left, a .5 dark ring, and (green only) a bloom of at most 2 pt at 55 %: green live, amber waiting or urgent, red failed, blue link kind, off idle. The status badge is a 24 tall cap-material pill with an LED and the state in the label role; it is not pressable, and its hint (the command that fixes it) shows as a tooltip.
+/// LEDs and the status badge (object sheet). An LED is 4 or 5 pt, a radial recipe lit from the top left, a .5 dark ring, and (green only) a bloom of at most 2 pt at 55 %: green live, amber waiting or urgent, red failed, blue link kind, off idle. The status badge is a 24 tall cap-material pill with an LED and the state in the label role; it is not pressable, and its hint (the command that fixes it) shows as a tooltip.
 public enum MetalStatusMetrics {
     public static let led: Double = 5.0
     public static let ledSmall: Double = 4.0
@@ -1245,7 +1362,7 @@ public enum MetalLensBarMetrics {
     public static let enterScale: Double = 0.98
 }
 
-/// The segmented control (KAMUI-04): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
+/// The segmented control (object sheet): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
 public enum MetalSegmentedMetrics {
     public static let trackPad: Double = 3.0
     public static let compact: Double = 24.0

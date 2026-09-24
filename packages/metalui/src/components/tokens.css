@@ -707,9 +707,9 @@
 }
 
 /* Frost (tokens.json frost): E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. */
-.mu-frost-strip { background: var(--mu-frost); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* A frosted toolbar strip in the colorway (KAMUI-01/02). */
-.mu-frost-plate { background: var(--mu-frost-strong); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Floating plates: command palette, menus, popovers, the lens bar and panel (KAMUI-06). */
-.mu-frost-graphite { background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Dense dark chrome that stays graphite in both colorways: the selection tool strip, the medium toolbar, tooltips, the past banner. */
+.mu-frost-strip { background: var(--mu-frost); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* A frosted toolbar strip in the colorway (object sheet). */
+.mu-frost-plate { background: var(--mu-frost-strong); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Floating plates: command palette, menus, popovers, the lens bar and panel (object sheet). */
+.mu-frost-graphite { background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Dense dark chrome that stays graphite in both colorways: the selection tool strip, the graphite toolbar, tooltips, the past banner. */
 @media (prefers-reduced-transparency: reduce) {
   .mu-frost-strip { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .mu-frost-plate { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
@@ -892,6 +892,119 @@
   --mu-r-toolbar-search-font: 500 13px/1 var(--mu-sans);
   --mu-r-toolbar-search-glyph: 14px;
   --mu-r-toolbar-kbd-ink: #A6A6A9;
+  /* glass-face: reference style.css .glass, .glass .screen, .glass .screen::after, .glass-tag, .linkobj, .codeobj */
+  --mu-r-glass-face-self-background:
+    /* mu-recipe:glass-face:0 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
+  --mu-r-glass-face-self-shadow:
+    /* mu-recipe:glass-face:1 */ inset 0 1px 0 rgba(255,255,255,.13),
+    /* mu-recipe:glass-face:2 */ inset 0 0 6px 2px rgba(255,255,255,.04),
+    /* mu-recipe:glass-face:3 */ 0 0 0 .5px rgba(0,0,0,.6),
+    /* mu-recipe:glass-face:4 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:glass-face:5 */ 0 16px 30px -12px rgba(20,20,20,.35),
+    /* mu-recipe:glass-face:6 */ 0 36px 70px -30px rgba(20,20,20,.3);
+  --mu-r-glass-face-screen-background:
+    /* mu-recipe:glass-face:7 */ #0B0B0C;
+  --mu-r-glass-face-glare-background:
+    /* mu-recipe:glass-face:8 */ linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%),
+    /* mu-recipe:glass-face:9 */ linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25));
+  --mu-r-glass-face-glare-shadow:
+    /* mu-recipe:glass-face:10 */ inset 0 1px 0 rgba(255,255,255,.14),
+    /* mu-recipe:glass-face:11 */ inset 0 0 0 1px rgba(0,0,0,.5),
+    /* mu-recipe:glass-face:12 */ inset 0 8px 18px -8px rgba(0,0,0,.45);
+  --mu-r-glass-face-link-screen-background:
+    /* mu-recipe:glass-face:13 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-glass-face-code-screen-background:
+    /* mu-recipe:glass-face:14 */ radial-gradient(120% 80% at 20% 0%, #26282C 0%, #151618 60%, #0F1011 100%);
+  --mu-r-glass-face-tag-background:
+    /* mu-recipe:glass-face:15 */ rgba(20,20,22,.5);
+  --mu-r-glass-face-tag-led-link-background:
+    /* mu-recipe:glass-face:16 */ radial-gradient(circle at 40% 35%, #E6EEFF 18%, #9DB9FF 45%, #4B78F0 100%);
+  --mu-r-glass-face-tag-led-code-background:
+    /* mu-recipe:glass-face:17 */ radial-gradient(circle at 40% 35%, #F6E4FF 18%, #D4A6F0 45%, #9B5CC8 100%);
+  --mu-r-glass-face-open-background:
+    /* mu-recipe:glass-face:18 */ rgba(255,255,255,.08);
+  --mu-r-glass-face-open-hover-background:
+    /* mu-recipe:glass-face:19 */ rgba(255,255,255,.16);
+  --mu-r-glass-face-self-radius: 22px;
+  --mu-r-glass-face-self-pad: 6px;
+  --mu-r-glass-face-screen-radius: 16px;
+  --mu-r-glass-face-link-width: 250px;
+  --mu-r-glass-face-link-height: 92px;
+  --mu-r-glass-face-link-pad-x: 14px;
+  --mu-r-glass-face-link-pad-y: 12px;
+  --mu-r-glass-face-tag-height: 18px;
+  --mu-r-glass-face-tag-pad-x: 7px;
+  --mu-r-glass-face-tag-radius: 7px;
+  --mu-r-glass-face-tag-gap: 5px;
+  --mu-r-glass-face-tag-inset: 10px;
+  --mu-r-glass-face-tag-led: 5px;
+  --mu-r-glass-face-tag-font: 500 9px/1 var(--mu-mono);
+  --mu-r-glass-face-tag-tracking: 0.1em;
+  --mu-r-glass-face-tag-ink: rgba(255,255,255,.8);
+  --mu-r-glass-face-open-ink: rgba(255,255,255,.75);
+  --mu-r-glass-face-domain-font: 620 15px/1.2 var(--mu-sans);
+  --mu-r-glass-face-domain-tracking: -0.015em;
+  --mu-r-glass-face-domain-ink: #EDEDEF;
+  --mu-r-glass-face-path-font: 400 9.5px/1.4 var(--mu-mono);
+  --mu-r-glass-face-path-tracking: 0.06em;
+  --mu-r-glass-face-path-ink: rgba(255,255,255,.5);
+  --mu-r-glass-face-code-min-width: 260px;
+  --mu-r-glass-face-code-max-width: 460px;
+  --mu-r-glass-face-code-pad-top: 30px;
+  --mu-r-glass-face-code-pad-x: 14px;
+  --mu-r-glass-face-code-pad-bottom: 12px;
+  --mu-r-glass-face-code-font: 400 11px/1.62 var(--mu-mono);
+  --mu-r-glass-face-code-tracking: -0.01em;
+  --mu-r-glass-face-code-line: 17.82px;
+  --mu-r-glass-face-code-ink: #D7D8DB;
+  --mu-r-glass-face-code-number-ink: #48494E;
+  --mu-r-glass-face-code-number-width: 18px;
+  --mu-r-glass-face-code-max-lines: 18px;
+  --mu-r-glass-face-code-keyword: #E7A6D9;
+  --mu-r-glass-face-code-type: #E7C98A;
+  --mu-r-glass-face-code-string: #9FE3BF;
+  --mu-r-glass-face-code-comment: #6D6E73;
+  --mu-r-glass-face-code-number: #9EC2FF;
+  --mu-r-glass-face-link-screen-reach: 1.2px;
+  --mu-r-glass-face-code-screen-reach: 1.2px;
+  /* hover-engraving: reference style.css .meta, .meta .eng b, .meta .led, .meta .derived-tags span */
+  --mu-r-hover-engraving-led-shadow:
+    /* mu-recipe:hover-engraving:14 */ 0 0 0 .5px rgba(0,0,0,.25);
+  --mu-r-hover-engraving-self-height: 22px;
+  --mu-r-hover-engraving-self-pad: 10px;
+  --mu-r-hover-engraving-self-gap: 8px;
+  --mu-r-hover-engraving-self-blur: blur(12px);
+  --mu-r-hover-engraving-self-dwell: 420ms;
+  --mu-r-hover-engraving-self-rise: 2px;
+  --mu-r-hover-engraving-self-slide: 3px;
+  --mu-r-hover-engraving-self-beside-gap: 4px;
+  --mu-r-hover-engraving-self-beside-top: 9px;
+  --mu-r-hover-engraving-self-below-gap: 8px;
+  --mu-r-hover-engraving-self-fade: 160ms;
+  --mu-r-hover-engraving-self-move: 200ms;
+  --mu-r-hover-engraving-emphasis-weight: 500;
+  --mu-r-hover-engraving-tag-font: 400 9px/15px var(--mu-mono);
+  --mu-r-hover-engraving-tag-tracking: 0.06em;
+  --mu-r-hover-engraving-tag-height: 15px;
+  --mu-r-hover-engraving-tag-pad: 6px;
+  --mu-r-hover-engraving-tag-gap: 4px;
+  --mu-r-hover-engraving-led-size: 5px;
+  --mu-r-hover-engraving-led-gap: 4px;
+  --mu-r-hover-engraving-led-lift: 1px;
+}
+/* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
+[data-mu-self] {
+  --mu-r-swatch-self-background:
+    linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,0) 45%, rgba(0,0,0,.10)),
+    color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-swatch-self-shadow:
+    inset 0 1px 0 rgba(255,255,255,.45),
+    inset 0 -1.5px 0 rgba(0,0,0,.18),
+    inset 0 0 6px 2px rgba(255,255,255,.12),
+    0 1px 2px rgba(0,0,0,.12),
+    0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
+  --mu-r-glass-face-link-screen-background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
 }
 :root,
 [data-mu-colorway="bone"] {
@@ -928,6 +1041,17 @@
     /* mu-recipe:suggestion-chip:7 */ 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-r-suggestion-chip-button-hover-background:
     /* mu-recipe:suggestion-chip:13 */ rgba(0,0,0,.06);
+  --mu-r-hover-engraving-self-background:
+    /* mu-recipe:hover-engraving:0 */ rgba(252,251,249,.92);
+  --mu-r-hover-engraving-self-shadow:
+    /* mu-recipe:hover-engraving:2 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:hover-engraving:3 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:hover-engraving:4 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:hover-engraving:5 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:hover-engraving:6 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-hover-engraving-tag-shadow:
+    /* mu-recipe:hover-engraving:12 */ inset 0 0 0 .5px rgba(40,38,32,.2);
+  --mu-r-hover-engraving-emphasis-color: rgba(40,38,32,.62);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-dimple-self-background:
@@ -963,6 +1087,17 @@
     /* mu-recipe:suggestion-chip:12 */ 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-r-suggestion-chip-button-hover-background:
     /* mu-recipe:suggestion-chip:14 */ rgba(255,255,255,.08);
+  --mu-r-hover-engraving-self-background:
+    /* mu-recipe:hover-engraving:1 */ rgba(34,34,37,.92);
+  --mu-r-hover-engraving-self-shadow:
+    /* mu-recipe:hover-engraving:7 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:hover-engraving:8 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:hover-engraving:9 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:hover-engraving:10 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:hover-engraving:11 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-hover-engraving-tag-shadow:
+    /* mu-recipe:hover-engraving:13 */ inset 0 0 0 .5px rgba(255,255,255,.2);
+  --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -999,5 +1134,16 @@
       0 5px 12px -4px rgba(0,0,0,.3);
     --mu-r-suggestion-chip-button-hover-background:
       rgba(255,255,255,.08);
+    --mu-r-hover-engraving-self-background:
+      rgba(34,34,37,.92);
+    --mu-r-hover-engraving-self-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-hover-engraving-tag-shadow:
+      inset 0 0 0 .5px rgba(255,255,255,.2);
+    --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
   }
 }

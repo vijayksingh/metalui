@@ -4,7 +4,7 @@ import * as React from 'react';
 import './hover-engraving.css';
 
 /* ─────────────────────────────────────────────────────────
- * HOVER ENGRAVING (Kamui 03 §5, DS-31, the medium demo's .meta)
+ * HOVER ENGRAVING (the brief, DS-31, the reference design's .meta)
  *
  *   pass      the pointer crosses the block: nothing
  *   dwell     the block stays hovered 420 ms: the engraving fades in on settle,
@@ -23,7 +23,7 @@ export interface HoverEngravingProps extends Omit<React.HTMLAttributes<HTMLSpanE
   details?: string[];
   /** Tags derived from a cluster title or region, as hollow pills: "poster". */
   tags?: string[];
-  /** The recognizer's status, with its LED: { led: 'live', text: 'JEV ✓' }. */
+  /** The recognizer's status, with its LED: { led: 'live', text: 'RECOGNIZER ✓' }. */
   status?: { led: EngravingStatus; text: string };
   /** beside the first line of a text block (default), or below a material block. */
   placement?: 'beside' | 'below';
@@ -56,7 +56,7 @@ export const HoverEngraving = React.forwardRef<HTMLSpanElement, HoverEngravingPr
         {details.map((d) => ` · ${d}`).join('')}
       </span>
       {tags.length > 0 && (
-        <span className="mu-engraving-tags mu-type-label">
+        <span className="mu-engraving-tags">
           {tags.map((t) => <span key={t}>#{t}</span>)}
         </span>
       )}
