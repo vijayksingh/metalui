@@ -79,3 +79,5 @@ export const DocumentIcon = createIcon("document", "DocumentIcon");
 export const ClockIcon = createIcon("clock", "ClockIcon");
 /** Me. Hover: the trend redraws to its last point. Press: the last point pulses. */
 export const MeIcon = createIcon("me", "MeIcon");
+/** Seed sample. Hover: the sprout grows. Press: the seed settles. */
+export const SeedIcon = createIcon("seed", "SeedIcon");

@@ -124,3 +124,6 @@
 /* me */
 .mu-icon.mu-ic-me .tr{stroke-dasharray:1 2} .mu-icon.mu-ic-me .lp{transform-origin:16px 9.8px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-me,.mu-ic-me:is(:hover,[data-hover])):not([data-static]) .tr{animation:me-h .5s cubic-bezier(.3,.1,.2,1) both} @keyframes me-h{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}} .mu-icon.mu-ic-me[data-press] .lp{animation:me-p .3s cubic-bezier(.3,0,.2,1)} @keyframes me-p{40%{transform:scale(1.5)}}}
+/* seed */
+.mu-icon.mu-ic-seed .sp{transform-origin:12px 7px} .mu-icon.mu-ic-seed .sd{transform-origin:12px 20.2px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-seed,.mu-ic-seed:is(:hover,[data-hover])):not([data-static]) .sp{transform:scale(1.25) rotate(6deg)} .mu-icon.mu-ic-seed[data-press] .sd{animation:sd-p .34s cubic-bezier(.3,0,.2,1)} @keyframes sd-p{40%{transform:scaleY(.94)}}}

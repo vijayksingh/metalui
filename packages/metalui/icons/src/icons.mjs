@@ -353,4 +353,12 @@ export const ICONS = [
   mo: `@H .tr{animation:me-h .5s cubic-bezier(.3,.1,.2,1) both} @keyframes me-h{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}
        @P .lp{animation:me-p .3s cubic-bezier(.3,0,.2,1)} @keyframes me-p{40%{transform:scale(1.5)}}`,
   shape: 'Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead.' },
+
+// Seed: a sample day planted on an empty canvas. Body: the seed. Mark: the sprout and its leaf.
+{ name: 'seed', cat: 'Actions', label: 'Seed sample', hover: 'the sprout grows', press: 'the seed settles',
+  body: `<path class="sd f" style="--duo:.14" d="M12 7a5.6 6.6 0 1 1 0 13.2 5.6 6.6 0 1 1 0-13.2Z"/><path class="sp" d="M12 4.4V7"/><path class="sp f" style="--duo:.2" d="M15.4 3.2c-.3 1.5-1.6 2.2-3.4 2 .5-1.5 1.8-2.2 3.4-2Z"/>`,
+  base: `& .sp{transform-origin:12px 7px} & .sd{transform-origin:12px 20.2px}`,
+  mo: `@H .sp{transform:scale(1.25) rotate(6deg)}
+       @P .sd{animation:sd-p .34s cubic-bezier(.3,0,.2,1)} @keyframes sd-p{40%{transform:scaleY(.94)}}`,
+  shape: 'Seed 11.2 × 13.2, tinted .14; sprout stem 2.6 and a tinted leaf from its top.' },
 ];

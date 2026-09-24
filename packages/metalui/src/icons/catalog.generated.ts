@@ -824,6 +824,26 @@ export const ICON_CATALOG = {
     body: "<rect class=\"f\" style=\"--duo:.08\" x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3.5\"/><path class=\"tr\" pathLength=\"1\" d=\"M7.2 15.2l2.8-3.2 2.6 2 3.4-4.2\"/><circle class=\"lp s\" cx=\"16\" cy=\"9.8\" r=\"1.2\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * SEED SAMPLE · Actions
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the sprout grows
+   * PRESS one-shot (from the current pose)
+   *          the seed settles
+   *     0ms   .sd plays sd-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "seed": {
+    label: "Seed sample",
+    category: "Actions",
+    hover: "the sprout grows",
+    press: "the seed settles",
+    pressMs: 340,
+    defs: "",
+    body: "<path class=\"sd f\" style=\"--duo:.14\" d=\"M12 7a5.6 6.6 0 1 1 0 13.2 5.6 6.6 0 1 1 0-13.2Z\"/><path class=\"sp\" d=\"M12 4.4V7\"/><path class=\"sp f\" style=\"--duo:.2\" d=\"M15.4 3.2c-.3 1.5-1.6 2.2-3.4 2 .5-1.5 1.8-2.2 3.4-2Z\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

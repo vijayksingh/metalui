@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 39,
+  "count": 40,
   "icons": [
     {
       "name": "select",
@@ -430,6 +430,17 @@
       "pressMs": 300,
       "tuned16": false,
       "construction": "Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead."
+    },
+    {
+      "name": "seed",
+      "component": "SeedIcon",
+      "label": "Seed sample",
+      "category": "Actions",
+      "hover": "the sprout grows",
+      "press": "the seed settles",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "Seed 11.2 × 13.2, tinted .14; sprout stem 2.6 and a tinted leaf from its top."
     }
   ]
 }
