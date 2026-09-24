@@ -1,5 +1,11 @@
 # Swift parity requests
 
+## Placement marker and twin outline
+
+- **Object:** generated `placement` recipe for a transcluded block's marker and `twin` presence state.
+- **Missing:** marker inset, height inset, 2 px width, radius and green-deep .45 fill; the twin plate's raised-lite shadows and green-deep .35 hairline. Swift temporarily reads the closest generated region-over tint and spacing steps.
+- **Demo CSS:** `style.css:311-313` defines `.frag.t-ref::after` at left 2 px, top/bottom 13 px, 2 px width and `.45` green-deep fill, then `.frag.twin .plate` with raised-lite plus a 1 px `.35` green-deep outline.
+
 ## Canvas ink stroke
 
 - **Object:** a generated `ink-stroke` recipe for a drawn path and its live preview.
