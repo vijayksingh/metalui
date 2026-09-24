@@ -61,6 +61,12 @@
 - **Demo source:** reference demo `style.css:349-364` defines the full ring and pale collar, `lite` ring, handle and grip shapes, writing readout opacity, and graphite readout. Reference demo `app.js:828-868` reuses the ring elements, suppresses a bare-caret ring, and selects lite for multiple blocks.
 - **Token request:** native writing needs the 1.1 second step caret blink named in the Mac scope `SCOPE.md:355` and reference demo `README.md:214`; the browser uses its native caret at reference demo `style.css:150`. Add a generated timing token for Swift rather than a local UI duration literal.
 
+## Lens result plate
+
+- **Object:** a generated `lensPanel` recipe (or a named `MetalSurface` panel variant) for the list, table, timeline and gallery projections.
+- **Missing:** the exact plate material and layout are not one generated object: 24 px blur at 1.6 saturation, translucent bone fill at .86, raised shadow stack, 24 px radius, 10 px inset, 760 px width cap and 230 px viewport height reserve. The Mac list currently uses `MetalFrost.plate` and client-owned layout constants as a temporary composition; the shared `row` recipe paints its rows.
+- **Demo CSS:** reference `style.css:428-439` defines `#panel`, `.prow`, checked text and weak-match opacity. The other projections follow at lines 440-454.
+
 ## Composition refactor (docs/COMPOSITION.md)
 
 Primitives and blocks the React side now has. Mirror each with the same name (Metal prefix), slots and recipe; the recipe parity check lists what is still missing.
