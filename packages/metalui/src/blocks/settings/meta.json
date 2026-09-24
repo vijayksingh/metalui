@@ -1,0 +1,26 @@
+{
+  "name": "settings",
+  "title": "Settings",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "surface",
+    "label",
+    "rule",
+    "kbd"
+  ],
+  "description": "An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.",
+  "base": "none",
+  "react": {
+    "export": "Settings",
+    "files": [
+      "settings.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSettings",
+    "file": "swift/Sources/MetalUI/Blocks/MetalSettings.swift"
+  },
+  "agent": "settings.agent.md"
+}

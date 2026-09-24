@@ -501,6 +501,24 @@
       "docs": "Agent guide: https://metalui.dev/r/selection-frame.md. SwiftUI: MetalSelectionFrame in the MetalUI Swift package."
     },
     {
+      "name": "settings",
+      "type": "registry:ui",
+      "title": "Settings",
+      "description": "An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/settings/settings.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/settings/settings.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/settings.md. SwiftUI: MetalSettings in the MetalUI Swift package."
+    },
+    {
       "name": "size-readout",
       "type": "registry:ui",
       "title": "Size readout",
@@ -629,6 +647,26 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/surface.md. SwiftUI: MetalSurface in the MetalUI Swift package."
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/switch/switch.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/switch/switch.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/switch.md. SwiftUI: MetalSwitch in the MetalUI Swift package."
     },
     {
       "name": "time-scrubber",

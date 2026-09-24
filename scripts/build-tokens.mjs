@@ -192,6 +192,11 @@ const PB = T.pastbanner;
 const PB_KEYS = Object.keys(PB).filter((k) => !k.startsWith('$'));
 const pastbannerVars = PB_KEYS.map((k) => `  --mu-pastbanner-${k}: ${typeof PB[k] === 'number' ? `${PB[k]}px` : PB[k]};`).join('\n');
 
+// ---------- settings (tokens.json settings) ----------
+const SETTINGS = T.settings;
+const SETTINGS_KEYS = Object.keys(SETTINGS).filter((k) => !k.startsWith('$'));
+const settingsVars = SETTINGS_KEYS.map((k) => `  --mu-settings-${k}: ${typeof SETTINGS[k] === 'number' ? `${SETTINGS[k]}px` : SETTINGS[k]};`).join('\n');
+
 // ---------- tool strip (tokens.json toolstrip) ----------
 const TS = T.toolstrip;
 const TS_KEYS = Object.keys(TS).filter((k) => !k.startsWith('$'));
@@ -268,6 +273,7 @@ ${lensbarVars}
 ${scrubberVars}
 ${pastbannerVars}
 ${toolstripVars}
+${settingsVars}
 ${kbdVars}
 ${statusVars}
 ${toastVars}
@@ -342,7 +348,7 @@ const ED = T.editorial;
 // The layout groups (presence, suggestion, engraving, …) as theme values: a px value is spacing
 // (h-presence-readout-height), a colour is a colour, a duration or an opacity a utility. A name a recipe
 // already gives is left to the recipe.
-const GROUPS = ['presence', 'cue', 'suggestion', 'engraving', 'provenance', 'region', 'lensbar', 'scrubber', 'pastbanner', 'toolstrip', 'palette', 'toast', 'toolbar', 'menu', 'kbd', 'status', 'segmented', 'button', 'tooltip'];
+const GROUPS = ['presence', 'cue', 'suggestion', 'engraving', 'provenance', 'region', 'lensbar', 'scrubber', 'pastbanner', 'toolstrip', 'settings', 'palette', 'toast', 'toolbar', 'menu', 'kbd', 'status', 'segmented', 'button', 'tooltip'];
 const recipeNames = new Set([...RECIPES.theme.vars.matchAll(/--([\w-]+):/g)].map((m) => m[1]));
 const groupVars = [];
 const groupUtils = [];
@@ -839,6 +845,11 @@ ${KB_KEYS.map((k) => { const v = KB[k]; if (typeof v === 'number') return `    p
 /// ${TS.$use}
 public enum MetalToolStripMetrics {
 ${TS_KEYS.map((k) => { const v = TS[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
+}
+
+/// ${SETTINGS.$use}
+public enum MetalSettingsMetrics {
+${SETTINGS_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(SETTINGS[k])}`).join('\n')}
 }
 
 /// ${PB.$use}

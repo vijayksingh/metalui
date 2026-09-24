@@ -444,6 +444,23 @@
       "agent": "https://metalui.dev/r/selection-frame.md"
     },
     {
+      "name": "settings",
+      "title": "Settings",
+      "status": "alpha",
+      "description": "An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Settings",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSettings"
+      },
+      "registry": "https://metalui.dev/r/settings.json",
+      "agent": "https://metalui.dev/r/settings.md"
+    },
+    {
       "name": "size-readout",
       "title": "Size readout",
       "status": "alpha",
@@ -561,6 +578,23 @@
       },
       "registry": "https://metalui.dev/r/surface.json",
       "agent": "https://metalui.dev/r/surface.md"
+    },
+    {
+      "name": "switch",
+      "title": "Switch",
+      "status": "alpha",
+      "description": "A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Switch",
+        "base": "@base-ui/react/switch"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSwitch"
+      },
+      "registry": "https://metalui.dev/r/switch.json",
+      "agent": "https://metalui.dev/r/switch.md"
     },
     {
       "name": "time-scrubber",

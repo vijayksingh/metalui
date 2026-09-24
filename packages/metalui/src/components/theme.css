@@ -487,6 +487,10 @@
   --color-label-accent-color: var(--mu-r-label-accent-color);
   --color-label-placeholder-color: var(--mu-r-label-placeholder-color);
   --color-label-emphasis-color: var(--mu-r-label-emphasis-color);
+  --tracking-label-name-tracking: var(--mu-r-label-name-tracking);
+  --color-label-name-color: var(--mu-r-label-name-color);
+  --tracking-label-detail-tracking: var(--mu-r-label-detail-tracking);
+  --color-label-detail-color: var(--mu-r-label-detail-color);
   --spacing-rule-thickness: var(--mu-r-rule-self-thickness);
   --spacing-rule-margin: var(--mu-r-rule-self-margin);
   --color-mark-match-underline: var(--mu-r-mark-match-underline);
@@ -712,6 +716,16 @@
   --spacing-silhouette-region-pad: var(--mu-r-silhouette-region-pad);
   --tracking-silhouette-region-tracking: var(--mu-r-silhouette-region-tracking);
   --color-silhouette-region-ink: var(--mu-r-silhouette-region-ink);
+  --spacing-switch-width: var(--mu-r-switch-self-width);
+  --spacing-switch-height: var(--mu-r-switch-self-height);
+  --spacing-switch-pad: var(--mu-r-switch-self-pad);
+  --spacing-switch-thumb-size: var(--mu-r-switch-thumb-size);
+  --spacing-switch-thumb-travel: var(--mu-r-switch-thumb-travel);
+  --spacing-switch-thumb-stretch: var(--mu-r-switch-thumb-stretch);
+  --spacing-switch-small-width: var(--mu-r-switch-small-width);
+  --spacing-switch-small-height: var(--mu-r-switch-small-height);
+  --spacing-switch-small-thumb: var(--mu-r-switch-small-thumb);
+  --spacing-switch-small-travel: var(--mu-r-switch-small-travel);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1211,6 +1225,14 @@
 @utility weight-label-emphasis-weight {
   font-weight: var(--mu-r-label-emphasis-weight);
 }
+@utility type-label-name {
+  font: var(--mu-r-label-name-font);
+  letter-spacing: var(--mu-r-label-name-tracking);
+}
+@utility type-label-detail {
+  font: var(--mu-r-label-detail-font);
+  letter-spacing: var(--mu-r-label-detail-tracking);
+}
 @utility recipe-rule {
   background: var(--mu-r-rule-self-background);
   box-shadow: var(--mu-r-rule-self-shadow);
@@ -1644,6 +1666,51 @@
   --tw-duration: var(--mu-r-silhouette-self-fade);
   transition-duration: var(--mu-r-silhouette-self-fade);
 }
+@utility recipe-switch {
+  background: var(--mu-r-switch-self-background);
+  box-shadow: var(--mu-r-switch-self-shadow);
+}
+@utility recipe-switch-on {
+  background: var(--mu-r-switch-self-on-background);
+  box-shadow: var(--mu-r-switch-self-on-shadow);
+}
+@utility recipe-switch-thumb {
+  background: var(--mu-r-switch-thumb-background);
+  box-shadow: var(--mu-r-switch-thumb-shadow);
+}
+@utility switch-thumb-on {
+  translate: var(--mu-r-switch-thumb-travel) 0;
+}
+@utility switch-thumb-pressed {
+  width: calc(var(--mu-r-switch-thumb-size) + var(--mu-r-switch-thumb-stretch));
+}
+@utility switch-thumb-on-pressed {
+  translate: calc(var(--mu-r-switch-thumb-travel) - var(--mu-r-switch-thumb-stretch)) 0;
+}
+@utility switch-small-thumb-on {
+  translate: var(--mu-r-switch-small-travel) 0;
+}
+@utility switch-small-thumb-pressed {
+  width: calc(var(--mu-r-switch-small-thumb) + var(--mu-r-switch-thumb-stretch));
+}
+@utility switch-small-thumb-on-pressed {
+  translate: calc(var(--mu-r-switch-small-travel) - var(--mu-r-switch-thumb-stretch)) 0;
+}
+@utility transition-switch-track {
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+@utility transition-switch-thumb {
+  transition: translate var(--mu-spring-part-d) var(--mu-spring-part), width var(--mu-spring-part-d) var(--mu-spring-part);
+}
+@utility stroke-width-switch-width {
+  stroke-width: var(--mu-r-switch-self-width);
+}
+@utility opacity-switch-disabled {
+  opacity: var(--mu-r-switch-self-disabled);
+}
+@utility stroke-width-switch-small-width {
+  stroke-width: var(--mu-r-switch-small-width);
+}
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
@@ -1850,6 +1917,15 @@
   --color-toolstrip-sep-lip: var(--mu-toolstrip-sep-lip);
   --spacing-toolstrip-sep-height: var(--mu-toolstrip-sep-height);
   --spacing-toolstrip-enter-rise: var(--mu-toolstrip-enter-rise);
+  --spacing-settings-row-min: var(--mu-settings-row-min);
+  --spacing-settings-row-pad-y: var(--mu-settings-row-pad-y);
+  --spacing-settings-row-pad-x: var(--mu-settings-row-pad-x);
+  --spacing-settings-row-gap: var(--mu-settings-row-gap);
+  --spacing-settings-detail-gap: var(--mu-settings-detail-gap);
+  --spacing-settings-heading-gap: var(--mu-settings-heading-gap);
+  --spacing-settings-section-gap: var(--mu-settings-section-gap);
+  --spacing-settings-heading-pad-x: var(--mu-settings-heading-pad-x);
+  --spacing-settings-keys-gap: var(--mu-settings-keys-gap);
   --spacing-kbd-small: var(--mu-kbd-small);
   --spacing-kbd-min-small: var(--mu-kbd-min-small);
   --spacing-kbd-pad-small: var(--mu-kbd-pad-small);

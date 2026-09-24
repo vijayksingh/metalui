@@ -35,9 +35,11 @@ export { SuggestionChip, type SuggestionChipProps } from './blocks/suggestion-ch
 export { SizeReadout, type SizeReadoutProps } from './components/size-readout/size-readout';
 export { SnapGuides, type SnapGuide, type SnapGuidesProps } from './components/snap-guides/snap-guides';
 export { Lasso, type LassoProps, type LassoRect } from './components/lasso/lasso';
+export { Switch, type SwitchProps } from './components/switch/switch';
 export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from './components/block-silhouette/block-silhouette';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { LinkCard, linkHueDegrees, type LinkCardProps } from './blocks/link-card/link-card';
+export { Settings, type SettingsRowProps } from './blocks/settings/settings';
 export { CodeCard, tintCode, diffClasses, type CodeCardProps, type DiffClass } from './blocks/code-card/code-card';

@@ -18,7 +18,7 @@ import * as React from 'react';
 
 export type LabelVariant =
   | 'engraved' | 'small' | 'title' | 'heading' | 'query' | 'count' | 'cell' | 'value' | 'value-small'
-  | 'display' | 'display-quiet' | 'readout' | 'readout-dim' | 'on-graphite' | 'dark';
+  | 'display' | 'display-quiet' | 'readout' | 'readout-dim' | 'on-graphite' | 'dark' | 'name' | 'detail';
 
 export interface LabelProps extends React.HTMLAttributes<HTMLElement> {
   variant?: LabelVariant;
@@ -50,6 +50,8 @@ const ROLES: Record<LabelVariant, string> = {
   readout: 'type-label-readout text-label-readout-color',
   'readout-dim': 'type-label-readout not-italic text-label-readout-dim-color',
   'on-graphite': 'type-label-on-graphite text-label-on-graphite-color',
+  name: 'type-label-name text-label-name-color',
+  detail: 'type-label-detail text-label-detail-color',
 };
 const ACCENT: Partial<Record<LabelVariant, string>> = {
   engraved: `${ENGRAVED} text-label-accent-color text-shadow-none ${EMPHASIS}`,

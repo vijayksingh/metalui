@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "type": "registry:ui",
+  "title": "Switch",
+  "description": "A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/switch/switch.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/switch/switch.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Switch as BaseSwitch } from '@base-ui/react/switch';\n\n/* ─────────────────────────────────────────────────────────\n * SWITCH (the reference design's .tog) on Base UI Switch\n *\n * A setting that is on or off and takes effect at once.\n *\n *   off       a sunk pill track (the track well) with a raised round thumb at the left\n *   on        the thumb slides right on the part spring (a track with ends, so it may\n *             overshoot against the stop) and the track fills with a soft green\n *   pressed   the thumb stretches toward where it is going (4 pt), so the press already\n *             points at the result; releasing lets it travel\n *   focus     the green ring at offset 2 (keyboard only); Space toggles\n *   disabled  40 %\n * Two sizes: regular 40 × 24 (settings rows), small 32 × 20 (dense cards).\n * Reduce Motion: the thumb moves at once; the colour still fades.\n * ───────────────────────────────────────────────────────── */\n\nexport interface SwitchProps extends Omit<BaseSwitch.Root.Props, 'className' | 'render'> {\n  size?: 'regular' | 'small';\n  /** Its accessible name, when no visible label names it. */\n  'aria-label'?: string;\n  className?: string;\n}\n\nconst ROOT = 'mu-switch group/sw relative box-border inline-flex flex-none items-center p-switch-pad rounded-pill border-0 cursor-pointer outline-none recipe-switch data-checked:recipe-switch-on transition-switch-track focus-visible:focus-ring data-disabled:opacity-switch-disabled data-disabled:cursor-default tap-highlight-none';\nconst SIZE = {\n  regular: 'w-switch-width h-switch-height',\n  small: 'w-switch-small-width h-switch-small-height',\n};\nconst THUMB_BASE = 'mu-switch-thumb block rounded-pill recipe-switch-thumb transition-switch-thumb reduced-motion:transition-none';\nconst THUMB = {\n  regular: 'h-switch-thumb-size w-switch-thumb-size group-data-checked/sw:switch-thumb-on group-active/sw:switch-thumb-pressed group-active/sw:group-data-checked/sw:switch-thumb-on-pressed',\n  small: 'h-switch-small-thumb w-switch-small-thumb group-data-checked/sw:switch-small-thumb-on group-active/sw:switch-small-thumb-pressed group-active/sw:group-data-checked/sw:switch-small-thumb-on-pressed',\n};\n\n/** A setting that is on or off, taking effect at once. */\nexport const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(function Switch({ size = 'regular', className, ...props }, ref) {\n  return (\n    <BaseSwitch.Root ref={ref} data-size={size} className={[ROOT, SIZE[size], className].filter(Boolean).join(' ')} {...props}>\n      <BaseSwitch.Thumb className={`${THUMB_BASE} ${THUMB[size]}`} />\n    </BaseSwitch.Root>\n  );\n});\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/switch.md. SwiftUI: MetalSwitch in the MetalUI Swift package."
+}

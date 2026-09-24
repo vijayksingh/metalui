@@ -1,0 +1,19 @@
+{
+  "name": "switch",
+  "title": "Switch",
+  "status": "alpha",
+  "description": "A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.",
+  "base": "@base-ui/react/switch",
+  "react": {
+    "export": "Switch",
+    "files": [
+      "switch.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSwitch",
+    "file": "swift/Sources/MetalUI/Components/MetalSwitch.swift"
+  },
+  "agent": "switch.agent.md",
+  "layer": "component"
+}
