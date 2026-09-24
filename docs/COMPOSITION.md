@@ -64,7 +64,7 @@ A block is what a person recognises as a thing: a palette, a region, a swatch ca
 | `SwatchCard` | custom (object face) | swatch recipe + Label(hex) + Led dimple |
 | `LinkCard`, `CodeCard` | custom (glass face) | glass-face recipe + Label + Chip + (code: highlighted text) |
 | `SelectionFrame` | custom (band, handles, edge light, readout) | uses Kbd-style readout, Label |
-| `SizeReadout` | composition | Surface(small) › Label |
+| `SizeReadout` | component (the selection frame block uses it, and blocks never import blocks) | Surface(graphite-deep) › Led + Label(readout) + Label(readout-dim) |
 | `MePanel` | composition | Surface › Label rows + Sparkline × n |
 | `EmptyState` | composition | Surface › Icon + text + Chip × 2 |
 
