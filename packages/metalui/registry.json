@@ -474,11 +474,6 @@
           "path": "packages/metalui/src/components/row/row.tsx",
           "type": "registry:ui",
           "target": "components/metalui/row/row.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/row/row.css",
-          "type": "registry:file",
-          "target": "components/metalui/row/row.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/row.md. SwiftUI: MetalRow in the MetalUI Swift package."

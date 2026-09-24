@@ -1367,6 +1367,9 @@
 @utility duration-row-fade {
   transition-duration: var(--mu-r-row-self-fade);
 }
+@utility transition-row {
+  transition: var(--mu-r-row-self-transition);
+}
 @utility recipe-link-card-screen {
   background: var(--mu-r-link-card-screen-background);
 }

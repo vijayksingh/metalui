@@ -1737,6 +1737,7 @@ public enum MetalRecipes {
             "text.checked": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
             "self.maybe": .text("0.55"),
             "self.fade": .text("160ms"),
+            "self.transition": .text("background var(--mu-r-row-self-fade), box-shadow var(--mu-r-row-self-fade)"),
         ]
     )
 

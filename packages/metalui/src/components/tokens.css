@@ -1446,6 +1446,7 @@
   --mu-r-row-rail-color: #3FB97A;
   --mu-r-row-self-maybe: 0.55;
   --mu-r-row-self-fade: 160ms;
+  --mu-r-row-self-transition: background var(--mu-r-row-self-fade), box-shadow var(--mu-r-row-self-fade);
   /* glyph: reference style.css #lensBar svg, .pal-field svg, .tb-search svg, .pal-row svg */
   --mu-r-glyph-size-small: 14px;
   --mu-r-glyph-size-regular: 16px;

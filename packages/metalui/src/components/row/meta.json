@@ -8,8 +8,7 @@
   "react": {
     "export": "Row",
     "files": [
-      "row.tsx",
-      "row.css"
+      "row.tsx"
     ]
   },
   "swift": {
