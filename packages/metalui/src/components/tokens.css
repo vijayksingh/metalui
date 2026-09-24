@@ -239,6 +239,10 @@
   --mu-region-row-pad-x: 8px;
   --mu-region-row-gap: 9px;
   --mu-region-row-dimple: 14px;
+  --mu-segmented-track-pad: 3px;
+  --mu-segmented-compact: 24px;
+  --mu-segmented-regular: 28px;
+  --mu-segmented-focus-width: 1.5px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);

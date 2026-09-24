@@ -728,3 +728,11 @@ public enum MetalRegion {
     public static let rowGap: Double = 9.0
     public static let rowDimple: Double = 14.0
 }
+
+/// The segmented control (KAMUI-04): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
+public enum MetalSegmentedMetrics {
+    public static let trackPad: Double = 3.0
+    public static let compact: Double = 24.0
+    public static let regular: Double = 28.0
+    public static let focusWidth: Double = 1.5
+}

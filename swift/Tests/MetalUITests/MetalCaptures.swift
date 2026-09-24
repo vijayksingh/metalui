@@ -213,4 +213,17 @@ final class MetalCaptures: XCTestCase {
             capture("region-\(colorway.rawValue)", view)
         }
     }
+
+    func testSegmented() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 20) {
+                MetalSegmented("Colorway", selection: .constant("bone"), options: [("bone", "Bone"), ("graphite", "Graphite")])
+                MetalSegmented("View", selection: .constant("list"), options: [("place", "place"), ("list", "list"), ("table", "table"), ("timeline", "timeline"), ("gallery", "gallery")], size: .compact)
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("segmented-\(colorway.rawValue)", view)
+        }
+    }
 }

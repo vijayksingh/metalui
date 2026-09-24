@@ -138,6 +138,31 @@
       "docs": "Agent guide: https://metalui.dev/r/region.md. SwiftUI: MetalRegion, MetalRegionRow in the MetalUI Swift package."
     },
     {
+      "name": "segmented",
+      "type": "registry:ui",
+      "title": "Segmented control",
+      "description": "A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/segmented/segmented.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/segmented/segmented.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/segmented/segmented.css",
+          "type": "registry:file",
+          "target": "components/metalui/segmented/segmented.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/segmented.md. SwiftUI: MetalSegmented in the MetalUI Swift package."
+    },
+    {
       "name": "selection-frame",
       "type": "registry:ui",
       "title": "Selection frame",

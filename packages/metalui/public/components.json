@@ -92,6 +92,24 @@
       "sheet": "Kamui 04 §7"
     },
     {
+      "name": "segmented",
+      "title": "Segmented control",
+      "status": "alpha",
+      "description": "A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Segmented",
+        "base": "@base-ui/react/radio-group"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSegmented"
+      },
+      "registry": "https://metalui.dev/r/segmented.json",
+      "agent": "https://metalui.dev/r/segmented.md",
+      "sheet": "KAMUI-04"
+    },
+    {
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",

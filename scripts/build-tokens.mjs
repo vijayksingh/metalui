@@ -168,6 +168,11 @@ const RG = T.region;
 const RG_KEYS = Object.keys(RG).filter((k) => !k.startsWith('$'));
 const regionVars = RG_KEYS.map((k) => `  --mu-region-${k}: ${typeof RG[k] === 'number' ? (k === 'dim' ? RG[k] : `${RG[k]}px`) : RG[k]};`).join('\n');
 
+// ---------- segmented (tokens.json segmented) ----------
+const SE = T.segmented;
+const SE_KEYS = Object.keys(SE).filter((k) => !k.startsWith('$'));
+const segmentedVars = SE_KEYS.map((k) => `  --mu-segmented-${k}: ${SE[k]}px;`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -193,6 +198,7 @@ ${suggestionVars}
 ${engravingVars}
 ${provenanceVars}
 ${regionVars}
+${segmentedVars}
 ${typeVars}
 ${travel}
 }
@@ -575,7 +581,12 @@ public enum MetalRegion {
 ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion);
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${SE.$use}
+public enum MetalSegmentedMetrics {
+${SE_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(SE[k])}`).join('\n')}
+}
+`);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

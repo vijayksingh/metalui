@@ -1,0 +1,43 @@
+@import "../tokens.css";
+
+/* Segmented control (KAMUI-04): a pill of pills on Base UI RadioGroup. */
+.mu-segmented {
+  position: relative;
+  display: inline-flex;
+  padding: var(--mu-segmented-track-pad);
+  border-radius: 999px;
+  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
+  box-shadow: var(--mu-well);
+}
+.mu-segment {
+  --h: var(--mu-segmented-regular);
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--h);
+  /* The pill rule: text first, h/2 − 1. */
+  padding: 0 calc(var(--h) / 2 - 1px);
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  white-space: nowrap;
+  color: var(--mu-ink2);
+  cursor: pointer;
+  transition: color var(--mu-spring-settle-d) var(--mu-spring-settle);
+  -webkit-tap-highlight-color: transparent;
+}
+.mu-segmented[data-size="compact"] .mu-segment { --h: var(--mu-segmented-compact); }
+.mu-segment:hover { color: var(--mu-ink); }
+.mu-segment[data-checked] { color: var(--mu-ink); }
+.mu-segment:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+.mu-segment[data-disabled] { opacity: .4; cursor: default; }
+.mu-segmented[data-disabled] { opacity: .4; }
+/* The thumb: a raised cap that glides on the part spring (SlidingIndicator). */
+.mu-segmented > .mu-segmented-thumb {
+  border-radius: 999px;
+  background: linear-gradient(var(--mu-thumb-hi), var(--mu-thumb-lo));
+  box-shadow: var(--mu-raise-sm);
+}
