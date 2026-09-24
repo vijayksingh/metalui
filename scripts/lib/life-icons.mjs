@@ -55,8 +55,8 @@ const iconCss = (g, target) => `${g.base ? expand(g.base, g.name, target) : ''}\
 // ---------- static bake (identical to the Kamui life builder) ----------
 const DROP = { snack: ['cr'], cooking: ['pf'], reading: ['pg'], cycle: ['sp'], idea: ['rs'], podcast: ['sw'], grateful: ['dp'] };
 const BAKE = { td: 'opacity=".4"' };
-function staticSvg(g, sw = SW, body = g.body) {
-  const drop = DROP[g.name] || [];
+export function lifeStaticSvg(g, sw = SW, body = g.body, extraDrop = []) {
+  const drop = [...(DROP[g.name] || []), ...extraDrop];
   const id = `mu-life-${g.name}`;
   let s = (g.defs ? `<defs>${g.defs}</defs>` : '') + body;
   s = s.replace(/&-/g, id + '-');
@@ -113,6 +113,8 @@ function hoverMs(g) {
 const pascal = (n) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 const VAL = { '+': 'pleasant', '0': 'neutral', '-': 'unpleasant' };
 const construction = (g) => (g.cat === 'feelings' ? 'vessel + trace (feelings language)' : g.cat === 'time' && /dayGlyph|horizon/.test(g.body) ? 'horizon + arc + sun' : null);
+
+export { GLYPHS as LIFE_GLYPHS, T16 as LIFE_T16, TINT_OF as LIFE_TINT_OF, SW16 as LIFE_SW16 };
 
 export function buildLife() {
   const CAT_LABEL = Object.fromEntries(CATS);
@@ -210,8 +212,8 @@ ${entries.map(({ g }) => `/** ${g.label}. Hover: ${g.hover}. */\nexport const Li
   }, null, 2) + '\n');
 
   for (const { g, t16 } of entries) {
-    emit(`packages/metalui/public/icons/life/svg/${g.name}.svg`, staticSvg(g));
-    emit(`packages/metalui/public/icons/life/svg/16/${g.name}.svg`, staticSvg(g, t16?.sw ?? SW16, t16?.body ?? g.body));
+    emit(`packages/metalui/public/icons/life/svg/${g.name}.svg`, lifeStaticSvg(g));
+    emit(`packages/metalui/public/icons/life/svg/16/${g.name}.svg`, lifeStaticSvg(g, t16?.sw ?? SW16, t16?.body ?? g.body));
     emit(`packages/metalui/public/icons/life/svg-animated/${g.name}.svg`, animatedSvg(g));
   }
   return GLYPHS.length;

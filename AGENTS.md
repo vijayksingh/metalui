@@ -17,7 +17,8 @@ packages/metalui/          the published package, @unlocalhosted/metalui
   public/                  generated registry (r/), icon SVGs, AI.md, llms.txt, manifests
 tokens/tokens.json         the one source for materials, colorways, springs and foundations
 swift/ + Package.swift     MetalUI for SwiftUI (tokens generated from tokens.json)
-scripts/                   generators: tokens, icons, registry, agent docs
+scripts/                   generators: tokens, icons (product + life), SF Symbols, registry, agent docs
+e2e/                       Playwright feature slices; captures land in docs/captures/
 ```
 
 ## Load-bearing rules
@@ -38,6 +39,10 @@ npm ci
 npm run dev          # docs on http://127.0.0.1:4193
 npm run generate     # tokens, icons, registry, agent docs
 npm run check        # generated files are fresh
+npm run symbols      # SF Symbols for both icon sets (macOS, Xcode toolchain); symbols:check to verify
+npm run test:e2e     # Playwright feature slices against the docs site
+npm run symbols      # SF Symbols for both icon sets (macOS, Xcode toolchain); symbols:check to verify
+npm run test:e2e     # Playwright feature slices against the docs site
 npm run typecheck
 npm run build        # check + package (packages/metalui/dist) + docs (apps/docs/dist)
 swift build

@@ -26,8 +26,8 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 | Step | What | Status | Commit | Clients import |
 |---|---|---|---|---|
-| 3.1 | Life set source, subpath and manifest | shipped | see git log `feat(icons): life set` | `import { LifeIcon, LifeCoffeeIcon, searchLifeIcons, LIFE_CATALOG } from '@unlocalhosted/metalui/icons/life'` + `@unlocalhosted/metalui/icons/life.css`; `@unlocalhosted/metalui/icons-life.json`; SVGs under `public/icons/life/{svg,svg/16,svg-animated}` |
-| 3.6 | SF Symbols + `MetalIcon` / `MetalLifeIcon` | pending | | |
+| 3.1 | Life set source, subpath and manifest | shipped | `5f27616` | `import { LifeIcon, LifeCoffeeIcon, searchLifeIcons, LIFE_CATALOG } from '@unlocalhosted/metalui/icons/life'` + `@unlocalhosted/metalui/icons/life.css`; `@unlocalhosted/metalui/icons-life.json`; SVGs under `public/icons/life/{svg,svg/16,svg-animated}` |
+| 3.6 | SF Symbols + `MetalIcon` / `MetalLifeIcon` | shipped | see `feat(swift): SF Symbols for product and life icons` | Swift `MetalIcon(.sendAway, size: 16)`, `MetalLifeIcon(.coffee, size: 16)` / `(… tint:)`, `Image(metal:)`, `Image(metalLife:)`, `MetalIconName`, `MetalLifeIconName`, `.metalIconInteraction(_:)` (MetalButton sets it); symbols `mu.<name>`, `mu.<name>.16`, `mu.life.<name>`, `mu.life.<name>.16` in the package bundle. Limitation: native life hovers are one `.bounce.byLayer`, not the authored per-glyph interactions; one part (`mu.life.cycle.16` primary #2) keeps Regular geometry at every weight. |
 | 3.2 | Life gallery page | pending | | |
 | 3.3 | Feelings construction and lint | pending | | |
 | 3.4 | Feelings grid | pending | | |

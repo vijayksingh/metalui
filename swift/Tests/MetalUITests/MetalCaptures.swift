@@ -64,4 +64,33 @@ final class MetalCaptures: XCTestCase {
             capture("frost-\(colorway.rawValue)", frostBench(colorway))
         }
     }
+
+    private func iconSheet(_ colorway: MetalColorway) -> some View {
+        let columns = Array(repeating: GridItem(.fixed(44), spacing: 8), count: 16)
+        return VStack(alignment: .leading, spacing: 20) {
+            Text("PRODUCT · \(MetalIconName.allCases.count) · 24 AND 16").font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color)
+            LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+                ForEach(MetalIconName.allCases, id: \.self) { icon in
+                    VStack(spacing: 6) { MetalIcon(icon, size: 24); MetalIcon(icon, size: 16) }
+                }
+            }
+            Text("LIFE · \(MetalLifeIconName.allCases.count) · 24 AND 16, TINTED WHERE THE MANIFEST SAYS").font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color)
+            LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+                ForEach(MetalLifeIconName.allCases, id: \.self) { icon in
+                    VStack(spacing: 6) { MetalLifeIcon(icon, size: 24); MetalLifeIcon(icon, size: 16) }
+                }
+            }
+        }
+        .foregroundStyle(colorway.tokens.icon.color)
+        .padding(28)
+        .frame(width: 16 * 52 + 56, alignment: .leading)
+        .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+        .metalColorway(colorway)
+    }
+
+    func testIcons() {
+        for colorway in MetalColorway.allCases {
+            capture("icons-\(colorway.rawValue)", iconSheet(colorway))
+        }
+    }
 }

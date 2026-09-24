@@ -43,6 +43,7 @@ private struct MetalButtonBody: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.isFocused) private var isFocused
     @Environment(\.metalColorway) private var colorway
+    @State private var hovering = false
 
     var body: some View {
         let isDown = isEnabled && configuration.isPressed
@@ -50,6 +51,8 @@ private struct MetalButtonBody: View {
         let recipes = recipes(for: colorway.tokens)
 
         configuration.label
+            // The button is its icons' trigger: a MetalIcon inside plays its hover pose and press.
+            .metalIconInteraction(MetalIconInteraction(isHovered: hovering && isEnabled, isPressed: isDown))
             .font(.metal(MetalType.ui))
             .tracking(MetalType.ui.trackingPoints)
             .lineLimit(1)
@@ -57,6 +60,7 @@ private struct MetalButtonBody: View {
             .padding(.horizontal, MetalButtonMetrics.horizontalPadding)
             .frame(height: MetalButtonMetrics.height)
             .contentShape(shape)
+            .onHover { hovering = $0 }
             .background {
                 ZStack {
                     Color.clear.metalRecipe(recipes.up, in: shape).opacity(isDown ? 0 : 1)
