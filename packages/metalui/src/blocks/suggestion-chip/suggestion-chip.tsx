@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Chip } from '../../components/chip/chip';
 import { Label } from '../../components/label/label';
 import { IconButton } from '../../components/icon-button/icon-button';
-import './suggestion-chip.css';
 
 /* ─────────────────────────────────────────────────────────
  * SUGGESTION CHIP (the reference design's .sugg): a composition
@@ -18,6 +17,11 @@ import './suggestion-chip.css';
  * At most one chip per block, and only for cues that change behaviour
  * (task, measurement, date, region). Never for a kind or a glyph.
  * ───────────────────────────────────────────────────────── */
+
+/* Faint until its block (the host, .mu-icon-trigger) is hovered or it holds focus; it arrives on settle
+ * from 3 above and .96. Layout from the suggestion group. */
+const CHIP = 'mu-suggestion opacity-suggestion-rest-opacity transition-opacity ease-settle duration-settle animate-suggestion-in in-[.mu-icon-trigger:hover]:opacity-100 hover:opacity-100 focus-within:opacity-100 data-host-hover:opacity-100';
+const CONF = 'mu-suggestion-conf ml-suggestion-conf-margin-start mr-suggestion-conf-margin-end';
 
 export interface SuggestionChipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   /** The question, as a person would ask it: "Task?", "Date friday?", "Track as sleep?", "Move to Done?". */
@@ -43,11 +47,11 @@ export const SuggestionChip = React.forwardRef<HTMLSpanElement, SuggestionChipPr
       role="group"
       aria-label={`Suggestion: ${label} Confidence ${conf}`}
       data-host-hover={hostHovered ? '' : undefined}
-      className={className ? `mu-suggestion ${className}` : 'mu-suggestion'}
+      className={className ? `${CHIP} ${className}` : CHIP}
       {...props}
     >
       <Chip.Text>{label}</Chip.Text>
-      <Label variant="small" aria-hidden className="mu-suggestion-conf">{conf}</Label>
+      <Label variant="small" aria-hidden className={CONF}>{conf}</Label>
       <Chip.Actions>
         <IconButton variant="mini" accept label="Accept" icon="✓" onClick={onAccept} />
         <IconButton variant="mini" label="Dismiss" icon="×" onClick={onDismiss} />

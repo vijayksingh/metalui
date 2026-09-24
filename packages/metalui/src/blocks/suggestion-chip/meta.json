@@ -14,8 +14,7 @@
   "react": {
     "export": "SuggestionChip",
     "files": [
-      "suggestion-chip.tsx",
-      "suggestion-chip.css"
+      "suggestion-chip.tsx"
     ]
   },
   "swift": {

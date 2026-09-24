@@ -1950,3 +1950,9 @@
 @utility animate-pastbanner-in {
   animation: mu-pastbanner-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
 }
+@keyframes mu-suggestion-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-suggestion-enter-rise) * -1 * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-suggestion-enter-scale)) * var(--mu-travel-settle))); }
+}
+@utility animate-suggestion-in {
+  animation: mu-suggestion-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}

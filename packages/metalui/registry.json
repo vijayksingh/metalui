@@ -589,11 +589,6 @@
           "path": "packages/metalui/src/blocks/suggestion-chip/suggestion-chip.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/suggestion-chip/suggestion-chip.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/suggestion-chip/suggestion-chip.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/suggestion-chip/suggestion-chip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/suggestion-chip.md. SwiftUI: MetalSuggestionChip in the MetalUI Swift package."

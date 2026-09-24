@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Dimple, SuggestionChip } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/suggestion-chip/suggestion-chip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSuggestionChip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
