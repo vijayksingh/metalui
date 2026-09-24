@@ -1,6 +1,6 @@
 import SwiftUI
 
-// The cue family (Kamui 03 §3). Mirrors components/cue from MetalCue and the colorway cue-* tokens.
+// The cue family. Mirrors the reference cue components and the colorway cue-* tokens.
 // In a TextKit editor the in-flow cues are rendering attributes drawn by the host from MetalCue; the
 // views here are for SwiftUI surfaces (lens rows, panels, previews) and the margin objects.
 
@@ -61,7 +61,7 @@ public struct MetalCueTag: View {
 }
 
 /// A task's checkbox: a 16 pt well that turns dark with a white tick drawn on (not sprung, DS-21).
-/// `doing` shows the half-filled green square; `ghost` the hollow dimple of a task Jev inferred.
+/// `doing` shows the half-filled green square; `ghost` the hollow dimple of an inferred task.
 public struct MetalDimple: View {
     @Binding var isOn: Bool
     let doing: Bool
@@ -90,7 +90,9 @@ public struct MetalDimple: View {
             guard isOn else { return }
             drawn = 0
             // 220 ms after a 40 ms beat, ease-out; instant under Reduce Motion.
-            withAnimation(reduceMotion ? nil : .easeOut(duration: MetalCue.tickMs / 1000).delay(MetalCue.tickDelayMs / 1000)) { drawn = 1 }
+            let draw = MetalCue.tickMs / 1000
+            let wait = MetalCue.tickDelayMs / 1000
+            withAnimation(reduceMotion ? nil : .easeOut(duration: draw).delay(wait)) { drawn = 1 }
         } label: {
             ZStack {
                 if isOn {
@@ -98,7 +100,7 @@ public struct MetalDimple: View {
                     MetalTickShape()
                         .trim(from: 0, to: drawn)
                         .stroke(MetalCue.tick.color, style: StrokeStyle(lineWidth: MetalCue.tickWidth, lineCap: .round, lineJoin: .round))
-                        .padding(side * 0.3)
+                        .padding(MetalRecipes.checkbox.points("tick.x"))
                 } else if ghost {
                     Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueGhostSh), in: shape)
                     if hovering { shape.strokeBorder(MetalCue.ghostHover.color, lineWidth: 1) }
@@ -119,7 +121,7 @@ public struct MetalDimple: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
-        .opacity(isEnabled ? 1 : 0.4)
+        .opacity(isEnabled ? .one : MetalButtonMetrics.disabled)
         .accessibilityLabel(label)
         .accessibilityValue(isOn ? "done" : doing ? "in progress" : "open")
         .accessibilityAddTraits(.isToggle)
@@ -142,10 +144,9 @@ public struct MetalCueUrgency: View {
     public init() {}
 
     public var body: some View {
-        Circle()
-            .fill(MetalShared.ledAmber.gradient(diameter: MetalCue.urgencyLed))
+        Color.clear
             .frame(width: MetalCue.urgencyLed, height: MetalCue.urgencyLed)
-            .background { MetalOuterShadows(layers: MetalShared.ledRing, shape: Circle()) }
+            .metalObjectRecipe(MetalRecipes.mark, part: "urgency", in: Circle())
             .accessibilityLabel("Due soon")
     }
 }
@@ -181,7 +182,7 @@ public struct MetalCueURLPill: View {
     }
 }
 
-/// A value Jev read that is not in the text: a hollow pill in the label role.
+/// A value the recognizer read that is not in the text: a hollow pill in the label role.
 public struct MetalCueInferred: View {
     let text: String
     @Environment(\.metalColorway) private var colorway
