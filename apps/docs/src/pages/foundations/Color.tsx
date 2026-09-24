@@ -20,10 +20,11 @@ const SURFACE_KEYS = ['s-hi', 's', 's-lo', 'well-top', 'well-bot'] as const;
 function Led({ ok }: { ok: boolean }) {
   return (
     <span
-      aria-label={ok ? 'passes' : 'fails'}
       className="inline-block size-6 shrink-0 rounded-full shadow-[0_0_0_.5px_rgba(0,0,0,.25)]"
       style={{ background: ok ? 'var(--mu-led-green)' : 'var(--mu-led-red)' }}
-    />
+    >
+      <span className="sr-only">{ok ? 'passes' : 'fails'}</span>
+    </span>
   );
 }
 
@@ -93,7 +94,7 @@ export default function Color() {
       <Section title="Colorways" lede="Bone and Graphite are finishes, not themes. Each supplies the same surfaces: a highlight, body and low edge for raised material, and a top and bottom for wells.">
         <div className="grid gap-16 md:grid-cols-2 [&>*]:min-w-0">
           {(['bone', 'graphite'] as CW[]).map((cw) => (
-            <div key={cw} data-mu-colorway={cw} className="flex flex-col gap-12 rounded-card p-24" style={{ background: cw === 'bone' ? SHARED.page : SHARED['page-dark'] }}>
+            <div key={cw} data-md="row" data-mu-colorway={cw} className="flex flex-col gap-12 rounded-card p-24" style={{ background: cw === 'bone' ? SHARED.page : SHARED['page-dark'] }}>
               <div className="flex items-baseline justify-between">
                 <span className="type-title text-ink">{cw === 'bone' ? 'Bone' : 'Graphite'}</span>
                 <span className="type-readout text-ink2">{cw === 'bone' ? SHARED.page : SHARED['page-dark']}</span>
@@ -117,7 +118,7 @@ export default function Color() {
           {(['bone', 'graphite'] as CW[]).map((cw) => (
             <div key={cw} data-mu-colorway={cw} style={inkVars(cw)} className="material-raised flex flex-col rounded-card p-16">
               {rows(cw).map((r) => (
-                <div key={r.key} className="grid grid-cols-[1fr_auto] items-center gap-12 border-b border-[var(--mu-rule)] py-12 last:border-0">
+                <div key={r.key} data-md="row" className="grid grid-cols-[1fr_auto] items-center gap-12 border-b border-[var(--mu-rule)] py-12 last:border-0">
                   <div className="flex min-w-0 flex-col gap-4">
                     <span className={r.label ? 'type-label engraved' : 'type-ui'} style={r.label ? undefined : { color: r.color }}>{r.sample}</span>
                     <span className="type-meta text-ink2">{r.key} · {r.job}</span>
@@ -129,7 +130,7 @@ export default function Color() {
                   </div>
                 </div>
               ))}
-              <span className="type-label engraved pt-8">{cw} · worst surface</span>
+              <span data-md="row" className="type-label engraved pt-8">{cw} · worst surface</span>
             </div>
           ))}
         </div>

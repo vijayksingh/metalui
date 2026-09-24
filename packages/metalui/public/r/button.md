@@ -55,6 +55,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 - Put icons **before** the label, at `size={16}`. An icon inside a Button plays its hover pose and press motion from the whole button (the button is the icon's trigger), so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
+- **A label that changes in place must morph, never snap.** Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the button's width springs to the new label, the old text leaves first, and the icon crosses through scale and blur. Example: `<Button><SwapIcon swapKey={state}>{icon}</SwapIcon><SwapText value={label} /></Button>`.
 
 ## Accessibility
 

@@ -98,7 +98,7 @@ export default function Typography() {
           {TYPE_ROLES.map((role) => {
             const v = d[role];
             return (
-              <div key={role} className="grid grid-cols-[96px_1fr] items-baseline gap-x-24 gap-y-6 border-b border-[var(--mu-rule)] py-20 last:border-0 md:grid-cols-[96px_1fr_220px]">
+              <div key={role} data-md="row" className="grid grid-cols-[96px_1fr] items-baseline gap-x-24 gap-y-6 border-b border-[var(--mu-rule)] py-20 last:border-0 md:grid-cols-[96px_1fr_220px]">
                 <span className="type-label engraved">{role}</span>
                 <span className={role === 'body' || role === 'meta' ? 'text-ink2' : 'text-ink'} style={style(role)}>
                   {d.sample || SAMPLES[role]}

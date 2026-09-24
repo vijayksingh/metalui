@@ -73,7 +73,7 @@ export default function ButtonPage() {
       </Section>
 
       <Section title="States" lede="Each cap at rest, pressed, focused and disabled. Hover brightens the label; icons inside play their hover pose from the whole button.">
-        <Bench tone="page">
+        <Bench tone="page" caption="standard · primary · destructive, each at rest, pressed, focus and disabled">
           <div className="grid grid-cols-[88px_repeat(4,auto)] items-center gap-x-24 gap-y-16">
             <span />
             {['Rest', 'Pressed', 'Focus', 'Disabled'].map((s) => (
@@ -93,14 +93,14 @@ export default function ButtonPage() {
       </Section>
 
       <Section title="In use">
-        <Bench>
+        <Bench caption="Three caps, with and without a leading 14px icon, and disabled">
           <ButtonDemo />
         </Bench>
       </Section>
 
       <Section title="Source" lede="The same Button three ways, plus the guide your coding agent reads.">
         <div className="flex flex-col gap-12">
-          <div role="tablist" aria-label="Source" className="material-well inline-flex w-fit rounded-pill p-2">
+          <div role="tablist" aria-label="Source" data-md="skip" className="material-well inline-flex w-fit rounded-pill p-2">
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -136,6 +136,7 @@ export default function ButtonPage() {
             { id: 'B1', title: 'One signal cap per group', body: 'Everything else is standard. Destructive is only for removing or discarding data.' },
             { id: 'B2', title: 'Icons lead, at the control’s icon size', body: '14 in a 32 button. The button is the icon’s trigger, so its hover pose and press play from the whole button.' },
             { id: 'B3', title: 'The press is feedback, not a result', body: 'Show the real outcome: a toast, a state change or an error. Never let the animation stand in for success.' },
+            { id: 'B4', title: 'Changing labels morph', body: 'Copy → Copied, Save → Saving… → Saved: wrap the label in SwapText and the icon in SwapIcon. The width springs to the new label; nothing snaps (Motion M5).' },
           ]}
         />
       </Section>

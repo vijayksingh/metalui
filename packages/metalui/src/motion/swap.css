@@ -1,0 +1,84 @@
+@import "../components/tokens.css";
+
+/* Content swap (FOUNDATIONS §9, M5): content changes morph, never snap. */
+
+/* ---------- text ---------- */
+.mu-swap-text {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+  /* The footprint: springs to the new label's width. */
+  transition: width var(--mu-spring-morph-d) var(--mu-spring-morph);
+}
+.mu-swap-text-slot {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--mu-swap-text-enter) var(--mu-swap-ease-out),
+    filter var(--mu-swap-text-enter) var(--mu-swap-ease-out),
+    opacity var(--mu-swap-text-enter) var(--mu-swap-ease-out);
+}
+/* The old label leaves faster than the new one arrives. */
+.mu-swap-text-slot[data-phase="exit"] {
+  transform: translateY(calc(var(--mu-swap-travel) * -1));
+  filter: blur(var(--mu-swap-blur));
+  opacity: 0;
+  transition-duration: var(--mu-swap-text-exit);
+}
+.mu-swap-text-slot[data-phase="enter-start"] {
+  transform: translateY(var(--mu-swap-travel));
+  filter: blur(var(--mu-swap-blur));
+  opacity: 0;
+  transition: none;
+}
+.mu-swap-text-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ---------- icon ---------- */
+.mu-swap-icon {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+}
+.mu-swap-icon-layer {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+  transition:
+    opacity var(--mu-swap-icon-dur) ease-in-out,
+    filter var(--mu-swap-icon-dur) ease-in-out,
+    transform var(--mu-swap-icon-dur) ease-in-out;
+}
+.mu-swap-icon-layer[data-state="enter"] {
+  opacity: 0;
+  filter: blur(var(--mu-swap-blur));
+  transform: scale(var(--mu-swap-icon-scale));
+  transition: none;
+}
+.mu-swap-icon-layer[data-state="out"] {
+  opacity: 0;
+  filter: blur(var(--mu-swap-blur));
+  transform: scale(var(--mu-swap-icon-scale));
+}
+
+/* Reduced motion keeps meaning, removes travel: a short opacity cross-fade. */
+@media (prefers-reduced-motion: reduce) {
+  .mu-swap-text { transition: none; }
+  .mu-swap-text-slot,
+  .mu-swap-icon-layer {
+    transform: none !important;
+    filter: none !important;
+    transition: opacity 120ms linear !important;
+  }
+}

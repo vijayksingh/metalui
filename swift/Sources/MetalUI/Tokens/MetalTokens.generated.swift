@@ -50,7 +50,7 @@ public enum MetalTokens {
         wellBot: MetalRGBA(236, 235, 231, 1.0),
         ink: MetalRGBA(27, 27, 29, 1.0),
         ink2: MetalRGBA(92, 92, 96, 1.0),
-        ink3: MetalRGBA(131, 131, 134, 1.0),
+        ink3: MetalRGBA(130, 130, 133, 1.0),
         icon: MetalRGBA(58, 58, 61, 1.0),
         engrave: MetalRGBA(40, 38, 32, 0.56),
         lip: MetalRGBA(255, 255, 255, 0.55),
@@ -228,4 +228,6 @@ public enum MetalSprings {
     public static let ui = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
     /// press release
     public static let press = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
+    /// footprint changes: a control growing or shrinking to new content
+    public static let morph = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
 }

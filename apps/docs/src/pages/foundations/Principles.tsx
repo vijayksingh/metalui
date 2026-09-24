@@ -8,6 +8,7 @@ const PRINCIPLES = [
   { id: 'P4', title: 'Colorways, not themes', body: 'Bone and Graphite are two finishes of the same objects, like hardware colorways. Signal colors stay the same in both.' },
   { id: 'P5', title: 'One signal per object', body: 'Phosphor green marks intent (focus, selection, live state), never a call to action. Each object carries at most one saturated signal.' },
   { id: 'P6', title: 'Quiet at rest', body: 'Text-like objects rest without a card; their material rises in on hover. Softness belongs to materials and edges, never to legibility.' },
+  { id: 'P7', title: 'Nothing snaps', body: 'Every change of state is continuous. A control that changes its label keeps its surface: the footprint springs to the new size, the old words leave before the new ones arrive, and icons cross through a small scale and blur. Motion explains the change; it never decorates it.' },
 ];
 
 const FOUNDATIONS = [

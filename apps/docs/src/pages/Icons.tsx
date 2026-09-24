@@ -42,6 +42,7 @@ export default function Icons() {
                   return (
                     <button
                       key={name}
+                      data-md="row"
                       type="button"
                       aria-pressed={on}
                       onClick={() => setPicked(name)}

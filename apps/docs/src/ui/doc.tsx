@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { Button } from '@unlocalhosted/metalui';
-import { CheckIcon, DuplicateIcon } from '@unlocalhosted/metalui/icons';
+import { useLocation } from 'react-router';
+import { Button, SwapIcon, SwapText } from '@unlocalhosted/metalui';
+import { CheckIcon, DuplicateIcon, NoteIcon } from '@unlocalhosted/metalui/icons';
+import { pageMarkdown } from '../lib/pageMarkdown';
 
 /** Page title and lede. No kicker above the title: the title carries itself. */
 export function PageHeader({ title, lede, children }: { title: string; lede: React.ReactNode; children?: React.ReactNode }) {
   return (
     <header className="mb-48 flex flex-col gap-16">
-      <h1 className="page-title text-ink">{title}</h1>
+      <div className="flex flex-wrap items-start justify-between gap-16">
+        <h1 className="page-title text-ink">{title}</h1>
+        <CopyPageButton />
+      </div>
       <p className="page-lede max-w-[62ch] text-ink2">{lede}</p>
       {children}
     </header>
@@ -46,6 +51,7 @@ export function Bench({
     <figure className="flex flex-col gap-12">
       <div
         style={style}
+        data-md="skip"
         className={[
           'relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-card p-32',
           tone === 'well' ? 'material-well' : 'border border-dashed border-[var(--mu-rule)]',
@@ -120,8 +126,40 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
         } catch {}
       }}
     >
-      {copied ? <CheckIcon size={14} /> : <DuplicateIcon size={14} />}
-      <span aria-live="polite">{copied ? 'Copied' : label}</span>
+      <SwapIcon swapKey={copied ? 'done' : 'idle'}>{copied ? <CheckIcon size={14} /> : <DuplicateIcon size={14} />}</SwapIcon>
+      <span aria-live="polite"><SwapText value={copied ? 'Copied' : label} /></span>
+    </Button>
+  );
+}
+
+const COPIED_PAGE_MS = 1600;
+
+/**
+ * Copies the whole page as Markdown for coding agents: headings, prose, rules,
+ * tables, code and specimen captions, with dial values as currently tuned.
+ */
+export function CopyPageButton() {
+  const { pathname } = useLocation();
+  const [copied, setCopied] = React.useState(false);
+  React.useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), COPIED_PAGE_MS);
+    return () => clearTimeout(t);
+  }, [copied]);
+  return (
+    <Button
+      aria-label="Copy this page as Markdown for agents"
+      onClick={async () => {
+        const main = document.querySelector('main');
+        if (!main) return;
+        try {
+          await navigator.clipboard.writeText(pageMarkdown(main, pathname));
+          setCopied(true);
+        } catch {}
+      }}
+    >
+      <SwapIcon swapKey={copied ? 'done' : 'idle'}>{copied ? <CheckIcon size={14} /> : <NoteIcon size={14} />}</SwapIcon>
+      <span aria-live="polite"><SwapText value={copied ? 'Copied for agents' : 'Copy page'} /></span>
     </Button>
   );
 }
@@ -129,11 +167,11 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
 export function Code({ code, label }: { code: string; label?: string }) {
   return (
     <div className="material-raised rounded-card p-6">
-      <div className="flex items-center justify-between gap-12 px-10 pb-6 pt-4">
+      <div data-md="skip" className="flex items-center justify-between gap-12 px-10 pb-6 pt-4">
         <span className="type-label engraved">{label ?? 'Code'}</span>
         <CopyButton text={code} />
       </div>
-      <pre className="type-code material-well max-h-[440px] overflow-auto rounded-plate p-16 text-ink">
+      <pre data-label={label} className="type-code material-well max-h-[440px] overflow-auto rounded-plate p-16 text-ink">
         <code>{code}</code>
       </pre>
     </div>
