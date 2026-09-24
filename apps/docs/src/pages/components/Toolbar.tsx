@@ -8,6 +8,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/toolbar/t
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToolbar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { ToolbarXray } from '../../ui/xray/ToolbarXray';
 
 const TOOLS = [
   { id: 'select', label: 'Select', key: 'V', icon: <SelectIcon size={16} /> },
@@ -36,7 +37,7 @@ export default function ToolbarPage() {
   const d = useDialKit('Toolbar', { variant: { type: 'select', options: ['graphite', 'frost'], default: 'graphite' } });
   return (
     <>
-      <PageHeader title="Toolbar and tool button" lede="A capsule strip of circular tool caps. The active tool sits pressed with a green LED; each tool shows its name and key after 120 ms; the glyphs play their hover from the whole cap. The medium uses the graphite strip in both colorways. Built on Base UI Toolbar, Toggle and Tooltip." />
+      <PageHeader title="Toolbar and tool button" lede="A strip of round tool buttons. The tool you are using stays down with a green light. Point at a tool and after 120 ms it shows its name and key. The dark strip is used in both colorways. Built on Base UI Toolbar, Toggle and Tooltip." />
       <Section title="Playground" lede="Pick a tool, hover for its tooltip, press the momentary ones, tab in and use the arrows. Dial: graphite or frost.">
         <Bench caption={`${d.variant} strip · 48 tall · tools 36`} className="min-h-[200px]">
           <Strip variant={d.variant as 'graphite'} />
@@ -49,6 +50,9 @@ export default function ToolbarPage() {
         </Bench>
         <SwiftCapture name="toolbar" maxWidth={620} />
       </Section>
+      <Section id="x-ray" title="X-ray" lede="See how the toolbar is put together. Click an icon to learn about one part and change it.">
+        <ToolbarXray />
+      </Section>
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
@@ -59,7 +63,7 @@ export default function ToolbarPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'B1', title: 'Every tool has a name and a key', body: 'Icon-only tools always carry a tooltip with the key and an accessible name.', origin: 'Kamui 04 §2' },
+          { id: 'B1', title: 'Every tool has a name and a key', body: 'Icon-only tools always carry a tooltip with the key and an accessible name.', origin: 'Reference design 04 §2' },
           { id: 'B2', title: 'Tool state is instant', body: 'A hundred times a day: only the press travels, one point, on release.', origin: 'MetalUI M6' },
           { id: 'B3', title: 'A strip is a capsule', body: '36 tools in a 6 nest make 48 at radius 24.', origin: 'FOUNDATIONS containers' },
         ]} />

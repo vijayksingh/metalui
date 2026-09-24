@@ -9,6 +9,7 @@ import { SegmentedXray } from './SegmentedXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
 import { SwatchXray } from './SwatchXray';
+import { ToolbarXray } from './ToolbarXray';
 
 /* Every x-ray, by the name the floating table and the overlays use. */
 export const XRAYS = {
@@ -22,6 +23,7 @@ export const XRAYS = {
   chip: { title: 'Suggestion chip', View: ChipXray },
   field: { title: 'Field', View: FieldXray },
   status: { title: 'Status badge', View: StatusXray },
+  toolbar: { title: 'Toolbar', View: ToolbarXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;

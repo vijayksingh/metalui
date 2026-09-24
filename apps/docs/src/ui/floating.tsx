@@ -99,9 +99,9 @@ const ITEMS: Item[] = [
   { id: 'status', table: ['62%', '40%'], space: ['40%', '8%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray }) => <span onClick={() => openXray('status')}><StatusBadge led="live">Sync live</StatusBadge></span> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
-    // a tool cap opens the icon button's x-ray
+    // a tool cap opens the icon button's x-ray; the strip opens the toolbar's
     node: ({ openXray }) => (
-      <div onClick={(e) => { if ((e.target as HTMLElement).closest('.mu-tool')) openXray('icon-button'); }}>
+      <div onClick={(e) => { openXray((e.target as HTMLElement).closest('.mu-tool') ? 'icon-button' : 'toolbar'); }}>
       <Toolbar variant="graphite" aria-label="Tools">
         <ToolButton label="Select" icon={<Icon name="select" size={16} />} pressed />
         <ToolButton label="Note" icon={<Icon name="note" size={16} />} />
