@@ -8,8 +8,7 @@
   "react": {
     "export": "Sparkline",
     "files": [
-      "sparkline.tsx",
-      "sparkline.css"
+      "sparkline.tsx"
     ]
   },
   "swift": {

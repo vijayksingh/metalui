@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import './sparkline.css';
 
 /* SPARKLINE: a small series plot. A line with gaps where a day has no value, a dot per value, the
- * last one in the intent green, a dashed baseline at the average. Dots can act (focus their source). */
+ * last one in the intent green, a dashed baseline at the average. Dots can act (focus their source).
+ * Styled with the theme's utilities (the sparkline recipe). */
 
 export interface SparklinePoint {
   value: number;
@@ -24,10 +24,19 @@ export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>,
   size?: 'regular' | 'mini';
 }
 
+const PLOT = {
+  regular: 'mu-sparkline block w-full h-sparkline-height overflow-visible',
+  mini: 'mu-sparkline block w-full h-sparkline-height-mini overflow-visible',
+};
+const BASE = 'mu-sparkline-base stroke-sparkline-base-color dash-sparkline-base-dash stroke-width-sparkline-base-width';
+const LINE = 'mu-sparkline-line fill-none stroke-sparkline-line-color stroke-width-sparkline-line-width';
+const DOT = 'mu-sparkline-dot r-sparkline-dot-r fill-sparkline-dot-fill stroke-sparkline-dot-ring stroke-width-sparkline-dot-stroke cursor-pointer';
+const LAST = 'mu-sparkline-dot r-sparkline-dot-r-last fill-sparkline-dot-last-fill stroke-sparkline-dot-last-ring stroke-width-sparkline-dot-stroke cursor-pointer';
+
 export function Sparkline({ points, width = 300, height, size = 'regular', className, ...props }: SparklineProps) {
   const h = height ?? (size === 'mini' ? 24 : 40);
   const vals = points.filter(Boolean).map((p) => p!.value);
-  const cls = className ? `mu-sparkline ${className}` : 'mu-sparkline';
+  const cls = className ? `${PLOT[size]} ${className}` : PLOT[size];
   if (!vals.length) return <svg aria-hidden data-size={size} className={cls} viewBox={`0 0 ${width} ${h}`} {...props} />;
   let lo = Math.min(...vals);
   let hi = Math.max(...vals);
@@ -49,12 +58,12 @@ export function Sparkline({ points, width = 300, height, size = 'regular', class
   const dots = points.map((p, i) => [p, i] as const).filter(([p]) => p) as [SparklinePoint, number][];
   return (
     <svg data-size={size} className={cls} viewBox={`0 0 ${width} ${h}`} preserveAspectRatio="none" {...props}>
-      <line className="mu-sparkline-base" x1="0" x2={width} y1={Y(avg).toFixed(1)} y2={Y(avg).toFixed(1)} />
-      <path className="mu-sparkline-line" d={d} />
+      <line className={BASE} x1="0" x2={width} y1={Y(avg).toFixed(1)} y2={Y(avg).toFixed(1)} />
+      <path className={LINE} strokeLinecap="round" strokeLinejoin="round" d={d} />
       {dots.map(([p, i], k) => (
         <circle
           key={i}
-          className="mu-sparkline-dot"
+          className={k === dots.length - 1 ? LAST : DOT}
           data-last={k === dots.length - 1 ? '' : undefined}
           cx={X(i).toFixed(1)}
           cy={Y(p.value).toFixed(1)}

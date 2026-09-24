@@ -710,6 +710,9 @@
 @utility opacity-checkbox-disabled {
   opacity: var(--mu-r-checkbox-self-disabled);
 }
+@utility stroke-width-checkbox-tick-stroke {
+  stroke-width: var(--mu-r-checkbox-tick-stroke);
+}
 @utility duration-checkbox-tick-draw {
   transition-duration: var(--mu-r-checkbox-tick-draw);
 }
@@ -756,6 +759,9 @@
 }
 @utility duration-toolbar-tool-shadow-time {
   transition-duration: var(--mu-r-toolbar-tool-shadow-time);
+}
+@utility stroke-width-toolbar-sep-width {
+  stroke-width: var(--mu-r-toolbar-sep-width);
 }
 @utility type-toolbar-search {
   font: var(--mu-r-toolbar-search-font);
@@ -1215,6 +1221,24 @@
   font: var(--mu-r-field-search-font);
   letter-spacing: var(--mu-r-field-search-tracking);
 }
+@utility stroke-width-sparkline-line-width {
+  stroke-width: var(--mu-r-sparkline-line-width);
+}
+@utility r-sparkline-dot-r {
+  r: var(--mu-r-sparkline-dot-r);
+}
+@utility r-sparkline-dot-r-last {
+  r: var(--mu-r-sparkline-dot-r-last);
+}
+@utility stroke-width-sparkline-dot-stroke {
+  stroke-width: var(--mu-r-sparkline-dot-stroke);
+}
+@utility dash-sparkline-base-dash {
+  stroke-dasharray: var(--mu-r-sparkline-base-dash);
+}
+@utility stroke-width-sparkline-base-width {
+  stroke-width: var(--mu-r-sparkline-base-width);
+}
 @utility z-dialog-scrim-z {
   z-index: var(--mu-r-dialog-scrim-z);
 }
@@ -1345,6 +1369,9 @@
 }
 @utility recipe-link-card-screen {
   background: var(--mu-r-link-card-screen-background);
+}
+@utility stroke-width-link-card-width {
+  stroke-width: var(--mu-r-link-card-self-width);
 }
 @utility type-link-card-host {
   font: var(--mu-r-link-card-host-font);

@@ -616,11 +616,6 @@
           "path": "packages/metalui/src/components/sparkline/sparkline.tsx",
           "type": "registry:ui",
           "target": "components/metalui/sparkline/sparkline.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/sparkline/sparkline.css",
-          "type": "registry:file",
-          "target": "components/metalui/sparkline/sparkline.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."

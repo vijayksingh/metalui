@@ -206,11 +206,14 @@ export function buildRecipes(recipes) {
         if (typeof v === 'number') {
           themeVars.push(`  --spacing-${n}: ${ref(k)};`);
           if (/radius/.test(k) || /radius/.test(part)) themeVars.push(`  --radius-${n}: ${ref(k)};`);
+          if (/^(width|stroke)$/.test(k)) utilities.push(`@utility stroke-width-${n} {\n  stroke-width: ${ref(k)};\n}`);
+          if (/^r(-|$)/.test(k)) utilities.push(`@utility r-${n} {\n  r: ${ref(k)};\n}`);
           if (k === 'font-size') utilities.push(`@utility font-size-${n} {\n  font-size: ${ref(k)};\n}`);
           continue;
         }
         const str = String(v);
         if (k === 'font' || k === 'transform') continue;
+        if (k === 'dash') { utilities.push(`@utility dash-${n} {\n  stroke-dasharray: ${ref(k)};\n}`); continue; }
         if (k === 'tracking') themeVars.push(`  --tracking-${n}: ${ref(k)};`);
         else if (/^\d+(\.\d+)?ms$/.test(str)) utilities.push(`@utility duration-${n} {\n  transition-duration: ${ref(k)};\n}`);
         else if (/^(#|rgba?\(|hsla?\(|transparent$|white$|black$)/.test(str)) themeVars.push(`  --color-${n}: ${ref(k)};`);
