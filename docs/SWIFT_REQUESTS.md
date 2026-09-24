@@ -128,3 +128,9 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **Object:** a generated Me panel and pinned Me summary layout composed from `MetalSparkline`, `MetalLabel` and the panel/region surfaces.
 - **Missing:** the `sparkline` recipe contains line, dots, baseline and heights, but its 4 px plot inset is still implicit. Add `plot.pad` so the Swift port can read it directly. The four panel columns (92/110/flexible/120 px, 14 px gap, 12/14 px row padding) and the mini layout (58/flexible/44 px, 8 px gap, 34 px row height, 6 px inset) lack a generated composition recipe. The client temporarily keeps these layout values in its owned layout file.
 - **Demo CSS:** reference demo `style.css:457-470` defines Me rows, sparklines and mini rows. Reference demo `app.js:2906-2965` plots the 4 px inset, gap semantics, last dot and five-metric mini limit.
+
+## Swift generator: reserved recipe names
+
+- **Object:** the new `switch` recipe in `tokens/tokens.json`.
+- **Missing:** Swift generation currently emits `public static let switch` in `swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift:1872`, which fails to parse. Escape Swift reserved identifiers in the generator (`switch` should be backticked) and regenerate. The native package cannot build while this generated declaration is present. The Swift Rule port is source-parsed but cannot pass its package build until this is corrected.
+- **Demo CSS:** the setting switch is `.tog` in the reference demo `style.css`; its track, thumb, on state and focus style belong to this recipe. The web Settings Recognition section currently uses `Segmented` at `Settings.tsx:170-176`.
