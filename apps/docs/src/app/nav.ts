@@ -49,6 +49,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/lens-bar', label: 'Lens bar' },
       { to: '/components/memory-scrubber', label: 'Memory scrubber' },
       { to: '/components/past-banner', label: 'Past banner' },
+      { to: '/components/tool-strip', label: 'Tool strip' },
     ],
   },
   {

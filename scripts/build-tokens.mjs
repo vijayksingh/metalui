@@ -189,6 +189,11 @@ const PB = T.pastbanner;
 const PB_KEYS = Object.keys(PB).filter((k) => !k.startsWith('$'));
 const pastbannerVars = PB_KEYS.map((k) => `  --mu-pastbanner-${k}: ${typeof PB[k] === 'number' ? `${PB[k]}px` : PB[k]};`).join('\n');
 
+// ---------- tool strip (tokens.json toolstrip) ----------
+const TS = T.toolstrip;
+const TS_KEYS = Object.keys(TS).filter((k) => !k.startsWith('$'));
+const toolstripVars = TS_KEYS.map((k) => `  --mu-toolstrip-${k}: ${typeof TS[k] === 'number' ? `${TS[k]}px` : TS[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -218,6 +223,7 @@ ${segmentedVars}
 ${lensbarVars}
 ${scrubberVars}
 ${pastbannerVars}
+${toolstripVars}
 ${typeVars}
 ${travel}
 }
@@ -602,6 +608,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
 /// ${LB.$use}
+public enum MetalToolStripMetrics {
+${TS_KEYS.map((k) => { const v = TS[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
+}
+
+/// ${PB.$use}
 public enum MetalPastBannerMetrics {
 ${PB_KEYS.map((k) => { const v = PB[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }

@@ -265,4 +265,14 @@ final class MetalCaptures: XCTestCase {
             capture("past-banner-\(colorway.rawValue)", view)
         }
     }
+
+    func testToolStrip() {
+        for colorway in MetalColorway.allCases {
+            let view = MetalToolStrip(label: "3 blocks", items: ["Tasks", "Summarise", "Gather", "Region", "Export"].map { MetalToolStripItem($0) {} } + [MetalToolStripItem("Send away", destructive: true) {}])
+                .padding(28)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("tool-strip-\(colorway.rawValue)", view)
+        }
+    }
 }

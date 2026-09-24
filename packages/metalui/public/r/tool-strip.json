@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tool-strip",
+  "type": "registry:ui",
+  "title": "Tool strip",
+  "description": "A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/tool-strip/tool-strip.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/tool-strip/tool-strip.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Toolbar } from '@base-ui/react/toolbar';\nimport './tool-strip.css';\n\n/* ─────────────────────────────────────────────────────────\n * SELECTION TOOL STRIP (Kamui 04 §11) on Base UI Toolbar\n *   a click selection  rises 4 from the selection on the part spring (instant under Reduce Motion)\n *   hover              a soft light well, white\n *   press              down 1 onto a dark well, 50 ms; back on release\n *   destructive        after an engraved separator, in the warm red\n * Never for a selection made by finishing (quiet), never while dragging, resizing or in the past.\n * ───────────────────────────────────────────────────────── */\n\nexport interface ToolStripItem {\n  label: string;\n  onSelect: () => void;\n  /** The one destructive verb (Send away), set apart by an engraved separator. */\n  destructive?: boolean;\n  disabled?: boolean;\n  /** The key, in the tooltip and aria-keyshortcuts. */\n  shortcut?: string;\n}\n\nexport interface ToolStripProps {\n  items: ToolStripItem[];\n  /** What the verbs act on, for assistive tech: \"3 blocks\". */\n  label: string;\n  className?: string;\n}\n\n/** Verbs over a selection. Tools compose, and never own the data before or after. */\nexport function ToolStrip({ items, label, className }: ToolStripProps) {\n  return (\n    <Toolbar.Root aria-label={`Tools for ${label}`} className={['mu-toolstrip', 'mu-frost-graphite', className].filter(Boolean).join(' ')}>\n      {items.map((it) => (\n        <React.Fragment key={it.label}>\n          {it.destructive && <Toolbar.Separator className=\"mu-toolstrip-sep\" />}\n          <Toolbar.Button\n            className=\"mu-toolstrip-button type-ui\"\n            data-destructive={it.destructive ? '' : undefined}\n            disabled={it.disabled}\n            aria-keyshortcuts={it.shortcut}\n            title={it.shortcut ? `${it.label} · ${it.shortcut}` : undefined}\n            onClick={it.onSelect}\n          >\n            {it.label}\n          </Toolbar.Button>\n        </React.Fragment>\n      ))}\n    </Toolbar.Root>\n  );\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/tool-strip/tool-strip.css",
+      "type": "registry:file",
+      "target": "components/metalui/tool-strip/tool-strip.css",
+      "content": "@import \"../tokens.css\";\n\n/* Selection tool strip (Kamui 04 §11, the medium demo's #selTools) on Base UI Toolbar. */\n.mu-toolstrip {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--mu-toolstrip-gap);\n  padding: var(--mu-toolstrip-pad);\n  border-radius: var(--mu-radius-plate);\n  /* Rises 4 from the selection on the part spring (instant under Reduce Motion). */\n  animation: mu-toolstrip-in var(--mu-spring-part-d) var(--mu-spring-part) both;\n}\n@keyframes mu-toolstrip-in {\n  from { opacity: 0; transform: translateY(calc(var(--mu-toolstrip-enter-rise) * var(--mu-travel-part))); }\n}\n.mu-toolstrip-button {\n  height: var(--mu-toolstrip-button-height);\n  padding: 0 var(--mu-toolstrip-button-pad);\n  border: 0;\n  border-radius: var(--mu-radius-row);\n  color: var(--mu-toolstrip-ink);\n  background: transparent;\n  white-space: nowrap;\n  cursor: pointer;\n  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), color var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-release-d) var(--mu-spring-release);\n}\n.mu-toolstrip-button:hover { background: var(--mu-toolstrip-hover); color: var(--mu-toolstrip-ink-hover); }\n.mu-toolstrip-button:active { transform: translateY(var(--mu-motion-press)); background: var(--mu-toolstrip-active); transition-duration: 50ms; }\n.mu-toolstrip-button:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-green); outline-offset: 0; }\n.mu-toolstrip-button[data-destructive] { color: var(--mu-toolstrip-danger); }\n.mu-toolstrip-button[data-disabled] { opacity: .4; cursor: default; }\n.mu-toolstrip-sep {\n  width: 1px;\n  height: var(--mu-toolstrip-sep-height);\n  margin: 0 3px;\n  background: var(--mu-toolstrip-sep);\n  box-shadow: 1px 0 0 var(--mu-toolstrip-sep-lip);\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/tool-strip.md. SwiftUI: MetalToolStrip in the MetalUI Swift package."
+}

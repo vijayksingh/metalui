@@ -736,6 +736,24 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalToolStripMetrics {
+    public static let pad: Double = 4.0
+    public static let gap: Double = 2.0
+    public static let gapAbove: Double = 12.0
+    public static let buttonHeight: Double = 28.0
+    public static let buttonPad: Double = 10.0
+    public static let ink: MetalRGBA = MetalRGBA(214, 214, 216, 1.0)
+    public static let inkHover: MetalRGBA = MetalRGBA(255, 255, 255, 1.0)
+    public static let hover: MetalRGBA = MetalRGBA(255, 255, 255, 0.08)
+    public static let active: MetalRGBA = MetalRGBA(0, 0, 0, 0.35)
+    public static let danger: MetalRGBA = MetalRGBA(255, 138, 126, 1.0)
+    public static let sep: MetalRGBA = MetalRGBA(0, 0, 0, 0.55)
+    public static let sepLip: MetalRGBA = MetalRGBA(255, 255, 255, 0.055)
+    public static let sepHeight: Double = 16.0
+    public static let enterRise: Double = 4.0
+}
+
+/// The past banner: the only chrome that changes while the canvas is scrubbed into the past. A graphite pill at the top centre: the MEMORY engraving, the moment viewed, and a Back to Now cap with its key. It drops in one nest from above on the surface spring and leaves on release.
 public enum MetalPastBannerMetrics {
     public static let height: Double = 34.0
     public static let padStart: Double = 14.0

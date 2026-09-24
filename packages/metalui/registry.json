@@ -284,6 +284,31 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/suggestion-chip.md. SwiftUI: MetalSuggestionChip in the MetalUI Swift package."
+    },
+    {
+      "name": "tool-strip",
+      "type": "registry:ui",
+      "title": "Tool strip",
+      "description": "A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tool-strip/tool-strip.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/tool-strip/tool-strip.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/tool-strip/tool-strip.css",
+          "type": "registry:file",
+          "target": "components/metalui/tool-strip/tool-strip.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/tool-strip.md. SwiftUI: MetalToolStrip in the MetalUI Swift package."
     }
   ]
 }

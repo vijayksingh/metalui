@@ -19,3 +19,4 @@
 - [Segmented control](https://metalui.dev/r/segmented.md): A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.
 - [Selection frame](https://metalui.dev/r/selection-frame.md): KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.
+- [Tool strip](https://metalui.dev/r/tool-strip.md): A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.

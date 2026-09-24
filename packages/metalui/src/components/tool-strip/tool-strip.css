@@ -1,0 +1,38 @@
+@import "../tokens.css";
+
+/* Selection tool strip (Kamui 04 §11, the medium demo's #selTools) on Base UI Toolbar. */
+.mu-toolstrip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-toolstrip-gap);
+  padding: var(--mu-toolstrip-pad);
+  border-radius: var(--mu-radius-plate);
+  /* Rises 4 from the selection on the part spring (instant under Reduce Motion). */
+  animation: mu-toolstrip-in var(--mu-spring-part-d) var(--mu-spring-part) both;
+}
+@keyframes mu-toolstrip-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-toolstrip-enter-rise) * var(--mu-travel-part))); }
+}
+.mu-toolstrip-button {
+  height: var(--mu-toolstrip-button-height);
+  padding: 0 var(--mu-toolstrip-button-pad);
+  border: 0;
+  border-radius: var(--mu-radius-row);
+  color: var(--mu-toolstrip-ink);
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), color var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-release-d) var(--mu-spring-release);
+}
+.mu-toolstrip-button:hover { background: var(--mu-toolstrip-hover); color: var(--mu-toolstrip-ink-hover); }
+.mu-toolstrip-button:active { transform: translateY(var(--mu-motion-press)); background: var(--mu-toolstrip-active); transition-duration: 50ms; }
+.mu-toolstrip-button:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-green); outline-offset: 0; }
+.mu-toolstrip-button[data-destructive] { color: var(--mu-toolstrip-danger); }
+.mu-toolstrip-button[data-disabled] { opacity: .4; cursor: default; }
+.mu-toolstrip-sep {
+  width: 1px;
+  height: var(--mu-toolstrip-sep-height);
+  margin: 0 3px;
+  background: var(--mu-toolstrip-sep);
+  box-shadow: 1px 0 0 var(--mu-toolstrip-sep-lip);
+}
