@@ -301,11 +301,6 @@
           "path": "packages/metalui/src/components/kbd/kbd.tsx",
           "type": "registry:ui",
           "target": "components/metalui/kbd/kbd.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/kbd/kbd.css",
-          "type": "registry:file",
-          "target": "components/metalui/kbd/kbd.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."

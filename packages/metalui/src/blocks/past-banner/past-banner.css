@@ -1,5 +1,4 @@
 @import "../../components/tokens.css";
-@import "../../components/kbd/kbd.css";
 
 /* Past banner: a composition. It lays out its parts and brings the pill in; every paint is
    Surface(graphite-plain), Label, Button(graphite) and Kbd. Layout values: --mu-pastbanner-*. */

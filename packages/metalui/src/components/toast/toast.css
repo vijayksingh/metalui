@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../kbd/kbd.css";
 
 /* Toast (the reference design's #toast) on Base UI Toast. Its look is the toast recipe (--mu-r-toast-*). */
 .mu-toast-viewport {

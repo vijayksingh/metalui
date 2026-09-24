@@ -3,9 +3,17 @@
   "title": "Keycap",
   "status": "alpha",
   "description": "A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.",
-  "sheet": "KAMUI keycap (Kamui 04 §9)",
   "base": "none (a kbd element)",
-  "react": { "export": "Kbd", "files": ["kbd.tsx", "kbd.css"] },
-  "swift": { "symbol": "MetalKbd", "file": "swift/Sources/MetalUI/Components/MetalKbd.swift" },
-  "agent": "kbd.agent.md"
+  "react": {
+    "export": "Kbd",
+    "files": [
+      "kbd.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalKbd",
+    "file": "swift/Sources/MetalUI/Components/MetalKbd.swift"
+  },
+  "agent": "kbd.agent.md",
+  "layer": "component"
 }

@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../kbd/kbd.css";
 
 /* Field and search field. Their look is the field recipe (--mu-r-field-*) on the well. */
 .mu-field {

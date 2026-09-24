@@ -221,8 +221,7 @@
         "symbol": "MetalKbd"
       },
       "registry": "https://metalui.dev/r/kbd.json",
-      "agent": "https://metalui.dev/r/kbd.md",
-      "sheet": "KAMUI keycap (Kamui 04 §9)"
+      "agent": "https://metalui.dev/r/kbd.md"
     },
     {
       "name": "label",

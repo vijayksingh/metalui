@@ -1,6 +1,6 @@
 import { Button, Kbd } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/kbd/kbd.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/kbd/kbd.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/kbd/kbd.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalKbd.swift?raw';
 import { CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, TokenTable } from '../../ui/doc';

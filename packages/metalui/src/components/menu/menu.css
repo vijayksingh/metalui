@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../kbd/kbd.css";
 
 /* Menu and the correction popover (the reference design's #pop) on Base UI Menu. Its look is the menu recipe (--mu-r-menu-*). */
 /* Above a toast: a menu is what the person is acting in now. */

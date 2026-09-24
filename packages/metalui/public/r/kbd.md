@@ -1,6 +1,6 @@
 # Keycap
 
-A key's glyph on a small raised cap. React: `Kbd` from `@unlocalhosted/metalui`. SwiftUI: `MetalKbd`. Kamui brief: 04 §9.
+A key's glyph on a small raised cap. React: `Kbd` from `@unlocalhosted/metalui`. SwiftUI: `MetalKbd`.
 
 ## Use it for
 

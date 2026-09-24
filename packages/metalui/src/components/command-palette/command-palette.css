@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../kbd/kbd.css";
 
 /* Command palette (the reference design's .pal) on Base UI Dialog + inline Combobox. */
 .mu-palette-scrim {
