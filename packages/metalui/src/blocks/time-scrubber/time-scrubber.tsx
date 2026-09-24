@@ -5,7 +5,6 @@ import { Slider } from '../../components/slider/slider';
 import { Label } from '../../components/label/label';
 import { Glyph } from '../../components/glyph/glyph';
 import { Button } from '../../components/button/button';
-import './time-scrubber.css';
 
 /* ─────────────────────────────────────────────────────────
  * TIME SCRUBBER (the reference design's #scrub): a composition
@@ -25,6 +24,13 @@ const WD3 = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const DAY = 86400000;
 const startOfDay = (t: number) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
 const clamp = (n: number, a: number, b: number) => Math.min(b, Math.max(a, n));
+
+/* Layout from the scrubber group: the readout sits over the slider, which fills the 330 × 50 box (its
+ * track on the box's centre line). */
+const BOX = 'mu-scrubber relative w-scrubber-width h-scrubber-height';
+const READ = 'mu-scrubber-read absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
+const GLYPH = 'mu-scrubber-glyph mr-scrubber-glyph-gap';
+const SLIDER = 'mu-scrubber-slider !absolute inset-0';
 
 export interface TimeScrubberProps {
   /** The first moment (ms): the start of the day of the oldest item. */
@@ -62,16 +68,16 @@ export function TimeScrubber({ start, end, value, onValueChange, marks = [], for
   const shown = days.filter((_, i) => i % every === 0 || i === days.length - 1);
 
   return (
-    <div className={className ? `mu-scrubber ${className}` : 'mu-scrubber'}>
-      <div className="mu-scrubber-read">
+    <div className={className ? `${BOX} ${className}` : BOX}>
+      <div className={READ}>
         <Label variant="engraved">
-          {glyph && <Glyph size="tiny" tone="inherit" className="mu-scrubber-glyph">{glyph}</Glyph>}
+          {glyph && <Glyph size="tiny" tone="inherit" className={GLYPH}>{glyph}</Glyph>}
           {title} · {read}
         </Label>
         {value != null && <Button cap="link" onClick={() => onValueChange(null)}>NOW</Button>}
       </div>
       <Slider.Root
-        className="mu-scrubber-slider"
+        className={SLIDER}
         value={value ?? end}
         min={start}
         max={end}

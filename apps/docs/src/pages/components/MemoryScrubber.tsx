@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MemoryScrubber } from '@unlocalhosted/metalui';
 import { ClockIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMemoryScrubber.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';

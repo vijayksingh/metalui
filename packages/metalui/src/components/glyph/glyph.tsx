@@ -13,7 +13,7 @@ export interface GlyphProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 const FRAME = 'inline-grid place-items-center flex-none';
 const SIZES = {
-  tiny: '[&>svg]:size-glyph-size-tiny',
+  tiny: '[&>svg]:size-glyph-size-tiny glyph-drop-tiny',
   small: '[&>svg]:size-glyph-size-small',
   regular: '[&>svg]:size-glyph-size-regular',
 };

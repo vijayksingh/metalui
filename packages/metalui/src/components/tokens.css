@@ -1463,6 +1463,7 @@
   --mu-r-glyph-size-small: 14px;
   --mu-r-glyph-size-regular: 16px;
   --mu-r-glyph-size-tiny: 10px;
+  --mu-r-glyph-drop-tiny: -1px;
   /* link-card: reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open */
   --mu-r-link-card-screen-background:
     /* mu-recipe:link-card:0 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);

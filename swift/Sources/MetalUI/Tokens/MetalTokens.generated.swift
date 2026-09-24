@@ -1765,6 +1765,7 @@ public enum MetalRecipes {
             "ink.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "ink.ink2": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
             "ink.ink3": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "drop.tiny": .number(-1.0),
         ]
     )
 

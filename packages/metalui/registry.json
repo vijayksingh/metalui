@@ -632,11 +632,6 @@
           "path": "packages/metalui/src/blocks/time-scrubber/time-scrubber.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/time-scrubber/time-scrubber.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/time-scrubber/time-scrubber.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/time-scrubber/time-scrubber.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/time-scrubber.md. SwiftUI: MetalTimeScrubber in the MetalUI Swift package."

@@ -658,6 +658,7 @@
   --color-glyph-ink-ink: var(--mu-r-glyph-ink-ink);
   --color-glyph-ink-ink2: var(--mu-r-glyph-ink-ink2);
   --color-glyph-ink-ink3: var(--mu-r-glyph-ink-ink3);
+  --spacing-glyph-drop-tiny: var(--mu-r-glyph-drop-tiny);
   --spacing-link-card-width: var(--mu-r-link-card-self-width);
   --spacing-link-card-screen-height: var(--mu-r-link-card-screen-height);
   --spacing-link-card-screen-pad-y: var(--mu-r-link-card-screen-pad-y);
@@ -1533,6 +1534,9 @@
 }
 @utility transition-row {
   transition: var(--mu-r-row-self-transition);
+}
+@utility glyph-drop-tiny {
+  vertical-align: var(--mu-r-glyph-drop-tiny);
 }
 @utility recipe-link-card-screen {
   background: var(--mu-r-link-card-screen-background);

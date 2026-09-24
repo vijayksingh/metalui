@@ -15,8 +15,7 @@
   "react": {
     "export": "TimeScrubber, MemoryScrubber",
     "files": [
-      "time-scrubber.tsx",
-      "time-scrubber.css"
+      "time-scrubber.tsx"
     ]
   },
   "swift": {
