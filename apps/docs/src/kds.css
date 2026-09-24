@@ -779,3 +779,11 @@ html.rm .xr-dialogwrap { animation: none; }
 .xr-overlay { z-index: 100; overflow-y: auto; place-items: safe center; }
 .xr-overlay > .xr-sheet { margin: auto; }
 @container (max-width: 559px) { .xr-solid-fit { zoom: .6; } }
+/* the snap guides playground: a small canvas whose world scales with the zoom */
+.snap-canvas { position: relative; width: 100%; overflow: hidden; border-radius: 22px;
+  background-color: color-mix(in srgb, var(--page) 60%, transparent);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1.2px); background-size: 20px 20px; }
+.snap-world { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 0 0; }
+.xr-catch { background: color-mix(in srgb, var(--green-deep) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--green-deep) 30%, transparent); border-radius: 4px; }
+.xr-solid:has(.snap-canvas) { width: 100%; cursor: default; }
+.xr-solid:has(.snap-canvas) .xr-solid-fit { width: 100%; }

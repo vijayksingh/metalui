@@ -52,6 +52,7 @@ const router = createBrowserRouter([
       { path: 'components/suggestion-chip', lazy: lazy(() => import('./pages/components/SuggestionChip')) },
       { path: 'components/cue', lazy: lazy(() => import('./pages/components/CueFamily')) },
       { path: 'components/selection-frame', lazy: lazy(() => import('./pages/components/SelectionFrame')) },
+      { path: 'components/snap-guides', lazy: lazy(() => import('./pages/components/SnapGuides')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
       { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },
