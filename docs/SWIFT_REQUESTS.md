@@ -73,6 +73,12 @@
 - **Missing:** the vertical rule and rounded hover fill are still assembled from generic color tokens; the 42 px time column, 12 px gap, 6 px vertical inset, 14 px horizontal inset and day header spacing are client-owned.
 - **Demo CSS:** reference `style.css:445-450` defines `.tl-day`, its trailing rule, `.tl-item`, hover and time engraving.
 
+## Gallery result card
+
+- **Object:** a gallery card layout recipe that composes `MetalSurface(.raiseLite, radius: .plate)`.
+- **Missing:** grid minimum 170 px and gap 10 px, card minimum height 96 px, padding 12/14 px, four-line text clamp, and the 46 px colour/image band with radius 12 are still client-owned.
+- **Demo CSS:** reference `style.css:451-453` defines `.gallery`, `.gcard`, `.gcard .lt` and `.gcard .sw`.
+
 ## Composition refactor (docs/COMPOSITION.md)
 
 Primitives and blocks the React side now has. Mirror each with the same name (Metal prefix), slots and recipe; the recipe parity check lists what is still missing.
