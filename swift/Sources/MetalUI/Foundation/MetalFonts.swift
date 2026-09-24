@@ -3,8 +3,8 @@ import CoreText
 import SwiftUI
 
 /// The type families, as the tokens name them: the system faces (SF Pro Text for UI and
-/// reading, SF Mono for engravings, readouts, keycaps and code) exactly as the web's
-/// -apple-system / ui-monospace stacks render them, and the bundled Doto (SIL OFL 1.1) for
+/// reading, the browser's resolved mono face for engravings, readouts, keycaps and code)
+/// as the web's -apple-system / ui-monospace stacks render them, and the bundled Doto (SIL OFL 1.1) for
 /// dot-matrix display readouts. Geist and Martian Mono stay bundled for hosts that ask for them.
 public enum MetalFonts {
     /// PostScript family names as the variable fonts declare them.
@@ -43,8 +43,10 @@ public enum MetalFonts {
         return NSFont.Weight.black.rawValue
     }
 
-    /// A CoreText font for a type role at a size: the system face for sans and mono at the role's
-    /// weight, Doto on its variable axes for pixel.
+    /// A CoreText font for a type role at a size. Chrome resolves the demo's
+    /// `"SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace` stack to
+    /// Courier on macOS; use that same available face for the Swift mono role.
+    /// Doto keeps its variable axes for pixel labels.
     public static func ctFont(_ role: MetalTypeRole, size: Double) -> CTFont {
         let base: CTFont
         switch role.family {
@@ -56,7 +58,9 @@ public enum MetalFonts {
             ]
             base = CTFontCreateWithFontDescriptor(CTFontDescriptorCreateWithAttributes(attributes as CFDictionary), size, nil)
         case .mono:
-            base = NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight))) as CTFont
+            let name = role.weight > 500 ? "Courier-Bold" : "Courier"
+            base = (NSFont(name: name, size: size) ??
+                    NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight)))) as CTFont
         default:
             base = NSFont.systemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight))) as CTFont
         }
