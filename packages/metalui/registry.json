@@ -42,6 +42,31 @@
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
     },
     {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "The dimple checkbox: a recessed well that turns into a dark pressed key with a drawn tick; doing (half green) and ghost (an inferred task's hollow ring) states.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/checkbox/checkbox.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/checkbox/checkbox.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/checkbox/checkbox.css",
+          "type": "registry:file",
+          "target": "components/metalui/checkbox/checkbox.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
+    },
+    {
       "name": "command-palette",
       "type": "registry:ui",
       "title": "Command palette",
@@ -65,31 +90,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
-    },
-    {
-      "name": "cue",
-      "type": "registry:ui",
-      "title": "Cue family",
-      "description": "Recognition made visible on the text: date, duration, amount, measurement, tag, derived tag and hex cues that never move a letter; the URL host pill and the inferred pill; the dimple, ghost dimple and urgency LED in the margin; the trailing life glyph.",
-      "dependencies": [
-        "@base-ui/react@^1.8.0"
-      ],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/cue/cue.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/cue/cue.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/cue/cue.css",
-          "type": "registry:file",
-          "target": "components/metalui/cue/cue.css"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/cue.md. SwiftUI: MetalDimple, MetalCueURLPill, MetalCueInferred, MetalCueUrgency, MetalCueLife, Text.metalCue(_:) in the MetalUI Swift package."
     },
     {
       "name": "hover-engraving",
@@ -184,6 +184,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/lens-bar.md. SwiftUI: MetalLensBar in the MetalUI Swift package."
+    },
+    {
+      "name": "mark",
+      "type": "registry:ui",
+      "title": "Mark",
+      "description": "Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/mark/mark.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/mark/mark.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/mark/mark.css",
+          "type": "registry:file",
+          "target": "components/metalui/mark/mark.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:) in the MetalUI Swift package."
     },
     {
       "name": "memory-scrubber",

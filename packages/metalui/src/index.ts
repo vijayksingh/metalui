@@ -11,8 +11,8 @@ export { Menu, ContextMenu, MenuItem, MenuSeparator, type MenuProps, type Contex
 export { CommandPalette, type CommandPaletteItem, type CommandPaletteProps } from './components/command-palette/command-palette';
 export { ToastProvider, useToast, type ToastOptions, type ToastTone } from './components/toast/toast';
 export { Led, StatusBadge, type LedProps, type LedKind, type StatusBadgeProps } from './components/status/status';
-export { Cue, CueUrl, CueInferred, CueUrgency, CueLife, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/cue/cue';
-export { Dimple, type DimpleProps } from './components/dimple/dimple';
+export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
+export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './components/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './components/past-banner/past-banner';

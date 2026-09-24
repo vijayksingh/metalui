@@ -3,9 +3,9 @@ import { useDialKit } from 'dialkit';
 import { Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, SlidingIndicator } from '@unlocalhosted/metalui';
 import { LinkIcon } from '@unlocalhosted/metalui/icons';
 import { LifeCoffeeIcon, LifeCalmIcon } from '@unlocalhosted/metalui/icons/life';
-import reactSource from '../../../../../packages/metalui/src/components/cue/cue.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/cue/cue.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/cue/cue.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/components/mark/mark.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/components/mark/mark.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCue.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -64,7 +64,7 @@ export default function CueFamilyPage() {
               <span className="type-content text-ink">
                 {d.writing && <span className="type-readout inline-block w-25 -ml-25 text-ink3">[{done ? 'x' : ' '}] </span>}
                 <span className={done ? 'text-ink3 line-through decoration-[rgba(0,0,0,.25)]' : ''}>Send the poster to Sam</span>
-                {!d.writing && <CueInferred resolved="FRI 3 OCT · JEV 0.82">fri</CueInferred>}
+                {!d.writing && <CueInferred resolved="FRI 3 OCT · RECOGNIZER 0.82">fri</CueInferred>}
               </span>
             </div>
             <Line cues={d.cues} />
@@ -132,10 +132,10 @@ export default function CueFamilyPage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'Q1', title: 'A cue never moves a letter', body: 'Every in-flow cue has the same advance as the plain words (width delta 0.00 pt). A tag’s padding is paid back by an equal negative margin; underlines sit below the baseline.', origin: 'Kamui 03 §3, DS-31' },
-            { id: 'Q2', title: 'Applying a cue never rewrites text', body: 'Text changes only when the person acts: ticking a dimple writes [x], accepting a chip, dropping into a region. Each is undoable.', origin: 'Kamui 03 §4' },
-            { id: 'Q3', title: 'Quiet', body: 'No toast, badge or sound for recognition. Tags are ink2, derived tags ink3; no hue for kinds.', origin: 'Kamui 03 §13' },
-            { id: 'Q4', title: 'Hidden confidence is a bug', body: 'An inferred value says where it came from in its chip: JEV 0.82, RULE, YOU.', origin: 'Kamui 03 §5' },
+            { id: 'Q1', title: 'A cue never moves a letter', body: 'Every in-flow cue has the same advance as the plain words (width delta 0.00 pt). A tag’s padding is paid back by an equal negative margin; underlines sit below the baseline.', origin: 'the brief, DS-31' },
+            { id: 'Q2', title: 'Applying a cue never rewrites text', body: 'Text changes only when the person acts: ticking a dimple writes [x], accepting a chip, dropping into a region. Each is undoable.', origin: 'the brief' },
+            { id: 'Q3', title: 'Quiet', body: 'No toast, badge or sound for recognition. Tags are ink2, derived tags ink3; no hue for kinds.', origin: 'the brief' },
+            { id: 'Q4', title: 'Hidden confidence is a bug', body: 'An inferred value says where it came from in its chip: RECOGNIZER 0.82, RULE, YOU.', origin: 'the brief' },
           ]}
         />
       </Section>

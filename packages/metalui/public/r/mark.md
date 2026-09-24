@@ -1,17 +1,17 @@
-# Cue family
+# Mark
 
-Recognition made visible on the text. React: `Cue`, `CueUrl`, `CueInferred`, `Dimple` (Base UI Checkbox), `CueUrgency`, `CueLife` from `@unlocalhosted/metalui`. SwiftUI: `Text.metalCue(_:colorway:)`, `MetalCueTag`, `MetalDimple`, `MetalCueURLPill`, `MetalCueInferred`, `MetalCueUrgency`, `MetalCueLife`. Kamui brief: 03 §3 and the medium demo.
+Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, `MarkUrgency`, `MarkLife` from `@unlocalhosted/metalui` (earlier `Cue`, `CueUrl`, `MarkInferred`, `CueUrgency`, `CueLife`); the checkbox is `Checkbox`. SwiftUI: `Text.metalMark(_:colorway:)`, `MetalMarkTag`, `MetalMarkURLPill`, `MetalMarkInferred`, `MetalMarkUrgency`, `MetalMarkLife`.
 
 ## Use it for
 
 - Marking what a recognizer understood in a person's own writing: a date, a duration, an amount, a measurement, a tag, a colour, a link.
-- A task's checkbox in the margin (`Dimple`), a task the model inferred (`Dimple ghost`), and urgency (`CueUrgency`).
-- The one life glyph trailing a block (`CueLife` around a `Life*Icon` at 16).
+- A task's checkbox in the margin (`Checkbox`), a task the model inferred (`Checkbox ghost`), and urgency (`MarkUrgency`).
+- The one life glyph trailing a block (`MarkLife` around a `Life*Icon` at 16).
 
 ## Don't use it for
 
 - Changing the text. A cue never rewrites, reflows or recolours the words (tags are ink2, derived tags ink3, never a hue).
-- Anything the person did not write: a value the model read that is not in the text is a `CueInferred` pill after the words, never an underline.
+- Anything the person did not write: a value the model read that is not in the text is a `MarkInferred` pill after the words, never an underline.
 - Status, errors or calls to action. Cues are quiet and have no toast, badge or sound.
 
 ## Anatomy
@@ -45,7 +45,7 @@ import { LifeCoffeeIcon } from '@unlocalhosted/metalui/icons/life';
 <Dimple checked={done} onCheckedChange={tick} aria-label="Poster task" />
 Send the poster <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cue> for <Cue kind="tag">#poster</Cue>
 <CueUrl host="figma.com" href={url} glyph={<LinkIcon size={11} />} />
-<CueInferred resolved="FRI 3 OCT · JEV 0.82">fri</CueInferred>
+<CueInferred resolved="FRI 3 OCT · RECOGNIZER 0.82">fri</CueInferred>
 <CueLife><LifeCoffeeIcon size={16} /></CueLife>
 ```
 
@@ -53,7 +53,7 @@ Send the poster <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cu
 |---|---|
 | `Cue` | `kind` (`date`, `duration`, `amount`, `measurement`, `tag`, `derived-tag`, `hex`), `resolved` (hover chip), `color` and `swatch` (hex) |
 | `CueUrl` | `host`, `glyph`, any anchor attribute |
-| `CueInferred` | `resolved` |
+| `MarkInferred` | `resolved` |
 | `Dimple` | Base UI Checkbox props (`checked`, `onCheckedChange`, `disabled`), `doing`, `ghost` |
 | `CueUrgency` | – |
 | `CueLife` | the glyph as children |
@@ -63,7 +63,7 @@ Send the poster <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cu
 - Metric-neutral: every in-flow cue has the same advance as the plain text it marks (measured width delta 0.00 pt). Never add padding without paying it back.
 - One life glyph per block, trailing; never a chip for a glyph; never while writing.
 - Ticking a dimple is a person's action: the host writes `[x]` into the text and offers Undo. Applying a cue never rewrites text.
-- Hidden confidence is a bug: an inferred value shows where it came from (`JEV 0.82`) in its chip.
+- Hidden confidence is a bug: an inferred value shows where it came from (`RECOGNIZER 0.82`) in its chip.
 
 ## Accessibility
 

@@ -1,0 +1,20 @@
+{
+  "name": "mark",
+  "title": "Mark",
+  "status": "alpha",
+  "description": "Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.",
+  "base": "none",
+  "react": {
+    "export": "Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife (Cue*)",
+    "files": [
+      "mark.tsx",
+      "mark.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:)",
+    "file": "swift/Sources/MetalUI/Components/MetalMark.swift"
+  },
+  "agent": "mark.agent.md",
+  "layer": "component"
+}

@@ -30,10 +30,10 @@
   color: var(--mu-ink2);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  background: var(--mu-cue-tag-bg);
-  box-shadow: var(--mu-cue-tag-sh);
+  background: var(--mu-r-mark-tag-background);
+  box-shadow: var(--mu-r-mark-tag-shadow);
 }
-.mu-cue[data-kind="derived-tag"] { background: transparent; box-shadow: var(--mu-cue-derived-sh); color: var(--mu-ink3); }
+.mu-cue[data-kind="derived-tag"] { background: transparent; box-shadow: var(--mu-r-mark-derived-shadow); color: var(--mu-ink3); }
 .mu-cue[data-kind="hex"] {
   text-decoration: underline solid color-mix(in srgb, var(--mu-cue-hex, var(--mu-ink3)) var(--mu-cue-hex-mix), transparent);
   text-decoration-thickness: var(--mu-cue-hex-thickness);
@@ -47,7 +47,7 @@
   border-radius: var(--mu-cue-swatch-radius);
   transform: translateY(1px);
   background: var(--mu-cue-hex);
-  box-shadow: var(--mu-cue-swatch-sh);
+  box-shadow: var(--mu-r-mark-swatch-shadow);
 }
 
 /* The resolved value, on hover: a graphite chip rising 3 over the cue on the part spring. Absolute, so metric-neutral. */
@@ -88,11 +88,11 @@
   vertical-align: 1px;
   color: var(--mu-cue-url-ink);
   text-decoration: none;
-  background: var(--mu-cue-url-bg);
-  box-shadow: var(--mu-cue-url-ring);
+  background: var(--mu-r-mark-url-background);
+  box-shadow: var(--mu-r-mark-url-shadow);
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
-.mu-cue-url:hover { background: var(--mu-cue-url-bg-hover); }
+.mu-cue-url:hover { background: var(--mu-r-mark-url-hover-background); }
 .mu-cue-url > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); }
 .mu-cue-url:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
 
@@ -107,7 +107,7 @@
   vertical-align: 1px;
   line-height: var(--mu-cue-inferred-height);
   color: var(--mu-ink3);
-  box-shadow: var(--mu-cue-inferred-ring);
+  box-shadow: var(--mu-r-mark-inferred-shadow);
 }
 
 /* ---- urgency: a 5 pt amber LED in the margin ---- */
@@ -116,8 +116,8 @@
   width: var(--mu-cue-urgency-led);
   height: var(--mu-cue-urgency-led);
   border-radius: var(--mu-round);
-  background: var(--mu-led-amber);
-  box-shadow: var(--mu-led-ring);
+  background: var(--mu-r-mark-urgency-background);
+  box-shadow: var(--mu-r-mark-urgency-shadow);
 }
 
 /* ---- the life glyph on a line: after a middle dot, ink3 at rest, ink2 when the host is hovered ---- */

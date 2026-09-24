@@ -1,0 +1,20 @@
+{
+  "name": "checkbox",
+  "title": "Checkbox",
+  "status": "alpha",
+  "layer": "component",
+  "description": "The dimple checkbox: a recessed well that turns into a dark pressed key with a drawn tick; doing (half green) and ghost (an inferred task's hollow ring) states.",
+  "base": "@base-ui/react/checkbox",
+  "react": {
+    "export": "Checkbox (Dimple)",
+    "files": [
+      "checkbox.tsx",
+      "checkbox.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCheckbox",
+    "file": "swift/Sources/MetalUI/Components/MetalCheckbox.swift"
+  },
+  "agent": "checkbox.agent.md"
+}

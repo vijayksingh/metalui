@@ -751,41 +751,41 @@
   --mu-r-swatch-label-ink-light: rgba(255,255,255,.8);
   --mu-r-swatch-led-size: 8px;
   --mu-r-swatch-led-inset: 10px;
-  /* dimple: reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
-  --mu-r-dimple-self-on-background:
-    /* mu-recipe:dimple:10 */ linear-gradient(#303033, #1E1E20);
-  --mu-r-dimple-self-on-shadow:
-    /* mu-recipe:dimple:11 */ inset 0 1px 0 rgba(255,255,255,.12),
-    /* mu-recipe:dimple:12 */ 0 1px 2px rgba(0,0,0,.2);
-  --mu-r-dimple-self-ghost-background:
-    /* mu-recipe:dimple:13 */ rgba(0,0,0,0);
-  --mu-r-dimple-self-ghost-hover-shadow:
-    /* mu-recipe:dimple:18 */ inset 0 0 0 1px rgba(63,185,122,.55);
-  --mu-r-dimple-doing-background:
-    /* mu-recipe:dimple:19 */ linear-gradient(90deg, #3FB97A 50%, rgba(63,185,122,0) 50%);
-  --mu-r-dimple-self-size: 16px;
-  --mu-r-dimple-self-radius: 6px;
-  --mu-r-dimple-self-x: -25px;
-  --mu-r-dimple-self-y: 2.5px;
-  --mu-r-dimple-self-row-size: 14px;
-  --mu-r-dimple-self-row-radius: 5px;
-  --mu-r-dimple-self-fade: 160ms;
-  --mu-r-dimple-tick-x: 5px;
-  --mu-r-dimple-tick-y: 2.5px;
-  --mu-r-dimple-tick-w: 4px;
-  --mu-r-dimple-tick-h: 8px;
-  --mu-r-dimple-tick-stroke: 1.6px;
-  --mu-r-dimple-tick-rotate: 42deg;
-  --mu-r-dimple-tick-color: #FFFFFF;
-  --mu-r-dimple-tick-draw: 220ms;
-  --mu-r-dimple-tick-delay: 40ms;
-  --mu-r-dimple-ghost-x: -27px;
-  --mu-r-dimple-ghost-y: 3.5px;
-  --mu-r-dimple-ghost-size: 14px;
-  --mu-r-dimple-ghost-radius: 5px;
-  --mu-r-dimple-doing-inset: 4.5px;
-  --mu-r-dimple-doing-radius: 3px;
-  --mu-r-dimple-doing-opacity: 0.8;
+  /* checkbox: reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
+  --mu-r-checkbox-self-on-background:
+    /* mu-recipe:checkbox:10 */ linear-gradient(#303033, #1E1E20);
+  --mu-r-checkbox-self-on-shadow:
+    /* mu-recipe:checkbox:11 */ inset 0 1px 0 rgba(255,255,255,.12),
+    /* mu-recipe:checkbox:12 */ 0 1px 2px rgba(0,0,0,.2);
+  --mu-r-checkbox-self-ghost-background:
+    /* mu-recipe:checkbox:13 */ rgba(0,0,0,0);
+  --mu-r-checkbox-self-ghost-hover-shadow:
+    /* mu-recipe:checkbox:18 */ inset 0 0 0 1px rgba(63,185,122,.55);
+  --mu-r-checkbox-doing-background:
+    /* mu-recipe:checkbox:19 */ linear-gradient(90deg, #3FB97A 50%, rgba(63,185,122,0) 50%);
+  --mu-r-checkbox-self-size: 16px;
+  --mu-r-checkbox-self-radius: 6px;
+  --mu-r-checkbox-self-x: -25px;
+  --mu-r-checkbox-self-y: 2.5px;
+  --mu-r-checkbox-self-row-size: 14px;
+  --mu-r-checkbox-self-row-radius: 5px;
+  --mu-r-checkbox-self-fade: 160ms;
+  --mu-r-checkbox-tick-x: 5px;
+  --mu-r-checkbox-tick-y: 2.5px;
+  --mu-r-checkbox-tick-w: 4px;
+  --mu-r-checkbox-tick-h: 8px;
+  --mu-r-checkbox-tick-stroke: 1.6px;
+  --mu-r-checkbox-tick-rotate: 42deg;
+  --mu-r-checkbox-tick-color: #FFFFFF;
+  --mu-r-checkbox-tick-draw: 220ms;
+  --mu-r-checkbox-tick-delay: 40ms;
+  --mu-r-checkbox-ghost-x: -27px;
+  --mu-r-checkbox-ghost-y: 3.5px;
+  --mu-r-checkbox-ghost-size: 14px;
+  --mu-r-checkbox-ghost-radius: 5px;
+  --mu-r-checkbox-doing-inset: 4.5px;
+  --mu-r-checkbox-doing-radius: 3px;
+  --mu-r-checkbox-doing-opacity: 0.8;
   /* region: reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
   --mu-r-region-self-over-background:
     /* mu-recipe:region:8 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));
@@ -1146,6 +1146,23 @@
     /* mu-recipe:rule:5 */ 1px 0 0 rgba(255,255,255,.055);
   --mu-r-rule-self-thickness: 1px;
   --mu-r-rule-self-margin: 3px;
+  /* mark: reference style.css .c-date, .c-dur, .c-amt, .c-meas, .c-tag, .c-hex, .c-url, .c-jdate, .led-urgent, .c-life */
+  --mu-r-mark-url-background:
+    /* mu-recipe:mark:8 */ rgba(111,155,255,.09);
+  --mu-r-mark-url-shadow:
+    /* mu-recipe:mark:9 */ inset 0 0 0 .5px rgba(111,155,255,.25);
+  --mu-r-mark-url-hover-background:
+    /* mu-recipe:mark:10 */ rgba(111,155,255,.15);
+  --mu-r-mark-inferred-shadow:
+    /* mu-recipe:mark:11 */ inset 0 0 0 .5px rgba(63,185,122,.45);
+  --mu-r-mark-swatch-shadow:
+    /* mu-recipe:mark:12 */ inset 0 1px 0 rgba(255,255,255,.45),
+    /* mu-recipe:mark:13 */ inset 0 -1px 0 rgba(0,0,0,.18),
+    /* mu-recipe:mark:14 */ 0 1px 2px rgba(0,0,0,.15);
+  --mu-r-mark-urgency-background:
+    /* mu-recipe:mark:15 */ radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18);
+  --mu-r-mark-urgency-shadow:
+    /* mu-recipe:mark:16 */ 0 0 0 .5px rgba(0,0,0,.25);
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1163,17 +1180,17 @@
 }
 :root,
 [data-mu-colorway="bone"] {
-  --mu-r-dimple-self-background:
-    /* mu-recipe:dimple:0 */ linear-gradient(#E6E5E1, #EDECE8);
-  --mu-r-dimple-self-shadow:
-    /* mu-recipe:dimple:2 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
-    /* mu-recipe:dimple:3 */ inset 0 0 0 .5px rgba(0,0,0,.03),
-    /* mu-recipe:dimple:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
-  --mu-r-dimple-self-hover-background:
-    /* mu-recipe:dimple:8 */ linear-gradient(#E1E0DC, #EAE9E5);
-  --mu-r-dimple-self-ghost-shadow:
-    /* mu-recipe:dimple:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
-    /* mu-recipe:dimple:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
+  --mu-r-checkbox-self-background:
+    /* mu-recipe:checkbox:0 */ linear-gradient(#E6E5E1, #EDECE8);
+  --mu-r-checkbox-self-shadow:
+    /* mu-recipe:checkbox:2 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
+    /* mu-recipe:checkbox:3 */ inset 0 0 0 .5px rgba(0,0,0,.03),
+    /* mu-recipe:checkbox:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
+  --mu-r-checkbox-self-hover-background:
+    /* mu-recipe:checkbox:8 */ linear-gradient(#E1E0DC, #EAE9E5);
+  --mu-r-checkbox-self-ghost-shadow:
+    /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
+    /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-region-self-background:
     /* mu-recipe:region:0 */ linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012));
   --mu-r-region-self-shadow:
@@ -1374,19 +1391,26 @@
     /* mu-recipe:rule:0 */ rgba(0,0,0,.075);
   --mu-r-rule-self-shadow:
     /* mu-recipe:rule:2 */ 1px 0 0 rgba(255,255,255,.8);
+  --mu-r-mark-tag-background:
+    /* mu-recipe:mark:0 */ rgba(40,38,32,.05);
+  --mu-r-mark-tag-shadow:
+    /* mu-recipe:mark:2 */ inset 0 0 3px 1px rgba(255,255,255,.7),
+    /* mu-recipe:mark:3 */ inset 0 0 0 .5px rgba(0,0,0,.04);
+  --mu-r-mark-derived-shadow:
+    /* mu-recipe:mark:6 */ inset 0 0 0 .5px rgba(40,38,32,.18);
 }
 [data-mu-colorway="graphite"] {
-  --mu-r-dimple-self-background:
-    /* mu-recipe:dimple:1 */ linear-gradient(#141415, #18181A);
-  --mu-r-dimple-self-shadow:
-    /* mu-recipe:dimple:5 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
-    /* mu-recipe:dimple:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
-    /* mu-recipe:dimple:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
-  --mu-r-dimple-self-hover-background:
-    /* mu-recipe:dimple:9 */ linear-gradient(#1A1A1C, #1F1F21);
-  --mu-r-dimple-self-ghost-shadow:
-    /* mu-recipe:dimple:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
-    /* mu-recipe:dimple:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
+  --mu-r-checkbox-self-background:
+    /* mu-recipe:checkbox:1 */ linear-gradient(#141415, #18181A);
+  --mu-r-checkbox-self-shadow:
+    /* mu-recipe:checkbox:5 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:checkbox:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:checkbox:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-checkbox-self-hover-background:
+    /* mu-recipe:checkbox:9 */ linear-gradient(#1A1A1C, #1F1F21);
+  --mu-r-checkbox-self-ghost-shadow:
+    /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
+    /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-region-self-background:
     /* mu-recipe:region:1 */ linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
   --mu-r-region-self-shadow:
@@ -1587,18 +1611,25 @@
     /* mu-recipe:rule:1 */ rgba(0,0,0,.45);
   --mu-r-rule-self-shadow:
     /* mu-recipe:rule:3 */ 1px 0 0 rgba(255,255,255,.035);
+  --mu-r-mark-tag-background:
+    /* mu-recipe:mark:1 */ rgba(255,255,255,.06);
+  --mu-r-mark-tag-shadow:
+    /* mu-recipe:mark:4 */ inset 0 0 3px 1px rgba(255,255,255,.04),
+    /* mu-recipe:mark:5 */ inset 0 0 0 .5px rgba(0,0,0,.3);
+  --mu-r-mark-derived-shadow:
+    /* mu-recipe:mark:7 */ inset 0 0 0 .5px rgba(255,255,255,.2);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
-    --mu-r-dimple-self-background:
+    --mu-r-checkbox-self-background:
       linear-gradient(#141415, #18181A);
-    --mu-r-dimple-self-shadow:
+    --mu-r-checkbox-self-shadow:
       inset 0 2px 6px -1px rgba(0,0,0,.6),
       inset 0 0 0 .5px rgba(0,0,0,.35),
       inset 0 -2px 4px -2px rgba(255,255,255,.05);
-    --mu-r-dimple-self-hover-background:
+    --mu-r-checkbox-self-hover-background:
       linear-gradient(#1A1A1C, #1F1F21);
-    --mu-r-dimple-self-ghost-shadow:
+    --mu-r-checkbox-self-ghost-shadow:
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-region-self-background:
@@ -1801,5 +1832,12 @@
       rgba(0,0,0,.45);
     --mu-r-rule-self-shadow:
       1px 0 0 rgba(255,255,255,.035);
+    --mu-r-mark-tag-background:
+      rgba(255,255,255,.06);
+    --mu-r-mark-tag-shadow:
+      inset 0 0 3px 1px rgba(255,255,255,.04),
+      inset 0 0 0 .5px rgba(0,0,0,.3);
+    --mu-r-mark-derived-shadow:
+      inset 0 0 0 .5px rgba(255,255,255,.2);
   }
 }
