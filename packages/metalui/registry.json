@@ -230,11 +230,6 @@
           "path": "packages/metalui/src/blocks/hover-engraving/hover-engraving.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/hover-engraving/hover-engraving.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/hover-engraving/hover-engraving.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/hover-engraving/hover-engraving.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."

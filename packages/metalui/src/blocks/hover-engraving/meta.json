@@ -15,8 +15,7 @@
   "react": {
     "export": "HoverEngraving",
     "files": [
-      "hover-engraving.tsx",
-      "hover-engraving.css"
+      "hover-engraving.tsx"
     ]
   },
   "swift": {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { HoverEngraving, type EngravingStatus } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalHoverEngraving.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';

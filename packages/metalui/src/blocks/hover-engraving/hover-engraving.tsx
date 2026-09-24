@@ -5,7 +5,6 @@ import { Surface } from '../../components/surface/surface';
 import { Label } from '../../components/label/label';
 import { Chip } from '../../components/chip/chip';
 import { Led } from '../../components/status/status';
-import './hover-engraving.css';
 
 /* ─────────────────────────────────────────────────────────
  * HOVER ENGRAVING (the reference design's .meta): a composition
@@ -18,6 +17,17 @@ import './hover-engraving.css';
  *   selected  hidden, and hidden while writing (the host passes open={false})
  * Reduce Motion: settle resolves to a crossfade, so it fades in place.
  * ───────────────────────────────────────────────────────── */
+
+/* Layout and timing from the engraving group. Hidden until a dwell; leaving is immediate (the delay
+ * only applies on the way in). A dwell, not a pass: the host must stay hovered for 420 ms. */
+const PILL = 'mu-engraving absolute z-2 flex items-center gap-engraving-gap h-engraving-height px-engraving-pad whitespace-nowrap pointer-events-none opacity-0 engraving-motion [.mu-icon-trigger:hover>&]:not-data-[open=false]:engraving-shown data-[open=true]:engraving-shown data-[open=true]:data-immediate:delay-0';
+/* Beside the first line of a text block, so a stacked list below stays readable; under a material block. */
+const PLACEMENT = {
+  beside: 'left-full ml-engraving-beside-gap top-engraving-beside-top engraving-beside-out',
+  below: 'left-0 top-full mt-engraving-below-gap engraving-below-out',
+};
+const TAGS = 'mu-engraving-tags flex gap-engraving-tag-gap';
+const STATUS = 'mu-engraving-status [&>.mu-led]:inline-block [&>.mu-led]:mr-engraving-led-gap [&>.mu-led]:engraving-led-lift';
 
 export type EngravingStatus = 'live' | 'waiting' | 'failed' | 'off';
 
@@ -53,7 +63,7 @@ export const HoverEngraving = React.forwardRef<HTMLSpanElement, HoverEngravingPr
       data-placement={placement}
       data-open={open === undefined ? undefined : String(open)}
       data-immediate={immediate ? '' : undefined}
-      className={className ? `mu-engraving ${className}` : 'mu-engraving'}
+      className={className ? `${PILL} ${PLACEMENT[placement]} ${className}` : `${PILL} ${PLACEMENT[placement]}`}
       {...props}
     >
       <Label variant="engraved">
@@ -61,12 +71,12 @@ export const HoverEngraving = React.forwardRef<HTMLSpanElement, HoverEngravingPr
         {details.map((d) => ` · ${d}`).join('')}
       </Label>
       {tags.length > 0 && (
-        <span className="mu-engraving-tags">
+        <span className={TAGS}>
           {tags.map((t) => <Chip key={t} variant="tag">#{t}</Chip>)}
         </span>
       )}
       {status && (
-        <Label variant="engraved" className="mu-engraving-status">
+        <Label variant="engraved" className={STATUS}>
           <Led kind={status.led} />
           {status.text}
         </Label>

@@ -845,6 +845,21 @@
 @utility recipe-hover-engraving-led {
   box-shadow: var(--mu-r-hover-engraving-led-shadow);
 }
+@utility engraving-motion {
+  transition: opacity var(--mu-engraving-fade-ms), transform var(--mu-engraving-move-ms) var(--mu-spring-settle);
+}
+@utility engraving-beside-out {
+  transform: translateX(calc((var(--mu-zero-length) - var(--mu-engraving-slide)) * var(--mu-travel-settle)));
+}
+@utility engraving-below-out {
+  transform: translateY(calc((var(--mu-zero-length) - var(--mu-engraving-rise)) * var(--mu-travel-settle)));
+}
+@utility engraving-shown {
+  opacity: 1; transform: none; transition-delay: var(--mu-engraving-dwell-ms);
+}
+@utility engraving-led-lift {
+  vertical-align: var(--mu-engraving-led-lift);
+}
 @utility backdrop-hover-engraving-blur {
   -webkit-backdrop-filter: var(--mu-r-hover-engraving-self-blur);
   backdrop-filter: var(--mu-r-hover-engraving-self-blur);
