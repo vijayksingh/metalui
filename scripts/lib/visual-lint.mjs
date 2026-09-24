@@ -29,6 +29,8 @@ const rules = [
   ['font', /\b(?:font-size|fontSize|font-weight|fontWeight|font)\s*:\s*[^;]*\d|\.font\s*\(\s*\.system\s*\([^)]*\d|\.fontWeight\s*\([^)]*\d/i],
   ['duration', /\b(?:transition|animation)(?:-[\w-]+)?\s*:[^;]*(?:\d+(?:\.\d+)?m?s|cubic-bezier\s*\(|steps\s*\(|\bease(?:-in|-out|-in-out)?\b)|\b(?:duration|delay|easing)\s*:\s*(?:\d|cubic-bezier|ease-)|\.(?:easeIn|easeOut|easeInOut|linear|spring|timingCurve)\s*\([^)]*\d/i],
   ['spacing', /\b(?:padding|margin|gap)(?:-[\w-]+)?\s*:\s*[^;]*\d|\.(?:padding|frame)\s*\([^)]*\d/i],
+  // a Tailwind arbitrary value or variable shorthand in a class (h-[13px], bg-[#fff], h-(--x)): take it from the theme
+  ['arbitrary', /(?:^|[\s'"`:])!?[a-z][\w-]*-(?:\[[^\]\s]+\]|\(--[\w-]+\))(?=[\s'"`]|$)/],
 ];
 
 function stripComments(line, extension) {

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// check:composition (docs/COMPOSITION.md §6): a composition block draws nothing itself. Its CSS may
+// check:composition (docs/COMPOSITION.md §6): a composition block draws nothing itself. Its classes and CSS may
 // only arrange (layout, placement, and the motion and visibility of its parts: transform, opacity);
 // every paint (fill, shadow, colour, type, radius, border, filter) comes from the components it uses;
 // it has no recipe of its own.
@@ -8,6 +8,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { blocks } from './lib/components.mjs';
+import { classTokens, utilityOf, PAINT_UTILITY } from './lib/classes.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const src = join(root, 'packages/metalui/src');
@@ -28,6 +29,10 @@ for (const meta of blocks()) {
     // A recipe the Swift port still reads may stay, marked, until the port composes the block too.
     if (tokens.recipes[meta.name].$pendingSwiftPort) pending.push(`${meta.dir}: recipes.${meta.name} kept for the Swift port only`);
     else errors.push(`${meta.dir}: a composition block has its own recipe (tokens.json recipes.${meta.name})`);
+  }
+  // Tailwind: its class utilities only arrange (layout, placement, motion and visibility of its parts)
+  for (const { file, token } of classTokens(join(src, meta.dir))) {
+    if (PAINT_UTILITY.test(utilityOf(token))) errors.push(`${meta.dir}/${file}: ${token}: a composition block paints`);
   }
   for (const f of readdirSync(join(src, meta.dir)).filter((f) => f.endsWith('.css'))) {
     readFileSync(join(src, meta.dir, f), 'utf8')
