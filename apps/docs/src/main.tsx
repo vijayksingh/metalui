@@ -54,6 +54,7 @@ const router = createBrowserRouter([
       { path: 'components/selection-frame', lazy: lazy(() => import('./pages/components/SelectionFrame')) },
       { path: 'components/snap-guides', lazy: lazy(() => import('./pages/components/SnapGuides')) },
       { path: 'components/lasso', lazy: lazy(() => import('./pages/components/Lasso')) },
+      { path: 'components/block-silhouette', lazy: lazy(() => import('./pages/components/BlockSilhouette')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
       { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },

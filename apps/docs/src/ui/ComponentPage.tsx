@@ -16,14 +16,16 @@ export interface ComponentPageProps {
   title: string;
   lede: React.ReactNode;
   play: { lede: string; caption?: string; node: React.ReactNode };
-  xray: React.ReactNode;
+  xray?: React.ReactNode;
+  /** More sections between the X-ray and the source. */
+  more?: { id: string; title: string; lede?: string; node: React.ReactNode }[];
   /** The name of its SwiftUI capture, when it has one. */
   capture?: string;
   sources: { id: 'react' | 'css' | 'swift' | 'agent'; label: string; code: string }[];
   rules: Rule[];
 }
 
-export function ComponentPage({ title, lede, play, xray, capture, sources, rules }: ComponentPageProps) {
+export function ComponentPage({ title, lede, play, xray, more, capture, sources, rules }: ComponentPageProps) {
   const hasSwift = sources.some((s) => s.id === 'swift');
   return (
     <>
@@ -32,9 +34,12 @@ export function ComponentPage({ title, lede, play, xray, capture, sources, rules
         <Bench caption={play.caption}>{play.node}</Bench>
         {capture && <SwiftCapture name={capture} maxWidth={520} />}
       </Section>
-      <Section id="x-ray" title="X-ray" lede="See what it is made of. Click an icon to learn about one part and change it.">
-        {xray}
-      </Section>
+      {xray && (
+        <Section id="x-ray" title="X-ray" lede="See what it is made of. Click an icon to learn about one part and change it.">
+          {xray}
+        </Section>
+      )}
+      {more?.map((m) => <Section key={m.id} id={m.id} title={m.title} lede={m.lede}>{m.node}</Section>)}
       <Section title="Source">
         <SourceTabs tabs={sources} />
       </Section>
