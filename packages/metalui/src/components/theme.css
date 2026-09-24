@@ -1975,6 +1975,15 @@
 @utility presence-edge-w {
   top: 0; bottom: 0; width: var(--mu-presence-edge-light-width); left: calc(var(--mu-presence-edge-light-width) / -2); background: linear-gradient(180deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
 }
+@utility presence-guide-line {
+  fill: none; stroke: var(--mu-presence-guide); stroke-width: calc(var(--mu-presence-guide-width) / var(--mu-canvas-scale, 1)); stroke-linecap: butt; [data-mu-colorway="graphite"] & { stroke: var(--mu-presence-guide-dark); }
+}
+@utility presence-guide-center {
+  stroke-dasharray: calc(var(--mu-presence-guide-dash) / var(--mu-canvas-scale, 1)) calc(var(--mu-presence-guide-dash) / var(--mu-canvas-scale, 1));
+}
+@utility presence-guide-leave {
+  transition: opacity var(--mu-spring-release-d) var(--mu-spring-release);
+}
 @utility region-motion {
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }

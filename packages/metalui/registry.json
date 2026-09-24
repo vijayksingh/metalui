@@ -503,6 +503,24 @@
       "docs": "Agent guide: https://metalui.dev/r/slider.md. SwiftUI: MetalSlider in the MetalUI Swift package."
     },
     {
+      "name": "snap-guides",
+      "type": "registry:ui",
+      "title": "Snap guides",
+      "description": "The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/snap-guides/snap-guides.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/snap-guides/snap-guides.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/snap-guides.md. SwiftUI: MetalSnapGuides in the MetalUI Swift package."
+    },
+    {
       "name": "sparkline",
       "type": "registry:ui",
       "title": "Sparkline",

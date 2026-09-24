@@ -444,6 +444,23 @@
       "agent": "https://metalui.dev/r/slider.md"
     },
     {
+      "name": "snap-guides",
+      "title": "Snap guides",
+      "status": "alpha",
+      "description": "The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "SnapGuides",
+        "base": "none (decorative; aria-hidden: the snap itself is the fact)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSnapGuides"
+      },
+      "registry": "https://metalui.dev/r/snap-guides.json",
+      "agent": "https://metalui.dev/r/snap-guides.md"
+    },
+    {
       "name": "sparkline",
       "title": "Sparkline",
       "status": "alpha",

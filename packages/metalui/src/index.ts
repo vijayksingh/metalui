@@ -33,6 +33,7 @@ export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } fr
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './blocks/hover-engraving/hover-engraving';
 export { SuggestionChip, type SuggestionChipProps } from './blocks/suggestion-chip/suggestion-chip';
 export { SizeReadout, type SizeReadoutProps } from './components/size-readout/size-readout';
+export { SnapGuides, type SnapGuide, type SnapGuidesProps } from './components/snap-guides/snap-guides';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';

@@ -1,0 +1,19 @@
+{
+  "name": "snap-guides",
+  "title": "Snap guides",
+  "status": "alpha",
+  "description": "The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.",
+  "base": "none (decorative; aria-hidden: the snap itself is the fact)",
+  "react": {
+    "export": "SnapGuides",
+    "files": [
+      "snap-guides.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSnapGuides",
+    "file": "swift/Sources/MetalUI/Components/MetalSnapGuides.swift"
+  },
+  "agent": "snap-guides.agent.md",
+  "layer": "component"
+}
