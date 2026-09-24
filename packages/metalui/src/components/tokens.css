@@ -1043,6 +1043,7 @@
   --mu-r-surface-blur-lens: blur(10px);
   --mu-r-surface-blur-graphite: blur(22px) saturate(1.6);
   --mu-r-surface-blur-graphite-glass: blur(22px);
+  --mu-r-surface-blur-graphite-strip: blur(22px);
   /* well: reference style.css --well; .pal-field, .seg, .sc-track, .region, .region.over, .tb-search */
   --mu-r-well-self-region-over-background:
     /* mu-recipe:well:24 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));

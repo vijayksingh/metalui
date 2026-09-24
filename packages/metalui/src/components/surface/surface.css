@@ -12,6 +12,7 @@
 .mu-surface[data-material="tip"] { background: var(--mu-r-surface-self-tip-background); box-shadow: var(--mu-r-surface-self-tip-shadow); }
 .mu-surface[data-material="lens"] { background: var(--mu-r-surface-self-lens-background); box-shadow: var(--mu-r-surface-self-lens-shadow); }
 .mu-surface[data-material="graphite"] { background: var(--mu-r-surface-self-graphite-background); box-shadow: var(--mu-r-surface-self-graphite-shadow); }
+.mu-surface:is([data-material="graphite-plain"], [data-material="graphite-strip"]) { background: var(--mu-r-surface-self-graphite-background); box-shadow: var(--mu-r-surface-self-graphite-shadow); }
 .mu-surface[data-material="graphite-deep"] { background: var(--mu-r-surface-self-graphite-deep-background); box-shadow: var(--mu-r-surface-self-graphite-deep-shadow); }
 .mu-surface[data-material="graphite-glass"] { background: var(--mu-r-surface-self-graphite-glass-background); box-shadow: var(--mu-r-surface-self-graphite-glass-shadow); }
 .mu-surface[data-material="frost"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-frost); backdrop-filter: var(--mu-r-surface-blur-frost); }
@@ -21,6 +22,7 @@
 .mu-surface[data-material="tip"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-tip); backdrop-filter: var(--mu-r-surface-blur-tip); }
 .mu-surface[data-material="lens"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-lens); backdrop-filter: var(--mu-r-surface-blur-lens); }
 .mu-surface[data-material="graphite"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite); backdrop-filter: var(--mu-r-surface-blur-graphite); }
+.mu-surface[data-material="graphite-strip"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite-strip); backdrop-filter: var(--mu-r-surface-blur-graphite-strip); }
 .mu-surface[data-material="graphite-glass"] { -webkit-backdrop-filter: var(--mu-r-surface-blur-graphite-glass); backdrop-filter: var(--mu-r-surface-blur-graphite-glass); }
 .mu-surface[data-radius="pill"] { border-radius: var(--mu-r-surface-radius-pill); }
 .mu-surface[data-radius="hero"] { border-radius: var(--mu-r-surface-radius-hero); }

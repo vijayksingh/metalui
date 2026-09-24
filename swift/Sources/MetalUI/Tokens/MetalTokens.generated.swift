@@ -1089,6 +1089,7 @@ public enum MetalRecipes {
             "blur.lens": .text("blur(10px)"),
             "blur.graphite": .text("blur(22px) saturate(1.6)"),
             "blur.graphite-glass": .text("blur(22px)"),
+            "blur.graphite-strip": .text("blur(22px)"),
         ]
     )
 
