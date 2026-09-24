@@ -182,6 +182,24 @@
       "sheet": "KAMUI-14"
     },
     {
+      "name": "size-readout",
+      "title": "Size readout",
+      "status": "alpha",
+      "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. The KAMUI-14 readout on its own.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "SizeReadout",
+        "base": "none (a readout; aria-hidden where it repeats what the object states)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSizeReadout"
+      },
+      "registry": "https://metalui.dev/r/size-readout.json",
+      "agent": "https://metalui.dev/r/size-readout.md",
+      "sheet": "KAMUI-14 readout, Kamui 04 §10"
+    },
+    {
       "name": "suggestion-chip",
       "title": "Suggestion chip",
       "status": "alpha",

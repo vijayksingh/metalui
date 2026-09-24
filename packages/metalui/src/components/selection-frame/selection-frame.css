@@ -1,4 +1,5 @@
 @import "../tokens.css";
+@import "../size-readout/size-readout.css";
 
 /* KAMUI-14 · Selection frame. Every value is a --mu-presence-* token (tokens.json presence).
    The frame is an overlay laid over its host: the host is position: relative, the frame fills it,
@@ -100,38 +101,10 @@
 .mu-sf-edge[data-edge="e"] { right: calc(var(--mu-presence-edge-light-width) / -2); }
 .mu-sf-edge[data-edge="w"] { left: calc(var(--mu-presence-edge-light-width) / -2); }
 
-/* ---- readout: the measured frame, a graphite pill under the object ---- */
-.mu-sf-readout {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + var(--mu-presence-readout-gap));
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: var(--mu-presence-readout-gap-inner);
-  height: var(--mu-presence-readout-height);
-  padding: 0 var(--mu-presence-readout-pad-end) 0 var(--mu-presence-readout-pad-start);
-  border-radius: 999px;
-  white-space: nowrap;
-  /* The readout type role (mu-type-readout on the element), tracked open as the sheet sets it. */
-  line-height: 1;
-  letter-spacing: var(--mu-presence-readout-tracking);
-  color: var(--mu-presence-readout-ink);
-  background: var(--mu-presence-readout-bg);
-  box-shadow: var(--mu-presence-readout-sh);
-  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
-}
-.mu-sf-readout .mu-sf-x { color: var(--mu-presence-readout-dim); }
-.mu-sf-readout .mu-sf-led {
-  width: var(--mu-presence-readout-led);
-  height: var(--mu-presence-readout-led);
-  flex: none;
-  border-radius: 50%;
-  background: var(--mu-led-green);
-  box-shadow: var(--mu-led-ring);
-}
-.mu-selection-frame[data-mode="writing"] .mu-sf-readout { opacity: var(--mu-presence-readout-writing); }
-.mu-selection-frame[data-mode="moving"] .mu-sf-readout { opacity: 1; }
+/* The readout sits 16 under the object, centred. */
+.mu-selection-frame > .mu-readout { position: absolute; left: 50%; top: calc(100% + var(--mu-presence-readout-gap)); transform: translateX(-50%); }
+.mu-selection-frame[data-mode="writing"] .mu-readout { opacity: var(--mu-presence-readout-writing); }
+.mu-selection-frame[data-mode="moving"] .mu-readout { opacity: 1; }
 
 @media (prefers-contrast: more) {
   .mu-selection-frame[data-variant="lite"] > .mu-sf-ring { box-shadow: 0 0 0 var(--mu-presence-ring-width) var(--mu-presence-ring); }

@@ -57,8 +57,8 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 | 7b | Lens bar | shipped | `2795903` | React `LensBar` (`query`, `count`, `source: 'asking'\|'jev'\|'local'\|null`, `mode`, `onModeChange`, `modes`, `onPin`, `onClose`, `glyphs: { lens, pin, close }`; Base UI Toolbar); CSS `--mu-lensbar-*`; Swift `MetalLensBar(query:count:source:mode:modes:onPin:onClose:)`, `MetalLensMode`, `MetalLensSource`. |
 | 8 | Memory scrubber | shipped | `a83b74b` | React `MemoryScrubber` (`start`, `end`, `value: number\|null`, `onValueChange`, `marks`, `format`, `glyph`; Base UI Slider); CSS `--mu-scrubber-*`; Swift `MetalMemoryScrubber(range:selection:marks:format:)`, `MetalScrubberMetrics`. |
 | 9 | Past banner | shipped | `b5b0548` | React `PastBanner` (`moment`, `onBack`); CSS `--mu-pastbanner-*`; Swift `MetalPastBanner(moment:onBack:)`, `MetalPastBannerMetrics`. |
-| 10 | Tool strip | shipped | see `feat(objects): tool strip` | React `ToolStrip` (`label`, `items: { label, onSelect, destructive?, disabled?, shortcut? }[]`; Base UI Toolbar); CSS `--mu-toolstrip-*`; Swift `MetalToolStrip(label:items:)`, `MetalToolStripItem`. |
-| 11 | Size readout | pending | | |
+| 10 | Tool strip | shipped | `a3e78a8` | React `ToolStrip` (`label`, `items: { label, onSelect, destructive?, disabled?, shortcut? }[]`; Base UI Toolbar); CSS `--mu-toolstrip-*`; Swift `MetalToolStrip(label:items:)`, `MetalToolStripItem`. |
+| 11 | Size readout | shipped | see `feat(objects): size readout` | React `SizeReadout` (`width`, `height`, `count`, `copied`, `value`, `led`), used by `SelectionFrame`; CSS `.mu-readout`; Swift `MetalSizeReadout(size:count:copied:value:led:)`, used by `.metalSelectionFrame`. |
 
 ## 5b. Further objects the client LLDs need
 

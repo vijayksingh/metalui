@@ -159,35 +159,11 @@ private struct MetalSelectionFrameModifier: ViewModifier {
     }
 
     private func readoutView(_ size: CGSize) -> some View {
-        let w = Int(size.width.rounded()), h = Int(size.height.rounded())
-        let dim = MetalPresence.readoutDim.color
-        let role = MetalType.readout
-        let label: Text = {
-            if let copied { return Text("COPIED ") + Text("·").foregroundColor(dim) + Text(" \(copied) \(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)") }
-            if let count, count > 1 { return Text("\(count) ") + Text("·").foregroundColor(dim) + Text(" \(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)") }
-            return Text("\(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)")
-        }()
-        return HStack(spacing: MetalPresence.readoutGapInner) {
-            Circle()
-                .fill(MetalShared.ledGreen.gradient(diameter: MetalPresence.readoutLed))
-                .frame(width: MetalPresence.readoutLed, height: MetalPresence.readoutLed)
-            label
-                .font(.metal(role))
-                .tracking(MetalPresence.readoutTracking * role.size)
-                .monospacedDigit()
-                .foregroundColor(MetalPresence.readoutInk.color)
-                .lineLimit(1)
-                .fixedSize()
-        }
-        .padding(.leading, MetalPresence.readoutPadStart)
-        .padding(.trailing, MetalPresence.readoutPadEnd)
-        .frame(height: MetalPresence.readoutHeight)
-        .metalRecipe(MetalRecipe(fill: MetalPresence.readoutBg, shadows: MetalPresence.readoutSh), in: Capsule(style: .continuous))
-        .opacity(mode == .writing ? MetalPresence.readoutWriting : 1)
-        .metalAnimation(.settle, value: mode)
-        .fixedSize()
-        .position(x: size.width / 2, y: size.height + MetalPresence.readoutGap + MetalPresence.readoutHeight / 2)
-        .accessibilityHidden(true)
+        MetalSizeReadout(size: size, count: count, copied: copied)
+            .opacity(mode == .writing ? MetalPresence.readoutWriting : 1)
+            .metalAnimation(.settle, value: mode)
+            .position(x: size.width / 2, y: size.height + MetalPresence.readoutGap + MetalPresence.readoutHeight / 2)
+            .accessibilityHidden(true)
     }
 }
 

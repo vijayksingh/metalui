@@ -1,0 +1,28 @@
+@import "../tokens.css";
+
+/* Size readout (KAMUI-14 readout, Kamui 04 §10): a graphite pill with a green LED and the measured frame. */
+.mu-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-presence-readout-gap-inner);
+  height: var(--mu-presence-readout-height);
+  padding: 0 var(--mu-presence-readout-pad-end) 0 var(--mu-presence-readout-pad-start);
+  border-radius: 999px;
+  white-space: nowrap;
+  /* The readout type role (mu-type-readout on the element), tracked open as the sheet sets it. */
+  line-height: 1;
+  letter-spacing: var(--mu-presence-readout-tracking);
+  color: var(--mu-presence-readout-ink);
+  background: var(--mu-presence-readout-bg);
+  box-shadow: var(--mu-presence-readout-sh);
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-readout .mu-readout-x { color: var(--mu-presence-readout-dim); }
+.mu-readout .mu-readout-led {
+  width: var(--mu-presence-readout-led);
+  height: var(--mu-presence-readout-led);
+  flex: none;
+  border-radius: 50%;
+  background: var(--mu-led-green);
+  box-shadow: var(--mu-led-ring);
+}

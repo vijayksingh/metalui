@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { flushSync } from 'react-dom';
+import { SizeReadout } from '../size-readout/size-readout';
 import './selection-frame.css';
 
 /* ─────────────────────────────────────────────────────────
@@ -118,9 +119,6 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
     return () => clearTimeout(t);
   }, [copied]);
 
-  const w = box ? Math.round(box.width) : 0;
-  const h = box ? Math.round(box.height) : 0;
-
   return (
     <div
       ref={ref}
@@ -155,18 +153,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
             />
           );
         })}
-      {selected && readout && box && (
-        <span className="mu-sf-readout mu-type-readout">
-          <span className="mu-sf-led" />
-          {copiedShown ? (
-            <>COPIED <span className="mu-sf-x">·</span> {copiedShown} {w} <span className="mu-sf-x">×</span> {h}</>
-          ) : count && count > 1 ? (
-            <>{count} <span className="mu-sf-x">·</span> {w} <span className="mu-sf-x">×</span> {h}</>
-          ) : (
-            <>{w} <span className="mu-sf-x">×</span> {h}</>
-          )}
-        </span>
-      )}
+      {selected && readout && box && <SizeReadout width={box.width} height={box.height} count={count} copied={copiedShown} />}
     </div>
   );
 });

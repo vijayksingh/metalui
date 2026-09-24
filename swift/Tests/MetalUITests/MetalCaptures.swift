@@ -275,4 +275,19 @@ final class MetalCaptures: XCTestCase {
             capture("tool-strip-\(colorway.rawValue)", view)
         }
     }
+
+    func testSizeReadout() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 16) {
+                MetalSizeReadout(size: CGSize(width: 320, height: 214))
+                MetalSizeReadout(size: CGSize(width: 540, height: 180), count: 3)
+                MetalSizeReadout(size: CGSize(width: 130, height: 215), copied: "PNG")
+                MetalSizeReadout(value: "100 %")
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("size-readout-\(colorway.rawValue)", view)
+        }
+    }
 }

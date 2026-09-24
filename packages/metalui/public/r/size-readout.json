@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "size-readout",
+  "type": "registry:ui",
+  "title": "Size readout",
+  "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. The KAMUI-14 readout on its own.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/size-readout/size-readout.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/size-readout/size-readout.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './size-readout.css';\n\n/* ─────────────────────────────────────────────────────────\n * SIZE READOUT (the KAMUI-14 readout, Kamui 04 §10)\n *   reads   ● 320 × 214 · ● 3 · 540 × 180 · ● COPIED · PNG 130 × 215 · or any short value (● 100 %)\n *   always  the measured value, never a constant; tabular figures (the readout role)\n * The Selection frame places one under its object; use this one on its own for zoom and other readouts.\n * ───────────────────────────────────────────────────────── */\n\nexport interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {\n  width?: number;\n  height?: number;\n  /** Blocks in a multi-selection. */\n  count?: number;\n  /** A copy just happened, in this format: \"PNG\". */\n  copied?: string | null;\n  /** Any other short value in place of the size: \"100 %\". */\n  value?: React.ReactNode;\n  /** Hide the LED (a readout that is not live). */\n  led?: boolean;\n}\n\n/** A graphite pill that reads a measured value: a size, a count, a zoom. */\nexport const SizeReadout = React.forwardRef<HTMLSpanElement, SizeReadoutProps>(function SizeReadout(\n  { width = 0, height = 0, count, copied, value, led = true, className, ...props },\n  ref,\n) {\n  const w = Math.round(width), h = Math.round(height);\n  const X = <span className=\"mu-readout-x\">×</span>;\n  const dot = <span className=\"mu-readout-x\">·</span>;\n  return (\n    <span ref={ref} className={['mu-readout', 'mu-type-readout', className].filter(Boolean).join(' ')} {...props}>\n      {led && <span aria-hidden className=\"mu-readout-led\" />}\n      {value !== undefined ? value : copied ? (\n        <>COPIED {dot} {copied} {w} {X} {h}</>\n      ) : count && count > 1 ? (\n        <>{count} {dot} {w} {X} {h}</>\n      ) : (\n        <>{w} {X} {h}</>\n      )}\n    </span>\n  );\n});\n"
+    },
+    {
+      "path": "packages/metalui/src/components/size-readout/size-readout.css",
+      "type": "registry:file",
+      "target": "components/metalui/size-readout/size-readout.css",
+      "content": "@import \"../tokens.css\";\n\n/* Size readout (KAMUI-14 readout, Kamui 04 §10): a graphite pill with a green LED and the measured frame. */\n.mu-readout {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--mu-presence-readout-gap-inner);\n  height: var(--mu-presence-readout-height);\n  padding: 0 var(--mu-presence-readout-pad-end) 0 var(--mu-presence-readout-pad-start);\n  border-radius: 999px;\n  white-space: nowrap;\n  /* The readout type role (mu-type-readout on the element), tracked open as the sheet sets it. */\n  line-height: 1;\n  letter-spacing: var(--mu-presence-readout-tracking);\n  color: var(--mu-presence-readout-ink);\n  background: var(--mu-presence-readout-bg);\n  box-shadow: var(--mu-presence-readout-sh);\n  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);\n}\n.mu-readout .mu-readout-x { color: var(--mu-presence-readout-dim); }\n.mu-readout .mu-readout-led {\n  width: var(--mu-presence-readout-led);\n  height: var(--mu-presence-readout-led);\n  flex: none;\n  border-radius: 50%;\n  background: var(--mu-led-green);\n  box-shadow: var(--mu-led-ring);\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
+}

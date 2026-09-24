@@ -27,7 +27,7 @@ for (const colorway of COLORWAYS) {
     const [b, r] = await Promise.all([block.boundingBox(), ring.boundingBox()]);
     expect(r!.x).toBeCloseTo(b!.x - 6, 0);
     expect(r!.width).toBeCloseTo(b!.width + 12, 0);
-    const readout = block.locator('.mu-sf-readout');
+    const readout = block.locator('.mu-readout');
     const size = () => block.evaluate((el) => `${Math.round(el.getBoundingClientRect().width)} × ${Math.round(el.getBoundingClientRect().height)}`);
     await expect(readout).toHaveText(await size());
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`selection-frame-${colorway}`) });
