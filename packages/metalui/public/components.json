@@ -37,6 +37,23 @@
       "agent": "https://metalui.dev/r/checkbox.md"
     },
     {
+      "name": "chip",
+      "title": "Chip",
+      "status": "alpha",
+      "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass and glass-action.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Chip",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalChip"
+      },
+      "registry": "https://metalui.dev/r/chip.json",
+      "agent": "https://metalui.dev/r/chip.md"
+    },
+    {
       "name": "command-palette",
       "title": "Command palette",
       "status": "alpha",
@@ -55,6 +72,57 @@
       "sheet": "KAMUI-06"
     },
     {
+      "name": "dialog",
+      "title": "Dialog",
+      "status": "alpha",
+      "description": "A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Dialog",
+        "base": "@base-ui/react/dialog"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDialog"
+      },
+      "registry": "https://metalui.dev/r/dialog.json",
+      "agent": "https://metalui.dev/r/dialog.md"
+    },
+    {
+      "name": "field",
+      "title": "Field",
+      "status": "alpha",
+      "description": "Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Field, SearchField",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalField, MetalSearchField"
+      },
+      "registry": "https://metalui.dev/r/field.json",
+      "agent": "https://metalui.dev/r/field.md"
+    },
+    {
+      "name": "glass-face",
+      "title": "Glass face",
+      "status": "alpha",
+      "description": "A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "GlassFace",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalGlassFace"
+      },
+      "registry": "https://metalui.dev/r/glass-face.json",
+      "agent": "https://metalui.dev/r/glass-face.md"
+    },
+    {
       "name": "hover-engraving",
       "title": "Hover engraving",
       "status": "alpha",
@@ -71,6 +139,23 @@
       "registry": "https://metalui.dev/r/hover-engraving.json",
       "agent": "https://metalui.dev/r/hover-engraving.md",
       "sheet": "the brief, DS-31"
+    },
+    {
+      "name": "icon-button",
+      "title": "Icon button",
+      "status": "alpha",
+      "description": "A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "IconButton",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalIconButton"
+      },
+      "registry": "https://metalui.dev/r/icon-button.json",
+      "agent": "https://metalui.dev/r/icon-button.md"
     },
     {
       "name": "kbd",
@@ -302,6 +387,23 @@
       "registry": "https://metalui.dev/r/size-readout.json",
       "agent": "https://metalui.dev/r/size-readout.md",
       "sheet": "KAMUI-14 readout, Kamui 04 §10"
+    },
+    {
+      "name": "sparkline",
+      "title": "Sparkline",
+      "status": "alpha",
+      "description": "A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Sparkline",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSparkline"
+      },
+      "registry": "https://metalui.dev/r/sparkline.json",
+      "agent": "https://metalui.dev/r/sparkline.md"
     },
     {
       "name": "status",

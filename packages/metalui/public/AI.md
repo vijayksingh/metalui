@@ -136,6 +136,22 @@ The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/m
 
 ---
 
+# Chip
+
+A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `Chip.Actions`. SwiftUI: `MetalChip { lead: … text: … actions: … }`.
+
+## Variants
+
+- `suggestion`: 20 tall, frosted, a green hairline and a small raise; a question in `Chip.Text`, a confidence `Label`, and `IconButton variant="mini"` actions (✓ accept, × dismiss).
+- `glass`: an 18 tall dark tag on a glass screen, backdrop-blurred; `Chip.Lead led="link" | "code"` for its LED.
+- `glass-action`: an 18 tall light cap on glass (`as="a"` for a link out), brighter on hover.
+
+## Behaviour
+
+- The chip itself is not a control; its actions are. A `glass-action` rendered `as="a"` is a link: give it `href`, `target="_blank"` and `rel="noopener noreferrer"`.
+
+---
+
 # Command palette
 
 ⌘K: lenses and actions in one field. React: `CommandPalette` from `@unlocalhosted/metalui` (Base UI Dialog around an inline Base UI Combobox). SwiftUI: `MetalCommandPalette` with `MetalCommandPaletteItem`. Sheet reference: KAMUI-06; Kamui brief: 04 §3; behaviour: the medium demo's `openPalette()`.
@@ -207,6 +223,56 @@ Rows of one section must be adjacent. The palette filters by every query word ag
 
 ---
 
+# Dialog
+
+A modal layer. React: `Dialog` with parts `Dialog.Root` (open, onOpenChange) and `Dialog.Popup` (a `Surface`, material `plate` by default). SwiftUI: `MetalDialog(isPresented:) { popup: … }`.
+
+## Behaviour
+
+- Focus moves in and stays in; Escape and a click on the scrim close it; focus returns to the opener.
+- The popup rises a step (−6, from .985) on the surface spring and closes on release; under Reduce Motion it fades in place.
+- Name it: `aria-label` on the popup.
+
+---
+
+# Field and search field
+
+React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trail`; `SearchField`. SwiftUI: `MetalField { icon: … input: … trail: … }`, `MetalSearchField`.
+
+## Field
+
+- A 44 tall well (radius 17), a 15 glyph, the input in 15 pt, a hint in ink3, a green caret; trailing keycaps in `Field.Trail`.
+- `Field.Input` is a plain input; pass it as a Base UI combobox input's `render` to join a listbox.
+
+## Search field
+
+- A button, not an input: it opens search (a palette). 38 tall (radius 15) with a 14 glyph, the placeholder and a keycap (`⌘K`); graphite in a dark strip, light elsewhere.
+
+## Keyboard and accessibility
+
+- Field: the input takes focus; its caret is the focus (no ring). Search field: a button with `aria-keyshortcuts`, the green ring on focus.
+
+---
+
+# Glass face
+
+A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) and `GlassFace.Screen`. SwiftUI: `MetalGlassFace { screen: … }`.
+
+## Use it for
+
+- An object that shows a screen: a link's preview, a block of code, an image behind glass.
+
+## Anatomy
+
+- The bezel: radius 22, padding 6, a dark gradient with a bright top edge, an inner glow and a deep drop shadow.
+- The screen: radius 16, near black; the glare is a 115° sheen, a darkening toward the bottom, a bright top rim, a dark inner ring and an inner shadow. The screen's own fill (a hue, a gradient) is the caller's, under the glare.
+
+## Behaviour
+
+- No role; the content and its actions carry their own.
+
+---
+
 # Hover engraving
 
 A block's identity, shown on a dwell, never on a pass. React: `HoverEngraving` from `@unlocalhosted/metalui`. SwiftUI: `.metalHoverEngraving(...)` or `MetalHoverEngraving`. the reference brief: 03 §5, DS-31.
@@ -270,6 +336,24 @@ Reduce Motion: settle is a crossfade, so it fades in place.
 ## Tokens
 
 `--mu-engraving-*`, per colorway `--mu-engraving-bg`, `--mu-engraving-emphasis`, `--mu-engraving-tag-ring`; `--mu-engrave`, `--mu-lip`, `--mu-raise-sm`, `--mu-led-*`, `--mu-type-label`. Swift: `MetalEngraving`.
+
+---
+
+# Icon button
+
+A pressable cap with only a glyph. React: `IconButton`. SwiftUI: `MetalIconButton`.
+
+## Variants
+
+- `tool`: a 38 graphite cap (radius 15). Pressed sinks 1 into a dark well (50 ms linear, back on release). `pressed={true}` latches it down with a 4 pt green LED 5 in from the top right.
+- `ghost`: a 28 flat round button; hover fills it faintly and darkens the glyph.
+- `mini`: an 18 × 16 flat pill inside a chip; `accept` turns its glyph green on hover.
+
+## Keyboard and accessibility
+
+- A `<button>`; Space and Enter activate. `label` is its accessible name; `pressed` sets `aria-pressed`.
+- Focus: the green ring (2 pt, no offset: the cap is the target).
+- Inside a toolbar, render it through the toolbar's button part so arrow keys move between tools.
 
 ---
 
@@ -990,6 +1074,21 @@ Opacity changes ride settle. The value changes in place without motion (figures 
 ## Tokens
 
 `--mu-presence-readout-*`, `--mu-led-green`, `--mu-led-ring`, `--mu-type-readout`. Swift: `MetalPresence`.
+
+---
+
+# Sparkline
+
+A small series plot. React: `Sparkline`. SwiftUI: `MetalSparkline`.
+
+## Use it for
+
+- A trend over a short window: one slot per day, `null` for a day with no value (the line breaks).
+
+## Behaviour
+
+- The last dot is in the intent green; the others ring ink2. A dot with `onSelect` is a button named by its `title` ("WED 24 SEP · 6.5"): selecting it focuses its source.
+- The dashed baseline sits at the average. Values are plotted, never summarised with a face or a colour.
 
 ---
 

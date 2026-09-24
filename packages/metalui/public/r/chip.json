@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chip",
+  "type": "registry:ui",
+  "title": "Chip",
+  "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass and glass-action.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/chip/chip.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/chip/chip.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './chip.css';\n\n/* CHIP: a small pill with an optional leading LED or glyph and trailing actions.\n *   suggestion     frosted with a green hairline (a question with its confidence and ✓ ×)\n *   glass          a dark tag on a glass screen (an LED and a kind)\n *   glass-action   a light cap on glass (OPEN ↗), brighter on hover\n * Slots: Chip.Root, Chip.Lead, Chip.Text, Chip.Actions. */\n\nexport interface ChipRootProps extends React.HTMLAttributes<HTMLElement> {\n  variant?: 'suggestion' | 'glass' | 'glass-action';\n  as?: 'span' | 'div' | 'a' | 'button';\n  href?: string;\n  target?: string;\n  rel?: string;\n}\n\nconst Root = React.forwardRef<HTMLElement, ChipRootProps>(function ChipRoot({ variant = 'suggestion', as = 'span', className, ...props }, ref) {\n  const Tag = as as React.ElementType;\n  return <Tag ref={ref} data-variant={variant} className={className ? `mu-chip ${className}` : 'mu-chip'} {...props} />;\n});\n\n/** The leading LED (`led=\"link\" | \"code\"`) or a glyph (children). */\nfunction Lead({ led, children, className, ...props }: React.HTMLAttributes<HTMLSpanElement> & { led?: 'link' | 'code' }) {\n  return (\n    <span aria-hidden data-led={led} className={className ? `mu-chip-lead ${className}` : 'mu-chip-lead'} {...props}>\n      {children}\n    </span>\n  );\n}\nfunction Text({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {\n  return <span className={className ? `mu-chip-text ${className}` : 'mu-chip-text'} {...props} />;\n}\nfunction Actions({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {\n  return <span className={className ? `mu-chip-actions ${className}` : 'mu-chip-actions'} {...props} />;\n}\n\nexport const Chip = Object.assign(Root, { Root, Lead, Text, Actions });\nexport type ChipProps = ChipRootProps;\n"
+    },
+    {
+      "path": "packages/metalui/src/components/chip/chip.css",
+      "type": "registry:file",
+      "target": "components/metalui/chip/chip.css",
+      "content": "@import \"../tokens.css\";\n\n/* Chip: a small pill. Its look is the chip recipe (--mu-r-chip-*). */\n.mu-chip { box-sizing: border-box; display: inline-flex; align-items: center; white-space: nowrap; text-decoration: none; }\n.mu-chip[data-variant=\"suggestion\"] {\n  gap: var(--mu-r-chip-suggestion-gap);\n  height: var(--mu-r-chip-suggestion-height);\n  padding: var(--mu-zero) var(--mu-r-chip-suggestion-pad-right) var(--mu-zero) var(--mu-r-chip-suggestion-pad-left);\n  border-radius: var(--mu-radius-pill);\n  font: var(--mu-r-chip-suggestion-font);\n  letter-spacing: var(--mu-r-chip-suggestion-tracking);\n  color: var(--mu-r-chip-suggestion-ink);\n  background: var(--mu-r-chip-suggestion-background);\n  box-shadow: var(--mu-r-chip-suggestion-shadow);\n}\n.mu-chip:is([data-variant=\"glass\"], [data-variant=\"glass-action\"]) {\n  gap: var(--mu-r-chip-glass-gap);\n  height: var(--mu-r-chip-glass-height);\n  padding: var(--mu-zero) var(--mu-r-chip-glass-pad-x);\n  border-radius: var(--mu-r-chip-glass-radius);\n  font: var(--mu-r-chip-glass-font);\n  letter-spacing: var(--mu-r-chip-glass-tracking);\n}\n.mu-chip[data-variant=\"glass\"] {\n  color: var(--mu-r-chip-glass-ink);\n  background: var(--mu-r-chip-glass-background);\n  -webkit-backdrop-filter: var(--mu-r-chip-glass-blur);\n  backdrop-filter: var(--mu-r-chip-glass-blur);\n}\n.mu-chip[data-variant=\"glass-action\"] { color: var(--mu-r-chip-glass-action-ink); background: var(--mu-r-chip-glass-action-background); cursor: pointer; }\n.mu-chip[data-variant=\"glass-action\"]:hover { background: var(--mu-r-chip-glass-action-hover-background); }\n.mu-chip-lead { display: inline-grid; place-items: center; flex: none; }\n.mu-chip-lead[data-led] { width: var(--mu-r-chip-led-size); height: var(--mu-r-chip-led-size); border-radius: var(--mu-round); }\n.mu-chip-lead[data-led=\"link\"] { background: var(--mu-r-chip-led-link-background); }\n.mu-chip-lead[data-led=\"code\"] { background: var(--mu-r-chip-led-code-background); }\n.mu-chip-actions { display: inline-flex; align-items: center; }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
+}

@@ -1,0 +1,52 @@
+@import "../tokens.css";
+@import "../well/well.css";
+@import "../kbd/kbd.css";
+
+/* Field and search field. Their look is the field recipe (--mu-r-field-*) on the well. */
+.mu-field {
+  display: flex;
+  align-items: center;
+  gap: var(--mu-r-field-field-gap);
+  height: var(--mu-r-field-field-height);
+  padding: var(--mu-zero) var(--mu-r-field-field-pad-right) var(--mu-zero) var(--mu-r-field-field-pad-left);
+  border-radius: var(--mu-r-field-field-radius);
+  color: var(--mu-r-field-field-hint);
+  cursor: text;
+}
+.mu-field-icon { display: inline-grid; flex: none; }
+.mu-field > .mu-field-icon > svg { width: var(--mu-r-field-field-glyph); height: var(--mu-r-field-field-glyph); }
+.mu-field-input {
+  flex: 1;
+  min-width: var(--mu-zero);
+  padding: var(--mu-zero);
+  border: var(--mu-zero);
+  outline: var(--mu-zero);
+  background: transparent;
+  font: var(--mu-r-field-field-font);
+  letter-spacing: var(--mu-r-field-field-tracking);
+  color: var(--mu-r-field-field-ink);
+  caret-color: var(--mu-r-field-field-caret);
+}
+.mu-field-input::placeholder { color: var(--mu-r-field-field-hint); }
+.mu-field-input:focus-visible { outline: none; }
+.mu-field-trail { display: inline-flex; align-items: center; margin-left: auto; }
+
+.mu-search-field {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mu-r-field-search-gap);
+  height: var(--mu-r-field-search-height);
+  min-width: var(--mu-r-field-search-min-width);
+  padding: var(--mu-zero) var(--mu-r-field-search-pad-right) var(--mu-zero) var(--mu-r-field-search-pad-left);
+  border: var(--mu-zero);
+  border-radius: var(--mu-r-field-search-radius);
+  font: var(--mu-r-field-search-font);
+  letter-spacing: var(--mu-r-field-search-tracking);
+  cursor: text;
+}
+.mu-search-field[data-tone="graphite"] { color: var(--mu-r-field-search-ink); background: var(--mu-r-well-self-graphite-background); box-shadow: var(--mu-r-well-self-graphite-shadow); }
+.mu-search-field[data-tone="light"] { color: var(--mu-r-field-field-hint); background: var(--mu-r-well-self-field-background); box-shadow: var(--mu-r-well-self-field-shadow); }
+.mu-search-field > .mu-field-icon > svg { width: var(--mu-r-field-search-glyph); height: var(--mu-r-field-search-glyph); }
+.mu-search-field > .mu-kbd { margin-left: auto; }
+.mu-search-field:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-zero); }

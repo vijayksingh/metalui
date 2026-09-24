@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sparkline",
+  "type": "registry:ui",
+  "title": "Sparkline",
+  "description": "A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/sparkline/sparkline.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/sparkline/sparkline.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './sparkline.css';\n\n/* SPARKLINE: a small series plot. A line with gaps where a day has no value, a dot per value, the\n * last one in the intent green, a dashed baseline at the average. Dots can act (focus their source). */\n\nexport interface SparklinePoint {\n  value: number;\n  /** A tooltip for the dot: \"WED 24 SEP · 6.5\". */\n  title?: string;\n  /** Called when the dot is clicked. */\n  onSelect?: () => void;\n}\n\nexport interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'points'> {\n  /** One entry per slot (a day); null leaves a gap. */\n  points: (SparklinePoint | null)[];\n  /** The drawing's own coordinate width and height (it scales to its box). */\n  width?: number;\n  height?: number;\n  /** mini: the small plot of a pinned summary. */\n  size?: 'regular' | 'mini';\n}\n\nexport function Sparkline({ points, width = 300, height, size = 'regular', className, ...props }: SparklineProps) {\n  const h = height ?? (size === 'mini' ? 24 : 40);\n  const vals = points.filter(Boolean).map((p) => p!.value);\n  const cls = className ? `mu-sparkline ${className}` : 'mu-sparkline';\n  if (!vals.length) return <svg aria-hidden data-size={size} className={cls} viewBox={`0 0 ${width} ${h}`} {...props} />;\n  let lo = Math.min(...vals);\n  let hi = Math.max(...vals);\n  if (hi - lo < 1e-6) {\n    lo -= 1;\n    hi += 1;\n  }\n  const pad = 4;\n  const X = (i: number) => (points.length > 1 ? (i / (points.length - 1)) * width : width / 2);\n  const Y = (v: number) => h - pad - ((v - lo) / (hi - lo)) * (h - pad * 2);\n  let d = '';\n  let pen = false;\n  points.forEach((p, i) => {\n    if (!p) return void (pen = false);\n    d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(p.value).toFixed(1)}`;\n    pen = true;\n  });\n  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;\n  const dots = points.map((p, i) => [p, i] as const).filter(([p]) => p) as [SparklinePoint, number][];\n  return (\n    <svg data-size={size} className={cls} viewBox={`0 0 ${width} ${h}`} preserveAspectRatio=\"none\" {...props}>\n      <line className=\"mu-sparkline-base\" x1=\"0\" x2={width} y1={Y(avg).toFixed(1)} y2={Y(avg).toFixed(1)} />\n      <path className=\"mu-sparkline-line\" d={d} />\n      {dots.map(([p, i], k) => (\n        <circle\n          key={i}\n          className=\"mu-sparkline-dot\"\n          data-last={k === dots.length - 1 ? '' : undefined}\n          cx={X(i).toFixed(1)}\n          cy={Y(p.value).toFixed(1)}\n          role={p.onSelect ? 'button' : undefined}\n          aria-label={p.onSelect ? p.title : undefined}\n          onClick={p.onSelect}\n        >\n          {p.title && <title>{p.title}</title>}\n        </circle>\n      ))}\n    </svg>\n  );\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/sparkline/sparkline.css",
+      "type": "registry:file",
+      "target": "components/metalui/sparkline/sparkline.css",
+      "content": "@import \"../tokens.css\";\n\n/* Sparkline. Its look is the sparkline recipe (--mu-r-sparkline-*). */\n.mu-sparkline { display: block; width: 100%; height: var(--mu-r-sparkline-self-height); overflow: visible; }\n.mu-sparkline[data-size=\"mini\"] { height: var(--mu-r-sparkline-self-height-mini); }\n.mu-sparkline-line { fill: none; stroke: var(--mu-r-sparkline-line-color); stroke-width: var(--mu-r-sparkline-line-width); stroke-linecap: round; stroke-linejoin: round; }\n.mu-sparkline-dot { r: var(--mu-r-sparkline-dot-r); fill: var(--mu-r-sparkline-dot-fill); stroke: var(--mu-r-sparkline-dot-ring); stroke-width: var(--mu-r-sparkline-dot-stroke); cursor: pointer; }\n.mu-sparkline-dot[data-last] { r: var(--mu-r-sparkline-dot-r-last); fill: var(--mu-r-sparkline-dot-last-fill); stroke: var(--mu-r-sparkline-dot-last-ring); }\n.mu-sparkline-base { stroke: var(--mu-r-sparkline-base-color); stroke-dasharray: var(--mu-r-sparkline-base-dash); stroke-width: var(--mu-r-sparkline-base-width); }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."
+}

@@ -740,7 +740,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A dark glass object for a link or a block of code: a bezel, a screen with a glare and a shaded rim, a tag with an LED; a link's screen glows in a hue taken from its host. (reference style.css .glass, .glass .screen, .glass .screen::after, .glass-tag, .linkobj, .codeobj)
+    /// A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow. (reference style.css .glass, .glass .screen, .glass .screen::after)
     public static let glassFace = MetalObjectRecipe(
         name: "glass-face",
         layers: [
@@ -757,64 +757,11 @@ public enum MetalRecipes {
             .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:glass-face:10 inset 0 1px 0 rgba(255,255,255,.14)
             .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:glass-face:11 inset 0 0 0 1px rgba(0,0,0,.5)
             .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:glass-face:12 inset 0 8px 18px -8px rgba(0,0,0,.45)
-            .init(part: "link-screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:glass-face:13 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
-            .init(part: "code-screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.2, y: 0.0), stops: [.init(.color(MetalRGBA(38.0, 40.0, 44.0, 1.0)), 0.0), .init(.color(MetalRGBA(21.0, 22.0, 24.0, 1.0)), 0.6), .init(.color(MetalRGBA(15.0, 16.0, 17.0, 1.0)), 1.0)])), // mu-recipe:glass-face:14 radial-gradient(120% 80% at 20% 0%, #26282C 0%, #151618 60%, #0F1011 100%)
-            .init(part: "tag", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(20.0, 20.0, 22.0, 0.5)))), // mu-recipe:glass-face:15 rgba(20,20,22,.5)
-            .init(part: "tag-led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:glass-face:16 radial-gradient(circle at 40% 35%, #E6EEFF 18%, #9DB9FF 45%, #4B78F0 100%)
-            .init(part: "tag-led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:glass-face:17 radial-gradient(circle at 40% 35%, #F6E4FF 18%, #D4A6F0 45%, #9B5CC8 100%)
-            .init(part: "open", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:glass-face:18 rgba(255,255,255,.08)
-            .init(part: "open", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:glass-face:19 rgba(255,255,255,.16)
         ],
         props: [
             "self.radius": .number(22.0),
             "self.pad": .number(6.0),
             "screen.radius": .number(16.0),
-            "link.width": .number(250.0),
-            "link.height": .number(92.0),
-            "link.pad-x": .number(14.0),
-            "link.pad-y": .number(12.0),
-            "tag.height": .number(18.0),
-            "tag.pad-x": .number(7.0),
-            "tag.radius": .number(7.0),
-            "tag.gap": .number(5.0),
-            "tag.inset": .number(10.0),
-            "tag.led": .number(5.0),
-            "tag.font": .text("500 9px/1 mono"),
-            "tag.tracking": .text("0.1em"),
-            "tag.ink": .text("rgba(255,255,255,.8)"),
-            "tag.blur": .text("blur(8px) saturate(1.4)"),
-            "open.ink": .text("rgba(255,255,255,.75)"),
-            "open.font": .text("500 9px/18px mono"),
-            "open.tracking": .text("0.1em"),
-            "open.height": .number(18.0),
-            "open.pad-x": .number(7.0),
-            "open.radius": .number(7.0),
-            "open.inset": .number(10.0),
-            "domain.font": .text("620 15px/1.2 sans"),
-            "domain.tracking": .text("-0.015em"),
-            "domain.ink": .text("#EDEDEF"),
-            "path.font": .text("400 9.5px/1.4 mono"),
-            "path.tracking": .text("0.06em"),
-            "path.ink": .text("rgba(255,255,255,.5)"),
-            "code.min-width": .number(260.0),
-            "code.max-width": .number(460.0),
-            "code.pad-top": .number(30.0),
-            "code.pad-x": .number(14.0),
-            "code.pad-bottom": .number(12.0),
-            "code.font": .text("400 11px/1.62 mono"),
-            "code.tracking": .text("-0.01em"),
-            "code.line": .number(17.82),
-            "code.ink": .text("#D7D8DB"),
-            "code.number-ink": .text("#48494E"),
-            "code.number-width": .number(18.0),
-            "code.max-lines": .number(18.0),
-            "code.keyword": .text("#E7A6D9"),
-            "code.type": .text("#E7C98A"),
-            "code.string": .text("#9FE3BF"),
-            "code.comment": .text("#6D6E73"),
-            "code.number": .text("#9EC2FF"),
-            "link-screen.reach": .number(1.2),
-            "code-screen.reach": .number(1.2),
         ]
     )
 
@@ -1318,6 +1265,165 @@ public enum MetalRecipes {
         ],
         props: [
             :
+        ]
+    )
+
+    /// A pressable cap with only a glyph: tool (a graphite cap that latches pressed with a green LED), ghost (a flat round button that fills on hover) and mini (a small flat pill inside a chip). (reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button)
+    public static let iconButton = MetalObjectRecipe(
+        name: "icon-button",
+        layers: [
+            .init(part: "tool", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:icon-button:0 linear-gradient(#303033, #262628)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:icon-button:1 inset 0 1px 0 rgba(255,255,255,.09)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: -1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:icon-button:2 inset 0 -1px 0 rgba(0,0,0,.3)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:icon-button:3 0 0 0 .5px rgba(0,0,0,.8)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 1.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:icon-button:4 0 1px 1px rgba(0,0,0,.35)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.25)))), // mu-recipe:icon-button:5 0 2px 4px -1px rgba(0,0,0,.25)
+            .init(part: "tool", state: "pressed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(20.0, 20.0, 21.0, 1.0)), 0.0), .init(.color(MetalRGBA(25.0, 25.0, 26.0, 1.0)), 1.0)])), // mu-recipe:icon-button:6 linear-gradient(#141415, #19191A)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:icon-button:7 inset 0 1px 3px rgba(0,0,0,.7)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:icon-button:8 inset 0 0 0 .5px rgba(0,0,0,.8)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:icon-button:9 0 1px 0 rgba(255,255,255,.06)
+            .init(part: "led", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(217.0, 255.0, 233.0, 1.0)), 0.18), .init(.color(MetalRGBA(123.0, 234.0, 174.0, 1.0)), 0.42), .init(.color(MetalRGBA(47.0, 182.0, 115.0, 1.0)), 1.0)])), // mu-recipe:icon-button:10 radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673)
+            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(123.0, 234.0, 174.0, 0.6)))), // mu-recipe:icon-button:11 0 0 2px rgba(123,234,174,.6)
+            .init(part: "ghost", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.05)))), // mu-recipe:icon-button:12 rgba(0,0,0,.05)
+            .init(part: "ghost", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:13 rgba(255,255,255,.08)
+            .init(part: "mini", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:icon-button:14 rgba(0,0,0,.06)
+            .init(part: "mini", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:15 rgba(255,255,255,.08)
+        ],
+        props: [
+            "tool.size": .number(38.0),
+            "tool.radius": .number(15.0),
+            "tool.glyph": .number(16.0),
+            "tool.ink": .text("#D6D6D8"),
+            "tool.press": .number(1.0),
+            "tool.press-time": .text("50ms"),
+            "tool.shadow-time": .text("90ms"),
+            "led.size": .number(4.0),
+            "led.inset": .number(5.0),
+            "ghost.size": .number(28.0),
+            "ghost.glyph": .number(14.0),
+            "ghost.ink": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "ghost.ink-hover": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "mini.w": .number(18.0),
+            "mini.h": .number(16.0),
+            "mini.font": .text("500 11px/1 sans"),
+            "mini.ink": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "mini.ink-hover": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "mini.accept-ink": .text("#3FB97A"),
+            "self.fade": .text("160ms"),
+        ]
+    )
+
+    /// A small pill with an optional leading LED or glyph and trailing actions: suggestion (frosted with a green hairline), glass (a dark tag on a glass screen) and glass-action (a light cap on glass). (reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open)
+    public static let chip = MetalObjectRecipe(
+        name: "chip",
+        layers: [
+            .init(part: "suggestion", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(252.0, 251.0, 249.0, 0.7)))), // mu-recipe:chip:0 rgba(252,251,249,.7)
+            .init(part: "suggestion", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(44.0, 44.0, 47.0, 0.7)))), // mu-recipe:chip:1 rgba(44,44,47,.7)
+            .init(part: "suggestion", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.4)))), // mu-recipe:chip:2 inset 0 0 0 .5px rgba(63,185,122,.4)
+            .init(part: "suggestion", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:chip:3 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "suggestion", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:chip:4 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "suggestion", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:chip:5 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "suggestion", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:chip:6 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "suggestion", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:chip:7 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:chip:8 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:chip:9 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:chip:10 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:chip:11 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:chip:12 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "glass", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(20.0, 20.0, 22.0, 0.5)))), // mu-recipe:chip:13 rgba(20,20,22,.5)
+            .init(part: "glass-action", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:chip:14 rgba(255,255,255,.08)
+            .init(part: "glass-action", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:15 rgba(255,255,255,.16)
+            .init(part: "led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:chip:16 radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0)
+            .init(part: "led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:chip:17 radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8)
+        ],
+        props: [
+            "suggestion.height": .number(20.0),
+            "suggestion.pad-left": .number(9.0),
+            "suggestion.pad-right": .number(3.0),
+            "suggestion.gap": .number(2.0),
+            "suggestion.font": .text("500 11.5px/20px sans"),
+            "suggestion.tracking": .text("-0.012em"),
+            "suggestion.ink": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "glass.height": .number(18.0),
+            "glass.pad-x": .number(7.0),
+            "glass.radius": .number(7.0),
+            "glass.gap": .number(5.0),
+            "glass.font": .text("500 9px/1 mono"),
+            "glass.tracking": .text("0.1em"),
+            "glass.ink": .text("rgba(255,255,255,.8)"),
+            "glass.blur": .text("blur(8px) saturate(1.4)"),
+            "glass-action.ink": .text("rgba(255,255,255,.75)"),
+            "led.size": .number(5.0),
+        ]
+    )
+
+    /// Text input in a well with a leading glyph and trailing keycaps; SearchField is a button in a well that opens search (light or graphite). (reference style.css .pal-field, .pal-field input, .tb-search)
+    public static let field = MetalObjectRecipe(
+        name: "field",
+        layers: [
+
+        ],
+        props: [
+            "field.height": .number(44.0),
+            "field.radius": .number(17.0),
+            "field.pad-left": .number(16.0),
+            "field.pad-right": .number(12.0),
+            "field.gap": .number(10.0),
+            "field.glyph": .number(15.0),
+            "field.font": .text("500 15px/1 sans"),
+            "field.tracking": .text("-0.01em"),
+            "field.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "field.hint": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "field.caret": .text("#3FB97A"),
+            "search.height": .number(38.0),
+            "search.min-width": .number(196.0),
+            "search.radius": .number(15.0),
+            "search.pad-left": .number(12.0),
+            "search.pad-right": .number(8.0),
+            "search.gap": .number(8.0),
+            "search.glyph": .number(14.0),
+            "search.font": .text("500 13px/1 sans"),
+            "search.tracking": .text("-0.012em"),
+            "search.ink": .text("#8E8E93"),
+        ]
+    )
+
+    /// A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average. (reference style.css .spark path, .spark circle, .spark circle.last, .spark .base)
+    public static let sparkline = MetalObjectRecipe(
+        name: "sparkline",
+        layers: [
+
+        ],
+        props: [
+            "line.width": .number(1.5),
+            "line.color": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "dot.r": .number(2.0),
+            "dot.r-last": .number(3.0),
+            "dot.stroke": .number(1.2),
+            "dot.fill": .perColorway(bone: "#FCFBF9", graphite: "#2C2C2F"),
+            "dot.ring": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "dot.last-fill": .text("#5FC894"),
+            "dot.last-ring": .text("#2FB673"),
+            "base.color": .perColorway(bone: "rgba(40,38,32,.1)", graphite: "rgba(255,255,255,.12)"),
+            "base.dash": .text("2 3"),
+            "base.width": .number(1.0),
+            "self.height": .number(40.0),
+            "self.height-mini": .number(24.0),
+        ]
+    )
+
+    /// A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it. (reference style.css #palette)
+    public static let dialog = MetalObjectRecipe(
+        name: "dialog",
+        layers: [
+
+        ],
+        props: [
+            "scrim.color": .perColorway(bone: "rgba(243,243,241,.25)", graphite: "rgba(14,14,15,.25)"),
+            "scrim.z": .text("30"),
+            "self.top": .text("16vh"),
+            "self.enter-y": .number(-6.0),
+            "self.enter-scale": .text("0.985"),
         ]
     )
 }

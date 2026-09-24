@@ -67,6 +67,29 @@
       "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
     },
     {
+      "name": "chip",
+      "type": "registry:ui",
+      "title": "Chip",
+      "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass and glass-action.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/chip/chip.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/chip/chip.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/chip/chip.css",
+          "type": "registry:file",
+          "target": "components/metalui/chip/chip.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
+    },
+    {
       "name": "command-palette",
       "type": "registry:ui",
       "title": "Command palette",
@@ -92,6 +115,77 @@
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
     },
     {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/dialog/dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/dialog/dialog.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/dialog/dialog.css",
+          "type": "registry:file",
+          "target": "components/metalui/dialog/dialog.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/field/field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/field/field.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/field/field.css",
+          "type": "registry:file",
+          "target": "components/metalui/field/field.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/field.md. SwiftUI: MetalField, MetalSearchField in the MetalUI Swift package."
+    },
+    {
+      "name": "glass-face",
+      "type": "registry:ui",
+      "title": "Glass face",
+      "description": "A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/glass-face/glass-face.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/glass-face/glass-face.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/glass-face/glass-face.css",
+          "type": "registry:file",
+          "target": "components/metalui/glass-face/glass-face.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/glass-face.md. SwiftUI: MetalGlassFace in the MetalUI Swift package."
+    },
+    {
       "name": "hover-engraving",
       "type": "registry:ui",
       "title": "Hover engraving",
@@ -113,6 +207,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "Icon button",
+      "description": "A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/icon-button/icon-button.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icon-button/icon-button.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/icon-button/icon-button.css",
+          "type": "registry:file",
+          "target": "components/metalui/icon-button/icon-button.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
     },
     {
       "name": "kbd",
@@ -424,6 +541,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "Sparkline",
+      "description": "A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/sparkline/sparkline.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/sparkline/sparkline.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/sparkline/sparkline.css",
+          "type": "registry:file",
+          "target": "components/metalui/sparkline/sparkline.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."
     },
     {
       "name": "status",

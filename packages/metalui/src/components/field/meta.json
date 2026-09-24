@@ -1,0 +1,28 @@
+{
+  "name": "field",
+  "title": "Field",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.",
+  "base": "none",
+  "react": {
+    "export": "Field, SearchField",
+    "files": [
+      "field.tsx",
+      "field.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalField, MetalSearchField",
+    "file": "swift/Sources/MetalUI/Components/MetalField.swift"
+  },
+  "agent": "field.agent.md",
+  "slots": {
+    "Field": [
+      "Root",
+      "Icon",
+      "Input",
+      "Trail"
+    ]
+  }
+}

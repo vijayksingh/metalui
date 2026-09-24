@@ -3,6 +3,12 @@ export { Surface, type SurfaceProps, type SurfaceMaterial, type SurfaceRadius } 
 export { Well, type WellProps, type WellVariant, type WellRadius } from './components/well/well';
 export { Label, type LabelProps, type LabelVariant } from './components/label/label';
 export { Rule, type RuleProps } from './components/rule/rule';
+export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
+export { Chip, type ChipProps } from './components/chip/chip';
+export { Field, SearchField, type SearchFieldProps } from './components/field/field';
+export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
+export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
+export { GlassFace } from './components/glass-face/glass-face';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';

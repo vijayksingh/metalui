@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "glass-face",
+  "type": "registry:ui",
+  "title": "Glass face",
+  "description": "A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/glass-face/glass-face.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/glass-face/glass-face.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './glass-face.css';\n\n/* GLASS FACE: a dark glass object: a bezel around a screen with a glare, a shaded rim and an inner\n * shadow. What is on the screen is the caller's. Slots: GlassFace.Root, GlassFace.Screen. */\n\nconst Root = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function GlassFaceRoot({ className, ...props }, ref) {\n  return <div ref={ref} className={className ? `mu-glass-face ${className}` : 'mu-glass-face'} {...props} />;\n});\nconst Screen = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function GlassFaceScreen({ className, ...props }, ref) {\n  return <div ref={ref} className={className ? `mu-glass-screen ${className}` : 'mu-glass-screen'} {...props} />;\n});\n\nexport const GlassFace = Object.assign(Root, { Root, Screen });\n"
+    },
+    {
+      "path": "packages/metalui/src/components/glass-face/glass-face.css",
+      "type": "registry:file",
+      "target": "components/metalui/glass-face/glass-face.css",
+      "content": "@import \"../tokens.css\";\n\n/* Glass face. Its look is the glass-face recipe (--mu-r-glass-face-*). */\n.mu-glass-face {\n  box-sizing: border-box;\n  padding: var(--mu-r-glass-face-self-pad);\n  border-radius: var(--mu-r-glass-face-self-radius);\n  background: var(--mu-r-glass-face-self-background);\n  box-shadow: var(--mu-r-glass-face-self-shadow);\n}\n.mu-glass-screen { position: relative; overflow: hidden; border-radius: var(--mu-r-glass-face-screen-radius); background: var(--mu-r-glass-face-screen-background); }\n.mu-glass-screen::after {\n  content: \"\";\n  position: absolute;\n  inset: var(--mu-zero);\n  pointer-events: none;\n  border-radius: inherit;\n  background: var(--mu-r-glass-face-glare-background);\n  box-shadow: var(--mu-r-glass-face-glare-shadow);\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/glass-face.md. SwiftUI: MetalGlassFace in the MetalUI Swift package."
+}

@@ -1,0 +1,36 @@
+@import "../tokens.css";
+
+/* Chip: a small pill. Its look is the chip recipe (--mu-r-chip-*). */
+.mu-chip { box-sizing: border-box; display: inline-flex; align-items: center; white-space: nowrap; text-decoration: none; }
+.mu-chip[data-variant="suggestion"] {
+  gap: var(--mu-r-chip-suggestion-gap);
+  height: var(--mu-r-chip-suggestion-height);
+  padding: var(--mu-zero) var(--mu-r-chip-suggestion-pad-right) var(--mu-zero) var(--mu-r-chip-suggestion-pad-left);
+  border-radius: var(--mu-radius-pill);
+  font: var(--mu-r-chip-suggestion-font);
+  letter-spacing: var(--mu-r-chip-suggestion-tracking);
+  color: var(--mu-r-chip-suggestion-ink);
+  background: var(--mu-r-chip-suggestion-background);
+  box-shadow: var(--mu-r-chip-suggestion-shadow);
+}
+.mu-chip:is([data-variant="glass"], [data-variant="glass-action"]) {
+  gap: var(--mu-r-chip-glass-gap);
+  height: var(--mu-r-chip-glass-height);
+  padding: var(--mu-zero) var(--mu-r-chip-glass-pad-x);
+  border-radius: var(--mu-r-chip-glass-radius);
+  font: var(--mu-r-chip-glass-font);
+  letter-spacing: var(--mu-r-chip-glass-tracking);
+}
+.mu-chip[data-variant="glass"] {
+  color: var(--mu-r-chip-glass-ink);
+  background: var(--mu-r-chip-glass-background);
+  -webkit-backdrop-filter: var(--mu-r-chip-glass-blur);
+  backdrop-filter: var(--mu-r-chip-glass-blur);
+}
+.mu-chip[data-variant="glass-action"] { color: var(--mu-r-chip-glass-action-ink); background: var(--mu-r-chip-glass-action-background); cursor: pointer; }
+.mu-chip[data-variant="glass-action"]:hover { background: var(--mu-r-chip-glass-action-hover-background); }
+.mu-chip-lead { display: inline-grid; place-items: center; flex: none; }
+.mu-chip-lead[data-led] { width: var(--mu-r-chip-led-size); height: var(--mu-r-chip-led-size); border-radius: var(--mu-round); }
+.mu-chip-lead[data-led="link"] { background: var(--mu-r-chip-led-link-background); }
+.mu-chip-lead[data-led="code"] { background: var(--mu-r-chip-led-code-background); }
+.mu-chip-actions { display: inline-flex; align-items: center; }

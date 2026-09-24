@@ -1,0 +1,20 @@
+{
+  "name": "icon-button",
+  "title": "Icon button",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).",
+  "base": "none",
+  "react": {
+    "export": "IconButton",
+    "files": [
+      "icon-button.tsx",
+      "icon-button.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalIconButton",
+    "file": "swift/Sources/MetalUI/Components/MetalIconButton.swift"
+  },
+  "agent": "icon-button.agent.md"
+}

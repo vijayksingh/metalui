@@ -1,0 +1,9 @@
+@import "../tokens.css";
+
+/* Sparkline. Its look is the sparkline recipe (--mu-r-sparkline-*). */
+.mu-sparkline { display: block; width: 100%; height: var(--mu-r-sparkline-self-height); overflow: visible; }
+.mu-sparkline[data-size="mini"] { height: var(--mu-r-sparkline-self-height-mini); }
+.mu-sparkline-line { fill: none; stroke: var(--mu-r-sparkline-line-color); stroke-width: var(--mu-r-sparkline-line-width); stroke-linecap: round; stroke-linejoin: round; }
+.mu-sparkline-dot { r: var(--mu-r-sparkline-dot-r); fill: var(--mu-r-sparkline-dot-fill); stroke: var(--mu-r-sparkline-dot-ring); stroke-width: var(--mu-r-sparkline-dot-stroke); cursor: pointer; }
+.mu-sparkline-dot[data-last] { r: var(--mu-r-sparkline-dot-r-last); fill: var(--mu-r-sparkline-dot-last-fill); stroke: var(--mu-r-sparkline-dot-last-ring); }
+.mu-sparkline-base { stroke: var(--mu-r-sparkline-base-color); stroke-dasharray: var(--mu-r-sparkline-base-dash); stroke-width: var(--mu-r-sparkline-base-width); }

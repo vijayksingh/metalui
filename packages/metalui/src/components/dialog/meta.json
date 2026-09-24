@@ -1,0 +1,26 @@
+{
+  "name": "dialog",
+  "title": "Dialog",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.",
+  "base": "@base-ui/react/dialog",
+  "react": {
+    "export": "Dialog",
+    "files": [
+      "dialog.tsx",
+      "dialog.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalDialog",
+    "file": "swift/Sources/MetalUI/Components/MetalDialog.swift"
+  },
+  "agent": "dialog.agent.md",
+  "slots": {
+    "Dialog": [
+      "Root",
+      "Popup"
+    ]
+  }
+}

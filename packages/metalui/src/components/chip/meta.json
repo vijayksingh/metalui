@@ -1,0 +1,28 @@
+{
+  "name": "chip",
+  "title": "Chip",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass and glass-action.",
+  "base": "none",
+  "react": {
+    "export": "Chip",
+    "files": [
+      "chip.tsx",
+      "chip.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalChip",
+    "file": "swift/Sources/MetalUI/Components/MetalChip.swift"
+  },
+  "agent": "chip.agent.md",
+  "slots": {
+    "Chip": [
+      "Root",
+      "Lead",
+      "Text",
+      "Actions"
+    ]
+  }
+}

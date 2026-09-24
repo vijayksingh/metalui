@@ -1,0 +1,26 @@
+{
+  "name": "glass-face",
+  "title": "Glass face",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.",
+  "base": "none",
+  "react": {
+    "export": "GlassFace",
+    "files": [
+      "glass-face.tsx",
+      "glass-face.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalGlassFace",
+    "file": "swift/Sources/MetalUI/Components/MetalGlassFace.swift"
+  },
+  "agent": "glass-face.agent.md",
+  "slots": {
+    "GlassFace": [
+      "Root",
+      "Screen"
+    ]
+  }
+}
