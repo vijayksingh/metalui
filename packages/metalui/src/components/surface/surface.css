@@ -1,7 +1,8 @@
 @import "../tokens.css";
 
 /* Surface: a raised plate or card from a material. Its look is the surface recipe (--mu-r-surface-*). */
-.mu-surface { box-sizing: border-box; position: relative; }
+/* Zero specificity: a block that places a surface (absolute, fixed) wins whatever the stylesheet order. */
+:where(.mu-surface) { box-sizing: border-box; position: relative; }
 .mu-surface[data-material="raise"] { background: var(--mu-r-surface-self-raise-background); box-shadow: var(--mu-r-surface-self-raise-shadow); }
 .mu-surface[data-material="raise-lite"] { background: var(--mu-r-surface-self-raise-lite-background); box-shadow: var(--mu-r-surface-self-raise-lite-shadow); }
 .mu-surface[data-material="raise-sm"] { background: var(--mu-r-surface-self-raise-sm-background); box-shadow: var(--mu-r-surface-self-raise-sm-shadow); }
