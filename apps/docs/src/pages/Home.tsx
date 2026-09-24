@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { ButtonXray } from '../ui/xray/ButtonXray';
-import { FloatingTable } from '../ui/floating';
+import { SegmentedXray } from '../ui/xray/SegmentedXray';
+import { FloatingTable, type XrayKind } from '../ui/floating';
 
 /* The overview, laid out like the reference design-language site's home:
  *   hero        engraved kicker · two-tone title · lede
@@ -13,10 +14,10 @@ import { FloatingTable } from '../ui/floating';
 
 
 export default function Home() {
-  const [xray, setXray] = React.useState(false);
+  const [xray, setXray] = React.useState<XrayKind | null>(null);
   React.useEffect(() => {
     if (!xray) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setXray(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setXray(null); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [xray]);
@@ -33,10 +34,10 @@ export default function Home() {
           </p>
         </div>
 
-        <FloatingTable mode="table" onXray={() => setXray(true)} />
+        <FloatingTable mode="table" onXray={setXray} />
         {xray && (
-          <div className="xr-overlay" role="dialog" aria-modal="true" aria-label="Button, x-ray" onClick={(e) => { if (e.target === e.currentTarget) setXray(false); }} onKeyDown={(e) => { if (e.key === 'Escape') setXray(false); }}>
-            <div className="xr-sheet"><ButtonXray startOpen /></div>
+          <div className="xr-overlay" role="dialog" aria-modal="true" aria-label={xray === 'segmented' ? 'Segmented control, x-ray' : 'Button, x-ray'} onClick={(e) => { if (e.target === e.currentTarget) setXray(null); }} onKeyDown={(e) => { if (e.key === 'Escape') setXray(null); }}>
+            <div className="xr-sheet">{xray === 'segmented' ? <SegmentedXray startOpen /> : <ButtonXray startOpen />}</div>
           </div>
         )}
       </section>

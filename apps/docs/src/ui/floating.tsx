@@ -31,7 +31,7 @@ interface Item {
   dur: string;
   drift: [string, string];
   live?: boolean;
-  node: (ctx: { openXray: () => void; chip: boolean; setChip: (v: boolean) => void }) => React.ReactNode;
+  node: (ctx: { openXray: (which: XrayKind) => void; chip: boolean; setChip: (v: boolean) => void }) => React.ReactNode;
 }
 
 const ITEMS: Item[] = [
@@ -49,13 +49,21 @@ const ITEMS: Item[] = [
   { id: 'swatch', table: ['84%', '34%'], space: ['82%', '34%', -140, -18], dur: '24s', drift: ['-18px', '30px'], node: () => <Swatch hex="#FF6B3D" label="Colour" /> },
   {
     id: 'button', table: ['36%', '52%'], space: ['42%', '48%', 80, -6], dur: '20s', drift: ['28px', '-14px'], live: true,
-    node: ({ openXray }) => <div style={{ zoom: 1.6 }}><Button cap="primary" onClick={openXray}>New Canvas</Button></div>,
+    node: ({ openXray }) => <div style={{ zoom: 1.6 }}><Button cap="primary" onClick={() => openXray('button')}>New Canvas</Button></div>,
   },
   {
     id: 'chip', table: ['10%', '62%'], space: ['14%', '62%', -60, 10], dur: '28s', drift: ['22px', '-22px'],
     node: ({ chip, setChip }) => chip ? <SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /> : null,
   },
-  { id: 'seg', table: ['66%', '58%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], node: () => <Segmented aria-label="Colorway specimen" defaultValue="bone" options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} /> },
+  {
+    id: 'seg', table: ['66%', '58%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
+    // a click picks the option and opens the x-ray, like the button
+    node: ({ openXray }) => (
+      <div style={{ zoom: 1.3 }} onClick={() => openXray('segmented')}>
+        <Segmented aria-label="View" defaultValue="week" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }]} />
+      </div>
+    ),
+  },
   { id: 'key', table: ['84%', '72%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], node: () => <div style={{ zoom: 1.4 }}><Kbd>⌘K</Kbd></div> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'],
@@ -71,7 +79,9 @@ const ITEMS: Item[] = [
   },
 ];
 
-export function FloatingTable({ mode, onXray }: { mode: 'space' | 'table'; onXray: () => void }) {
+export type XrayKind = 'button' | 'segmented';
+
+export function FloatingTable({ mode, onXray }: { mode: 'space' | 'table'; onXray: (which: XrayKind) => void }) {
   const [chip, setChip] = React.useState(true);
   const root = React.useRef<HTMLDivElement>(null);
 
