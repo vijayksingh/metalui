@@ -27,8 +27,8 @@ const VARIANTS = {
 };
 const LEAD = 'mu-chip-lead inline-grid place-items-center flex-none';
 const LEDS = {
-  link: 'size-chip-led-size rounded-full recipe-chip-led-link',
-  code: 'size-chip-led-size rounded-full recipe-chip-led-code',
+  link: 'size-chip-led-size rounded-round recipe-chip-led-link',
+  code: 'size-chip-led-size rounded-round recipe-chip-led-code',
 };
 const ACTIONS = 'mu-chip-actions inline-flex items-center group-data-[variant=suggestion]/chip:gap-chip-suggestion-gap';
 

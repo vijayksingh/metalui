@@ -32,7 +32,7 @@ const LABEL = {
   dark: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-dark',
   light: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-light',
 };
-const LED = 'mu-swatch-led absolute right-swatch-led-inset top-swatch-led-inset size-swatch-led-size rounded-full recipe-swatch-led';
+const LED = 'mu-swatch-led absolute right-swatch-led-inset top-swatch-led-inset size-swatch-led-size rounded-round recipe-swatch-led';
 
 export const Swatch = React.forwardRef<HTMLDivElement, SwatchProps>(function Swatch({ hex, label, className, style, ...props }, ref) {
   const ink = swatchInk(hex);

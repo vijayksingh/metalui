@@ -16,7 +16,7 @@ export interface LedProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: 'default' | 'small';
 }
 
-const LED = 'mu-led inline-block flex-none rounded-full';
+const LED = 'mu-led inline-block flex-none rounded-round';
 const LED_SIZES = {
   default: 'size-status-led-size',
   small: 'size-status-led-size-small',
