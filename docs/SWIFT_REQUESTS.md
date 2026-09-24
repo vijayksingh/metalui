@@ -1,5 +1,11 @@
 # Swift parity requests
 
+## Status badge type cascade
+
+- **Object:** `status` badge text in both colorways.
+- **Mismatch:** the generated `status.badge.font` is `500 9.5px/1 mono`, but the paired isolated React crop is 7 physical pixels narrower than Swift's recipe-driven badge at 2×. Headless computed style confirms React renders `9px/12px` with `0.99px` tracking from `.mu-type-label`. `StatusBadge` applies both `mu-badge` and `mu-type-label`; give the badge recipe priority in the React cascade so both render the same declared font. Swift keeps the generated recipe.
+- **Reference CSS:** `packages/metalui/src/components/status/status.css:19-34` declares the badge font and tracking; `packages/metalui/src/components/tokens.css:506` declares `.mu-type-label` with a different font and tracking.
+
 ## Placement marker and twin outline
 
 - **Object:** generated `placement` recipe for a transcluded block's marker and `twin` presence state.
