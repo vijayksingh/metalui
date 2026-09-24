@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Toast (KAMUI-20). Mirrors components/toast from MetalToastMetrics.
+// The same object recipe as components/toast.
 
 /// One toast: what happened, an optional detail, Undo, and a tone.
 public struct MetalToastModel: Identifiable, Equatable {
@@ -21,7 +21,7 @@ public struct MetalToastModel: Identifiable, Equatable {
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
 }
 
-/// The toast pill: 44 tall, smoked, the result with its Undo cap.
+/// The toast pill: smoked glass, the result with its Undo cap.
 public struct MetalToast: View {
     let model: MetalToastModel
     let onUndo: () -> Void
@@ -32,37 +32,41 @@ public struct MetalToast: View {
     }
 
     public var body: some View {
-        HStack(spacing: MetalToastMetrics.gap) {
-            HStack(spacing: 6) {
+        let recipe = MetalRecipes.toast
+        HStack(spacing: recipe.points("self.gap")) {
+            HStack(spacing: recipe.points("text.gap")) {
                 if model.tone == .success { Text("✓").foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
+                if model.tone == .error { Text("!").foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
                 Text(model.title)
-                if let sub = model.sub { Text("· \(sub)").foregroundColor(MetalToastMetrics.sub.color) }
+                if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink") ?? MetalToastMetrics.sub).color) }
             }
-            .font(.metal(MetalType.ui)).tracking(MetalType.ui.trackingPoints)
+            .font(recipe.font("self.font"))
+            .tracking(recipe.tracking("self.tracking", size: recipe.fontSize("self.font")))
             if model.undo != nil {
                 Button {
                     model.undo?()
                     onUndo()
                 } label: {
-                    HStack(spacing: MetalToastMetrics.undoGap) {
-                        Text("Undo").font(.metal(MetalType.ui))
+                    HStack(spacing: recipe.points("undo.gap")) {
+                        Text("Undo").font(recipe.font("undo.font"))
                         MetalKbd("⌘Z", surface: .sunk)
                     }
-                    .padding(.leading, MetalToastMetrics.undoPadStart)
-                    .padding(.trailing, MetalToastMetrics.undoPadEnd)
-                    .frame(height: MetalToastMetrics.undoHeight)
-                    .metalRecipe(MetalRecipe(fill: MetalToastMetrics.undoBg, shadows: MetalToastMetrics.undoSh), in: Capsule(style: .continuous))
+                    .padding(.leading, recipe.points("undo.pad-left"))
+                    .padding(.trailing, recipe.points("undo.pad-right"))
+                    .frame(height: recipe.points("undo.height"))
+                    .metalObjectRecipe(recipe, part: "undo", in: Capsule(style: .continuous))
                 }
                 .buttonStyle(.plain)
                 .keyboardShortcut("z", modifiers: .command)
             }
         }
-        .foregroundColor(MetalToastMetrics.ink.color)
-        .padding(.leading, MetalToastMetrics.padStart)
-        .padding(.trailing, model.undo != nil ? MetalToastMetrics.padEnd : MetalToastMetrics.padStart)
-        .frame(height: MetalToastMetrics.height)
+        .foregroundColor((recipe.color("self.ink") ?? MetalToastMetrics.ink).color)
+        .padding(.leading, recipe.points("self.pad-left"))
+        .padding(.trailing, model.undo != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
+        .frame(height: recipe.points("self.height"))
         .fixedSize()
-        .metalRecipe(MetalRecipe(fill: .solid(MetalToastMetrics.bg), shadows: MetalToastMetrics.sh, backdrop: MetalBackdrop(blur: MetalFrost.blur, saturation: MetalFrost.saturation, dark: true), opaqueFill: MetalFrost.graphite.recipe(in: .graphite).opaqueFill), in: Capsule(style: .continuous))
+        .background(.ultraThinMaterial, in: Capsule(style: .continuous))
+        .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
         .accessibilityElement(children: .contain)
     }
 }
@@ -79,8 +83,8 @@ private struct MetalToastHost: ViewModifier {
                     MetalToast(t) { dismiss() }
                         .id(t.id)
                         .transition(.asymmetric(
-                            insertion: .opacity.combined(with: travel ? .offset(y: MetalToastMetrics.enterRise).combined(with: .scale(scale: MetalToastMetrics.enterScale)) : .identity),
-                            removal: .opacity.combined(with: travel ? .offset(y: MetalToastMetrics.enterRise) : .identity)))
+                            insertion: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")).combined(with: .scale(scale: MetalRecipes.toast.scalar("self.scale"))) : .identity),
+                            removal: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")) : .identity)))
                         .task(id: t.id) {
                             guard t.tone != .error else { return }
                             let ms = t.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
@@ -89,7 +93,7 @@ private struct MetalToastHost: ViewModifier {
                         }
                 }
             }
-            .padding(.bottom, MetalToastMetrics.bottom)
+            .padding(.bottom, MetalRecipes.toast.points("self.bottom"))
             .metalAnimation(.settle, value: toast)
         }
     }
