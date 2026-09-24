@@ -1,0 +1,14 @@
+name: Neutral naming
+on:
+  push:
+  pull_request:
+jobs:
+  neutral-names:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Legacy source remains; switch to `npm run lint:names` at zero baseline.
+      - run: node scripts/lint-neutral-names.mjs --report-only

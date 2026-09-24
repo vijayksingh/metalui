@@ -2,3 +2,4 @@
 set -eu
 repo_root="$(git rev-parse --show-toplevel)"
 node "$repo_root/scripts/lint-literals.mjs" --staged
+node "$repo_root/scripts/lint-neutral-names.mjs" --staged

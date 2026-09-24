@@ -1,0 +1,86 @@
+[
+  {
+    "file": "apps/docs/src/demos/FeelingsGrid.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is framework syntax."
+  },
+  {
+    "file": "apps/docs/src/pages/components/Button.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is framework syntax."
+  },
+  {
+    "file": "apps/docs/src/pages/foundations/Spacing.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is framework syntax."
+  },
+  {
+    "file": "apps/docs/src/ui/doc.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is framework syntax."
+  },
+  {
+    "file": "packages/metalui/src/components/tool-strip/tool-strip.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is framework syntax."
+  },
+  {
+    "file": "packages/metalui/icons/src/life.mjs",
+    "word": "fragment",
+    "match": "fragment",
+    "lineIncludes": "fragmented",
+    "reason": "Fragmented is a common adjective describing attention, not the product object noun."
+  },
+  {
+    "file": "apps/docs/src/pages/foundations/Motion.tsx",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "font-medium",
+    "reason": "Tailwind font weight utility, not a product noun."
+  },
+  {
+    "file": "apps/docs/src/ui/doc.tsx",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "font-medium",
+    "reason": "Tailwind font weight utility, not a product noun."
+  },
+  {
+    "file": "packages/metalui/src/components/button/button.agent.md",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "Geist 12.5 medium",
+    "reason": "Typography weight, not a product noun."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Foundation/MetalObjectRecipe.swift",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "return .medium",
+    "reason": "Swift size category, not a product noun."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Icons/MetalIcon.swift",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": ".medium",
+    "reason": "Platform symbol scale or image scale, not a product noun."
+  },
+  {
+    "file": "packages/metalui/src/icons/MorphIcon.tsx",
+    "word": "fragment",
+    "match": "Fragment",
+    "lineIncludes": "React.Fragment",
+    "reason": "React.Fragment is the framework's official element name, not MetalUI product vocabulary."
+  }
+]
