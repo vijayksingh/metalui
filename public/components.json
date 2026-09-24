@@ -1,0 +1,23 @@
+{
+  "$description": "MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.",
+  "components": [
+    {
+      "name": "button",
+      "title": "Button",
+      "status": "alpha",
+      "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Button",
+        "base": "@base-ui/react/button"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalButton"
+      },
+      "registry": "https://metalui.dev/r/button.json",
+      "agent": "https://metalui.dev/r/button.md",
+      "sheet": "KAMUI-15"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+site-dist/
+.build/
+.swiftpm/
+*.tgz
+.DS_Store

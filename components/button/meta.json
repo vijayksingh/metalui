@@ -1,0 +1,17 @@
+{
+  "name": "button",
+  "title": "Button",
+  "status": "alpha",
+  "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.",
+  "sheet": "KAMUI-15",
+  "base": "@base-ui/react/button",
+  "react": {
+    "export": "Button",
+    "files": ["button.tsx", "button.css"]
+  },
+  "swift": {
+    "symbol": "MetalButton",
+    "file": "swift/Sources/MetalUI/Components/MetalButton.swift"
+  },
+  "agent": "button.agent.md"
+}

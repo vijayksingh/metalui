@@ -1,0 +1,11 @@
+# MetalUI
+
+> Soft Hardware components for React (on Base UI) and SwiftUI, with animated duotone icons. Every component ships React, SwiftUI and an agent guide.
+
+- [Full agent guide](https://metalui.dev/AI.md)
+- [Component manifest](https://metalui.dev/components.json)
+- [Icon manifest](https://metalui.dev/icons.json)
+
+## Components
+
+- [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.
