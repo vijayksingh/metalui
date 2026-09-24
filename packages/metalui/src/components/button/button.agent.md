@@ -15,7 +15,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 
 ## Anatomy
 
-- The **cap** is a 32px-tall pill: 15px horizontal padding, SF Pro 12.5 medium, tracking −0.005em.
+- The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
 - The **label** is text, optionally with a leading MetalUI icon at 16px and a 6px gap.
 - The **press** moves the cap down 1px, and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 

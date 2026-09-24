@@ -28,9 +28,6 @@ enum MetalButtonMetrics {
     static let height: CGFloat = 32
     static let horizontalPadding: CGFloat = 15
     static let iconGap: CGFloat = 6
-    static let fontSize: CGFloat = 12.5
-    /// -0.005em.
-    static let tracking: CGFloat = -0.005 * 12.5
     static let pressTravel: CGFloat = 1
     static let disabledOpacity = 0.4
     static let focusWidth: CGFloat = 2
@@ -53,8 +50,8 @@ private struct MetalButtonBody: View {
         let recipes = recipes(for: colorway.tokens)
 
         configuration.label
-            .font(.system(size: MetalButtonMetrics.fontSize, weight: .medium))
-            .tracking(MetalButtonMetrics.tracking)
+            .font(.metal(MetalType.ui))
+            .tracking(MetalType.ui.trackingPoints)
             .lineLimit(1)
             .foregroundStyle(foreground(colorway.tokens))
             .padding(.horizontal, MetalButtonMetrics.horizontalPadding)
