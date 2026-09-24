@@ -13,6 +13,8 @@ export type ButtonCap = 'standard' | 'primary' | 'destructive';
 
 export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
+  /** default: 32 tall. compact: 28, 12 pt, raise-sm (the medium's pills: "seed a sample day", "lenses ⌘K"). */
+  size?: 'default' | 'compact';
 }
 
 /**
@@ -21,13 +23,14 @@ export interface ButtonProps extends BaseButton.Props {
  * play their hover pose and press one-shot from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', className, ...props },
+  { cap = 'standard', size = 'default', className, ...props },
   ref,
 ) {
   return (
     <BaseButton
       ref={ref}
       data-cap={cap}
+      data-size={size}
       className={(state) => {
         const extra = typeof className === 'function' ? className(state) : className;
         return extra ? `mu-button mu-icon-trigger ${extra}` : 'mu-button mu-icon-trigger';

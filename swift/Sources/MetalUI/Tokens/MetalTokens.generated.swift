@@ -747,6 +747,25 @@ public enum MetalRegion {
     public static let rowDimple: Double = 14.0
 }
 
+/// The press-in pill button (KAMUI-15): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the medium pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.
+public enum MetalButtonMetrics {
+    public static let height: Double = 32.0
+    public static let pad: Double = 15.0
+    public static let gap: Double = 6.0
+    public static let glyph: Double = 16.0
+    public static let compactHeight: Double = 28.0
+    public static let compactPad: Double = 11.0
+    public static let compactGap: Double = 7.0
+    public static let compactGlyph: Double = 14.0
+    public static let compactSize: Double = 12.0
+    public static let travel: Double = 1.0
+    public static let pressMs: Double = 50.0
+    public static let fadeMs: Double = 180.0
+    public static let focusWidth: Double = 2.0
+    public static let focusOffset: Double = 2.0
+    public static let disabled: Double = 0.4
+}
+
 /// Menus and the correction popover (Kamui 03 §5, 04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY JEV 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
 public enum MetalMenuMetrics {
     public static let minWidth: Double = 200.0

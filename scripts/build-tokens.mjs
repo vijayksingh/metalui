@@ -214,6 +214,11 @@ const TB = T.toolbar;
 const TB_KEYS = Object.keys(TB).filter((k) => !k.startsWith('$'));
 const toolbarVars = TB_KEYS.map((k) => `  --mu-toolbar-${k}: ${typeof TB[k] === 'number' ? (k.endsWith('-ms') ? `${TB[k]}ms` : `${TB[k]}px`) : TB[k]};`).join('\n');
 
+// ---------- button (tokens.json button) ----------
+const BT = T.button;
+const BT_KEYS = Object.keys(BT).filter((k) => !k.startsWith("$"));
+const buttonVars = BT_KEYS.map((k) => `  --mu-button-${k}: ${k.endsWith("-ms") ? `${BT[k]}ms` : k === "disabled" ? BT[k] : `${BT[k]}px`};`).join("\n");
+
 // ---------- tooltip (tokens.json tooltip) ----------
 const TP = T.tooltip;
 const TP_KEYS = Object.keys(TP).filter((k) => !k.startsWith("$"));
@@ -264,6 +269,7 @@ ${kbdVars}
 ${statusVars}
 ${toastVars}
 ${toolbarVars}
+${buttonVars}
 ${tooltipVars}
 ${menuVars}
 ${paletteVars}
@@ -650,6 +656,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${BT.$use}
+public enum MetalButtonMetrics {
+${BT_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(BT[k])}`).join("\n")}
+}
+
 /// ${MN.$use}
 public enum MetalMenuMetrics {
 ${MN_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(MN[k])}`).join("\n")}

@@ -8,7 +8,7 @@
 
 ## Components
 
-- [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.
+- [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps, at 32 or compact 28.
 - [Command palette](https://metalui.dev/r/command-palette.md): ⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.
 - [Cue family](https://metalui.dev/r/cue.md): Recognition made visible on the text: date, duration, amount, measurement, tag, derived tag and hex cues that never move a letter; the URL host pill and the inferred pill; the dimple, ghost dimple and urgency LED in the margin; the trailing life glyph.
 - [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.

@@ -20,7 +20,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.",
+      "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps, at 32 or compact 28.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],

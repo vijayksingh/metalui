@@ -8,6 +8,9 @@ import agentGuide from '../../../../../packages/metalui/src/components/button/bu
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalButton.swift?raw';
 import { ButtonDemo } from '../../demos/ButtonDemo';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
+import { SwiftCapture } from '../../ui/SwiftCapture';
+import { Kbd } from '@unlocalhosted/metalui';
+import { SearchIcon, SeedIcon } from '@unlocalhosted/metalui/icons';
 
 const TABS = [
   { id: 'react', label: 'React', code: reactSource },
@@ -90,6 +93,19 @@ export default function ButtonPage() {
             ))}
           </div>
         </Bench>
+      </Section>
+
+      <Section title="Compact" lede="The medium's pills, refit to 28 on the height ladder: 12 pt, a 14 glyph, the button fill on raise-sm, ink2 until hover. For inline actions beside content (an empty canvas, a lens row), never a dialog's footer.">
+        <Bench tone="page" caption="compact · 28 · standard, with a glyph, with a key, primary, disabled">
+          <div className="flex items-center gap-12" data-testid="compact">
+            <Button size="compact">seed a sample day</Button>
+            <Button size="compact"><SeedIcon size={14} />Seed</Button>
+            <Button size="compact"><SearchIcon size={14} />lenses <Kbd size="small">⌘K</Kbd></Button>
+            <Button size="compact" cap="primary">Keep</Button>
+            <Button size="compact" disabled>Share</Button>
+          </div>
+        </Bench>
+        <SwiftCapture name="button" maxWidth={360} />
       </Section>
 
       <Section title="In use">

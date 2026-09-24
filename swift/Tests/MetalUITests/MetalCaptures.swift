@@ -415,4 +415,24 @@ final class MetalCaptures: XCTestCase {
             capture("menu-\(colorway.rawValue)", view)
         }
     }
+    func testButton() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(alignment: .leading, spacing: 18) {
+                HStack(spacing: 12) {
+                    MetalButton("Cancel") {}
+                    MetalButton("New Canvas", cap: .primary) {}
+                    MetalButton("Delete", cap: .destructive, action: {}) { MetalIcon(.trash, size: 16) }
+                }
+                HStack(spacing: 10) {
+                    MetalButton("seed a sample day", size: .compact) {}
+                    MetalButton("Open", size: .compact, action: {}) { MetalIcon(.search, size: 14) }
+                    MetalButton("Keep", cap: .primary, size: .compact) {}
+                }
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("button-\(colorway.rawValue)", view)
+        }
+    }
 }

@@ -49,13 +49,15 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
 - The **label** is text, optionally with a leading MetalUI icon at 16px and a 6px gap.
-- The **press** moves the cap down 1px, and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
+- **Compact** (`size="compact"`): 28 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The medium's pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
+- The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## API
 
 | React prop | SwiftUI | Values | Default |
 |---|---|---|---|
 | `cap` | `cap:` | `standard`, `primary`, `destructive` | `standard` |
+| `size` | `size:` | `default` (32), `compact` (28) | `default` |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |
@@ -68,6 +70,7 @@ import '@unlocalhosted/metalui/styles.css';
 
 <Button cap="primary" onClick={create}>New Canvas</Button>
 <Button onClick={close}>Cancel</Button>
+<Button size="compact" onClick={seed}>seed a sample day</Button>
 <Button cap="destructive" onClick={remove}><SendAwayIcon size={16} />Delete</Button>
 ```
 
@@ -76,6 +79,7 @@ import MetalUI
 
 MetalButton("New Canvas", cap: .primary) { create() }
 MetalButton("Cancel") { close() }
+MetalButton("seed a sample day", size: .compact) { seed() }
 MetalButton("Delete", cap: .destructive) { remove() }
 ```
 
@@ -99,7 +103,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 
 ## Tokens
 
-`--mu-btn-bg`, `--mu-btn-sh`, `--mu-pressed-bg`, `--mu-pressed-sh`, `--mu-primary-*`, `--mu-destructive-*`, `--mu-spring-release`, `--mu-focus`. Swift: `MetalTokens.<colorway>.btnBg/btnSh/pressedBg/pressedSh`, `MetalCaps.primary/destructive`, `MetalSprings.release`.
+`--mu-button-*` (sizes, press, fade, focus), `--mu-raise-sm` (compact), `--mu-btn-bg`, `--mu-btn-sh`, `--mu-pressed-bg`, `--mu-pressed-sh`, `--mu-primary-*`, `--mu-destructive-*`, `--mu-spring-release`, `--mu-focus`. Swift: `MetalButtonMetrics`, `MetalTokens.<colorway>.btnBg/btnSh/pressedBg/pressedSh`, `MetalCaps.primary/destructive`, `MetalSprings.release`.
 
 ---
 
