@@ -120,11 +120,67 @@
   background: linear-gradient(var(--mu-thumb-hi), var(--mu-thumb-lo));
   box-shadow: var(--mu-raise-sm);
 }
-@utility material-float {
+/* Frost: the same recipes as .mu-frost-*, with their Reduce Transparency and Increase Contrast twins. */
+@utility material-frost-strip {
+  background: var(--mu-frost);
+  box-shadow: var(--mu-raise);
+  -webkit-backdrop-filter: var(--mu-backdrop);
+  backdrop-filter: var(--mu-backdrop);
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--mu-frost-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+    background: var(--mu-frost-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  @media (prefers-contrast: more) {
+    box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise);
+  }
+}
+@utility material-frost-plate {
   background: var(--mu-frost-strong);
   box-shadow: var(--mu-raise);
-  -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: var(--mu-backdrop);
+  backdrop-filter: var(--mu-backdrop);
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--mu-frost-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+    background: var(--mu-frost-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  @media (prefers-contrast: more) {
+    box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise);
+  }
+}
+@utility material-frost-graphite {
+  background: var(--mu-frost-graphite-fill);
+  box-shadow: var(--mu-frost-graphite-shadow);
+  -webkit-backdrop-filter: var(--mu-backdrop);
+  backdrop-filter: var(--mu-backdrop);
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--mu-frost-graphite-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+    background: var(--mu-frost-graphite-opaque);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  @media (prefers-contrast: more) {
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.45), var(--mu-frost-graphite-shadow);
+  }
+}
+/* The floating level (E2) is the frosted plate. */
+@utility material-float {
+  @apply material-frost-plate;
 }
 @utility engraved {
   color: var(--mu-engrave);

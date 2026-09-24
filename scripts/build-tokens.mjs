@@ -97,6 +97,39 @@ ${TINTS.map((t) => `.mu-tint-${t} { color: var(--mu-tint-${t}); } /* ${TINT[t].k
   ${tintSel} { color: inherit; }
 }`;
 
+// ---------- frost (tokens.json frost) ----------
+// A value that names a colorway key reads that key (so it follows the colorway where it is used);
+// anything else is a literal, the same in both colorways, emitted once on :root.
+const FR = T.frost;
+const FROSTS = Object.keys(FR.recipes);
+const isCw = (v) => Object.prototype.hasOwnProperty.call(T.colorways.bone, v);
+const frostRef = (r, part) => (isCw(FR.recipes[r][part]) ? `var(--mu-${FR.recipes[r][part]})` : `var(--mu-frost-${r}-${part})`);
+const frostVars = [
+  `  --mu-backdrop-blur: ${FR.backdrop.blur}px;`,
+  `  --mu-backdrop-saturate: ${FR.backdrop.saturate};`,
+  `  --mu-backdrop: blur(${FR.backdrop.blur}px) saturate(${FR.backdrop.saturate});`,
+  ...FROSTS.flatMap((r) => ['fill', 'opaque', 'shadow'].filter((part) => !isCw(FR.recipes[r][part])).map((part) => `  --mu-frost-${r}-${part}: ${FR.recipes[r][part]};`)),
+].join('\n');
+const frostDecls = (r) => [
+  `background: ${frostRef(r, 'fill')}`,
+  `box-shadow: ${frostRef(r, 'shadow')}`,
+  `-webkit-backdrop-filter: var(--mu-backdrop)`,
+  `backdrop-filter: var(--mu-backdrop)`,
+];
+const opaqueDecls = (r) => [`background: ${frostRef(r, 'opaque')}`, '-webkit-backdrop-filter: none', 'backdrop-filter: none'];
+// A recipe with a fixed finish (graphite chrome) takes that finish's contrast edge in either colorway.
+const edgeColor = (r) => (FR.recipes[r].finish ? T.colorways[FR.recipes[r].finish]['contrast-edge'] : 'var(--mu-contrast-edge)');
+const edgeDecl = (r) => `box-shadow: inset 0 0 0 1px ${edgeColor(r)}, ${frostRef(r, 'shadow')}`;
+const frostClasses = `/* Frost (tokens.json frost): ${FR.$use.split('.')[0]}. */
+${FROSTS.map((r) => `.mu-frost-${r} { ${frostDecls(r).join('; ')}; } /* ${FR.recipes[r].use} */`).join('\n')}
+@media (prefers-reduced-transparency: reduce) {
+${FROSTS.map((r) => `  .mu-frost-${r} { ${opaqueDecls(r).join('; ')}; }`).join('\n')}
+}
+${FROSTS.map((r) => `[data-mu-transparency="reduce"] .mu-frost-${r}, .mu-frost-${r}[data-mu-transparency="reduce"] { ${opaqueDecls(r).join('; ')}; }`).join('\n')}
+@media (prefers-contrast: more) {
+${FROSTS.map((r) => `  .mu-frost-${r} { ${edgeDecl(r)}; }`).join('\n')}
+}`;
+
 const typeClasses = Object.keys(F.type)
   .map((role) => `.mu-type-${role} { ${typeDecls(role).join('; ')}; }`)
   .join('\n');
@@ -110,6 +143,7 @@ ${caps}
 ${motion}
 ${swap}
 ${foundationVars}
+${frostVars}
 ${travel}
 }
 
@@ -137,6 +171,8 @@ ${decl(CW.graphite).replace(/^/gm, '  ')}
 }
 
 ${tintClasses}
+
+${frostClasses}
 `;
 emit('packages/metalui/src/components/tokens.css', css);
 
@@ -196,11 +232,22 @@ ${Object.keys(F.type).map((role) => `@utility type-${role} {\n  ${typeDecls(role
   background: linear-gradient(var(--mu-thumb-hi), var(--mu-thumb-lo));
   box-shadow: var(--mu-raise-sm);
 }
+/* Frost: the same recipes as .mu-frost-*, with their Reduce Transparency and Increase Contrast twins. */
+${FROSTS.map((r) => `@utility material-frost-${r} {
+  ${frostDecls(r).join(';\n  ')};
+  @media (prefers-reduced-transparency: reduce) {
+    ${opaqueDecls(r).join(';\n    ')};
+  }
+  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+    ${opaqueDecls(r).join(';\n    ')};
+  }
+  @media (prefers-contrast: more) {
+    ${edgeDecl(r)};
+  }
+}`).join('\n')}
+/* The floating level (E2) is the frosted plate. */
 @utility material-float {
-  background: var(--mu-frost-strong);
-  box-shadow: var(--mu-raise);
-  -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  backdrop-filter: blur(22px) saturate(1.6);
+  @apply material-frost-plate;
 }
 @utility engraved {
   color: var(--mu-engrave);
@@ -390,7 +437,42 @@ ${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(TINT[t].valence)
     }
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift);
+// Frost recipes in Swift: the same fill, opaque twin, shadow stack and backdrop as .mu-frost-*.
+const swiftFrostPart = (r, part) => {
+  const v = FR.recipes[r][part];
+  if (isCw(v)) return part === 'shadow' ? `t.${camel(v)}` : `.solid(t.${camel(v)})`;
+  const [type, val] = swiftValue(v);
+  return type === 'MetalRGBA' ? `.solid(${val})` : val;
+};
+const swiftFrost = `
+/// ${FR.$use}
+public enum MetalFrost: String, CaseIterable, Sendable {
+${FROSTS.map((r) => `    /// ${FR.recipes[r].use}\n    case ${r}`).join('\n')}
+
+    /// The blur behind every frosted recipe (CSS \`--mu-backdrop\`).
+    public static let blur: Double = ${num(FR.backdrop.blur)}
+    public static let saturation: Double = ${num(FR.backdrop.saturate)}
+
+    /// The recipe in a colorway: translucent fill, shadow stack, backdrop, opaque twin and contrast edge.
+    public func recipe(in colorway: MetalColorway) -> MetalRecipe {
+        let t = colorway.tokens
+        switch self {
+${FROSTS.map((r) => {
+  const fin = FR.recipes[r].finish;
+  return `        case .${r}:
+            return MetalRecipe(
+                fill: ${swiftFrostPart(r, 'fill')},
+                shadows: ${swiftFrostPart(r, 'shadow').replace(/\n {12}/g, '\n                    ').replace(/\n {8}\]/, '\n                ]')},
+                backdrop: MetalBackdrop(blur: Self.blur, saturation: Self.saturation, dark: ${fin ? (fin === 'graphite') : 'colorway == .graphite'}),
+                opaqueFill: ${swiftFrostPart(r, 'opaque')},
+                contrastEdge: ${fin ? `MetalTokens.${fin}.contrastEdge` : 't.contrastEdge'}
+            )`;
+}).join('\n')}
+        }
+    }
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

@@ -21,6 +21,7 @@ const router = createBrowserRouter([
       { path: 'foundations/spacing', lazy: lazy(() => import('./pages/foundations/Spacing')) },
       { path: 'foundations/sizing', lazy: lazy(() => import('./pages/foundations/Sizing')) },
       { path: 'foundations/elevation', lazy: lazy(() => import('./pages/foundations/Elevation')) },
+      { path: 'foundations/materials', lazy: lazy(() => import('./pages/foundations/Materials')) },
       { path: 'foundations/motion', lazy: lazy(() => import('./pages/foundations/Motion')) },
       { path: 'foundations/transitions', lazy: lazy(() => import('./pages/foundations/Transitions')) },
       { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },

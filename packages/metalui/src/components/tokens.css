@@ -92,6 +92,12 @@
   --mu-focus-offset: 2px;
   --mu-focus-width: 2px;
   --mu-select-offset: 6px;
+  --mu-backdrop-blur: 22px;
+  --mu-backdrop-saturate: 1.6;
+  --mu-backdrop: blur(22px) saturate(1.6);
+  --mu-frost-graphite-fill: linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+  --mu-frost-graphite-opaque: linear-gradient(180deg, #28282B, #1B1B1D);
+  --mu-frost-graphite-shadow: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.2), 0 12px 28px -10px rgba(0,0,0,.34), 0 30px 60px -24px rgba(0,0,0,.30);
   --mu-travel-part: 1;
   --mu-travel-object: 1;
   --mu-travel-hinge: 1;
@@ -162,6 +168,8 @@
   --mu-thumb-lo: #F7F6F3;
   --mu-frost: rgba(250,249,246,.68);
   --mu-frost-strong: rgba(251,250,248,.80);
+  --mu-frost-opaque: #F4F3F0;
+  --mu-contrast-edge: rgba(0,0,0,.45);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.75), inset 2px 3px 3px -1px rgba(255,255,255,.95), inset -1px -3px 5px -2px rgba(110,100,80,.07), 0 0 0 .5px rgba(24,22,16,.045), 0 1px 2px rgba(24,22,16,.05), 0 8px 18px -6px rgba(24,22,16,.08), 0 26px 50px -16px rgba(24,22,16,.13), 0 52px 96px -36px rgba(24,22,16,.13);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.85), inset 1px 2px 2px -1px #FFFFFF, 0 0 0 .5px rgba(24,22,16,.05), 0 1px 2px rgba(24,22,16,.07), 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-well: inset 0 2px 6px -1px rgba(60,55,40,.10), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px rgba(255,255,255,.95);
@@ -200,6 +208,8 @@
   --mu-thumb-lo: #2E2E31;
   --mu-frost: rgba(36,36,39,.66);
   --mu-frost-strong: rgba(34,34,37,.78);
+  --mu-frost-opaque: #252528;
+  --mu-contrast-edge: rgba(255,255,255,.45);
   --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
   --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);
@@ -239,6 +249,8 @@
     --mu-thumb-lo: #2E2E31;
     --mu-frost: rgba(36,36,39,.66);
     --mu-frost-strong: rgba(34,34,37,.78);
+    --mu-frost-opaque: #252528;
+    --mu-contrast-edge: rgba(255,255,255,.45);
     --mu-raise: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.2), 0 26px 50px -16px rgba(0,0,0,.34), 0 52px 96px -36px rgba(0,0,0,.3);
     --mu-raise-sm: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.3), 0 5px 12px -4px rgba(0,0,0,.3);
     --mu-well: inset 0 2px 6px -1px rgba(0,0,0,.6), inset 0 0 0 .5px rgba(0,0,0,.35), inset 0 -2px 4px -2px rgba(255,255,255,.05);
@@ -273,4 +285,22 @@
 [data-mu-untinted]:is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) { color: inherit; }
 @media (prefers-contrast: more) {
   .mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris { color: inherit; }
+}
+
+/* Frost (tokens.json frost): E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. */
+.mu-frost-strip { background: var(--mu-frost); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* A frosted toolbar strip in the colorway (KAMUI-01/02). */
+.mu-frost-plate { background: var(--mu-frost-strong); box-shadow: var(--mu-raise); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Floating plates: command palette, menus, popovers, the lens bar and panel (KAMUI-06). */
+.mu-frost-graphite { background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } /* Dense dark chrome that stays graphite in both colorways: the selection tool strip, the medium toolbar, tooltips, the past banner. */
+@media (prefers-reduced-transparency: reduce) {
+  .mu-frost-strip { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .mu-frost-plate { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .mu-frost-graphite { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+[data-mu-transparency="reduce"] .mu-frost-strip, .mu-frost-strip[data-mu-transparency="reduce"] { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+[data-mu-transparency="reduce"] .mu-frost-plate, .mu-frost-plate[data-mu-transparency="reduce"] { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+[data-mu-transparency="reduce"] .mu-frost-graphite, .mu-frost-graphite[data-mu-transparency="reduce"] { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (prefers-contrast: more) {
+  .mu-frost-strip { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise); }
+  .mu-frost-plate { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise); }
+  .mu-frost-graphite { box-shadow: inset 0 0 0 1px rgba(255,255,255,.45), var(--mu-frost-graphite-shadow); }
 }

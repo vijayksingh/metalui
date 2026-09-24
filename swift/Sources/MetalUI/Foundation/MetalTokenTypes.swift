@@ -60,6 +60,14 @@ public struct MetalGradient: Equatable, Sendable {
         self.stops = stops
     }
 
+    /// One color, top to bottom: a flat fill written as a gradient so every recipe has one fill type.
+    public static func solid(_ color: MetalRGBA) -> MetalGradient {
+        MetalGradient(angle: 180, stops: [.init(color, 0), .init(color, 1)])
+    }
+
+    /// True when any stop lets what is behind show through.
+    public var isTranslucent: Bool { stops.contains { $0.color.alpha < 1 } }
+
     public var linearGradient: LinearGradient {
         let radians = angle * .pi / 180
         let dx = sin(radians) / 2
@@ -91,6 +99,21 @@ public struct MetalRadialGradient: Equatable, Sendable {
             startRadius: 0,
             endRadius: diameter * sqrt(dx * dx + dy * dy)
         )
+    }
+}
+
+/// A CSS `backdrop-filter: blur() saturate()`: the frost behind a floating surface.
+public struct MetalBackdrop: Equatable, Sendable {
+    /// CSS blur length in points.
+    public let blur: Double
+    public let saturation: Double
+    /// Whether the frost belongs to a dark finish (graphite), so the blur is tinted dark.
+    public let dark: Bool
+
+    public init(blur: Double, saturation: Double, dark: Bool) {
+        self.blur = blur
+        self.saturation = saturation
+        self.dark = dark
     }
 }
 

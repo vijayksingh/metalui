@@ -20,6 +20,8 @@ public struct MetalColorwayTokens: Sendable {
     public let thumbLo: MetalRGBA
     public let frost: MetalRGBA
     public let frostStrong: MetalRGBA
+    public let frostOpaque: MetalRGBA
+    public let contrastEdge: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -67,6 +69,8 @@ public enum MetalTokens {
         thumbLo: MetalRGBA(247, 246, 243, 1.0),
         frost: MetalRGBA(250, 249, 246, 0.68),
         frostStrong: MetalRGBA(251, 250, 248, 0.8),
+        frostOpaque: MetalRGBA(244, 243, 240, 1.0),
+        contrastEdge: MetalRGBA(0, 0, 0, 0.45),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -137,6 +141,8 @@ public enum MetalTokens {
         thumbLo: MetalRGBA(46, 46, 49, 1.0),
         frost: MetalRGBA(36, 36, 39, 0.66),
         frostStrong: MetalRGBA(34, 34, 37, 0.78),
+        frostOpaque: MetalRGBA(37, 37, 40, 1.0),
+        contrastEdge: MetalRGBA(255, 255, 255, 0.45),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -369,6 +375,59 @@ public enum MetalTint: String, CaseIterable, Sendable {
         case .graphite: return "neutral"
         case .dusk: return "unpleasant"
         case .iris: return "unpleasant"
+        }
+    }
+}
+
+/// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.
+public enum MetalFrost: String, CaseIterable, Sendable {
+    /// A frosted toolbar strip in the colorway (KAMUI-01/02).
+    case strip
+    /// Floating plates: command palette, menus, popovers, the lens bar and panel (KAMUI-06).
+    case plate
+    /// Dense dark chrome that stays graphite in both colorways: the selection tool strip, the medium toolbar, tooltips, the past banner.
+    case graphite
+
+    /// The blur behind every frosted recipe (CSS `--mu-backdrop`).
+    public static let blur: Double = 22.0
+    public static let saturation: Double = 1.6
+
+    /// The recipe in a colorway: translucent fill, shadow stack, backdrop, opaque twin and contrast edge.
+    public func recipe(in colorway: MetalColorway) -> MetalRecipe {
+        let t = colorway.tokens
+        switch self {
+        case .strip:
+            return MetalRecipe(
+                fill: .solid(t.frost),
+                shadows: t.raise,
+                backdrop: MetalBackdrop(blur: Self.blur, saturation: Self.saturation, dark: colorway == .graphite),
+                opaqueFill: .solid(t.frostOpaque),
+                contrastEdge: t.contrastEdge
+            )
+        case .plate:
+            return MetalRecipe(
+                fill: .solid(t.frostStrong),
+                shadows: t.raise,
+                backdrop: MetalBackdrop(blur: Self.blur, saturation: Self.saturation, dark: colorway == .graphite),
+                opaqueFill: .solid(t.frostOpaque),
+                contrastEdge: t.contrastEdge
+            )
+        case .graphite:
+            return MetalRecipe(
+                fill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(40, 40, 43, 0.94), 0.0), .init(MetalRGBA(27, 27, 29, 0.96), 1.0)]),
+                shadows: [
+                    MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
+                    MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
+                    MetalShadow(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.35)),
+                    MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.45)),
+                    MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.2)),
+                    MetalShadow(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, color: MetalRGBA(0, 0, 0, 0.34)),
+                    MetalShadow(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, color: MetalRGBA(0, 0, 0, 0.3)),
+                ],
+                backdrop: MetalBackdrop(blur: Self.blur, saturation: Self.saturation, dark: true),
+                opaqueFill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(40, 40, 43, 1.0), 0.0), .init(MetalRGBA(27, 27, 29, 1.0), 1.0)]),
+                contrastEdge: MetalTokens.graphite.contrastEdge
+            )
         }
     }
 }
