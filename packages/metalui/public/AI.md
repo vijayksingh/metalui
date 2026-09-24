@@ -86,7 +86,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 - Put icons **before** the label, at `size={16}`. An icon inside a Button plays its hover pose and press motion from the whole button (the button is the icon's trigger), so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
-- **A label that changes in place must morph, never snap** (Transitions T1–T3). Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the button's face turns one step on a drum: old and new labels and icons overlap with a small defocus (no blank frame), and the width settles to the new label. Example: `<Button><SwapIcon swapKey={state}>{icon}</SwapIcon><SwapText value={label} /></Button>`.
+- **A label that changes in place must morph, never snap** (Transitions T1–T3). Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the button's face turns one step on a drum: old and new labels and icons overlap with a small defocus (no blank frame), and the width settles to the new label. If the icon is a state glyph (copy, check, plus, close, arrows, play/pause), use `MorphIcon` from `@unlocalhosted/metalui/icons` so it transforms instead of swapping. Example: `<Button><MorphIcon name={copied ? 'check' : 'copy'} size={14} /><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`.
 
 ## Accessibility
 
@@ -115,6 +115,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
+- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, play/pause, download/upload) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
 

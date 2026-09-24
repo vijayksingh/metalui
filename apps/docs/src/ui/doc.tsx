@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
-import { Button, SwapIcon, SwapText } from '@unlocalhosted/metalui';
-import { CheckIcon, DuplicateIcon, NoteIcon } from '@unlocalhosted/metalui/icons';
+import { Button, SwapText } from '@unlocalhosted/metalui';
+import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
 
 /** Page title and lede. No kicker above the title: the title carries itself. */
@@ -135,7 +135,7 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
         } catch {}
       }}
     >
-      <SwapIcon swapKey={copied ? 'done' : 'idle'}>{copied ? <CheckIcon size={14} /> : <DuplicateIcon size={14} />}</SwapIcon>
+      <MorphIcon name={copied ? 'check' : 'copy'} size={14} />
       <span aria-live="polite"><SwapText value={copied ? 'Copied' : label} /></span>
     </Button>
   );
@@ -167,7 +167,7 @@ export function CopyPageButton() {
         } catch {}
       }}
     >
-      <SwapIcon swapKey={copied ? 'done' : 'idle'}>{copied ? <CheckIcon size={14} /> : <NoteIcon size={14} />}</SwapIcon>
+      <MorphIcon name={copied ? 'check' : 'copy'} size={14} />
       <span aria-live="polite"><SwapText value={copied ? 'Copied for agents' : 'Copy page'} /></span>
     </Button>
   );

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Icon, ICON_CATALOG, ICON_NAMES, type IconName } from '@unlocalhosted/metalui/icons';
 import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
+import { MorphFilmstrips, MorphPlayground } from '../demos/MorphGlyphs';
 
 const CATEGORIES = ['Tools', 'Actions', 'Status'] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
@@ -90,12 +91,23 @@ export default function Icons() {
         </div>
       </Section>
 
+      <Section title="Morph glyphs" lede="State glyphs in controls (copy, check, plus, close, arrows, play and pause) do not swap: they transform. Every morph glyph is at most four strokes on the same 24 grid and 1.7 stroke as the set, so any one can become any other. One shape at different angles turns like a dial into a detent; different shapes move their strokes point by point. A stroke that is no longer needed retracts into the nearest joint; a new one grows out of one. Click the large glyph to cycle, or pick one below.">
+        <Bench caption="Live · turns ride the part spring, morphs ride settle">
+          <MorphPlayground />
+        </Bench>
+        <Bench tone="page" caption="Filmstrips · each pair at 0, 25, 50, 75 and 100% of its morph">
+          <MorphFilmstrips />
+        </Bench>
+      </Section>
+
       <Section title="Rules">
         <Rules
           rules={[
             { id: 'I1', title: 'The size follows the control', body: '12 in 20–24 controls, 14 in 28–32, 16 in 36–40, 20 in 44 and up.' },
             { id: 'I2', title: 'The control is the trigger', body: 'Inside any element with the mu-icon-trigger class (MetalUI Buttons already have it), the glyph plays from that element’s hover and press.' },
             { id: 'I3', title: 'Decorative unless titled', body: 'Without a title the glyph is hidden from assistive tech; label the control instead. Under reduced motion it stays still.' },
+            { id: 'I4', title: 'State glyphs morph, they are never replaced', body: 'When a control’s icon changes state (copy → check, plus → close, play → pause), use MorphIcon: one shape turns, different shapes move their strokes. Authored glyphs that cannot morph ride the drum with their label.', origin: 'Ours · idea adapted from Benji Taylor, “Morphing icons with Claude”' },
+            { id: 'I5', title: 'Nothing leaves into empty space', body: 'A stroke the next glyph does not need retracts into the nearest joint of the next glyph; a stroke it gains grows out of the nearest joint of the current one, like a part folding into a mechanism.', origin: 'Ours' },
           ]}
         />
       </Section>
