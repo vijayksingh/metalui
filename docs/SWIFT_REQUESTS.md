@@ -64,7 +64,7 @@
 ## Lens result plate
 
 - **Object:** a generated `lensPanel` recipe (or a named `MetalSurface` panel variant) for the list, table, timeline and gallery projections.
-- **Missing:** the exact plate material and layout are not one generated object: 24 px blur at 1.6 saturation, translucent bone fill at .86, raised shadow stack, 24 px radius, 10 px inset, 760 px width cap and 230 px viewport height reserve. The Mac list currently uses `MetalFrost.plate` and client-owned layout constants as a temporary composition; the shared `row` recipe paints its rows.
+- **Missing:** the panel's layout values are not generated: 10 px inset, 760 px width cap and 230 px viewport height reserve. `MetalSurface(.panel, radius: .card)` now supplies the correct 24 px blur, translucent fill and raised shadow stack; `MetalRow(.panel)` supplies the rows. The Mac client temporarily owns only the panel placement and layout.
 - **Demo CSS:** reference `style.css:428-439` defines `#panel`, `.prow`, checked text and weak-match opacity. The other projections follow at lines 440-454.
 
 ## Composition refactor (docs/COMPOSITION.md)
