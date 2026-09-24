@@ -1186,7 +1186,7 @@ public enum MetalRecipes {
             "display-quiet.tracking": .text("-0.022em"),
             "display-quiet.color": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
             "on-graphite.font": .text("500 12.5px/1 sans"),
-            "on-graphite.tracking": .text("0"),
+            "on-graphite.tracking": .text("-0.18px"),
             "on-graphite.color": .text("#EDEDEF"),
             "readout-dim.color": .text("#7C7D82"),
             "accent.color": .perColorway(bone: "#2F9E63", graphite: "#5FCB93"),
