@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
-import './tooltip.css';
 
 /* ─────────────────────────────────────────────────────────
  * TOOLTIP (the brief; the reference design's #tip and .tb[data-tip]) on Base UI Tooltip
@@ -45,16 +44,21 @@ export interface TooltipProps {
   className?: string;
 }
 
+/* Styled with the theme's utilities (the tooltip recipe): the graphite chip fades in and out on settle. */
+const POSITIONER = 'mu-tooltip-positioner z-tooltip-z';
+const POPUP = 'mu-tooltip max-w-tooltip-max-width py-tooltip-pad-y px-tooltip-pad-x rounded-tooltip-radius pointer-events-none type-tooltip text-tooltip-ink recipe-tooltip transition-tooltip data-starting-style:opacity-0 data-ending-style:opacity-0 data-instant:transition-none';
+const KEY = 'mu-tooltip-key text-tooltip-key-ink';
+
 /** Names an icon-only control and its key, one hover away. */
 function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap, delay, offset, className }: TooltipProps) {
   return (
     <BaseTooltip.Root open={open}>
       <BaseTooltip.Trigger delay={delay} render={children} />
       <BaseTooltip.Portal>
-        <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={offset ?? gap()} collisionPadding={8}>
-          <BaseTooltip.Popup className={className ? `mu-tooltip ${className}` : 'mu-tooltip'} data-wrap={wrap ? '' : undefined}>
+        <BaseTooltip.Positioner className={POSITIONER} side={side} sideOffset={offset ?? gap()} collisionPadding={8}>
+          <BaseTooltip.Popup className={`${POPUP} ${wrap ? 'whitespace-normal' : 'whitespace-nowrap'}${className ? ` ${className}` : ''}`} data-wrap={wrap ? '' : undefined}>
             {label}
-            {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}
+            {shortcut && <span className={KEY}> · {shortcut}</span>}
           </BaseTooltip.Popup>
         </BaseTooltip.Positioner>
       </BaseTooltip.Portal>
@@ -64,7 +68,7 @@ function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap, dela
 
 /** The dimmed part of a tooltip: a key, or a note's detail ("· 14:10 · confident"). */
 function Dim({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-  return <span className={className ? `mu-tooltip-key ${className}` : 'mu-tooltip-key'} {...props} />;
+  return <span className={className ? `${KEY} ${className}` : KEY} {...props} />;
 }
 
 export const Tooltip = Object.assign(TooltipRoot, { Root: TooltipRoot, Dim });

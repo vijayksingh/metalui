@@ -1362,6 +1362,7 @@
   --mu-r-tooltip-self-tracking: 0.05em;
   --mu-r-tooltip-self-ink: #E9E9EB;
   --mu-r-tooltip-self-z: 70;
+  --mu-r-tooltip-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-r-tooltip-key-ink: #8E8E93;
   /* menu: reference style.css #pop, #pop .ph, #pop button, #pop button:hover */
   --mu-r-menu-self-min-width: 200px;

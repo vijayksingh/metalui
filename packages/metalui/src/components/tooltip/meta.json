@@ -7,8 +7,7 @@
   "react": {
     "export": "Tooltip, TooltipProvider",
     "files": [
-      "tooltip.tsx",
-      "tooltip.css"
+      "tooltip.tsx"
     ]
   },
   "swift": {

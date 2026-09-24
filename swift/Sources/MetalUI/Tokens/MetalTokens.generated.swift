@@ -1573,6 +1573,7 @@ public enum MetalRecipes {
             "self.tracking": .text("0.05em"),
             "self.ink": .text("#E9E9EB"),
             "self.z": .text("70"),
+            "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle)"),
             "key.ink": .text("#8E8E93"),
         ]
     )

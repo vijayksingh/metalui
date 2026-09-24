@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Toolbar, ToolButton, ToolbarSeparator, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { CloseIcon, PinIcon, RegionIcon, SelectIcon, TextIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/tooltip/tooltip.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/tooltip/tooltip.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/tooltip/tooltip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
@@ -58,9 +58,9 @@ export default function TooltipPage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'T1', title: 'Every icon-only control has one', body: 'Its name and its key, and its own accessible name besides: the tooltip is visual.', origin: 'Kamui 04 (preamble)' },
-          { id: 'T2', title: 'One line, name then key', body: 'SELECT · V. No sentences. Where a cue came from is the provenance tooltip, not this.', origin: 'Kamui 04 §2, 03 §5' },
-          { id: 'T3', title: 'Never an action', body: 'The pointer passes through it and it holds nothing to click; anything to act on is a menu or popover.', origin: 'Kamui 04 §18' },
+          { id: 'T1', title: 'Every icon-only control has one', body: 'Its name and its key, and its own accessible name besides: the tooltip is visual.', origin: 'reference brief' },
+          { id: 'T2', title: 'One line, name then key', body: 'SELECT · V. No sentences. Where a cue came from is the provenance tooltip, not this.', origin: 'reference brief' },
+          { id: 'T3', title: 'Never an action', body: 'The pointer passes through it and it holds nothing to click; anything to act on is a menu or popover.', origin: 'reference brief' },
         ]} />
       </Section>
     </>

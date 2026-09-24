@@ -21,7 +21,7 @@
       "path": "packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.css",
       "type": "registry:file",
       "target": "components/metalui/blocks/provenance-tooltip/provenance-tooltip.css",
-      "content": "@import \"../../components/tokens.css\";\n@import \"../../components/tooltip/tooltip.css\";\n\n/* Provenance tooltip: a composition. Every paint and motion is Tooltip's (wrap, Tooltip.Dim);\n   its timing and placement are --mu-provenance-*. */\n"
+      "content": "@import \"../../components/tokens.css\";\n\n/* Provenance tooltip: a composition. Every paint and motion is Tooltip's (wrap, Tooltip.Dim);\n   its timing and placement are --mu-provenance-*. */\n"
     }
   ],
   "docs": "Agent guide: https://metalui.dev/r/provenance-tooltip.md. SwiftUI: MetalProvenanceTooltip, .metalProvenance(_:detail:) in the MetalUI Swift package."

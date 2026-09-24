@@ -1308,6 +1308,9 @@
 @utility z-tooltip-z {
   z-index: var(--mu-r-tooltip-self-z);
 }
+@utility transition-tooltip {
+  transition: var(--mu-r-tooltip-self-transition);
+}
 @utility recipe-menu {
   background: var(--mu-r-menu-self-background);
   box-shadow: var(--mu-r-menu-self-shadow);

@@ -777,11 +777,6 @@
           "path": "packages/metalui/src/components/tooltip/tooltip.tsx",
           "type": "registry:ui",
           "target": "components/metalui/tooltip/tooltip.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/tooltip/tooltip.css",
-          "type": "registry:file",
-          "target": "components/metalui/tooltip/tooltip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
