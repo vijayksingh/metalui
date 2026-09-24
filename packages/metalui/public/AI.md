@@ -745,23 +745,21 @@ Layout: `--mu-pastbanner-*`. Look: the surface, label, button and kbd recipes. M
 
 # Provenance tooltip
 
-One hover away from every cue: where it came from. React: `ProvenanceTooltip` (and `ProvenanceProvider` around a canvas) from `@unlocalhosted/metalui`, on Base UI Tooltip. SwiftUI: `.metalProvenance(_:detail:)` or `MetalProvenanceTooltip`. Kamui brief: 03 §5.
+One hover away from every cue: where it came from. A composition block: a wrapped `Tooltip` with the detail in `Tooltip.Dim`. React: `ProvenanceTooltip` (and `ProvenanceProvider` around a canvas) from `@unlocalhosted/metalui`. SwiftUI: `.metalProvenance(_:detail:)` or `MetalProvenanceTooltip`.
 
 ## Use it for
 
-- Every cue the app applied: `RULE · DATE PARSER`, `JEV · 0.82`, `REGION · DONE`, `CLUSTER · POSTER`, `FORMULA`, `YOU` (a correction).
+- Every cue the app applied: `Rule · date parser`, `Recognizer · 0.82`, `Region · Done`, `Cluster · poster`, `Formula`, `You` (a correction).
 
 ## Don't use it for
 
 - Tooltips on chrome (a tool's name and key). Those are the toolbar's tooltips.
-- Long explanations. One line: the source, then the detail.
+- Long explanations. The source, then the detail.
 - Hiding confidence. If the app guessed, the number is shown.
 
 ## Anatomy
 
-A graphite frosted tag (the graphite frost recipe), radius 11, padding 6 / 10, max 280 wide, in the `readout` role (10.5 mono) uppercase, tracked .05em: the source in `ink`, the detail after a middle dot in `dim`. It sits 8 above the cue, or 34 above a cue that shows its own value chip on hover, and flips below near the top of the view.
-
-The readout role, not the label role: provenance carries information on its own, and the label role never does (DS-06).
+`Tooltip wrap` (the graphite fill with no backdrop, radius 11, padding 6 / 10, max 280 wide, 10 mono at 1.45, tracked .05em): the source in its ink, the detail after a middle dot in `Tooltip.Dim`. It waits 380 ms, sits 8 above the cue, or 34 above a cue that shows its own value chip on hover, and flips below near the top of the view.
 
 ## States and motion
 
@@ -771,21 +769,20 @@ The readout role, not the label role: provenance carries information on its own,
 | hovered or focused 380 ms | the tooltip | fade on settle |
 | next cue within the group | the next tooltip at once | – |
 | leave, Escape | hidden | fade on settle |
-| Reduce Transparency | opaque graphite | – |
 
 ## API
 
 ```tsx
 <ProvenanceProvider>
-  <ProvenanceTooltip source="Jev" detail={['0.82']} clearsChip>
-    <Cue kind="date" resolved="TUE 30 SEP">tomorrow</Cue>
+  <ProvenanceTooltip source="Recognizer" detail={['0.82']} clearsChip>
+    <Mark kind="date" resolved="TUE 30 SEP">tomorrow</Mark>
   </ProvenanceTooltip>
 </ProvenanceProvider>
 ```
 
 | Prop | Notes |
 |---|---|
-| `source` | first, in ink |
+| `source` | first, in the tooltip's ink |
 | `detail` | dimmed, after a middle dot |
 | `clearsChip` | the cue has its own value chip: sit above it |
 | `open` | controlled |
@@ -793,17 +790,17 @@ The readout role, not the label role: provenance carries information on its own,
 ## Rules
 
 - Every applied cue has provenance, and a guess shows its number.
-- One line, the source first.
+- The source first.
 - It never covers the cue's own value chip.
 
 ## Accessibility
 
-- Base UI Tooltip: it opens on hover and on keyboard focus and closes on Escape. Base UI tooltips are visual only, so the component also sets the cue's `aria-description` to the provenance ("Jev, 0.82"). The cue stays the focusable element.
+- Base UI Tooltip: it opens on hover and on keyboard focus and closes on Escape. Tooltips are visual only, so the block also sets the cue's `aria-description` to the provenance ("Recognizer, 0.82"). The cue stays the focusable element.
 - It never holds interactive content.
 
 ## Tokens
 
-`--mu-provenance-*`, `--mu-frost-graphite-*`, `--mu-backdrop`, `--mu-type-readout`, `--mu-spring-settle`. Swift: `MetalProvenance`, `MetalFrost.graphite`.
+Timing and placement: `--mu-provenance-delay-ms`, `--mu-provenance-offset`, `--mu-provenance-chip-offset`. Look: the tooltip recipe. Swift: `MetalProvenance`.
 
 ---
 

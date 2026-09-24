@@ -402,7 +402,7 @@
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",
-      "description": "One hover away from every cue: a graphite tooltip on Base UI Tooltip that says where the cue came from (RULE · DATE PARSER, JEV · 0.82, YOU), with the number whenever the app guessed.",
+      "description": "One hover away from every cue: a wrapped Tooltip that says where the cue came from (Rule · date parser, Recognizer · 0.82, You), the detail in Tooltip.Dim, with the number whenever the app guessed.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
@@ -411,14 +411,14 @@
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/provenance-tooltip/provenance-tooltip.tsx",
+          "path": "packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/provenance-tooltip/provenance-tooltip.tsx"
+          "target": "components/metalui/blocks/provenance-tooltip/provenance-tooltip.tsx"
         },
         {
-          "path": "packages/metalui/src/components/provenance-tooltip/provenance-tooltip.css",
+          "path": "packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.css",
           "type": "registry:file",
-          "target": "components/metalui/provenance-tooltip/provenance-tooltip.css"
+          "target": "components/metalui/blocks/provenance-tooltip/provenance-tooltip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/provenance-tooltip.md. SwiftUI: MetalProvenanceTooltip, .metalProvenance(_:detail:) in the MetalUI Swift package."

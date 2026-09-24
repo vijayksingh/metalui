@@ -1882,7 +1882,7 @@ public enum MetalEngraving {
     public static let led: Double = 5.0
 }
 
-/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, RECOGNIZER · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the reference design's #tip.
+/// Provenance's timing and placement: one hover away from every cue (380 ms), 8 above it or 34 above a cue that shows its own value chip. If the app guessed, the number is shown: hidden confidence is a bug. Its look is the tooltip recipe; radius, pad, max-width, tracking, ink and dim stay only until the Swift port reads it. Values are the reference design's #tip.
 public enum MetalProvenance {
     public static let delayMs: Double = 380.0
     public static let offset: Double = 8.0

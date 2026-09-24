@@ -28,7 +28,7 @@ export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-sc
 export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
-export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './components/provenance-tooltip/provenance-tooltip';
+export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './blocks/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './components/hover-engraving/hover-engraving';
 export { SuggestionChip, type SuggestionChipProps } from './blocks/suggestion-chip/suggestion-chip';
 export { SizeReadout, type SizeReadoutProps } from './components/size-readout/size-readout';

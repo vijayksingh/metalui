@@ -1,0 +1,5 @@
+@import "../../components/tokens.css";
+@import "../../components/tooltip/tooltip.css";
+
+/* Provenance tooltip: a composition. Every paint and motion is Tooltip's (wrap, Tooltip.Dim);
+   its timing and placement are --mu-provenance-*. */

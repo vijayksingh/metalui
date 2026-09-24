@@ -1,0 +1,24 @@
+{
+  "name": "provenance-tooltip",
+  "title": "Provenance tooltip",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "tooltip"
+  ],
+  "description": "One hover away from every cue: a wrapped Tooltip that says where the cue came from (Rule · date parser, Recognizer · 0.82, You), the detail in Tooltip.Dim, with the number whenever the app guessed.",
+  "base": "@base-ui/react/tooltip",
+  "react": {
+    "export": "ProvenanceTooltip, ProvenanceProvider",
+    "files": [
+      "provenance-tooltip.tsx",
+      "provenance-tooltip.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalProvenanceTooltip, .metalProvenance(_:detail:)",
+    "file": "swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift"
+  },
+  "agent": "provenance-tooltip.agent.md"
+}
