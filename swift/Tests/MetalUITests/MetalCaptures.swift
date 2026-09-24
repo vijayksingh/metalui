@@ -119,6 +119,45 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// A world-space alignment across three objects, at a non-unit canvas zoom.
+    private func snapGuidesSheet(_ colorway: MetalColorway) -> some View {
+        let scale: CGFloat = 1.25
+        let guides = [
+            MetalSnapGuide(axis: .horizontal, position: 40, start: 45, end: 320, kind: .edge),
+            MetalSnapGuide(axis: .vertical, position: 100, start: 40, end: 210, kind: .center),
+        ]
+        let world = ZStack(alignment: .topLeading) {
+            colorway.tokens.s.color
+            RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous)
+                .fill(colorway.tokens.sHi.color)
+                .frame(width: 110, height: 78)
+                .position(x: 100, y: 79)
+            RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous)
+                .fill(colorway.tokens.sHi.color)
+                .frame(width: 110, height: 78)
+                .position(x: 265, y: 79)
+            RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous)
+                .fill(colorway.tokens.sHi.color)
+                .frame(width: 110, height: 60)
+                .position(x: 100, y: 180)
+            MetalSnapGuides(guides: guides, scale: scale)
+        }
+        .frame(width: 360, height: 230)
+        .scaleEffect(scale, anchor: .topLeading)
+        .frame(width: 450, height: 287.5, alignment: .topLeading)
+
+        return world
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+    }
+
+    func testSnapGuides() {
+        for colorway in MetalColorway.allCases {
+            capture("snap-guides-\(colorway.rawValue)", snapGuidesSheet(colorway))
+        }
+    }
+
     private func cueSheet(_ colorway: MetalColorway) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 24) {
