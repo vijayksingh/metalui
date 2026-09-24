@@ -350,7 +350,7 @@ A static icon at a size in an ink. React: `Glyph` wrapping any MetalUI icon. Swi
 
 ## Props
 
-- `size`: `small` (14, default) or `regular` (16). `tone`: `ink`, `ink2` (default), `ink3`.
+- `size`: `tiny` (10), `small` (14, default) or `regular` (16). `tone`: `ink`, `ink2` (default), `ink3`, or `inherit` (the ink of the words it sits in, as a glyph inside an engraving).
 - It is `aria-hidden`; the icon inside inherits the ink.
 
 ---

@@ -214,7 +214,7 @@
       "name": "glyph",
       "type": "registry:ui",
       "title": "Glyph",
-      "description": "A static icon at a size (14, 16) in an ink (ink, ink2, ink3); decorative.",
+      "description": "A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"

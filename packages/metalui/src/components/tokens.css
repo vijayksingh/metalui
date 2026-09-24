@@ -1368,6 +1368,7 @@
   /* glyph: reference style.css #lensBar svg, .pal-field svg, .tb-search svg, .pal-row svg */
   --mu-r-glyph-size-small: 14px;
   --mu-r-glyph-size-regular: 16px;
+  --mu-r-glyph-size-tiny: 10px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
