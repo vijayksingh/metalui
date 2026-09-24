@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, type ButtonCap } from '@unlocalhosted/metalui';
+import { Button, SlidingIndicator, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/button/button.css?raw';
@@ -100,7 +100,8 @@ export default function ButtonPage() {
 
       <Section title="Source" lede="The same Button three ways, plus the guide your coding agent reads.">
         <div className="flex flex-col gap-12">
-          <div role="tablist" aria-label="Source" data-md="skip" className="material-well inline-flex w-fit rounded-pill p-2">
+          <div role="tablist" aria-label="Source" data-md="skip" className="material-well relative inline-flex w-fit rounded-pill p-2">
+            <SlidingIndicator className="material-thumb rounded-pill" />
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -108,7 +109,7 @@ export default function ButtonPage() {
                 type="button"
                 aria-selected={tab === t.id}
                 onClick={() => setTab(t.id)}
-                className={['type-ui h-28 cursor-pointer rounded-pill px-13 transition-[color,background,box-shadow] duration-200', tab === t.id ? 'material-thumb text-ink' : 'text-ink2 hover:text-ink'].join(' ')}
+                className={['type-ui relative z-10 h-28 cursor-pointer rounded-pill px-13 transition-colors duration-150', tab === t.id ? 'text-ink' : 'text-ink2 hover:text-ink'].join(' ')}
               >
                 {t.label}
               </button>
@@ -136,7 +137,7 @@ export default function ButtonPage() {
             { id: 'B1', title: 'One signal cap per group', body: 'Everything else is standard. Destructive is only for removing or discarding data.' },
             { id: 'B2', title: 'Icons lead, at the control’s icon size', body: '14 in a 32 button. The button is the icon’s trigger, so its hover pose and press play from the whole button.' },
             { id: 'B3', title: 'The press is feedback, not a result', body: 'Show the real outcome: a toast, a state change or an error. Never let the animation stand in for success.' },
-            { id: 'B4', title: 'Changing labels morph', body: 'Copy → Copied, Save → Saving… → Saved: wrap the label in SwapText and the icon in SwapIcon. The width springs to the new label; nothing snaps (Motion M5).' },
+            { id: 'B4', title: 'Changing labels morph', body: 'Copy → Copied, Save → Saving… → Saved: wrap the label in SwapText and the icon in SwapIcon. The width springs to the new label; nothing snaps (Transitions T1–T3).' },
           ]}
         />
       </Section>

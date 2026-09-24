@@ -26,6 +26,7 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/sizing', label: 'Sizing' },
       { to: '/foundations/elevation', label: 'Elevation' },
       { to: '/foundations/motion', label: 'Motion' },
+      { to: '/foundations/transitions', label: 'Transitions' },
     ],
   },
   {

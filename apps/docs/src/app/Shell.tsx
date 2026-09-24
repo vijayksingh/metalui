@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
+import { SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 
@@ -13,7 +14,8 @@ const COLORWAYS: { value: Colorway; label: string }[] = [
 function ColorwaySwitch() {
   const { colorway, setColorway } = useColorway();
   return (
-    <div role="radiogroup" aria-label="Colorway" className="material-well inline-flex rounded-pill p-2">
+    <div role="radiogroup" aria-label="Colorway" className="material-well relative inline-flex rounded-pill p-2">
+      <SlidingIndicator className="material-thumb rounded-pill" />
       {COLORWAYS.map((c) => {
         const on = c.value === colorway;
         return (
@@ -24,8 +26,8 @@ function ColorwaySwitch() {
             aria-checked={on}
             onClick={() => setColorway(c.value)}
             className={[
-              'type-ui h-24 cursor-pointer rounded-pill px-11 transition-[color,background,box-shadow] duration-200',
-              on ? 'material-thumb text-ink' : 'text-ink2 hover:text-ink',
+              'type-ui relative z-10 h-24 cursor-pointer rounded-pill px-11 transition-colors duration-150',
+              on ? 'text-ink' : 'text-ink2 hover:text-ink',
             ].join(' ')}
           >
             {c.label}
@@ -38,7 +40,8 @@ function ColorwaySwitch() {
 
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav aria-label="Documentation" className="flex flex-col gap-24">
+    <nav aria-label="Documentation" className="relative flex flex-col gap-24">
+      <SlidingIndicator spring="morph" className="material-thumb rounded-row" />
       {NAV.map((group) => (
         <div key={group.label} className="flex flex-col gap-2">
           <div className="type-label engraved px-8 pb-6">{group.label}</div>
@@ -50,8 +53,8 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className={({ isActive }) =>
                 [
-                  'type-ui flex h-32 items-center justify-between rounded-row px-8 no-underline transition-[color,background,box-shadow] duration-200',
-                  isActive ? 'material-thumb text-ink' : 'text-ink2 hover:bg-[color-mix(in_srgb,var(--mu-ink)_5%,transparent)] hover:text-ink',
+                  'type-ui relative z-10 flex h-32 items-center justify-between rounded-row px-8 no-underline transition-colors duration-150',
+                  isActive ? 'text-ink' : 'text-ink2 hover:bg-[color-mix(in_srgb,var(--mu-ink)_5%,transparent)] hover:text-ink',
                 ].join(' ')
               }
             >

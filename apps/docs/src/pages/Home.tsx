@@ -13,7 +13,7 @@ const TOOLS: { name: IconName; label: string }[] = [
 ];
 
 const PLACES = [
-  { to: '/foundations', title: 'Foundations', body: 'The rules the objects are built from: ink, type, a ×6 radius ladder, a 4-point spacing base, control heights, five elevation levels, and springs.', meta: '8 pages' },
+  { to: '/foundations', title: 'Foundations', body: 'The rules the objects are built from: ink, type, a ×6 radius ladder, a 4-point spacing base, control heights, five elevation levels, springs and transitions.', meta: '9 pages' },
   { to: '/components/button', title: 'Components', body: 'Base UI primitives dressed in Soft Hardware. Each ships as React, SwiftUI and an agent guide. They land one at a time, each reviewed against the object sheet.', meta: '1 · Button' },
   { to: '/icons', title: 'Icons', body: 'Monoline and duotone glyphs on a 24 grid. Each one has its own hover pose and press animation.', meta: '31 glyphs' },
 ];

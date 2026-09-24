@@ -82,8 +82,8 @@ export function Rules({ rules }: { rules: { id: string; title: string; body: Rea
   );
 }
 
-/** A token table: name, value, use. Values in readout type. */
-export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'] }: { rows: React.ReactNode[][]; head?: string[] }) {
+/** A token table: name, value, use. `mono` lists the columns set as readouts (default: name and value). */
+export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'], mono = [0, 1] }: { rows: React.ReactNode[][]; head?: string[]; mono?: number[] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
@@ -98,7 +98,7 @@ export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'] }: { ro
           {rows.map((cells, i) => (
             <tr key={i} className="border-b border-[var(--mu-rule)] last:border-0">
               {cells.map((c, j) => (
-                <td key={j} className={['py-10 pr-16 align-baseline', j === 0 ? 'type-readout whitespace-nowrap text-ink' : j === 1 ? 'type-readout text-ink2' : 'prose-body text-ink2'].join(' ')}>{c}</td>
+                <td key={j} className={['py-10 pr-16 align-baseline', !mono.includes(j) ? 'prose-body text-ink2' : j === 0 ? 'type-readout whitespace-nowrap text-ink' : 'type-readout text-ink2'].join(' ')}>{c}</td>
               ))}
             </tr>
           ))}

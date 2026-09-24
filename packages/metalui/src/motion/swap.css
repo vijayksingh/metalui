@@ -1,39 +1,73 @@
 @import "../components/tokens.css";
 
-/* Content swap (FOUNDATIONS §9, M5): content changes morph, never snap. */
+/* Content swap (Transitions T1, T2, T3): an overlapping crossfade, never a gap. */
 
-/* ---------- text ---------- */
+.mu-swap-text,
+.mu-swap-icon {
+  display: inline-grid;
+  vertical-align: top;
+}
 .mu-swap-text {
   position: relative;
-  display: inline-block;
-  vertical-align: top;
+  justify-items: start;
   white-space: nowrap;
-  /* The footprint: springs to the new label's width. */
+  /* The footprint springs to the incoming label. */
   transition: width var(--mu-spring-morph-d) var(--mu-spring-morph);
 }
-.mu-swap-text-slot {
-  display: inline-block;
-  transform: translateY(0);
-  filter: blur(0);
+.mu-swap-icon {
+  flex: none;
+  place-items: center;
+}
+
+/* Every layer shares one cell, so outgoing and incoming overlap. */
+.mu-swap-layer {
+  grid-area: 1 / 1;
+  display: inline-flex;
   opacity: 1;
+  filter: blur(0);
+  transform: none;
   transition:
-    transform var(--mu-swap-text-enter) var(--mu-swap-ease-out),
-    filter var(--mu-swap-text-enter) var(--mu-swap-ease-out),
-    opacity var(--mu-swap-text-enter) var(--mu-swap-ease-out);
+    opacity var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay),
+    filter var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay),
+    transform var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay);
 }
-/* The old label leaves faster than the new one arrives. */
-.mu-swap-text-slot[data-phase="exit"] {
-  transform: translateY(calc(var(--mu-swap-travel) * -1));
-  filter: blur(var(--mu-swap-blur));
+
+/* Text: in from 4 below, out 4 up; the old leaves quicker than the new arrives. */
+.mu-swap-text > .mu-swap-layer[data-state="enter"] {
   opacity: 0;
-  transition-duration: var(--mu-swap-text-exit);
-}
-.mu-swap-text-slot[data-phase="enter-start"] {
+  filter: blur(var(--mu-swap-blur));
   transform: translateY(var(--mu-swap-travel));
-  filter: blur(var(--mu-swap-blur));
-  opacity: 0;
   transition: none;
 }
+.mu-swap-text > .mu-swap-layer[data-state="out"] {
+  opacity: 0;
+  filter: blur(var(--mu-swap-blur));
+  transform: translateY(calc(var(--mu-swap-travel) * -1));
+  transition:
+    opacity var(--mu-swap-out) var(--mu-ease-in-out),
+    filter var(--mu-swap-out) var(--mu-ease-in-out),
+    transform var(--mu-swap-out) var(--mu-ease-in-out);
+}
+
+/* Icons: through a small scale with blur, both at once. */
+.mu-swap-icon > .mu-swap-layer {
+  transition:
+    opacity var(--mu-swap-icon) var(--mu-ease-in-out),
+    filter var(--mu-swap-icon) var(--mu-ease-in-out),
+    transform var(--mu-swap-icon) var(--mu-ease-in-out);
+}
+.mu-swap-icon > .mu-swap-layer[data-state="enter"] {
+  opacity: 0;
+  filter: blur(var(--mu-swap-blur));
+  transform: scale(var(--mu-swap-icon-scale));
+  transition: none;
+}
+.mu-swap-icon > .mu-swap-layer[data-state="out"] {
+  opacity: 0;
+  filter: blur(var(--mu-swap-blur));
+  transform: scale(var(--mu-swap-icon-scale));
+}
+
 .mu-swap-text-measure {
   position: absolute;
   top: 0;
@@ -43,42 +77,13 @@
   white-space: nowrap;
 }
 
-/* ---------- icon ---------- */
-.mu-swap-icon {
-  display: inline-grid;
-  flex: none;
-  place-items: center;
-}
-.mu-swap-icon-layer {
-  grid-area: 1 / 1;
-  display: inline-flex;
-  opacity: 1;
-  filter: blur(0);
-  transform: scale(1);
-  transition:
-    opacity var(--mu-swap-icon-dur) ease-in-out,
-    filter var(--mu-swap-icon-dur) ease-in-out,
-    transform var(--mu-swap-icon-dur) ease-in-out;
-}
-.mu-swap-icon-layer[data-state="enter"] {
-  opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: scale(var(--mu-swap-icon-scale));
-  transition: none;
-}
-.mu-swap-icon-layer[data-state="out"] {
-  opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: scale(var(--mu-swap-icon-scale));
-}
-
-/* Reduced motion keeps meaning, removes travel: a short opacity cross-fade. */
+/* Reduced motion keeps meaning and removes movement: a plain crossfade. */
 @media (prefers-reduced-motion: reduce) {
   .mu-swap-text { transition: none; }
-  .mu-swap-text-slot,
-  .mu-swap-icon-layer {
+  .mu-swap-layer,
+  .mu-swap-layer[data-state] {
     transform: none !important;
     filter: none !important;
-    transition: opacity 120ms linear !important;
   }
+  .mu-swap-layer { transition: opacity var(--mu-duration-quick) linear !important; }
 }

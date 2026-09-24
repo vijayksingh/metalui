@@ -45,13 +45,34 @@
   --mu-destructive-pressed-bg: linear-gradient(#BE352C,#CF4238);
   --mu-destructive-pressed-sh: inset 0 1px 3px rgba(80,0,0,.45), 0 0 0 .5px rgba(110,10,0,.55);
   --mu-destructive-ink: #FFFFFF;
-  --mu-swap-text-exit: 120ms;
-  --mu-swap-text-enter: 180ms;
-  --mu-swap-travel: 4px;
-  --mu-swap-blur: 2px;
-  --mu-swap-icon-dur: 250ms;
-  --mu-swap-icon-scale: 0.25;
-  --mu-swap-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --mu-duration-stagger: 40ms; /* offset between items; the delay before an incoming swap */
+  --mu-duration-micro: 80ms; /* tooltip delay, shake segment, the wait before a footprint shrinks */
+  --mu-duration-quick: 150ms; /* outgoing content, closes, press, tooltip in */
+  --mu-duration-fast: 250ms; /* incoming content, icon swap, dropdown and modal open, sliding indicator */
+  --mu-duration-medium: 350ms; /* panel and toast close */
+  --mu-duration-slow: 400ms; /* panel open, skeleton reveal */
+  --mu-duration-gentle: 500ms; /* rare emphasis: text reveal, success */
+  --mu-ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* default: anything entering, and small swaps */
+  --mu-ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1); /* things already on screen moving or crossfading out */
+  --mu-ease-linear: linear; /* constant motion only: progress, spinners */
+  --mu-distance-micro: 4px; /* text swap */
+  --mu-distance-small: 6px; /* error shake */
+  --mu-distance-base: 8px; /* content swap in a panel, page step */
+  --mu-distance-medium: 12px; /* text reveal */
+  --mu-scale-icon: 0.25; /* icon swap */
+  --mu-scale-modal: 0.96; /* modal open and close */
+  --mu-scale-menu: 0.97; /* dropdown and popover open, from the trigger */
+  --mu-scale-tip: 0.98; /* tooltip open */
+  --mu-blur-small: 2px; /* text and icon swap, panel reveal, number change */
+  --mu-blur-medium: 3px; /* page step, text reveal */
+  --mu-swap-out: var(--mu-duration-quick);
+  --mu-swap-in: var(--mu-duration-fast);
+  --mu-swap-in-delay: 0ms;
+  --mu-swap-shrink-delay: var(--mu-duration-micro);
+  --mu-swap-travel: var(--mu-distance-micro);
+  --mu-swap-blur: var(--mu-blur-small);
+  --mu-swap-icon-scale: var(--mu-scale-icon);
+  --mu-swap-icon: var(--mu-duration-fast);
   --mu-radius-key: 6px;
   --mu-radius-row: 12px;
   --mu-radius-plate: 18px;
