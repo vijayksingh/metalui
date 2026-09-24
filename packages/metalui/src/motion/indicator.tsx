@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import './indicator.css';
 
 /* ─────────────────────────────────────────────────────────
  * SLIDING INDICATOR STORYBOARD (selection A → B in a group)
@@ -16,6 +15,9 @@ import './indicator.css';
  * Reduced motion: the thumb moves instantly; labels still recolor.
  * ───────────────────────────────────────────────────────── */
 
+/* Selection glide (Transitions T3): the selection is a part that travels, on the part spring; free
+ * travel has no stop to bounce against, so it settles. Reduce Motion: it moves at once. */
+const INDICATOR = 'mu-indicator absolute top-0 left-0 z-0 pointer-events-none data-animate:indicator-glide data-animate:data-[spring=settle]:indicator-glide-settle data-animate:motion-reduce:transition-none';
 const ACTIVE = '[aria-checked="true"],[aria-selected="true"],[aria-current="page"]';
 
 export interface SlidingIndicatorProps {
@@ -62,7 +64,7 @@ export function SlidingIndicator({ activeSelector = ACTIVE, className, spring = 
     <span
       ref={self}
       aria-hidden="true"
-      className={className ? `mu-indicator ${className}` : 'mu-indicator'}
+      className={className ? `${INDICATOR} ${className}` : INDICATOR}
       data-animate={box?.animate || undefined}
       data-spring={spring}
       style={box ? { width: box.w, height: box.h, transform: `translate(${box.x}px, ${box.y}px)` } : { visibility: 'hidden' }}

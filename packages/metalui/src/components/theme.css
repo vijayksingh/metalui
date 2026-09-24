@@ -1998,6 +1998,12 @@
 @utility palette-foot-rule {
   border-top: var(--mu-palette-edge) solid var(--mu-rule); box-shadow: inset var(--mu-zero) var(--mu-palette-edge) var(--mu-zero) var(--mu-rule-lip);
 }
+@utility indicator-glide {
+  transition: transform var(--mu-spring-part-d) var(--mu-spring-part), width var(--mu-spring-part-d) var(--mu-spring-part), height var(--mu-spring-part-d) var(--mu-spring-part);
+}
+@utility indicator-glide-settle {
+  transition: transform var(--mu-spring-settle-d) var(--mu-spring-settle), width var(--mu-spring-settle-d) var(--mu-spring-settle), height var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
 @utility duration-part {
   --tw-duration: var(--mu-spring-part-d);
   transition-duration: var(--mu-spring-part-d);
