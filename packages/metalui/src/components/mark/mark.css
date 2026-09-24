@@ -25,7 +25,7 @@
 /* Tag: a soft pill whose padding is paid back by an equal negative margin, so the words do not move. */
 .mu-cue:is([data-kind="tag"], [data-kind="derived-tag"]) {
   padding: var(--mu-cue-tag-pad-y) var(--mu-cue-tag-pad-x);
-  margin: var(--mu-zero) calc(var(--mu-zero) - var(--mu-cue-tag-pad-x));
+  margin: var(--mu-zero) calc(var(--mu-zero-length) - var(--mu-cue-tag-pad-x));
   border-radius: var(--mu-radius-pill);
   color: var(--mu-ink2);
   -webkit-box-decoration-break: clone;

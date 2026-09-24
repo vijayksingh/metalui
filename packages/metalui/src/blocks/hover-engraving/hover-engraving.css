@@ -22,13 +22,13 @@
 .mu-engraving[data-placement="beside"] {
   left: calc(100% + var(--mu-engraving-beside-gap));
   top: var(--mu-engraving-beside-top);
-  transform: translateX(calc((var(--mu-zero) - var(--mu-engraving-slide)) * var(--mu-travel-settle)));
+  transform: translateX(calc((var(--mu-zero-length) - var(--mu-engraving-slide)) * var(--mu-travel-settle)));
 }
 /* Under a material block (a link, an image, a swatch). */
 .mu-engraving[data-placement="below"] {
   left: var(--mu-zero);
   top: calc(100% + var(--mu-engraving-below-gap));
-  transform: translateY(calc((var(--mu-zero) - var(--mu-engraving-rise)) * var(--mu-travel-settle)));
+  transform: translateY(calc((var(--mu-zero-length) - var(--mu-engraving-rise)) * var(--mu-travel-settle)));
 }
 /* A dwell, not a pass: the host must stay hovered for 420 ms. */
 .mu-icon-trigger:hover > .mu-engraving:not([data-open="false"]),
