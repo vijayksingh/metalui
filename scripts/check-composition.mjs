@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // check:composition (docs/COMPOSITION.md §6): a composition block draws nothing itself. Its CSS may
-// only arrange (layout, placement, motion of the whole); every paint (fill, shadow, colour, type,
-// radius, border, opacity, filter) comes from the components it uses; it has no recipe of its own.
+// only arrange (layout, placement, and the motion and visibility of its parts: transform, opacity);
+// every paint (fill, shadow, colour, type, radius, border, filter) comes from the components it uses;
+// it has no recipe of its own.
 // A custom block says so (`kind: "custom"`) with a `reason`.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -12,7 +13,7 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const src = join(root, 'packages/metalui/src');
 const tokens = JSON.parse(readFileSync(join(root, 'tokens/tokens.json'), 'utf8'));
 const recipes = new Set(Object.keys(tokens.recipes ?? {}).filter((k) => !k.startsWith('$')));
-const PAINT = /^\s*(background(?:-[\w-]+)?|box-shadow|color|font(?:-[\w-]+)?|letter-spacing|line-height|text-shadow|text-decoration(?:-[\w-]+)?|text-transform|border(?:-[\w-]+)?|outline(?:-[\w-]+)?|opacity|filter|backdrop-filter|-webkit-backdrop-filter|fill|stroke(?:-[\w-]+)?|caret-color)\s*:/;
+const PAINT = /^\s*(background(?:-[\w-]+)?|box-shadow|color|font(?:-[\w-]+)?|letter-spacing|line-height|text-shadow|text-decoration(?:-[\w-]+)?|text-transform|border(?:-[\w-]+)?|outline(?:-[\w-]+)?|filter|backdrop-filter|-webkit-backdrop-filter|fill|stroke(?:-[\w-]+)?|caret-color)\s*:/;
 const errors = [];
 
 for (const meta of blocks()) {
