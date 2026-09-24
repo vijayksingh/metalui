@@ -6,11 +6,12 @@ import './indicator.css';
 /* ─────────────────────────────────────────────────────────
  * SLIDING INDICATOR STORYBOARD (selection A → B in a group)
  *
- *      0ms   the thumb leaves A and glides to B's box
- *            short hops (segments, tabs): ui spring k170 c16, ~9% overshoot
- *            long travel (lists, navigation): morph spring k380 c36, none
- *      0ms   A's label fades to ink2, B's to ink            (quick 150ms)
- *    ~600ms  the thumb has settled on B (~9% overshoot, as on the sheet)
+ *      0ms   the thumb leaves A and travels to B's box
+ *            in a track with ends (segments, tabs, switch): part spring
+ *              k170 c16, near 198ms, overshoots ~9% against the stop
+ *            free travel (lists, navigation): settle spring k380 c36,
+ *              near 214ms, no overshoot: nothing to bounce against
+ *      0ms   A's label fades to ink2, B's to ink
  * First paint, resize and font load: the thumb is placed without motion.
  * Reduced motion: the thumb moves instantly; labels still recolor.
  * ───────────────────────────────────────────────────────── */
@@ -23,10 +24,10 @@ export interface SlidingIndicatorProps {
   /** The indicator's material and shape, e.g. "material-thumb rounded-pill". */
   className?: string;
   /**
-   * "ui" for short hops (segmented, tabs) with the sheet's slight overshoot;
-   * "morph" for long travel (lists, navigation), which must not wobble.
+   * "part" when the thumb rides a track with ends (segmented, tabs, switch): it may
+   * overshoot against the stop. "settle" for free travel (lists, navigation).
    */
-  spring?: 'ui' | 'morph';
+  spring?: 'part' | 'settle';
 }
 
 /**
@@ -34,7 +35,7 @@ export interface SlidingIndicatorProps {
  * controls, tabs, navigation. Place it as the first child of a positioned
  * group; it follows ARIA state, so the items stay ordinary buttons or links.
  */
-export function SlidingIndicator({ activeSelector = ACTIVE, className, spring = 'ui' }: SlidingIndicatorProps) {
+export function SlidingIndicator({ activeSelector = ACTIVE, className, spring = 'part' }: SlidingIndicatorProps) {
   const self = React.useRef<HTMLSpanElement>(null);
   const [box, setBox] = React.useState<{ x: number; y: number; w: number; h: number; animate: boolean } | null>(null);
 

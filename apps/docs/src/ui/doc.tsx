@@ -65,8 +65,16 @@ export function Bench({
   );
 }
 
-/** Numbered rules: id readout on the left, statement on the right. */
-export function Rules({ rules }: { rules: { id: string; title: string; body: React.ReactNode }[] }) {
+export interface Rule {
+  id: string;
+  title: string;
+  body: React.ReactNode;
+  /** Where the rule comes from: "Ours", or "Adapted · <source>". */
+  origin?: string;
+}
+
+/** Numbered rules: id readout on the left, statement (and its origin) on the right. */
+export function Rules({ rules }: { rules: Rule[] }) {
   return (
     <dl className="grid grid-cols-[56px_1fr] gap-x-16 gap-y-20">
       {rules.map((r) => (
@@ -75,6 +83,7 @@ export function Rules({ rules }: { rules: { id: string; title: string; body: Rea
           <dd className="flex flex-col gap-4">
             <span className="type-title text-ink">{r.title}</span>
             <span className="prose-body max-w-[64ch] text-ink2">{r.body}</span>
+            {r.origin && <span className="type-label engraved pt-2">{r.origin}</span>}
           </dd>
         </React.Fragment>
       ))}

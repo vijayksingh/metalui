@@ -29,9 +29,13 @@
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
   --shadow-well: var(--mu-well);
-  --ease-spring-obj: var(--mu-spring-obj);
-  --ease-spring-ui: var(--mu-spring-ui);
-  --ease-spring-press: var(--mu-spring-press);
+  --ease-part: var(--mu-spring-part);
+  --ease-object: var(--mu-spring-object);
+  --ease-hinge: var(--mu-spring-hinge);
+  --ease-surface: var(--mu-spring-surface);
+  --ease-settle: var(--mu-spring-settle);
+  --ease-release: var(--mu-spring-release);
+  --ease-refusal: var(--mu-spring-refusal);
 }
 
 /* Type roles */

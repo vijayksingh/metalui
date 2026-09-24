@@ -1,6 +1,6 @@
 @import "../components/tokens.css";
 
-/* Sliding indicator (Transitions T5): the selection glides, it never jumps. */
+/* Selection glide (Transitions T3): the selection is a part that travels. */
 .mu-indicator {
   position: absolute;
   top: 0;
@@ -10,16 +10,16 @@
 }
 .mu-indicator[data-animate] {
   transition:
-    transform var(--mu-spring-ui-d) var(--mu-spring-ui),
-    width var(--mu-spring-ui-d) var(--mu-spring-ui),
-    height var(--mu-spring-ui-d) var(--mu-spring-ui);
+    transform var(--mu-spring-part-d) var(--mu-spring-part),
+    width var(--mu-spring-part-d) var(--mu-spring-part),
+    height var(--mu-spring-part-d) var(--mu-spring-part);
 }
-/* Long travel must not wobble: bounce scales inversely with distance. */
-.mu-indicator[data-animate][data-spring="morph"] {
+/* Free travel has no stop to bounce against: it settles. */
+.mu-indicator[data-animate][data-spring="settle"] {
   transition:
-    transform var(--mu-spring-morph-d) var(--mu-spring-morph),
-    width var(--mu-spring-morph-d) var(--mu-spring-morph),
-    height var(--mu-spring-morph-d) var(--mu-spring-morph);
+    transform var(--mu-spring-settle-d) var(--mu-spring-settle),
+    width var(--mu-spring-settle-d) var(--mu-spring-settle),
+    height var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
 @media (prefers-reduced-motion: reduce) {
   .mu-indicator[data-animate] { transition: none; }

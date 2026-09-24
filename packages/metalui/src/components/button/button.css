@@ -23,7 +23,7 @@
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   transition:
-    transform var(--mu-spring-press-d) var(--mu-spring-press),
+    transform var(--mu-spring-release-d) var(--mu-spring-release),
     box-shadow .18s,
     background .18s;
 }

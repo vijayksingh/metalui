@@ -48,7 +48,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, SF Pro 12.5 medium, tracking −0.005em.
 - The **label** is text, optionally with a leading MetalUI icon at 16px and a 6px gap.
-- The **press** moves the cap down 1px, and its shadow collapses into an inner well. The release uses the `press` spring (stiffness 500, damping 40, 300ms). Shadows and fills cross-fade over 180ms.
+- The **press** moves the cap down 1px, and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## API
 
@@ -86,7 +86,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 - Put icons **before** the label, at `size={16}`. An icon inside a Button plays its hover pose and press motion from the whole button (the button is the icon's trigger), so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
-- **A label that changes in place must morph, never snap** (Transitions T1–T3). Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the old and new labels crossfade with a small drift and blur (no blank frame), the button's width springs to the new label, and the icon crosses through scale and blur. Example: `<Button><SwapIcon swapKey={state}>{icon}</SwapIcon><SwapText value={label} /></Button>`.
+- **A label that changes in place must morph, never snap** (Transitions T1–T3). Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the button's face turns one step on a drum: old and new labels and icons overlap with a small defocus (no blank frame), and the width settles to the new label. Example: `<Button><SwapIcon swapKey={state}>{icon}</SwapIcon><SwapText value={label} /></Button>`.
 
 ## Accessibility
 
@@ -98,7 +98,7 @@ MetalButton("Delete", cap: .destructive) { remove() }
 
 ## Tokens
 
-`--mu-btn-bg`, `--mu-btn-sh`, `--mu-pressed-bg`, `--mu-pressed-sh`, `--mu-primary-*`, `--mu-destructive-*`, `--mu-spring-press`, `--mu-focus`. Swift: `MetalTokens.<colorway>.btnBg/btnSh/pressedBg/pressedSh`, `MetalCaps.primary/destructive`, `MetalSprings.press`.
+`--mu-btn-bg`, `--mu-btn-sh`, `--mu-pressed-bg`, `--mu-pressed-sh`, `--mu-primary-*`, `--mu-destructive-*`, `--mu-spring-release`, `--mu-focus`. Swift: `MetalTokens.<colorway>.btnBg/btnSh/pressedBg/pressedSh`, `MetalCaps.primary/destructive`, `MetalSprings.release`.
 
 ---
 

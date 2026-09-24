@@ -9,13 +9,30 @@ const T = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8'));
 const decl = (obj, prefix = '') =>
   Object.entries(obj).map(([k, v]) => `  --mu-${prefix}${k}: ${v};`).join('\n');
 
+// A damped spring (mass 1) sampled as a CSS linear() curve over its settle time.
+function springCurve(k, c, duration, n = 48) {
+  const w0 = Math.sqrt(k), z = c / (2 * Math.sqrt(k)), wd = w0 * Math.sqrt(1 - z * z);
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const t = (i / n) * duration;
+    const x = i === n ? 1 : 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));
+    pts.push(+x.toFixed(4));
+  }
+  return `linear(${pts.join(', ')})`;
+}
 const springs = Object.entries(T.springs)
-  .map(([k, s]) => `  /* k=${s.stiffness} c=${s.damping}: ${s.use} */\n  --mu-spring-${k}: ${s.css};\n  --mu-spring-${k}-d: ${s.duration}s;`)
+  .map(([k, s]) => [
+    `  /* ${k}: k=${s.stiffness} c=${s.damping} ζ=${s.zeta} · ${s.use} */`,
+    `  --mu-spring-${k}: ${s.css ?? springCurve(s.stiffness, s.damping, s.duration)};`,
+    `  --mu-spring-${k}-d: ${s.duration}s;`,
+    `  --mu-spring-${k}-half: ${s.half};`,
+    `  --mu-spring-${k}-near: ${s.near};`,
+  ].join('\n'))
   .join('\n');
 const caps = Object.entries(T.caps).map(([k, c]) => decl(c, `${k}-`)).join('\n');
 const motion = Object.entries(T.motion)
   .filter(([k]) => !k.startsWith('$'))
-  .flatMap(([group, entries]) => Object.entries(entries).map(([k, v]) => `  --mu-${group}-${k}: ${v.value}; /* ${v.use} */`))
+  .map(([k, v]) => `  --mu-motion-${k}: ${v.value}; /* ${v.use} */`)
   .join('\n');
 const swap = Object.entries(T.swap).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `  --mu-swap-${k}: ${v};`).join('\n');
 
@@ -103,9 +120,7 @@ ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
   --shadow-well: var(--mu-well);
-  --ease-spring-obj: var(--mu-spring-obj);
-  --ease-spring-ui: var(--mu-spring-ui);
-  --ease-spring-press: var(--mu-spring-press);
+${Object.keys(T.springs).map((k) => `  --ease-${k}: var(--mu-spring-${k});`).join('\n')}
 }
 
 /* Type roles */

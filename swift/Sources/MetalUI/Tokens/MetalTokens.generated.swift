@@ -220,14 +220,18 @@ public enum MetalCaps {
 }
 
 public enum MetalSprings {
-    /// objects: cards, fan-out, hover lift
-    public static let obj = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92)
-    /// flap tilt, drawers
-    public static let flap = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94)
-    /// controls: thumbs, toggles, ticks
-    public static let ui = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
-    /// press release
-    public static let press = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
-    /// footprint changes: a control growing or shrinking to new content
-    public static let morph = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
+    /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
+    public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
+    /// objects: cards lifting and landing on the table
+    public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92)
+    /// anything on a hinge: flaps, lids, drawers that tilt
+    public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94)
+    /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
+    public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5)
+    /// arrivals and footprints: content coming into place, a control growing to new content
+    public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
+    /// departures and letting go: content leaving, a pressed cap returning
+    public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
+    /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
+    public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
 }

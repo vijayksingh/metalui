@@ -6,18 +6,18 @@ import { tokens } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 
 /* ─────────────────────────────────────────────────────────
- * TRANSITIONS GUIDE
+ * TRANSITIONS: how Soft Hardware changes state
  *
- * Live recipes (replay any of them; slow motion in the dial panel):
- *   T1  text swap        SwapText       overlap: out 150 in-out, in 250 out
- *   T2  icon swap        SwapIcon       through scale 0.25 + blur 2, 250
- *   T3  footprint        SwapText       width on the morph spring
- *   T5  sliding select   SlidingIndicator  ui spring (short) / morph (long)
- * Slow motion multiplies every duration and spring on this page only.
+ * Live recipes (slow motion in the dial panel scales every spring on this page):
+ *   T1  the drum        SwapText + SwapIcon   face turns one step (4), focus 2; both faces
+ *                                            ride settle from the same frame: they sum to 1
+ *   T2  footprint       SwapText              width on settle; grows first, shrinks after settle-half
+ *   T3  selection glide SlidingIndicator      part spring in a track, settle when free
+ * Other recipes are patterns each component applies; their specimens live on Motion.
  * ───────────────────────────────────────────────────────── */
 
-const M = tokens.motion;
-const ms = (v: string) => parseFloat(v);
+const SP = tokens.springs;
+const sec = (v: string) => parseFloat(v) / 1000;
 
 const LABELS = [
   { key: 'save', label: 'Save', icon: <NoteIcon size={14} /> },
@@ -53,18 +53,16 @@ function Segmented({ value, onChange }: { value: number; onChange: (i: number) =
 }
 
 const RECIPES: React.ReactNode[][] = [
-  ['T1 · Text swap', 'A label or short text changes in place', 'Overlapping crossfade. Out: quick 150, in-out, 4 up, blur 2. In: fast 250, out, from 4 below, blur 2. Never a blank frame.', 'SwapText'],
-  ['T2 · Icon swap', 'Two icons share a slot', 'Both at once: out shrinks to 0.25, in grows from 0.25, blur 2, fast 250, in-out.', 'SwapIcon'],
-  ['T3 · Footprint', 'A control grows or shrinks to new content', 'Morph spring (k380 c36, no overshoot). Growing: the surface moves first. Shrinking: waits micro 80 so the old content has left.', 'SwapText'],
-  ['T4 · Number change', 'A count or value updates', 'Digits roll 4 in the direction of change with blur 2, fast 250; tabular figures so nothing shifts.', 'Pattern'],
-  ['T5 · Selection glide', 'One of a set becomes selected', 'The thumb glides to the new item. Short hops: ui spring. Long travel (lists, navigation): morph spring. Never animate on first paint.', 'SlidingIndicator'],
-  ['T6 · Open from trigger', 'Menu, popover, select, tooltip', 'Scale from 0.97 (tooltip 0.98) + opacity, origin at the trigger (Base UI --transform-origin). In fast 250, out quick 150 to 0.99.', 'Pattern'],
-  ['T7 · Modal', 'A dialog over the page', 'Scale from 0.96 + opacity, centered origin. In fast 250, out quick 150. Backdrop fades on the same clock.', 'Pattern'],
-  ['T8 · Panel', 'A drawer or panel slides into a region', 'Travel from its edge, in slow 400 on ease-out, out medium 350. The content is already in place; nothing trickles in after.', 'Pattern'],
-  ['T9 · Content swap', 'A panel changes view (tabs, steps)', 'Overlapping crossfade with 8 of travel toward the new view and blur 3; the container height springs on morph.', 'Pattern'],
-  ['T10 · Enter and leave', 'Toasts, badges, rows appearing', 'Rise 8 from below with opacity and blur 2 in fast 250; leave in quick 150 the same way they came. Never from scale 0.', 'Pattern'],
-  ['T11 · Press', 'Any cap is pressed', 'Down 1 point in 50ms linear, the shadow collapses; release on the press spring. Kept under reduced motion.', 'Button'],
-  ['T12 · Refusal', 'Invalid input, wrong code', 'Horizontal shake: 6 px segments, micro 80 each, 3 cycles. Once; never on a loop.', 'Pattern'],
+  ['T1 · The drum', 'A control’s face changes: label, icon, digits', 'The face turns one step (4) and defocuses half of it (2). The drum is one object: both faces ride the settle spring from the same frame, so what leaves and what arrives always add up to one whole face. Icons and digits ride the same drum as the label.', 'SwapText · SwapIcon'],
+  ['T2 · Footprint', 'A control grows or shrinks to new content', 'Width on settle. Growing: the surface makes room as the drum turns. Shrinking: waits until the old face is half turned away (settle half, 83ms).', 'SwapText'],
+  ['T3 · Selection glide', 'One of a set becomes selected', 'The selection is a part that travels. In a track with ends: part spring, may overshoot against the stop. Free travel (lists, navigation): settle. Placed without motion on first paint.', 'SlidingIndicator'],
+  ['T4 · Press', 'A cap is pressed', 'Down the cap’s depth (1) in 50ms linear; the shadow collapses into a well. Back on release. Kept under reduced motion.', 'Button'],
+  ['T5 · Lift', 'An object is hovered or picked up', 'Rises one step (4) on the object spring; the ambient shadow grows with it. Lands with a small overshoot: the table is its stop.', 'Pattern'],
+  ['T6 · Rise', 'A menu, popover, palette or tooltip opens', 'Rises one nest (6) from its trigger, from one nest smaller than itself, on the surface spring; its shadow grows from the trigger’s contact to the floating ambient. Closes on release, back the way it came.', 'Pattern'],
+  ['T7 · Panel', 'A drawer or panel enters a region', 'Travels its own extent from its edge on the surface spring, content already inside. Leaves on release the same way.', 'Pattern'],
+  ['T8 · View change', 'A panel changes view (tabs, steps)', 'Two steps (8) toward the new view, focus 4, overlapping like the drum; the container height settles.', 'Pattern'],
+  ['T9 · Arrive and leave', 'Rows, toasts, badges', 'Rise one nest from below on settle; leave on release the way they came. Several items: each starts as the one before is half gone (release half).', 'Pattern'],
+  ['T10 · Refusal', 'Invalid input, a wrong code', 'Released one nest aside on the refusal spring (k900 c12): it rings against the nest walls about three times and dies out. Once, never a loop.', 'Pattern'],
 ];
 
 export default function Transitions() {
@@ -76,13 +74,10 @@ export default function Transitions() {
     {
       slowMotion: [1, 1, 8, 0.5],
       replay: { type: 'action', label: 'Step every demo' },
-      swap: {
+      drum: {
         _collapsed: true,
-        out: [150, 40, 400, 10],
-        in: [250, 60, 600, 10],
-        travel: [4, 0, 16, 1],
-        blur: [2, 0, 8, 0.5],
-        iconScale: [0.25, 0, 1, 0.05],
+        turn: [4, 0, 16, 1],
+        focus: [2, 0, 8, 0.5],
       },
     },
     {
@@ -95,18 +90,16 @@ export default function Transitions() {
     },
   );
 
-  // Slow motion scales every clock on this page; the swap dials tune the recipe itself.
+  // Slow motion stretches every spring on this page; the curves stay the same shape.
   const k = d.slowMotion;
   const vars = {
-    '--mu-swap-out': `${d.swap.out * k}ms`,
-    '--mu-swap-in': `${d.swap.in * k}ms`,
-    '--mu-swap-icon': `${ms(M.duration.fast.value) * k}ms`,
-    '--mu-swap-shrink-delay': `${ms(M.duration.micro.value) * k}ms`,
-    '--mu-swap-travel': `${d.swap.travel}px`,
-    '--mu-swap-blur': `${d.swap.blur}px`,
-    '--mu-swap-icon-scale': d.swap.iconScale,
-    '--mu-spring-morph-d': `${tokens.springs.morph.duration * k}s`,
-    '--mu-spring-ui-d': `${tokens.springs.ui.duration * k}s`,
+    '--mu-swap-spring': `${SP.settle.duration * k}s var(--mu-spring-settle)`,
+    '--mu-swap-shrink-delay': `${sec(SP.settle.half) * 1000 * k}ms`,
+    '--mu-swap-turn': `${d.drum.turn}px`,
+    '--mu-swap-focus': `${d.drum.focus}px`,
+    '--mu-spring-release-d': `${SP.release.duration * k}s`,
+    '--mu-spring-settle-d': `${SP.settle.duration * k}s`,
+    '--mu-spring-part-d': `${SP.part.duration * k}s`,
   } as React.CSSProperties;
 
   const label = LABELS[labelAt];
@@ -116,22 +109,11 @@ export default function Transitions() {
     <div style={vars}>
       <PageHeader
         title="Transitions"
-        lede="How things change state. Every change is continuous: a control keeps its identity while its content, size or selection moves to the new state. The recipes below are the only ways MetalUI moves between states, and every value comes from one motion scale."
+        lede="How Soft Hardware changes state. A control is an object, so it never snaps: its face turns, its footprint settles, its selection travels, surfaces rise from what opened them. Each recipe names its mass class and its distance on the grid; the timing follows from the physics on the Motion page."
       />
 
-      <Section title="Before anything moves" lede="Answer these in order. Most motion decisions are made here, before a duration is chosen.">
-        <Rules
-          rules={[
-            { id: 'Q1', title: 'How often is it seen?', body: 'A hundred times a day (keyboard shortcuts, list arrowing, the command palette toggle): no animation. Tens of times (hover, selection): short and quiet. Occasionally (menus, dialogs, toasts): the standard recipes. Rarely (first run, success): room for delight.' },
-            { id: 'Q2', title: 'What does it explain?', body: 'Where something came from, that input was heard, what changed, or that nothing jumped. If the answer is “it looks nice”, it does not move.' },
-            { id: 'Q3', title: 'What is the physics?', body: 'Entering: ease-out. Already on screen and moving: ease-in-out. Objects, thumbs and footprints: springs. Constant motion only: linear. Never ease-in.' },
-            { id: 'Q4', title: 'What remains under reduced motion?', body: 'Meaning stays, movement goes: crossfades and color changes remain, travel, scale, blur and overshoot are removed. Press travel stays, because it is feedback.' },
-          ]}
-        />
-      </Section>
-
-      <Section title="T1–T3 · Text, icon and footprint" lede="The label crossfades with a small drift and blur, so the two states read as one change; the icon crosses through a small scale; the button's width springs to the new label. Press the button, or step every demo from the dial panel. Turn up slow motion to see the overlap.">
-        <Bench caption={`out ${Math.round(d.swap.out * k)}ms · in ${Math.round(d.swap.in * k)}ms · travel ${d.swap.travel} · blur ${d.swap.blur} · morph ${(tokens.springs.morph.duration * k).toFixed(2)}s`}>
+      <Section title="T1–T2 · The drum and the footprint" lede="A control’s face sits on a drum. When it changes, the face turns one step: the old face turns up and out of focus while the new one turns up into focus. The drum is one object, so both ride one spring from the same frame and always add up to one whole face; the footprint settles to the new face. Press the button or the chip; turn up slow motion to watch the overlap.">
+        <Bench caption={`turn ${d.drum.turn} · focus ${d.drum.focus} · settle spring ${(SP.settle.duration * k).toFixed(2)}s · both faces sum to 1`}>
           <div className="flex flex-wrap items-center justify-center gap-24">
             <Button cap="primary" onClick={() => setLabelAt((i) => (i + 1) % LABELS.length)}>
               <SwapIcon swapKey={label.key}>{label.icon}</SwapIcon>
@@ -149,31 +131,23 @@ export default function Transitions() {
         </Bench>
       </Section>
 
-      <Section title="T5 · Selection glide" lede="The selection is an object that travels; it never teleports. Short hops use the ui spring and its slight overshoot, as on the object sheet. Long travel, such as this site's navigation, uses the morph spring so it never wobbles.">
-        <Bench caption={`Segmented · ui spring · ${(tokens.springs.ui.duration * k).toFixed(2)}s`}>
+      <Section title="T3 · Selection glide" lede="The selection is a part that travels; it never teleports. Riding a track with ends, like this segmented control, it may overshoot a little against the stop. Traveling freely, like this site’s navigation, it settles.">
+        <Bench caption={`segmented · part spring · ${(SP.part.duration * k).toFixed(2)}s`}>
           <Segmented value={layout} onChange={setLayout} />
         </Bench>
       </Section>
 
-      <Section title="Recipes" lede="Every state change in MetalUI uses one of these. Built recipes ship as primitives; patterns are applied by each component as it is built.">
+      <Section title="Recipes" lede="Every state change in MetalUI is one of these. Built recipes ship as primitives; the rest are applied by each component as it is built, and their specimens are on the Motion page.">
         <TokenTable head={['Recipe', 'When', 'Motion', 'Ships as']} rows={RECIPES} mono={[0]} />
       </Section>
 
-      <Section title="The motion scale" lede="Pick a value by what the motion is doing, not by the number. A 300ms modal close is still quick (150).">
-        <TokenTable
-          head={['Duration', 'Value', 'Used for']}
-          rows={Object.entries(M.duration).map(([name, t]) => [`--mu-duration-${name}`, t.value, t.use])}
-        />
-        <TokenTable
-          head={['Ease', 'Value', 'Used for']}
-          rows={Object.entries(M.ease).map(([name, t]) => [`--mu-ease-${name}`, t.value, t.use])}
-        />
-        <TokenTable
-          head={['Distance · scale · blur', 'Value', 'Used for']}
-          rows={[
-            ...Object.entries(M.distance).map(([name, t]) => [`--mu-distance-${name}`, t.value, t.use]),
-            ...Object.entries(M.scale).map(([name, t]) => [`--mu-scale-${name}`, t.value, t.use]),
-            ...Object.entries(M.blur).map(([name, t]) => [`--mu-blur-${name}`, t.value, t.use]),
+      <Section title="Choosing a recipe">
+        <Rules
+          rules={[
+            { id: 'C1', title: 'Did the face change, or the object?', body: 'Same control, new label, icon or number: the drum (T1), with the footprint (T2) if its size changes. A different object appearing: rise (T6), panel (T7) or arrive (T9).' },
+            { id: 'C2', title: 'Did something become selected?', body: 'One of a set: the selection glides (T3). Never recolor the old and new items in place without the travel.' },
+            { id: 'C3', title: 'Was it touched?', body: 'Pressed: the press (T4). Hovered and liftable: the lift (T5). Refused: the refusal (T10).' },
+            { id: 'C4', title: 'Is it done a hundred times a day?', body: 'Then no recipe: it changes instantly (Motion M6).' },
           ]}
         />
       </Section>
@@ -181,16 +155,25 @@ export default function Transitions() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'R1', title: 'Nothing snaps', body: 'A label, size, icon or selection never changes in one frame. If it changes, it uses a recipe.' },
-            { id: 'R2', title: 'Overlap, never a gap', body: 'The outgoing and incoming states cross; the slot is never empty. A light blur (2) blends the two into one perceived change.' },
-            { id: 'R3', title: 'Leaving is quicker and quieter than arriving', body: 'Exits run quick (150) on ease-in-out; entries run fast (250) on ease-out. The user has already moved on.' },
-            { id: 'R4', title: 'Surfaces make room before content arrives', body: 'When something grows, the surface moves first. When it shrinks, the content leaves first. Words never spill outside their surface.' },
-            { id: 'R5', title: 'Nothing appears from nothing', body: 'Surfaces enter from 0.96–0.98 scale, not 0. The icon swap is the one exception: from 0.25, always with blur, inside a fixed slot.' },
-            { id: 'R6', title: 'Origin is where it came from', body: 'Menus and popovers grow from their trigger; modals from the center. A thing leaves the way it came.' },
-            { id: 'R7', title: 'Interruptible by construction', body: 'State changes use transitions and springs, which start from where the object is. Keyframes are for one-shot gestures only, like an icon’s press.' },
-            { id: 'R8', title: 'Composite first', body: 'Animate transform, opacity and filter. The one exception is a small control’s footprint, which springs its width because scaling would distort its material.' },
-            { id: 'R9', title: 'One entrance per container', body: 'A panel arrives with its content already in place. No trickling children after the surface lands.' },
-            { id: 'R10', title: 'Bounce shrinks as distance grows', body: 'Small, short moves may overshoot a little (ui spring); long travel and resizing do not (morph spring).' },
+            { id: 'R1', title: 'Nothing snaps', body: 'A label, size, icon, selection or surface never changes in one frame. If it changes, it uses a recipe.', origin: 'Ours · principle P7' },
+            { id: 'R2', title: 'The window is never empty', body: 'Outgoing and incoming overlap; defocus blends them into one change. In the drum both faces ride one spring from the same frame, so their visibility sums to exactly one at every instant. A gap between leaving and arriving reads as a blink.', origin: 'Ours · the drum; crossfade-with-blur adapted from Animations on the Web' },
+            { id: 'R3', title: 'Things that leave ride release', body: 'A row, toast or closing surface leaves on the release spring, which is stiffer than settle, so departures are quicker by construction: half gone in 71ms while arrivals are half in at 83ms. A drum is the exception: it is one object, so both faces turn on one spring.', origin: 'Ours · derived from the springs' },
+            { id: 'R4', title: 'The surface makes room first', body: 'Growing: the footprint moves before the face lands. Shrinking: the old face leaves before the footprint closes. Words never spill outside their object.', origin: 'Adapted · beUI (layout continuity)' },
+            { id: 'R5', title: 'Nothing comes from nothing', body: 'A surface rises from one nest smaller than itself, one nest from its trigger, never from zero size or from thin air. It leaves the way it came.', origin: 'Ours · distances from the grid; principle from Animations on the Web' },
+            { id: 'R6', title: 'The light never moves', body: 'Every recipe that changes elevation changes the shadow with it: rise grows contact into ambient, press collapses into a well, lift grows the ambient.', origin: 'Ours' },
+            { id: 'R7', title: 'Composite first', body: 'Animate transform, opacity and filter. The one exception is a small control’s footprint, whose width settles because scaling would distort its material.', origin: 'Ours · exception; rule from Animations on the Web' },
+            { id: 'R8', title: 'One entrance per object', body: 'A panel or surface arrives with its content already in place; nothing trickles in after it lands.', origin: 'Adapted · Animations on the Web' },
+          ]}
+        />
+      </Section>
+
+      <Section title="Where this comes from" lede="MetalUI’s motion is its own, derived from the Soft Hardware object sheet. These references shaped how it is organised and are credited where a rule is adapted from them.">
+        <Rules
+          rules={[
+            { id: 'Ours', title: 'What is Soft Hardware’s', body: 'Mass classes and their springs (from the object sheet), fades riding springs, bounce needing a stop, the light staying put, distances derived from the grid and the nest, the drum, and the rise from a trigger with its shadow growing.' },
+            { id: 'Ref 1', title: 'transitions.dev, by Jakub Antalik', body: 'The idea of a small, closed set of named state-change recipes that agents can apply by name.' },
+            { id: 'Ref 2', title: 'beUI motion guide', body: 'Layout continuity: the surface changes first, the content follows.' },
+            { id: 'Ref 3', title: 'Animations on the Web, by Emil Kowalski', body: 'Frequency, crossfades blended with blur, origin-aware motion, interruptibility and reduced motion that keeps meaning.' },
           ]}
         />
       </Section>

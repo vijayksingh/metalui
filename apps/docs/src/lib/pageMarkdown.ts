@@ -33,8 +33,8 @@ function rules(el: Element) {
   for (let i = 0; i < kids.length; i += 2) {
     const [dt, dd] = [kids[i], kids[i + 1]];
     if (!dd) break;
-    const [title, body] = [...dd.children];
-    out.push(`- **${inner(dt)} · ${title ? inner(title) : ''}**${body ? `: ${inner(body)}` : ''}`);
+    const [title, body, origin] = [...dd.children];
+    out.push(`- **${inner(dt)} · ${title ? inner(title) : ''}**${body ? `: ${inner(body)}` : ''}${origin ? ` _(${inner(origin)})_` : ''}`);
   }
   return out.join('\n');
 }

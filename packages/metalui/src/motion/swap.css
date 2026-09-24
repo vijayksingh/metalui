@@ -1,6 +1,8 @@
 @import "../components/tokens.css";
 
-/* Content swap (Transitions T1, T2, T3): an overlapping crossfade, never a gap. */
+/* The drum (Transitions T1, T2): a control's face turns one grid step.
+   The drum is one object, so both faces ride one spring from the same frame:
+   what leaves and what arrives always sum to a whole face. Defocus is half the turn. */
 
 .mu-swap-text,
 .mu-swap-icon {
@@ -11,15 +13,15 @@
   position: relative;
   justify-items: start;
   white-space: nowrap;
-  /* The footprint springs to the incoming label. */
-  transition: width var(--mu-spring-morph-d) var(--mu-spring-morph);
+  /* The footprint settles to the incoming face. */
+  transition: width var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
 .mu-swap-icon {
   flex: none;
   place-items: center;
 }
 
-/* Every layer shares one cell, so outgoing and incoming overlap. */
+/* Every layer shares one cell: the drum has one window. */
 .mu-swap-layer {
   grid-area: 1 / 1;
   display: inline-flex;
@@ -27,45 +29,22 @@
   filter: blur(0);
   transform: none;
   transition:
-    opacity var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay),
-    filter var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay),
-    transform var(--mu-swap-in) var(--mu-ease-out) var(--mu-swap-in-delay);
+    opacity var(--mu-swap-spring),
+    filter var(--mu-swap-spring),
+    transform var(--mu-swap-spring);
 }
-
-/* Text: in from 4 below, out 4 up; the old leaves quicker than the new arrives. */
-.mu-swap-text > .mu-swap-layer[data-state="enter"] {
+/* Incoming waits one step below the window, out of focus. */
+.mu-swap-layer[data-state="enter"] {
   opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: translateY(var(--mu-swap-travel));
+  filter: blur(var(--mu-swap-focus));
+  transform: translateY(var(--mu-swap-turn));
   transition: none;
 }
-.mu-swap-text > .mu-swap-layer[data-state="out"] {
+/* Outgoing turns up out of the window and defocuses, on the same spring. */
+.mu-swap-layer[data-state="out"] {
   opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: translateY(calc(var(--mu-swap-travel) * -1));
-  transition:
-    opacity var(--mu-swap-out) var(--mu-ease-in-out),
-    filter var(--mu-swap-out) var(--mu-ease-in-out),
-    transform var(--mu-swap-out) var(--mu-ease-in-out);
-}
-
-/* Icons: through a small scale with blur, both at once. */
-.mu-swap-icon > .mu-swap-layer {
-  transition:
-    opacity var(--mu-swap-icon) var(--mu-ease-in-out),
-    filter var(--mu-swap-icon) var(--mu-ease-in-out),
-    transform var(--mu-swap-icon) var(--mu-ease-in-out);
-}
-.mu-swap-icon > .mu-swap-layer[data-state="enter"] {
-  opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: scale(var(--mu-swap-icon-scale));
-  transition: none;
-}
-.mu-swap-icon > .mu-swap-layer[data-state="out"] {
-  opacity: 0;
-  filter: blur(var(--mu-swap-blur));
-  transform: scale(var(--mu-swap-icon-scale));
+  filter: blur(var(--mu-swap-focus));
+  transform: translateY(calc(var(--mu-swap-turn) * -1));
 }
 
 .mu-swap-text-measure {
@@ -77,7 +56,7 @@
   white-space: nowrap;
 }
 
-/* Reduced motion keeps meaning and removes movement: a plain crossfade. */
+/* Reduced motion keeps the change and removes the travel: a plain crossfade. */
 @media (prefers-reduced-motion: reduce) {
   .mu-swap-text { transition: none; }
   .mu-swap-layer,
@@ -85,5 +64,5 @@
     transform: none !important;
     filter: none !important;
   }
-  .mu-swap-layer { transition: opacity var(--mu-duration-quick) linear !important; }
+  .mu-swap-layer { transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle) !important; }
 }

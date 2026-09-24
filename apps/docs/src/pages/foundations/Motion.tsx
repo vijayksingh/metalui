@@ -1,161 +1,222 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { motion, useReducedMotion } from 'motion/react';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
-import { Bench, PageHeader, Rules, Section, copyJSON } from '../../ui/doc';
+import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 
 /* ─────────────────────────────────────────────────────────
- * MOTION STORYBOARD
+ * METAL MOTION: objects with mass, under one light
  *
- * Play toggles every specimen between rest and active:
- *   obj    card lifts 3pt on hover, falls back       (k120 c13)
- *   flap   folder flap tilts −15° → −45°             (k120 c14)
- *   ui     switch thumb slides 16pt                  (k170 c16)
- *   press  cap lands in 50ms linear, releases spring (k500 c40)
- *   morph  footprint springs to new content          (k380 c36)
+ * Every specimen rides its mass class's spring (CSS: the sampled linear()).
+ *   part     switch thumb hits the end of its track      k170 c16  overshoot ~9%
+ *   object   card lifts one step (4) and lands            k120 c13  overshoot ~10%
+ *   hinge    flap tilts −15° → −45°                       k120 c14
+ *   surface  a plate rises one nest from its cap          k220 c28  no overshoot
+ *   release  a pressed cap returns                        k500 c40
+ *   refusal  a field released one nest aside rings out    k900 c12
+ * Shadows change with elevation as part of each motion; the light never moves.
  * ───────────────────────────────────────────────────────── */
 
-type SpringKey = 'obj' | 'flap' | 'ui' | 'press';
+type SpringName = keyof typeof tokens.springs;
 const S = tokens.springs;
-const physics = (k: SpringKey) => ({ type: 'spring' as const, stiffness: S[k].stiffness, damping: S[k].damping, mass: 1 });
+const physics = (k: SpringName) => ({ type: 'spring' as const, stiffness: S[k].stiffness, damping: S[k].damping, mass: 1 });
 
 function overshoot(zeta: number) {
   return zeta >= 1 ? 0 : Math.exp((-zeta * Math.PI) / Math.sqrt(1 - zeta * zeta));
 }
 
-/** DialKit hands back a transition config; springs carry stiffness, damping and mass. */
-function springSummary(k: SpringKey, config: object) {
-  const spring = config as { stiffness?: number; damping?: number; mass?: number };
-  const stiffness = spring.stiffness ?? S[k].stiffness;
-  const damping = spring.damping ?? S[k].damping;
-  const mass = spring.mass ?? 1;
-  const z = dampingRatio(stiffness, damping, mass);
-  return `k${Math.round(stiffness)} c${Math.round(damping)} · ζ ${z.toFixed(2)} · ${Math.round(settleTime(stiffness, damping, mass) * 1000)}ms · ${(overshoot(z) * 100).toFixed(1)}% overshoot`;
+/** A spring sampled as CSS linear() over its settle time, from live dial values. */
+function curve(k: number, c: number, duration: number, n = 40) {
+  const w0 = Math.sqrt(k), z = c / (2 * Math.sqrt(k)), wd = w0 * Math.sqrt(Math.max(1 - z * z, 1e-6));
+  const pts: number[] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = (i / n) * duration;
+    pts.push(i === n ? 1 : +(1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t))).toFixed(4));
+  }
+  return `linear(${pts.join(',')})`;
 }
 
-function SpringReadout({ k, spring: config }: { k: SpringKey; spring: object }) {
-  const spring = config as { stiffness?: number; damping?: number; mass?: number };
-  const stiffness = spring.stiffness ?? S[k].stiffness;
-  const damping = spring.damping ?? S[k].damping;
-  const mass = spring.mass ?? 1;
-  const z = dampingRatio(stiffness, damping, mass);
-  return (
-    <span className="type-readout text-ink2">
-      k{Math.round(stiffness)} c{Math.round(damping)} · ζ {z.toFixed(2)} · {Math.round(settleTime(stiffness, damping, mass) * 1000)}ms · {(overshoot(z) * 100).toFixed(1)}%
-      <span className="sr-only"> for {k}</span>
-    </span>
-  );
+const read = (config: object) => {
+  const s = config as { stiffness?: number; damping?: number };
+  return { k: s.stiffness ?? 200, c: s.damping ?? 20 };
+};
+
+function summary(config: object) {
+  const { k, c } = read(config);
+  const z = dampingRatio(k, c);
+  return `k${Math.round(k)} c${Math.round(c)} · ζ ${z.toFixed(2)} · settles ${Math.round(settleTime(k, c) * 1000)}ms · ${(overshoot(z) * 100).toFixed(1)}% overshoot`;
+}
+
+/** A transition string that rides a live spring config. */
+function ride(config: object, props: string[]) {
+  const { k, c } = read(config);
+  const d = settleTime(k, c);
+  const ease = curve(k, c, d);
+  return props.map((p) => `${p} ${d.toFixed(3)}s ${ease}`).join(', ');
 }
 
 export default function Motion() {
-  const reduce = useReducedMotion();
-  const [active, setActive] = React.useState(false);
+  const [on, setOn] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [pressed, setPressed] = React.useState(false);
+  const [lifted, setLifted] = React.useState(false);
+  const [refused, setRefused] = React.useState(0);
+  const field = React.useRef<HTMLDivElement>(null);
 
   const d = useDialKit(
     'Motion',
     {
-      obj: physics('obj'),
-      flap: physics('flap'),
-      ui: physics('ui'),
-      press: physics('press'),
-      liftY: [-3, -12, 0, 1],
+      part: physics('part'),
+      object: physics('object'),
+      hinge: physics('hinge'),
+      surface: physics('surface'),
+      release: physics('release'),
+      refusal: physics('refusal'),
       play: { type: 'action', label: 'Play all' },
-      copy: { type: 'action', label: 'Copy spring tokens' },
+      copy: { type: 'action', label: 'Copy springs' },
     },
     {
       onAction: (a) => {
-        if (a === 'play') setActive((v) => !v);
-        if (a === 'copy') copyJSON({ obj: d.obj, flap: d.flap, ui: d.ui, press: d.press });
+        if (a === 'play') { setOn((v) => !v); setOpen((v) => !v); setRefused((n) => n + 1); }
+        if (a === 'copy') copyJSON({ part: d.part, object: d.object, hinge: d.hinge, surface: d.surface, release: d.release, refusal: d.refusal });
       },
     },
   );
-  const t = (s: object) => (reduce ? { duration: 0 } : s);
+
+  // Replay the refusal from one nest aside.
+  React.useEffect(() => {
+    const el = field.current;
+    if (!el || refused === 0) return;
+    const { k, c } = read(d.refusal);
+    const dur = settleTime(k, c);
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = `mu-refuse ${dur.toFixed(3)}s ${curve(k, c, dur, 64)}`;
+  }, [refused]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const massRows = (Object.keys(S) as SpringName[]).map((name) => {
+    const s = S[name];
+    return [name, `k${s.stiffness} c${s.damping} · ζ ${s.zeta}`, `half ${s.half} · near ${s.near}`, s.use];
+  });
+  const lift = on || lifted;
 
   return (
     <>
+      <style>{'@keyframes mu-refuse { from { transform: translateX(var(--mu-motion-nest)); } to { transform: none; } }'}</style>
       <PageHeader
         title="Motion"
-        lede="Motion is short, damped and physical. Five springs cover everything; the CSS versions are the same springs sampled into linear() curves, and SwiftUI uses them as interpolating springs. Under reduced motion every transition is instant, but a press still moves 1 point, because that is feedback."
+        lede="Soft Hardware objects have mass and sit under one light, so their motion is physics, not a timing table. How heavy a thing is decides its spring; the springs decide how long everything takes; the grid decides how far anything moves; the light decides how shadows change on the way."
       />
 
-      <Section title="Springs" lede="Hover the card, press the cap, or use Play all in the dial panel. Tune stiffness and damping and the readouts update.">
+      <Section title="Mass classes" lede="Every moving thing belongs to a class, and each class has one spring. Half is when a motion is visibly underway; near is when it reads as done. There is no separate duration table: every timing comes from these.">
+        <TokenTable head={['Class', 'Spring', 'Timing', 'Moves']} rows={massRows} mono={[0, 1, 2]} />
+      </Section>
+
+      <Section title="Specimens" lede="Each specimen rides its own spring, live from the dial panel. Press, hover, or use Play all.">
         <div className="grid gap-16 md:grid-cols-2 [&>*]:min-w-0">
-          <Bench caption={`obj · objects, hover lift, card slides · ${springSummary('obj', d.obj)}`}>
-            <div className="flex flex-col items-center gap-20">
-              <motion.div
-                className="material-raised h-[96px] w-[200px] rounded-card"
-                animate={{ y: active ? d.liftY : 0 }}
-                whileHover={{ y: d.liftY }}
-                transition={t(d.obj)}
-              />
-              <SpringReadout k="obj" spring={d.obj} />
-            </div>
-          </Bench>
-
-          <Bench caption={`flap · flap tilt, drawers · ${springSummary('flap', d.flap)}`}>
-            <div className="flex flex-col items-center gap-20">
-              <div className="relative h-[96px] w-[200px] [perspective:800px]">
-                <div className="material-well absolute inset-x-0 bottom-0 h-[72px] rounded-card" />
-                <motion.div
-                  className="material-float absolute inset-x-0 bottom-0 h-[56px] origin-bottom rounded-card"
-                  animate={{ rotateX: active ? -45 : -15 }}
-                  whileHover={{ rotateX: -45 }}
-                  transition={t(d.flap)}
-                />
-              </div>
-              <SpringReadout k="flap" spring={d.flap} />
-            </div>
-          </Bench>
-
-          <Bench caption={`ui · thumbs, toggles, ticks · ${springSummary('ui', d.ui)}`}>
-            <div className="flex flex-col items-center gap-20">
-              <div className="material-raised flex h-44 w-[216px] items-center justify-between rounded-pill pl-21 pr-10">
+          <Bench caption={`part · a thumb meets the end of its track · ${summary(d.part)}`}>
+            <div className="material-raised flex h-44 w-[216px] items-center justify-between rounded-pill pl-21 pr-10">
               <span className="type-ui text-ink">Open at login</span>
               <button
                 type="button"
                 role="switch"
-                aria-checked={active}
+                aria-checked={on}
                 aria-label="Open at login"
-                onClick={() => setActive((v) => !v)}
+                onClick={() => setOn((v) => !v)}
                 className="relative h-24 w-40 cursor-pointer rounded-pill transition-[background] duration-200"
-                style={active ? { background: 'linear-gradient(#66CC99,#8BDFB5)', boxShadow: 'inset 0 2px 5px -1px rgba(0,70,35,.28), inset 0 0 6px 1px rgba(255,255,255,.25)' } : { background: 'linear-gradient(var(--mu-well-top),var(--mu-well-bot))', boxShadow: 'var(--mu-well)' }}
+                style={on ? { background: 'linear-gradient(#66CC99,#8BDFB5)', boxShadow: 'inset 0 2px 5px -1px rgba(0,70,35,.28), inset 0 0 6px 1px rgba(255,255,255,.25)' } : { background: 'linear-gradient(var(--mu-well-top),var(--mu-well-bot))', boxShadow: 'var(--mu-well)' }}
               >
-                <motion.span className="material-thumb absolute left-2 top-2 block size-20 rounded-pill" animate={{ x: active ? 16 : 0 }} transition={t(d.ui)} />
+                <span className="material-thumb absolute left-2 top-2 block size-20 rounded-pill" style={{ transform: `translateX(${on ? 16 : 0}px)`, transition: ride(d.part, ['transform']) }} />
               </button>
-              </div>
-              <SpringReadout k="ui" spring={d.ui} />
             </div>
           </Bench>
 
-          <Bench caption={`press · lands in 50ms, releases on a spring · ${springSummary('press', d.press)}`}>
-            <div className="flex flex-col items-center gap-20">
-              <motion.button
-                type="button"
-                onPointerDown={() => setPressed(true)}
-                onPointerUp={() => setPressed(false)}
-                onPointerLeave={() => setPressed(false)}
-                className={`type-ui h-32 cursor-pointer rounded-pill px-15 text-ink ${pressed ? 'material-pressed' : 'material-cap'}`}
-                animate={{ y: pressed ? 1 : 0 }}
-                transition={pressed ? { duration: 0.05, ease: 'linear' } : t(d.press)}
+          <Bench caption={`object · lifts one step and lands on the table · ${summary(d.object)}`}>
+            <div className="p-4" onPointerEnter={() => setLifted(true)} onPointerLeave={() => setLifted(false)}>
+              <div
+                className="material-raised h-[96px] w-[200px] rounded-card"
+                style={{ transform: `translateY(${lift ? -4 : 0}px)`, transition: ride(d.object, ['transform']) }}
+              />
+            </div>
+          </Bench>
+
+          <Bench caption={`hinge · a flap tilts on its hinge · ${summary(d.hinge)}`}>
+            <div className="relative h-[96px] w-[200px] [perspective:800px]">
+              <div className="material-well absolute inset-x-0 bottom-0 h-[72px] rounded-card" />
+              <div
+                className="material-float absolute inset-x-0 bottom-0 h-[56px] origin-bottom rounded-card"
+                style={{ transform: `rotateX(${on ? -45 : -15}deg)`, transition: ride(d.hinge, ['transform']) }}
+              />
+            </div>
+          </Bench>
+
+          <Bench caption={`surface · rises one nest from its cap; the light does not move · ${summary(d.surface)}`}>
+            <div className="relative flex h-[152px] w-[220px] flex-col items-center justify-end">
+              <div
+                aria-hidden={!open}
+                className="pointer-events-none absolute bottom-44 left-[10px] w-[200px] origin-bottom rounded-card"
+                style={{
+                  transform: `translateY(${open ? 0 : 6}px) scale(${open ? 1 : (200 - 6) / 200})`,
+                  opacity: open ? 1 : 0,
+                  transition: ride(d.surface, ['transform', 'opacity']),
+                }}
               >
-                Hold me
-              </motion.button>
-              <SpringReadout k="press" spring={d.press} />
+                {/* The shadow grows from the cap's contact to the floating ambient: two recipes crossfade. */}
+                <div className="material-cap absolute inset-0 rounded-card" style={{ opacity: open ? 0 : 1, transition: ride(d.surface, ['opacity']) }} />
+                <div className="material-float absolute inset-0 rounded-card" style={{ opacity: open ? 1 : 0, transition: ride(d.surface, ['opacity']) }} />
+                <div className="relative flex flex-col gap-2 p-6">
+                  {['Arrange as Timeline', 'Tag Selection', 'Export…'].map((row) => (
+                    <span key={row} className="type-ui flex h-28 items-center rounded-row px-8 text-ink">{row}</span>
+                  ))}
+                </div>
+              </div>
+              <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="material-cap type-ui h-32 cursor-pointer rounded-pill px-15 text-ink">
+                Actions
+              </button>
+            </div>
+          </Bench>
+
+          <Bench caption={`release · a pressed cap returns · ${summary(d.release)}`}>
+            <button
+              type="button"
+              onPointerDown={() => setPressed(true)}
+              onPointerUp={() => setPressed(false)}
+              onPointerLeave={() => setPressed(false)}
+              className={`type-ui h-32 cursor-pointer rounded-pill px-15 text-ink ${pressed ? 'material-pressed' : 'material-cap'}`}
+              style={{ transform: `translateY(${pressed ? 1 : 0}px)`, transition: pressed ? 'transform 50ms linear' : ride(d.release, ['transform']) }}
+            >
+              Hold me
+            </button>
+          </Bench>
+
+          <Bench caption={`refusal · released one nest aside, it rings against the walls · ${summary(d.refusal)}`}>
+            <div className="flex items-center gap-12">
+              <div ref={field} className="material-well type-readout flex h-36 w-[140px] items-center rounded-pill px-17 text-ink2">0 4 2 _</div>
+              <button type="button" onClick={() => setRefused((n) => n + 1)} className="material-cap type-ui h-32 cursor-pointer rounded-pill px-15 text-ink">Unlock</button>
             </div>
           </Bench>
         </div>
       </Section>
 
-      <Section title="Rules">
+      <Section title="Distances" lede="How far things move comes from the grid and the material, never from taste. Defocus is half the travel, like a lens pulling focus on what moved.">
+        <TokenTable
+          head={['Token', 'Value', 'What moves that far']}
+          rows={Object.entries(tokens.motion)
+            .filter(([k]) => !k.startsWith('$'))
+            .map(([k, v]) => [`--mu-motion-${k}`, (v as { value: string }).value, (v as { use: string }).use])}
+        />
+      </Section>
+
+      <Section title="Principles">
         <Rules
           rules={[
-            { id: 'M1', title: 'Objects may overshoot gently; chrome stays crisp', body: 'Object springs overshoot 7–10%. The press release is near-critical (ζ ≈ 0.9), so controls never wobble.' },
-            { id: 'M2', title: 'Press lands linear, releases on a spring', body: 'Pressing is a 50ms linear step down 1 point. Letting go uses the press spring, from wherever the cap currently is.' },
-            { id: 'M3', title: 'Hover is a pose, press is a one-shot', body: 'Hover moves parts into a state that reverses and can be interrupted. Press plays a keyframe gesture once and returns to the current pose.' },
-            { id: 'M4', title: 'Reduced motion keeps feedback', body: 'Transitions become instant and loops stop; the 1-point press travel stays. Content swaps keep a short opacity cross-fade.' },
-            { id: 'M5', title: 'State changes use the transition recipes', body: 'Springs move objects; the Transitions page defines how labels, icons, sizes and selections change state (text swap, icon swap, footprint, selection glide, open and close).' },
-            { id: 'M6', title: 'Frequent means fast', body: 'Something the user does a hundred times a day gets no choreography: press, hover, swap stay under 300ms. Longer motion is for rare moments and large spatial changes.' },
+            { id: 'M1', title: 'Mass decides the spring', body: 'A part (a thumb, a key) is light and quick; an object (a card) is heavier; a surface floats and settles without bounce. Pick the class, and the spring, timing and overshoot follow. There is no duration to choose.', origin: 'Ours' },
+            { id: 'M2', title: 'Fades ride springs', body: 'Opacity, focus and color that accompany a motion use the same spring as the motion, so everything lands together. Arrivals ride settle, departures ride release. No cubic-bezier tables; linear only for constant motion like progress.', origin: 'Ours' },
+            { id: 'M3', title: 'Bounce needs a stop', body: 'Only something that meets a physical stop may overshoot: a thumb at the end of its track, a card landing on the table, a flap at its hinge. Surfaces, footprints and free glides have nothing to bounce against, so they settle.', origin: 'Ours · sharpens “bounce by size” from Animations on the Web' },
+            { id: 'M4', title: 'Light stays put', body: 'Elevation changes are part of the motion. Lifting grows the ambient shadow, pressing collapses it into a well, and a surface rising from its cap grows from contact shadow to floating ambient. Highlights stay on the top-left edges.', origin: 'Ours' },
+            { id: 'M5', title: 'Distances come from the grid', body: 'A press is the cap’s depth (1). A swap turns one step (4). A surface rises one nest (6), and a refusal reaches one nest. A view changes by two steps (8). A panel travels its own extent. Defocus is half the travel.', origin: 'Ours' },
+            { id: 'M6', title: 'Frequency decides whether anything moves', body: 'What is done a hundred times a day (shortcuts, arrowing through a list, the palette toggle) does not animate. Motion is kept for what is seen occasionally.', origin: 'Adapted · Animations on the Web (Emil Kowalski)' },
+            { id: 'M7', title: 'Reduced motion keeps meaning', body: 'Travel, scale, focus and overshoot go; crossfades and color stay. A press still moves 1, because that is feedback, not decoration.', origin: 'Adapted · Animations on the Web, beUI' },
+            { id: 'M8', title: 'Interruptible by construction', body: 'State changes use transitions and springs, which continue from wherever the object is. Keyframes are only for one-shot gestures such as an icon’s press or a refusal.', origin: 'Adapted · Animations on the Web' },
           ]}
         />
       </Section>

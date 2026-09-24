@@ -12,7 +12,7 @@ final class MetalTokensTests: XCTestCase {
         XCTAssertEqual(MetalTokens.bone.btnSh[0], MetalShadow(inset: true, x: 0, y: 0, blur: 4, spread: 1, color: MetalRGBA(255, 255, 255, 0.9)))
         XCTAssertEqual(MetalTokens.graphite.pressedSh.filter(\.inset).count, 3)
         XCTAssertEqual(MetalCaps.destructive.pressedSh[1], MetalShadow(inset: false, x: 0, y: 0, blur: 0, spread: 0.5, color: MetalRGBA(110, 10, 0, 0.55)))
-        XCTAssertEqual(MetalSprings.press, MetalSpring(stiffness: 500, damping: 40, duration: 0.3))
+        XCTAssertEqual(MetalSprings.release, MetalSpring(stiffness: 500, damping: 40, duration: 0.3))
         XCTAssertEqual(MetalTokens.graphite.duoK, 1.3)
     }
 

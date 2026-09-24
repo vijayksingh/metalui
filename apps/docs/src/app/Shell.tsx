@@ -41,7 +41,7 @@ function ColorwaySwitch() {
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav aria-label="Documentation" className="relative flex flex-col gap-24">
-      <SlidingIndicator spring="morph" className="material-thumb rounded-row" />
+      <SlidingIndicator spring="settle" className="material-thumb rounded-row" />
       {NAV.map((group) => (
         <div key={group.label} className="flex flex-col gap-2">
           <div className="type-label engraved px-8 pb-6">{group.label}</div>

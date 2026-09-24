@@ -77,7 +77,7 @@ private struct MetalButtonBody: View {
             }
             .offset(y: isDown ? MetalButtonMetrics.pressTravel : 0)
             // Press travel is feedback and stays under Reduce Motion; the spring does not.
-            .animation(reduceMotion ? nil : MetalSprings.press.animation, value: isDown)
+            .animation(reduceMotion ? nil : MetalSprings.release.animation, value: isDown)
             .opacity(isEnabled ? 1 : MetalButtonMetrics.disabledOpacity)
     }
 

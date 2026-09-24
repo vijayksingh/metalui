@@ -18,8 +18,8 @@ const FOUNDATIONS = [
   { to: '/foundations/spacing', title: 'Spacing', body: 'A 4-point base with 2 and 6 for fine work, and named relationships for every gap.' },
   { to: '/foundations/sizing', title: 'Sizing', body: 'Seven control heights from 20 to 44; the icon size follows the height.' },
   { to: '/foundations/elevation', title: 'Elevation', body: 'Five levels, each a material: well, canvas, cap, raised, floating.' },
-  { to: '/foundations/motion', title: 'Motion', body: 'Five damped springs; press lands in 50ms and releases on a spring.' },
-  { to: '/foundations/transitions', title: 'Transitions', body: 'How state changes: twelve recipes, one motion scale, and the rule that nothing snaps.' },
+  { to: '/foundations/motion', title: 'Motion', body: 'Objects with mass under one light: seven springs by mass class, distances from the grid, shadows that change with elevation.' },
+  { to: '/foundations/transitions', title: 'Transitions', body: 'How state changes: ten recipes (the drum, footprint, glide, press, lift, rise, panel, view change, arrive, refusal) and the rule that nothing snaps.' },
 ];
 
 export default function Principles() {
