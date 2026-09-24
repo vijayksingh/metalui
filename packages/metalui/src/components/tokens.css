@@ -212,6 +212,16 @@
   --mu-engraving-tag-pad: 6px;
   --mu-engraving-tag-gap: 4px;
   --mu-engraving-led: 5px;
+  --mu-provenance-delay-ms: 380ms;
+  --mu-provenance-offset: 8px;
+  --mu-provenance-chip-offset: 34px;
+  --mu-provenance-radius: 11px;
+  --mu-provenance-pad-y: 6px;
+  --mu-provenance-pad-x: 10px;
+  --mu-provenance-max-width: 280px;
+  --mu-provenance-tracking: 0.05em;
+  --mu-provenance-ink: #E9E9EB;
+  --mu-provenance-dim: #8E8E93;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);

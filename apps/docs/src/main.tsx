@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'foundations/motion', lazy: lazy(() => import('./pages/foundations/Motion')) },
       { path: 'foundations/transitions', lazy: lazy(() => import('./pages/foundations/Transitions')) },
       { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },
+      { path: 'components/provenance-tooltip', lazy: lazy(() => import('./pages/components/ProvenanceTooltip')) },
       { path: 'components/hover-engraving', lazy: lazy(() => import('./pages/components/HoverEngraving')) },
       { path: 'components/suggestion-chip', lazy: lazy(() => import('./pages/components/SuggestionChip')) },
       { path: 'components/cue', lazy: lazy(() => import('./pages/components/CueFamily')) },

@@ -646,3 +646,18 @@ public enum MetalEngraving {
     public static let tagGap: Double = 4.0
     public static let led: Double = 5.0
 }
+
+/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, JEV · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the medium demo's #tip.
+public enum MetalProvenance {
+    public static let delayMs: Double = 380.0
+    public static let offset: Double = 8.0
+    public static let chipOffset: Double = 34.0
+    public static let radius: Double = 11.0
+    public static let padY: Double = 6.0
+    public static let padX: Double = 10.0
+    public static let maxWidth: Double = 280.0
+    /// In em.
+    public static let tracking: Double = 0.05
+    public static let ink: MetalRGBA = MetalRGBA(233, 233, 235, 1.0)
+    public static let dim: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
+}

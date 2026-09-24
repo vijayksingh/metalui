@@ -56,6 +56,24 @@
       "sheet": "Kamui 03 §5, DS-31"
     },
     {
+      "name": "provenance-tooltip",
+      "title": "Provenance tooltip",
+      "status": "alpha",
+      "description": "One hover away from every cue: a graphite tooltip on Base UI Tooltip that says where the cue came from (RULE · DATE PARSER, JEV · 0.82, YOU), with the number whenever the app guessed.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ProvenanceTooltip, ProvenanceProvider",
+        "base": "@base-ui/react/tooltip"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalProvenanceTooltip, .metalProvenance(_:detail:)"
+      },
+      "registry": "https://metalui.dev/r/provenance-tooltip.json",
+      "agent": "https://metalui.dev/r/provenance-tooltip.md",
+      "sheet": "Kamui 03 §5"
+    },
+    {
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",

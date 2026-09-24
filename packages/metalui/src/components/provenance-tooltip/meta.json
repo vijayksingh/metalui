@@ -1,0 +1,11 @@
+{
+  "name": "provenance-tooltip",
+  "title": "Provenance tooltip",
+  "status": "alpha",
+  "description": "One hover away from every cue: a graphite tooltip on Base UI Tooltip that says where the cue came from (RULE · DATE PARSER, JEV · 0.82, YOU), with the number whenever the app guessed.",
+  "sheet": "Kamui 03 §5",
+  "base": "@base-ui/react/tooltip",
+  "react": { "export": "ProvenanceTooltip, ProvenanceProvider", "files": ["provenance-tooltip.tsx", "provenance-tooltip.css"] },
+  "swift": { "symbol": "MetalProvenanceTooltip, .metalProvenance(_:detail:)", "file": "swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift" },
+  "agent": "provenance-tooltip.agent.md"
+}

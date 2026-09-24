@@ -1,0 +1,25 @@
+@import "../tokens.css";
+
+/* Provenance tooltip (Kamui 03 §5, the medium demo's #tip) on Base UI Tooltip. */
+.mu-provenance {
+  max-width: var(--mu-provenance-max-width);
+  padding: var(--mu-provenance-pad-y) var(--mu-provenance-pad-x);
+  border-radius: var(--mu-provenance-radius);
+  text-transform: uppercase;
+  letter-spacing: var(--mu-provenance-tracking);
+  color: var(--mu-provenance-ink);
+  background: var(--mu-frost-graphite-fill);
+  box-shadow: var(--mu-frost-graphite-shadow);
+  -webkit-backdrop-filter: var(--mu-backdrop);
+  backdrop-filter: var(--mu-backdrop);
+  transform-origin: var(--transform-origin);
+  /* A fade, on settle: it is information, not an arrival. */
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-provenance[data-starting-style],
+.mu-provenance[data-ending-style] { opacity: 0; }
+.mu-provenance[data-instant] { transition: none; }
+.mu-provenance-dim { color: var(--mu-provenance-dim); }
+@media (prefers-reduced-transparency: reduce) {
+  .mu-provenance { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

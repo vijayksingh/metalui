@@ -179,4 +179,18 @@ final class MetalCaptures: XCTestCase {
             capture("hover-engraving-\(colorway.rawValue)", view)
         }
     }
+
+    func testProvenanceTooltip() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 16) {
+                MetalProvenanceTooltip(source: "Rule", detail: ["Date parser"])
+                MetalProvenanceTooltip(source: "Jev", detail: ["0.82"])
+                MetalProvenanceTooltip(source: "You")
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("provenance-tooltip-\(colorway.rawValue)", view)
+        }
+    }
 }
