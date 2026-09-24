@@ -6,6 +6,13 @@
 - **Missing:** `MetalIconName.lens` and its `mu.lens` / `mu.lens.16` assets. Mac client still carries `LensGlyphTwin` until the reference icon is authored in MetalUI's icon source and generated for Swift.
 - **Demo source:** `app.js:44` draws a 20 by 20 view box, outer circle centered at 10 with radius 6, inner circle radius 2.2, round caps and a 1.55 stroke. `style.css:420` displays it at 14 by 14 in `--ink2` on the lens bar. Keep the 16 point cut legible at that size.
 
+## Selection frame recipe and native caret timing
+
+- **Object:** `MetalSelectionFrame` with a generated `selectionFrame` recipe for selected, lite, hover and writing states. `MetalSizeReadout` needs its own layered recipe or an explicit reference to the selection readout recipe.
+- **Missing:** `check:recipes` reports both Swift components without matching component recipes. The existing `presence` tokens provide measurements and colors, but do not declare the ring/collar/readout layer order, handle variants, or the part-spring entrance. The native client temporarily draws the frame from those tokens in an AppKit overlay; the Swift component cannot yet replace that overlay with recipe parity.
+- **Demo source:** reference demo `style.css:349-364` defines the full ring and pale collar, `lite` ring, handle and grip shapes, writing readout opacity, and graphite readout. Reference demo `app.js:828-868` reuses the ring elements, suppresses a bare-caret ring, and selects lite for multiple blocks.
+- **Token request:** native writing needs the 1.1 second step caret blink named in the Mac scope `SCOPE.md:355` and reference demo `README.md:214`; the browser uses its native caret at reference demo `style.css:150`. Add a generated timing token for Swift rather than a local UI duration literal.
+
 ## Composition refactor (docs/COMPOSITION.md)
 
 Primitives and blocks the React side now has. Mirror each with the same name (Metal prefix), slots and recipe; the recipe parity check lists what is still missing.
