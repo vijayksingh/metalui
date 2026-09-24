@@ -514,9 +514,9 @@ public enum MetalTint: String, CaseIterable, Sendable {
 }
 
 /// Object recipes (tokens.json `recipes`): every layer of each object's look, per part and state,
-/// from the medium demo's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).
+/// from the reference design's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).
 public enum MetalRecipes {
-    /// A colour swatch chip: a hard, glossy body in its own colour, a sheen, an engraved hex, a recessed LED dimple. (prototypes/medium/style.css .swatchobj)
+    /// A colour swatch chip: a hard, glossy body in its own colour, a sheen, an engraved hex, a recessed LED dimple. (reference style.css .swatchobj)
     public static let swatch = MetalObjectRecipe(
         name: "swatch",
         layers: [
@@ -545,7 +545,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (prototypes/medium/style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing)
+    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing)
     public static let dimple = MetalObjectRecipe(
         name: "dimple",
         layers: [
@@ -597,7 +597,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A region: a sunk well with an engraved head (name, rule, count); over: a green drop-target; a pinned lens: a frosted plate. (prototypes/medium/style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr)
+    /// A region: a sunk well with an engraved head (name, rule, count); over: a green drop-target; a pinned lens: a frosted plate. (reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr)
     public static let region = MetalObjectRecipe(
         name: "region",
         layers: [
@@ -638,7 +638,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A suggestion chip beside its block: a small frosted pill with a green hairline, the question, its confidence, accept and dismiss. (prototypes/medium/style.css .suggs, .sugg, .sugg .eng, .sugg button)
+    /// A suggestion chip beside its block: a small frosted pill with a green hairline, the question, its confidence, accept and dismiss. (reference style.css .suggs, .sugg, .sugg .eng, .sugg button)
     public static let suggestionChip = MetalObjectRecipe(
         name: "suggestion-chip",
         layers: [
@@ -676,7 +676,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The medium's graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (prototypes/medium/style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
+    /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
         layers: [
@@ -850,7 +850,7 @@ public enum MetalPresence {
     public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
 }
 
-/// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are Kamui's medium demo (prototypes/medium style.css); colorway-dependent ones live in the colorways as cue-*.
+/// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are Kamui's reference design (prototypes/medium style.css); colorway-dependent ones live in the colorways as cue-*.
 public enum MetalCue {
     public static let gutter: Double = 25.0
     public static let dimple: Double = 16.0
@@ -920,7 +920,7 @@ public enum MetalCue {
     public static let lifeMs: Double = 120.0
 }
 
-/// A suggestion chip: one question the recognizer asks at middle confidence (Kamui DS-30), at most one per block and only for cues that change behaviour (task, measurement, date, region). Faint until its block is hovered; hidden while writing; accepting finishes the block first. Values are the medium demo's .sugg.
+/// A suggestion chip: one question the recognizer asks at middle confidence (DS-30), at most one per block and only for cues that change behaviour (task, measurement, date, region). Faint until its block is hovered; hidden while writing; accepting finishes the block first. Values are the reference design's .sugg.
 public enum MetalSuggestion {
     public static let height: Double = 20.0
     public static let padStart: Double = 9.0
@@ -936,7 +936,7 @@ public enum MetalSuggestion {
     public static let offsetY: Double = 10.0
 }
 
-/// The hover engraving: a block's identity, shown on a dwell, never on a pass. A frosted pill beside the first line of a text block (below a material one) in the label role, engraved: kind · time · edits · other life events · derived tags · the recognizer's status, with an LED. Hidden while selected or writing. Values are the medium demo's .meta.
+/// The hover engraving: a block's identity, shown on a dwell, never on a pass. A frosted pill beside the first line of a text block (below a material one) in the label role, engraved: kind · time · edits · other life events · derived tags · the recognizer's status, with an LED. Hidden while selected or writing. Values are the reference design's .meta.
 public enum MetalEngraving {
     public static let height: Double = 22.0
     public static let pad: Double = 10.0
@@ -954,7 +954,7 @@ public enum MetalEngraving {
     public static let led: Double = 5.0
 }
 
-/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, JEV · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the medium demo's #tip.
+/// Provenance: one hover away from every cue, a graphite tooltip says where it came from (RULE · DATE PARSER, JEV · 0.82, REGION · DONE, CLUSTER · POSTER, FORMULA, YOU). If the app guessed, the number is shown: hidden confidence is a bug. It sits above the cue, clear of the cue's own value chip, and flips below near the top edge. Set in the readout role, not the label role, because it carries information on its own (DS-06). Values are the reference design's #tip.
 public enum MetalProvenance {
     public static let delayMs: Double = 380.0
     public static let offset: Double = 8.0
@@ -969,7 +969,7 @@ public enum MetalProvenance {
     public static let dim: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
 }
 
-/// A region: a drawn rectangle on the canvas with a name that carries a rule (Done ticks, To do makes tasks, a date dates, any other name tags). A sunk well at rest; over is the drop-target state (green fill, 1 pt ring, the rule reads 'drop to …' in green); dim under an in-place lens; gone when it did not exist at the scrubbed time; a pinned lens is a frosted plate with rows instead of a well. Radius from the ladder by size: hero (30) when the short side is at least big-at, else card (24). Values are the medium demo's .region; per-colorway fills are region-* in the colorways.
+/// A region: a drawn rectangle on the canvas with a name that carries a rule (Done ticks, To do makes tasks, a date dates, any other name tags). A sunk well at rest; over is the drop-target state (green fill, 1 pt ring, the rule reads 'drop to …' in green); dim under an in-place lens; gone when it did not exist at the scrubbed time; a pinned lens is a frosted plate with rows instead of a well. Radius from the ladder by size: hero (30) when the short side is at least big-at, else card (24). Values are the reference design's .region; per-colorway fills are region-* in the colorways.
 public enum MetalRegion {
     public static let bigAt: Double = 240.0
     public static let headHeight: Double = 44.0
@@ -1009,7 +1009,7 @@ public enum MetalButtonMetrics {
     public static let disabled: Double = 0.4
 }
 
-/// Menus and the correction popover (Kamui 03 §5, 04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY JEV 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
+/// Menus and the correction popover (04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY JEV 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
 public enum MetalMenuMetrics {
     public static let minWidth: Double = 200.0
     public static let pad: Double = 6.0

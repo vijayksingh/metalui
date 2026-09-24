@@ -1,6 +1,6 @@
 @import "../tokens.css";
 
-/* The cue family (Kamui 03 §3, the medium demo). Every value is --mu-cue-* or a colorway cue-* token.
+/* The cue family (the reference design). Every value is --mu-cue-* or a colorway cue-* token.
    In-flow cues are metric-neutral: they never change the advance of the text they mark. That rules out
    tabular numerals in flow: Geist's tabular digits are wider than its proportional ones (the demo's
    tabular-nums moved a 1h30 · $40 · 6h line by 1.09 px), so values keep the text's own figures. */
@@ -96,7 +96,7 @@
 .mu-cue-url > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); }
 .mu-cue-url:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
 
-/* ---- the inferred pill: a value Jev read that is not in the text (a date, a measurement) ---- */
+/* ---- the inferred pill: a value the recognizer read that is not in the text (a date, a measurement) ---- */
 .mu-cue-inferred {
   position: relative;
   display: inline-block;

@@ -4,7 +4,7 @@ import * as React from 'react';
 import './region.css';
 
 /* ─────────────────────────────────────────────────────────
- * REGION (Kamui 04 §7, the medium demo's .region)
+ * REGION (the reference design's .region)
  *
  * rest    a sunk well; the head names it, says the rule it carries, counts what is inside
  * over    a block is dragged above it: green fill, 1 pt ring, the rule reads "drop to mark tasks done"

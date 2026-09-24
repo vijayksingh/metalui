@@ -2,7 +2,7 @@
 @import "../kbd/kbd.css";
 @import "../tooltip/tooltip.css";
 
-/* Toolbar and tool button (KAMUI-01/02; Kamui 04 §2) on Base UI Toolbar and Toggle. */
+/* Toolbar and tool button on Base UI Toolbar and Toggle. */
 .mu-toolbar {
   display: inline-flex;
   align-items: center;
@@ -68,7 +68,7 @@
 .mu-toolbar-search > .mu-kbd { margin-left: auto; }
 .mu-toolbar-search:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
 
-/* Graphite: the medium's dock, dark in both colorways; its look is the toolbar recipe (--mu-r-toolbar-*, the demo's #toolbar). */
+/* Graphite: the graphite dock, dark in both colorways; its look is the toolbar recipe (--mu-r-toolbar-*, the demo's #toolbar). */
 .mu-toolbar[data-variant="graphite"] {
   gap: var(--mu-r-toolbar-self-gap);
   padding: var(--mu-r-toolbar-self-pad);

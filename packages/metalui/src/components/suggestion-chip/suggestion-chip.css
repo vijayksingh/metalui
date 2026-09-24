@@ -1,6 +1,6 @@
 @import "../tokens.css";
 
-/* Suggestion chip (Kamui 03 §4, the medium demo's .sugg). Its look is the suggestion-chip recipe (--mu-r-suggestion-chip-*). */
+/* Suggestion chip (the reference design's .sugg). Its look is the suggestion-chip recipe (--mu-r-suggestion-chip-*). */
 .mu-suggestion {
   display: inline-flex;
   align-items: center;

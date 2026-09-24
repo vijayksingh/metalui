@@ -8,7 +8,7 @@ import { Kbd } from '../kbd/kbd';
 import './toolbar.css';
 
 /* ─────────────────────────────────────────────────────────
- * TOOLBAR and TOOL BUTTON (KAMUI-01/02) on Base UI Toolbar + Toggle + Tooltip
+ * TOOLBAR and TOOL BUTTON on Base UI Toolbar + Toggle + Tooltip
  *   enter     one nest from its edge on the surface spring
  *   hover     the glyph plays its pose (the tool is its trigger); a tooltip after 120 ms: "Select · V"
  *   press     down 1 into a well, 50 ms; back on release
@@ -17,7 +17,7 @@ import './toolbar.css';
  * ───────────────────────────────────────────────────────── */
 
 export interface ToolbarProps {
-  /** frost (the colorway's frosted strip) or graphite (the medium's dark strip, in both colorways). */
+  /** frost (the colorway's frosted strip) or graphite (the dark strip, in both colorways). */
   variant?: 'frost' | 'graphite';
   'aria-label': string;
   className?: string;

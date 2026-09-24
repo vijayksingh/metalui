@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// A task's checkbox (the medium demo's .dimple): a recessed well that turns into a dark pressed key
+/// A task's checkbox (the reference design's .dimple): a recessed well that turns into a dark pressed key
 /// with a white tick drawn on (not sprung, DS-21). `doing` shows the half-filled green square; `ghost`
-/// the hollow ring of a task Jev inferred. Its look is `MetalRecipes.dimple` (tokens.json recipes.dimple).
+/// the hollow ring of an inferred task. Its look is `MetalRecipes.dimple` (tokens.json recipes.dimple).
 public struct MetalDimple: View {
     @Binding var isOn: Bool
     let doing: Bool

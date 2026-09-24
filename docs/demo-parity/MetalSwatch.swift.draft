@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A colour swatch chip (the medium demo's .swatchobj): a hard, glossy body in its own colour — a
+/// A colour swatch chip (the reference design's .swatchobj): a hard, glossy body in its own colour — a
 /// 135° sheen, a bright top edge and dark bottom rim, an inner glow, a contact shadow and a drop
 /// shadow in its own colour — the hex engraved in dark or light ink by luminance, and a recessed LED
 /// dimple. Its look is `MetalRecipes.swatch` (tokens.json recipes.swatch).

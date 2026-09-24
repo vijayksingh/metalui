@@ -1,6 +1,6 @@
 @import "../tokens.css";
 
-/* Region (Kamui 04 §7, the medium demo's .region). Its look is the region recipe (--mu-r-region-*). */
+/* Region (the reference design's .region). Its look is the region recipe (--mu-r-region-*). */
 .mu-region {
   position: relative;
   box-sizing: border-box;

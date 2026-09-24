@@ -1,6 +1,6 @@
 @import "../tokens.css";
 
-/* Swatch (the medium demo's .swatchobj). Its look is the swatch recipe (--mu-r-swatch-*); --mu-self is its colour. */
+/* Swatch (the reference design's .swatchobj). Its look is the swatch recipe (--mu-r-swatch-*); --mu-self is its colour. */
 .mu-swatch {
   position: relative;
   box-sizing: border-box;

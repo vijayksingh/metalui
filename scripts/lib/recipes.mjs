@@ -1,6 +1,6 @@
 // Object recipes as data (tokens.json `recipes`): every layer of an object's look — fills
 // (gradients, solid colors, the object's own color), shadow stacks (inset and outer), text-shadow
-// lips — and its sizes, radii and type, per part and per state, taken from the medium demo's CSS.
+// lips — and its sizes, radii and type, per part and per state, taken from the reference design's CSS.
 // One source generates both platforms:
 //
 //   CSS    custom properties --mu-r-<object>-<part>[-<state>]-<prop>, one line per layer, each
@@ -192,7 +192,7 @@ ${props.join('\n') || '            :'}
     css: { root: root.join('\n'), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
     swift: `
 /// Object recipes (tokens.json \`recipes\`): every layer of each object's look, per part and state,
-/// from the medium demo's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).
+/// from the reference design's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).
 public enum MetalRecipes {
 ${swift.join('\n\n')}
 }

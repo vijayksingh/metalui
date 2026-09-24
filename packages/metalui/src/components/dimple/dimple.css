@@ -1,6 +1,6 @@
 @import "../tokens.css";
 
-/* Dimple (the medium demo's .dimple): a task's checkbox, a well in the margin. Its look is the dimple recipe. */
+/* Dimple (the reference design's .dimple): a task's checkbox, a well in the margin. Its look is the dimple recipe. */
 .mu-dimple-slot { display: inline-flex; width: max-content; height: max-content; line-height: 0; }
 .mu-dimple {
   position: relative;
@@ -45,7 +45,7 @@
   background: var(--mu-r-dimple-doing-background);
   opacity: var(--mu-r-dimple-doing-opacity);
 }
-/* Ghost: a task Jev inferred, not written. Hangs in the margin; the band grows left instead of the words moving. */
+/* Ghost: an inferred task, not written. Hangs in the margin; the band grows left instead of the words moving. */
 .mu-dimple[data-ghost] {
   width: var(--mu-r-dimple-ghost-size);
   height: var(--mu-r-dimple-ghost-size);

@@ -5,7 +5,7 @@ import { Button } from '@base-ui/react/button';
 import './suggestion-chip.css';
 
 /* ─────────────────────────────────────────────────────────
- * SUGGESTION CHIP (Kamui 03 §4, the medium demo's .sugg)
+ * SUGGESTION CHIP (the reference design's .sugg)
  *
  *   arrives   on settle, from 3 above and .96 (a footprint, no overshoot)
  *   rest      at .62: the person decides, the chip does not shout

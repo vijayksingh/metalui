@@ -4,14 +4,14 @@ import * as React from 'react';
 import './cue.css';
 
 /* ─────────────────────────────────────────────────────────
- * CUE FAMILY (Kamui 03 §3, the medium demo)
+ * CUE FAMILY (the reference design)
  *
  * A cue is a rendering attribute on the text, never a change to it.
  *   in-flow   date · duration · amount · measurement · tag · derived tag · hex
  *             metric-neutral: width delta 0.00 pt, so a cue appearing mid-word never moves a letter
  *   hover     the resolved value rises 3 over the cue on the part spring (data-chip)
- *   at rest   a URL becomes a host pill; a value Jev read that is not in the text is an inferred pill
- *   margin    the dimple (a task's checkbox), the ghost dimple (a task Jev inferred), the urgency LED
+ *   at rest   a URL becomes a host pill; a value the recognizer read that is not in the text is an inferred pill
+ *   margin    the dimple (a task's checkbox), the ghost dimple (an inferred task), the urgency LED
  *   trailing  the life glyph after a middle dot, ink3 → ink2 with its host
  *   tick      draws on in 220 ms after 40 ms, ease-out, not sprung (DS-21); instant under Reduce Motion
  * ───────────────────────────────────────────────────────── */
@@ -63,11 +63,11 @@ export const CueUrl = React.forwardRef<HTMLAnchorElement, CueUrlProps>(function 
 });
 
 export interface CueInferredProps extends React.HTMLAttributes<HTMLSpanElement> {
-  /** The value and where it came from, on hover: "TUE 30 SEP · JEV 0.82". */
+  /** The value and where it came from, on hover: "TUE 30 SEP · 0.82". */
   resolved?: string;
 }
 
-/** A value Jev read that is not in the text (a date, a measurement): a hollow pill after the words. */
+/** A value the recognizer read that is not in the text (a date, a measurement): a hollow pill after the words. */
 export const CueInferred = React.forwardRef<HTMLSpanElement, CueInferredProps>(function CueInferred({ resolved, className, ...props }, ref) {
   return <span ref={ref} data-chip={resolved} className={['mu-cue', 'mu-cue-inferred', 'mu-type-label', className].filter(Boolean).join(' ')} {...props} />;
 });

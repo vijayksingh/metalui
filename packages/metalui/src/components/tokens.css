@@ -726,7 +726,7 @@
 
 /* Object recipes (tokens.json recipes): every layer of each object's look, from the medium demo. */
 :root {
-  /* swatch: prototypes/medium/style.css .swatchobj */
+  /* swatch: reference style.css .swatchobj */
   --mu-r-swatch-self-background:
     /* mu-recipe:swatch:0 */ linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,0) 45%, rgba(0,0,0,.10)),
     /* mu-recipe:swatch:1 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
@@ -751,7 +751,7 @@
   --mu-r-swatch-label-ink-light: rgba(255,255,255,.8);
   --mu-r-swatch-led-size: 8px;
   --mu-r-swatch-led-inset: 10px;
-  /* dimple: prototypes/medium/style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
+  /* dimple: reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
   --mu-r-dimple-self-on-background:
     /* mu-recipe:dimple:10 */ linear-gradient(#303033, #1E1E20);
   --mu-r-dimple-self-on-shadow:
@@ -786,7 +786,7 @@
   --mu-r-dimple-doing-inset: 4.5px;
   --mu-r-dimple-doing-radius: 3px;
   --mu-r-dimple-doing-opacity: 0.8;
-  /* region: prototypes/medium/style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
+  /* region: reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
   --mu-r-region-self-over-background:
     /* mu-recipe:region:8 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));
   --mu-r-region-self-radius: 26px;
@@ -807,7 +807,7 @@
   --mu-r-region-empty-pad-y: 10px;
   --mu-r-region-empty-pad-x: 8px;
   --mu-r-region-lens-blur: 10px;
-  /* suggestion-chip: prototypes/medium/style.css .suggs, .sugg, .sugg .eng, .sugg button */
+  /* suggestion-chip: reference style.css .suggs, .sugg, .sugg .eng, .sugg button */
   --mu-r-suggestion-chip-self-height: 20px;
   --mu-r-suggestion-chip-self-pad-left: 9px;
   --mu-r-suggestion-chip-self-pad-right: 3px;
@@ -822,7 +822,7 @@
   --mu-r-suggestion-chip-button-font: 500 11px/1 var(--mu-sans);
   --mu-r-suggestion-chip-row-gap: 6px;
   --mu-r-suggestion-chip-row-offset: 12px;
-  /* toolbar: prototypes/medium/style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
+  /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
   --mu-r-toolbar-self-shadow:

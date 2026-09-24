@@ -5,20 +5,20 @@ import { Checkbox } from '@base-ui/react/checkbox';
 import './dimple.css';
 
 /* ─────────────────────────────────────────────────────────
- * DIMPLE (Kamui 03 §3, the medium demo's .dimple) on Base UI Checkbox
+ * DIMPLE (the reference design's .dimple) on Base UI Checkbox
  *
  *   rest     a recessed well in the margin
  *   hover    the well darkens a step
  *   on       a dark pressed key; the white tick draws on (ease-out, 220 ms after a 40 ms beat)
  *   doing    a half-filled green square (announced as mixed)
- *   ghost    a hollow ring: a task Jev inferred and nobody wrote; green ring on hover
+ *   ghost    a hollow ring: a task that was inferred, not written; green ring on hover
  * Its look is the dimple recipe (tokens.json recipes.dimple → --mu-r-dimple-*).
  * ───────────────────────────────────────────────────────── */
 
 export interface DimpleProps extends Omit<Checkbox.Root.Props, 'className' | 'indeterminate'> {
   /** The task is in progress: a half-filled green square (announced as mixed). */
   doing?: boolean;
-  /** A task Jev inferred and nobody wrote: the hollow ghost dimple, hanging in the margin. */
+  /** A task the recognizer inferred and nobody wrote: the hollow ghost dimple, hanging in the margin. */
   ghost?: boolean;
   className?: string;
 }

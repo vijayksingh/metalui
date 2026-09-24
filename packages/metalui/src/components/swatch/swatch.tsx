@@ -4,7 +4,7 @@ import * as React from 'react';
 import './swatch.css';
 
 /* ─────────────────────────────────────────────────────────
- * SWATCH (Kamui 03 §10, the medium demo's .swatchobj)
+ * SWATCH (the reference design's .swatchobj)
  *
  * A lone hex on the canvas becomes a hard, glossy chip in its own colour: a 135° sheen, a bright
  * top edge and a dark bottom rim, an inner glow, a contact shadow and a drop shadow in its own
