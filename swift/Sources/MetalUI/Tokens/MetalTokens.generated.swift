@@ -1549,6 +1549,7 @@ public enum MetalRecipes {
             "segment.fade": .text("160ms"),
             "segment.disabled": .text("0.4"),
             "segment.focus-width": .number(1.5),
+            "segment.transition": .text("color var(--mu-r-segmented-segment-fade)"),
         ]
     )
 

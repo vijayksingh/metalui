@@ -1310,6 +1310,9 @@
   background: var(--mu-r-segmented-thumb-background);
   box-shadow: var(--mu-r-segmented-thumb-shadow);
 }
+@utility segment-focus {
+  outline: var(--mu-r-segmented-segment-focus-width) solid var(--mu-focus); outline-offset: 0;
+}
 @utility type-segmented-segment {
   font: var(--mu-r-segmented-segment-font);
   letter-spacing: var(--mu-r-segmented-segment-tracking);
@@ -1320,6 +1323,9 @@
 }
 @utility opacity-segmented-segment-disabled {
   opacity: var(--mu-r-segmented-segment-disabled);
+}
+@utility transition-segmented-segment {
+  transition: var(--mu-r-segmented-segment-transition);
 }
 @utility recipe-tooltip {
   background: var(--mu-r-tooltip-self-background);

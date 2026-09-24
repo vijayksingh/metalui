@@ -1344,6 +1344,7 @@
   --mu-r-segmented-segment-fade: 160ms;
   --mu-r-segmented-segment-disabled: 0.4;
   --mu-r-segmented-segment-focus-width: 1.5px;
+  --mu-r-segmented-segment-transition: color var(--mu-r-segmented-segment-fade);
   /* tooltip: reference style.css #tip, #tip .dim, .tb-tip */
   --mu-r-tooltip-self-background:
     /* mu-recipe:tooltip:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

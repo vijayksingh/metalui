@@ -942,7 +942,7 @@ An engraved groove between groups. React: `Rule`. SwiftUI: `MetalRule`.
 
 # Segmented control
 
-A pill of pills: one of a few options, always visible. React: `Segmented` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSegmented`. Sheet reference: KAMUI-04.
+A pill of pills: one of a few options, always visible. React: `Segmented` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSegmented`. Sheet reference: the object sheet.
 
 ## Use it for
 

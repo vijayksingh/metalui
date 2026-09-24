@@ -3,9 +3,17 @@
   "title": "Segmented control",
   "status": "alpha",
   "description": "A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.",
-  "sheet": "KAMUI-04",
   "base": "@base-ui/react/radio-group",
-  "react": { "export": "Segmented", "files": ["segmented.tsx", "segmented.css"] },
-  "swift": { "symbol": "MetalSegmented", "file": "swift/Sources/MetalUI/Components/MetalSegmented.swift" },
-  "agent": "segmented.agent.md"
+  "react": {
+    "export": "Segmented",
+    "files": [
+      "segmented.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSegmented",
+    "file": "swift/Sources/MetalUI/Components/MetalSegmented.swift"
+  },
+  "agent": "segmented.agent.md",
+  "layer": "component"
 }

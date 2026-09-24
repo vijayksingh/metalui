@@ -392,8 +392,7 @@
         "symbol": "MetalSegmented"
       },
       "registry": "https://metalui.dev/r/segmented.json",
-      "agent": "https://metalui.dev/r/segmented.md",
-      "sheet": "KAMUI-04"
+      "agent": "https://metalui.dev/r/segmented.md"
     },
     {
       "name": "selection-frame",

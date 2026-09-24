@@ -4,7 +4,6 @@ import * as React from 'react';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { Radio } from '@base-ui/react/radio';
 import { SlidingIndicator } from '../../motion/indicator';
-import './segmented.css';
 
 /* ─────────────────────────────────────────────────────────
  * SEGMENTED CONTROL (object sheet) on Base UI RadioGroup
@@ -38,6 +37,15 @@ export interface SegmentedProps<V extends string = string> {
   className?: string;
 }
 
+/* Styled with the theme's utilities (the segmented recipe): a track well, a raised thumb that glides
+ * to the chosen segment, and segments that ink up on hover and when chosen. */
+const TRACK = 'mu-segmented relative inline-flex p-segmented-pad rounded-pill recipe-segmented data-disabled:opacity-segmented-segment-disabled';
+const THUMB = 'mu-segmented-thumb rounded-pill recipe-segmented-thumb';
+const SEGMENT = {
+  compact: 'mu-segment relative z-1 inline-flex items-center gap-segmented-gap h-segmented-segment-height px-segmented-segment-pad-x m-0 border-0 rounded-pill bg-transparent whitespace-nowrap type-segmented-segment text-segmented-segment-ink cursor-pointer tap-highlight-none transition-segmented-segment hover:text-segmented-segment-ink-on data-checked:text-segmented-segment-ink-on focus-visible:segment-focus data-disabled:opacity-segmented-segment-disabled data-disabled:cursor-default',
+  regular: 'mu-segment relative z-1 inline-flex items-center gap-segmented-gap h-segmented-segment-height-regular px-segmented-segment-pad-x m-0 border-0 rounded-pill bg-transparent whitespace-nowrap type-segmented-segment text-segmented-segment-ink cursor-pointer tap-highlight-none transition-segmented-segment hover:text-segmented-segment-ink-on data-checked:text-segmented-segment-ink-on focus-visible:segment-focus data-disabled:opacity-segmented-segment-disabled data-disabled:cursor-default',
+};
+
 /** A pill of pills: one of a few views or modes, always visible. */
 export function Segmented<V extends string = string>({ options, value, defaultValue, onValueChange, size = 'regular', disabled, className, ...props }: SegmentedProps<V>) {
   return (
@@ -48,11 +56,11 @@ export function Segmented<V extends string = string>({ options, value, defaultVa
       disabled={disabled}
       aria-label={props['aria-label']}
       data-size={size}
-      className={className ? `mu-segmented ${className}` : 'mu-segmented'}
+      className={className ? `${TRACK} ${className}` : TRACK}
     >
-      <SlidingIndicator className="mu-segmented-thumb" />
+      <SlidingIndicator className={THUMB} />
       {options.map((o) => (
-        <Radio.Root key={o.value} value={o.value} disabled={o.disabled} className="mu-segment">
+        <Radio.Root key={o.value} value={o.value} disabled={o.disabled} className={SEGMENT[size]}>
           {o.icon}
           {o.label}
         </Radio.Root>

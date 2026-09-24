@@ -497,11 +497,6 @@
           "path": "packages/metalui/src/components/segmented/segmented.tsx",
           "type": "registry:ui",
           "target": "components/metalui/segmented/segmented.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/segmented/segmented.css",
-          "type": "registry:file",
-          "target": "components/metalui/segmented/segmented.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/segmented.md. SwiftUI: MetalSegmented in the MetalUI Swift package."
