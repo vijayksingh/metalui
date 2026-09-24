@@ -429,21 +429,21 @@
       "name": "region",
       "type": "registry:ui",
       "title": "Region",
-      "description": "A drawn rectangle with a name that carries a rule: a sunk well with a head (name, rule, count), a drop-target state, dim and past states, renaming, and a pinned-lens form as a frosted plate with rows.",
+      "description": "A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/region/region.tsx",
+          "path": "packages/metalui/src/blocks/region/region.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/region/region.tsx"
+          "target": "components/metalui/blocks/region/region.tsx"
         },
         {
-          "path": "packages/metalui/src/components/region/region.css",
+          "path": "packages/metalui/src/blocks/region/region.css",
           "type": "registry:file",
-          "target": "components/metalui/region/region.css"
+          "target": "components/metalui/blocks/region/region.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/region.md. SwiftUI: MetalRegion, MetalRegionRow in the MetalUI Swift package."

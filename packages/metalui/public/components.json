@@ -303,19 +303,18 @@
       "name": "region",
       "title": "Region",
       "status": "alpha",
-      "description": "A drawn rectangle with a name that carries a rule: a sunk well with a head (name, rule, count), a drop-target state, dim and past states, renaming, and a pinned-lens form as a frosted plate with rows.",
+      "description": "A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Region, RegionRow",
-        "base": "none (a group; its rows and dimples are real controls)"
+        "base": "none (a group; its rows and checkboxes are real controls)"
       },
       "swift": {
         "package": "MetalUI",
         "symbol": "MetalRegion, MetalRegionRow"
       },
       "registry": "https://metalui.dev/r/region.json",
-      "agent": "https://metalui.dev/r/region.md",
-      "sheet": "Kamui 04 §7"
+      "agent": "https://metalui.dev/r/region.md"
     },
     {
       "name": "row",

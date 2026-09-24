@@ -27,7 +27,7 @@ export { PastBanner, type PastBannerProps } from './components/past-banner/past-
 export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-scrubber/memory-scrubber';
 export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';
-export { Region, RegionRow, type RegionProps, type RegionRowProps } from './components/region/region';
+export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './components/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './components/hover-engraving/hover-engraving';
 export { SuggestionChip, type SuggestionChipProps } from './blocks/suggestion-chip/suggestion-chip';

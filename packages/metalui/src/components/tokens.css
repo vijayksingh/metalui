@@ -243,6 +243,8 @@
   --mu-region-row-pad-x: 8px;
   --mu-region-row-gap: 9px;
   --mu-region-row-dimple: 14px;
+  --mu-region-name-min: 20px;
+  --mu-region-row-meta-top: 3px;
   --mu-segmented-track-pad: 3px;
   --mu-segmented-compact: 24px;
   --mu-segmented-regular: 28px;
@@ -792,27 +794,6 @@
   --mu-r-checkbox-row-tick-y: 2px;
   --mu-r-checkbox-row-tick-w: 3.5px;
   --mu-r-checkbox-row-tick-h: 7px;
-  /* region: reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
-  --mu-r-region-self-over-background:
-    /* mu-recipe:region:8 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));
-  --mu-r-region-self-radius: 26px;
-  --mu-r-region-self-radius-big: 26px;
-  --mu-r-region-self-dim: 0.35;
-  --mu-r-region-head-height: 44px;
-  --mu-r-region-head-pad-top: 14px;
-  --mu-r-region-head-pad-x: 18px;
-  --mu-r-region-head-gap: 10px;
-  --mu-r-region-name-font: 640 13.5px/1.2 var(--mu-sans);
-  --mu-r-region-name-tracking: -0.01em;
-  --mu-r-region-name-placeholder-weight: 500;
-  --mu-r-region-count-font: 500 10px/1 var(--mu-mono);
-  --mu-r-region-rule-over-color: #2F9E63;
-  --mu-r-region-body-inset: 12px;
-  --mu-r-region-body-top: 46px;
-  --mu-r-region-row-meta-top: 3px;
-  --mu-r-region-empty-pad-y: 10px;
-  --mu-r-region-empty-pad-x: 8px;
-  --mu-r-region-lens-blur: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1088,7 +1069,7 @@
   --mu-r-label-heading-font: 660 15px/1 var(--mu-sans);
   --mu-r-label-heading-tracking: -0.015em;
   --mu-r-label-count-font: 500 10px/1 var(--mu-mono);
-  --mu-r-label-count-tracking: 0;
+  --mu-r-label-count-tracking: -0.18px;
   --mu-r-label-readout-font: 500 10.5px/1 var(--mu-mono);
   --mu-r-label-readout-tracking: 0.04em;
   --mu-r-label-readout-color: #EDEDEF;
@@ -1402,17 +1383,6 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
-  --mu-r-region-self-background:
-    /* mu-recipe:region:0 */ linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012));
-  --mu-r-region-self-shadow:
-    /* mu-recipe:region:2 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
-    /* mu-recipe:region:3 */ inset 0 0 0 .5px rgba(0,0,0,.035),
-    /* mu-recipe:region:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.9);
-  --mu-r-region-self-over-shadow:
-    /* mu-recipe:region:9 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
-    /* mu-recipe:region:11 */ inset 0 0 0 1px rgba(63,185,122,.45);
-  --mu-r-region-self-lens-background:
-    /* mu-recipe:region:12 */ linear-gradient(rgba(252,251,249,.55), rgba(246,245,242,.45));
   --mu-r-hover-engraving-self-background:
     /* mu-recipe:hover-engraving:0 */ rgba(252,251,249,.92);
   --mu-r-hover-engraving-self-shadow:
@@ -1707,17 +1677,6 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
-  --mu-r-region-self-background:
-    /* mu-recipe:region:1 */ linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
-  --mu-r-region-self-shadow:
-    /* mu-recipe:region:5 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
-    /* mu-recipe:region:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
-    /* mu-recipe:region:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
-  --mu-r-region-self-over-shadow:
-    /* mu-recipe:region:10 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
-    inset 0 0 0 1px rgba(63,185,122,.45);
-  --mu-r-region-self-lens-background:
-    /* mu-recipe:region:13 */ linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
   --mu-r-hover-engraving-self-background:
     /* mu-recipe:hover-engraving:1 */ rgba(34,34,37,.92);
   --mu-r-hover-engraving-self-shadow:
@@ -2013,17 +1972,6 @@
     --mu-r-checkbox-self-ghost-shadow:
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
-    --mu-r-region-self-background:
-      linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
-    --mu-r-region-self-shadow:
-      inset 0 2px 6px -1px rgba(0,0,0,.5),
-      inset 0 0 0 .5px rgba(0,0,0,.35),
-      inset 0 -2px 4px -2px rgba(255,255,255,.05);
-    --mu-r-region-self-over-shadow:
-      inset 0 2px 6px -1px rgba(0,0,0,.5),
-      inset 0 0 0 1px rgba(63,185,122,.45);
-    --mu-r-region-self-lens-background:
-      linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
     --mu-r-hover-engraving-self-background:
       rgba(34,34,37,.92);
     --mu-r-hover-engraving-self-shadow:

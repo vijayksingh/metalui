@@ -1,6 +1,6 @@
 # Region
 
-A drawn rectangle with a name that carries a rule. React: `Region` and `RegionRow` from `@unlocalhosted/metalui`. SwiftUI: `MetalRegionView` and `MetalRegionRow`. Kamui brief: 04 §7, 03 §6.
+A drawn rectangle with a name that carries a rule. A composition block. React: `Region` (with parts `Region.Root`, `Region.Header`, `Region.Name`, `Region.Rule`, `Region.Count`, `Region.Body`, `Region.Row`) and `RegionRow` from `@unlocalhosted/metalui`. SwiftUI: `MetalRegion { header: … rows: … }` and `MetalRegionRow`.
 
 ## Use it for
 
@@ -15,9 +15,9 @@ A drawn rectangle with a name that carries a rule. React: `Region` and `RegionRo
 
 ## Anatomy
 
-- **Well**: a sunk rectangle (`region-fill`, `region-sh`), radius from the ladder by size: 30 when the short side is at least 240, else 24.
-- **Head**, 44 tall (padding 14 / 18, grab cursor): the **name** in the `title` role (empty: "name this region" in ink3), the **rule** in the `label` role, engraved (`marks tasks done`, `tags them #poster`, `dates them friday`), and the **count** in the `readout` role, ink3.
-- **Lens**: a frosted plate (`region-lens-fill`, blur 10, `raise-lite`) with its rows inset 12 under the head: `RegionRow` (padding 5 / 8, radius 12, a 14 pt dimple, the day engraved at the right; hover raises `row-hover` + `raise-sm`; checked rows are struck in ink3).
+- **Root**: `Well variant="region"` (a sunk rectangle, radius 26; `over` lights it green with a 1 pt ring), or `Surface material="lens"` for a pinned lens (a frosted plate, blur 10).
+- **Header**, 44 tall (padding 14 / 18, grab cursor, baseline-aligned, gap 10): **Name** `Label variant="title"` (empty: "name this region" in ink3; a field while renaming), **Rule** `Label variant="engraved"` (`marks tasks done`; `tone="accent"` while over), **Count** `Label variant="count"`.
+- **Body** (lens only): inset 12, 46 from the top, holding **Row**s: `Row variant="list"` with a `Checkbox size="row"` lead, the text, and the day as an engraving at the right.
 
 ## States and motion
 
@@ -38,13 +38,14 @@ A drawn rectangle with a name that carries a rule. React: `Region` and `RegionRo
 | `name`, `rule`, `dropRule`, `count` | same | the host derives the rule from the name |
 | `over`, `dim`, `past` | `state:` | |
 | `lens` + children (`RegionRow`) | `lens:` + `rows:` | |
+| parts: `Region.Root` … `Region.Row` | `header:`, `rows:` | rearrange without forking |
 | `renaming`, `onRename`, `onRenameCancel` | `renaming:`, `onRename:` | |
 | `width`, `height` | (its frame) | picks the radius |
 
 ```tsx
 <Region name="Done" rule="marks tasks done" dropRule="drop to mark tasks done" count={3} over={dragOver === 'done'} width={320} height={260} />
 <Region name="open tasks" rule="lens · live" lens width={300} height={220}>
-  <RegionRow lead={<Dimple aria-label="Send the poster" />} meta="FRI">Send the poster</RegionRow>
+  <RegionRow lead={<Checkbox size="row" aria-label="Send the poster" />} meta="FRI">Send the poster</RegionRow>
 </Region>
 ```
 
@@ -63,4 +64,4 @@ A drawn rectangle with a name that carries a rule. React: `Region` and `RegionRo
 
 ## Tokens
 
-`--mu-region-*`, per colorway `--mu-region-fill`, `--mu-region-sh`, `--mu-region-over-shade`, `--mu-region-lens-fill`, `--mu-raise-lite`, `--mu-row-hover`; `--mu-radius-card`, `--mu-radius-hero`, `--mu-type-*`. Swift: `MetalRegion`, `MetalTokens.<colorway>.region*`.
+Layout: `--mu-region-*` (head, body, the name's minimum, dim). Look: the well, surface, label and row recipes. Swift: `MetalRegion`.

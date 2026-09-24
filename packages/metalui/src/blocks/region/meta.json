@@ -1,0 +1,38 @@
+{
+  "name": "region",
+  "title": "Region",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "well",
+    "surface",
+    "label",
+    "row"
+  ],
+  "description": "A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.",
+  "base": "none (a group; its rows and checkboxes are real controls)",
+  "react": {
+    "export": "Region, RegionRow",
+    "files": [
+      "region.tsx",
+      "region.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalRegion, MetalRegionRow",
+    "file": "swift/Sources/MetalUI/Components/MetalRegionView.swift"
+  },
+  "agent": "region.agent.md",
+  "slots": {
+    "Region": [
+      "Root",
+      "Header",
+      "Name",
+      "Rule",
+      "Count",
+      "Body",
+      "Row"
+    ]
+  }
+}

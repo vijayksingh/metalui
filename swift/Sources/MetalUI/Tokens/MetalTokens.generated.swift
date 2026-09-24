@@ -601,47 +601,6 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A region: a sunk well with an engraved head (name, rule, count); over: a green drop-target; a pinned lens: a frosted plate. (reference style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr)
-    public static let region = MetalObjectRecipe(
-        name: "region",
-        layers: [
-            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.028)), 0.0), .init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.012)), 1.0)])), // mu-recipe:region:0 linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012))
-            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.02)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.01)), 1.0)])), // mu-recipe:region:1 linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01))
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.07)))), // mu-recipe:region:2 inset 0 2px 6px -1px rgba(60,55,40,.07)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.035)))), // mu-recipe:region:3 inset 0 0 0 .5px rgba(0,0,0,.035)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:region:4 inset 0 -2px 4px -2px rgba(255,255,255,.9)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:region:5 inset 0 2px 6px -1px rgba(0,0,0,.5)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:region:6 inset 0 0 0 .5px rgba(0,0,0,.35)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:region:7 inset 0 -2px 4px -2px rgba(255,255,255,.05)
-            .init(part: "self", state: "over", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(120.0, 214.0, 165.0, 0.07)), 0.0), .init(.color(MetalRGBA(120.0, 214.0, 165.0, 0.03)), 1.0)])), // mu-recipe:region:8 linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03))
-            .init(part: "self", state: "over", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.07)))), // mu-recipe:region:9 inset 0 2px 6px -1px rgba(60,55,40,.07)
-            .init(part: "self", state: "over", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:region:10 inset 0 2px 6px -1px rgba(0,0,0,.5)
-            .init(part: "self", state: "over", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.45)))), // mu-recipe:region:11 inset 0 0 0 1px rgba(63,185,122,.45)
-            .init(part: "self", state: "lens", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(252.0, 251.0, 249.0, 0.55)), 0.0), .init(.color(MetalRGBA(246.0, 245.0, 242.0, 0.45)), 1.0)])), // mu-recipe:region:12 linear-gradient(rgba(252,251,249,.55), rgba(246,245,242,.45))
-            .init(part: "self", state: "lens", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(44.0, 44.0, 47.0, 0.55)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 39.0, 0.45)), 1.0)])), // mu-recipe:region:13 linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45))
-        ],
-        props: [
-            "self.radius": .number(26.0),
-            "self.radius-big": .number(26.0),
-            "self.dim": .text("0.35"),
-            "head.height": .number(44.0),
-            "head.pad-top": .number(14.0),
-            "head.pad-x": .number(18.0),
-            "head.gap": .number(10.0),
-            "name.font": .text("640 13.5px/1.2 sans"),
-            "name.tracking": .text("-0.01em"),
-            "name.placeholder-weight": .text("500"),
-            "count.font": .text("500 10px/1 mono"),
-            "rule-over.color": .text("#2F9E63"),
-            "body.inset": .number(12.0),
-            "body.top": .number(46.0),
-            "row.meta-top": .number(3.0),
-            "empty.pad-y": .number(10.0),
-            "empty.pad-x": .number(8.0),
-            "lens.blur": .number(10.0),
-        ]
-    )
-
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
@@ -1201,7 +1160,7 @@ public enum MetalRecipes {
             "heading.tracking": .text("-0.015em"),
             "heading.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "count.font": .text("500 10px/1 mono"),
-            "count.tracking": .text("0"),
+            "count.tracking": .text("-0.18px"),
             "count.color": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
             "readout.font": .text("500 10.5px/1 mono"),
             "readout.tracking": .text("0.04em"),
@@ -1957,6 +1916,8 @@ public enum MetalRegion {
     public static let rowPadX: Double = 8.0
     public static let rowGap: Double = 9.0
     public static let rowDimple: Double = 14.0
+    public static let nameMin: Double = 20.0
+    public static let rowMetaTop: Double = 3.0
 }
 
 /// The press-in pill button (object sheet): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the canvas pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.
