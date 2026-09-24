@@ -14,8 +14,7 @@
   "react": {
     "export": "ToolStrip",
     "files": [
-      "tool-strip.tsx",
-      "tool-strip.css"
+      "tool-strip.tsx"
     ]
   },
   "swift": {

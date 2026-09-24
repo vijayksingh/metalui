@@ -1932,3 +1932,11 @@
   --tw-duration: var(--mu-spring-refusal-d);
   transition-duration: var(--mu-spring-refusal-d);
 }
+
+/* Motions (tokens.json animations): each block's entrance. */
+@keyframes mu-toolstrip-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-toolstrip-enter-rise) * var(--mu-travel-part))); }
+}
+@utility animate-toolstrip-in {
+  animation: mu-toolstrip-in var(--mu-spring-part-d) var(--mu-spring-part) both;
+}

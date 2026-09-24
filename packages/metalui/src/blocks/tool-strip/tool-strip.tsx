@@ -5,7 +5,6 @@ import { Toolbar } from '@base-ui/react/toolbar';
 import { Surface } from '../../components/surface/surface';
 import { Button } from '../../components/button/button';
 import { Rule } from '../../components/rule/rule';
-import './tool-strip.css';
 
 /* ─────────────────────────────────────────────────────────
  * SELECTION TOOL STRIP (the reference design's #selTools): a composition on Base UI Toolbar
@@ -15,6 +14,9 @@ import './tool-strip.css';
  *   hover / press      the strip cap's own: a soft light well; down 1 onto a dark well
  * Never for a selection made by finishing (quiet), never while dragging, resizing or in the past.
  * ───────────────────────────────────────────────────────── */
+
+/* Layout from the toolstrip group; it rises on the part spring (animate-toolstrip-in). */
+const STRIP = 'mu-toolstrip inline-flex items-center gap-toolstrip-gap p-toolstrip-pad animate-toolstrip-in [&>.mu-rule]:h-toolstrip-sep-height';
 
 export interface ToolStripItem {
   label: string;
@@ -38,7 +40,7 @@ export function ToolStrip({ items, label, className }: ToolStripProps) {
   return (
     <Toolbar.Root
       aria-label={`Tools for ${label}`}
-      render={<Surface material="graphite-strip" radius="strip" className={className ? `mu-toolstrip ${className}` : 'mu-toolstrip'} />}
+      render={<Surface material="graphite-strip" radius="strip" className={className ? `${STRIP} ${className}` : STRIP} />}
     >
       {items.flatMap((it) => [
         it.destructive ? <Toolbar.Separator key={`${it.label}-rule`} render={<Rule tone="graphite" />} /> : null,

@@ -687,11 +687,6 @@
           "path": "packages/metalui/src/blocks/tool-strip/tool-strip.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/tool-strip/tool-strip.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/tool-strip/tool-strip.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/tool-strip/tool-strip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tool-strip.md. SwiftUI: MetalToolStrip in the MetalUI Swift package."
