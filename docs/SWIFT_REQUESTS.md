@@ -114,3 +114,9 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **Object:** generated `region` recipe for `MetalRegionView` and its pinned lens rows.
 - **Missing:** `check:recipes` reports `MetalRegionView` without a component recipe. The generated `MetalRegion` measurements and colorway materials cover most of the well, but do not declare the complete lens background, header/body placement, row hover, weak-match fade, and the two viewport-centred sizes (280 × 220, `me` 300 × 250). The native client temporarily composes the well, native editable name, and `MetalRegionResultRow` from existing MetalUI values. It needs a row part that keeps the checkbox action separate from row focus.
 - **Demo CSS:** reference demo `style.css:319-344` defines the well, live material, 44 px head, 46 px body top, 12 px inset, row hover and checked states. Reference demo `app.js:2749-2758` sets pin geometry; `app.js:2760-2785` limits the body to twelve ranked rows and its empty copy.
+
+## Command palette
+
+- **Object:** `MetalCommandPalette` as a composition block built from the generated `MetalSurface`, `MetalRow(.option)`, `MetalLabel`, `MetalKbd`, field and icon recipes.
+- **Missing:** `check:recipes` reports no command palette recipe. The Swift component still assembles a plate from generic frost and palette measurements; the generated recipe should specify the 24 px blur and saturation, 560 px width cap, 6 px inset, raised selected row, green rail, field well, focus and keyboard hint layers. The palette must keep the field and row's key grammar while drawing the same layers as the browser.
+- **Demo CSS:** reference demo `style.css:517-532` defines the palette scrim, plate, field, section rows, selected rail and footer. Reference demo `app.js:2991-3060` defines Arrow, Return, Shift-Return and Escape behavior.
