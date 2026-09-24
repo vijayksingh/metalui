@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-date" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Date. Hover (or data-state="hover"): heart beats twice. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .ht{transform-origin:12px 13px}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ht{animation:mu-il-date .8s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-date{15%{transform:scale(1.1)}30%{transform:scale(.97)}45%{transform:scale(1.08)}70%{transform:none}}}</style>
+<path class="ht f" style="--duo:.2" d="M12 19.8c-.3 0-8.4-4.9-8.4-10.5A4.4 4.4 0 0 1 12 7.1a4.4 4.4 0 0 1 8.4 2.2c0 5.6-8.1 10.5-8.4 10.5Z"/>
+</svg>

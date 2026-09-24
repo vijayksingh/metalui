@@ -6,6 +6,7 @@ import { ICONS } from '../packages/metalui/icons/src/icons.mjs';
 import { T16 } from '../packages/metalui/icons/src/tuned16.mjs';
 import { emit, finish } from './lib/emit.mjs';
 import { staticSvg, SW } from './lib/static-svg.mjs';
+import { buildLife } from './lib/life-icons.mjs';
 
 // ---------- spring easing as CSS linear() (identical to the Kamui builder) ----------
 function spring(z, T, n = 44) {
@@ -177,4 +178,5 @@ for (const { ic, t16 } of entries) {
   emit(`packages/metalui/public/icons/svg/16/${ic.name}.svg`, staticSvg(ic, t16?.sw ?? SW16, t16?.body ?? ic.body));
   emit(`packages/metalui/public/icons/svg-animated/${ic.name}.svg`, animatedSvg(ic));
 }
-finish(`icons (${ICONS.length})`);
+const lifeCount = buildLife();
+finish(`icons (${ICONS.length} product, ${lifeCount} life)`);

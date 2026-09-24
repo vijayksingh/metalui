@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-outdoors" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Outdoors. Hover (or data-state="hover"): trees sway. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .t1{transform-origin:9.4px 20.4px} svg.mu-life .t2{transform-origin:17.4px 20.4px;--dl:.08s}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .t1,svg.mu-life:is(:hover,[data-state~="hover"]) .t2{animation:mu-il-outdoors 1s ease-in-out var(--dl)} @keyframes mu-il-outdoors{30%{transform:rotate(4deg)}65%{transform:rotate(-3deg)}}}</style>
+<g class="t1"><path class="f" style="--duo:.14" d="M9.4 3.8 4.8 11.6h2.6l-3.2 5.6h10.4l-3.2-5.6H14Z"/><path d="M9.4 17.2v3.2"/></g><g class="t2"><circle class="f" style="--duo:.14" cx="17.4" cy="11.4" r="3"/><path d="M17.4 14.4v6"/></g>
+</svg>

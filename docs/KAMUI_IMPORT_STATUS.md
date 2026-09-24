@@ -19,14 +19,14 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 | Step | What | Status | Commit | Clients import |
 |---|---|---|---|---|
-| 2 | Frosted recipe + Reduce Transparency twin | pending | | |
+| 2 | Frosted recipe + Reduce Transparency twin | shipped | `fee6d2d` | `.mu-frost-strip\|plate\|graphite`, Tailwind `material-frost-*`, `--mu-backdrop`, `--mu-frost-opaque`, `--mu-contrast-edge`, `data-mu-transparency="reduce"`; Swift `MetalFrost`, `.metalFrost(_:in:)`, `MetalRecipe(backdrop:opaqueFill:contrastEdge:)` |
 | Gate 2 | Owner sign-off on frost parity | awaiting owner | | |
 
 ## 3. Icons
 
 | Step | What | Status | Commit | Clients import |
 |---|---|---|---|---|
-| 3.1 | Life set source, subpath and manifest | pending | | |
+| 3.1 | Life set source, subpath and manifest | shipped | see git log `feat(icons): life set` | `import { LifeIcon, LifeCoffeeIcon, searchLifeIcons, LIFE_CATALOG } from '@unlocalhosted/metalui/icons/life'` + `@unlocalhosted/metalui/icons/life.css`; `@unlocalhosted/metalui/icons-life.json`; SVGs under `public/icons/life/{svg,svg/16,svg-animated}` |
 | 3.6 | SF Symbols + `MetalIcon` / `MetalLifeIcon` | pending | | |
 | 3.2 | Life gallery page | pending | | |
 | 3.3 | Feelings construction and lint | pending | | |

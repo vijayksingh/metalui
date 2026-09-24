@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-drawing" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Drawing. Hover (or data-state="hover"): paint dots swell. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .p1{transform-origin:7.8px 11px} svg.mu-life .p2{transform-origin:10.6px 7.4px;--dl:.06s} svg.mu-life .p3{transform-origin:15px 7.8px;--dl:.12s} svg.mu-life .p4{transform-origin:8.4px 15.2px;--dl:.18s}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .p{animation:mu-il-drawing .5s cubic-bezier(.3,0,.2,1) var(--dl)} @keyframes mu-il-drawing{40%{transform:scale(1.35)}}}</style>
+<path class="f" style="--duo:.08" d="M12 3.6c-4.8 0-8.4 3.6-8.4 8.2 0 4.8 3.8 8.6 8.6 8.6 1.2 0 1.8-.8 1.8-1.6 0-1.4-1.4-1.8-1.4-3.2 0-1 .8-1.8 1.8-1.8h2.2c2.2 0 3.8-1.6 3.8-3.8 0-3.6-3.8-6.4-8.6-6.4Z"/><circle class="p p1 s" cx="7.8" cy="11" r="1.2"/><circle class="p p2 s" cx="10.6" cy="7.4" r="1.2"/><circle class="p p3 s" cx="15" cy="7.8" r="1.2"/><circle class="p p4 s" cx="8.4" cy="15.2" r="1.2"/>
+</svg>

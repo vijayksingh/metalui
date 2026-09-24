@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-walk" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Walk. Hover (or data-state="hover"): legs swing a step. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .la,svg.mu-life .lb{transform-origin:11.6px 13.4px} svg.mu-life .aa{transform-origin:12.4px 8.2px}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .la{animation:mu-il-walk .8s ease-in-out} svg.mu-life:is(:hover,[data-state~="hover"]) .lb{animation:mu-il-walk2 .8s ease-in-out} svg.mu-life:is(:hover,[data-state~="hover"]) .aa{animation:mu-il-walk3 .8s ease-in-out} @keyframes mu-il-walk{50%{transform:rotate(-16deg)}} @keyframes mu-il-walk2{50%{transform:rotate(16deg)}} @keyframes mu-il-walk3{50%{transform:rotate(12deg)}}}</style>
+<circle class="s hd" cx="12.8" cy="4.4" r="2"/><path d="M12.4 8.2 11.6 13.4"/><path class="aa" d="M9.8 11.8l2.6-3.6 2.4 3.2"/><path class="la" d="M11.6 13.4l2 3 .8 3.4"/><path class="lb" d="M11.6 13.4l-1.6 3.2-1.4 3.2"/>
+</svg>

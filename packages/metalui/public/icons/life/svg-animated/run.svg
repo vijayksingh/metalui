@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-run" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Run. Hover (or data-state="hover"): the figure strides. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .fg{transform-origin:11.2px 13.4px} svg.mu-life .la,svg.mu-life .lb{transform-origin:11.2px 13.4px} svg.mu-life .ar{transform-origin:13.4px 8.4px}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .fg{transform:translateX(.6px) rotate(4deg)} svg.mu-life:is(:hover,[data-state~="hover"]) .la{animation:mu-il-run .56s ease-in-out 2} svg.mu-life:is(:hover,[data-state~="hover"]) .lb{animation:mu-il-run2 .56s ease-in-out 2} svg.mu-life:is(:hover,[data-state~="hover"]) .ar{animation:mu-il-run3 .56s ease-in-out 2} @keyframes mu-il-run{50%{transform:rotate(-26deg)}} @keyframes mu-il-run2{50%{transform:rotate(24deg)}} @keyframes mu-il-run3{50%{transform:rotate(-10deg)}}}</style>
+<g class="fg"><circle class="s hd" cx="15.4" cy="4.6" r="2"/><path class="tr" d="M13.4 8.4 11.2 13.4"/><path class="ar" d="M8.4 11.2 10.4 8.8l3-.4 2.6 2.4 2.4-1"/><path class="la" d="M11.2 13.4l3.2 2.4-1 4.2"/><path class="lb" d="M11.2 13.4 9.2 16.8H5.4"/></g>
+</svg>

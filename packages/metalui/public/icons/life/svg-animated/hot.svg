@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-hot" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Hot. Hover (or data-state="hover"): heat shimmers. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .h2{--dl:.1s} svg.mu-life .h3{--dl:.2s}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .h{animation:mu-il-hot .8s ease-in-out var(--dl) 2} @keyframes mu-il-hot{50%{transform:translateY(-.9px);opacity:.55}}}</style>
+<circle class="f" style="--duo:.28" cx="7.6" cy="7.6" r="3.1"/><path d="M7.6 2.6L7.6 1.2M4.06 4.06L3.07 3.07M2.6 7.6L1.2 7.6M4.06 11.14L3.07 12.13M7.6 12.6L7.6 14M12.6 7.6L14 7.6M11.14 4.06L12.13 3.07"/><path class="h h1" d="M12.4 11c-1 1.3 1 2.6 0 3.9s1 2.6 0 3.9"/><path class="h h2" d="M16 11c-1 1.3 1 2.6 0 3.9s1 2.6 0 3.9"/><path class="h h3" d="M19.6 11c-1 1.3 1 2.6 0 3.9s1 2.6 0 3.9"/>
+</svg>

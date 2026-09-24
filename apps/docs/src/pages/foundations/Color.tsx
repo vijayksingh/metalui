@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { LifeIcon, type LifeIconName, type TintName } from '@unlocalhosted/metalui/icons/life';
 import { CheckIcon } from '@unlocalhosted/metalui/icons';
 import { tokens, worstContrast } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
@@ -37,33 +38,11 @@ type Tint = { bone: string; graphite: string; kind: string; valence: string; fee
 const TINT = tokens.foundations.tint;
 const TINTS = Object.entries(TINT).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [string, Tint][];
 
-// One real glyph per family, drawn from Kamui's life set (design/medium-icons) until the set
-// itself lands in MetalUI (import plan 3.1). The tint colors the stroke; a tinted vessel is not filled.
-const VESSEL = '<circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/>';
-const SPECIMEN: Record<string, { name: string; body: string }> = {
-  ember: { name: 'happy', body: `${VESSEL}<path d="M6.8 13.2c2.2 0 2.8-4.6 5.2-4.6s3 4.6 5.2 4.6"/>` },
-  blush: { name: 'loved', body: `${VESSEL}<circle cx="10.2" cy="12" r="3.1"/><circle cx="13.8" cy="12" r="3.1"/>` },
-  tide: { name: 'calm', body: `${VESSEL}<path d="M6.4 11c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0"/><path d="M8.8 14.4c0.76 -0.53 1.34 -0.53 2.1 0c0.76 0.53 1.34 0.53 2.1 0c0.76 -0.53 1.34 -0.53 2.1 0" style="opacity:.45"/>` },
-  spark: { name: 'curious', body: `${VESSEL}<path d="M6.6 14.6c2.4 0 3.8-.8 4.6-2.2.9-1.7.1-3.4-1.2-3.2-1.5.2-1.2 2.5.6 2.9 2.2.5 4.2-.9 5.8-3.3"/><circle class="s" cx="16.9" cy="7.6" r="1"/>` },
-  graphite: { name: 'focused', body: `${VESSEL}<circle cx="12" cy="12" r="3.8"/><circle class="s" cx="12" cy="12" r="1.2"/>` },
-  dusk: { name: 'sad', body: `${VESSEL}<path d="M7 10c2.8.2 4.2 2 5.4 3.6 1 1.3 2.3 1.9 4.4 1.9"/>` },
-  iris: { name: 'anxious', body: `${VESSEL}<path d="M6.6 13.2l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5"/>` },
+// One real life glyph per family (@unlocalhosted/metalui/icons/life). The tint colors the stroke;
+// a tinted vessel is not filled.
+const SPECIMEN: Record<string, LifeIconName> = {
+  ember: 'happy', blush: 'loved', tide: 'calm', spark: 'curious', graphite: 'focused', dusk: 'sad', iris: 'anxious',
 };
-const DATE = '<path class="f" style="--duo:.2" d="M12 19.8c-.3 0-8.4-4.9-8.4-10.5A4.4 4.4 0 0 1 12 7.1a4.4 4.4 0 0 1 8.4 2.2c0 5.6-8.1 10.5-8.4 10.5Z"/>';
-
-function Glyph({ tint, body, size = 36, title }: { tint: string; body: string; size?: number; title: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      className={`mu-icon mu-tint-${tint}`}
-      role="img"
-      aria-label={title}
-      dangerouslySetInnerHTML={{ __html: body }}
-    />
-  );
-}
 
 /** Every family on its real glyph, in both colorways, with a switch that turns tints off the way Increase Contrast does. */
 function TintBench() {
@@ -77,13 +56,13 @@ function TintBench() {
             <div className="grid grid-cols-4 gap-x-8 gap-y-16 text-ink sm:grid-cols-8">
               {TINTS.map(([t, q]) => (
                 <div key={t} className="flex flex-col items-center gap-6 text-center">
-                  <Glyph tint={t} body={SPECIMEN[t].body} title={`${SPECIMEN[t].name}, ${t}`} />
-                  <span className="type-meta text-ink">{SPECIMEN[t].name}</span>
+                  <LifeIcon name={SPECIMEN[t]} tint={t as TintName} size={36} title={`${SPECIMEN[t]}, ${t}`} />
+                  <span className="type-meta text-ink">{SPECIMEN[t]}</span>
                   <span className="type-label engraved">{q.kind}</span>
                 </div>
               ))}
               <div className="flex flex-col items-center gap-6 text-center">
-                <Glyph tint="blush" body={DATE} title="date, blush" />
+                <LifeIcon name="date" size={36} title="date, blush" />
                 <span className="type-meta text-ink">date</span>
                 <span className="type-label engraved">moment</span>
               </div>

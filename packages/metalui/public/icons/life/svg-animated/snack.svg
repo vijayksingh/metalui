@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-snack" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Snack. Hover (or data-state="hover"): cookie turns, a crumb falls. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .ck{transform-origin:11.2px 12.8px} svg.mu-life .cr{opacity:0}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ck{transform:rotate(-14deg)} svg.mu-life:is(:hover,[data-state~="hover"]) .cr{animation:mu-il-snack .6s cubic-bezier(.3,0,.2,1) .08s} @keyframes mu-il-snack{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(1.2px,6px)}}}</style>
+<g class="ck"><path class="f" style="--duo:.14" d="M14.27 5.41L13.55 5.15L12.8 4.96L12.03 4.84L11.26 4.8L10.49 4.83L9.72 4.94L8.97 5.12L8.24 5.37L7.54 5.69L6.87 6.08L6.24 6.53L5.66 7.03L5.12 7.6L4.65 8.21L4.24 8.86L3.89 9.55L3.61 10.27L3.4 11.02L3.27 11.78L3.2 12.55L3.22 13.32L3.3 14.09L3.47 14.85L3.7 15.58L4 16.29L4.37 16.97L4.81 17.61L5.3 18.21L5.85 18.75L6.45 19.24L7.1 19.67L7.78 20.03L8.49 20.33L9.23 20.55L9.99 20.71L10.76 20.79L11.53 20.79L12.3 20.72L13.06 20.58L13.8 20.36L14.52 20.08L15.21 19.72L15.86 19.3L16.46 18.82L17.02 18.29L17.52 17.7L17.97 17.07L18.35 16.39L18.66 15.69L18.9 14.95L19.08 14.2L19.17 13.43L19.2 12.66L19.15 11.89L19.02 11.13L18.82 10.38L18.62 10.39L18.42 10.4L18.22 10.4L18.02 10.38L17.83 10.36L17.63 10.33L17.43 10.29L17.24 10.24L17.05 10.18L16.86 10.11L16.67 10.03L16.49 9.94L16.32 9.85L16.15 9.74L15.98 9.63L15.82 9.51L15.66 9.39L15.51 9.25L15.37 9.11L15.24 8.96L15.11 8.81L14.99 8.65L14.88 8.48L14.77 8.31L14.67 8.14L14.59 7.96L14.51 7.77L14.44 7.59L14.37 7.4L14.32 7.2L14.28 7.01L14.24 6.81L14.22 6.61L14.21 6.41L14.2 6.21L14.2 6.01L14.22 5.81L14.24 5.61Z"/><circle class="s" cx="8.4" cy="10.4" r="1"/><circle class="s" cx="13.2" cy="15.4" r="1"/><circle class="s" cx="8.6" cy="15.8" r="1"/><circle class="s" cx="12.4" cy="10.4" r="1"/></g><circle class="cr s" cx="17.8" cy="9.6" r=".85"/>
+</svg>

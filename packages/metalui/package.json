@@ -14,6 +14,7 @@
     "public/AI.md",
     "public/components.json",
     "public/icons.json",
+    "public/icons-life.json",
     "README.md",
     "LICENSE"
   ],
@@ -29,12 +30,18 @@
       "types": "./dist/icons.d.ts",
       "import": "./dist/icons.js"
     },
+    "./icons/life": {
+      "types": "./dist/icons-life.d.ts",
+      "import": "./dist/icons-life.js"
+    },
     "./styles.css": "./dist/index.css",
     "./icons.css": "./dist/icons.css",
+    "./icons/life.css": "./dist/icons-life.css",
     "./tokens.css": "./src/components/tokens.css",
     "./theme.css": "./src/components/theme.css",
     "./components.json": "./public/components.json",
-    "./icons.json": "./public/icons.json"
+    "./icons.json": "./public/icons.json",
+    "./icons-life.json": "./public/icons-life.json"
   },
   "scripts": {
     "build": "tsup",

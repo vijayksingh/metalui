@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-cleaning" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Cleaning. Hover (or data-state="hover"): a puff of mist. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .ms{transform-origin:15.6px 6px}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ms{animation:mu-il-cleaning .6s cubic-bezier(.2,.7,.3,1)} @keyframes mu-il-cleaning{0%{transform:scale(.5);opacity:0}50%{opacity:1}100%{transform:none}}}</style>
+<path class="f" style="--duo:.12" d="M8.2 10.2h5.4l1.2 2.4v6a1.8 1.8 0 0 1-1.8 1.8H8.8a1.8 1.8 0 0 1-1.8-1.8v-6Z"/><path d="M9.2 10.2V7.6h3.4v2.6"/><path d="M8.2 7.6V5a1.2 1.2 0 0 1 1.2-1.2h4.4l1.6 1.8h-1.8v2"/><g class="ms"><circle class="s m1" cx="18.2" cy="3.8" r=".75"/><circle class="s m2" cx="19.4" cy="6" r=".75"/><circle class="s m3" cx="18.2" cy="8.2" r=".75"/></g>
+</svg>

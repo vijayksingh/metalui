@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-life mu-il-calm" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI life icon: Calm. Hover (or data-state="hover"): reflection ripples once. Reduced motion: static. -->
+<style>
+.mu-life{--sw:1.7;--k-spring:linear(0,0.0132,0.0492,0.1028,0.1692,0.2443,0.3247,0.4071,0.4892,0.5688,0.6445,0.715,0.7795,0.8374,0.8886,0.933,0.9707,1.0021,1.0274,1.0473,1.0623,1.0728,1.0795,1.0828,1.0835,1.0818,1.0784,1.0736,1.0679,1.0614,1.0547,1.0478,1.041,1.0344,1.0282,1.0224,1.0171,1.0124,1.0083,1.0047,1.0017,0.9992,0.9972,0.9957,1);--k-dur:.5s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-life *{transform-box:view-box}
+.mu-life .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-life .s{fill:currentColor;stroke:none}
+.mu-life .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
+}
+svg.mu-life .rf{transform-origin:12px 14.4px}
+@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .rf{animation:mu-il-calm 1.4s cubic-bezier(.45,0,.55,1)} @keyframes mu-il-calm{50%{transform:scaleX(1.35);opacity:.2}}}</style>
+<circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/><path d="M6.4 11c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0"/><path class="rf" d="M8.8 14.4c0.76 -0.53 1.34 -0.53 2.1 0c0.76 0.53 1.34 0.53 2.1 0c0.76 -0.53 1.34 -0.53 2.1 0" style="opacity:.45"/>
+</svg>
