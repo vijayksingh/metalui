@@ -25,11 +25,11 @@ export default function Home() {
       <section className="hero" aria-labelledby="hero-h">
         <div className="hero-copy">
           <span className="eng">MetalUI · Soft Hardware · Rev B · React and SwiftUI</span>
-          <h1 id="hero-h">Small, well-made objects <span>on a quiet table.</span></h1>
+          <h1 id="hero-h">UI components that look <span>and feel like real objects.</span></h1>
           <p>
-            Controls that behave like objects: bone and graphite soft-touch plastic, smoked glass, rubber and anodized metal, lit by one key
-            light from the top-left. <b>Caps press in and spring back.</b> Every piece ships as React on Base UI and as SwiftUI from one set of
-            recipes, with a guide for coding agents.
+            Buttons, switches and cards made to look like soft plastic, glass, rubber and metal. They all share one light from the top left.
+            <b>Buttons move down when you press them and spring back.</b> Every component works in React and in SwiftUI, and both are built from
+            the same files. There is also a guide for coding agents.
           </p>
         </div>
 
@@ -43,15 +43,15 @@ export default function Home() {
 
       <section className="sec" id="two-halves">
         <h2>Two halves</h2>
-        <p className="sec-sub">The material says what a thing is made of. The mechanics say how it answers your hand. Neither is a theme; both are closed sets.</p>
+        <p className="sec-sub">The first half is how things look. The second half is how they move when you use them.</p>
         <div className="two-col">
           <div className="panel raised">
             <span className="eng">The material</span>
             <h3 style={{ margin: '6px 0 10px' }}>Soft Hardware</h3>
             <ul>
-              <li><b>Materials, not colours.</b> Bone, graphite, smoked glass, rubber, anodized metal. One material per object, plus at most one signal colour.</li>
-              <li><b>One light.</b> A soft key light from the top-left. Light lives inside the material; nothing glows.</li>
-              <li><b>Recipes, not styles.</b> Every look is layered data in one file; CSS and Swift are generated from it, so they cannot drift.</li>
+              <li><b>Materials.</b> Bone, graphite, smoked glass, rubber and metal. Each object uses one material and at most one accent colour.</li>
+              <li><b>One light.</b> A soft light from the top left. Nothing glows.</li>
+              <li><b>One source file.</b> Every look is written down once. The CSS and Swift code are made from that file, so web and Mac always match.</li>
             </ul>
             <p style={{ marginTop: 12 }}><Link to="/foundations/materials">Materials</Link></p>
           </div>
@@ -59,9 +59,9 @@ export default function Home() {
             <span className="eng">The mechanics</span>
             <h3 style={{ margin: '6px 0 10px' }}>Things you can press</h3>
             <ul>
-              <li><b>Travel.</b> Caps sink one point and spring back; thumbs slide; dials have detents.</li>
-              <li><b>Mass.</b> Seven spring classes from stiffness and damping, so a thumb and a panel move like what they are.</li>
-              <li><b>Nothing snaps.</b> A label that changes turns on a drum; an icon that changes morphs.</li>
+              <li><b>Pressing.</b> Buttons move down one point and spring back. Sliders slide. Dials click into steps.</li>
+              <li><b>Weight.</b> There are seven springs. Small things move fast and big things move slower.</li>
+              <li><b>Smooth changes.</b> When a label or icon changes, it animates into the new one instead of jumping.</li>
             </ul>
             <p style={{ marginTop: 12 }}><Link to="/foundations/motion">Motion</Link></p>
           </div>
@@ -72,10 +72,10 @@ export default function Home() {
         <h2>Explore the system</h2>
         <div className="cards">
           {[
-            { to: '/foundations', icon: 'layout', title: 'Foundations', body: 'Colorways, ink, type, space, radius, materials, elevation, springs and transitions.', eng: 'Tokens · live' },
-            { to: '/components/button', icon: 'board', title: 'Components', body: 'Primitives with one job each: button, segmented control, keycap, slider, field, menu, tooltip, toast.', eng: 'React · SwiftUI' },
-            { to: '/components/tool-strip', icon: 'text', title: 'Blocks', body: 'Things made of components: toolbar, filter bar, time scrubber, region, cards and the selection frame.', eng: 'Compositions' },
-            { to: '/icons', icon: 'seed', title: 'Icons', body: 'Monoline glyphs on a 24 grid, each with its own hover pose, plus the life set and its tints.', eng: 'Glyphs' },
+            { to: '/foundations', icon: 'layout', title: 'Foundations', body: 'Colours, text, spacing, corners, materials, shadows and motion.', eng: 'Tokens · live' },
+            { to: '/components/button', icon: 'board', title: 'Components', body: 'Small parts that each do one thing, like buttons, sliders, fields, menus and tooltips.', eng: 'React · SwiftUI' },
+            { to: '/components/tool-strip', icon: 'text', title: 'Blocks', body: 'Bigger pieces built from components, like the toolbar, filter bar and cards.', eng: 'Compositions' },
+            { to: '/icons', icon: 'seed', title: 'Icons', body: 'Line icons on a 24 point grid. Each one moves a little when you hover it.', eng: 'Glyphs' },
           ].map((c) => (
             <Link key={c.title} className="card raised obj" to={c.to}>
               <span className="ico"><Icon name={c.icon as never} size={20} /></span>

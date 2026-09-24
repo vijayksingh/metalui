@@ -33,9 +33,9 @@ export default function Landing() {
       <FloatingTable mode="space" onXray={() => setXray(true)} />
 
       <footer className="landing-foot">
-        <p className="landing-line">Small, well-made objects <span>for React and SwiftUI.</span></p>
+        <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
         <Button cap="primary" onClick={enter}>Read the docs</Button>
-        <span className="eng">⏎ read the docs · click the dark button to open it up · <Kbd size="small">esc</Kbd> back</span>
+        <span className="eng">⏎ read the docs · click the dark button to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
       {xray && (
