@@ -34,6 +34,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case capture = "capture"
     case paste = "paste"
     case keeper = "keeper"
+    case plus = "plus"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -70,6 +71,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return "Capture"
         case .paste: return "Paste"
         case .keeper: return "Keeper"
+        case .plus: return "New"
         }
     }
 
@@ -106,6 +108,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return .status
         case .paste: return .status
         case .keeper: return .status
+        case .plus: return .actions
         }
     }
 
@@ -143,6 +146,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return 0.16
         case .paste: return 0.1
         case .keeper: return nil
+        case .plus: return 0.12
         }
     }
 
@@ -180,6 +184,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return nil
         case .paste: return nil
         case .keeper: return nil
+        case .plus: return nil
         }
     }
 
@@ -217,6 +222,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return false
         case .paste: return false
         case .keeper: return true
+        case .plus: return false
         }
     }
 
@@ -254,6 +260,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .capture: return 1.85
         case .paste: return 1.85
         case .keeper: return 1.9
+        case .plus: return 1.85
         }
     }
 }

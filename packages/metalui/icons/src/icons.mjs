@@ -288,4 +288,12 @@ export const ICONS = [
        @keyframes kp-r{40%{transform:rotate(-8deg)}}
        @keyframes kp-e{40%{transform:translateY(-.9px)}}`,
   shape: 'The buddy as a glyph: solid body r6.8 with eye capsules knocked out (2.4×4.2), accretion ring rx9.8 ry2.5 tilted −12°; the front arc knocks a 1.1u gap into the body, the back arc hides behind it.' },
+
+// A tile with a plus: the new-block cap. Body: the tile. Marks: the two arms.
+{ name: 'plus', cat: 'Actions', label: 'New', hover: 'the plus turns a quarter', press: 'the tile presses in',
+  body: `<rect class="pt f" style="--duo:.12" x="4.5" y="4.5" width="15" height="15" rx="3.5"/><path class="pa" d="M8.8 12h6.4"/><path class="pa" d="M12 8.8v6.4"/>`,
+  base: `& .pa{transform-origin:12px 12px} & .pt{transform-origin:12px 12px}`,
+  mo: `@H .pa{transform:rotate(90deg)}
+       @P .pt{animation:pl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes pl-p{40%{transform:scale(.92)}}`,
+  shape: 'Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre.' },
 ];

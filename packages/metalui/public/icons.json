@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 31,
+  "count": 32,
   "icons": [
     {
       "name": "select",
@@ -342,6 +342,17 @@
       "pressMs": 440,
       "tuned16": true,
       "construction": "The buddy as a glyph: solid body r6.8 with eye capsules knocked out (2.4×4.2), accretion ring rx9.8 ry2.5 tilted −12°; the front arc knocks a 1.1u gap into the body, the back arc hides behind it."
+    },
+    {
+      "name": "plus",
+      "component": "PlusIcon",
+      "label": "New",
+      "category": "Actions",
+      "hover": "the plus turns a quarter",
+      "press": "the tile presses in",
+      "pressMs": 300,
+      "tuned16": false,
+      "construction": "Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre."
     }
   ]
 }

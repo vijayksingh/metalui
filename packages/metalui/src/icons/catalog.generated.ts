@@ -663,6 +663,26 @@ export const ICON_CATALOG = {
     body16: "<defs><mask id=\"&-k\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><rect x=\"8.7\" y=\"7.2\" width=\"2.7\" height=\"4.5\" rx=\"1.35\" fill=\"#000\" stroke=\"none\"/><rect x=\"12.6\" y=\"7.2\" width=\"2.7\" height=\"4.5\" rx=\"1.35\" fill=\"#000\" stroke=\"none\"/><path d=\"M2.4 13a9.6 2.4 0 0 0 19.2 0\" fill=\"none\" stroke=\"#000\" stroke-width=\"4.4\" transform=\"rotate(-12 12 13)\"/></mask></defs><circle class=\"s\" mask=\"url(#&-k)\" cx=\"12\" cy=\"11.2\" r=\"7\"/><path d=\"M2.4 13a9.6 2.4 0 0 0 19.2 0\" transform=\"rotate(-12 12 13)\"/>",
     sw16: 1.9,
   },
+  /* ─────────────────────────────────────────────────────────
+   * NEW · Actions
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the plus turns a quarter
+   * PRESS one-shot (from the current pose)
+   *          the tile presses in
+   *     0ms   .pt plays pl-p (300ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "plus": {
+    label: "New",
+    category: "Actions",
+    hover: "the plus turns a quarter",
+    press: "the tile presses in",
+    pressMs: 300,
+    defs: "",
+    body: "<rect class=\"pt f\" style=\"--duo:.12\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3.5\"/><path class=\"pa\" d=\"M8.8 12h6.4\"/><path class=\"pa\" d=\"M12 8.8v6.4\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

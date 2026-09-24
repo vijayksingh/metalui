@@ -100,3 +100,6 @@
 /* keeper */
 .mu-icon.mu-ic-keeper .eyes{transform-origin:12px 9.6px} .mu-icon.mu-ic-keeper .rg{transform-origin:12px 12.8px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-keeper,.mu-ic-keeper:is(:hover,[data-hover])):not([data-static]) .eyes{animation:kp-b .32s cubic-bezier(.4,0,.2,1)} .mu-icon.mu-ic-keeper[data-press] .rg{animation:kp-r .44s cubic-bezier(.3,0,.2,1)} .mu-icon.mu-ic-keeper[data-press] .eyes{animation:kp-e .44s cubic-bezier(.3,0,.2,1)} @keyframes kp-b{45%{transform:scaleY(.12)}} @keyframes kp-r{40%{transform:rotate(-8deg)}} @keyframes kp-e{40%{transform:translateY(-.9px)}}}
+/* plus */
+.mu-icon.mu-ic-plus .pa{transform-origin:12px 12px} .mu-icon.mu-ic-plus .pt{transform-origin:12px 12px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-plus,.mu-ic-plus:is(:hover,[data-hover])):not([data-static]) .pa{transform:rotate(90deg)} .mu-icon.mu-ic-plus[data-press] .pt{animation:pl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes pl-p{40%{transform:scale(.92)}}}
