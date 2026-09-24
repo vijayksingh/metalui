@@ -109,3 +109,6 @@
 /* task */
 .mu-icon.mu-ic-task .tk{stroke-dasharray:1 2;transform-origin:11px 14.5px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-task,.mu-ic-task:is(:hover,[data-hover])):not([data-static]) .tk{transform:translateY(-.5px) rotate(-4deg)} .mu-icon.mu-ic-task[data-press] .tk{animation:tk-p .3s cubic-bezier(.3,.1,.2,1) both} @keyframes tk-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}
+/* tag */
+.mu-icon.mu-ic-tag .tg{transform-origin:9.4px 12px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-tag,.mu-ic-tag:is(:hover,[data-hover])):not([data-static]) .tg{transform:rotate(-9deg)} .mu-icon.mu-ic-tag[data-press] .tg{animation:tg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes tg-p{40%{transform:scale(.93)}}}

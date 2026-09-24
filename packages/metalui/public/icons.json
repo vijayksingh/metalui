@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 34,
+  "count": 35,
   "icons": [
     {
       "name": "select",
@@ -375,6 +375,17 @@
       "pressMs": 300,
       "tuned16": false,
       "construction": "Dimple 14 × 14 r3.5, tinted .12; the tick draws with trim(0→1)."
+    },
+    {
+      "name": "tag",
+      "component": "TagIcon",
+      "label": "Tag",
+      "category": "Tools",
+      "hover": "the tag swings on its eyelet",
+      "press": "the tag stamps",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line."
     }
   ]
 }

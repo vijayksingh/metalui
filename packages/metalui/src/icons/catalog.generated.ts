@@ -723,6 +723,26 @@ export const ICON_CATALOG = {
     body: "<rect class=\"tb f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><path class=\"tk\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * TAG · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the tag swings on its eyelet
+   * PRESS one-shot (from the current pose)
+   *          the tag stamps
+   *     0ms   .tg plays tg-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "tag": {
+    label: "Tag",
+    category: "Tools",
+    hover: "the tag swings on its eyelet",
+    press: "the tag stamps",
+    pressMs: 340,
+    defs: "",
+    body: "<g class=\"tg\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.2 5h7.6a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2h-7.6a2.2 2.2 0 0 1-1.7-.8L4.6 13.4a2.2 2.2 0 0 1 0-2.8l3.9-4.8a2.2 2.2 0 0 1 1.7-.8Z\"/><circle class=\"s\" cx=\"9.4\" cy=\"12\" r=\"1.3\"/></g>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

@@ -312,4 +312,12 @@ export const ICONS = [
   mo: `@H .tk{transform:translateY(-.5px) rotate(-4deg)}
        @P .tk{animation:tk-p .3s cubic-bezier(.3,.1,.2,1) both} @keyframes tk-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
   shape: 'Dimple 14 × 14 r3.5, tinted .12; the tick draws with trim(0→1).' },
+
+// A tag: the price tag with its eyelet. Body: the tag. Mark: the eyelet, a bead.
+{ name: 'tag', cat: 'Tools', label: 'Tag', hover: 'the tag swings on its eyelet', press: 'the tag stamps',
+  body: `<g class="tg"><path class="f" style="--duo:.12" d="M10.2 5h7.6a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2h-7.6a2.2 2.2 0 0 1-1.7-.8L4.6 13.4a2.2 2.2 0 0 1 0-2.8l3.9-4.8a2.2 2.2 0 0 1 1.7-.8Z"/><circle class="s" cx="9.4" cy="12" r="1.3"/></g>`,
+  base: `& .tg{transform-origin:9.4px 12px}`,
+  mo: `@H .tg{transform:rotate(-9deg)}
+       @P .tg{animation:tg-p .34s cubic-bezier(.3,0,.2,1)} @keyframes tg-p{40%{transform:scale(.93)}}`,
+  shape: 'Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line.' },
 ];

@@ -69,3 +69,5 @@ export const PlusIcon = createIcon("plus", "PlusIcon");
 export const RegionIcon = createIcon("region", "RegionIcon");
 /** Task. Hover: the tick lifts. Press: the tick redraws. */
 export const TaskIcon = createIcon("task", "TaskIcon");
+/** Tag. Hover: the tag swings on its eyelet. Press: the tag stamps. */
+export const TagIcon = createIcon("tag", "TagIcon");
