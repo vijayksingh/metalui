@@ -59,7 +59,9 @@ const cssColor = (c) => (c.self !== undefined ? `color-mix(in srgb, var(--mu-sel
 const swiftPaintColor = (c) => (c.self !== undefined ? `.selfColor(alpha: ${num(c.self)})` : `.color(MetalRGBA(${c.rgba.slice(0, 3).map(num).join(', ')}, ${num(c.rgba[3])}))`);
 
 // a color inside a value, rewritten for CSS (self → --mu-self)
-const cssValue = (v) => v.replace(/self(?:\/([\d.]+))?/g, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
+// `self` as a colour token only: never inside a name (--mu-r-button-self-fade)
+const SELF = /(?<![\w-])self(?:\/([\d.]+))?(?![\w-])/g;
+const cssValue = (v) => v.replace(SELF, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
 
 function shadow(layer) {
   const inset = /\binset\b/.test(layer);
@@ -132,7 +134,7 @@ function propValue(v) {
   return String(v)
     .replace(/\bsans\b/, 'var(--mu-sans)')
     .replace(/\bmono\b/, 'var(--mu-mono)')
-    .replace(/self(?:\/([\d.]+))?/g, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
+    .replace(SELF, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
 }
 
 /** Validates and returns { css: { root, bone, graphite }, swift } for tokens.recipes. */
@@ -170,7 +172,7 @@ export function buildRecipes(recipes) {
           target.push(`    ${mark}${cssValue(l.value)}${k < layers.length - 1 ? ',' : ';'}`);
         });
       };
-      const usesSelf = list.some((l) => /\bself\b/.test(l.value));
+      const usesSelf = list.some((l) => /(?<![\w-])self(?![\w-])/.test(l.value));
       if (!perColorway) {
         emitTo(root, list);
         if (usesSelf) emitTo(selfish, list);
@@ -213,7 +215,7 @@ export function buildRecipes(recipes) {
         else if (/^\d+(\.\d+)?ms$/.test(str)) utilities.push(`@utility duration-${n} {\n  transition-duration: ${ref(k)};\n}`);
         else if (/^(#|rgba?\(|hsla?\(|transparent$|white$|black$)/.test(str)) themeVars.push(`  --color-${n}: ${ref(k)};`);
         else if (/^blur\(/.test(str)) utilities.push(`@utility backdrop-${n} {\n  -webkit-backdrop-filter: ${ref(k)};\n  backdrop-filter: ${ref(k)};\n}`);
-        else if (k === 'transition') utilities.push(`@utility transition-${n} {\n  transition: ${ref(k)};\n}`);
+        else if (k === 'transition') utilities.push(`@utility transition-${stem(part)} {\n  transition: ${ref(k)};\n}`);
         else if (/^-?\d*\.?\d+$/.test(str)) {
           if (k === 'z' || /-z$/.test(k)) utilities.push(`@utility z-${n} {\n  z-index: ${ref(k)};\n}`);
           else if (/weight/.test(k)) utilities.push(`@utility weight-${n} {\n  font-weight: ${ref(k)};\n}`);
