@@ -34,7 +34,7 @@
       "types": "./dist/icons-life.d.ts",
       "import": "./dist/icons-life.js"
     },
-    "./styles.css": "./dist/index.css",
+    "./styles.css": "./src/components/tokens.css",
     "./icons.css": "./dist/icons.css",
     "./icons/life.css": "./dist/icons-life.css",
     "./tokens.css": "./src/components/tokens.css",
