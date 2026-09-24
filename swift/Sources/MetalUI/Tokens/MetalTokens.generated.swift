@@ -2142,6 +2142,15 @@ public enum MetalPaletteMetrics {
     public static let footPadBottom: Double = 6.0
     public static let enterRise: Double = 6.0
     public static let enterScale: Double = 0.985
+    public static let listPadTop: Double = 4.0
+    public static let listPadBottom: Double = 2.0
+    public static let hintGap: Double = 6.0
+    public static let barRadius: Double = 2.0
+    public static let emptyPadY: Double = 14.0
+    public static let footMarginTop: Double = 4.0
+    public static let footKeyGap: Double = 5.0
+    public static let edge: Double = 1.0
+    public static let barOutset: Double = 2.0
 }
 
 /// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Segmented and IconButton(ghost).

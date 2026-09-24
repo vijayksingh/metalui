@@ -1,7 +1,7 @@
 @import "../tokens.css";
 @import "../kbd/kbd.css";
 
-/* Command palette (KAMUI-06; Kamui 04 §3) on Base UI Dialog + inline Combobox. */
+/* Command palette (the reference design's .pal) on Base UI Dialog + inline Combobox. */
 .mu-palette-scrim {
   position: fixed;
   inset: 0;
@@ -43,7 +43,7 @@
   align-items: center;
   gap: var(--mu-palette-field-gap);
   height: var(--mu-palette-field-height);
-  padding: 0 var(--mu-palette-field-pad-end) 0 var(--mu-palette-field-pad-start);
+  padding: var(--mu-zero) var(--mu-palette-field-pad-end) var(--mu-zero) var(--mu-palette-field-pad-start);
   border-radius: var(--mu-palette-field-radius);
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
@@ -53,10 +53,10 @@
 .mu-palette-field-glyph > svg { width: var(--mu-palette-field-glyph); height: var(--mu-palette-field-glyph); }
 .mu-palette-input {
   flex: 1;
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
+  min-width: var(--mu-zero);
+  padding: var(--mu-zero);
+  border: var(--mu-zero);
+  outline: var(--mu-zero);
   background: transparent;
   color: var(--mu-ink);
   caret-color: var(--mu-green-deep);
@@ -68,10 +68,10 @@
   max-height: calc(var(--mu-palette-list-max) * 100vh);
   overflow: auto;
   /* The selected row's bar sits 2 outside the row: room for it inside the scroll clip. */
-  margin: 0 var(--mu-palette-bar-left);
-  padding: 4px calc(var(--mu-palette-bar-left) * -1) 2px;
-  scroll-padding: 4px 0;
-  outline: 0;
+  margin: var(--mu-zero) var(--mu-palette-bar-left);
+  padding: var(--mu-palette-list-pad-top) var(--mu-palette-bar-outset) var(--mu-palette-list-pad-bottom);
+  scroll-padding: var(--mu-palette-list-pad-top) var(--mu-zero);
+  outline: var(--mu-zero);
 }
 .mu-palette-list:empty { display: none; }
 .mu-palette-eng { color: var(--mu-engrave); text-shadow: 0 .5px 0 var(--mu-lip); }
@@ -86,7 +86,7 @@
   align-items: center;
   gap: var(--mu-palette-row-gap);
   height: var(--mu-palette-row-height);
-  padding: 0 var(--mu-palette-row-pad);
+  padding: var(--mu-zero) var(--mu-palette-row-pad);
   border-radius: var(--mu-radius-row);
   color: var(--mu-ink);
   cursor: pointer;
@@ -96,7 +96,7 @@
 .mu-palette-row-glyph { display: inline-grid; flex: none; color: var(--mu-ink2); }
 .mu-palette-row-glyph > svg { width: var(--mu-palette-row-glyph); height: var(--mu-palette-row-glyph); }
 .mu-palette-row-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mu-palette-row-hint { display: flex; flex: none; align-items: center; gap: 6px; margin-left: auto; }
+.mu-palette-row-hint { display: flex; flex: none; align-items: center; gap: var(--mu-palette-hint-gap); margin-left: auto; }
 /* Selected: a raised cap with a green-deep bar at the left. Instant: the list is scanned, not watched. */
 .mu-palette-row[data-highlighted] { background: var(--mu-row-on-bg); box-shadow: var(--mu-raise-sm); }
 .mu-palette-row[data-highlighted]::before {
@@ -106,7 +106,7 @@
   top: var(--mu-palette-bar-inset);
   bottom: var(--mu-palette-bar-inset);
   width: var(--mu-palette-bar-width);
-  border-radius: 2px;
+  border-radius: var(--mu-palette-bar-radius);
   background: var(--mu-green-deep);
 }
 .mu-palette-row[data-danger], .mu-palette-row[data-danger] .mu-palette-row-glyph { color: var(--mu-red); }
@@ -120,21 +120,21 @@
   text-decoration-thickness: var(--mu-palette-mark-underline);
   text-underline-offset: var(--mu-palette-mark-offset);
 }
-.mu-palette-empty:not(:empty) { padding: 14px var(--mu-palette-row-pad); color: var(--mu-ink3); }
+.mu-palette-empty:not(:empty) { padding: var(--mu-palette-empty-pad-y) var(--mu-palette-row-pad); color: var(--mu-ink3); }
 
 /* The footer: keys above an engraved rule. */
 .mu-palette-foot {
   display: flex;
   align-items: center;
   gap: var(--mu-palette-foot-gap);
-  margin-top: 4px;
+  margin-top: var(--mu-palette-foot-margin-top);
   padding: var(--mu-palette-foot-pad-top) var(--mu-palette-row-pad) var(--mu-palette-foot-pad-bottom);
-  border-top: 1px solid var(--mu-rule);
-  box-shadow: inset 0 1px 0 var(--mu-rule-lip);
+  border-top: var(--mu-palette-edge) solid var(--mu-rule);
+  box-shadow: inset var(--mu-zero) var(--mu-palette-edge) var(--mu-zero) var(--mu-rule-lip);
 }
-.mu-palette-foot > span { display: flex; align-items: center; gap: 5px; }
+.mu-palette-foot > span { display: flex; align-items: center; gap: var(--mu-palette-foot-key-gap); }
 .mu-palette-foot > .mu-palette-status { margin-left: auto; }
 
 @media (prefers-contrast: more) {
-  .mu-palette-row[data-highlighted] { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise-sm); }
+  .mu-palette-row[data-highlighted] { box-shadow: inset var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-palette-edge) var(--mu-contrast-edge), var(--mu-raise-sm); }
 }

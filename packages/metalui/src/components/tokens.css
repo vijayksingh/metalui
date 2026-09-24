@@ -427,6 +427,15 @@
   --mu-palette-foot-pad-bottom: 6px;
   --mu-palette-enter-rise: 6px;
   --mu-palette-enter-scale: 0.985;
+  --mu-palette-list-pad-top: 4px;
+  --mu-palette-list-pad-bottom: 2px;
+  --mu-palette-hint-gap: 6px;
+  --mu-palette-bar-radius: 2px;
+  --mu-palette-empty-pad-y: 14px;
+  --mu-palette-foot-margin-top: 4px;
+  --mu-palette-foot-key-gap: 5px;
+  --mu-palette-edge: 1px;
+  --mu-palette-bar-outset: 2px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
