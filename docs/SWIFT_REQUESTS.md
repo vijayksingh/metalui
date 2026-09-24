@@ -1,5 +1,11 @@
 # Swift parity requests
 
+## Cue recipe for inferred values and life glyph
+
+- **Object:** `cue` recipe parts for `MetalCueInferred` and `MetalCueLife`, with the in-flow text marks documented as metric-neutral.
+- **Missing:** the generated cue foundations include `inferred-height`, `inferred-pad`, `inferred-ring`, `life-gap-before`, `life-gap-after`, and `life-drop`, but no `MetalRecipes.cue`. Swift's existing views still assemble a transparent inferred pill and life run with literals. Give inferred/date/measurement values and the life run recipe parts so Swift can paint the same layers and type without a local twin. Until it lands, the Mac host uses generated `MetalCue` values and the existing `MetalCueInferred`/`MetalCueLife` components.
+- **Demo CSS:** `style.css:191-205` defines cue underlines, resolved chips and the 17 px inferred date pill; `style.css:257-261` defines the middle dot, 16 px life glyph, vertical lift and host-hover tint.
+
 ## Status badge type cascade
 
 - **Object:** `status` badge text in both colorways.
