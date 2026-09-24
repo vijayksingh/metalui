@@ -1556,6 +1556,9 @@
 @utility recipe-link-card-screen {
   background: var(--mu-r-link-card-screen-background);
 }
+@utility link-card-tint {
+  --mu-self: var(--mu-r-link-card-screen-tint);
+}
 @utility stroke-width-link-card-width {
   stroke-width: var(--mu-r-link-card-self-width);
 }

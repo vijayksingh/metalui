@@ -302,11 +302,6 @@
           "path": "packages/metalui/src/blocks/link-card/link-card.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/link-card/link-card.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/link-card/link-card.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/link-card/link-card.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/link-card.md. SwiftUI: MetalLinkCard in the MetalUI Swift package."

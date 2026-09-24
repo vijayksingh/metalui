@@ -14,8 +14,7 @@
   "react": {
     "export": "LinkCard, linkHueDegrees",
     "files": [
-      "link-card.tsx",
-      "link-card.css"
+      "link-card.tsx"
     ]
   },
   "swift": {
