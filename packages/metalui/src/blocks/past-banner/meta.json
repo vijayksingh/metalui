@@ -1,0 +1,27 @@
+{
+  "name": "past-banner",
+  "title": "Past banner",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "surface",
+    "label",
+    "button",
+    "kbd"
+  ],
+  "description": "The only chrome that changes while the canvas is scrubbed into the past: Surface(graphite-plain) with the MEMORY engraving, the moment viewed, and a Back to Now cap with its key.",
+  "base": "none",
+  "react": {
+    "export": "PastBanner",
+    "files": [
+      "past-banner.tsx",
+      "past-banner.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalPastBanner",
+    "file": "swift/Sources/MetalUI/Components/MetalPastBanner.swift"
+  },
+  "agent": "past-banner.agent.md"
+}

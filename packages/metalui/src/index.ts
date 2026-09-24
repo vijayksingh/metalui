@@ -23,7 +23,7 @@ export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInf
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './components/tool-strip/tool-strip';
-export { PastBanner, type PastBannerProps } from './components/past-banner/past-banner';
+export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-scrubber/memory-scrubber';
 export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';

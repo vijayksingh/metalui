@@ -267,19 +267,18 @@
       "name": "past-banner",
       "title": "Past banner",
       "status": "alpha",
-      "description": "The only chrome that changes while the canvas is scrubbed into the past: a graphite pill with the MEMORY engraving, the moment viewed, and Back to Now.",
+      "description": "The only chrome that changes while the canvas is scrubbed into the past: Surface(graphite-plain) with the MEMORY engraving, the moment viewed, and a Back to Now cap with its key.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "PastBanner",
-        "base": "@base-ui/react/button"
+        "base": "none"
       },
       "swift": {
         "package": "MetalUI",
         "symbol": "MetalPastBanner"
       },
       "registry": "https://metalui.dev/r/past-banner.json",
-      "agent": "https://metalui.dev/r/past-banner.md",
-      "sheet": "Kamui 04 §13"
+      "agent": "https://metalui.dev/r/past-banner.md"
     },
     {
       "name": "provenance-tooltip",

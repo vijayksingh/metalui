@@ -379,23 +379,21 @@
       "name": "past-banner",
       "type": "registry:ui",
       "title": "Past banner",
-      "description": "The only chrome that changes while the canvas is scrubbed into the past: a graphite pill with the MEMORY engraving, the moment viewed, and Back to Now.",
-      "dependencies": [
-        "@base-ui/react@^1.8.0"
-      ],
+      "description": "The only chrome that changes while the canvas is scrubbed into the past: Surface(graphite-plain) with the MEMORY engraving, the moment viewed, and a Back to Now cap with its key.",
+      "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/past-banner/past-banner.tsx",
+          "path": "packages/metalui/src/blocks/past-banner/past-banner.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/past-banner/past-banner.tsx"
+          "target": "components/metalui/blocks/past-banner/past-banner.tsx"
         },
         {
-          "path": "packages/metalui/src/components/past-banner/past-banner.css",
+          "path": "packages/metalui/src/blocks/past-banner/past-banner.css",
           "type": "registry:file",
-          "target": "components/metalui/past-banner/past-banner.css"
+          "target": "components/metalui/blocks/past-banner/past-banner.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/past-banner.md. SwiftUI: MetalPastBanner in the MetalUI Swift package."

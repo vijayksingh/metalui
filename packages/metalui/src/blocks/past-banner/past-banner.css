@@ -1,0 +1,22 @@
+@import "../../components/tokens.css";
+@import "../../components/surface/surface.css";
+@import "../../components/label/label.css";
+@import "../../components/button/button.css";
+@import "../../components/kbd/kbd.css";
+
+/* Past banner: a composition. It lays out its parts and brings the pill in; every paint is
+   Surface(graphite-plain), Label, Button(graphite) and Kbd. Layout values: --mu-pastbanner-*. */
+.mu-pastbanner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-pastbanner-gap);
+  height: var(--mu-pastbanner-height);
+  padding: var(--mu-zero) var(--mu-pastbanner-pad-end) var(--mu-zero) var(--mu-pastbanner-pad-start);
+  white-space: nowrap;
+  /* One nest from above, on the surface spring; a crossfade under Reduce Motion. */
+  animation: mu-pastbanner-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}
+@keyframes mu-pastbanner-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * -1 * var(--mu-travel-surface))); }
+}
+.mu-pastbanner-back { gap: var(--mu-pastbanner-key-gap); }

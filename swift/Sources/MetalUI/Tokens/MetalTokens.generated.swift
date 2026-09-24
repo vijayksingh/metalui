@@ -2119,7 +2119,7 @@ public enum MetalToolStripMetrics {
     public static let enterRise: Double = 4.0
 }
 
-/// The past banner: the only chrome that changes while the canvas is scrubbed into the past. A graphite pill at the top centre: the MEMORY engraving, the moment viewed, and a Back to Now cap with its key. It drops in one nest from above on the surface spring and leaves on release.
+/// The past banner's layout: a 34 tall pill, padding 0 6 0 14, gap 10; the key sits 7 after Back to Now (the reference's space and 4). Its look is Surface(graphite-plain), Label and Button(graphite); ink, engrave and button-* stay only until the Swift port reads those recipes.
 public enum MetalPastBannerMetrics {
     public static let height: Double = 34.0
     public static let padStart: Double = 14.0
@@ -2132,6 +2132,7 @@ public enum MetalPastBannerMetrics {
     public static let buttonPad: Double = 10.0
     public static let buttonBg: MetalRGBA = MetalRGBA(255, 255, 255, 0.09)
     public static let buttonHover: MetalRGBA = MetalRGBA(255, 255, 255, 0.15)
+    public static let keyGap: Double = 7.0
 }
 
 /// The memory scrubber: time as a dimension of the surface. A well track (10 tall) with a green intent fill up to the knob, tick marks for blocks and edits, day labels beneath, a knurled anodized knob, and a MEMORY readout above with NOW while in the past. Arrows step an hour, Shift a day; the knob rides the part spring when it jumps (a click, a key), and follows the pointer exactly while dragged. Within 1 % of now it snaps to now.

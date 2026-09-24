@@ -1,14 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { Button } from '@base-ui/react/button';
+import { Surface } from '../../components/surface/surface';
+import { Label } from '../../components/label/label';
+import { Button } from '../../components/button/button';
+import { Kbd } from '../../components/kbd/kbd';
 import './past-banner.css';
 
 /* ─────────────────────────────────────────────────────────
- * PAST BANNER (Kamui 04 §13)
+ * PAST BANNER (the reference design's #pastBanner): a composition
+ *   Surface(graphite-plain, pill) › Label(dark) MEMORY + Label(on-graphite) the moment + Button(graphite) Back to Now + Kbd ⎋
+ *
  *   scrubbed  drops in one nest from above on the surface spring (a crossfade under Reduce Motion)
- *   shows     MEMORY · the moment viewed · Back to Now ⎋
- *   back      the cap presses 1; the host returns to the present and unmounts it
+ *   back      the cap presses; the host returns to the present and unmounts it
  * The only chrome that changes while in the past. It is a live status, so the moment is announced.
  * ───────────────────────────────────────────────────────── */
 
@@ -22,12 +26,12 @@ export interface PastBannerProps {
 /** Says the canvas is showing the past, and brings it back. Shown only while scrubbed. */
 export function PastBanner({ moment, onBack, className }: PastBannerProps) {
   return (
-    <div role="status" className={['mu-pastbanner', 'mu-frost-graphite', 'type-ui', className].filter(Boolean).join(' ')}>
-      <span className="mu-pastbanner-engrave mu-type-label">MEMORY</span>
-      <span>{moment}</span>
-      <Button className="mu-pastbanner-back type-ui" onClick={onBack} aria-keyshortcuts="Escape">
-        Back to Now <span aria-hidden className="mu-pastbanner-key">⎋</span>
+    <Surface material="graphite-plain" radius="pill" role="status" className={className ? `mu-pastbanner ${className}` : 'mu-pastbanner'}>
+      <Label variant="dark">MEMORY</Label>
+      <Label variant="on-graphite">{moment}</Label>
+      <Button cap="graphite" className="mu-pastbanner-back" onClick={onBack} aria-keyshortcuts="Escape">
+        Back to Now <Kbd aria-hidden>⎋</Kbd>
       </Button>
-    </div>
+    </Surface>
   );
 }

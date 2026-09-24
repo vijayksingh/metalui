@@ -700,11 +700,11 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 
 # Past banner
 
-Says the canvas is showing the past, and brings it back. React: `PastBanner` from `@unlocalhosted/metalui`. SwiftUI: `MetalPastBanner`. Kamui brief: 04 §13, 03 §9.
+Says the canvas is showing the past, and brings it back. A composition block. React: `PastBanner` from `@unlocalhosted/metalui`. SwiftUI: `MetalPastBanner`.
 
 ## Use it for
 
-- While the memory scrubber views a past moment: `MEMORY · viewing Tue 23 Sep · 14:10 · [Back to Now ⎋]`.
+- While the time scrubber views a past moment: `MEMORY · viewing Tue 23 Sep · 14:10 · [Back to Now ⎋]`.
 
 ## Don't use it for
 
@@ -712,7 +712,7 @@ Says the canvas is showing the past, and brings it back. React: `PastBanner` fro
 
 ## Anatomy
 
-A 34 tall graphite frosted pill at the top centre (the graphite frost recipe), padding 0 6 0 14, gap 10: `MEMORY` in the `label` role, white at .4 with a dark lip; the moment in the `ui` role (`#EDEDEF`); a 24 tall Back to Now cap (`rgba(255,255,255,.09)`, hover .15) with the ⎋ key.
+`Surface material="graphite-plain" radius="pill"`, 34 tall at the top centre, padding 0 6 0 14, gap 10: `Label variant="dark"` MEMORY; `Label variant="on-graphite"` the moment; `Button cap="graphite"` Back to Now with a `Kbd` ⎋ 7 after it.
 
 ## States and motion
 
@@ -739,7 +739,7 @@ A 34 tall graphite frosted pill at the top centre (the graphite frost recipe), p
 
 ## Tokens
 
-`--mu-pastbanner-*`, `.mu-frost-graphite`, `--mu-spring-surface`, `--mu-motion-nest`. Swift: `MetalPastBannerMetrics`.
+Layout: `--mu-pastbanner-*`. Look: the surface, label, button and kbd recipes. Motion: `--mu-spring-surface`, `--mu-motion-nest`. Swift: `MetalPastBannerMetrics`.
 
 ---
 
