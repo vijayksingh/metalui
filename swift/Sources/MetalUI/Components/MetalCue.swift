@@ -227,19 +227,23 @@ public struct MetalCueInferred: View {
 public struct MetalCueLife: View {
     let icon: MetalLifeIconName
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalIconInteraction) private var hostInteraction
+    @State private var ownHover = false
 
     public init(_ icon: MetalLifeIconName) { self.icon = icon }
 
     public var body: some View {
-        HStack(spacing: 0) {
+        let hovered = hostInteraction?.isHovered ?? ownHover
+        HStack(spacing: .zero) {
             Text("·").foregroundColor(colorway.tokens.ink3.color)
                 .padding(.leading, MetalCue.lifeGapBefore)
                 .padding(.trailing, MetalCue.lifeGapAfter)
                 .accessibilityHidden(true)
-            MetalLifeIcon(icon, size: 16)
-                .foregroundStyle(colorway.tokens.ink3.color)
+            MetalLifeIcon(icon)
+                .foregroundStyle((hovered ? colorway.tokens.ink2 : colorway.tokens.ink3).color)
                 .offset(y: -MetalCue.lifeDrop)
         }
+        .onHover { ownHover = $0 }
         .accessibilityLabel(icon.label)
     }
 }
