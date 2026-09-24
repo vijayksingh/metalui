@@ -2,29 +2,30 @@
 
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
-import { at, frameOf, plan, springAt, type MorphFrame, type MorphGlyphName, type MorphPlan } from './morph';
+import type { IconName } from './catalog.generated';
+import { morphAt, morphParts, morphPath, planMorph, springAt, type MorphFrame } from './morph';
 
 /* ─────────────────────────────────────────────────────────
- * GLYPH MORPH STORYBOARD (glyph A → B)
+ * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set)
  *
- *   same rotation group (plus ↔ close, arrow → arrow, chevron → chevron)
- *      0ms   the shape turns the short way round like a dial   (part k170 c16)
- *    ~200ms  it reaches its detent, overshoots ~9%, settles    (near 198ms)
- *   different glyphs (copy → check, play → pause, menu → close)
- *      0ms   every stroke moves point by point to its place    (settle k380 c36)
- *            unused strokes retract into the target's nearest joint and fade;
- *            new strokes grow out of the source's nearest joint
- *    ~214ms  reads as done                                     (near 214ms)
- * Interrupted: a new target starts from the in-between shape on screen.
+ *      0ms   every part of A pairs with the part of B it travels least to become
+ *            wires bend to their new line at constant weight
+ *            beads draw out into wires (thinning), wires gather into beads
+ *            a ring opens where it is nearest to its new ends; tint drains or fills
+ *            parts B lacks gather into the nearest staying wire and vanish into it
+ *            parts B gains bud from the nearest staying wire and grow out of it
+ *    ~214ms  reads as done                     (settle k380 c36, one spring for all)
+ *    ~400ms  at rest: the authored icon, exactly
+ * Interrupted: the next morph starts from the in-between glyph on screen.
  * Reduced motion: the glyph changes in place.
  * ───────────────────────────────────────────────────────── */
 
 export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name' | 'children'> {
-  /** The glyph to show. Changing it morphs from whatever is on screen. */
-  name: MorphGlyphName;
+  /** Any icon in the set. Changing it morphs from whatever is on screen. */
+  name: IconName;
   /** Rendered size in px. */
   size?: number;
-  /** Stroke width in 24-grid units. Defaults to the icon set's 1.7. */
+  /** Wire width in 24-grid units. Defaults to the set's 1.7; beads and plates keep their size. */
   strokeWidth?: number;
   /** Accessible name. Without it the glyph is decorative. */
   title?: string;
@@ -33,39 +34,57 @@ export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'nam
 const prefersReduced = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-/** A state glyph that transforms into the next one instead of being replaced. */
+/** Draws one frame of parts. Shared by MorphIcon and static filmstrips. */
+export function MorphGlyph({ frame }: { frame: MorphFrame }) {
+  return (
+    <>
+      {frame.map((part, i) => (
+        <path
+          key={i}
+          d={morphPath(part)}
+          strokeWidth={part.weight}
+          fillRule={part.holes.length ? 'evenodd' : 'nonzero'}
+          opacity={part.opacity < 1 ? part.opacity : undefined}
+          style={{ fillOpacity: `calc(${part.tint.toFixed(4)} * var(--mu-duo-k, 1) + ${part.solid.toFixed(4)})` }}
+        />
+      ))}
+    </>
+  );
+}
+
+/** An icon that becomes the next icon instead of being replaced by it. */
 export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(function MorphIcon(
   { name, size = 24, strokeWidth = 1.7, title, className, ...props },
   ref,
 ) {
-  const [frame, setFrame] = React.useState<MorphFrame>(() => frameOf(name));
-  const shown = React.useRef<{ frame: MorphFrame; name: MorphGlyphName }>({ frame: frameOf(name), name });
+  const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth));
+  const shown = React.useRef({ frame, name });
   const raf = React.useRef(0);
 
   React.useEffect(() => {
     if (shown.current.name === name) return;
     cancelAnimationFrame(raf.current);
-    const p: MorphPlan = plan(shown.current.frame, shown.current.name, name);
     shown.current.name = name;
+    const rest = morphParts(name, strokeWidth);
     if (prefersReduced()) {
-      shown.current.frame = frameOf(name);
-      setFrame(frameOf(name));
+      shown.current.frame = rest;
+      setFrame(rest);
       return;
     }
-    const spring = p.kind === 'turn' ? SPRINGS.part : SPRINGS.settle;
+    const plan = planMorph(shown.current.frame, name, strokeWidth);
+    const { stiffness, damping, duration } = SPRINGS.settle;
     const start = performance.now();
     const tick = (now: number) => {
       const t = (now - start) / 1000;
-      const done = t >= spring.duration;
-      // At rest, hold the glyph's own form, so a later turn in its group starts cleanly.
-      const next = done ? frameOf(name) : at(p, springAt(spring.stiffness, spring.damping, t));
+      // At rest, draw the authored icon itself.
+      const next = t >= duration ? rest : morphAt(plan, springAt(stiffness, damping, t));
       shown.current.frame = next;
       setFrame(next);
-      if (!done) raf.current = requestAnimationFrame(tick);
+      if (t < duration) raf.current = requestAnimationFrame(tick);
     };
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, [name]);
+  }, [name, strokeWidth]);
 
   return (
     <svg
@@ -73,9 +92,8 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      fill="none"
+      fill="currentColor"
       stroke="currentColor"
-      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className ? `mu-morph-icon ${className}` : 'mu-morph-icon'}
@@ -86,15 +104,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
       {...props}
     >
       {title && <title>{title}</title>}
-      <g transform={`rotate(${frame.angle.toFixed(3)} 12 12)`}>
-        {frame.strokes.map((s, i) => (
-          <polyline
-            key={i}
-            points={s.points.map(([x, y]) => `${x.toFixed(3)},${y.toFixed(3)}`).join(' ')}
-            opacity={s.opacity}
-          />
-        ))}
-      </g>
+      <MorphGlyph frame={frame} />
     </svg>
   );
 });

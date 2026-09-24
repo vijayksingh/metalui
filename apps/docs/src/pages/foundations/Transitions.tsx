@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, SlidingIndicator, SwapIcon, SwapText } from '@unlocalhosted/metalui';
-import { MorphIcon, OfflineIcon, SyncErrorIcon, SyncedIcon, type MorphGlyphName } from '@unlocalhosted/metalui/icons';
+import { Button, SlidingIndicator, SwapText } from '@unlocalhosted/metalui';
+import { MorphIcon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 
@@ -19,15 +19,15 @@ import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 const SP = tokens.springs;
 const sec = (v: string) => parseFloat(v) / 1000;
 
-const LABELS: { key: string; label: string; glyph: MorphGlyphName }[] = [
-  { key: 'save', label: 'Save', glyph: 'download' },
-  { key: 'saving', label: 'Saving to Today…', glyph: 'arrow-down' },
-  { key: 'saved', label: 'Saved', glyph: 'check' },
+const LABELS: { key: string; label: string; glyph: IconName }[] = [
+  { key: 'save', label: 'Pin', glyph: 'pin' },
+  { key: 'saving', label: 'Pinning to Today…', glyph: 'synced' },
+  { key: 'saved', label: 'Pinned', glyph: 'check' },
 ];
-const STATUS = [
-  { key: 'synced', label: 'Synced', icon: <SyncedIcon size={16} /> },
-  { key: 'offline', label: 'Offline', icon: <OfflineIcon size={16} /> },
-  { key: 'error', label: 'Sync error', icon: <SyncErrorIcon size={16} /> },
+const STATUS: { key: string; label: string; glyph: IconName }[] = [
+  { key: 'synced', label: 'Synced', glyph: 'synced' },
+  { key: 'offline', label: 'Offline', glyph: 'offline' },
+  { key: 'error', label: 'Sync error', glyph: 'sync-error' },
 ];
 const LAYOUTS = ['Free', 'Timeline', 'Grouped'];
 
@@ -53,7 +53,7 @@ function Segmented({ value, onChange }: { value: number; onChange: (i: number) =
 }
 
 const RECIPES: React.ReactNode[][] = [
-  ['T1 · The drum', 'A control’s face changes: label, digits, an authored icon', 'The face turns one step (4) and defocuses half of it (2). The drum is one object: both faces ride the settle spring from the same frame, so what leaves and what arrives always add up to one whole face. State glyphs do not ride the drum: they morph (T11).', 'SwapText · SwapIcon'],
+  ['T1 · The drum', 'A control’s face changes: label, digits, an authored icon', 'The face turns one step (4) and defocuses half of it (2). The drum is one object: both faces ride the settle spring from the same frame, so what leaves and what arrives always add up to one whole face. An icon from the set does not ride the drum: it morphs (T11).', 'SwapText · SwapIcon'],
   ['T2 · Footprint', 'A control grows or shrinks to new content', 'Width on settle. Growing: the surface makes room as the drum turns. Shrinking: waits until the old face is half turned away (settle half, 83ms).', 'SwapText'],
   ['T3 · Selection glide', 'One of a set becomes selected', 'The selection is a part that travels. In a track with ends: part spring, may overshoot against the stop. Free travel (lists, navigation): settle. Placed without motion on first paint.', 'SlidingIndicator'],
   ['T4 · Press', 'A cap is pressed', 'Down the cap’s depth (1) in 50ms linear; the shadow collapses into a well. Back on release. Kept under reduced motion.', 'Button'],
@@ -63,7 +63,7 @@ const RECIPES: React.ReactNode[][] = [
   ['T8 · View change', 'A panel changes view (tabs, steps)', 'Two steps (8) toward the new view, focus 4, overlapping like the drum; the container height settles.', 'Pattern'],
   ['T9 · Arrive and leave', 'Rows, toasts, badges', 'Rise one nest from below on settle; leave on release the way they came. Several items: each starts as the one before is half gone (release half).', 'Pattern'],
   ['T10 · Refusal', 'Invalid input, a wrong code', 'Released one nest aside on the refusal spring (k900 c12): it rings against the nest walls about three times and dies out. Once, never a loop.', 'Pattern'],
-  ['T11 · Glyph morph', 'A state icon changes: copy → check, plus → close, play → pause', 'One shape at another angle turns like a dial into a detent (part spring). Different shapes move their strokes point by point in drawn space (settle): a stroke the next glyph lacks retracts into its nearest joint by halfway; a stroke it gains grows out of the current glyph’s nearest joint after halfway.', 'MorphIcon'],
+  ['T11 · Glyph morph', 'A control’s icon changes: paste → check, synced → offline, zoom in → zoom out', 'The icon becomes the next one on settle, every part from the same frame. Parts pair by least travel; wires bend at constant weight, beads draw out into wires, rings open and close with round caps, tint follows enclosed area. A part the next icon lacks gathers into the nearest staying wire and ends inside it; a part it gains buds from one. Nothing fades.', 'MorphIcon'],
 ];
 
 export default function Transitions() {
@@ -113,7 +113,7 @@ export default function Transitions() {
         lede="How Soft Hardware changes state. A control is an object, so it never snaps: its face turns, its footprint settles, its selection travels, surfaces rise from what opened them. Each recipe names its mass class and its distance on the grid; the timing follows from the physics on the Motion page."
       />
 
-      <Section title="T1, T2, T11 · The drum, the footprint and the glyph" lede="A control’s face sits on a drum. When it changes, the face turns one step: the old face turns up and out of focus while the new one turns up into focus. The drum is one object, so both ride one spring from the same frame and always add up to one whole face; the footprint settles to the new face. The button’s icon is a state glyph, so it morphs; the chip’s icons are authored illustrations, so they turn with the label. Press either; turn up slow motion to watch.">
+      <Section title="T1, T2, T11 · The drum, the footprint and the glyph" lede="A control’s face sits on a drum. When it changes, the face turns one step: the old face turns up and out of focus while the new one turns up into focus. The drum is one object, so both ride one spring from the same frame and always add up to one whole face; the footprint settles to the new face. Both icons morph into the next one while the label turns. Press either; turn up slow motion to watch.">
         <Bench caption={`turn ${d.drum.turn} · focus ${d.drum.focus} · settle spring ${(SP.settle.duration * k).toFixed(2)}s · both faces sum to 1`}>
           <div className="flex flex-wrap items-center justify-center gap-24">
             <Button cap="primary" onClick={() => setLabelAt((i) => (i + 1) % LABELS.length)}>
@@ -125,7 +125,7 @@ export default function Transitions() {
               onClick={() => setStatusAt((i) => (i + 1) % STATUS.length)}
               className="material-cap inline-flex h-32 cursor-pointer items-center gap-6 rounded-pill pl-9 pr-15 text-ink"
             >
-              <SwapIcon swapKey={status.key}>{status.icon}</SwapIcon>
+              <MorphIcon name={status.glyph} size={16} />
               <span className="type-label"><SwapText value={status.label} /></span>
             </button>
           </div>
