@@ -110,3 +110,75 @@ public struct MetalRowText: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 }
+
+/// A pinned lens row keeps its task control separate from source focus.
+/// Materials and measurements match the region row in the generated kit.
+public struct MetalRegionResultRow: View {
+    let text: String
+    let meta: String?
+    let maybe: Bool
+    let isTask: Bool
+    let checked: Bool
+    let inferred: Bool
+    let onTick: () -> Void
+    let onFocus: () -> Void
+
+    @Environment(\.metalColorway) private var colorway
+    @State private var hovering = false
+
+    public init(_ text: String, meta: String? = nil, maybe: Bool = false, isTask: Bool = false,
+                checked: Bool = false, inferred: Bool = false,
+                onTick: @escaping () -> Void = {}, onFocus: @escaping () -> Void) {
+        self.text = text
+        self.meta = meta
+        self.maybe = maybe
+        self.isTask = isTask
+        self.checked = checked
+        self.inferred = inferred
+        self.onTick = onTick
+        self.onFocus = onFocus
+    }
+
+    public var body: some View {
+        let t = colorway.tokens
+        HStack(alignment: .firstTextBaseline, spacing: MetalRegion.rowGap) {
+            if isTask {
+                MetalDimple(isOn: Binding(get: { checked }, set: { _ in onTick() }),
+                            ghost: inferred, size: .row,
+                            label: checked ? "Mark open" : "Mark done")
+            }
+            Button(action: onFocus) {
+                HStack(alignment: .firstTextBaseline, spacing: MetalRegion.rowGap) {
+                    Text(text)
+                        .font(.metal(MetalType.ui))
+                        .foregroundColor((checked ? t.ink3 : t.ink).color)
+                        .strikethrough(checked)
+                        .lineLimit(1)
+                    Spacer(minLength: .zero)
+                    if let meta {
+                        Text(meta.uppercased())
+                            .font(.metal(MetalType.label))
+                            .tracking(MetalType.label.trackingPoints)
+                            .foregroundColor(t.engrave.color)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Focus \(text)")
+        }
+        .padding(.vertical, MetalRegion.rowPadY)
+        .padding(.horizontal, MetalRegion.rowPadX)
+        .background {
+            if hovering {
+                Color.clear.metalRecipe(
+                    MetalRecipe(fill: .solid(t.rowHover), shadows: t.raiseSm),
+                    in: RoundedRectangle(cornerRadius: MetalRadius.row, style: .continuous))
+            }
+        }
+        .onHover { hovering = $0 }
+        .metalAnimation(.settle, value: hovering)
+        .opacity(maybe ? MetalRecipes.row.scalar("self.maybe") : .one)
+        .accessibilityElement(children: .contain)
+    }
+}
