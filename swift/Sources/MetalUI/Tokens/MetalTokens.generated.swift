@@ -1141,7 +1141,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text in a set role: engraved mono label (with a lip), titles, headings, a query, values, table cells, display lines, readouts and text on graphite chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before)
+    /// Text in a set role: engraved mono label (with a lip), titles, headings, a query, values, table cells, display lines, readouts and text on graphite chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before, .meta .eng b)
     public static let label = MetalObjectRecipe(
         name: "label",
         layers: [
@@ -1193,6 +1193,8 @@ public enum MetalRecipes {
             "accent.color": .perColorway(bone: "#2F9E63", graphite: "#5FCB93"),
             "placeholder.color": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
             "placeholder.weight": .text("500"),
+            "emphasis.weight": .text("500"),
+            "emphasis.color": .perColorway(bone: "rgba(40,38,32,.62)", graphite: "rgba(255,255,255,.55)"),
         ]
     )
 

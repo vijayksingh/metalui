@@ -4,6 +4,8 @@
 .mu-label { white-space: nowrap; }
 .mu-label:is([data-variant="engraved"], [data-variant="small"], [data-variant="dark"]) { font: var(--mu-r-label-engraved-font); letter-spacing: var(--mu-r-label-engraved-tracking); text-transform: var(--mu-r-label-engraved-transform); color: var(--mu-r-label-engraved-color); text-shadow: var(--mu-r-label-engraved-text-shadow); }
 .mu-label[data-variant="small"] { font-size: var(--mu-r-label-small-font-size); }
+/* A <b> inside an engraving is its emphasis: the kind before the details. */
+.mu-label:is([data-variant="engraved"], [data-variant="small"]) b { font-weight: var(--mu-r-label-emphasis-weight); color: var(--mu-r-label-emphasis-color); }
 .mu-label[data-variant="dark"] { color: var(--mu-r-label-dark-color); text-shadow: var(--mu-r-label-dark-text-shadow); }
 .mu-label[data-variant="title"] { font: var(--mu-r-label-title-font); letter-spacing: var(--mu-r-label-title-tracking); color: var(--mu-r-label-title-color); }
 .mu-label[data-variant="heading"] { font: var(--mu-r-label-heading-font); letter-spacing: var(--mu-r-label-heading-tracking); color: var(--mu-r-label-heading-color); }

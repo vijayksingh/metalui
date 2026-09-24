@@ -413,6 +413,10 @@ Text in a set role. React: `Label`. SwiftUI: `MetalLabel`.
 - `display` and `display-quiet`: a large line and its quieter continuation (an empty state's words).
 - On graphite: `readout` with its `readout-dim` part, `on-graphite` for sans text, `dark` for an engraving.
 
+## Emphasis
+
+- A `<b>` inside an `engraved` or `small` label is its emphasis: weight 500 in a darker engraving ink (`TASK · 07:40`, the kind before the details).
+
 ## Tone and placeholder
 
 - `tone="accent"`: green with no lip, cross-fading on settle (a region's rule while a block is over it: "drop to mark tasks done").

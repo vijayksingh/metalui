@@ -1060,7 +1060,7 @@
   --mu-r-well-radius-region: 26px;
   --mu-r-well-radius-strip: 15px;
   --mu-r-well-radius-row: 12px;
-  /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before */
+  /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i, .region.over .rrule, .region .rname:empty::before, .meta .eng b */
   --mu-r-label-dark-text-shadow:
     /* mu-recipe:label:2 */ 0 -1px 0 rgba(0,0,0,.6);
   --mu-r-label-engraved-font: 400 9px/1.36 var(--mu-mono);
@@ -1094,6 +1094,7 @@
   --mu-r-label-on-graphite-color: #EDEDEF;
   --mu-r-label-readout-dim-color: #7C7D82;
   --mu-r-label-placeholder-weight: 500;
+  --mu-r-label-emphasis-weight: 500;
   /* rule: reference style.css .tb-sep, #selTools .sep, .pal-foot, .ptable th, .tl-day::after */
   --mu-r-rule-self-graphite-background:
     /* mu-recipe:rule:4 */ rgba(0,0,0,.55);
@@ -1567,6 +1568,7 @@
   --mu-r-label-display-quiet-color: #9A9A9D;
   --mu-r-label-accent-color: #2F9E63;
   --mu-r-label-placeholder-color: #9A9A9D;
+  --mu-r-label-emphasis-color: rgba(40,38,32,.62);
   --mu-r-rule-self-background:
     /* mu-recipe:rule:0 */ rgba(0,0,0,.075);
   --mu-r-rule-self-shadow:
@@ -1861,6 +1863,7 @@
   --mu-r-label-display-quiet-color: #77777B;
   --mu-r-label-accent-color: #5FCB93;
   --mu-r-label-placeholder-color: #77777B;
+  --mu-r-label-emphasis-color: rgba(255,255,255,.55);
   --mu-r-rule-self-background:
     /* mu-recipe:rule:1 */ rgba(0,0,0,.45);
   --mu-r-rule-self-shadow:
@@ -2156,6 +2159,7 @@
     --mu-r-label-display-quiet-color: #77777B;
     --mu-r-label-accent-color: #5FCB93;
     --mu-r-label-placeholder-color: #77777B;
+    --mu-r-label-emphasis-color: rgba(255,255,255,.55);
     --mu-r-rule-self-background:
       rgba(0,0,0,.45);
     --mu-r-rule-self-shadow:
