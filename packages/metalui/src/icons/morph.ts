@@ -26,8 +26,7 @@
 //       A lone part is light: leaving is done by two thirds of the way, arriving starts at one third.
 //   E10 Every plan carries its strain, so a product can see which changes will not be smooth.
 
-import type { IconName } from './catalog.generated';
-import { MORPH_PARTS } from './morph.generated';
+import { MORPH_PARTS, type MorphIconName, type MorphPartSource } from './morph.generated';
 
 export type Point = [number, number];
 
@@ -106,11 +105,16 @@ function cornersOf(pts: Point[], closed: boolean): number[] {
 const cache = new Map<string, MorphFrame>();
 
 /** A glyph at rest as morphable parts. `weight` is the wire width in 24u (1.7 by default). */
-export function morphParts(name: IconName, weight = 1.7): MorphFrame {
+export function morphParts(name: MorphIconName, weight = 1.7): MorphFrame {
   const key = `${name}@${weight}`;
   let parts = cache.get(key);
-  if (!parts) {
-    parts = MORPH_PARTS[name].map(([path, w, tint, solid, opacity, rels = []]) => {
+  if (!parts) cache.set(key, (parts = partsFrom(MORPH_PARTS[name], weight)));
+  return parts;
+}
+
+/** Generated rows (the shape of morph.generated.ts) as a frame; for glyphs outside the set, such as proposals. */
+export function partsFrom(rows: readonly MorphPartSource[], weight = 1.7): MorphFrame {
+  return rows.map(([path, w, tint, solid, opacity, rels = []]) => {
       const [outer, ...holes] = parse(path);
       const bead = outer.points.length === 1;
       // Drop a closing point that repeats the start; the ring closes itself.
@@ -131,10 +135,7 @@ export function morphParts(name: IconName, weight = 1.7): MorphFrame {
         inside: rels.filter((r) => r[0] === 'inside').map((r) => ({ part: r[1], r: r[2] })),
         path: bead ? `M${pts[0][0]} ${pts[0][1]}l0 0` : path,
       };
-    });
-    cache.set(key, parts);
-  }
-  return parts;
+  });
 }
 
 // ---------- resampling and alignment ----------
@@ -409,13 +410,18 @@ export interface MorphStrain {
   lone: number;
   /** Share of tracks that change topology: rings opening or closing, plates becoming wires. */
   topology: number;
+  /** Mean change of weight, tint and solidity across tracks, in the pairing's trait units. */
+  traits: number;
+  /** Share of track pairs whose straight paths cross each other on the way. */
+  crossing: number;
   turn: boolean;
   total: number;
 }
 
 export interface MorphPlan {
   tracks: MorphTrack[];
-  to: IconName;
+  /** The glyph planned to, when it is one of the set. */
+  to?: MorphIconName;
   turn?: MorphAxis;
   strain: MorphStrain;
   /** The pairing's cost matrix (from × to, then the lone costs), for reading why parts paired as they did. */
@@ -479,12 +485,23 @@ const bounds = (pts: Point[]) => pts.reduce((b, p) => [Math.min(b[0], p[0]), Mat
 /** A body hides a part that fits within it (scaled down to this at most); otherwise the part gathers. */
 const TUCK_MIN = 0.5, TUCK_R = 1, TUCK_MARGIN = 0.2, TUCK_BOXY = 0.6;
 
-/** Strain weights: one step of travel (4), all material lone, every track changing topology, a turn. */
-const STRAIN = { travel: 1 / 4, lone: 2, topology: 0.5, turn: 0.5 };
+/** Strain weights: one step of travel (4), all material lone, every track changing topology,
+ *  a trait unit, every pair of paths crossing, a turn. */
+const STRAIN = { travel: 1 / 4, lone: 2, topology: 0.5, traits: 0.25, crossing: 0.5, turn: 0.5 };
 
-/** Plans the morph from what is on screen now to a glyph. */
-export function planMorph(from: MorphFrame, to: IconName, weight = 1.7): MorphPlan {
-  const rest = morphParts(to, weight);
+/** Plans the morph from what is on screen now to a glyph of the set. */
+export function planMorph(from: MorphFrame, to: MorphIconName, weight = 1.7): MorphPlan {
+  return { ...planFrames(from, morphParts(to, weight)), to };
+}
+
+/** Whether segments ab and cd cross. */
+function crosses(a: Point, b: Point, c: Point, d: Point) {
+  const o = (p: Point, q: Point, r: Point) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+  return o(a, b, c) !== o(a, b, d) && o(c, d, a) !== o(c, d, b);
+}
+
+/** Plans the morph from one frame to another. */
+export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
   const turn = turnAxis(from, rest);
   const target = turn === undefined ? rest : rest.map((p) => mirrorPart(p, turn));
   const n = from.length, m = target.length, size = n + m;
@@ -651,11 +668,22 @@ export function planMorph(from: MorphFrame, to: IconName, weight = 1.7): MorphPl
   const loneShare = tracks.reduce((s, t) => s + (t.move === 'bud' || t.move === 'absorb' ? t.material : t.move === 'tuck' || t.move === 'emerge' ? t.material / 2 : 0), 0) / total;
   const topology = tracks.filter((t) => ['open', 'close', 'press', 'unfold'].includes(t.move) || (t.from.weight === 0) !== (t.to.weight === 0)).length / tracks.length;
   const travel = tracks.reduce((s, t) => s + t.material * t.travel, 0) / total;
+  const traitOf = (t: MorphTrack) => 0.5 * Math.min(4, Math.abs(t.from.weight - t.to.weight)) + 2 * Math.abs(t.from.tint - t.to.tint) + Math.abs(t.from.solid - t.to.solid);
+  const traitsShare = tracks.reduce((s, t) => s + t.material * traitOf(t), 0) / total;
+  let pairs = 0, crossed = 0;
+  for (let i = 0; i < tracks.length; i++) {
+    for (let j = i + 1; j < tracks.length; j++) {
+      pairs++;
+      const a = tracks[i], b = tracks[j];
+      if (crosses(centroid(a.A), centroid(a.B), centroid(b.A), centroid(b.B))) crossed++;
+    }
+  }
+  const crossing = pairs ? crossed / pairs : 0;
   const strain: MorphStrain = {
-    travel, lone: loneShare, topology, turn: turn !== undefined,
-    total: travel * STRAIN.travel + loneShare * STRAIN.lone + topology * STRAIN.topology + (turn !== undefined ? STRAIN.turn : 0),
+    travel, lone: loneShare, topology, traits: traitsShare, crossing, turn: turn !== undefined,
+    total: travel * STRAIN.travel + loneShare * STRAIN.lone + topology * STRAIN.topology + traitsShare * STRAIN.traits + crossing * STRAIN.crossing + (turn !== undefined ? STRAIN.turn : 0),
   };
-  return { tracks, to, turn, strain, costs: c };
+  return { tracks, turn, strain, costs: c };
 }
 
 const mix = (a: number, b: number, p: number) => a + (b - a) * p;

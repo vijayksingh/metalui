@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
-import type { IconName } from './catalog.generated';
 import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart } from './morph';
+import type { MorphIconName } from './morph.generated';
 
 /* ─────────────────────────────────────────────────────────
  * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set; docs/MORPH.md)
@@ -23,8 +23,9 @@ import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type
  * ───────────────────────────────────────────────────────── */
 
 export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name' | 'children'> {
-  /** Any icon in the set. Changing it morphs from whatever is on screen. */
-  name: IconName;
+  /** Any icon of the morph family (the wire-based set; a solid character glyph such as keeper is
+   *  not one, it changes by the drum, SwapIcon). Changing it morphs from whatever is on screen. */
+  name: MorphIconName;
   /** Rendered size in px. */
   size?: number;
   /** Wire width in 24-grid units. Defaults to the set's 1.7; beads and plates keep their size. */

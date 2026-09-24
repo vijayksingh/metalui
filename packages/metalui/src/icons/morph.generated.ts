@@ -5,12 +5,16 @@
 //   tint      duotone fill opacity (scaled by the colorway's --mu-duo-k); solid is 1 for solid fills
 //   relations depth. ["behind", part, r]: hidden within that part's ink widened by r.
 //             ["inside", part, r]: visible only within that part's body narrowed by r.
-import type { IconName } from './catalog.generated';
+// Glyphs with a solid plate (characters, mascots) are not in the morph family (docs/ICON-GRAMMAR.md, K0).
 
 export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: number, r: number];
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
-export const MORPH_PARTS: Record<IconName, readonly MorphPartSource[]> = {
+/** The icons that morph: every wire-based glyph of the set. */
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste"] as const;
+export type MorphIconName = (typeof MORPH_NAMES)[number];
+
+export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
   "select": [
     ["M6.1 4.9L18.3 10.6C18.49 10.68 18.61 10.87 18.6 11.08C18.59 11.28 18.45 11.46 18.26 11.53L13 13.2L10.8 18.3C10.72 18.49 10.53 18.61 10.33 18.61C10.12 18.6 9.94 18.47 9.87 18.28L6.1 4.9Z", 1.7, 0.14, 0, 1],
   ],
@@ -162,10 +166,5 @@ export const MORPH_PARTS: Record<IconName, readonly MorphPartSource[]> = {
     ["M9.9 3.4L14.1 3.4C14.82 3.4 15.4 3.98 15.4 4.7L15.4 5.7C15.4 6.42 14.82 7 14.1 7L9.9 7C9.18 7 8.6 6.42 8.6 5.7L8.6 4.7C8.6 3.98 9.18 3.4 9.9 3.4Z", 1.7, 0, 0, 1],
     ["M8.6 11.8L15.4 11.8", 1.7, 0, 0, 1],
     ["M8.6 15.4L12.8 15.4", 1.7, 0, 0, 1],
-  ],
-  "keeper": [
-    ["M2.41 14.84C2.13 13.49 6.19 11.48 11.48 10.35C16.77 9.23 21.3 9.41 21.59 10.76", 1.5, 0, 0, 1, [["behind",1,1.2]]],
-    ["M18.8 11.4C18.8 15.16 15.76 18.2 12 18.2C8.24 18.2 5.2 15.16 5.2 11.4C5.2 7.64 8.24 4.6 12 4.6C15.76 4.6 18.8 7.64 18.8 11.4ZM10.1 7.5L10.1 7.5C10.76 7.5 11.3 8.04 11.3 8.7L11.3 10.5C11.3 11.16 10.76 11.7 10.1 11.7L10.1 11.7C9.44 11.7 8.9 11.16 8.9 10.5L8.9 8.7C8.9 8.04 9.44 7.5 10.1 7.5ZM13.9 7.5L13.9 7.5C14.56 7.5 15.1 8.04 15.1 8.7L15.1 10.5C15.1 11.16 14.56 11.7 13.9 11.7L13.9 11.7C13.24 11.7 12.7 11.16 12.7 10.5L12.7 8.7C12.7 8.04 13.24 7.5 13.9 7.5Z", 0, 0, 1, 1, [["behind",2,2]]],
-    ["M2.41 14.84C2.7 16.19 7.23 16.37 12.52 15.25C17.81 14.12 21.87 12.11 21.59 10.76", 1.5, 0, 0, 1],
   ],
 };

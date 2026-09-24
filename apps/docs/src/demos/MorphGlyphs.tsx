@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon, ICON_CATALOG, ICON_NAMES, MorphGlyph, MorphIcon, morphAt, morphParts, planMorph, type IconName, type MorphFrame } from '@unlocalhosted/metalui/icons';
+import { Icon, ICON_CATALOG, MORPH_NAMES, MorphGlyph, MorphIcon, morphAt, morphParts, planMorph, type MorphFrame, type MorphIconName } from '@unlocalhosted/metalui/icons';
 
 /** A frame drawn statically, with the same rendering MorphIcon uses. */
 function Still({ frame, size = 32 }: { frame: MorphFrame; size?: number }) {
@@ -11,7 +11,7 @@ function Still({ frame, size = 32 }: { frame: MorphFrame; size?: number }) {
 }
 
 // Pairs a product actually switches between, then a few far ones to show any-to-any.
-const PAIRS: [IconName, IconName][] = [
+const PAIRS: [MorphIconName, MorphIconName][] = [
   ['synced', 'offline'],
   ['offline', 'sync-error'],
   ['paste', 'check'],
@@ -23,7 +23,7 @@ const PAIRS: [IconName, IconName][] = [
   ['search', 'zoom-in'],
   ['link', 'check'],
   ['board', 'pin'],
-  ['keeper', 'synced'],
+  ['note', 'trash'],
 ];
 const STEPS = [0, 0.2, 0.4, 0.6, 0.8, 1];
 
@@ -53,7 +53,7 @@ export function MorphFilmstrips() {
 export function MorphParity() {
   return (
     <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(88px,1fr))] gap-12">
-      {ICON_NAMES.map((n) => (
+      {MORPH_NAMES.map((n) => (
         <div key={n} data-md="skip" className="flex flex-col items-center gap-6 text-icon">
           <div className="flex gap-4">
             <Icon name={n} size={32} animate={false} strokeWidth={1.7} />
@@ -68,19 +68,19 @@ export function MorphParity() {
 
 /** Pick any icon; the live glyph morphs from whatever is on screen. */
 export function MorphPlayground({ size = 96 }: { size?: number }) {
-  const [name, setName] = React.useState<IconName>('synced');
+  const [name, setName] = React.useState<MorphIconName>('synced');
   return (
     <div className="flex w-full flex-col items-center gap-24">
       <button
         type="button"
         aria-label={`${ICON_CATALOG[name].label}: morph to the next icon`}
-        onClick={() => setName((n) => ICON_NAMES[(ICON_NAMES.indexOf(n) + 1) % ICON_NAMES.length])}
+        onClick={() => setName((n) => MORPH_NAMES[(MORPH_NAMES.indexOf(n) + 1) % MORPH_NAMES.length])}
         className="grid cursor-pointer place-items-center text-icon hover:text-ink"
       >
         <MorphIcon name={name} size={size} />
       </button>
       <div role="radiogroup" aria-label="Icon" className="flex max-w-[640px] flex-wrap justify-center gap-6">
-        {ICON_NAMES.map((g) => (
+        {MORPH_NAMES.map((g) => (
           <button
             key={g}
             type="button"

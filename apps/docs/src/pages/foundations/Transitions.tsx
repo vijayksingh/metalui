@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, SlidingIndicator, SwapText } from '@unlocalhosted/metalui';
-import { MorphIcon, type IconName } from '@unlocalhosted/metalui/icons';
+import { MorphIcon, type MorphIconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 
@@ -19,12 +19,12 @@ import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 const SP = tokens.springs;
 const sec = (v: string) => parseFloat(v) / 1000;
 
-const LABELS: { key: string; label: string; glyph: IconName }[] = [
+const LABELS: { key: string; label: string; glyph: MorphIconName }[] = [
   { key: 'save', label: 'Pin', glyph: 'pin' },
   { key: 'saving', label: 'Pinning to Today…', glyph: 'synced' },
   { key: 'saved', label: 'Pinned', glyph: 'check' },
 ];
-const STATUS: { key: string; label: string; glyph: IconName }[] = [
+const STATUS: { key: string; label: string; glyph: MorphIconName }[] = [
   { key: 'synced', label: 'Synced', glyph: 'synced' },
   { key: 'offline', label: 'Offline', glyph: 'offline' },
   { key: 'error', label: 'Sync error', glyph: 'sync-error' },
@@ -53,7 +53,7 @@ function Segmented({ value, onChange }: { value: number; onChange: (i: number) =
 }
 
 const RECIPES: React.ReactNode[][] = [
-  ['T1 · The drum', 'A control’s face changes: label, digits, an authored icon', 'The face turns one step (4) and defocuses half of it (2). The drum is one object: both faces ride the settle spring from the same frame, so what leaves and what arrives always add up to one whole face. An icon from the set does not ride the drum: it morphs (T11).', 'SwapText · SwapIcon'],
+  ['T1 · The drum', 'A control’s face changes: label, digits, an authored icon', 'The face turns one step (4) and defocuses half of it (2). The drum is one object: both faces ride the settle spring from the same frame, so what leaves and what arrives always add up to one whole face. A wire icon from the set does not ride the drum: it morphs (T11). A solid character glyph (the keeper) is not in the morph family and does ride it.', 'SwapText · SwapIcon'],
   ['T2 · Footprint', 'A control grows or shrinks to new content', 'Width on settle. Growing: the surface makes room as the drum turns. Shrinking: waits until the old face is half turned away (settle half, 83ms).', 'SwapText'],
   ['T3 · Selection glide', 'One of a set becomes selected', 'The selection is a part that travels. In a track with ends: part spring, may overshoot against the stop. Free travel (lists, navigation): settle. Placed without motion on first paint.', 'SlidingIndicator'],
   ['T4 · Press', 'A cap is pressed', 'Down the cap’s depth (1) in 50ms linear; the shadow collapses into a well. Back on release. Kept under reduced motion.', 'Button'],
@@ -63,7 +63,7 @@ const RECIPES: React.ReactNode[][] = [
   ['T8 · View change', 'A panel changes view (tabs, steps)', 'Two steps (8) toward the new view, focus 4, overlapping like the drum; the container height settles.', 'Pattern'],
   ['T9 · Arrive and leave', 'Rows, toasts, badges', 'Rise one nest from below on settle; leave on release the way they came. Several items: each starts as the one before is half gone (release half).', 'Pattern'],
   ['T10 · Refusal', 'Invalid input, a wrong code', 'Released one nest aside on the refusal spring (k900 c12): it rings against the nest walls about three times and dies out. Once, never a loop.', 'Pattern'],
-  ['T11 · Glyph morph', 'A control’s icon changes: paste → check, synced → offline, zoom in → zoom out', 'The icon becomes the next one on settle, every part from the same frame. Parts pair by least travel; wires bend at constant weight, beads draw out into wires, rings open and close with round caps, tint follows enclosed area. A part the next icon lacks gathers into the nearest staying wire and ends inside it; a part it gains buds from one. Nothing fades.', 'MorphIcon'],
+  ['T11 · Glyph morph', 'A control’s icon changes: paste → check, synced → offline, zoom in → zoom out', 'The icon becomes the next one on settle, every part from the same frame. Parts pair by least energy and ride a carriage (rigid turn, scale and travel, bending only what they must); beads draw out into wires; rings open where they meet their new ends and tint follows the area; clearances travel with the parts that cast them. A part the next icon lacks tucks behind a body or gathers into a staying wire; one it gains emerges or buds. A mirror pair turns over. Nothing fades. Every plan carries a strain: under 1 it reads as one object (docs/MORPH.md).', 'MorphIcon'],
 ];
 
 export default function Transitions() {
