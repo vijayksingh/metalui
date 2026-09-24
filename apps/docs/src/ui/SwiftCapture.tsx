@@ -10,8 +10,8 @@ export function SwiftCapture({ name, maxWidth = 760 }: { name: string; maxWidth?
   const { colorway } = useColorway();
   const src = Object.entries(CAPTURES).find(([k]) => k.endsWith(`/${name}-${colorway}.png`))?.[1];
   return (
-    <Bench tone="page" caption={`SwiftUI · ImageRenderer capture, ${colorway}`}>
-      {src ? <Capture src={src} alt={`SwiftUI ${name} in ${colorway}`} maxWidth={maxWidth} /> : <span className="type-meta text-ink2">No capture yet: run the Swift captures.</span>}
+    <Bench tone="page" caption={`The SwiftUI twin at the same size, rendered by ImageRenderer in ${colorway === "graphite" ? "Graphite" : "Bone"}.`}>
+      {src ? <Capture src={src} alt={`SwiftUI ${name} in ${colorway}`} maxWidth={maxWidth} /> : <span className="type-doc-caption text-ink3">No capture yet: run the Swift captures.</span>}
     </Bench>
   );
 }

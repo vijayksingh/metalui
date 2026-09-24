@@ -9,52 +9,50 @@
 /* The library's own sources use these utilities too. */
 @source "../../../packages/metalui/src";
 
-/* ---------- editorial scale (the site only; objects use the type roles) ---------- */
-@utility page-title {
-  font: 600 32px/38px var(--mu-sans);
-  letter-spacing: -0.03em;
-}
-@utility page-lede {
-  font: 400 15px/24px var(--mu-sans);
-  letter-spacing: -0.008em;
-}
-@utility prose-body {
-  font: 400 13.5px/22px var(--mu-sans);
-  letter-spacing: -0.006em;
-}
+/* The site's base layer only. Everything else is Tailwind utilities from the generated theme
+   (type-doc-* is the reading scale, material-stage the demo object, syn-* the code inks). */
+@layer base {
+  html {
+    background: var(--mu-page);
+    color: var(--mu-ink);
+    font-family: var(--mu-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  html[data-mu-colorway="graphite"] { background: var(--mu-page-dark); }
 
-/* ---------- base ---------- */
-html {
-  background: var(--mu-page);
-  color: var(--mu-ink);
-  font-family: var(--mu-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-html[data-mu-colorway="graphite"] { background: var(--mu-page-dark); }
-@media (prefers-color-scheme: dark) {
-  html:not([data-mu-colorway="bone"]) { background: var(--mu-page-dark); }
-}
+  /* The canvas the objects rest on: a fine grain, multiplied on bone, screened on graphite. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .48  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  html[data-mu-colorway="graphite"] body::before { mix-blend-mode: screen; opacity: .35; }
 
-/* The canvas the objects rest on: a fine grain, multiplied on bone, screened on graphite. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .48  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-html[data-mu-colorway="graphite"] body::before { mix-blend-mode: screen; opacity: .35; }
+  ::selection { background: color-mix(in srgb, var(--mu-green) 40%, transparent); color: var(--mu-ink); }
+  :focus-visible { outline: var(--mu-focus-width) solid var(--mu-green-deep); outline-offset: var(--mu-focus-offset); }
+  a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  * { scrollbar-width: thin; scrollbar-color: var(--mu-ink3) transparent; }
 
-::selection { background: color-mix(in srgb, var(--mu-green) 40%, transparent); color: var(--mu-ink); }
-:focus-visible { outline: var(--mu-focus-width) solid var(--mu-green-deep); outline-offset: var(--mu-focus-offset); }
-a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
-* { scrollbar-width: thin; scrollbar-color: var(--mu-ink3) transparent; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+  /* Highlighted code (twinkleplop's token classes) in the syntax inks. The inks follow the
+     colorway of the nearest [data-mu-colorway], so a code screen can set its own. */
+  .twinkleplop { color: var(--mu-syn-text); }
+  .twinkleplop .ln { display: inline-block; width: 3ch; margin-right: 2ch; text-align: right; color: var(--mu-syn-line); user-select: none; }
+  .twinkleplop :is(.keyword, .boolean, .null, .builtin, .directive, .svelte_block) { color: var(--mu-syn-keyword); }
+  .twinkleplop :is(.type, .class_name, .namespace, .tag_name, .selector, .selector_class, .selector_id, .selector_pseudo, .decorator, .heading, .heading_marker) { color: var(--mu-syn-type); }
+  .twinkleplop :is(.function, .property, .attr_name, .attribute, .css_variable, .label, .link_text) { color: var(--mu-syn-member); }
+  .twinkleplop :is(.string, .template, .regex, .string_escape, .url, .inserted) { color: var(--mu-syn-string); }
+  .twinkleplop :is(.number, .unit, .constant, .hash) { color: var(--mu-syn-number); }
+  .twinkleplop :is(.comment, .prompt, .front_matter_marker) { color: var(--mu-syn-comment); }
+  .twinkleplop :is(.punctuation, .operator, .list_marker, .code_fence, .deleted) { color: var(--mu-syn-punct); }
 }

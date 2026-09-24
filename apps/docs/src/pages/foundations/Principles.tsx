@@ -38,7 +38,7 @@ export default function Principles() {
             <li key={f.to} className="border-b border-[var(--mu-rule)] last:border-0">
               <Link to={f.to} className="group flex flex-col gap-6 py-16 text-ink no-underline">
                 <span className="type-title group-hover:underline">{f.title}</span>
-                <span className="prose-body max-w-[64ch] text-ink2">{f.body}</span>
+                <span className="type-doc-prose max-w-[64ch] text-ink2">{f.body}</span>
               </Link>
             </li>
           ))}

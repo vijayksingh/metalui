@@ -114,7 +114,7 @@ export default function IconsLife() {
               </div>
             );
           })}
-          {!found.size && <p className="prose-body text-ink2">Nothing means “{query}” yet. Try the thing itself: coffee, run, tired.</p>}
+          {!found.size && <p className="type-doc-prose text-ink2">Nothing means “{query}” yet. Try the thing itself: coffee, run, tired.</p>}
         </div>
       </Section>
 
@@ -187,9 +187,9 @@ export default function IconsLife() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'L1', title: 'One glyph per block, trailing', body: 'The first recognised event wins; the others are named in the hover engraving. Never a chip for a glyph, never while writing, so a glyph cannot move text.', origin: 'Kamui 03 §3, DS-27' },
-            { id: 'L2', title: 'Hover only, never a press', body: 'Each glyph has one short interaction (0.4–1.2 s) that plays once or twice and never loops. The host (the block, a row) is the trigger. Under reduced motion it stays still.', origin: 'Kamui MAPPING.md' },
-            { id: 'L3', title: 'Sizes by place', body: '16, the tuned cut at stroke 1.85, trailing a block; 14 on the day strip; 24 in a well beside a metric.', origin: 'Kamui 05 §5' },
+            { id: 'L1', title: 'One glyph per block, trailing', body: 'The first recognised event wins; the others are named in the hover engraving. Never a chip for a glyph, never while writing, so a glyph cannot move text.', origin: 'Reference design 03 §3, DS-27' },
+            { id: 'L2', title: 'Hover only, never a press', body: 'Each glyph has one short interaction (0.4–1.2 s) that plays once or twice and never loops. The host (the block, a row) is the trigger. Under reduced motion it stays still.', origin: 'Reference design, glyph mapping' },
+            { id: 'L3', title: 'Sizes by place', body: '16, the tuned cut at stroke 1.85, trailing a block; 14 on the day strip; 24 in a well beside a metric.', origin: 'Reference design 05 §5' },
             { id: 'L4', title: 'Only feelings are tinted', body: 'Feelings, the two energy states and a few moments with an unmistakable feeling carry their tint on the stroke. Everything else is ink. Tints go with one setting and under Increase Contrast; the shape still carries the meaning.', origin: 'DS-42' },
             { id: 'L5', title: 'Import from the subpath', body: '@unlocalhosted/metalui/icons/life keeps the main entry small; import its CSS once.', origin: 'Ours' },
           ]}

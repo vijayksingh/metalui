@@ -1,50 +1,38 @@
 import * as React from 'react';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
-import { SlidingIndicator } from '@unlocalhosted/metalui';
+import { Button, Segmented, SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 
-const COLORWAYS: { value: Colorway; label: string }[] = [
-  { value: 'bone', label: 'Bone' },
-  { value: 'graphite', label: 'Graphite' },
-];
+/* ─────────────────────────────────────────────────────────
+ * SHELL
+ *   header    brand · links · colorway, 52 tall, frosted over the page
+ *   sidebar   208 wide, sticky; group labels engraved, rows in the ui role, a sliding thumb
+ *   main      one reading column on the measure (640), centred in what is left;
+ *             stages bleed to the stage width (760) on large screens
+ * ───────────────────────────────────────────────────────── */
 
-/** Bone / Graphite: a pill of pills, segments padded h/2 − 1 (F-03). */
 function ColorwaySwitch() {
   const { colorway, setColorway } = useColorway();
   return (
-    <div role="radiogroup" aria-label="Colorway" className="material-well relative inline-flex rounded-pill p-2">
-      <SlidingIndicator className="material-thumb rounded-pill" />
-      {COLORWAYS.map((c) => {
-        const on = c.value === colorway;
-        return (
-          <button
-            key={c.value}
-            type="button"
-            role="radio"
-            aria-checked={on}
-            onClick={() => setColorway(c.value)}
-            className={[
-              'type-ui relative z-10 h-24 cursor-pointer rounded-pill px-11 transition-colors duration-150',
-              on ? 'text-ink' : 'text-ink2 hover:text-ink',
-            ].join(' ')}
-          >
-            {c.label}
-          </button>
-        );
-      })}
-    </div>
+    <Segmented
+      size="compact"
+      aria-label="Colorway"
+      value={colorway}
+      onValueChange={(v) => setColorway(v as Colorway)}
+      options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]}
+    />
   );
 }
 
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav aria-label="Documentation" className="relative flex flex-col gap-24">
+    <nav aria-label="Documentation" className="relative flex flex-col gap-20">
       <SlidingIndicator spring="settle" className="material-thumb rounded-row" />
       {NAV.map((group) => (
-        <div key={group.label} className="flex flex-col gap-2">
-          <div className="type-label engraved px-8 pb-6">{group.label}</div>
+        <div key={group.label} className="flex flex-col">
+          <div className="type-label engraved px-10 pb-6">{group.label}</div>
           {group.items.map((item) => (
             <NavLink
               key={item.to}
@@ -53,13 +41,13 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className={({ isActive }) =>
                 [
-                  'type-ui relative z-10 flex h-32 items-center justify-between rounded-row px-8 no-underline transition-colors duration-150',
-                  isActive ? 'text-ink' : 'text-ink2 hover:bg-[color-mix(in_srgb,var(--mu-ink)_5%,transparent)] hover:text-ink',
+                  'type-ui relative z-10 flex h-28 items-center justify-between rounded-row px-10 no-underline transition-colors duration-150',
+                  isActive ? 'text-ink' : 'text-ink2 hover:text-ink',
                 ].join(' ')
               }
             >
               <span>{item.label}</span>
-              {item.meta && <span className="type-readout text-ink2">{item.meta}</span>}
+              {item.meta && <span className="type-readout text-ink3">{item.meta}</span>}
             </NavLink>
           ))}
         </div>
@@ -76,42 +64,38 @@ export function Shell() {
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-20 flex h-64 items-center justify-between gap-16 px-24 backdrop-blur-[22px] backdrop-saturate-[1.6] lg:px-32">
-        <div className="flex items-center gap-12">
-          <button
-            type="button"
-            className="material-cap type-ui h-32 rounded-pill px-15 lg:hidden"
-            aria-expanded={menuOpen}
-            aria-controls="docs-nav"
-            onClick={() => setMenuOpen((o) => !o)}
-          >
+      <header className="sticky top-0 z-20 flex h-52 items-center justify-between gap-12 bg-page/80 px-16 backdrop-blur-md backdrop-saturate-150 sm:px-24 in-data-[mu-colorway=graphite]:bg-page-dark/80">
+        <div className="flex items-center gap-10">
+          <Button size="compact" className="lg:hidden" aria-expanded={menuOpen} aria-controls="docs-nav" onClick={() => setMenuOpen((o) => !o)}>
             Menu
-          </button>
+          </Button>
           <NavLink to="/" className="flex items-baseline gap-8 text-ink no-underline">
             <span className="type-title">MetalUI</span>
-            <span className="type-readout hidden text-ink2 sm:inline">0.0 · alpha</span>
+            <span className="type-readout hidden text-ink3 sm:inline">0.0 alpha</span>
           </NavLink>
         </div>
         <div className="flex items-center gap-16">
-          <a className="type-ui hidden text-ink2 no-underline hover:text-ink sm:inline" href="/AI.md">AI.md</a>
-          <a className="type-ui hidden text-ink2 no-underline hover:text-ink sm:inline" href="https://github.com/vijayksingh/metalui">GitHub</a>
+          <a className="type-ui hidden text-ink2 no-underline hover:text-ink md:inline" href="/AI.md">AI.md</a>
+          <a className="type-ui hidden text-ink2 no-underline hover:text-ink md:inline" href="https://github.com/vijayksingh/metalui">GitHub</a>
           <ColorwaySwitch />
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-[1280px] gap-48 px-24 pb-80 lg:px-32">
+      <div className="mx-auto flex max-w-1280 gap-32 px-16 pb-96 sm:px-24">
         <aside
           id="docs-nav"
           className={[
-            'w-[232px] shrink-0 pt-24',
-            'lg:sticky lg:top-64 lg:block lg:h-[calc(100dvh-64px)] lg:overflow-y-auto',
-            menuOpen ? 'fixed inset-x-0 top-64 z-10 block h-[calc(100dvh-64px)] w-auto overflow-y-auto bg-[var(--mu-frost-strong)] px-24 backdrop-blur-[22px]' : 'hidden',
+            'w-208 shrink-0 pt-20',
+            'lg:sticky lg:top-52 lg:block lg:h-[calc(100dvh-52px)] lg:overflow-y-auto lg:pb-40',
+            menuOpen ? 'material-frost-plate fixed inset-x-0 top-52 z-10 block h-[calc(100dvh-52px)] w-auto overflow-y-auto px-16 pb-40' : 'hidden',
           ].join(' ')}
         >
           <Sidebar onNavigate={() => setMenuOpen(false)} />
         </aside>
-        <main className="min-w-0 flex-1 pt-32">
-          <Outlet />
+        <main className="min-w-0 flex-1 pt-40 lg:pt-56">
+          <div className="mx-auto w-full max-w-measure">
+            <Outlet />
+          </div>
         </main>
       </div>
 

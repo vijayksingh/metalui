@@ -59,7 +59,7 @@ export default function Home() {
               <Link to={p.to} className="group grid grid-cols-[1fr_auto] items-baseline gap-16 py-20 text-ink no-underline">
                 <span className="flex flex-col gap-6">
                   <span className="type-title group-hover:underline">{p.title}</span>
-                  <span className="prose-body max-w-[64ch] text-ink2">{p.body}</span>
+                  <span className="type-doc-prose max-w-[64ch] text-ink2">{p.body}</span>
                 </span>
                 <span className="type-readout text-ink2">{p.meta}</span>
               </Link>

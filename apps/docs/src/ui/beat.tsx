@@ -1,54 +1,54 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import { Segmented } from '@unlocalhosted/metalui';
-import { Code } from './doc';
+import { Code, Stage, Tag } from './doc';
+import type { Lang } from '../lib/highlight';
 
 /* ─────────────────────────────────────────────────────────
- * The page kit for show-don't-tell pages (docs/SHOW.md, DOCS_ARCHITECTURE.md §3).
+ * The kit for show-don't-tell pages (docs/SHOW.md, DOCS_ARCHITECTURE.md §3).
  *
- *   Head        title, one line, status, layer trail, spec strip (reference, above the fold)
- *   Beat        one sentence · live bench · verb-first caption · cost line · code folded
- *   useSlow     a 0.25× control for every motion bench: it slows the real transitions
- *   Toggle      the two-way switch a decision beat is built on
+ *   LayerTrail  one quiet line: what this is built from › this › where it is used
+ *   SpecLine    one quiet line of jump links into the reference
+ *   Beat        title · one sentence · a stage with its controls in the bottom edge
+ *               · verb-first caption · cost · code folded
+ *   Compare     specimens side by side, magnified, each named by a tag
+ *   useSlow     a 0.25× control for every motion stage: it slows the real transitions
  * ───────────────────────────────────────────────────────── */
 
-export interface TrailStep { label: string; to?: string; here?: boolean }
+export interface TrailStep { label: string; to?: string }
+
+const link = 'text-ink2 no-underline hover:text-ink hover:underline';
 
 export function LayerTrail({ down, here, up }: { down: TrailStep[]; here: string; up: TrailStep[] }) {
-  const step = (s: TrailStep) =>
-    s.to ? <Link key={s.label} to={s.to} className="text-ink2 underline decoration-dotted underline-offset-4 hover:text-ink">{s.label}</Link> : <span key={s.label} className="text-ink2">{s.label}</span>;
+  const step = (s: TrailStep) => (s.to ? <Link to={s.to} className={link}>{s.label}</Link> : <span className="text-ink2">{s.label}</span>);
+  const list = (steps: TrailStep[]) => steps.flatMap((s, i) => (i > 0 ? [', ', <span key={s.label}>{step(s)}</span>] : [<span key={s.label}>{step(s)}</span>]));
   return (
-    <nav aria-label="Layer trail" className="type-meta flex flex-wrap items-center gap-x-8 gap-y-4 text-ink3">
-      <span className="type-label engraved">Built from</span>
-      {down.map((s, i) => <span key={s.label} className="contents">{i > 0 && <span aria-hidden>·</span>}{step(s)}</span>)}
-      <span aria-hidden>›</span>
-      <span className="text-ink" aria-current="page">{here}</span>
-      <span aria-hidden>›</span>
-      <span className="type-label engraved">Used in</span>
-      {up.map((s, i) => <span key={s.label} className="contents">{i > 0 && <span aria-hidden>·</span>}{step(s)}</span>)}
+    <nav aria-label="Layer trail" className="type-doc-caption text-pretty text-ink3">
+      Built from {list(down)} <span aria-hidden className="px-2">→</span> <span className="text-ink" aria-current="page">{here}</span> <span aria-hidden className="px-2">→</span> used in {list(up)}
     </nav>
   );
 }
 
 export interface SpecItem { label: string; value: string; href: string; mono?: boolean }
 
-/** The spec strip: every item is a jump link into a reference section. */
-export function SpecStrip({ items }: { items: SpecItem[] }) {
+/** The spec line: every item is a jump link into a reference section. */
+export function SpecLine({ items }: { items: SpecItem[] }) {
   return (
-    <ul className="flex flex-wrap gap-8" aria-label="At a glance">
-      {items.map((it) => (
-        <li key={it.label}>
-          <a href={it.href} className="material-well type-meta inline-flex h-28 items-center gap-8 rounded-pill px-12 text-ink2 hover:text-ink">
-            <span className="type-label engraved">{it.label}</span>
-            <span className={it.mono ? 'type-readout text-ink' : 'text-ink'}>{it.value}</span>
+    <ul className="type-doc-caption flex flex-wrap items-baseline gap-x-6 gap-y-2 text-ink3" aria-label="At a glance">
+      {items.map((it, i) => (
+        <li key={it.label} className="flex items-baseline gap-6">
+          {i > 0 && <span aria-hidden>·</span>}
+          <a href={it.href} className="no-underline hover:text-ink">
+            {it.mono ? <code className="type-doc-code text-ink2">{it.value}</code> : <><span className="text-ink2">{it.value}</span> {it.label.toLowerCase()}</>}
           </a>
         </li>
       ))}
     </ul>
   );
 }
+export const SpecStrip = SpecLine;
 
-/** Slow motion for one bench: every transition that starts inside it plays at the chosen rate. */
+/** Slow motion for one stage: every transition that starts inside it plays at the chosen rate. */
 export function useSlow(ref: React.RefObject<HTMLElement | null>, slow: boolean) {
   React.useEffect(() => {
     const el = ref.current;
@@ -69,8 +69,19 @@ export function useSlow(ref: React.RefObject<HTMLElement | null>, slow: boolean)
 }
 
 export function Toggle<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { value: T; label: string }[]; onChange: (v: T) => void }) {
+  return <Segmented size="compact" aria-label={label} value={value} onValueChange={(v) => onChange(v as T)} options={options} />;
+}
+
+/** Real time or a quarter speed, in a stage's bar. */
+export function SlowSwitch({ slow, onChange }: { slow: boolean; onChange: (v: boolean) => void }) {
   return (
-    <Segmented aria-label={label} value={value} onValueChange={(v) => onChange(v as T)} options={options} />
+    <Segmented
+      size="compact"
+      aria-label="Speed"
+      value={slow ? 'slow' : 'real'}
+      onValueChange={(v) => onChange(v === 'slow')}
+      options={[{ value: 'real', label: 'Real time' }, { value: 'slow', label: '¼ speed' }]}
+    />
   );
 }
 
@@ -79,52 +90,55 @@ export interface BeatProps {
   title: string;
   /** One sentence. No more than 60 words between beats (SHOW.md). */
   setup: React.ReactNode;
-  /** Starts with a verb: Watch, Drag, Click, Switch, Count, Press, Hover. */
-  caption: string;
+  /** Starts with a verb: Watch, Drag, Click, Switch, Count, Press, Hover, Compare. */
+  caption: React.ReactNode;
   /** One line on what the decision costs. Decision beats must have one. */
   cost?: React.ReactNode;
-  /** Controls that sit above the bench (toggles, Slow, Replay). */
+  /** Controls in the stage's bottom edge (toggles, Slow, Replay, a width slider). */
+  bar?: React.ReactNode;
+  /** @deprecated use bar */
   controls?: React.ReactNode;
-  code?: { label: string; code: string };
+  code?: { label: string; code: string; lang?: Lang };
   slow?: boolean;
+  className?: string;
   children: React.ReactNode;
 }
 
-export function Beat({ id, title, setup, caption, cost, controls, code, slow = false, children }: BeatProps) {
-  const bench = React.useRef<HTMLDivElement>(null);
-  useSlow(bench, slow);
+export function Beat({ id, title, setup, caption, cost, bar, controls, code, slow = false, className, children }: BeatProps) {
+  const stage = React.useRef<HTMLDivElement>(null);
+  useSlow(stage, slow);
   return (
-    <article id={id} className="flex scroll-mt-80 flex-col gap-12">
-      <h3 className="type-title text-ink">{title}</h3>
-      <p className="prose-body max-w-[62ch] text-ink2">{setup}</p>
-      <figure className="flex flex-col gap-10">
-        {controls && <div data-md="skip" className="flex flex-wrap items-center gap-8">{controls}</div>}
-        <div ref={bench} data-md="skip" className="material-well relative flex min-h-[180px] items-center justify-center overflow-hidden rounded-card p-32">
+    <article id={id} data-beat className="flex scroll-mt-80 flex-col">
+      <h3 className="type-doc-subheading text-ink">{title}</h3>
+      <p className="type-doc-prose mt-4 max-w-measure text-pretty text-ink2">{setup}</p>
+      <div className="mt-20">
+        <Stage stageRef={stage} bar={bar ?? controls} caption={caption} cost={cost} className={className}>
           {children}
-        </div>
-        <figcaption className="flex flex-col gap-4">
-          <span className="type-meta text-ink">{caption}</span>
-          {cost && <span className="type-meta text-ink3"><span className="type-label engraved">Cost</span>&nbsp; {cost}</span>}
-        </figcaption>
-      </figure>
+        </Stage>
+      </div>
       {code && (
-        <details className="group">
-          <summary className="type-meta cursor-pointer text-ink2 hover:text-ink">Show the code</summary>
-          <div className="mt-8"><Code label={code.label} code={code.code} /></div>
+        <details className="group mt-12">
+          <summary data-md="skip" className="type-doc-caption w-fit cursor-pointer list-none text-ink3 hover:text-ink [&::-webkit-details-marker]:hidden">
+            <span className="inline-block transition-transform duration-150 group-open:rotate-90">›</span> Code
+          </summary>
+          <div className="mt-8"><Code label={code.label} lang={code.lang} code={code.code} /></div>
         </details>
       )}
     </article>
   );
 }
 
-/** A Slow switch styled like every other control on the bench. */
-export function SlowSwitch({ slow, onChange }: { slow: boolean; onChange: (v: boolean) => void }) {
+/** Specimens side by side, magnified so the detail reads at rest; each named by a tag above it. */
+export function Compare({ items, zoom = 2 }: { items: { label: string; note?: string; node: React.ReactNode; lit?: boolean }[]; zoom?: number }) {
   return (
-    <Segmented
-      aria-label="Speed"
-      value={slow ? 'slow' : 'real'}
-      onValueChange={(v) => onChange(v === 'slow')}
-      options={[{ value: "real", label: "Real time" }, { value: "slow", label: "0.25×" }]}
-    />
+    <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-rule">
+      {items.map((it) => (
+        <div key={it.label} className="flex flex-col items-center gap-16 px-12">
+          <Tag tone={it.lit ? 'lit' : 'quiet'}>{it.label}</Tag>
+          <div className="grid place-items-center py-8" style={{ zoom }}>{it.node}</div>
+          {it.note && <span className="type-doc-caption text-center text-ink3">{it.note}</span>}
+        </div>
+      ))}
+    </div>
   );
 }

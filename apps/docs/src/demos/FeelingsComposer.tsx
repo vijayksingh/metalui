@@ -44,7 +44,7 @@ export function composeFeeling(v: FeelingValues): string {
   return vessel + marks.join('');
 }
 
-/** The existing feelings the four variables express, with their values (Kamui 05 §3). */
+/** The existing feelings the four variables express, with their values (reference design 05 §3). */
 export const FEELING_VALUES: Partial<Record<LifeIconName, FeelingValues>> = {
   calm: { position: 'lifted', shape: 'smooth', level: 'none', dots: 'none' },
   happy: { position: 'centred', shape: 'smooth', level: 'none', dots: 'none' },
@@ -99,7 +99,7 @@ export function FeelingsComposer() {
             {values.position} · {values.shape} · {values.level} · {values.dots}
           </figcaption>
         </figure>
-        <p className="prose-body max-w-[36ch] text-ink2">
+        <p className="type-doc-prose max-w-[36ch] text-ink2">
           {match
             ? <>These values are <b className="font-semibold text-ink">{LIFE_CATALOG[match].label.toLowerCase()}</b>. Set the dials to any feeling below; a combination with no name yet is a feeling to author.</>
             : 'No feeling in the set has these values yet: this is a new feeling, authored by choosing its values.'}
