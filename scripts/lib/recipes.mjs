@@ -130,6 +130,8 @@ function propValue(v) {
 /** Validates and returns { css: { root, bone, graphite }, swift } for tokens.recipes. */
 export function buildRecipes(recipes) {
   const root = [];
+  // groups that paint with the object's own colour (--mu-self) resolve on the element that sets it
+  const selfish = [];
   const cw = { bone: [], graphite: [] };
   const swift = [];
   for (const [obj, r] of Object.entries(recipes ?? {})) {
@@ -156,7 +158,11 @@ export function buildRecipes(recipes) {
           target.push(`    ${mark}${cssValue(l.value)}${k < layers.length - 1 ? ',' : ';'}`);
         });
       };
-      if (!perColorway) emitTo(root, list);
+      const usesSelf = list.some((l) => /\bself\b/.test(l.value));
+      if (!perColorway) {
+        emitTo(root, list);
+        if (usesSelf) emitTo(selfish, list);
+      }
       else for (const c of ['bone', 'graphite']) emitTo(cw[c], list.filter((l) => !l.colorway || l.colorway === c), c);
     }
     for (const [part, props] of Object.entries(r.props ?? {}))
@@ -189,7 +195,7 @@ ${props.join('\n') || '            :'}
     )`);
   }
   return {
-    css: { root: root.join('\n'), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
+    css: { root: root.join('\n'), self: selfish.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
     swift: `
 /// Object recipes (tokens.json \`recipes\`): every layer of each object's look, per part and state,
 /// from the reference design's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).

@@ -130,6 +130,15 @@ public struct MetalObjectRecipe: Equatable, Sendable {
         layers(part, state: state, colorway: colorway).compactMap { if case .shadow(let s) = $0.value { return s.shadow(self: own) } else { return nil } }
     }
 
+    /// A number prop in points; zero when the recipe has none.
+    public func points(_ key: String) -> Double { number(key) ?? .zero }
+
+    /// A unitless prop (an opacity, a scale) written as text or number; zero when absent.
+    public func scalar(_ key: String) -> Double {
+        if let n = number(key) { return n }
+        return Double(text(key) ?? "") ?? .zero
+    }
+
     public func number(_ key: String) -> Double? {
         if case .number(let n) = props[key] { return n }
         return nil
@@ -143,13 +152,10 @@ public struct MetalObjectRecipe: Equatable, Sendable {
         }
     }
 
-    /// A CSS font shorthand prop ("600 9.5px/1 mono") as a system font: SF Pro (`sans`) or SF Mono (`mono`).
+    /// A CSS font shorthand prop ("600 9.5px/1 mono") in the bundled families: Geist (`sans`) or
+    /// Martian Mono (`mono`), at the prop's weight and size.
     public func font(_ key: String) -> Font {
-        let parts = (text(key) ?? "").split(separator: " ")
-        let weight = parts.first.flatMap { Double($0) } ?? 400
-        let size = parts.dropFirst().first.flatMap { Double($0.split(separator: "p").first ?? "") } ?? 13
-        let mono = parts.last == "mono"
-        return .system(size: size, weight: Self.weight(weight), design: mono ? .monospaced : .default)
+        .metal(typeRole(key))
     }
 
     /// The font size of a font shorthand prop, for em trackings.
@@ -242,4 +248,9 @@ extension View {
     public func metalObjectRecipe<S: InsettableShape>(_ recipe: MetalObjectRecipe, part: String, state: String? = nil, in shape: S, self own: MetalRGBA? = nil) -> some View {
         modifier(MetalObjectRecipeModifier(recipe: recipe, part: part, state: state, shape: shape, own: own))
     }
+}
+
+extension Double {
+    /// Full opacity or scale, for call sites that must not carry literals.
+    public static let one: Double = 1
 }

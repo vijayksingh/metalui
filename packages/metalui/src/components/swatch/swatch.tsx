@@ -35,6 +35,7 @@ export const Swatch = React.forwardRef<HTMLDivElement, SwatchProps>(function Swa
       tabIndex={props.onClick ? 0 : undefined}
       aria-label={props['aria-label'] ?? `Colour ${hex}`}
       data-ink={swatchInk(hex)}
+      data-mu-self=""
       className={className ? `mu-swatch ${className}` : 'mu-swatch'}
       style={{ '--mu-self': hex, ...style } as React.CSSProperties}
       {...props}

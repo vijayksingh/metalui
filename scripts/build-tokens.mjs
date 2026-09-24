@@ -133,7 +133,7 @@ ${FROSTS.map((r) => `[data-mu-transparency="reduce"] .mu-frost-${r}, .mu-frost-$
 ${FROSTS.map((r) => `  .mu-frost-${r} { ${edgeDecl(r)}; }`).join('\n')}
 }`;
 
-// ---------- presence (tokens.json presence): KAMUI-14 selection and hover presence ----------
+// ---------- presence (tokens.json presence): object sheet selection and hover presence ----------
 const PR = T.presence;
 const PR_KEYS = Object.keys(PR).filter((k) => !k.startsWith('$') && k !== 'ring-dark');
 const UNITLESS = new Set(['enter-scale', 'readout-writing']);
@@ -309,9 +309,13 @@ ${tintClasses}
 
 ${frostClasses}
 
-/* Object recipes (tokens.json recipes): every layer of each object's look, from the medium demo. */
+/* Object recipes (tokens.json recipes): every layer of each object's look, from the reference design. */
 :root {
 ${RECIPES.css.root}
+}
+/* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
+[data-mu-self] {
+${RECIPES.css.self}
 }
 :root,
 [data-mu-colorway="bone"] {

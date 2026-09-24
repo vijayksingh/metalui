@@ -1,43 +1,43 @@
 @import "../tokens.css";
 
-/* KAMUI-15 · Button. Values are tokens.json button (the sheet's .btn, refit to the height ladder).
-   --mu-button-h and --mu-button-px override one instance (the docs dials). */
+/* Button (the object sheet's .btn; compact is the reference design's .pill). Its look is the button recipe
+   (--mu-r-button-*); --mu-button-h and --mu-button-px override one instance (the docs dials). */
 .mu-button {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--mu-button-gap);
-  height: var(--mu-button-h, var(--mu-button-height));
-  margin: 0;
-  padding: 0 var(--mu-button-px, var(--mu-button-pad));
+  gap: var(--mu-r-button-self-gap);
+  height: var(--mu-button-h, var(--mu-r-button-self-height));
+  margin: var(--mu-zero);
+  padding: var(--mu-zero) var(--mu-button-px, var(--mu-r-button-self-pad));
   border: 0;
   border-radius: var(--mu-radius-pill);
   font: var(--mu-type-ui);
   letter-spacing: var(--mu-type-ui-tracking);
   white-space: nowrap;
   color: var(--mu-ink);
-  background: var(--mu-btn-bg);
-  box-shadow: var(--mu-btn-sh);
+  background: var(--mu-r-button-self-background);
+  box-shadow: var(--mu-r-button-self-shadow);
   cursor: pointer;
   user-select: none;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   transition:
     transform var(--mu-spring-release-d) var(--mu-spring-release),
-    box-shadow var(--mu-button-fade-ms),
-    background var(--mu-button-fade-ms),
-    color var(--mu-button-fade-ms);
+    box-shadow var(--mu-r-button-self-fade),
+    background var(--mu-r-button-self-fade),
+    color var(--mu-r-button-self-fade);
 }
-.mu-button > svg { width: var(--mu-button-glyph); height: var(--mu-button-glyph); flex: none; }
+.mu-button > svg { width: var(--mu-r-button-self-glyph); height: var(--mu-r-button-self-glyph); flex: none; }
 
 .mu-button:active:not([data-disabled]) {
-  transform: translateY(var(--mu-button-travel));
+  transform: translateY(var(--mu-r-button-self-travel));
   /* Down in 50 ms, linear; back on release. */
-  transition-duration: var(--mu-button-press-ms);
+  transition-duration: var(--mu-r-button-self-press);
   transition-timing-function: linear;
-  background: var(--mu-pressed-bg);
-  box-shadow: var(--mu-pressed-sh);
+  background: var(--mu-r-button-self-pressed-background);
+  box-shadow: var(--mu-r-button-self-pressed-shadow);
 }
 
 .mu-button[data-cap="primary"] {
@@ -61,26 +61,27 @@
 }
 
 .mu-button:focus-visible {
-  outline: var(--mu-button-focus-width) solid var(--mu-focus);
-  outline-offset: var(--mu-button-focus-offset);
+  outline: var(--mu-r-button-self-focus-width) solid var(--mu-focus);
+  outline-offset: var(--mu-r-button-self-focus-offset);
 }
 
 .mu-button[data-disabled] {
-  opacity: var(--mu-button-disabled);
+  opacity: var(--mu-r-button-self-disabled);
   cursor: default;
 }
 
-/* Compact: the medium's pills, 28 on the height ladder. The button fill on raise-sm, ink2 until hover. */
+/* Compact: the canvas pill (the reference design's .pill): 26 tall, raised, ink2 until hover, pressed into a shallow well. */
 .mu-button[data-size="compact"] {
-  gap: var(--mu-button-compact-gap);
-  height: var(--mu-button-h, var(--mu-button-compact-height));
-  padding: 0 var(--mu-button-px, var(--mu-button-compact-pad));
-  font-size: var(--mu-button-compact-size);
+  gap: var(--mu-r-button-compact-gap);
+  height: var(--mu-button-h, var(--mu-r-button-compact-height));
+  padding: var(--mu-zero) var(--mu-button-px, var(--mu-r-button-compact-pad));
+  font: var(--mu-r-button-compact-font);
+  letter-spacing: var(--mu-r-button-compact-tracking);
+  color: var(--mu-ink2);
+  background: var(--mu-r-button-compact-background);
+  box-shadow: var(--mu-r-button-compact-shadow);
+  transition: transform var(--mu-r-button-compact-move), box-shadow var(--mu-r-button-compact-move);
 }
-.mu-button[data-size="compact"] > svg { width: var(--mu-button-compact-glyph); height: var(--mu-button-compact-glyph); }
-.mu-button[data-size="compact"][data-cap="standard"] { color: var(--mu-ink2); box-shadow: var(--mu-raise-sm); }
-.mu-button[data-size="compact"][data-cap="standard"]:hover:not([data-disabled]) { color: var(--mu-ink); }
-.mu-button[data-size="compact"][data-cap="standard"]:active:not([data-disabled]) { box-shadow: var(--mu-pressed-sh); }
-
-/* Reduce Motion: the press rides release, which the policy keeps unchanged (tokens.json
-   springs.release.reduced). One point of travel with no overshoot is feedback, not decoration. */
+.mu-button[data-size="compact"]:hover { color: var(--mu-ink); }
+.mu-button[data-size="compact"]:active:not([data-disabled]) { background: var(--mu-r-button-compact-background); box-shadow: var(--mu-r-button-compact-pressed-shadow); }
+.mu-button[data-size="compact"] > svg { width: var(--mu-r-button-compact-glyph); height: var(--mu-r-button-compact-glyph); }

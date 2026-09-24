@@ -1,10 +1,10 @@
 # Hover engraving
 
-A block's identity, shown on a dwell, never on a pass. React: `HoverEngraving` from `@unlocalhosted/metalui`. SwiftUI: `.metalHoverEngraving(...)` or `MetalHoverEngraving`. Kamui brief: 03 §5, DS-31.
+A block's identity, shown on a dwell, never on a pass. React: `HoverEngraving` from `@unlocalhosted/metalui`. SwiftUI: `.metalHoverEngraving(...)` or `MetalHoverEngraving`. the reference brief: 03 §5, DS-31.
 
 ## Use it for
 
-- Telling what a block is and where it came from, without a card: `LOG · 07:40 · SLEEP 6 H · ALSO TIRED`, `TASK · TOMORROW 16:00 · #POSTER · JEV ✓`, `LUNCH? 0.71`, `NOT SENT · LOOKS LIKE A SECRET`.
+- Telling what a block is and where it came from, without a card: `LOG · 07:40 · SLEEP 6 H · ALSO TIRED`, `TASK · TOMORROW 16:00 · #POSTER · RECOGNIZER ✓`, `LUNCH? 0.71`, `NOT SENT · LOOKS LIKE A SECRET`.
 
 ## Don't use it for
 
@@ -42,7 +42,7 @@ Reduce Motion: settle is a crossfade, so it fades in place.
 ```tsx
 <div className="mu-icon-trigger block" aria-describedby="eng-1">
   slept badly, up at 5
-  <HoverEngraving id="eng-1" kind="LOG" details={['07:40', 'SLEEP 6 H', 'ALSO TIRED']} status={{ led: 'live', text: 'JEV ✓' }} open={selected || editing ? false : undefined} />
+  <HoverEngraving id="eng-1" kind="LOG" details={['07:40', 'SLEEP 6 H', 'ALSO TIRED']} status={{ led: 'live', text: 'RECOGNIZER ✓' }} open={selected || editing ? false : undefined} />
 </div>
 ```
 

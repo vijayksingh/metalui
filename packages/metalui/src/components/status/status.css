@@ -1,33 +1,36 @@
 @import "../tokens.css";
 @import "../provenance-tooltip/provenance-tooltip.css";
 
-/* LED and status badge (KAMUI-16; Kamui 04 §10). */
+/* LED and status badge (the reference design's .led-*, .pill.status). Its look is the status recipe (--mu-r-status-*). */
 .mu-led {
   display: inline-block;
   flex: none;
-  width: var(--mu-status-led);
-  height: var(--mu-status-led);
-  border-radius: 50%;
-  box-shadow: var(--mu-led-ring);
+  width: var(--mu-r-status-led-size);
+  height: var(--mu-r-status-led-size);
+  border-radius: var(--mu-round);
+  box-shadow: var(--mu-r-status-led-shadow);
 }
-.mu-led[data-size="small"] { width: var(--mu-status-led-small); height: var(--mu-status-led-small); }
-.mu-led[data-kind="live"] { background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom); }
-.mu-led[data-kind="waiting"] { background: var(--mu-led-amber); }
-.mu-led[data-kind="failed"] { background: var(--mu-led-red); }
-.mu-led[data-kind="link"] { background: var(--mu-led-blue); }
-.mu-led[data-kind="off"] { background: var(--mu-led-off); }
+.mu-led[data-size="small"] { width: var(--mu-r-status-led-size-small); height: var(--mu-r-status-led-size-small); }
+.mu-led[data-kind="live"] { background: var(--mu-r-status-led-live-background); box-shadow: var(--mu-r-status-led-live-shadow); }
+.mu-led[data-kind="waiting"] { background: var(--mu-r-status-led-waiting-background); }
+.mu-led[data-kind="failed"] { background: var(--mu-r-status-led-failed-background); }
+.mu-led[data-kind="link"] { background: var(--mu-r-status-led-link-background); }
+.mu-led[data-kind="off"] { background: var(--mu-r-status-led-off-background); box-shadow: var(--mu-r-status-led-off-shadow); }
 
 .mu-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--mu-status-badge-gap);
-  height: var(--mu-status-badge-height);
-  padding: 0 var(--mu-status-badge-pad-end) 0 var(--mu-status-badge-pad-start);
-  border-radius: 999px;
+  gap: var(--mu-r-status-badge-gap);
+  height: var(--mu-r-status-badge-height);
+  padding: var(--mu-zero) var(--mu-r-status-badge-pad);
+  border-radius: var(--mu-radius-pill);
   white-space: nowrap;
+  font: var(--mu-r-status-badge-font);
+  letter-spacing: var(--mu-r-status-badge-tracking);
+  text-transform: uppercase;
   color: var(--mu-ink2);
-  background: var(--mu-btn-bg);
-  box-shadow: var(--mu-btn-sh);
+  background: var(--mu-r-status-badge-background);
+  box-shadow: var(--mu-r-status-badge-shadow);
   cursor: default;
 }
 .mu-badge:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }

@@ -1,8 +1,11 @@
+import AppKit
 import CoreText
 import SwiftUI
 
-/// The bundled type families (SIL OFL 1.1): Geist for UI and reading, Martian Mono for
-/// engravings, readouts and code, Doto for dot-matrix display readouts.
+/// The type families, as the tokens name them: the system faces (SF Pro Text for UI and
+/// reading, SF Mono for engravings, readouts, keycaps and code) exactly as the web's
+/// -apple-system / ui-monospace stacks render them, and the bundled Doto (SIL OFL 1.1) for
+/// dot-matrix display readouts. Geist and Martian Mono stay bundled for hosts that ask for them.
 public enum MetalFonts {
     /// PostScript family names as the variable fonts declare them.
     static let familyNames: [MetalFontFamily: String] = [.sans: "Geist", .mono: "Martian Mono", .pixel: "Doto"]
@@ -24,23 +27,46 @@ public enum MetalFonts {
     private static let weightAxis = 0x7767_6874 // 'wght'
     private static let widthAxis = 0x7764_7468 // 'wdth'
 
-    /// A CoreText font for a type role at a size, with its weight and width set on the variable axes.
-    public static func ctFont(_ role: MetalTypeRole, size: Double) -> CTFont {
-        register()
-        var variation: [Int: Double] = [weightAxis: Double(role.weight)]
-        if role.family == .mono { variation[widthAxis] = role.stretch * 100 }
-        var attributes: [CFString: Any] = [
-            kCTFontFamilyNameAttribute: familyNames[role.family] ?? "Geist",
-            kCTFontVariationAttribute: variation,
+    /// A CSS weight (100–900) as the system font's weight trait (−1…1), interpolated between the
+    /// named weights so 620 or 660 land where the browser draws them.
+    static func systemWeight(_ css: Int) -> CGFloat {
+        let table: [(Double, CGFloat)] = [
+            (100, NSFont.Weight.ultraLight.rawValue), (200, NSFont.Weight.thin.rawValue), (300, NSFont.Weight.light.rawValue),
+            (400, NSFont.Weight.regular.rawValue), (500, NSFont.Weight.canvas.rawValue), (600, NSFont.Weight.semibold.rawValue),
+            (700, NSFont.Weight.bold.rawValue), (800, NSFont.Weight.heavy.rawValue), (900, NSFont.Weight.black.rawValue),
         ]
-        if role.tabular {
-            // Tabular figures, like font-variant-numeric: tabular-nums.
-            attributes[kCTFontFeatureSettingsAttribute] = [[
-                kCTFontFeatureTypeIdentifierKey: kNumberSpacingType,
-                kCTFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector,
-            ]]
+        let w = min(max(Double(css), 100), 900)
+        for i in 0..<(table.count - 1) where w <= table[i + 1].0 {
+            let (a, fa) = table[i], (b, fb) = table[i + 1]
+            return fa + (fb - fa) * CGFloat((w - a) / (b - a))
         }
-        let descriptor = CTFontDescriptorCreateWithAttributes(attributes as CFDictionary)
+        return NSFont.Weight.black.rawValue
+    }
+
+    /// A CoreText font for a type role at a size: the system face for sans and mono at the role's
+    /// weight, Doto on its variable axes for pixel.
+    public static func ctFont(_ role: MetalTypeRole, size: Double) -> CTFont {
+        let base: CTFont
+        switch role.family {
+        case .pixel:
+            register()
+            let attributes: [CFString: Any] = [
+                kCTFontFamilyNameAttribute: familyNames[.pixel] ?? "Doto",
+                kCTFontVariationAttribute: [weightAxis: Double(role.weight)],
+            ]
+            base = CTFontCreateWithFontDescriptor(CTFontDescriptorCreateWithAttributes(attributes as CFDictionary), size, nil)
+        case .mono:
+            base = NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight))) as CTFont
+        default:
+            base = NSFont.systemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight))) as CTFont
+        }
+        guard role.tabular else { return base }
+        // Tabular figures, like font-variant-numeric: tabular-nums.
+        let features: [CFString: Any] = [kCTFontFeatureSettingsAttribute: [[
+            kCTFontFeatureTypeIdentifierKey: kNumberSpacingType,
+            kCTFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector,
+        ]]]
+        let descriptor = CTFontDescriptorCreateCopyWithAttributes(CTFontCopyFontDescriptor(base), features as CFDictionary)
         return CTFontCreateWithFontDescriptor(descriptor, size, nil)
     }
 }
