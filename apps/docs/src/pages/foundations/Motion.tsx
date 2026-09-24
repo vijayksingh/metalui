@@ -9,7 +9,8 @@ import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../u
  *
  * Every specimen rides its mass class's spring (CSS: the sampled linear()).
  *   part     switch thumb hits the end of its track      k170 c16  overshoot ~9%
- *   object   card lifts one step (4) and lands            k120 c13  overshoot ~10%
+ *   settle   card hover-lifts one step (4), still on leave    k380 c36  no overshoot
+ *   object   a dropped card lands on the table            k120 c13  overshoot ~10%
  *   hinge    flap tilts −15° → −45°                       k120 c14
  *   surface  a plate rises one nest from its cap          k220 c28  no overshoot
  *   release  a pressed cap returns                        k500 c40
@@ -204,11 +205,11 @@ export default function Motion() {
             </div>
           </Bench>
 
-          <Bench caption={`object · lifts one step and lands on the table · ${summary(d.object)}`}>
+          <Bench caption={`settle lifts one step on hover · object lands it · ${summary(d.object)}`}>
             <div className="p-4" onPointerEnter={() => setLifted(true)} onPointerLeave={() => setLifted(false)}>
               <div
                 className="material-raised h-[96px] w-[200px] rounded-card"
-                style={{ transform: `translateY(${lift ? -4 : 0}px)`, transition: ride(d.object, ['transform']) }}
+                style={{ transform: `translateY(${lift ? -4 : 0}px)`, transition: lift ? `transform var(--mu-spring-settle-d) var(--mu-spring-settle)` : ride(d.object, ['transform']) }}
               />
             </div>
           </Bench>

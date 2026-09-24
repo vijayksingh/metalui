@@ -41,7 +41,7 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 | Step | What | Status | Commit |
 |---|---|---|---|
-| 4 | T5 split into hover lift (`settle`) and land (`object`); Button anatomy reads Geist 12.5 | pending | |
+| 4 | T5 split into hover lift (`settle`) and land (`object`); Button anatomy reads Geist 12.5 | shipped | see `docs(motion): split lift into hover lift and land` (Button already read Geist 12.5 from `6e55d35`) |
 
 ## 5. Objects, one at a time
 

@@ -254,13 +254,13 @@ public enum MetalCaps {
 public enum MetalSprings {
     /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
     public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
-    /// objects: cards lifting and landing on the table
+    /// objects landing on the table: a dropped block settling in a region, folder cards, a stack opening; a stop, and rare by design
     public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92)
     /// anything on a hinge: flaps, lids, drawers that tilt
     public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94)
     /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
     public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5)
-    /// arrivals and footprints: content coming into place, a control growing to new content
+    /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
     public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
     /// departures and letting go: content leaving, a pressed cap returning
     public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
@@ -282,13 +282,13 @@ public enum MetalReducedMotion: String, Sendable {
 public enum MetalSpringClass: String, CaseIterable, Sendable {
     /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
     case part
-    /// objects: cards lifting and landing on the table
+    /// objects landing on the table: a dropped block settling in a region, folder cards, a stack opening; a stop, and rare by design
     case object
     /// anything on a hinge: flaps, lids, drawers that tilt
     case hinge
     /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
     case surface
-    /// arrivals and footprints: content coming into place, a control growing to new content
+    /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
     case settle
     /// departures and letting go: content leaving, a pressed cap returning
     case release

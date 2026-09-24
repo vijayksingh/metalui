@@ -57,7 +57,8 @@ const RECIPES: React.ReactNode[][] = [
   ['T2 · Footprint', 'A control grows or shrinks to new content', 'Width on settle. Growing: the surface makes room as the drum turns. Shrinking: waits until the old face is half turned away (settle half, 83ms).', 'SwapText'],
   ['T3 · Selection glide', 'One of a set becomes selected', 'The selection is a part that travels. In a track with ends: part spring, may overshoot against the stop. Free travel (lists, navigation): settle. Placed without motion on first paint.', 'SlidingIndicator'],
   ['T4 · Press', 'A cap is pressed', 'Down the cap’s depth (1) in 50ms linear; the shadow collapses into a well. Back on release. Kept under reduced motion.', 'Button'],
-  ['T5 · Lift', 'An object is hovered or picked up', 'Rises one step (4) on the object spring; the ambient shadow grows with it. Lands with a small overshoot: the table is its stop.', 'Pattern'],
+  ['T5a · Hover lift', 'An object is hovered or picked up', 'Rises one step (4) on the settle spring, with no overshoot; the ambient shadow grows with it. It happens a hundred times a day, so it must be still again by the time the pointer has left.', 'Pattern'],
+  ['T5b · Land', 'A dragged object is dropped into place', 'Settles onto the table or into a region on the object spring, with its small overshoot: the table is its stop. Rare by design; open canvas lands on settle.', 'Pattern'],
   ['T6 · Rise', 'A menu, popover, palette or tooltip opens', 'Rises one nest (6) from its trigger, from one nest smaller than itself, on the surface spring; its shadow grows from the trigger’s contact to the floating ambient. Closes on release, back the way it came.', 'Pattern'],
   ['T7 · Panel', 'A drawer or panel enters a region', 'Travels its own extent from its edge on the surface spring, content already inside. Leaves on release the same way.', 'Pattern'],
   ['T8 · View change', 'A panel changes view (tabs, steps)', 'Two steps (8) toward the new view, focus 4, overlapping like the drum; the container height settles.', 'Pattern'],
@@ -147,7 +148,7 @@ export default function Transitions() {
           rules={[
             { id: 'C1', title: 'Did the face change, or the object?', body: 'Same control, new label, icon or number: the drum (T1), with the footprint (T2) if its size changes. A different object appearing: rise (T6), panel (T7) or arrive (T9).' },
             { id: 'C2', title: 'Did something become selected?', body: 'One of a set: the selection glides (T3). Never recolor the old and new items in place without the travel.' },
-            { id: 'C3', title: 'Was it touched?', body: 'Pressed: the press (T4). Hovered and liftable: the lift (T5). Refused: the refusal (T10).' },
+            { id: 'C3', title: 'Was it touched?', body: 'Pressed: the press (T4). Hovered and liftable: the hover lift (T5a); dropped into place: the land (T5b). Refused: the refusal (T10).' },
             { id: 'C4', title: 'Is it done a hundred times a day?', body: 'Then no recipe: it changes instantly (Motion M6).' },
           ]}
         />

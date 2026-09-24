@@ -30,7 +30,7 @@
   --mu-spring-part-d: 0.6s;
   --mu-spring-part-half: 105ms;
   --mu-spring-part-near: 198ms;
-  /* object: k=120 c=13 ζ=0.59 · objects: cards lifting and landing on the table */
+  /* object: k=120 c=13 ζ=0.59 · objects landing on the table: a dropped block settling in a region, folder cards, a stack opening; a stop, and rare by design */
   --mu-spring-object: linear(0, 0.0204, 0.0747, 0.1532, 0.2476, 0.3505, 0.4561, 0.5597, 0.6576, 0.7472, 0.8269, 0.8957, 0.9534, 1.0001, 1.0365, 1.0634, 1.0819, 1.093, 1.0981, 1.0982, 1.0944, 1.0877, 1.0791, 1.0693, 1.059, 1.0486, 1.0386, 1.0293, 1.021, 1.0136, 1.0074, 1.0022, 0.9981, 0.995, 0.9927, 0.9913, 0.9905, 0.9903, 0.9905, 0.991, 0.9917, 0.9927, 0.9937, 0.9947, 0.9957, 0.9966, 0.9975, 0.9983, 1);
   --mu-spring-object-d: 0.92s;
   --mu-spring-object-half: 124ms;
@@ -45,7 +45,7 @@
   --mu-spring-surface-d: 0.5s;
   --mu-spring-surface-half: 110ms;
   --mu-spring-surface-near: 292ms;
-  /* settle: k=380 c=36 ζ=0.92 · arrivals and footprints: content coming into place, a control growing to new content */
+  /* settle: k=380 c=36 ζ=0.92 · arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a) */
   --mu-spring-settle: linear(0, 0.0269, 0.0925, 0.1792, 0.2747, 0.3712, 0.4633, 0.5482, 0.6242, 0.6908, 0.7482, 0.7969, 0.8378, 0.8716, 0.8993, 0.9218, 0.9398, 0.9542, 0.9656, 0.9744, 0.9813, 0.9865, 0.9905, 0.9935, 0.9957, 0.9973, 0.9984, 0.9992, 0.9998, 1.0001, 1.0003, 1.0005, 1.0005, 1.0005, 1);
   --mu-spring-settle-d: 0.44s;
   --mu-spring-settle-half: 83ms;
