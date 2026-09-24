@@ -1,5 +1,11 @@
 # Swift parity requests
 
+## Image glass face
+
+- **Object:** `glass-face` image screen.
+- **Missing:** generated `image.max-width` and `image.saturation` / `image.contrast` properties. `MetalImageFace` uses the common glass bezel and screen layers now; these image-only values should drive the native pixel filter and width cap.
+- **Demo CSS:** `style.css:301-302` sets `.imgobj` max-width to 340 px and its image to `saturate(.92) contrast(1.04)` with a 15 px image radius. `style.css:265-270` provides the shared bezel, screen and glare layers.
+
 ## Checkbox disabled state
 
 - **Object:** `checkbox` recipe.
@@ -43,3 +49,4 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **`MetalLabel`**: `tone: .accent` (green, no lip, cross-fades on settle) and a placeholder for an empty label; `count` and `onGraphite` track at -0.18 pt; `readoutDim` is the readout type in `#7C7D82`.
 - **`MetalProvenanceTooltip`** (move to `Blocks/`) is a composition block: `.metalTooltip` wrapped, the detail in its dim part, 380 ms, 8 above (34 above a value chip). No backdrop, no uppercase (the reference `#tip`). The tooltip recipe loses its blur.
 - **`MetalSizeReadout`** stays a component (the selection frame block uses it), rebuilt as `MetalSurface(.graphiteDeep, radius: .pill)` › `MetalLed(.live)` + each figure a `MetalLabel(.readout)` and each mark a `MetalLabel(.readoutDim)`, 6 apart. `MetalPresence` readout values now match the reference: 22 tall, padding 10, gap 6, LED 5, ink `#EDEDEF`, dim `#7C7D82`, the graphite shadow.
+- **`MetalHoverEngraving`** (move to `Blocks/`) is a composition block: `MetalSurface(.tip, radius: .pill)` › `MetalLabel(.engraved)` with the kind as its emphasis (a new label `emphasis` part: weight 500, `.62` / `.55` ink) + `MetalChip(.tag)` per derived tag + `MetalLabel(.engraved)` with a `MetalLed` before the status. Layout and timing from `MetalEngraving` (new: `fadeMs` 160, `moveMs` 200, `ledGap` 4, `ledLift` 1). `MetalRecipes.hoverEngraving` is kept (`$pendingSwiftPort`) only until the port composes the block; then delete it.

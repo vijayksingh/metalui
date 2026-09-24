@@ -74,6 +74,39 @@ private struct MetalGlassBody<Content: View>: View {
     }
 }
 
+/// An image inside the shared glass bezel. The screen glare sits over the
+/// pixels, as the reference's `.glass .screen::after` does.
+public struct MetalImageFace<Content: View>: View {
+    public let size: CGSize
+    private let content: Content
+
+    public init(size: CGSize, @ViewBuilder content: () -> Content) {
+        self.size = size
+        self.content = content()
+    }
+
+    public var body: some View {
+        let recipe = MetalRecipes.glassFace
+        let pad = recipe.points("self.pad")
+        let screen = RoundedRectangle(cornerRadius: recipe.points("screen.radius"), style: .continuous)
+        ZStack {
+            Color.clear.metalObjectRecipe(recipe, part: "screen", in: screen)
+            content
+                .frame(width: max(.zero, size.width - pad - pad), height: max(.zero, size.height - pad - pad))
+                .clipped()
+            Color.clear.metalObjectRecipe(recipe, part: "glare", in: screen)
+                .allowsHitTesting(false)
+        }
+        .frame(width: max(.zero, size.width - pad - pad), height: max(.zero, size.height - pad - pad))
+        .clipShape(screen)
+        .padding(pad)
+        .metalObjectRecipe(recipe, part: "self", in: RoundedRectangle(cornerRadius: recipe.points("self.radius"), style: .continuous))
+        .frame(width: size.width, height: size.height)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Image")
+    }
+}
+
 /// A link as a glass object: its host large, its path engraved, a LINK tag and an OPEN key.
 public struct MetalLinkFace: View {
     let url: URL?
