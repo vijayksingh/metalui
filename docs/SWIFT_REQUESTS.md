@@ -120,3 +120,9 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **Object:** `MetalCommandPalette` as a composition block built from the generated `MetalSurface`, `MetalRow(.option)`, `MetalLabel`, `MetalKbd`, field and icon recipes.
 - **Missing:** `check:recipes` reports no command palette recipe. The Swift component still assembles a plate from generic frost and palette measurements; the generated recipe should specify the 24 px blur and saturation, 560 px width cap, 6 px inset, raised selected row, green rail, field well, focus and keyboard hint layers. The palette must keep the field and row's key grammar while drawing the same layers as the browser.
 - **Demo CSS:** reference demo `style.css:517-532` defines the palette scrim, plate, field, section rows, selected rail and footer. Reference demo `app.js:2991-3060` defines Arrow, Return, Shift-Return and Escape behavior.
+
+## Me series layout
+
+- **Object:** a generated Me panel and pinned Me summary layout composed from `MetalSparkline`, `MetalLabel` and the panel/region surfaces.
+- **Missing:** the `sparkline` recipe contains line, dots, baseline and heights, but its 4 px plot inset is still implicit. Add `plot.pad` so the Swift port can read it directly. The four panel columns (92/110/flexible/120 px, 14 px gap, 12/14 px row padding) and the mini layout (58/flexible/44 px, 8 px gap, 34 px row height, 6 px inset) lack a generated composition recipe. The client temporarily keeps these layout values in its owned layout file.
+- **Demo CSS:** reference demo `style.css:457-470` defines Me rows, sparklines and mini rows. Reference demo `app.js:2906-2965` plots the 4 px inset, gap semantics, last dot and five-metric mini limit.
