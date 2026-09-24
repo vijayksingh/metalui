@@ -1615,6 +1615,16 @@
   --color-presence-readout-ink: var(--mu-presence-readout-ink);
   --color-presence-readout-dim: var(--mu-presence-readout-dim);
   --spacing-presence-readout-led: var(--mu-presence-readout-led);
+  --spacing-presence-guide-width: var(--mu-presence-guide-width);
+  --color-presence-guide: var(--mu-presence-guide);
+  --color-presence-guide-dark: var(--mu-presence-guide-dark);
+  --spacing-presence-guide-dash: var(--mu-presence-guide-dash);
+  --spacing-presence-guide-overshoot: var(--mu-presence-guide-overshoot);
+  --spacing-presence-snap-threshold: var(--mu-presence-snap-threshold);
+  --spacing-presence-drag-threshold: var(--mu-presence-drag-threshold);
+  --spacing-presence-lasso-width: var(--mu-presence-lasso-width);
+  --color-presence-lasso-fill: var(--mu-presence-lasso-fill);
+  --color-presence-lasso-fill-dark: var(--mu-presence-lasso-fill-dark);
   --spacing-cue-gutter: var(--mu-cue-gutter);
   --spacing-cue-dimple: var(--mu-cue-dimple);
   --spacing-cue-dimple-top: var(--mu-cue-dimple-top);
@@ -1847,6 +1857,9 @@
 @utility duration-presence-copied-ms {
   --tw-duration: var(--mu-presence-copied-ms);
   transition-duration: var(--mu-presence-copied-ms);
+}
+@utility opacity-presence-corner-glow {
+  opacity: var(--mu-presence-corner-glow);
 }
 @utility duration-cue-tick-ms {
   --tw-duration: var(--mu-cue-tick-ms);

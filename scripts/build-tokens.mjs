@@ -136,7 +136,7 @@ ${FROSTS.map((r) => `  .mu-frost-${r} { ${edgeDecl(r)}; }`).join('\n')}
 // ---------- presence (tokens.json presence): object sheet selection and hover presence ----------
 const PR = T.presence;
 const PR_KEYS = Object.keys(PR).filter((k) => !k.startsWith('$') && k !== 'ring-dark');
-const UNITLESS = new Set(['enter-scale', 'readout-writing']);
+const UNITLESS = new Set(['enter-scale', 'readout-writing', 'corner-glow']);
 const prValue = (k, v) => (typeof v === 'number' ? (k.endsWith('-ms') ? `${v}ms` : UNITLESS.has(k) ? `${v}` : `${v}px`) : v);
 const presenceVars = PR_KEYS.map((k) => `  --mu-presence-${k}: ${prValue(k, PR[k])};`).join('\n');
 // ---------- cue (tokens.json cue): recognition cues on the text ----------

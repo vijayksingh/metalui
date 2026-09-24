@@ -1873,7 +1873,7 @@ public enum MetalFrost: String, CaseIterable, Sendable {
     }
 }
 
-/// object sheet, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and the native reference.
+/// object sheet, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and the native reference. While moving or resizing, snap guides explain each snap: guide-width lines in the guide colour, solid for aligned edges and guide-dash dashed for aligned centres, spanning every aligned object plus guide-overshoot at each end, the same width at every zoom; they clear when the drag ends. A drag starts after drag-threshold; a snap takes within snap-threshold screen points. The lasso is a lasso-width hairline over lasso-fill with a count readout under it.
 public enum MetalPresence {
     public static let ringWidth: Double = 1.25
     public static let ring: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
@@ -1926,6 +1926,17 @@ public enum MetalPresence {
     public static let readoutLed: Double = 5.0
     public static let readoutWriting: Double = 0.78
     public static let copiedMs: Double = 900.0
+    public static let guideWidth: Double = 1.0
+    public static let guide: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
+    public static let guideDark: MetalRGBA = MetalRGBA(120, 214, 165, 1.0)
+    public static let guideDash: Double = 3.0
+    public static let guideOvershoot: Double = 8.0
+    public static let snapThreshold: Double = 6.0
+    public static let dragThreshold: Double = 3.0
+    public static let lassoWidth: Double = 1.0
+    public static let lassoFill: MetalRGBA = MetalRGBA(63, 185, 122, 0.06)
+    public static let lassoFillDark: MetalRGBA = MetalRGBA(120, 214, 165, 0.08)
+    public static let cornerGlow: Double = 0.55
 
     /// The ring colour in a colorway: green-deep on bone, green on graphite.
     public static func ringColor(in colorway: MetalColorway) -> MetalRGBA { colorway == .graphite ? ringDark : ring }
