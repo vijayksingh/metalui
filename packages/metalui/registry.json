@@ -88,11 +88,6 @@
           "path": "packages/metalui/src/blocks/code-card/code-card.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/code-card/code-card.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/code-card/code-card.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/code-card/code-card.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/code-card.md. SwiftUI: MetalCodeCard in the MetalUI Swift package."

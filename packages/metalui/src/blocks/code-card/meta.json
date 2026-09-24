@@ -14,8 +14,7 @@
   "react": {
     "export": "CodeCard, tintCode",
     "files": [
-      "code-card.tsx",
-      "code-card.css"
+      "code-card.tsx"
     ]
   },
   "swift": {
