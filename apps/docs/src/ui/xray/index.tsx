@@ -7,6 +7,7 @@ import { FieldXray } from './FieldXray';
 import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
 import { MenuXray } from './MenuXray';
+import { PaletteXray } from './PaletteXray';
 import { SegmentedXray } from './SegmentedXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
@@ -32,6 +33,7 @@ export const XRAYS = {
   toast: { title: 'Toast', View: ToastXray },
   menu: { title: 'Menu', View: MenuXray },
   dialog: { title: 'Dialog', View: DialogXray },
+  palette: { title: 'Command palette', View: PaletteXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;

@@ -8,10 +8,11 @@ import agentGuide from '../../../../../packages/metalui/src/components/command-p
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCommandPalette.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { PaletteXray } from '../../ui/xray/PaletteXray';
 
-/* The medium demo's rows: lens suggestions, fragments that match, then actions. */
+/* The reference demo's rows: lens suggestions, items that match, then actions. */
 const LENSES = ['open tasks', 'this week', 'today', 'me', '#poster', '#studio', 'done', 'yesterday', 'links', 'colors'];
-const FRAGMENTS = [
+const ITEMS = [
   { id: 'f1', text: 'the font on the train poster was a condensed grotesk', at: '8:52' },
   { id: 'f2', text: 'poster refs from the studio', at: '9:10' },
   { id: 'f3', text: 'send the poster to Sam tomorrow 4pm', at: '11:04' },
@@ -22,9 +23,9 @@ const lensIcon = (q: string) =>
 function rows(q: string): CommandPaletteItem[] {
   const ql = q.trim().toLowerCase();
   const out: CommandPaletteItem[] = [];
-  if (ql) out.push({ id: `lens:${ql}`, section: 'LENS', label: `See “${q.trim()}”`, icon: <SearchIcon size={14} />, hint: ql.split(' ').length > 2 ? 'JEV' : 'RULES' });
+  if (ql) out.push({ id: `lens:${ql}`, section: 'LENS', label: `See “${q.trim()}”`, icon: <SearchIcon size={14} />, hint: ql.split(' ').length > 2 ? 'MODEL' : 'RULES' });
   LENSES.filter((l) => !ql || l.includes(ql)).slice(0, ql ? 4 : 10).forEach((l) => l !== ql && out.push({ id: `lens-${l}`, section: 'LENSES', label: l, icon: lensIcon(l) }));
-  if (ql) FRAGMENTS.filter((f) => f.text.includes(ql)).forEach((f) => out.push({ id: f.id, section: 'FRAGMENTS', label: f.text, icon: <DocumentIcon size={14} />, hint: <><span className="mu-palette-eng mu-type-label">{f.at}</span><Kbd size="small">↩</Kbd></> }));
+  if (ql) ITEMS.filter((f) => f.text.includes(ql)).forEach((f) => out.push({ id: f.id, section: 'ITEMS', label: f.text, icon: <DocumentIcon size={14} />, hint: <><span className="mu-palette-eng mu-type-label">{f.at}</span><Kbd size="small">↩</Kbd></> }));
   const acts: CommandPaletteItem[] = [
     { id: 'me', section: 'ACTIONS', label: 'Me · Trends From What You Wrote', icon: <MeIcon size={14} />, hint: <Kbd size="small">M</Kbd> },
     { id: 'seed', section: 'ACTIONS', label: 'Seed a Sample Day', icon: <SeedIcon size={14} /> },
@@ -38,7 +39,7 @@ function rows(q: string): CommandPaletteItem[] {
 }
 
 export default function CommandPalettePage() {
-  const d = useDialKit('Command palette', { open: false, query: 'poster', jev: true });
+  const d = useDialKit('Command palette', { open: false, query: 'poster', model: true });
   const [open, setOpen] = React.useState(false);
   const [q, setQ] = React.useState('');
   const [ran, setRan] = React.useState<string>('–');
@@ -57,7 +58,7 @@ export default function CommandPalettePage() {
     <>
       <PageHeader
         title="Command palette"
-        lede="⌘K: ask the canvas a question or run anything by name. One field, sections of rows (a lens for what you typed, suggested lenses, fragments that match, actions), a raised selected row, and a footer that says which keys work and where the answers come from. Built on Base UI Dialog around an inline Base UI Combobox."
+        lede="⌘K: ask the canvas a question or run anything by name. One field, sections of rows (a lens for what you typed, suggested lenses, items that match, actions), a raised selected row, and a footer that says which keys work and where the answers come from. Built on Base UI Dialog around an inline Base UI Combobox."
       />
       <Section title="Playground" lede="Open it with the button or ⌘K. Type: the first row is always the lens for your words. Arrows or hover move the selection; ↩ runs, ⇧↩ pins, ⎋ closes. The dial opens it with a query already typed (as the demo does from a tag).">
         <Bench caption={`last run · ${ran}`} className="min-h-[200px]">
@@ -73,10 +74,13 @@ export default function CommandPalettePage() {
           items={rows(q)}
           filter={false}
           icon={<SearchIcon size={15} />}
-          status={d.jev ? 'NATURAL LANGUAGE VIA JEV' : 'JEV OFFLINE · KEYWORDS ONLY'}
+          status={d.model ? 'NATURAL LANGUAGE VIA THE MODEL' : 'MODEL OFFLINE · KEYWORDS ONLY'}
           onRun={(item, { pin }) => setRan(`${item.label}${pin ? ' · pinned' : ''}`)}
         />
         <SwiftCapture name="command-palette" maxWidth={600} />
+      </Section>
+      <Section id="x-ray" title="X-ray" lede="See how the palette is put together. Click an icon to learn about one part and change it.">
+        <PaletteXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[
@@ -102,10 +106,10 @@ export default function CommandPalettePage() {
       </Section>
       <Section title="Rules">
         <Rules rules={[
-          { id: 'P1', title: 'Every key is discoverable here', body: 'A row whose action has a key shows it. The palette is where people learn the keys.', origin: 'Kamui 04 §3' },
-          { id: 'P2', title: 'Say where answers come from', body: 'The footer names Jev or says it is offline; a lens row says RULES or JEV.', origin: 'Kamui 03 §5' },
+          { id: 'P1', title: 'Every key is discoverable here', body: 'A row whose action has a key shows it. The palette is where people learn the keys.', origin: 'Reference design 04 §3' },
+          { id: 'P2', title: 'Say where answers come from', body: 'The footer names the model or says it is offline; a lens row says RULES or MODEL.', origin: 'Reference design 03 §5' },
           { id: 'P3', title: 'Selection is instant', body: 'Rows are scanned, not watched: the raised cap and its bar jump, and hover moves them.', origin: 'MetalUI M6' },
-          { id: 'P4', title: 'Destructive is red, and undoable', body: 'The palette runs it at once; the result carries Undo in a toast.', origin: 'Kamui 04 §12' },
+          { id: 'P4', title: 'Destructive is red, and undoable', body: 'The palette runs it at once; the result carries Undo in a toast.', origin: 'Reference design 04 §12' },
         ]} />
       </Section>
     </>
