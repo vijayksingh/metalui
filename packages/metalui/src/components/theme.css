@@ -29,8 +29,9 @@
   --color-warning: var(--mu-warning);
   --color-photon: var(--mu-photon);
   --color-tint-ember: var(--mu-tint-ember);
-  --color-tint-sand: var(--mu-tint-sand);
-  --color-tint-graphite: var(--mu-tint-graphite);
+  --color-tint-blush: var(--mu-tint-blush);
+  --color-tint-tide: var(--mu-tint-tide);
+  --color-tint-spark: var(--mu-tint-spark);
   --color-tint-dusk: var(--mu-tint-dusk);
   --color-tint-iris: var(--mu-tint-iris);
   --shadow-raise: var(--mu-raise);

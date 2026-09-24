@@ -5,6 +5,14 @@ import { root, emit, finish } from './lib/emit.mjs';
 
 const T = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8'));
 
+// ---------- feelings tints (foundations.tint) ----------
+// One pigment per family, the same in both colorways (a finish never changes with the colorway).
+// The neutral family has no pigment: its body stays ink.
+const TINT = T.foundations.tint;
+const TINTS = Object.keys(TINT).filter((k) => !k.startsWith('$') && k !== 'field-shift');
+const PIGMENTS = TINTS.filter((t) => TINT[t].base);
+const tintVars = PIGMENTS.map((t) => `  --mu-tint-${t}: ${TINT[t].base}; /* ${TINT[t].kind} */`).join('\n');
+
 // ---------- CSS ----------
 const decl = (obj, prefix = '') =>
   Object.entries(obj).map(([k, v]) => `  --mu-${prefix}${k}: ${v};`).join('\n');
@@ -78,16 +86,18 @@ function typeDecls(role) {
   if (r.tabular) out.push('font-variant-numeric: tabular-nums');
   return out;
 }
-// Valence tints: color only the glyphs that carry a feeling or energy, and fall back to the
-// surrounding ink under Increase Contrast or inside [data-mu-untinted].
-const TINTS = Object.keys(F.tint).filter((k) => !k.startsWith('$') && k !== 'field-shift');
+// Feelings tints: how the pigment sits on a glyph comes from the colorway (tint-line, tint-body).
+// Increase Contrast and [data-mu-untinted] return the glyph to ink.
 const tintSel = TINTS.map((t) => `.mu-tint-${t}`).join(', ');
-const tintClasses = `/* Valence tints (foundations.tint): feelings and energy glyphs only, never words. */
-${TINTS.map((t) => `.mu-tint-${t} { color: var(--mu-tint-${t}); }`).join('\n')}
+const tintClasses = `/* Feelings tints (foundations.tint). Bone: ink line, enamel body. Graphite: the line glows in
+   the pigment (--mu-tint-line 1), the body is its duotone (--mu-tint-body 1). Glyphs only. */
+${TINTS.map((t) => (TINT[t].base
+    ? `.mu-tint-${t} { color: color-mix(in srgb, var(--mu-tint-${t}) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-${t}); --mu-duo-tint: var(--mu-tint-body); }`
+    : `.mu-tint-${t} { --mu-duo-fill: currentColor; --mu-duo-tint: 1; } /* ${TINT[t].kind}: no pigment, the glyph stays ink */`)).join('\n')}
 [data-mu-untinted] :is(${tintSel}),
-[data-mu-untinted]:is(${tintSel}) { color: inherit; }
+[data-mu-untinted]:is(${tintSel}) { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
 @media (prefers-contrast: more) {
-  ${tintSel} { color: inherit; }
+  ${tintSel} { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
 }`;
 
 const typeClasses = Object.keys(F.type)
@@ -104,6 +114,7 @@ ${motion}
 ${swap}
 ${foundationVars}
 ${travel}
+${tintVars}
 }
 
 ${reducedMotion}
@@ -157,7 +168,7 @@ ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
   --color-success: var(--mu-success);
   --color-warning: var(--mu-warning);
   --color-photon: var(--mu-photon);
-${TINTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
+${PIGMENTS.map((t) => `  --color-tint-${t}: var(--mu-tint-${t});`).join('\n')}
   --shadow-raise: var(--mu-raise);
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
@@ -358,26 +369,27 @@ ${Object.entries(T.springs).map(([k, s]) => `        case .${k}: return .${s.red
     public static let crossfade: MetalSpringClass = .${F['reduced-motion'].crossfade}
 }
 
-/// ${F.tint.$use}
+/// ${TINT.$use}
 public enum MetalTint: String, CaseIterable, Sendable {
-${TINTS.map((t) => `    /// ${F.tint[t].valence} · ${F.tint[t].energy}: ${F.tint[t].feelings.join(', ')}\n    case ${t}`).join('\n')}
+${TINTS.map((t) => `    /// ${TINT[t].kind}: ${[...TINT[t].feelings, ...TINT[t].moments].join(', ')}\n    case ${t}`).join('\n')}
 
-    /// The tint's color in a colorway.
-    public func color(in colorway: MetalColorway) -> MetalRGBA {
+    /// The family's pigment, the same in both colorways; nil for neutral, whose body stays ink.
+    public var pigment: MetalRGBA? {
         switch self {
-${TINTS.map((t) => `        case .${t}: return colorway.tokens.tint${t[0].toUpperCase() + t.slice(1)}`).join('\n')}
+${TINTS.map((t) => `        case .${t}: return ${TINT[t].base ? swiftValue(TINT[t].base)[1] : 'nil'}`).join('\n')}
+        }
+    }
+
+    /// The kind of feeling the tint names.
+    public var kind: String {
+        switch self {
+${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(TINT[t].kind)}`).join('\n')}
         }
     }
 
     public var valence: String {
         switch self {
-${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(F.tint[t].valence)}`).join('\n')}
-        }
-    }
-
-    public var energy: String {
-        switch self {
-${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(F.tint[t].energy)}`).join('\n')}
+${TINTS.map((t) => `        case .${t}: return ${JSON.stringify(TINT[t].valence)}`).join('\n')}
         }
     }
 }

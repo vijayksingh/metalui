@@ -99,6 +99,12 @@
   --mu-travel-settle: 1;
   --mu-travel-release: 1;
   --mu-travel-refusal: 1;
+  --mu-tint-ember: #FF6B3D; /* joy */
+  --mu-tint-blush: #EA5098; /* affection */
+  --mu-tint-tide: #14BCBC; /* calm */
+  --mu-tint-spark: #F5A420; /* wonder */
+  --mu-tint-dusk: #1D84F5; /* low */
+  --mu-tint-iris: #955BE3; /* tension */
 }
 
 /* Reduce Motion: part instant, object instant, hinge instant, surface crossfade, settle crossfade, release unchanged, refusal instant. */
@@ -172,11 +178,8 @@
   --mu-pressed-bg: linear-gradient(#E9E8E4,#EFEEEA);
   --mu-pressed-sh: inset 0 2px 5px -1px rgba(60,55,40,.14), inset 0 0 0 .5px rgba(0,0,0,.035), inset 0 -2px 3px -2px rgba(255,255,255,.9);
   --mu-duo-k: 1;
-  --mu-tint-ember: #B0761A;
-  --mu-tint-sand: #94714A;
-  --mu-tint-graphite: #5C5C60;
-  --mu-tint-dusk: #62708E;
-  --mu-tint-iris: #5F57C9;
+  --mu-tint-line: 0;
+  --mu-tint-body: 3.5;
 }
 
 [data-mu-colorway="graphite"] {
@@ -208,11 +211,8 @@
   --mu-pressed-bg: linear-gradient(#18181A,#1C1C1E);
   --mu-pressed-sh: inset 0 2px 5px -1px rgba(0,0,0,.65), inset 0 0 0 .5px rgba(0,0,0,.5), inset 0 -2px 3px -2px rgba(255,255,255,.05);
   --mu-duo-k: 1.3;
-  --mu-tint-ember: #E6B55E;
-  --mu-tint-sand: #D1B58E;
-  --mu-tint-graphite: #A6A6A9;
-  --mu-tint-dusk: #9EA9C2;
-  --mu-tint-iris: #A9A3F3;
+  --mu-tint-line: 1;
+  --mu-tint-body: 0.6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -245,22 +245,22 @@
     --mu-pressed-bg: linear-gradient(#18181A,#1C1C1E);
     --mu-pressed-sh: inset 0 2px 5px -1px rgba(0,0,0,.65), inset 0 0 0 .5px rgba(0,0,0,.5), inset 0 -2px 3px -2px rgba(255,255,255,.05);
     --mu-duo-k: 1.3;
-    --mu-tint-ember: #E6B55E;
-    --mu-tint-sand: #D1B58E;
-    --mu-tint-graphite: #A6A6A9;
-    --mu-tint-dusk: #9EA9C2;
-    --mu-tint-iris: #A9A3F3;
+    --mu-tint-line: 1;
+    --mu-tint-body: 0.6;
   }
 }
 
-/* Valence tints (foundations.tint): feelings and energy glyphs only, never words. */
-.mu-tint-ember { color: var(--mu-tint-ember); }
-.mu-tint-sand { color: var(--mu-tint-sand); }
-.mu-tint-graphite { color: var(--mu-tint-graphite); }
-.mu-tint-dusk { color: var(--mu-tint-dusk); }
-.mu-tint-iris { color: var(--mu-tint-iris); }
-[data-mu-untinted] :is(.mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris),
-[data-mu-untinted]:is(.mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) { color: inherit; }
+/* Feelings tints (foundations.tint). Bone: ink line, enamel body. Graphite: the line glows in
+   the pigment (--mu-tint-line 1), the body is its duotone (--mu-tint-body 1). Glyphs only. */
+.mu-tint-ember { color: color-mix(in srgb, var(--mu-tint-ember) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-ember); --mu-duo-tint: var(--mu-tint-body); }
+.mu-tint-blush { color: color-mix(in srgb, var(--mu-tint-blush) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-blush); --mu-duo-tint: var(--mu-tint-body); }
+.mu-tint-tide { color: color-mix(in srgb, var(--mu-tint-tide) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-tide); --mu-duo-tint: var(--mu-tint-body); }
+.mu-tint-spark { color: color-mix(in srgb, var(--mu-tint-spark) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-spark); --mu-duo-tint: var(--mu-tint-body); }
+.mu-tint-graphite { --mu-duo-fill: currentColor; --mu-duo-tint: 1; } /* neutral: no pigment, the glyph stays ink */
+.mu-tint-dusk { color: color-mix(in srgb, var(--mu-tint-dusk) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-dusk); --mu-duo-tint: var(--mu-tint-body); }
+.mu-tint-iris { color: color-mix(in srgb, var(--mu-tint-iris) calc(var(--mu-tint-line) * 100%), currentColor); --mu-duo-fill: var(--mu-tint-iris); --mu-duo-tint: var(--mu-tint-body); }
+[data-mu-untinted] :is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris),
+[data-mu-untinted]:is(.mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris) { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
 @media (prefers-contrast: more) {
-  .mu-tint-ember, .mu-tint-sand, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris { color: inherit; }
+  .mu-tint-ember, .mu-tint-blush, .mu-tint-tide, .mu-tint-spark, .mu-tint-graphite, .mu-tint-dusk, .mu-tint-iris { color: inherit; --mu-duo-fill: currentColor; --mu-duo-tint: 1; }
 }

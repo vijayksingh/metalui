@@ -30,11 +30,8 @@ public struct MetalColorwayTokens: Sendable {
     public let pressedBg: MetalGradient
     public let pressedSh: [MetalShadow]
     public let duoK: Double
-    public let tintEmber: MetalRGBA
-    public let tintSand: MetalRGBA
-    public let tintGraphite: MetalRGBA
-    public let tintDusk: MetalRGBA
-    public let tintIris: MetalRGBA
+    public let tintLine: Double
+    public let tintBody: Double
 }
 
 /// A signal cap (primary, destructive) that looks the same in both colorways.
@@ -108,11 +105,8 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
         ],
         duoK: 1.0,
-        tintEmber: MetalRGBA(176, 118, 26, 1.0),
-        tintSand: MetalRGBA(148, 113, 74, 1.0),
-        tintGraphite: MetalRGBA(92, 92, 96, 1.0),
-        tintDusk: MetalRGBA(98, 112, 142, 1.0),
-        tintIris: MetalRGBA(95, 87, 201, 1.0)
+        tintLine: 0.0,
+        tintBody: 3.5
     )
 
     public static let graphite = MetalColorwayTokens(
@@ -176,11 +170,8 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
         ],
         duoK: 1.3,
-        tintEmber: MetalRGBA(230, 181, 94, 1.0),
-        tintSand: MetalRGBA(209, 181, 142, 1.0),
-        tintGraphite: MetalRGBA(166, 166, 169, 1.0),
-        tintDusk: MetalRGBA(158, 169, 194, 1.0),
-        tintIris: MetalRGBA(169, 163, 243, 1.0)
+        tintLine: 1.0,
+        tintBody: 0.6
     )
 }
 
@@ -311,47 +302,58 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
     public static let crossfade: MetalSpringClass = .settle
 }
 
-/// Valence tints color feelings and energy glyphs only: hue carries valence (warm pleasant, cool unpleasant), saturation carries energy (vivid activated, muted settled). Never red or green, never on words, off under Increase Contrast and by one setting (data-mu-untinted).
+/// Feelings tints name the kind of feeling a glyph carries: joy, affection, calm, wonder, neutral, low, tension. Energy lives in the glyph's shape and valence in its position, so no tint is muted to say it; every pigment speaks at the orange's voice. On bone the pigment is enamel: the body takes it (tint-body times the duotone) and the line stays engraved ink. On graphite the pigment is light: the line glows in it (tint-line) and the body is its soft duotone. Glyphs only, never words, never status or intent; off under Increase Contrast and inside data-mu-untinted.
 public enum MetalTint: String, CaseIterable, Sendable {
-    /// pleasant · activated: happy, excited, energised, proud
+    /// joy: happy, excited, energised, proud, party
     case ember
-    /// pleasant · settled: calm, hopeful, grateful, loved, rested
-    case sand
-    /// neutral · either: curious, focused, distracted, bored
+    /// affection: loved, grateful, date, friend, family, gift
+    case blush
+    /// calm: calm, rested, hopeful
+    case tide
+    /// wonder: curious
+    case spark
+    /// neutral: focused, distracted, bored
     case graphite
-    /// unpleasant · settled: dull, lonely, sad, drained, tired
+    /// low: dull, lonely, sad, drained, tired
     case dusk
-    /// unpleasant · activated: anxious, angry, stressed, frustrated, overwhelmed
+    /// tension: anxious, angry, stressed, frustrated, overwhelmed
     case iris
 
-    /// The tint's color in a colorway.
-    public func color(in colorway: MetalColorway) -> MetalRGBA {
+    /// The family's pigment, the same in both colorways; nil for neutral, whose body stays ink.
+    public var pigment: MetalRGBA? {
         switch self {
-        case .ember: return colorway.tokens.tintEmber
-        case .sand: return colorway.tokens.tintSand
-        case .graphite: return colorway.tokens.tintGraphite
-        case .dusk: return colorway.tokens.tintDusk
-        case .iris: return colorway.tokens.tintIris
+        case .ember: return MetalRGBA(255, 107, 61, 1.0)
+        case .blush: return MetalRGBA(234, 80, 152, 1.0)
+        case .tide: return MetalRGBA(20, 188, 188, 1.0)
+        case .spark: return MetalRGBA(245, 164, 32, 1.0)
+        case .graphite: return nil
+        case .dusk: return MetalRGBA(29, 132, 245, 1.0)
+        case .iris: return MetalRGBA(149, 91, 227, 1.0)
+        }
+    }
+
+    /// The kind of feeling the tint names.
+    public var kind: String {
+        switch self {
+        case .ember: return "joy"
+        case .blush: return "affection"
+        case .tide: return "calm"
+        case .spark: return "wonder"
+        case .graphite: return "neutral"
+        case .dusk: return "low"
+        case .iris: return "tension"
         }
     }
 
     public var valence: String {
         switch self {
         case .ember: return "pleasant"
-        case .sand: return "pleasant"
+        case .blush: return "pleasant"
+        case .tide: return "pleasant"
+        case .spark: return "pleasant"
         case .graphite: return "neutral"
         case .dusk: return "unpleasant"
         case .iris: return "unpleasant"
-        }
-    }
-
-    public var energy: String {
-        switch self {
-        case .ember: return "activated"
-        case .sand: return "settled"
-        case .graphite: return "either"
-        case .dusk: return "settled"
-        case .iris: return "activated"
         }
     }
 }

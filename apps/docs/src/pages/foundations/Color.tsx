@@ -33,36 +33,60 @@ const SIGNAL = tokens.foundations.signal;
 const SWATCHES = ['green', 'green-deep', 'red', 'success', 'warning', 'photon', 'blue', 'gold'] as const;
 const LEDS = ['led-green', 'led-amber', 'led-red', 'led-blue', 'led-off'] as const;
 
-const TINTS = Object.entries(tokens.foundations.tint).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [
-  string,
-  { valence: string; energy: string; feelings: string[] },
-][];
+type Tint = { base: string | null; kind: string; valence: string; feelings: string[]; moments: string[] };
+const TINT = tokens.foundations.tint;
+const TINTS = Object.entries(TINT).filter(([k]) => !k.startsWith('$') && k !== 'field-shift') as [string, Tint][];
 
-/** The feelings vessel (r 9.3 on the 24 grid, 1.7 wire, duotone body), standing in for a feelings glyph. */
-function Vessel({ tint }: { tint: string }) {
+// One real glyph per family, drawn from Kamui's life set (design/medium-icons) until the set
+// itself lands in MetalUI (import plan 3.1). The vessel is the duotone body; the marks are ink.
+const VESSEL = '<circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/>';
+const SPECIMEN: Record<string, { name: string; body: string }> = {
+  ember: { name: 'happy', body: `${VESSEL}<path d="M6.8 13.2c2.2 0 2.8-4.6 5.2-4.6s3 4.6 5.2 4.6"/>` },
+  blush: { name: 'loved', body: `${VESSEL}<circle cx="10.2" cy="12" r="3.1"/><circle cx="13.8" cy="12" r="3.1"/>` },
+  tide: { name: 'calm', body: `${VESSEL}<path d="M6.4 11c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0c1.01 -0.67 1.79 -0.67 2.8 0c1.01 0.67 1.79 0.67 2.8 0"/><path d="M8.8 14.4c0.76 -0.53 1.34 -0.53 2.1 0c0.76 0.53 1.34 0.53 2.1 0c0.76 -0.53 1.34 -0.53 2.1 0" style="opacity:.45"/>` },
+  spark: { name: 'curious', body: `${VESSEL}<path d="M6.6 14.6c2.4 0 3.8-.8 4.6-2.2.9-1.7.1-3.4-1.2-3.2-1.5.2-1.2 2.5.6 2.9 2.2.5 4.2-.9 5.8-3.3"/><circle class="s" cx="16.9" cy="7.6" r="1"/>` },
+  graphite: { name: 'focused', body: `${VESSEL}<circle cx="12" cy="12" r="3.8"/><circle class="s" cx="12" cy="12" r="1.2"/>` },
+  dusk: { name: 'sad', body: `${VESSEL}<path d="M7 10c2.8.2 4.2 2 5.4 3.6 1 1.3 2.3 1.9 4.4 1.9"/>` },
+  iris: { name: 'anxious', body: `${VESSEL}<path d="M6.6 13.2l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5l1.2 1.5l1.2 -1.5"/>` },
+};
+const DATE = '<path class="f" style="--duo:.2" d="M12 19.8c-.3 0-8.4-4.9-8.4-10.5A4.4 4.4 0 0 1 12 7.1a4.4 4.4 0 0 1 8.4 2.2c0 5.6-8.1 10.5-8.4 10.5Z"/>';
+
+function Glyph({ tint, body, size = 36, title }: { tint: string; body: string; size?: number; title: string }) {
   return (
-    <svg viewBox="0 0 24 24" width={32} height={32} aria-hidden="true" className={`mu-tint-${tint}`} fill="none" stroke="currentColor" strokeWidth={1.7}>
-      <circle cx="12" cy="12" r="9.3" fill="currentColor" fillOpacity="calc(.14 * var(--mu-duo-k, 1))" />
-    </svg>
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={`mu-icon mu-tint-${tint}`}
+      role="img"
+      aria-label={title}
+      dangerouslySetInnerHTML={{ __html: body }}
+    />
   );
 }
 
-/** Five tints in both colorways, with a switch that turns them off the way Increase Contrast does. */
+/** Every family on its real glyph, in both colorways, with a switch that turns tints off the way Increase Contrast does. */
 function TintBench() {
   const [off, setOff] = React.useState(false);
   return (
     <div className="flex w-full flex-col items-center gap-20" data-mu-untinted={off ? '' : undefined}>
-      <div className="grid w-full gap-16 md:grid-cols-2">
+      <div className="grid w-full gap-16 xl:grid-cols-2">
         {(['bone', 'graphite'] as CW[]).map((cw) => (
           <div key={cw} data-mu-colorway={cw} className="material-raised flex flex-col gap-16 rounded-card p-24">
             <span className="type-label engraved">{cw}</span>
-            <div className="grid grid-cols-5 gap-8 text-icon">
-              {TINTS.map(([t]) => (
-                <div key={t} className="flex flex-col items-center gap-6">
-                  <Vessel tint={t} />
-                  <span className="type-meta text-ink2">{t}</span>
+            <div className="grid grid-cols-4 gap-x-8 gap-y-16 text-ink sm:grid-cols-8">
+              {TINTS.map(([t, q]) => (
+                <div key={t} className="flex flex-col items-center gap-6 text-center">
+                  <Glyph tint={t} body={SPECIMEN[t].body} title={`${SPECIMEN[t].name}, ${t}`} />
+                  <span className="type-meta text-ink">{SPECIMEN[t].name}</span>
+                  <span className="type-label engraved">{q.kind}</span>
                 </div>
               ))}
+              <div className="flex flex-col items-center gap-6 text-center">
+                <Glyph tint="blush" body={DATE} title="date, blush" />
+                <span className="type-meta text-ink">date</span>
+                <span className="type-label engraved">moment</span>
+              </div>
             </div>
           </div>
         ))}
@@ -230,26 +254,25 @@ export default function Color() {
       </Section>
 
       <Section
-        title="Valence tints"
-        lede="Five tints color the glyphs that carry a feeling or an energy, and nothing else. Hue carries valence: warm is pleasant, cool is unpleasant. Saturation carries energy: vivid is activated, muted is settled. Neutral is graphite, which is ink2 by design. There is no red and no green, so a feeling never reads as destructive or as intent."
+        title="Feelings tints"
+        lede="Color names the kind of feeling a glyph carries: joy, affection, calm, wonder, low or tension, with neutral left in ink. Energy already lives in the glyph’s shape and valence in its position, so no feeling is muted to say how strong it is, and a quiet one is never brown or gray. Every pigment speaks at the orange’s voice. On bone it is enamel: the body takes the pigment and the line stays engraved ink. On graphite it is light, like the device’s LEDs: the line glows in the pigment over a faint body."
       >
-        <Bench caption="The feelings vessel in each tint · Increase Contrast, or the switch, returns every glyph to ink">
+        <Bench caption="One real glyph per family, plus a moment · the switch, or Increase Contrast, returns every body to ink">
           <TintBench />
         </Bench>
         <TokenTable
+          head={['Token', 'Pigment', 'Kind · carried by']}
           rows={TINTS.map(([t, q]) => [
-            `--mu-tint-${t}`,
-            `${C.bone[`tint-${t}` as keyof (typeof C)['bone']]} · ${C.graphite[`tint-${t}` as keyof (typeof C)['bone']]}`,
-            `${q.valence} · ${q.energy}: ${q.feelings.join(', ')}. Glyph at ${(['bone', 'graphite'] as CW[])
-              .map((cw) => `${worstContrast(C[cw][`tint-${t}` as keyof (typeof C)['bone']], surfaces(cw)).toFixed(1)}:1`)
-              .join(' / ')} on the worst surface.`,
+            q.base ? `--mu-tint-${t}` : `.mu-tint-${t}`,
+            q.base ?? 'ink',
+            `${q.kind} · ${[...q.feelings, ...q.moments.map((m) => `${m} (moment)`)].join(', ')}`,
           ])}
         />
         <Rules
           rules={[
-            { id: 'C4', title: 'Glyphs only, never words', body: 'Apply .mu-tint-<name> (or .metalTint(_:) in SwiftUI) to the glyph. The duotone body follows through currentColor. The label beside it stays ink.' },
-            { id: 'C5', title: 'Feelings and energy only', body: 'A tint says how something feels, never what state it is in. Status is an LED, intent is phosphor, destruction is red.' },
-            { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns tinted glyphs to the surrounding ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language has to read without color.' },
+            { id: 'C4', title: 'Enamel on bone, light on graphite', body: 'On bone the pigment is the glyph’s body and the line stays ink, so contrast never depends on shading a pigment darker, which would turn orange red and amber brown. On graphite the line glows in the pigment itself (each clears 3:1 on the dark surfaces), because a dark enamel would be brown. Words never take a tint.', origin: 'Ours' },
+            { id: 'C5', title: 'Color names the kind, never the strength', body: 'Joy, affection, calm, wonder, low and tension each have one pigment. How strong a feeling is shows in its shape. Moments that carry an unmistakable feeling take it too: a date, a friend, family and a gift are affection; a party is joy.', origin: 'Ours · replaces hue-is-valence, saturation-is-energy (Kamui 02 §3)' },
+            { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns every body to ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language reads without color.', origin: 'Ours' },
           ]}
         />
       </Section>
