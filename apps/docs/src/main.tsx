@@ -26,6 +26,7 @@ const router = createBrowserRouter([
       { path: 'foundations/transitions', lazy: lazy(() => import('./pages/foundations/Transitions')) },
       { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
+      { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },
     ],
   },

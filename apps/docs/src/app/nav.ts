@@ -36,6 +36,9 @@ export const NAV: NavGroup[] = [
   },
   {
     label: 'Assets',
-    items: [{ to: '/icons', label: 'Icons', meta: '31' }],
+    items: [
+      { to: '/icons', label: 'Icons', meta: '31' },
+      { to: '/icons/life', label: 'Life icons', meta: '108' },
+    ],
   },
 ];
