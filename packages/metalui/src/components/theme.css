@@ -2004,6 +2004,18 @@
 @utility indicator-glide-settle {
   transition: transform var(--mu-spring-settle-d) var(--mu-spring-settle), width var(--mu-spring-settle-d) var(--mu-spring-settle), height var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
+@utility swap-footprint {
+  transition: width var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+@utility swap-layer {
+  opacity: 1; filter: blur(0); transform: none; transition: opacity var(--mu-swap-spring), filter var(--mu-swap-spring), transform var(--mu-swap-spring); @media (prefers-reduced-motion: reduce) { transform: none !important; filter: none !important; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle) !important; }
+}
+@utility swap-enter {
+  opacity: 0; filter: blur(var(--mu-swap-focus)); transform: translateY(var(--mu-swap-turn)); transition: none;
+}
+@utility swap-out {
+  opacity: 0; filter: blur(var(--mu-swap-focus)); transform: translateY(calc(var(--mu-swap-turn) * -1));
+}
 @utility duration-part {
   --tw-duration: var(--mu-spring-part-d);
   transition-duration: var(--mu-spring-part-d);

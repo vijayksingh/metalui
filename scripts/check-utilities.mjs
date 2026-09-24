@@ -34,6 +34,15 @@ for (const meta of components()) {
   }
 }
 
+// The shared motion parts (the drum, the sliding indicator) are held to the same rule.
+for (const dir of ['motion']) {
+  for (const f of readdirSync(join(src, dir)).filter((f) => f.endsWith('.css'))) errors.push(`${dir}/${f}: a motion part keeps a stylesheet`);
+  for (const { file, token } of classTokens(join(src, dir))) {
+    if (/[[(]/.test(utilityOf(token))) errors.push(`${dir}/${file}: ${token}: an arbitrary value; take it from the theme`);
+    all.push({ where: `${dir}/${file}`, token });
+  }
+}
+
 const { unknown } = await compileCandidates([...new Set(all.map((a) => a.token))]);
 const bad = new Set(unknown);
 for (const a of all) if (bad.has(a.token)) errors.push(`${a.where}: ${a.token}: not a utility of the theme`);

@@ -18,7 +18,7 @@ import * as React from 'react';
 /* Selection glide (Transitions T3): the selection is a part that travels, on the part spring; free
  * travel has no stop to bounce against, so it settles. Reduce Motion: it moves at once. */
 const INDICATOR = 'mu-indicator absolute top-0 left-0 z-0 pointer-events-none data-animate:indicator-glide data-animate:data-[spring=settle]:indicator-glide-settle data-animate:motion-reduce:transition-none';
-const ACTIVE = '[aria-checked="true"],[aria-selected="true"],[aria-current="page"]';
+const activeItem = '[aria-checked="true"],[aria-selected="true"],[aria-current="page"]';
 
 export interface SlidingIndicatorProps {
   /** Selects the active item inside the group. Defaults to ARIA checked/selected/current. */
@@ -37,7 +37,7 @@ export interface SlidingIndicatorProps {
  * controls, tabs, navigation. Place it as the first child of a positioned
  * group; it follows ARIA state, so the items stay ordinary buttons or links.
  */
-export function SlidingIndicator({ activeSelector = ACTIVE, className, spring = 'part' }: SlidingIndicatorProps) {
+export function SlidingIndicator({ activeSelector = activeItem, className, spring = 'part' }: SlidingIndicatorProps) {
   const self = React.useRef<HTMLSpanElement>(null);
   const [box, setBox] = React.useState<{ x: number; y: number; w: number; h: number; animate: boolean } | null>(null);
 
