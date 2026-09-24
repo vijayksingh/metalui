@@ -8,8 +8,7 @@
   "react": {
     "export": "Chip",
     "files": [
-      "chip.tsx",
-      "chip.css"
+      "chip.tsx"
     ]
   },
   "swift": {

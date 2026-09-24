@@ -75,11 +75,6 @@
           "path": "packages/metalui/src/components/chip/chip.tsx",
           "type": "registry:ui",
           "target": "components/metalui/chip/chip.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/chip/chip.css",
-          "type": "registry:file",
-          "target": "components/metalui/chip/chip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."

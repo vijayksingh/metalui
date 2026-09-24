@@ -1,6 +1,5 @@
 @import "../../components/tokens.css";
 @import "../../components/glass-face/glass-face.css";
-@import "../../components/chip/chip.css";
 
 /* Link card: a custom block. The tinted screen and its type are the link-card recipe (--mu-r-link-card-*);
    the bezel and glare are GlassFace, the tag and action Chip. */

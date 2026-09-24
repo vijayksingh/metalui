@@ -1,5 +1,4 @@
 @import "../../components/tokens.css";
-@import "../../components/chip/chip.css";
 
 /* Hover engraving: a composition. It places the pill, times its dwell and lays out its parts; every
    paint is Surface(tip), Label(engraved), Chip(tag) and Led. Layout and timing: --mu-engraving-*. */
