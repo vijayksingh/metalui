@@ -27,17 +27,19 @@ const items = components().map((meta) => ({
   description: meta.description,
   dependencies: meta.base?.startsWith('@base-ui') ? [`@base-ui/react@${BASE_UI}`] : [],
   registryDependencies: [`${ORIGIN}/r/tokens.json`],
-  files: meta.react.files.map((f) => file(`packages/metalui/src/components/${meta.name}/${f}`, f.endsWith('.css') ? 'registry:file' : 'registry:ui', `components/metalui/${meta.name}/${f}`)),
+  files: meta.react.files.map((f) => file(`packages/metalui/src/${meta.dir}/${f}`, f.endsWith('.css') ? 'registry:file' : 'registry:ui', `components/metalui/${meta.dir.split('/')[0] === 'blocks' ? 'blocks/' : ''}${meta.name}/${f}`)),
+  dir: meta.dir,
   docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.symbol} in the MetalUI Swift package.`,
 }));
 
 emit('packages/metalui/public/r/tokens.json', JSON.stringify(tokensItem, null, 2) + '\n');
-for (const item of items) {
+for (const { dir, ...item } of items) {
   emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
-  emit(`packages/metalui/public/r/${item.name}.md`, readFileSync(root('packages/metalui/src/components', item.name, `${item.name}.agent.md`), 'utf8'));
+  item.dir = dir;
+  emit(`packages/metalui/public/r/${item.name}.md`, readFileSync(root('packages/metalui/src', item.dir, `${item.name}.agent.md`), 'utf8'));
 }
 
-const strip = ({ $schema, ...item }) => ({ ...item, files: item.files.map(({ content, ...f }) => f) });
+const strip = ({ $schema, dir, ...item }) => ({ ...item, files: item.files.map(({ content, ...f }) => f) });
 emit('packages/metalui/registry.json', JSON.stringify({
   $schema: 'https://ui.shadcn.com/schema/registry.json',
   name: 'metalui',

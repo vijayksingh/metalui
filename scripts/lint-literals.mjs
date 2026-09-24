@@ -7,7 +7,9 @@ import { walk, staged, lintFile, applyAllowlist, report } from './lib/visual-lin
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const roots = [
   ['packages/metalui/src/components', ['.css', '.tsx']],
+  ['packages/metalui/src/blocks', ['.css', '.tsx']],
   ['swift/Sources/MetalUI/Components', ['.swift']],
+  ['swift/Sources/MetalUI/Blocks', ['.swift']],
 ];
 const stagedFiles = process.argv.includes('--staged') ? staged(root) : null;
 const files = roots.flatMap(([dir, extensions]) => walk(join(root, dir), extensions));

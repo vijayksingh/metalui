@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walk } from './lib/visual-lint.mjs';
@@ -120,8 +120,13 @@ for (const name of names) {
     }
   }
 }
-const react = walk(join(root, 'packages/metalui/src/components'), ['.tsx']).filter((p) => !p.includes('.generated.'));
-const native = walk(join(root, 'swift/Sources/MetalUI/Components'), ['.swift']).filter((p) => !p.includes('.generated.'));
+// Components need a recipe; so do custom blocks (docs/COMPOSITION.md). Composition blocks draw only
+// through their components and have none.
+const customBlocks = new Set(existsSync(join(root, 'packages/metalui/src/blocks')) ? readdirSync(join(root, 'packages/metalui/src/blocks')).filter((d) => { const m = join(root, 'packages/metalui/src/blocks', d, 'meta.json'); return existsSync(m) && JSON.parse(readFileSync(m, 'utf8')).kind === 'custom'; }) : []);
+const inCustomBlock = (p) => { const m = p.match(/src\/blocks\/([\w-]+)\//); return m && customBlocks.has(m[1]); };
+const react = [...walk(join(root, 'packages/metalui/src/components'), ['.tsx']), ...walk(join(root, 'packages/metalui/src/blocks'), ['.tsx']).filter(inCustomBlock)].filter((p) => !p.includes('.generated.'));
+const swiftCustom = new Set([...customBlocks].map((d) => norm(d)));
+const native = [...walk(join(root, 'swift/Sources/MetalUI/Components'), ['.swift']), ...walk(join(root, 'swift/Sources/MetalUI/Blocks'), ['.swift']).filter((p) => swiftCustom.has(norm(p.split('/').at(-1).replace('.swift', ''))))].filter((p) => !p.includes('.generated.'));
 for (const path of [...react, ...native]) {
   const name = norm(path.split('/').at(-1).replace(/\.(tsx|swift)$/, ''));
   if (![...names].some((n) => norm(n) === name)) errors.push(`${path.slice(root.length + 1)}: component has no matching component recipe`);

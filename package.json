@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "npm run dev -w @metalui/docs",
     "generate": "node scripts/build-tokens.mjs && node scripts/build-icons.mjs && node scripts/build-morph.mjs && node scripts/build-registry.mjs && node scripts/build-agent-docs.mjs",
-    "check": "node scripts/build-tokens.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check && node scripts/lint-literals.mjs && node scripts/check-recipe-parity.mjs && node scripts/lint-neutral-names.mjs --report-only",
+    "check": "node scripts/build-tokens.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check && node scripts/lint-literals.mjs && node scripts/check-recipe-parity.mjs && node scripts/lint-neutral-names.mjs --report-only && node scripts/check-layers.mjs && node scripts/check-composition.mjs && node scripts/check-slots.mjs",
     "lint:names": "node scripts/lint-neutral-names.mjs",
     "lint:literals": "node scripts/lint-literals.mjs",
     "check:recipes": "node scripts/check-recipe-parity.mjs",
@@ -19,7 +19,10 @@
     "symbols:check": "node scripts/build-symbols.mjs --check",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "build": "npm run check && npm run build -w @unlocalhosted/metalui && npm run build -w @metalui/docs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:layers": "node scripts/check-layers.mjs",
+    "check:composition": "node scripts/check-composition.mjs",
+    "check:slots": "node scripts/check-slots.mjs"
   },
   "engines": {
     "node": ">=22"
