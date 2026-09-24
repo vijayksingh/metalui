@@ -45,7 +45,7 @@ const USAGE = [
 export default function ButtonPage() {
   return (
     <>
-      <PageHeader title="Button" lede="A press-in pill. Held, it sinks one point and its shadow collapses into a well. Released, it springs back.">
+      <PageHeader title="Button" lede="A pill-shaped button. When you hold it, it moves down one point and its shadow gets smaller. When you let go, it springs back.">
         <LayerTrail
           down={[{ label: 'the cap recipe', to: '/foundations/materials' }, { label: 'the release spring', to: '/foundations/motion' }]}
           here="Button"
@@ -62,7 +62,7 @@ export default function ButtonPage() {
         />
       </PageHeader>
       <Hero />
-      <Section id="x-ray" title="X-ray" lede="Open the button up. Click it, then click the numbers to see how each part is built: type, the pill rule, light, shadow, the press and its layers.">
+      <Section id="x-ray" title="X-ray" lede="See what the button is made of. Click an icon to learn about one part and change it.">
         <ButtonXray />
       </Section>
       <Section id="details" title="Details">
@@ -132,7 +132,7 @@ function Hero() {
   return (
     <section id="hero" className="flex scroll-mt-80 flex-col gap-24">
       <Stage
-        caption={<>Press it and hold. Height {h}, padding {pad} (half the height, less one, so it stays a pill), travel {d.press.travel} pt. Tune it in the panel at the bottom right.</>}
+        caption={<>Press it and hold. Height {h}, padding {pad} (half the height minus one, so the ends stay round), travel {d.press.travel} pt. Tune it in the panel at the bottom right.</>}
       >
         <div style={vars} className="flex items-center gap-12">
           <Button cap={d.content.cap as ButtonCap} disabled={d.content.disabled}>
@@ -154,7 +154,7 @@ function CapIsAnObject() {
       id="cap-is-an-object"
       title="The cap is an object"
       setup="Drawn as a flat fill, a button reads as a sticker on the page, not a thing you could press."
-      caption="Compare the edges. The recipe has a lit lip along the top and a soft shadow where it meets the page; the flat fill has neither."
+      caption="Look at the edges. Ours has a bright line on top and a soft shadow underneath. The flat one has neither."
       cost="five shadow layers per colorway instead of none, kept identical on web and Swift by one recipe."
       code={{ label: 'tokens.json › recipes.button', lang: 'json', code: JSON.stringify(RECIPE.layers.filter((l: { colorway?: string; state?: string }) => l.colorway === 'bone' && !l.state), null, 2) }}
     >
@@ -190,7 +190,7 @@ function Anatomy() {
       id="anatomy"
       title="Anatomy"
       setup={`${words[parts.length] ?? parts.length} layers make the cap, each taken from the recipe in the colorway you are reading in.`}
-      caption="Each layer alone, at twice the size, adds up to the cap. Hover a layer to find it in the finished cap; switch the colorway and every layer changes with it."
+      caption="Each layer on its own, at twice the size. Together they make the button. Hover a layer to find it in the button."
     >
       <div className="flex flex-col items-center gap-24 sm:flex-row sm:gap-20">
         <div className="grid grid-cols-2 gap-x-28 gap-y-20 sm:grid-cols-3">
@@ -300,7 +300,7 @@ function PressIsPhysics() {
       setup="Held, the cap travels one point in 50 ms and its shadow collapses into a well. Released, it rides the release spring back."
       slow={slow}
       bar={<><SlowSwitch slow={slow} onChange={setSlow} /><span className="type-readout pr-4 text-ink3">k {RELEASE.stiffness} · c {RELEASE.damping} · half {RELEASE.half}</span></>}
-      caption="Compare the curves: the spring leaves fast and eases into place; the 200 ms ease is a fixed shape. Click each button rapidly: the spring picks up from wherever the cap is, the keyframe starts over."
+      caption="The spring starts fast and slows down at the end. The 200 ms animation always has the same shape. Click both buttons quickly: the spring continues from where it is, the other one starts over."
       cost="a spring is a curve you sample from stiffness and damping, not a duration you type. It lives in one token."
     >
       <style>{`.naive-press{animation:naive-press 200ms ease}@keyframes naive-press{0%{transform:none}40%{transform:translateY(1px)}100%{transform:none}}.naive-cap:active{transform:none!important}`}</style>
@@ -344,7 +344,7 @@ function LabelTurns() {
       setup="Copy becoming Copied is one step on a drum, and the cap's width follows on the settle spring."
       slow={slow}
       bar={<SlowSwitch slow={slow} onChange={setSlow} />}
-      caption="Compare the width over time under each button: ours grows into the new word, the replaced label jumps in one frame. Press both to see it."
+      caption="Press both buttons and watch the width. Ours grows smoothly to fit the new word. The other one jumps."
       cost="one wrapper, SwapText, around any label that can change."
     >
       <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-cols-2 sm:divide-x sm:divide-rule">
@@ -379,7 +379,7 @@ function OneSignalCap() {
       id="one-signal-cap"
       title="One signal cap"
       setup="A footer with three loud buttons has no loud button. The dark cap only means something when it is alone."
-      caption="Count the dark caps in each footer, then notice where your eye lands first."
+      caption="Count the dark buttons in each row. See which one you look at first."
     >
       <div className="flex w-full flex-col divide-y divide-rule">
         {footers.map((f) => (
@@ -412,7 +412,7 @@ function OneLine() {
           <span className="type-readout w-40 text-right text-ink">{w}</span>
         </div>
       }
-      caption="Compare the two at this width: the wrapped one is a lozenge with two lines. Drag the width up and it heals; ours never changed shape."
+      caption="At this width the other button wraps onto two lines. Ours stays on one line. Drag the width to compare."
     >
       <div className="flex w-full flex-col gap-20">
         {[
@@ -435,7 +435,7 @@ const STATES = ['Rest', 'Hover', 'Focus', 'Pressed', 'Disabled'];
 
 function States() {
   return (
-    <Section id="states" title="States" lede="Each cap at rest, hover, focus, pressed and disabled. Hover, focus and pressed are held so you can study them.">
+    <Section id="states" title="States" lede="Every button at rest, hover, focus, pressed and disabled. Hover, focus and pressed are frozen here so you can look at them.">
       <Stage>
         <div className="-mx-8 w-full overflow-x-auto px-8">
           <div className="mx-auto grid w-max grid-cols-[88px_repeat(5,auto)] items-center gap-x-16 gap-y-16">
@@ -460,7 +460,7 @@ function States() {
 
 function Variants() {
   return (
-    <Section id="variants" title="Variants" lede="Compact is the canvas pill: 26 tall, raised lightly, quiet ink until hover. The link, graphite and strip caps set their own size for the surfaces they live on.">
+    <Section id="variants" title="Variants" lede="Compact is the small 26 point button used on the canvas. Its text is lighter until you hover. Link, graphite and strip buttons are sized for the places they are used.">
       <Stage caption="Compact, with a glyph, with a key, primary and disabled.">
         <div className="flex flex-wrap items-center justify-center gap-10">
           <Button size="compact">seed a sample day</Button>
@@ -485,7 +485,7 @@ function Variants() {
 
 function Colorways() {
   return (
-    <Section id="colorways" title="Colorways" lede="The same recipe in Bone and Graphite. Graphite is not an inverted Bone: its light is dimmer and its shadows are deeper.">
+    <Section id="colorways" title="Colorways" lede="The same button in Bone and Graphite. Graphite is not just Bone flipped. Its light is dimmer and its shadows are darker.">
       <div className="grid gap-12 sm:grid-cols-2 lg:-mx-60">
         {(['bone', 'graphite'] as const).map((cw) => (
           <div key={cw} data-mu-colorway={cw} className="material-stage flex flex-col items-center gap-16 rounded-plate px-16 py-28">
@@ -508,7 +508,7 @@ function Keyboard() {
     if (['Tab', 'Enter', 'Space'].includes(k)) setDown(isDown ? k : null);
   };
   return (
-    <Section id="keyboard" title="Keyboard" lede="Focus the button and use your own keyboard; the keys light as you press them.">
+    <Section id="keyboard" title="Keyboard" lede="Focus the button and use your keyboard. The keys light up as you press them.">
       <Stage caption={`Activated ${count} ${count === 1 ? 'time' : 'times'}.`}>
         <div className="flex flex-col items-center gap-20" onKeyDown={(e) => onKey(e, true)} onKeyUp={(e) => onKey(e, false)}>
           <Button onClick={() => setCount((n) => n + 1)}>Focus me</Button>
@@ -556,7 +556,7 @@ function Api() {
 function Tokens() {
   const p = RECIPE.props.self as Record<string, string | number>;
   return (
-    <Section id="tokens" title="Tokens" lede="Everything the button reads. Change a value in tokens.json and both platforms follow.">
+    <Section id="tokens" title="Tokens" lede="All the values the button uses. Change one in tokens.json and both React and SwiftUI update.">
       <TokenTable
         head={['Token', 'Value', 'Used for']}
         rows={[
