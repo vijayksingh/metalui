@@ -193,3 +193,17 @@ export function PaletteXray({ startOpen = false }: { startOpen?: boolean }) {
     />
   );
 }
+
+/** A small still of the palette, drawn with its own classes (the live one lives in a dialog). */
+export function PaletteStill() {
+  return (
+    <div className="mu-palette mu-frost-plate" style={{ position: 'static', transform: 'none', translate: 'none', margin: 0, width: 300 }}>
+      <label className="mu-palette-field"><span className="mu-palette-field-glyph"><Icon name="search" size={15} /></span><span className="mu-palette-input mu-type-content">tidy</span></label>
+      <div className="mu-palette-list" style={{ maxHeight: 'none' }}>
+        <div className="mu-palette-sec mu-type-label"><span className="mu-palette-eng">ACTIONS</span><span className="mu-palette-eng">1</span></div>
+        <div className="mu-palette-row mu-type-ui" data-highlighted=""><span className="mu-palette-row-glyph"><Icon name="tidy" size={14} /></span><span className="mu-palette-row-text"><mark className="mu-palette-mark">Tidy</mark> the canvas</span><span className="mu-palette-row-hint"><Kbd size="small">⌘T</Kbd></span></div>
+      </div>
+      <div className="mu-palette-foot mu-type-label"><span><Kbd size="small">↩</Kbd><span className="mu-palette-eng">OPEN</span></span></div>
+    </div>
+  );
+}

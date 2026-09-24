@@ -5,6 +5,7 @@ import type { XrayKind } from './xray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
+import { PaletteStill } from './xray/PaletteXray';
 
 export type { XrayKind };
 
@@ -86,7 +87,7 @@ const ITEMS: Item[] = [
     ),
   },
   { id: 'key', table: ['82%', '52%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
-  { id: 'slider', table: ['40%', '73%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
+  { id: 'slider', table: ['37%', '73%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
     id: 'field', table: ['38%', '50%'], space: ['60%', '80%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
     node: ({ openXray }) => (
@@ -112,6 +113,7 @@ const ITEMS: Item[] = [
   { id: 'toast', table: ['20%', '85%'], space: ['58%', '30%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
   { id: 'menu', table: ['2%', '22%'], space: ['74%', '4%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },
   { id: 'dialog', table: ['66%', '28.5%'], space: ['20%', '40%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
+  { id: 'palette', table: ['69%', '71%'], space: ['80%', '78%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, node: ({ openXray }) => <div style={{ zoom: 0.7 }} onClick={() => openXray('palette')}><PaletteStill /></div> },
   {
     id: 'toolbar', table: ['2%', '71%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray; the strip opens the toolbar's
