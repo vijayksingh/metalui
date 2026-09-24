@@ -1194,7 +1194,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text in a set role: engraved mono label (with a lip), readout, title, name, and the graphite engraving on dark chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip)
+    /// Text in a set role: engraved mono label (with a lip), titles, headings, a query, values, table cells, display lines, readouts and text on graphite chrome. (reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i)
     public static let label = MetalObjectRecipe(
         name: "label",
         layers: [
@@ -1221,6 +1221,28 @@ public enum MetalRecipes {
             "readout.tracking": .text("0.04em"),
             "readout.color": .text("#EDEDEF"),
             "dark.color": .text("rgba(255,255,255,.4)"),
+            "query.font": .text("620 13px/1 sans"),
+            "query.tracking": .text("-0.01em"),
+            "query.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "value.font": .text("560 22px/1 mono"),
+            "value.tracking": .text("-0.02em"),
+            "value.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "value-small.font": .text("560 12px/1 mono"),
+            "value-small.tracking": .text("0"),
+            "value-small.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "cell.font": .text("500 10.5px/1.4 mono"),
+            "cell.tracking": .text("0"),
+            "cell.color": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "display.font": .text("620 18px/1.25 sans"),
+            "display.tracking": .text("-0.022em"),
+            "display.color": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "display-quiet.font": .text("560 18px/1.25 sans"),
+            "display-quiet.tracking": .text("-0.022em"),
+            "display-quiet.color": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+            "on-graphite.font": .text("500 12.5px/1 sans"),
+            "on-graphite.tracking": .text("0"),
+            "on-graphite.color": .text("#EDEDEF"),
+            "readout-dim.color": .text("#7C7D82"),
         ]
     )
 

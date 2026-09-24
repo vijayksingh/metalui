@@ -1062,7 +1062,7 @@
   --mu-r-well-radius-region: 26px;
   --mu-r-well-radius-strip: 15px;
   --mu-r-well-radius-row: 12px;
-  /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip */
+  /* label: reference style.css .eng, #hdr b, .rname, .rcount, #pastBanner .eng, #tip, #lensBar .q, .merow .v, .mini-me .val, .ptable td.m, #empty h2, #empty p, #pastBanner, .readout i */
   --mu-r-label-dark-text-shadow:
     /* mu-recipe:label:2 */ 0 -1px 0 rgba(0,0,0,.6);
   --mu-r-label-engraved-font: 400 9px/1.36 var(--mu-mono);
@@ -1079,6 +1079,22 @@
   --mu-r-label-readout-tracking: 0.04em;
   --mu-r-label-readout-color: #EDEDEF;
   --mu-r-label-dark-color: rgba(255,255,255,.4);
+  --mu-r-label-query-font: 620 13px/1 var(--mu-sans);
+  --mu-r-label-query-tracking: -0.01em;
+  --mu-r-label-value-font: 560 22px/1 var(--mu-mono);
+  --mu-r-label-value-tracking: -0.02em;
+  --mu-r-label-value-small-font: 560 12px/1 var(--mu-mono);
+  --mu-r-label-value-small-tracking: 0;
+  --mu-r-label-cell-font: 500 10.5px/1.4 var(--mu-mono);
+  --mu-r-label-cell-tracking: 0;
+  --mu-r-label-display-font: 620 18px/1.25 var(--mu-sans);
+  --mu-r-label-display-tracking: -0.022em;
+  --mu-r-label-display-quiet-font: 560 18px/1.25 var(--mu-sans);
+  --mu-r-label-display-quiet-tracking: -0.022em;
+  --mu-r-label-on-graphite-font: 500 12.5px/1 var(--mu-sans);
+  --mu-r-label-on-graphite-tracking: 0;
+  --mu-r-label-on-graphite-color: #EDEDEF;
+  --mu-r-label-readout-dim-color: #7C7D82;
   /* rule: reference style.css .tb-sep, #selTools .sep, .pal-foot, .ptable th, .tl-day::after */
   --mu-r-rule-self-graphite-background:
     /* mu-recipe:rule:4 */ rgba(0,0,0,.55);
@@ -1560,6 +1576,12 @@
   --mu-r-label-title-color: #1B1B1D;
   --mu-r-label-heading-color: #1B1B1D;
   --mu-r-label-count-color: #9A9A9D;
+  --mu-r-label-query-color: #1B1B1D;
+  --mu-r-label-value-color: #1B1B1D;
+  --mu-r-label-value-small-color: #1B1B1D;
+  --mu-r-label-cell-color: #5C5C60;
+  --mu-r-label-display-color: #1B1B1D;
+  --mu-r-label-display-quiet-color: #9A9A9D;
   --mu-r-rule-self-background:
     /* mu-recipe:rule:0 */ rgba(0,0,0,.075);
   --mu-r-rule-self-shadow:
@@ -1865,6 +1887,12 @@
   --mu-r-label-title-color: #F2F2F0;
   --mu-r-label-heading-color: #F2F2F0;
   --mu-r-label-count-color: #77777B;
+  --mu-r-label-query-color: #F2F2F0;
+  --mu-r-label-value-color: #F2F2F0;
+  --mu-r-label-value-small-color: #F2F2F0;
+  --mu-r-label-cell-color: #A6A6A9;
+  --mu-r-label-display-color: #F2F2F0;
+  --mu-r-label-display-quiet-color: #77777B;
   --mu-r-rule-self-background:
     /* mu-recipe:rule:1 */ rgba(0,0,0,.45);
   --mu-r-rule-self-shadow:
@@ -2171,6 +2199,12 @@
     --mu-r-label-title-color: #F2F2F0;
     --mu-r-label-heading-color: #F2F2F0;
     --mu-r-label-count-color: #77777B;
+    --mu-r-label-query-color: #F2F2F0;
+    --mu-r-label-value-color: #F2F2F0;
+    --mu-r-label-value-small-color: #F2F2F0;
+    --mu-r-label-cell-color: #A6A6A9;
+    --mu-r-label-display-color: #F2F2F0;
+    --mu-r-label-display-quiet-color: #77777B;
     --mu-r-rule-self-background:
       rgba(0,0,0,.45);
     --mu-r-rule-self-shadow:

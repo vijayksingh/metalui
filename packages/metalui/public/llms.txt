@@ -18,7 +18,7 @@
 - [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
-- [Label](https://metalui.dev/r/label.md): Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.
+- [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
 - [Lens bar](https://metalui.dev/r/lens-bar.md): A floating frosted pill that names a lens's question, counts its matches, says where the answer came from and switches views with a compact segmented control; pin keeps it as a live region, close ends it.
 - [Mark](https://metalui.dev/r/mark.md): Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.
 - [Memory scrubber](https://metalui.dev/r/memory-scrubber.md): Time as a dimension of the surface: a well track with an intent fill, tick marks for blocks and edits, day labels and a knurled knob on Base UI Slider, with a MEMORY readout and NOW.

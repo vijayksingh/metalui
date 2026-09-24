@@ -3,7 +3,7 @@
   "title": "Label",
   "status": "alpha",
   "layer": "component",
-  "description": "Text in a set role: the engraved mono label (with a lip), small, title, heading, count, readout and dark.",
+  "description": "Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as=\"input\" edits in place.",
   "base": "none",
   "react": {
     "export": "Label",
