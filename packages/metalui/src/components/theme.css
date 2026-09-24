@@ -1923,6 +1923,9 @@
 @utility opacity-palette-enter-scale {
   opacity: var(--mu-palette-enter-scale);
 }
+@utility region-motion {
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
 @utility duration-part {
   --tw-duration: var(--mu-spring-part-d);
   transition-duration: var(--mu-spring-part-d);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Dimple, Region, RegionRow } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/region/region.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/blocks/region/region.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/region/region.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalRegionView.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';

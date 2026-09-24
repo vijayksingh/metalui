@@ -5,7 +5,6 @@ import { Well } from '../../components/well/well';
 import { Surface } from '../../components/surface/surface';
 import { Label } from '../../components/label/label';
 import { Row } from '../../components/row/row';
-import './region.css';
 
 /* ─────────────────────────────────────────────────────────
  * REGION (the reference design's .region): a composition
@@ -20,6 +19,15 @@ import './region.css';
  * lens    a pinned lens: a frosted plate listing its matches as rows
  * rename  the name becomes a field; Enter commits, Escape restores
  * ───────────────────────────────────────────────────────── */
+
+/* Layout from the region group. The whole fades on settle: .35 when dim, gone (and no pointer) in the
+ * past; its transition replaces the well's, adding opacity. */
+const ROOT = 'mu-region !region-motion data-dim:opacity-region-dim data-past:opacity-0 data-past:pointer-events-none';
+const HEAD = 'mu-region-head absolute inset-x-0 top-0 bottom-auto box-border h-region-head-height pt-region-head-pad-top px-region-head-pad-x pb-0 flex items-baseline gap-region-head-gap cursor-grab';
+const NAME = 'mu-region-name min-w-region-name-min';
+const RULE = 'mu-region-rule flex-1 min-w-0 overflow-hidden text-ellipsis';
+const BODY = 'mu-region-body absolute left-region-body-inset right-region-body-inset top-region-body-top bottom-region-body-inset overflow-hidden';
+const ROW_META = 'mu-region-row-meta ml-auto pt-region-row-meta-top';
 
 export interface RegionRootProps extends React.HTMLAttributes<HTMLDivElement> {
   over?: boolean;
@@ -40,7 +48,7 @@ const Root = React.forwardRef<HTMLDivElement, RegionRootProps>(function RegionRo
     'data-dim': dim ? '' : undefined,
     'data-past': past ? '' : undefined,
     'data-lens': lens ? '' : undefined,
-    className: className ? `mu-region ${className}` : 'mu-region',
+    className: className ? `${ROOT} ${className}` : ROOT,
     style: width === undefined ? style : { width, height, ...style },
     ...props,
   };
@@ -48,7 +56,7 @@ const Root = React.forwardRef<HTMLDivElement, RegionRootProps>(function RegionRo
 });
 
 function Header({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={className ? `mu-region-head ${className}` : 'mu-region-head'} {...props} />;
+  return <div className={className ? `${HEAD} ${className}` : HEAD} {...props} />;
 }
 
 export interface RegionNameProps {
@@ -62,12 +70,12 @@ export interface RegionNameProps {
 function Name({ name, renaming, onRename, onRenameCancel }: RegionNameProps) {
   const [draft, setDraft] = React.useState(name);
   React.useEffect(() => { if (renaming) setDraft(name); }, [renaming, name]);
-  if (!renaming) return <Label variant="title" className="mu-region-name" placeholder="name this region">{name}</Label>;
+  if (!renaming) return <Label variant="title" className={NAME} placeholder="name this region">{name}</Label>;
   return (
     <Label
       as="input"
       variant="title"
-      className="mu-region-name"
+      className={NAME}
       placeholder="name this region"
       aria-label="Region name"
       autoFocus
@@ -84,7 +92,7 @@ function Name({ name, renaming, onRename, onRenameCancel }: RegionNameProps) {
 
 /** The rule in words; accent while a block is over the region. */
 function Rule({ accent, className, ...props }: React.HTMLAttributes<HTMLElement> & { accent?: boolean }) {
-  return <Label variant="engraved" tone={accent ? 'accent' : undefined} className={className ? `mu-region-rule ${className}` : 'mu-region-rule'} {...props} />;
+  return <Label variant="engraved" tone={accent ? 'accent' : undefined} className={className ? `${RULE} ${className}` : RULE} {...props} />;
 }
 
 function Count({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
@@ -92,7 +100,7 @@ function Count({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
 }
 
 function Body({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={className ? `mu-region-body ${className}` : 'mu-region-body'} {...props} />;
+  return <div className={className ? `${BODY} ${className}` : BODY} {...props} />;
 }
 
 export interface RegionRowProps extends React.HTMLAttributes<HTMLElement> {
@@ -109,7 +117,7 @@ function RegionRow({ checked, lead, meta, className, children, ...props }: Regio
     <Row.Root variant="list" tabIndex={0} checked={checked} className={className ? `mu-region-row ${className}` : 'mu-region-row'} {...props}>
       {lead}
       <Row.Text>{children}</Row.Text>
-      {meta && <Label variant="engraved" className="mu-region-row-meta">{meta}</Label>}
+      {meta && <Label variant="engraved" className={ROW_META}>{meta}</Label>}
     </Row.Root>
   );
 }

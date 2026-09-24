@@ -356,6 +356,9 @@ for (const m of css.matchAll(new RegExp(String.raw`^\s+--mu-((?:${GROUPS.join('|
   else if (/^[\d.]+ms$/.test(v)) groupUtils.push(`@utility duration-${n} {\n  --tw-duration: var(--mu-${n});\n  transition-duration: var(--mu-${n});\n}`);
   else if (/^0?\.\d+$|^1$/.test(v)) groupUtils.push(`@utility opacity-${n} {\n  opacity: var(--mu-${n});\n}`);
 }
+// A group's $utilities: raw declarations a block needs that no theme value spells (a multi-property
+// transition), emitted verbatim.
+for (const g of GROUPS) for (const [k, v] of Object.entries(T[g]?.$utilities ?? {})) groupUtils.push(`@utility ${k} {\n  ${v}\n}`); // group $utilities
 const GROUP_THEME = `@theme inline {\n${groupVars.join('\n')}\n}\n${groupUtils.join('\n')}`;
 // Motions as data (tokens.json animations): a block's entrance, written against the spring and travel
 // variables, as @keyframes and an animate-<name> utility.

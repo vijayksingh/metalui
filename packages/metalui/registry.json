@@ -401,11 +401,6 @@
           "path": "packages/metalui/src/blocks/region/region.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/region/region.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/region/region.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/region/region.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/region.md. SwiftUI: MetalRegion, MetalRegionRow in the MetalUI Swift package."

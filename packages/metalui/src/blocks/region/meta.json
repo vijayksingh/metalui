@@ -15,8 +15,7 @@
   "react": {
     "export": "Region, RegionRow",
     "files": [
-      "region.tsx",
-      "region.css"
+      "region.tsx"
     ]
   },
   "swift": {
