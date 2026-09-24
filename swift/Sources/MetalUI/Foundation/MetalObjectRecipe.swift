@@ -188,6 +188,13 @@ public struct MetalObjectRecipe: Equatable, Sendable {
         return Double(argument)
     }
 
+    /// A generated millisecond motion prop in seconds for SwiftUI animation.
+    public func durationSeconds(_ key: String) -> Double {
+        guard let raw = text(key), raw.hasSuffix("ms"),
+              let milliseconds = Double(raw.dropLast(2)) else { return .zero }
+        return Measurement(value: milliseconds, unit: UnitDuration.milliseconds).converted(to: .seconds).value
+    }
+
     /// An em letter-spacing prop ("0.04em") in points at `size`.
     public func tracking(_ key: String, size: Double) -> Double {
         let s = text(key) ?? "0"
