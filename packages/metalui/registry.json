@@ -335,11 +335,6 @@
           "path": "packages/metalui/src/components/mark/mark.tsx",
           "type": "registry:ui",
           "target": "components/metalui/mark/mark.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/mark/mark.css",
-          "type": "registry:file",
-          "target": "components/metalui/mark/mark.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:) in the MetalUI Swift package."

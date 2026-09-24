@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import './mark.css';
 
 /* ─────────────────────────────────────────────────────────
  * CUE FAMILY (the reference design)
@@ -31,6 +30,19 @@ export interface MarkProps extends React.HTMLAttributes<HTMLSpanElement> {
   swatch?: boolean;
 }
 
+/* Styled with the theme's utilities: each cue is the mark recipe's own drawing (mark-<kind>), written
+ * against the cue tokens, with the resolved value's chip on hover (mark-chip). */
+const KINDS: Record<MarkKind, string> = {
+  date: 'mark-date',
+  duration: 'mark-quiet',
+  amount: 'mark-quiet',
+  measurement: 'mark-measure',
+  tag: 'mark-tag',
+  'derived-tag': 'mark-derived-tag',
+  hex: 'mark-hex',
+  match: 'mark-match',
+};
+
 /** An in-flow cue on recognised text. Metric-neutral: the words keep their exact advance. */
 export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({ kind, resolved, color, swatch, className, style, children, ...props }, ref) {
   return (
@@ -38,11 +50,11 @@ export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({
       ref={ref}
       data-kind={kind}
       data-chip={resolved}
-      className={className ? `mu-cue ${className}` : 'mu-cue'}
+      className={`mu-cue relative mark-chip ${KINDS[kind]}${className ? ` ${className}` : ''}`}
       style={color ? ({ '--mu-cue-hex': color, ...style } as React.CSSProperties) : style}
       {...props}
     >
-      {kind === 'hex' && swatch && <i aria-hidden className="mu-cue-swatch" />}
+      {kind === 'hex' && swatch && <i aria-hidden className="mu-cue-swatch mark-swatch" />}
       {children}
     </span>
   );
@@ -58,7 +70,7 @@ export interface MarkUrlProps extends React.AnchorHTMLAttributes<HTMLAnchorEleme
 /** A URL at rest: a short host pill. While writing, show the raw URL as plain text instead. */
 export const MarkUrl = React.forwardRef<HTMLAnchorElement, MarkUrlProps>(function MarkUrl({ host, glyph, className, ...props }, ref) {
   return (
-    <a ref={ref} target="_blank" rel="noopener noreferrer" className={className ? `mu-cue-url type-ui ${className}` : 'mu-cue-url type-ui'} {...props}>
+    <a ref={ref} target="_blank" rel="noopener noreferrer" className={className ? `mu-cue-url type-ui mark-url ${className}` : 'mu-cue-url type-ui mark-url'} {...props}>
       {glyph}
       {host}
     </a>
@@ -72,13 +84,13 @@ export interface MarkInferredProps extends React.HTMLAttributes<HTMLSpanElement>
 
 /** A value the recognizer read that is not in the text (a date, a measurement): a hollow pill after the words. */
 export const MarkInferred = React.forwardRef<HTMLSpanElement, MarkInferredProps>(function MarkInferred({ resolved, className, ...props }, ref) {
-  return <span ref={ref} data-chip={resolved} className={['mu-cue', 'mu-cue-inferred', 'mu-type-label', className].filter(Boolean).join(' ')} {...props} />;
+  return <span ref={ref} data-chip={resolved} className={className ? `mu-cue mu-cue-inferred mark-inferred mark-chip ${className}` : 'mu-cue mu-cue-inferred mark-inferred mark-chip'} {...props} />;
 });
 
 
 /** Urgency: a 5 pt amber LED in the margin of an open task that is due soon. */
 export function MarkUrgency({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-  return <span role="img" aria-label="Due soon" className={className ? `mu-cue-urgency ${className}` : 'mu-cue-urgency'} {...props} />;
+  return <span role="img" aria-label="Due soon" className={className ? `mu-cue-urgency mark-urgency ${className}` : 'mu-cue-urgency mark-urgency'} {...props} />;
 }
 
 export interface MarkLifeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -89,7 +101,7 @@ export interface MarkLifeProps extends React.HTMLAttributes<HTMLSpanElement> {
 /** The life glyph trailing a block: a middle dot, then the glyph. Display only: never while writing. */
 export function MarkLife({ children, className, ...props }: MarkLifeProps) {
   return (
-    <span className={className ? `mu-cue-life ${className}` : 'mu-cue-life'} {...props}>
+    <span className={className ? `mu-cue-life mark-life ${className}` : 'mu-cue-life mark-life'} {...props}>
       <span aria-hidden className="mu-cue-md">·</span>
       <span className="mu-cue-lg">{children}</span>
     </span>

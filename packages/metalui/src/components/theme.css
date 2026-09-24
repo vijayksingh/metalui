@@ -492,6 +492,8 @@
   --color-mark-match-underline: var(--mu-r-mark-match-underline);
   --spacing-mark-match-thickness: var(--mu-r-mark-match-thickness);
   --spacing-mark-match-offset: var(--mu-r-mark-match-offset);
+  --tracking-mark-chip-tracking: var(--mu-r-mark-chip-tracking);
+  --tracking-mark-inferred-tracking: var(--mu-r-mark-inferred-tracking);
   --spacing-icon-button-tool-size: var(--mu-r-icon-button-tool-size);
   --spacing-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
   --radius-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
@@ -1173,8 +1175,55 @@
   background: var(--mu-r-mark-urgency-background);
   box-shadow: var(--mu-r-mark-urgency-shadow);
 }
+@utility mark-date {
+  text-decoration: underline dotted var(--mu-cue-date-underline); text-decoration-thickness: var(--mu-cue-date-thickness); text-underline-offset: var(--mu-cue-underline-offset);
+}
+@utility mark-quiet {
+  text-decoration: underline solid var(--mu-cue-quiet); text-decoration-thickness: var(--mu-cue-quiet-thickness); text-underline-offset: var(--mu-cue-underline-offset);
+}
+@utility mark-measure {
+  text-decoration: underline solid var(--mu-cue-measure-underline); text-decoration-thickness: var(--mu-cue-measure-thickness); text-underline-offset: var(--mu-cue-measure-offset);
+}
+@utility mark-tag {
+  padding: var(--mu-cue-tag-pad-y) var(--mu-cue-tag-pad-x); margin: 0 calc(var(--mu-zero-length) - var(--mu-cue-tag-pad-x)); border-radius: var(--mu-radius-pill); -webkit-box-decoration-break: clone; box-decoration-break: clone; color: var(--mu-ink2); background: var(--mu-r-mark-tag-background); box-shadow: var(--mu-r-mark-tag-shadow);
+}
+@utility mark-derived-tag {
+  padding: var(--mu-cue-tag-pad-y) var(--mu-cue-tag-pad-x); margin: 0 calc(var(--mu-zero-length) - var(--mu-cue-tag-pad-x)); border-radius: var(--mu-radius-pill); -webkit-box-decoration-break: clone; box-decoration-break: clone; color: var(--mu-ink3); background: transparent; box-shadow: var(--mu-r-mark-derived-shadow);
+}
+@utility mark-hex {
+  text-decoration: underline solid color-mix(in srgb, var(--mu-cue-hex, var(--mu-ink3)) var(--mu-cue-hex-mix), transparent); text-decoration-thickness: var(--mu-cue-hex-thickness); text-underline-offset: var(--mu-cue-hex-offset); text-decoration-skip-ink: none;
+}
+@utility mark-match {
+  font-weight: var(--mu-r-mark-match-weight); text-decoration: underline solid var(--mu-r-mark-match-underline); text-decoration-thickness: var(--mu-r-mark-match-thickness); text-underline-offset: var(--mu-r-mark-match-offset);
+}
+@utility mark-swatch {
+  display: inline-block; width: var(--mu-cue-swatch); height: var(--mu-cue-swatch); border-radius: var(--mu-cue-swatch-radius); transform: translateY(1px); background: var(--mu-cue-hex); box-shadow: var(--mu-r-mark-swatch-shadow);
+}
+@utility mark-chip {
+  &[data-chip]:hover::after, &[data-chip]:focus-visible::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: 30; font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; }
+}
+@utility mark-url {
+  display: inline-flex; align-items: center; gap: var(--mu-cue-url-gap); height: var(--mu-cue-url-height); padding: 0 var(--mu-cue-url-pad-end) 0 var(--mu-cue-url-pad-start); border-radius: var(--mu-radius-pill); vertical-align: 1px; color: var(--mu-cue-url-ink); text-decoration: none; background: var(--mu-r-mark-url-background); box-shadow: var(--mu-r-mark-url-shadow); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); &:hover { background: var(--mu-r-mark-url-hover-background); } & > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+}
+@utility mark-inferred {
+  position: relative; display: inline-block; margin-left: var(--mu-cue-inferred-gap); padding: 0 var(--mu-cue-inferred-pad); height: var(--mu-cue-inferred-height); border-radius: var(--mu-radius-pill); vertical-align: 1px; font: var(--mu-r-mark-inferred-font); letter-spacing: var(--mu-r-mark-inferred-tracking); text-transform: uppercase; color: var(--mu-ink3); box-shadow: var(--mu-r-mark-inferred-shadow);
+}
+@utility mark-urgency {
+  display: inline-block; width: var(--mu-cue-urgency-led); height: var(--mu-cue-urgency-led); border-radius: var(--mu-round); background: var(--mu-r-mark-urgency-background); box-shadow: var(--mu-r-mark-urgency-shadow);
+}
+@utility mark-life {
+  white-space: nowrap; & > .mu-cue-md { color: var(--mu-ink3); margin: 0 var(--mu-cue-life-gap-after) 0 var(--mu-cue-life-gap-before); } & > .mu-cue-lg { display: inline-block; vertical-align: var(--mu-cue-life-drop); color: var(--mu-ink3); transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); animation: mu-cue-life var(--mu-cue-life-ms) var(--mu-ease-slide) both; } & > .mu-cue-lg > svg { display: block; } .mu-icon-trigger:hover & > .mu-cue-lg:not(:has([class*="mu-tint-"])) { color: var(--mu-ink2); }
+}
 @utility weight-mark-match-weight {
   font-weight: var(--mu-r-mark-match-weight);
+}
+@utility type-mark-chip {
+  font: var(--mu-r-mark-chip-font);
+  letter-spacing: var(--mu-r-mark-chip-tracking);
+}
+@utility type-mark-inferred {
+  font: var(--mu-r-mark-inferred-font);
+  letter-spacing: var(--mu-r-mark-inferred-tracking);
 }
 @utility recipe-icon-button-tool {
   background: var(--mu-r-icon-button-tool-background);
@@ -1484,6 +1533,12 @@
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
+}
+@keyframes mu-cue-chip {
+  from { opacity: 0; transform: translate(-50%, calc(var(--mu-cue-chip-rise) * var(--mu-travel-part))); }
+}
+@keyframes mu-cue-life {
+  from { opacity: 0; }
 }
 
 /* The layout groups as theme values, and each spring's duration (duration-settle, …). */

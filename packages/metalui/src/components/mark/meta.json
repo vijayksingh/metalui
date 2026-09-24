@@ -7,8 +7,7 @@
   "react": {
     "export": "Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife (Cue*)",
     "files": [
-      "mark.tsx",
-      "mark.css"
+      "mark.tsx"
     ]
   },
   "swift": {

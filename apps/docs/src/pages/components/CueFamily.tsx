@@ -4,7 +4,7 @@ import { Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, SlidingIndicator
 import { LinkIcon } from '@unlocalhosted/metalui/icons';
 import { LifeCoffeeIcon, LifeCalmIcon } from '@unlocalhosted/metalui/icons/life';
 import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/mark/mark.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/mark/mark.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCue.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';

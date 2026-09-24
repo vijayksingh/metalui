@@ -1312,6 +1312,10 @@ public enum MetalRecipes {
             "match.underline": .text("rgba(63,185,122,.55)"),
             "match.thickness": .number(1.5),
             "match.offset": .number(2.5),
+            "chip.font": .text("500 9.5px/1.3 mono"),
+            "chip.tracking": .text("0.08em"),
+            "inferred.font": .text("500 9px/17px mono"),
+            "inferred.tracking": .text("0.08em"),
         ]
     )
 
