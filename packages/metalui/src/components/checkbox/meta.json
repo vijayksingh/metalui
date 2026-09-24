@@ -8,8 +8,7 @@
   "react": {
     "export": "Checkbox (Dimple)",
     "files": [
-      "checkbox.tsx",
-      "checkbox.css"
+      "checkbox.tsx"
     ]
   },
   "swift": {

@@ -438,6 +438,15 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
     @slot;
   }
 }
+/* Reduce Motion (the system setting, or data-mu-motion="reduce" on an ancestor). */
+@custom-variant reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @slot;
+  }
+  [data-mu-motion="reduce"] & {
+    @slot;
+  }
+}
 @utility opaque-frost {
   background: var(--mu-frost-opaque);
   -webkit-backdrop-filter: none;
@@ -479,6 +488,7 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
 ${RECIPES.theme.vars}
 }
 ${RECIPES.theme.utilities}
+${RECIPES.theme.keyframes}
 `;
 emit('packages/metalui/src/components/theme.css', theme);
 

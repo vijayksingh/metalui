@@ -148,6 +148,7 @@ export function buildRecipes(recipes) {
   // its type, durations, opacities), all reading the --mu-r-* variables so they follow the colorway.
   const themeVars = [];
   const utilities = [];
+  const keyframes = [];
   for (const [obj, r] of Object.entries(recipes ?? {})) {
     if (obj.startsWith('$')) continue;
     if (!Array.isArray(r.layers)) throw new Error(`recipes.${obj}: needs an ordered layers array`);
@@ -190,6 +191,9 @@ export function buildRecipes(recipes) {
       looks.get(u).push(`  ${css}: var(${varName(obj, part, state, PROP_CSS[prop])});`);
     }
     for (const [u, decls] of looks) utilities.push(`@utility ${u} {\n${decls.join('\n')}\n}`);
+    // a recipe's own drawings (a tick, an LED, a doing mark) and motions, written against its variables
+    for (const [u, decls] of Object.entries(r.$utilities ?? {})) utilities.push(`@utility ${u} {\n  ${decls}\n}`);
+    for (const [k, frames] of Object.entries(r.$keyframes ?? {})) keyframes.push(`@keyframes ${k} {\n  ${frames}\n}`);
     for (const [part, props] of Object.entries(r.props ?? {})) {
       const v0 = (v) => (v && typeof v === 'object' ? v.bone ?? v.graphite : v);
       const ref = (k) => `var(--mu-r-${obj}-${part}-${k})`;
@@ -256,7 +260,7 @@ ${props.join('\n') || '            :'}
     )`);
   }
   return {
-    theme: { vars: themeVars.join('\n'), utilities: utilities.join('\n') },
+    theme: { vars: themeVars.join('\n'), utilities: utilities.join('\n'), keyframes: keyframes.join('\n') },
     css: { root: root.join('\n'), self: selfish.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
     swift: `
 /// Object recipes (tokens.json \`recipes\`): every layer of each object's look, per part and state,

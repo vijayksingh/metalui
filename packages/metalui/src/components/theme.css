@@ -252,6 +252,15 @@
     @slot;
   }
 }
+/* Reduce Motion (the system setting, or data-mu-motion="reduce" on an ancestor). */
+@custom-variant reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @slot;
+  }
+  [data-mu-motion="reduce"] & {
+    @slot;
+  }
+}
 @utility opaque-frost {
   background: var(--mu-frost-opaque);
   -webkit-backdrop-filter: none;
@@ -704,11 +713,23 @@
 @utility recipe-checkbox-doing {
   background: var(--mu-r-checkbox-doing-background);
 }
+@utility checkbox-tick {
+  position: absolute; left: var(--mu-r-checkbox-tick-x); top: var(--mu-r-checkbox-tick-y); width: var(--mu-r-checkbox-tick-w); height: var(--mu-r-checkbox-tick-h); border: solid var(--mu-r-checkbox-tick-color); border-width: 0 var(--mu-r-checkbox-tick-stroke) var(--mu-r-checkbox-tick-stroke) 0; transform: rotate(var(--mu-r-checkbox-tick-rotate)); animation: mu-checkbox-tick var(--mu-r-checkbox-tick-draw) var(--mu-r-checkbox-tick-delay) var(--mu-ease-slide) both;
+}
+@utility checkbox-tick-row {
+  left: var(--mu-r-checkbox-row-tick-x); top: var(--mu-r-checkbox-row-tick-y); width: var(--mu-r-checkbox-row-tick-w); height: var(--mu-r-checkbox-row-tick-h);
+}
+@utility checkbox-doing {
+  &::before { content: ''; position: absolute; inset: var(--mu-r-checkbox-doing-inset); border-radius: var(--mu-r-checkbox-doing-radius); background: var(--mu-r-checkbox-doing-background); opacity: var(--mu-r-checkbox-doing-opacity); }
+}
 @utility duration-checkbox-fade {
   transition-duration: var(--mu-r-checkbox-self-fade);
 }
 @utility opacity-checkbox-disabled {
   opacity: var(--mu-r-checkbox-self-disabled);
+}
+@utility transition-checkbox {
+  transition: var(--mu-r-checkbox-self-transition);
 }
 @utility stroke-width-checkbox-tick-stroke {
   stroke-width: var(--mu-r-checkbox-tick-stroke);
@@ -1390,4 +1411,7 @@
 @utility type-code-card-code {
   font: var(--mu-r-code-card-code-font);
   letter-spacing: var(--mu-r-code-card-code-tracking);
+}
+@keyframes mu-checkbox-tick {
+  from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }

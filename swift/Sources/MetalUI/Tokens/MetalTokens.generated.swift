@@ -620,6 +620,7 @@ public enum MetalRecipes {
             "self.y": .number(2.5),
             "self.fade": .text("160ms"),
             "self.disabled": .text("0.4"),
+            "self.transition": .text("background var(--mu-r-checkbox-self-fade), box-shadow var(--mu-r-checkbox-self-fade)"),
             "tick.x": .number(5.0),
             "tick.y": .number(2.5),
             "tick.w": .number(4.0),

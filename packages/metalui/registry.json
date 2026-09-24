@@ -52,11 +52,6 @@
           "path": "packages/metalui/src/components/checkbox/checkbox.tsx",
           "type": "registry:ui",
           "target": "components/metalui/checkbox/checkbox.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/checkbox/checkbox.css",
-          "type": "registry:file",
-          "target": "components/metalui/checkbox/checkbox.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
