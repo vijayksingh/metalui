@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kbd",
+  "type": "registry:ui",
+  "title": "Keycap",
+  "description": "A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/kbd/kbd.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/kbd/kbd.tsx",
+      "content": "import * as React from 'react';\nimport './kbd.css';\n\n/* KEYCAP (Kamui 04 §9). Static: a key is shown, never pressed. Glyphs only: ⌘ ⌥ ⇧ ⌃ ⎋ ↩ ⌫ ↑ ↓, letters. */\n\nexport interface KbdProps extends React.HTMLAttributes<HTMLElement> {\n  /** small (16) for a dense footer; default 20. */\n  size?: 'default' | 'small';\n  /** Where the cap sits: on a light surface (default), a graphite strip, or sunk into a toast's Undo. */\n  surface?: 'default' | 'strip' | 'sunk';\n  /** What assistive tech should say, when the glyph is not a word: \"Command K\". */\n  label?: string;\n}\n\nconst NAMES: Record<string, string> = { '⌘': 'Command', '⌥': 'Option', '⇧': 'Shift', '⌃': 'Control', '⎋': 'Escape', '↩': 'Return', '⌫': 'Delete', '↑': 'Up', '↓': 'Down', '←': 'Left', '→': 'Right' };\n\n/** A key, on a small raised cap. */\nexport const Kbd = React.forwardRef<HTMLElement, KbdProps>(function Kbd({ size = 'default', surface = 'default', label, className, children, ...props }, ref) {\n  const text = typeof children === 'string' ? children : '';\n  const spoken = label ?? (text && [...text].some((c) => NAMES[c]) ? [...text].map((c) => NAMES[c] ?? c).join(' ') : undefined);\n  return (\n    <kbd ref={ref} data-size={size} data-surface={surface} aria-label={spoken} className={['mu-kbd', 'mu-type-readout', className].filter(Boolean).join(' ')} {...props}>\n      {children}\n    </kbd>\n  );\n});\n"
+    },
+    {
+      "path": "packages/metalui/src/components/kbd/kbd.css",
+      "type": "registry:file",
+      "target": "components/metalui/kbd/kbd.css",
+      "content": "@import \"../tokens.css\";\n\n/* Keycap (Kamui 04 §9; the sheet's .key refit to 20 / radius 6). */\n.mu-kbd {\n  box-sizing: border-box;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: var(--mu-kbd-min);\n  height: var(--mu-kbd-height);\n  padding: 0 var(--mu-kbd-pad);\n  border-radius: var(--mu-radius-key);\n  color: var(--mu-ink2);\n  background: var(--mu-cap-bg);\n  box-shadow: var(--mu-cap-sh);\n  white-space: nowrap;\n  vertical-align: middle;\n}\n.mu-kbd[data-size=\"small\"] { min-width: var(--mu-kbd-min-small); height: var(--mu-kbd-small); padding: 0 var(--mu-kbd-pad-small); }\n.mu-kbd[data-surface=\"strip\"] { color: var(--mu-kbd-strip-ink); background: var(--mu-kbd-strip-bg); box-shadow: var(--mu-kbd-strip-sh); }\n.mu-kbd[data-surface=\"sunk\"] { color: var(--mu-kbd-sunk-ink); background: var(--mu-kbd-sunk-bg); box-shadow: var(--mu-kbd-sunk-sh); border-radius: 999px; }\n.mu-kbd + .mu-kbd { margin-left: 2px; }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
+}

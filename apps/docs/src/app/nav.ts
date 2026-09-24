@@ -35,6 +35,7 @@ export const NAV: NavGroup[] = [
     items: [
       { to: '/components/button', label: 'Button' },
       { to: '/components/segmented', label: 'Segmented control' },
+      { to: '/components/kbd', label: 'Keycap' },
     ],
   },
   {

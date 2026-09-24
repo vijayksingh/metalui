@@ -58,7 +58,7 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 | 8 | Memory scrubber | shipped | `a83b74b` | React `MemoryScrubber` (`start`, `end`, `value: number\|null`, `onValueChange`, `marks`, `format`, `glyph`; Base UI Slider); CSS `--mu-scrubber-*`; Swift `MetalMemoryScrubber(range:selection:marks:format:)`, `MetalScrubberMetrics`. |
 | 9 | Past banner | shipped | `b5b0548` | React `PastBanner` (`moment`, `onBack`); CSS `--mu-pastbanner-*`; Swift `MetalPastBanner(moment:onBack:)`, `MetalPastBannerMetrics`. |
 | 10 | Tool strip | shipped | `a3e78a8` | React `ToolStrip` (`label`, `items: { label, onSelect, destructive?, disabled?, shortcut? }[]`; Base UI Toolbar); CSS `--mu-toolstrip-*`; Swift `MetalToolStrip(label:items:)`, `MetalToolStripItem`. |
-| 11 | Size readout | shipped | see `feat(objects): size readout` | React `SizeReadout` (`width`, `height`, `count`, `copied`, `value`, `led`), used by `SelectionFrame`; CSS `.mu-readout`; Swift `MetalSizeReadout(size:count:copied:value:led:)`, used by `.metalSelectionFrame`. |
+| 11 | Size readout | shipped | `a625d65` | React `SizeReadout` (`width`, `height`, `count`, `copied`, `value`, `led`), used by `SelectionFrame`; CSS `.mu-readout`; Swift `MetalSizeReadout(size:count:copied:value:led:)`, used by `.metalSelectionFrame`. |
 
 ## 5b. Further objects the client LLDs need
 
@@ -66,7 +66,7 @@ From `kamui/docs/architecture/medium/LLD/WEB_CLIENT.md` §2 (`src/chrome/*`) and
 
 | Order | Object | Kamui brief | Status | Commit | Clients import |
 |---|---|---|---|---|---|
-| 12 | Kbd (keycap) | 04 §9 | pending | | |
+| 12 | Kbd (keycap) | 04 §9 | shipped | see `feat(components): keycap` | React `Kbd` (`size: 'default'\|'small'`, `surface: 'default'\|'strip'\|'sunk'`, `label`); CSS `--mu-kbd-*`; Swift `MetalKbd(_:size:surface:label:)`. |
 | 13 | LED and status pill | 04 §10 | pending | | |
 | 14 | Toast | 04 §12 | pending | | |
 | 15 | Toolbar and tool button | 04 §2 | pending | | |

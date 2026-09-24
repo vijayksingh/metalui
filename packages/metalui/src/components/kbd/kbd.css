@@ -1,0 +1,22 @@
+@import "../tokens.css";
+
+/* Keycap (Kamui 04 §9; the sheet's .key refit to 20 / radius 6). */
+.mu-kbd {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--mu-kbd-min);
+  height: var(--mu-kbd-height);
+  padding: 0 var(--mu-kbd-pad);
+  border-radius: var(--mu-radius-key);
+  color: var(--mu-ink2);
+  background: var(--mu-cap-bg);
+  box-shadow: var(--mu-cap-sh);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.mu-kbd[data-size="small"] { min-width: var(--mu-kbd-min-small); height: var(--mu-kbd-small); padding: 0 var(--mu-kbd-pad-small); }
+.mu-kbd[data-surface="strip"] { color: var(--mu-kbd-strip-ink); background: var(--mu-kbd-strip-bg); box-shadow: var(--mu-kbd-strip-sh); }
+.mu-kbd[data-surface="sunk"] { color: var(--mu-kbd-sunk-ink); background: var(--mu-kbd-sunk-bg); box-shadow: var(--mu-kbd-sunk-sh); border-radius: 999px; }
+.mu-kbd + .mu-kbd { margin-left: 2px; }

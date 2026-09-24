@@ -8,9 +8,7 @@ import cssSource from '../../../../../packages/metalui/src/components/cue/cue.cs
 import agentGuide from '../../../../../packages/metalui/src/components/cue/cue.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCue.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
-import { useColorway } from '../../app/colorway';
-import swiftBone from '../../../../../docs/captures/swift/cue-bone.png';
-import swiftGraphite from '../../../../../docs/captures/swift/cue-graphite.png';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const TABS = [
   { id: 'react', label: 'React', code: reactSource },
@@ -41,7 +39,6 @@ export default function CueFamilyPage() {
     writing: false,
   });
   const code = TABS.find((t) => t.id === tab)!;
-  const { colorway } = useColorway();
 
   return (
     <>
@@ -101,9 +98,7 @@ export default function CueFamilyPage() {
       </Section>
 
       <Section title="SwiftUI" lede="MetalDimple, Text.metalCue, MetalCueTag, MetalCueURLPill, MetalCueInferred, MetalCueUrgency and MetalCueLife from the same tokens. In a TextKit editor the host draws the in-flow cues itself from MetalCue.">
-        <Bench tone="page" caption={`SwiftUI · ImageRenderer capture, ${colorway}`}>
-          <img src={colorway === 'graphite' ? swiftGraphite : swiftBone} alt={`SwiftUI cues in ${colorway}`} className="h-auto w-full max-w-[640px]" />
-        </Bench>
+        <SwiftCapture name="cue" />
       </Section>
 
       <Section title="Source" lede="The family three ways, plus the guide your coding agent reads.">

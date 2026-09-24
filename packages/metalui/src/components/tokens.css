@@ -297,6 +297,18 @@
   --mu-toolstrip-sep-lip: rgba(255,255,255,.055);
   --mu-toolstrip-sep-height: 16px;
   --mu-toolstrip-enter-rise: 4px;
+  --mu-kbd-height: 20px;
+  --mu-kbd-small: 16px;
+  --mu-kbd-min: 19px;
+  --mu-kbd-min-small: 16px;
+  --mu-kbd-pad: 5px;
+  --mu-kbd-pad-small: 4px;
+  --mu-kbd-strip-bg: linear-gradient(#303033, #262628);
+  --mu-kbd-strip-sh: inset 0 1px 0 rgba(255,255,255,.09), 0 0 0 .5px rgba(0,0,0,.8);
+  --mu-kbd-strip-ink: #A6A6A9;
+  --mu-kbd-sunk-bg: linear-gradient(#232326, #1C1C1E);
+  --mu-kbd-sunk-sh: inset 0 1px 1.5px rgba(0,0,0,.5), 0 .5px 0 rgba(255,255,255,.06);
+  --mu-kbd-sunk-ink: #9A9A9E;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);

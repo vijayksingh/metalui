@@ -90,6 +90,29 @@
       "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."
     },
     {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Keycap",
+      "description": "A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/kbd/kbd.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/kbd/kbd.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/kbd/kbd.css",
+          "type": "registry:file",
+          "target": "components/metalui/kbd/kbd.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
+    },
+    {
       "name": "lens-bar",
       "type": "registry:ui",
       "title": "Lens bar",

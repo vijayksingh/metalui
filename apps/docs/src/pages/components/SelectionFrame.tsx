@@ -6,9 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/selection-
 import agentGuide from '../../../../../packages/metalui/src/components/selection-frame/selection-frame.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSelectionFrame.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
-import { useColorway } from '../../app/colorway';
-import swiftBone from '../../../../../docs/captures/swift/selection-frame-bone.png';
-import swiftGraphite from '../../../../../docs/captures/swift/selection-frame-graphite.png';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const TABS = [
   { id: 'react', label: 'React', code: reactSource },
@@ -123,7 +121,6 @@ export default function SelectionFramePage() {
     },
   });
   const code = TABS.find((t) => t.id === tab)!;
-  const { colorway } = useColorway();
 
   return (
     <>
@@ -166,9 +163,7 @@ export default function SelectionFramePage() {
       </Section>
 
       <Section title="SwiftUI" lede="The same frame from .metalSelectionFrame(_:), rendered by ImageRenderer from MetalPresence: selected, writing (text handles, readout at .78), lite, and multi.">
-        <Bench tone="page" caption={`SwiftUI · ImageRenderer capture, ${colorway}`}>
-          <img src={colorway === 'graphite' ? swiftGraphite : swiftBone} alt={`SwiftUI selection frames in ${colorway}`} className="h-auto w-full max-w-[760px]" />
-        </Bench>
+        <SwiftCapture name="selection-frame" />
       </Section>
 
       <Section title="Source" lede="The same Selection frame three ways, plus the guide your coding agent reads.">

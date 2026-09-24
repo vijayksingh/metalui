@@ -290,4 +290,17 @@ final class MetalCaptures: XCTestCase {
             capture("size-readout-\(colorway.rawValue)", view)
         }
     }
+
+    func testKbd() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 16) {
+                HStack(spacing: 6) { MetalKbd("⌘"); MetalKbd("K"); MetalKbd("⇧"); MetalKbd("↩"); MetalKbd("⎋") }
+                HStack(spacing: 6) { MetalKbd("↑", size: .small); MetalKbd("↓", size: .small); MetalKbd("⌘K", surface: .strip); MetalKbd("⌘Z", surface: .sunk) }
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("kbd-\(colorway.rawValue)", view)
+        }
+    }
 }

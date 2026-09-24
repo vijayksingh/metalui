@@ -1,5 +1,6 @@
 // @unlocalhosted/metalui: React components on Base UI. Import '@unlocalhosted/metalui/styles.css' once.
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
+export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Cue, CueUrl, CueInferred, CueUrgency, CueLife, Dimple, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps, type DimpleProps } from './components/cue/cue';
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './components/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './components/past-banner/past-banner';

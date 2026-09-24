@@ -3,8 +3,7 @@ import { useDialKit } from 'dialkit';
 import { tokens } from '../../lib/tokens';
 import { useColorway } from '../../app/colorway';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
-import swiftFrostBone from '../../../../../docs/captures/swift/frost-bone.png';
-import swiftFrostGraphite from '../../../../../docs/captures/swift/frost-graphite.png';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const FROST = tokens.frost;
 type FrostName = keyof typeof FROST.recipes;
@@ -73,13 +72,7 @@ export default function Materials() {
             ))}
           </div>
         </Bench>
-        <Bench tone="page" caption={`SwiftUI · MetalFrost via .metalFrost(_:in:) · ImageRenderer capture, ${colorway}`}>
-          <img
-            src={colorway === 'graphite' ? swiftFrostGraphite : swiftFrostBone}
-            alt={`SwiftUI rendering of the strip, plate and graphite frost recipes in ${colorway}`}
-            className="h-auto w-full max-w-[868px]"
-          />
-        </Bench>
+        <SwiftCapture name="frost" />
       </Section>
 
       <Section title="Recipes" lede="Each recipe names its fill, its opaque twin and its shadow stack. A value that names a colorway token follows the colorway; a literal is the same in both.">

@@ -56,6 +56,24 @@
       "sheet": "Kamui 03 §5, DS-31"
     },
     {
+      "name": "kbd",
+      "title": "Keycap",
+      "status": "alpha",
+      "description": "A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Kbd",
+        "base": "none (a kbd element)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalKbd"
+      },
+      "registry": "https://metalui.dev/r/kbd.json",
+      "agent": "https://metalui.dev/r/kbd.md",
+      "sheet": "KAMUI keycap (Kamui 04 §9)"
+    },
+    {
       "name": "lens-bar",
       "title": "Lens bar",
       "status": "alpha",

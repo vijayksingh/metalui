@@ -736,6 +736,28 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalKbdMetrics {
+    public static let height: Double = 20.0
+    public static let small: Double = 16.0
+    public static let min: Double = 19.0
+    public static let minSmall: Double = 16.0
+    public static let pad: Double = 5.0
+    public static let padSmall: Double = 4.0
+    public static let stripBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(48, 48, 51, 1.0), 0.0), .init(MetalRGBA(38, 38, 40, 1.0), 1.0)])
+    public static let stripSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.09)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.8)),
+    ]
+    public static let stripInk: MetalRGBA = MetalRGBA(166, 166, 169, 1.0)
+    public static let sunkBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(35, 35, 38, 1.0), 0.0), .init(MetalRGBA(28, 28, 30, 1.0), 1.0)])
+    public static let sunkSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.5)),
+        MetalShadow(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.06)),
+    ]
+    public static let sunkInk: MetalRGBA = MetalRGBA(154, 154, 158, 1.0)
+}
+
+/// The selection tool strip: a graphite toolbar that floats above a click selection with verbs over it (Tasks, Summarise, Gather, Region, Export, and the destructive Send away after an engraved separator). Never for a selection made by finishing. It rises 4 from the selection on the part spring.
 public enum MetalToolStripMetrics {
     public static let pad: Double = 4.0
     public static let gap: Double = 2.0
