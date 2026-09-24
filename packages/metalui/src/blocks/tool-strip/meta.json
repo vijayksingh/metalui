@@ -1,0 +1,26 @@
+{
+  "name": "tool-strip",
+  "title": "Tool strip",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "surface",
+    "button",
+    "rule"
+  ],
+  "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+  "base": "@base-ui/react/toolbar",
+  "react": {
+    "export": "ToolStrip",
+    "files": [
+      "tool-strip.tsx",
+      "tool-strip.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalToolStrip",
+    "file": "swift/Sources/MetalUI/Components/MetalToolStrip.swift"
+  },
+  "agent": "tool-strip.agent.md"
+}

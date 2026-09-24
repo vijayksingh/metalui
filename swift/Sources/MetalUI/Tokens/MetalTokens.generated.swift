@@ -2101,7 +2101,7 @@ public enum MetalKbdMetrics {
     public static let sunkInk: MetalRGBA = MetalRGBA(154, 154, 158, 1.0)
 }
 
-/// The selection tool strip: a graphite toolbar that floats above a click selection with verbs over it (Tasks, Summarise, Gather, Region, Export, and the destructive Send away after an engraved separator). Never for a selection made by finishing. It rises 4 from the selection on the part spring.
+/// The selection tool strip's layout: padding 4, gap 2, 12 above the selection, a 16 tall separator, a rise of 4 on arrival. Its look is Surface(graphite-strip), Button(strip) and Rule(graphite); the ink, hover, active, danger and sep values stay only until the Swift port reads those recipes.
 public enum MetalToolStripMetrics {
     public static let pad: Double = 4.0
     public static let gap: Double = 2.0

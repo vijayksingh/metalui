@@ -22,7 +22,7 @@ export { Led, StatusBadge, type LedProps, type LedKind, type StatusBadgeProps } 
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
-export { ToolStrip, type ToolStripProps, type ToolStripItem } from './components/tool-strip/tool-strip';
+export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { MemoryScrubber, type MemoryScrubberProps } from './components/memory-scrubber/memory-scrubber';
 export { LensBar, type LensBarProps, type LensMode } from './components/lens-bar/lens-bar';

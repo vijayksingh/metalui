@@ -711,7 +711,7 @@
       "name": "tool-strip",
       "type": "registry:ui",
       "title": "Tool strip",
-      "description": "A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.",
+      "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
@@ -720,14 +720,14 @@
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/tool-strip/tool-strip.tsx",
+          "path": "packages/metalui/src/blocks/tool-strip/tool-strip.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/tool-strip/tool-strip.tsx"
+          "target": "components/metalui/blocks/tool-strip/tool-strip.tsx"
         },
         {
-          "path": "packages/metalui/src/components/tool-strip/tool-strip.css",
+          "path": "packages/metalui/src/blocks/tool-strip/tool-strip.css",
           "type": "registry:file",
-          "target": "components/metalui/tool-strip/tool-strip.css"
+          "target": "components/metalui/blocks/tool-strip/tool-strip.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tool-strip.md. SwiftUI: MetalToolStrip in the MetalUI Swift package."

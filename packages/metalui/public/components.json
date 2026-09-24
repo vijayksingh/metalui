@@ -511,7 +511,7 @@
       "name": "tool-strip",
       "title": "Tool strip",
       "status": "alpha",
-      "description": "A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.",
+      "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "ToolStrip",
@@ -522,8 +522,7 @@
         "symbol": "MetalToolStrip"
       },
       "registry": "https://metalui.dev/r/tool-strip.json",
-      "agent": "https://metalui.dev/r/tool-strip.md",
-      "sheet": "Kamui 04 §11"
+      "agent": "https://metalui.dev/r/tool-strip.md"
     },
     {
       "name": "toolbar",

@@ -1350,7 +1350,7 @@ canvas.metalToast($toast)   // toast: MetalToastModel? = .init("Moved 3 blocks",
 
 # Tool strip
 
-Verbs over a selection. React: `ToolStrip` from `@unlocalhosted/metalui` (Base UI Toolbar). SwiftUI: `MetalToolStrip`. Kamui brief: 04 §11, 03 §11.
+Verbs over a selection. A composition block on Base UI Toolbar. React: `ToolStrip` from `@unlocalhosted/metalui`. SwiftUI: `MetalToolStrip`.
 
 ## Use it for
 
@@ -1364,7 +1364,7 @@ Verbs over a selection. React: `ToolStrip` from `@unlocalhosted/metalui` (Base U
 
 ## Anatomy
 
-A graphite frosted strip (the graphite frost recipe), padding 4, radius 18 (`plate`), floating 12 above the selection's top centre; buttons 28 tall, radius 12 (`row`), padding 10, the `ui` role in `#D6D6D8`; an engraved separator (1 × 16, dark with a light lip) before the destructive verb in `#FF8A7E`.
+`Surface material="graphite-strip" radius="strip"` (16), padding 4, gap 2, floating 12 above the selection's top centre; `Button cap="strip"` verbs (28 tall, radius 11, padding 10, 12 pt in `#D6D6D8`); a `Rule tone="graphite"` 16 tall before the destructive verb, `Button cap="strip-danger"` in `#FF8A7E`.
 
 ## States and motion
 
