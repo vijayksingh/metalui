@@ -6,6 +6,9 @@ import './mark.css';
 /* ─────────────────────────────────────────────────────────
  * CUE FAMILY (the reference design)
  *
+ *   match     the words a search matched in a result: heavier, a green underline (not metric-neutral;
+ *             only in result rows, never in writing)
+ *
  * A cue is a rendering attribute on the text, never a change to it.
  *   in-flow   date · duration · amount · measurement · tag · derived tag · hex
  *             metric-neutral: width delta 0.00 pt, so a cue appearing mid-word never moves a letter
@@ -16,7 +19,7 @@ import './mark.css';
  *   tick      draws on in 220 ms after 40 ms, ease-out, not sprung (DS-21); instant under Reduce Motion
  * ───────────────────────────────────────────────────────── */
 
-export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex';
+export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex' | 'match';
 
 export interface MarkProps extends React.HTMLAttributes<HTMLSpanElement> {
   kind: MarkKind;

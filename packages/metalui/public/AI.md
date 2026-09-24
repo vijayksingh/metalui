@@ -507,6 +507,7 @@ Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, 
 | tag | soft pill: padding 1/4 paid back by margin 0/−4, ink2 | same |
 | derived tag | hollow pill (.5 ring), ink3 | same |
 | hex | 3 pt underline in the colour at 78 %, skip-ink off; the 11 pt swatch before it at rest | underline only |
+| match | a search's matched words in a result row: weight 650, a green .55 underline 1.5 thick, offset 2.5 (heavier, so result rows only, never writing) | never |
 | URL | a 20 tall host pill with the link glyph at 11 | the raw URL, plain |
 | inferred | a 17 tall hollow pill in the label role after the last word | hidden |
 | dimple | 16 pt well, radius 6, hanging at −25 in the gutter; checked: dark with a white tick | the raw `[ ] ` sits in the gutter |

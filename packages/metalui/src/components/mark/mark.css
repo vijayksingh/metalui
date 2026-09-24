@@ -40,6 +40,13 @@
   text-underline-offset: var(--mu-cue-hex-offset);
   text-decoration-skip-ink: none;
 }
+/* Match: the words a search matched in a result row. Heavier, so never used in flow while writing. */
+.mu-cue[data-kind="match"] {
+  font-weight: var(--mu-r-mark-match-weight);
+  text-decoration: underline solid var(--mu-r-mark-match-underline);
+  text-decoration-thickness: var(--mu-r-mark-match-thickness);
+  text-underline-offset: var(--mu-r-mark-match-offset);
+}
 .mu-cue-swatch {
   display: inline-block;
   width: var(--mu-cue-swatch);

@@ -1125,7 +1125,7 @@
     /* mu-recipe:rule:5 */ 1px 0 0 rgba(255,255,255,.055);
   --mu-r-rule-self-thickness: 1px;
   --mu-r-rule-self-margin: 3px;
-  /* mark: reference style.css .c-date, .c-dur, .c-amt, .c-meas, .c-tag, .c-hex, .c-url, .c-jdate, .led-urgent, .c-life */
+  /* mark: reference style.css .c-date, .c-dur, .c-amt, .c-meas, .c-tag, .c-hex, .c-url, .c-jdate, .led-urgent, .c-life, .pal-row mark */
   --mu-r-mark-url-background:
     /* mu-recipe:mark:8 */ rgba(111,155,255,.09);
   --mu-r-mark-url-shadow:
@@ -1142,6 +1142,10 @@
     /* mu-recipe:mark:15 */ radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18);
   --mu-r-mark-urgency-shadow:
     /* mu-recipe:mark:16 */ 0 0 0 .5px rgba(0,0,0,.25);
+  --mu-r-mark-match-weight: 650;
+  --mu-r-mark-match-underline: rgba(63,185,122,.55);
+  --mu-r-mark-match-thickness: 1.5px;
+  --mu-r-mark-match-offset: 2.5px;
   /* icon-button: reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button */
   --mu-r-icon-button-tool-background:
     /* mu-recipe:icon-button:0 */ linear-gradient(#303033, #262628);

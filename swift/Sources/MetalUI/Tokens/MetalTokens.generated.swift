@@ -1283,7 +1283,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch dot, a URL host pill, an inferred pill, the urgency LED and a trailing glyph. (reference style.css .c-date, .c-dur, .c-amt, .c-meas, .c-tag, .c-hex, .c-url, .c-jdate, .led-urgent, .c-life)
+    /// Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch dot, a URL host pill, an inferred pill, the urgency LED and a trailing glyph. (reference style.css .c-date, .c-dur, .c-amt, .c-meas, .c-tag, .c-hex, .c-url, .c-jdate, .led-urgent, .c-life, .pal-row mark)
     public static let mark = MetalObjectRecipe(
         name: "mark",
         layers: [
@@ -1306,7 +1306,10 @@ public enum MetalRecipes {
             .init(part: "urgency", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.25)))), // mu-recipe:mark:16 0 0 0 .5px rgba(0,0,0,.25)
         ],
         props: [
-            :
+            "match.weight": .text("650"),
+            "match.underline": .text("rgba(63,185,122,.55)"),
+            "match.thickness": .number(1.5),
+            "match.offset": .number(2.5),
         ]
     )
 
