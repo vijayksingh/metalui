@@ -118,7 +118,7 @@ const cwFields = cwKeys.map((k) => `    public let ${camel(k)}: ${swiftValue(T.c
 const cwInstance = (cw) => `MetalColorwayTokens(\n${cwKeys.map((k) => `        ${camel(k)}: ${swiftValue(T.colorways[cw][k])[1]}`).join(',\n')}\n    )`;
 
 const swiftShared = Object.entries(T.shared)
-  .filter(([, v]) => !/^cubic-bezier|"|,\s*sans-serif|monospace/.test(v))
+  .filter(([, v]) => !/^cubic-bezier|"|,\s*sans-serif|monospace|%$/.test(v))
   .map(([k, v]) => { const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; })
   .join('\n');
 const capKeys = Object.keys(T.caps.primary);

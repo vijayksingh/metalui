@@ -12,8 +12,11 @@
   --mu-led-green: radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673 100%);
   --mu-led-red: radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A 100%);
   --mu-led-amber: radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18 100%);
-  --mu-mono: "SF Mono", ui-monospace, "Menlo", monospace;
-  --mu-sans: -apple-system, "SF Pro Text", "SF Pro", system-ui, sans-serif;
+  --mu-mono: "Martian Mono", "SF Mono", ui-monospace, monospace;
+  --mu-mono-stretch: 87.5%;
+  --mu-mono-code-stretch: 75%;
+  --mu-pixel: "Doto", "Martian Mono", ui-monospace, monospace;
+  --mu-sans: "Geist", -apple-system, system-ui, sans-serif;
   --mu-ease-press: cubic-bezier(.3,.0,.2,1);
   --mu-ease-slide: cubic-bezier(.22,.9,.25,1);
   --mu-focus: #3FB97A;
