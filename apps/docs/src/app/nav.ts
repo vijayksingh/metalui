@@ -58,6 +58,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/snap-guides', label: 'Snap guides' },
       { to: '/components/lasso', label: 'Lasso' },
       { to: '/components/block-silhouette', label: 'Block silhouette' },
+      { to: '/components/brush-cursor', label: 'Brush cursor' },
       { to: '/components/cue', label: 'Cue family' },
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
       { to: '/components/link-card', label: 'Link card' },

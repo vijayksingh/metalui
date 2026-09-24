@@ -794,3 +794,5 @@ html.rm .far-near { animation: none; }
 .far-pair { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; padding: 14px; border-radius: 20px; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
 .far-pair figcaption { grid-column: 1 / -1; text-align: center; }
 .far-cell { display: grid; place-items: center; min-height: 90px; overflow: hidden; }
+.ink-canvas { cursor: none; touch-action: none; }
+.ink-hint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
