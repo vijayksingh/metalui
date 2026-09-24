@@ -1,6 +1,5 @@
 @import "../../components/tokens.css";
 @import "../../components/surface/surface.css";
-@import "../../components/button/button.css";
 @import "../../components/rule/rule.css";
 
 /* Selection tool strip: a composition. It lays out its caps and brings the strip in; every paint is

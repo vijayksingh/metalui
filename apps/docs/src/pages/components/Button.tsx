@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Button, Kbd, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/button/button.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/button/button.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalButton.swift?raw';
 import { Bench, CopyPageButton, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
@@ -143,7 +143,7 @@ function Hero() {
   const h = d.geometry.height;
   const iconSize = h <= 24 ? 12 : h <= 32 ? 14 : h <= 40 ? 16 : 20;
   const pad = h / 2 - 1;
-  const vars = { '--mu-button-h': `${h}px`, '--mu-button-px': `${pad}px`, '--mu-r-button-self-travel': `${d.press.travel}px` } as React.CSSProperties;
+  const vars = { '--mu-r-button-self-height': `${h}px`, '--mu-r-button-self-pad': `${pad}px`, '--mu-r-button-self-travel': `${d.press.travel}px` } as React.CSSProperties;
   return (
     <section id="hero" className="mb-64 grid scroll-mt-80 gap-16 md:grid-cols-[1.2fr_1fr]">
       <Bench caption={`Press it. Hold it. Let go.  ·  h${h} · pad ${pad} · icon ${iconSize} · travel ${d.press.travel}`}>

@@ -20,20 +20,6 @@
   --color-ink3: var(--mu-ink3);
   --color-engrave: var(--mu-engrave);
   --color-icon: var(--mu-icon);
-  --color-s-hi: var(--mu-s-hi);
-  --color-s: var(--mu-s);
-  --color-s-lo: var(--mu-s-lo);
-  --color-rule: var(--mu-rule);
-  --color-stage-bar: var(--mu-stage-bar);
-  --color-syn-text: var(--mu-syn-text);
-  --color-syn-keyword: var(--mu-syn-keyword);
-  --color-syn-type: var(--mu-syn-type);
-  --color-syn-member: var(--mu-syn-member);
-  --color-syn-string: var(--mu-syn-string);
-  --color-syn-number: var(--mu-syn-number);
-  --color-syn-comment: var(--mu-syn-comment);
-  --color-syn-punct: var(--mu-syn-punct);
-  --color-syn-line: var(--mu-syn-line);
   --color-page: var(--mu-page);
   --color-page-dark: var(--mu-page-dark);
   --color-green: var(--mu-green);
@@ -53,9 +39,6 @@
   --shadow-raise-sm: var(--mu-raise-sm);
   --shadow-cap: var(--mu-btn-sh);
   --shadow-well: var(--mu-well);
-  --shadow-stage: var(--mu-stage-sh);
-  --container-measure: 640px;
-  --container-stage: 760px;
   --ease-part: var(--mu-spring-part);
   --ease-object: var(--mu-spring-object);
   --ease-hinge: var(--mu-spring-hinge);
@@ -116,37 +99,6 @@
   letter-spacing: 0;
 }
 
-/* Editorial roles (tokens.json editorial): the documentation site's reading scale. Components never use these. */
-@utility type-doc-title {
-  font: 600 30px/36px var(--mu-sans);
-  letter-spacing: -0.026em;
-}
-@utility type-doc-heading {
-  font: 600 19px/26px var(--mu-sans);
-  letter-spacing: -0.018em;
-}
-@utility type-doc-subheading {
-  font: 600 15px/22px var(--mu-sans);
-  letter-spacing: -0.012em;
-}
-@utility type-doc-lede {
-  font: 400 16px/25px var(--mu-sans);
-  letter-spacing: -0.011em;
-}
-@utility type-doc-prose {
-  font: 400 15px/24px var(--mu-sans);
-  letter-spacing: -0.008em;
-}
-@utility type-doc-caption {
-  font: 400 12.5px/18px var(--mu-sans);
-  letter-spacing: -0.002em;
-}
-@utility type-doc-code {
-  font: 400 12px/19px var(--mu-mono);
-  letter-spacing: 0;
-  font-stretch: var(--mu-mono-code-stretch);
-}
-
 /* Materials: a fill and its shadow stack, as one utility (FOUNDATIONS §8). */
 @utility material-raised {
   background: linear-gradient(180deg, var(--mu-s-hi), var(--mu-s) 55%, var(--mu-s-lo));
@@ -167,11 +119,6 @@
 @utility material-thumb {
   background: linear-gradient(var(--mu-thumb-hi), var(--mu-thumb-lo));
   box-shadow: var(--mu-raise-sm);
-}
-/* A stage: a light object that holds a specimen, with a hairline edge and a soft contact shadow. */
-@utility material-stage {
-  background: linear-gradient(var(--mu-s-hi), var(--mu-s));
-  box-shadow: var(--mu-stage-sh);
 }
 /* Frost: the same recipes as .mu-frost-*, with their Reduce Transparency and Increase Contrast twins. */
 @utility material-frost-strip {
@@ -361,8 +308,9 @@
   --tracking-button-strip-tracking: var(--mu-r-button-strip-tracking);
   --color-button-strip-ink: var(--mu-r-button-strip-ink);
   --color-button-strip-ink-hover: var(--mu-r-button-strip-ink-hover);
-  --spacing-button-strip-focus-width: var(--mu-r-button-strip-focus-width);
   --color-button-strip-danger-ink: var(--mu-r-button-strip-danger-ink);
+  --color-button-primary-ink: var(--mu-r-button-primary-ink);
+  --color-button-destructive-ink: var(--mu-r-button-destructive-ink);
   --spacing-kbd-height: var(--mu-r-kbd-self-height);
   --spacing-kbd-min: var(--mu-r-kbd-self-min);
   --spacing-kbd-pad: var(--mu-r-kbd-self-pad);
@@ -798,6 +746,25 @@
 @utility recipe-button-strip-pressed {
   background: var(--mu-r-button-strip-pressed-background);
 }
+@utility recipe-button-primary {
+  background: var(--mu-r-button-primary-background);
+  box-shadow: var(--mu-r-button-primary-shadow);
+}
+@utility recipe-button-primary-pressed {
+  background: var(--mu-r-button-primary-pressed-background);
+  box-shadow: var(--mu-r-button-primary-pressed-shadow);
+}
+@utility recipe-button-destructive {
+  background: var(--mu-r-button-destructive-background);
+  box-shadow: var(--mu-r-button-destructive-shadow);
+}
+@utility recipe-button-destructive-pressed {
+  background: var(--mu-r-button-destructive-pressed-background);
+  box-shadow: var(--mu-r-button-destructive-pressed-shadow);
+}
+@utility recipe-button-strip-focus {
+  box-shadow: var(--mu-r-button-strip-focus-shadow);
+}
 @utility duration-button-press {
   transition-duration: var(--mu-r-button-self-press);
 }
@@ -807,12 +774,18 @@
 @utility opacity-button-disabled {
   opacity: var(--mu-r-button-self-disabled);
 }
+@utility transition-button {
+  transition: var(--mu-r-button-self-transition);
+}
 @utility type-button-compact {
   font: var(--mu-r-button-compact-font);
   letter-spacing: var(--mu-r-button-compact-tracking);
 }
 @utility duration-button-compact-move {
   transition-duration: var(--mu-r-button-compact-move);
+}
+@utility transition-button-compact {
+  transition: var(--mu-r-button-compact-transition);
 }
 @utility type-button-link {
   font: var(--mu-r-button-link-font);

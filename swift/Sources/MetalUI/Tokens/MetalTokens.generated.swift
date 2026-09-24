@@ -58,17 +58,6 @@ public struct MetalColorwayTokens: Sendable {
     public let pressedBg: MetalGradient
     public let pressedSh: [MetalShadow]
     public let duoK: Double
-    public let synText: MetalRGBA
-    public let synKeyword: MetalRGBA
-    public let synType: MetalRGBA
-    public let synMember: MetalRGBA
-    public let synString: MetalRGBA
-    public let synNumber: MetalRGBA
-    public let synComment: MetalRGBA
-    public let synPunct: MetalRGBA
-    public let synLine: MetalRGBA
-    public let stageSh: [MetalShadow]
-    public let stageBar: MetalRGBA
     public let tintEmber: MetalRGBA
     public let tintBlush: MetalRGBA
     public let tintTide: MetalRGBA
@@ -203,22 +192,6 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
         ],
         duoK: 1.0,
-        synText: MetalRGBA(42, 42, 45, 1.0),
-        synKeyword: MetalRGBA(160, 53, 127, 1.0),
-        synType: MetalRGBA(138, 98, 18, 1.0),
-        synMember: MetalRGBA(45, 93, 181, 1.0),
-        synString: MetalRGBA(43, 122, 82, 1.0),
-        synNumber: MetalRGBA(45, 93, 181, 1.0),
-        synComment: MetalRGBA(142, 142, 146, 1.0),
-        synPunct: MetalRGBA(123, 123, 128, 1.0),
-        synLine: MetalRGBA(185, 184, 179, 1.0),
-        stageSh: [
-            MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.9)),
-            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(24, 22, 16, 0.1)),
-            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(24, 22, 16, 0.04)),
-            MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(24, 22, 16, 0.1)),
-        ],
-        stageBar: MetalRGBA(24, 22, 16, 0.022),
         tintEmber: MetalRGBA(208, 86, 14, 1.0),
         tintBlush: MetalRGBA(213, 68, 135, 1.0),
         tintTide: MetalRGBA(16, 138, 139, 1.0),
@@ -343,22 +316,6 @@ public enum MetalTokens {
             MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 3.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
         ],
         duoK: 1.3,
-        synText: MetalRGBA(215, 216, 219, 1.0),
-        synKeyword: MetalRGBA(231, 166, 217, 1.0),
-        synType: MetalRGBA(231, 201, 138, 1.0),
-        synMember: MetalRGBA(158, 194, 255, 1.0),
-        synString: MetalRGBA(159, 227, 191, 1.0),
-        synNumber: MetalRGBA(158, 194, 255, 1.0),
-        synComment: MetalRGBA(109, 110, 115, 1.0),
-        synPunct: MetalRGBA(124, 125, 130, 1.0),
-        synLine: MetalRGBA(72, 73, 78, 1.0),
-        stageSh: [
-            MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.05)),
-            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.6)),
-            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.25)),
-            MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(0, 0, 0, 0.45)),
-        ],
-        stageBar: MetalRGBA(0, 0, 0, 0.16),
         tintEmber: MetalRGBA(251, 121, 74, 1.0),
         tintBlush: MetalRGBA(237, 107, 162, 1.0),
         tintTide: MetalRGBA(37, 194, 195, 1.0),
@@ -819,7 +776,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (26 tall). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger)
+    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (26 tall). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps)
     public static let button = MetalObjectRecipe(
         name: "button",
         layers: [
@@ -862,6 +819,25 @@ public enum MetalRecipes {
             .init(part: "graphite", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:button:36 rgba(255,255,255,.09)
             .init(part: "strip", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:button:37 rgba(255,255,255,.08)
             .init(part: "strip", state: "pressed", colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:button:38 rgba(0,0,0,.35)
+            .init(part: "primary", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(56.0, 56.0, 60.0, 1.0)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 40.0, 1.0)), 1.0)])), // mu-recipe:button:39 linear-gradient(#38383C,#252528)
+            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 5.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:button:40 inset 0 0 5px 1px rgba(255,255,255,.07)
+            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.18)))), // mu-recipe:button:41 inset 1px 2px 2px -1px rgba(255,255,255,.18)
+            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:button:42 0 0 0 .5px rgba(0,0,0,.5)
+            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.15)))), // mu-recipe:button:43 0 1px 2px rgba(0,0,0,.15)
+            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:button:44 0 5px 12px -4px rgba(0,0,0,.22)
+            .init(part: "primary", state: "pressed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(28.0, 28.0, 30.0, 1.0)), 0.0), .init(.color(MetalRGBA(36.0, 36.0, 39.0, 1.0)), 1.0)])), // mu-recipe:button:45 linear-gradient(#1C1C1E,#242427)
+            .init(part: "primary", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:46 inset 0 1px 3px rgba(0,0,0,.6)
+            .init(part: "primary", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:button:47 0 0 0 .5px rgba(0,0,0,.7)
+            .init(part: "destructive", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(230.0, 89.0, 78.0, 1.0)), 0.0), .init(.color(MetalRGBA(208.0, 67.0, 58.0, 1.0)), 1.0)])), // mu-recipe:button:48 linear-gradient(#E6594E,#D0433A)
+            .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:button:49 inset 0 0 6px 1px rgba(255,255,255,.14)
+            .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.32)))), // mu-recipe:button:50 inset 1px 2px 2px -1px rgba(255,255,255,.32)
+            .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(120.0, 20.0, 10.0, 0.3)))), // mu-recipe:button:51 0 0 0 .5px rgba(120,20,10,.3)
+            .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(110.0, 10.0, 0.0, 0.14)))), // mu-recipe:button:52 0 1px 2px rgba(110,10,0,.14)
+            .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(170.0, 30.0, 20.0, 0.24)))), // mu-recipe:button:53 0 5px 12px -4px rgba(170,30,20,.24)
+            .init(part: "destructive", state: "pressed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(190.0, 53.0, 44.0, 1.0)), 0.0), .init(.color(MetalRGBA(207.0, 66.0, 56.0, 1.0)), 1.0)])), // mu-recipe:button:54 linear-gradient(#BE352C,#CF4238)
+            .init(part: "destructive", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(80.0, 0.0, 0.0, 0.45)))), // mu-recipe:button:55 inset 0 1px 3px rgba(80,0,0,.45)
+            .init(part: "destructive", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(110.0, 10.0, 0.0, 0.55)))), // mu-recipe:button:56 0 0 0 .5px rgba(110,10,0,.55)
+            .init(part: "strip", state: "focus", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 1.5, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 1.0)))), // mu-recipe:button:57 0 0 0 1.5px #3FB97A
         ],
         props: [
             "self.height": .number(32.0),
@@ -874,6 +850,7 @@ public enum MetalRecipes {
             "self.focus-width": .number(2.0),
             "self.focus-offset": .number(2.0),
             "self.disabled": .text("0.4"),
+            "self.transition": .text("translate var(--mu-spring-release-d) var(--mu-spring-release), box-shadow var(--mu-r-button-self-fade), background var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade)"),
             "compact.height": .number(26.0),
             "compact.pad": .number(11.0),
             "compact.gap": .number(7.0),
@@ -881,6 +858,7 @@ public enum MetalRecipes {
             "compact.font": .text("500 12px/1 sans"),
             "compact.tracking": .text("0"),
             "compact.move": .text("90ms"),
+            "compact.transition": .text("translate var(--mu-r-button-compact-move), box-shadow var(--mu-r-button-compact-move)"),
             "link.font": .text("500 9px/1 mono"),
             "link.tracking": .text("0.1em"),
             "link.ink": .text("#3FB97A"),
@@ -896,8 +874,9 @@ public enum MetalRecipes {
             "strip.tracking": .text("0"),
             "strip.ink": .text("#D6D6D8"),
             "strip.ink-hover": .text("#FFFFFF"),
-            "strip.focus-width": .number(1.5),
             "strip-danger.ink": .text("#FF8A7E"),
+            "primary.ink": .text("#FFFFFF"),
+            "destructive.ink": .text("#FFFFFF"),
         ]
     )
 
