@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Checkbox, Kbd, LinkCard, Mark, Segmented, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Segmented, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
 
@@ -84,6 +84,18 @@ const ITEMS: Item[] = [
   },
   { id: 'key', table: ['84%', '72%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
   { id: 'slider', table: ['54%', '84%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
+  {
+    id: 'field', table: ['40%', '70%'], space: ['60%', '80%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
+    node: ({ openXray }) => (
+      <div style={{ width: 230 }} onClick={() => openXray('field')}>
+        <Field style={{ width: '100%' }}>
+          <Field.Icon><Icon name="search" size={15} /></Field.Icon>
+          <Field.Input placeholder="Lens or action" aria-label="Lens or action" readOnly />
+          <Field.Trail><Kbd>⌘K</Kbd></Field.Trail>
+        </Field>
+      </div>
+    ),
+  },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray

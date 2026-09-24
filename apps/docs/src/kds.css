@@ -713,3 +713,8 @@ html.rm .xr-tick { animation: none; }
 .xr-chipbtn { display: grid; place-items: center; border-radius: 999px; }
 .xr-floortext { position: absolute; left: 0; transform: translateZ(.5px); font: 500 45px/1 var(--sans); letter-spacing: -.02em; color: var(--ink3); white-space: nowrap; }
 html.rm .xr-chipwrap { animation: none; transition: none; }
+/* x-ray, field: the words lie on the tray floor; the caret blinks */
+.xr-fieldrow { position: absolute; top: 0; display: flex; align-items: center; transform: translateZ(.8px); font-weight: 500; letter-spacing: -.01em; white-space: nowrap; }
+.xr-caret { display: block; width: 3.6px; border-radius: 2px; animation: xr-blink 1.1s steps(1) infinite; }
+@keyframes xr-blink { 50% { opacity: 0; } }
+html.rm .xr-caret { animation: none; }

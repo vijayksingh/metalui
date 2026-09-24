@@ -2,6 +2,7 @@ import type * as React from 'react';
 import { ButtonXray } from './ButtonXray';
 import { CheckboxXray } from './CheckboxXray';
 import { ChipXray } from './ChipXray';
+import { FieldXray } from './FieldXray';
 import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
 import { SegmentedXray } from './SegmentedXray';
@@ -18,6 +19,7 @@ export const XRAYS = {
   slider: { title: 'Slider', View: SliderXray },
   'icon-button': { title: 'Icon button', View: IconButtonXray },
   chip: { title: 'Suggestion chip', View: ChipXray },
+  field: { title: 'Field', View: FieldXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;
