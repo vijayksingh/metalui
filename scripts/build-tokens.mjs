@@ -428,6 +428,15 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
 @utility tap-highlight-none {
   -webkit-tap-highlight-color: transparent;
 }
+/* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
+@utility focus-ring {
+  outline: var(--mu-focus-width) solid var(--mu-focus);
+  outline-offset: var(--mu-focus-offset);
+}
+@utility focus-ring-flush {
+  outline: var(--mu-focus-width) solid var(--mu-focus);
+  outline-offset: var(--mu-zero);
+}
 
 /* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
    px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],

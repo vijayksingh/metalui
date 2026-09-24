@@ -288,11 +288,6 @@
           "path": "packages/metalui/src/components/icon-button/icon-button.tsx",
           "type": "registry:ui",
           "target": "components/metalui/icon-button/icon-button.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/icon-button/icon-button.css",
-          "type": "registry:file",
-          "target": "components/metalui/icon-button/icon-button.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."

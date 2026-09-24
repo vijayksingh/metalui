@@ -242,6 +242,15 @@
 @utility tap-highlight-none {
   -webkit-tap-highlight-color: transparent;
 }
+/* The focus ring (foundations): the focus ink at its width, off the edge, or flush on it. */
+@utility focus-ring {
+  outline: var(--mu-focus-width) solid var(--mu-focus);
+  outline-offset: var(--mu-focus-offset);
+}
+@utility focus-ring-flush {
+  outline: var(--mu-focus-width) solid var(--mu-focus);
+  outline-offset: var(--mu-zero);
+}
 
 /* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
    px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],
@@ -1092,11 +1101,17 @@
 @utility duration-icon-button-tool-shadow-time {
   transition-duration: var(--mu-r-icon-button-tool-shadow-time);
 }
+@utility transition-icon-button-tool {
+  transition: var(--mu-r-icon-button-tool-transition);
+}
 @utility type-icon-button-mini {
   font: var(--mu-r-icon-button-mini-font);
 }
 @utility duration-icon-button-fade {
   transition-duration: var(--mu-r-icon-button-self-fade);
+}
+@utility transition-icon-button {
+  transition: var(--mu-r-icon-button-self-transition);
 }
 @utility recipe-chip-suggestion {
   background: var(--mu-r-chip-suggestion-background);

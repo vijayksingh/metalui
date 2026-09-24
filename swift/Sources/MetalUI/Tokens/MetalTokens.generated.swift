@@ -1339,6 +1339,7 @@ public enum MetalRecipes {
             "tool.press": .number(1.0),
             "tool.press-time": .text("50ms"),
             "tool.shadow-time": .text("90ms"),
+            "tool.transition": .text("translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press)"),
             "led.size": .number(4.0),
             "led.inset": .number(5.0),
             "ghost.size": .number(28.0),
@@ -1352,6 +1353,7 @@ public enum MetalRecipes {
             "mini.ink-hover": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "mini.accept-ink": .text("#3FB97A"),
             "self.fade": .text("160ms"),
+            "self.transition": .text("background var(--mu-r-icon-button-self-fade), color var(--mu-r-icon-button-self-fade)"),
         ]
     )
 

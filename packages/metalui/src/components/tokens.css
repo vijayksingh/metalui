@@ -1220,6 +1220,7 @@
   --mu-r-icon-button-tool-press: 1px;
   --mu-r-icon-button-tool-press-time: 50ms;
   --mu-r-icon-button-tool-shadow-time: 90ms;
+  --mu-r-icon-button-tool-transition: translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press);
   --mu-r-icon-button-led-size: 4px;
   --mu-r-icon-button-led-inset: 5px;
   --mu-r-icon-button-ghost-size: 28px;
@@ -1229,6 +1230,7 @@
   --mu-r-icon-button-mini-font: 500 11px/1 var(--mu-sans);
   --mu-r-icon-button-mini-accept-ink: #3FB97A;
   --mu-r-icon-button-self-fade: 160ms;
+  --mu-r-icon-button-self-transition: background var(--mu-r-icon-button-self-fade), color var(--mu-r-icon-button-self-fade);
   /* chip: reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open, .meta .derived-tags span */
   --mu-r-chip-glass-background:
     /* mu-recipe:chip:13 */ rgba(20,20,22,.5);

@@ -4,7 +4,6 @@
 @import "../../components/label/label.css";
 @import "../../components/status/status.css";
 @import "../../components/segmented/segmented.css";
-@import "../../components/icon-button/icon-button.css";
 
 /* Filter bar: a composition. It lays out its parts and brings the bar in; every paint is
    Surface(frost), Glyph, Label, Led, Segmented and IconButton(ghost). Layout values: --mu-lensbar-*. */

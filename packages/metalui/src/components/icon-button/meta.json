@@ -8,8 +8,7 @@
   "react": {
     "export": "IconButton",
     "files": [
-      "icon-button.tsx",
-      "icon-button.css"
+      "icon-button.tsx"
     ]
   },
   "swift": {
