@@ -35,11 +35,13 @@ private struct MetalGlassTag: View {
 private struct MetalGlassBody<Content: View>: View {
     let screen: String
     let own: MetalRGBA?
+    let screenRecipe: MetalObjectRecipe?
     let content: Content
 
-    init(screen: String, own: MetalRGBA? = nil, @ViewBuilder content: () -> Content) {
+    init(screen: String, own: MetalRGBA? = nil, screenRecipe: MetalObjectRecipe? = nil, @ViewBuilder content: () -> Content) {
         self.screen = screen
         self.own = own
+        self.screenRecipe = screenRecipe
         self.content = content()
     }
 
@@ -64,6 +66,9 @@ private struct MetalGlassBody<Content: View>: View {
                     center: glow.center, startRadiusFraction: 0, endRadiusFraction: glow.reach))
             } else {
                 Color.clear.metalObjectRecipe(r, part: screen, in: screenShape, self: own)
+            }
+            if let screenRecipe {
+                Color.clear.metalObjectRecipe(screenRecipe, part: "screen", in: screenShape)
             }
             Color.clear.metalObjectRecipe(r, part: "glare", in: screenShape)
             content
@@ -193,42 +198,65 @@ public struct MetalLinkFace: View {
 }
 
 /// Code as a glass object: a CODE tag (language, line count) and numbered lines.
+public enum MetalCodeDiffClass: String, Sendable {
+    case add, remove, context
+}
+
 public struct MetalCodeFace: View {
     let code: String
     let language: String?
+    let diff: [MetalCodeDiffClass]?
 
-    public init(_ code: String, language: String? = nil) {
+    public init(_ code: String, language: String? = nil, diff: [MetalCodeDiffClass]? = nil) {
         self.code = code
         self.language = language
+        self.diff = diff
     }
 
     public var body: some View {
-        let r = MetalRecipes.glassFace
+        let r = MetalRecipes.codeCard
         let role = r.typeRole("code.font", trackingKey: "code.tracking")
         let all = code.components(separatedBy: "\n")
-        let lines = Array(all.prefix(Int(r.points("code.max-lines"))))
+        let lines = Array(all.prefix(Int(r.points("code.number"))))
+        let classes = diff ?? (language == "diff" ? Self.diffClasses(code) : [])
         let label = "Code" + (language.map { " · " + $0 } ?? "") + " · \(all.count) " + (all.count == 1 ? "line" : "lines")
-        let lineHeight = r.points("code.line")
-        MetalGlassBody(screen: "code-screen") {
+        let lineHeight = r.lineHeight("code.font")
+        MetalGlassBody(screen: "screen", screenRecipe: r) {
             ZStack(alignment: .topLeading) {
-                MetalGlassTag(text: label, led: "code").padding(r.points("tag.inset"))
+                MetalChip(.glass) {
+                    MetalChipLead(led: .code) { EmptyView() }
+                    MetalChipText { Text(label.uppercased()) }
+                }
+                .padding(r.points("chip.inset"))
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(lines.enumerated()), id: \.offset) { index, line in
+                        let rowClass = index < classes.count ? classes[index] : .context
+                        let signed = rowClass == .add || rowClass == .remove
                         HStack(spacing: 0) {
                             Text("\(index + 1)")
-                                .foregroundStyle((r.color("code.number-ink") ?? MetalRGBA(0, 0, 0, 0)).color)
-                                .frame(width: r.points("code.number-width"), alignment: .leading)
-                            Self.highlighted(line)
+                                .foregroundStyle((r.color("tint.line") ?? MetalRGBA(0, 0, 0, 0)).color)
+                                .frame(width: r.points("code.number"), alignment: .leading)
+                            if signed {
+                                Text(String(line.prefix(1)))
+                                    .foregroundStyle((r.color(rowClass == .add ? "diff.add-ink" : "diff.remove-ink") ?? MetalRGBA(0, 0, 0, 0)).color)
+                            }
+                            Self.highlighted(signed ? String(line.dropFirst()) : line)
                         }
                         .font(.metal(role))
                         .tracking(role.trackingPoints)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: lineHeight, alignment: .leading)
+                        .background {
+                            if rowClass == .add || rowClass == .remove {
+                                (r.color(rowClass == .add ? "diff.add-bg" : "diff.remove-bg") ?? MetalRGBA(0, 0, 0, 0)).color
+                            }
+                        }
                         .lineLimit(1)
                     }
                 }
-                .padding(.top, r.points("code.pad-top"))
-                .padding(.horizontal, r.points("code.pad-x"))
-                .padding(.bottom, r.points("code.pad-bottom"))
+                .padding(.top, r.points("screen.pad-top"))
+                .padding(.horizontal, r.points("screen.pad-x"))
+                .padding(.bottom, r.points("screen.pad-bottom"))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
@@ -237,65 +265,48 @@ public struct MetalCodeFace: View {
         .accessibilityLabel(label)
     }
 
-    /// Keywords the highlighter paints (the reference's code card).
-    static let keywords: Set<String> = [
-        "func", "let", "var", "if", "else", "return", "for", "in", "while", "const", "function", "import", "export", "from",
-        "class", "struct", "enum", "case", "switch", "guard", "def", "async", "await", "new", "true", "false", "nil", "null",
-        "self", "this",
-    ]
+    /// Core-compatible fallback when a host has no diff classes.
+    public static func diffClasses(_ code: String) -> [MetalCodeDiffClass] {
+        code.components(separatedBy: "\n").map { line in
+            if line.hasPrefix("+") && !line.hasPrefix("+++") { return .add }
+            if line.hasPrefix("-") && !line.hasPrefix("---") { return .remove }
+            return .context
+        }
+    }
+
+    // Match each source token once. SwiftUI Text runs never become input to later matches.
+    private static let tokenPattern = try! NSRegularExpression(
+        pattern: "(\".*?\"|'.*?')|(\\/\\/.*$|#(?!\\d).*$)|(\\b(?:func|let|var|if|else|return|for|in|while|const|function|import|export|from|class|struct|enum|case|switch|guard|def|async|await|new|true|false|nil|null|self|this)\\b)|(\\b[A-Z][A-Za-z0-9]+\\b)|((?<![\\w#&])\\d+(?:\\.\\d+)?\\b)"
+    )
 
     /// One line with the recipe's syntax inks: strings, a trailing comment, keywords, Types, numbers.
     static func highlighted(_ line: String) -> Text {
-        let r = MetalRecipes.glassFace
-        func ink(_ key: String) -> Color { (r.color("code." + key) ?? MetalRGBA(0, 0, 0, 0)).color }
+        let r = MetalRecipes.codeCard
+        func ink(_ key: String) -> Color { (r.color(key) ?? MetalRGBA(0, 0, 0, 0)).color }
+        let source = line as NSString
         var out = Text("")
-        var word = ""
-        func flushWord() {
-            guard !word.isEmpty else { return }
-            let color: Color
-            if keywords.contains(word) { color = ink("keyword") }
-            else if word.first?.isUppercase == true, word.count > 1, word.allSatisfy({ $0.isLetter || $0.isNumber }) { color = ink("type") }
-            else if Double(word) != nil { color = ink("number") }
-            else { color = ink("ink") }
-            out = out + Text(word).foregroundColor(color)
-            word = ""
+        var cursor = 0
+        let keys = ["tint.string", "tint.comment", "tint.keyword", "tint.type", "tint.number"]
+        for match in tokenPattern.matches(in: line, range: NSRange(location: 0, length: source.length)) {
+            if match.range.location > cursor {
+                out = out + Text(source.substring(with: NSRange(location: cursor, length: match.range.location - cursor))).foregroundColor(ink("code.ink"))
+            }
+            let group = (1...keys.count).first { match.range(at: $0).location != NSNotFound }
+            out = out + Text(source.substring(with: match.range)).foregroundColor(ink(group.map { keys[$0 - 1] } ?? "code.ink"))
+            cursor = NSMaxRange(match.range)
         }
-        let chars = Array(line)
-        var i = 0
-        while i < chars.count {
-            let c = chars[i]
-            if c == "\"" || c == "'" {
-                flushWord()
-                var j = i + 1
-                while j < chars.count && chars[j] != c { j += 1 }
-                let end = min(j + 1, chars.count)
-                out = out + Text(String(chars[i..<end])).foregroundColor(ink("string"))
-                i = end
-                continue
-            }
-            if c == "#" || (c == "/" && i + 1 < chars.count && chars[i + 1] == "/") {
-                flushWord()
-                out = out + Text(String(chars[i...])).foregroundColor(ink("comment"))
-                return out
-            }
-            if c.isLetter || c.isNumber || c == "_" || (c == "." && Double(word) != nil) {
-                word.append(c)
-            } else {
-                flushWord()
-                out = out + Text(String(c)).foregroundColor(ink("ink"))
-            }
-            i += 1
+        if cursor < source.length {
+            out = out + Text(source.substring(from: cursor)).foregroundColor(ink("code.ink"))
         }
-        flushWord()
         return out
     }
 
     /// The face's size for `code`: the widest line (clamped to the recipe's width range) by its lines.
     public static func size(for code: String) -> CGSize {
-        let r = MetalRecipes.glassFace
+        let r = MetalRecipes.codeCard
         let role = r.typeRole("code.font", trackingKey: "code.tracking")
         let font = MetalFonts.ctFont(role, size: role.size)
-        let lines = Array(code.components(separatedBy: "\n").prefix(Int(r.points("code.max-lines"))))
+        let lines = Array(code.components(separatedBy: "\n").prefix(Int(r.points("code.number"))))
         let widest = lines.map { line -> Double in
             let attributed = NSAttributedString(string: line, attributes: [
                 NSAttributedString.Key(kCTFontAttributeName as String): font,
@@ -303,11 +314,11 @@ public struct MetalCodeFace: View {
             ])
             return Double(CTLineGetTypographicBounds(CTLineCreateWithAttributedString(attributed), nil, nil, nil))
         }.max() ?? 0
-        let pad = r.points("self.pad")
-        let inner = widest.rounded(.up) + (r.points("code.number-width")) + 2 * (r.points("code.pad-x"))
-        let width = min(r.points("code.max-width"), max(r.points("code.min-width"), inner + (pad + pad)))
-        let height = (pad + pad) + (r.points("code.pad-top")) + Double(max(Int(Double.one), lines.count)) * (r.points("code.line"))
-            + (r.points("code.pad-bottom"))
+        let pad = MetalRecipes.glassFace.points("self.pad")
+        let inner = widest.rounded(.up) + r.points("code.number") + 2 * r.points("screen.pad-x")
+        let width = min(r.points("self.max-width"), max(r.points("self.min-width"), inner + (pad + pad)))
+        let height = (pad + pad) + r.points("screen.pad-top") + Double(max(Int(Double.one), lines.count)) * r.lineHeight("code.font")
+            + r.points("screen.pad-bottom")
         return CGSize(width: width, height: height.rounded())
     }
 }
