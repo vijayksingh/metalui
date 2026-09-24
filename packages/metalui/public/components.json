@@ -545,8 +545,7 @@
         "symbol": "MetalToast, .metalToast(_:)"
       },
       "registry": "https://metalui.dev/r/toast.json",
-      "agent": "https://metalui.dev/r/toast.md",
-      "sheet": "KAMUI-20"
+      "agent": "https://metalui.dev/r/toast.md"
     },
     {
       "name": "tool-strip",

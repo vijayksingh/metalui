@@ -370,6 +370,7 @@ ${Object.entries(F.radius).map(([k, v]) => `  --radius-${k}: ${v}px;`).join('\n'
 
 @theme inline {
   --radius-round: var(--mu-round);
+  --spacing-press: var(--mu-motion-press);
 ${inks.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
 ${surfaces.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}
 ${synKeys.map((k) => `  --color-${k}: var(--mu-${k});`).join('\n')}

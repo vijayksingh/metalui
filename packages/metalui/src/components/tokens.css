@@ -1420,6 +1420,7 @@
   --mu-r-toast-self-blur: blur(22px);
   --mu-r-toast-self-rise: 8px;
   --mu-r-toast-self-scale: 0.97;
+  --mu-r-toast-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-r-toast-text-gap: 6px;
   --mu-r-toast-sub-ink: #9A9AA0;
   --mu-r-toast-undo-height: 28px;

@@ -1665,6 +1665,7 @@ public enum MetalRecipes {
             "self.blur": .text("blur(22px)"),
             "self.rise": .number(8.0),
             "self.scale": .text("0.97"),
+            "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle)"),
             "text.gap": .number(6.0),
             "sub.ink": .text("#9A9AA0"),
             "undo.height": .number(28.0),

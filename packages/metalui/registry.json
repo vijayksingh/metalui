@@ -672,11 +672,6 @@
           "path": "packages/metalui/src/components/toast/toast.tsx",
           "type": "registry:ui",
           "target": "components/metalui/toast/toast.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/toast/toast.css",
-          "type": "registry:file",
-          "target": "components/metalui/toast/toast.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToast, .metalToast(_:) in the MetalUI Swift package."

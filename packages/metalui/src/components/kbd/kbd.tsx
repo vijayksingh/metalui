@@ -5,8 +5,8 @@ import * as React from 'react';
 export interface KbdProps extends React.HTMLAttributes<HTMLElement> {
   /** small (16) for a dense footer; default 18. */
   size?: 'default' | 'small';
-  /** Where the cap sits: on a light surface (default), a graphite strip, or sunk into a toast's Undo. */
-  surface?: 'default' | 'strip' | 'sunk';
+  /** Where the cap sits: on a light surface (default), a graphite strip, sunk, or plain (the host paints it). */
+  surface?: 'default' | 'strip' | 'sunk' | 'plain';
   /** What assistive tech should say, when the glyph is not a word: "Command K". */
   label?: string;
 }
@@ -27,6 +27,7 @@ const SURFACES = {
   default: 'text-ink2 recipe-kbd',
   strip: 'text-kbd-strip-ink recipe-kbd-strip',
   sunk: 'text-kbd-sunk-ink recipe-kbd-sunk',
+  plain: '',
 };
 
 /** A key, on a small raised cap. */

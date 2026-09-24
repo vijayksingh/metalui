@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Toast } from '@base-ui/react/toast';
 import { Kbd } from '../kbd/kbd';
-import './toast.css';
 
 /* ─────────────────────────────────────────────────────────
  * TOAST (object sheet) on Base UI Toast
@@ -48,21 +47,31 @@ export function useToast() {
   }), [manager]);
 }
 
+/* Styled with the theme's utilities (the toast recipe): a graphite glass pill that rises one nest from
+ * below on settle and leaves the way it came on release; the Undo cap presses by the material's travel. */
+const VIEWPORT = 'mu-toast-viewport fixed left-1/2 bottom-toast-bottom z-toast-z -translate-x-1/2 flex flex-col items-center outline-none';
+const TOAST = 'mu-toast group/toast flex items-center gap-toast-gap h-toast-height pl-toast-pad-left pr-toast-pad-right not-has-[.mu-toast-undo]:pr-toast-pad-left rounded-pill whitespace-nowrap type-toast text-toast-ink recipe-toast backdrop-toast-blur transition-toast data-starting-style:toast-enter data-ending-style:toast-leave reduce-transparency:opaque-frost-graphite';
+const TEXT = 'mu-toast-text inline-flex items-center gap-toast-text-gap';
+const SUB = 'mu-toast-sub text-toast-sub-ink';
+const CHECK = 'mu-toast-check text-success';
+const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
+const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
+
 function ToastList() {
   const { toasts } = Toast.useToastManager();
   return (
     <Toast.Portal>
-      <Toast.Viewport className="mu-toast-viewport">
+      <Toast.Viewport className={VIEWPORT}>
         {toasts.map((t) => (
-          <Toast.Root key={t.id} toast={t} className="mu-toast" data-type={t.type}>
-            <span className="mu-toast-text">
-              {t.type === 'success' && <span aria-hidden className="mu-toast-check">✓</span>}
+          <Toast.Root key={t.id} toast={t} className={TOAST} data-type={t.type}>
+            <span className={TEXT}>
+              {t.type === 'success' && <span aria-hidden className={CHECK}>✓</span>}
               <Toast.Title render={<span />}>{t.title}</Toast.Title>
-              {t.description && <Toast.Description render={<span className="mu-toast-sub" />}>· {t.description}</Toast.Description>}
+              {t.description && <Toast.Description render={<span className={SUB} />}>· {t.description}</Toast.Description>}
             </span>
             {t.actionProps && (
-              <Toast.Action className="mu-toast-undo" aria-keyshortcuts="Meta+Z">
-                Undo <Kbd surface="sunk">⌘Z</Kbd>
+              <Toast.Action className={UNDO} aria-keyshortcuts="Meta+Z">
+                Undo <Kbd surface="plain" className={KEY}>⌘Z</Kbd>
               </Toast.Action>
             )}
           </Toast.Root>

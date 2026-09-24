@@ -16,6 +16,7 @@
 
 @theme inline {
   --radius-round: var(--mu-round);
+  --spacing-press: var(--mu-motion-press);
   --color-ink: var(--mu-ink);
   --color-ink2: var(--mu-ink2);
   --color-ink3: var(--mu-ink3);
@@ -1396,6 +1397,15 @@
 @utility recipe-toast-kbd {
   background: var(--mu-r-toast-kbd-background);
 }
+@utility toast-enter {
+  opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-settle)));
+}
+@utility toast-leave {
+  opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-release))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-release))); transition-duration: var(--mu-spring-release-d); transition-timing-function: var(--mu-spring-release);
+}
+@utility toast-undo-focus {
+  outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset);
+}
 @utility type-toast {
   font: var(--mu-r-toast-self-font);
   letter-spacing: var(--mu-r-toast-self-tracking);
@@ -1409,6 +1419,9 @@
 }
 @utility opacity-toast-scale {
   opacity: var(--mu-r-toast-self-scale);
+}
+@utility transition-toast {
+  transition: var(--mu-r-toast-self-transition);
 }
 @utility type-toast-undo {
   font: var(--mu-r-toast-undo-font);

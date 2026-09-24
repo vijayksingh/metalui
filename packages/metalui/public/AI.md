@@ -1377,7 +1377,7 @@ Layout and timing: `--mu-scrubber-*` (box, readout gap, glyph spacing, steps, sn
 
 # Toast
 
-The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToast` and `.metalToast(_:)`. Sheet reference: KAMUI-20; Kamui brief: 04 §12.
+The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToast` and `.metalToast(_:)`. Sheet reference: the object sheet; 
 
 ## Use it for
 
