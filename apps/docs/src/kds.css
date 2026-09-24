@@ -685,3 +685,6 @@ html.rm .xr-thumb, html.rm .xr-thumb * { transition: none !important; }
 .xr > .xr-bench { flex: 1 1 540px; min-width: 0; }
 .xr > .xr-card { flex: 1 1 300px; max-width: 100%; }
 .xr > .xr-measure { flex: none; }
+/* objects hanging behind the camera's plane must still take the pointer */
+.space, .space-camera { pointer-events: none; }
+.space .drift-item { pointer-events: auto; }
