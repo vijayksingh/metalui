@@ -296,9 +296,10 @@ function readMask(icon, part, partIndex, parts, shape, op) {
 export const isMorphable = (rows) => !rows.some((r) => r[1] === 0 && r[3] === 1);
 
 // ---------- an icon → its rows ----------
-/** The morph parts of one authored icon: [path, weight, tint, solid, opacity, relations?] rows. */
-export function glyphParts(ic) {
-  const items = collect(staticSvg(ic));
+/** The morph parts of one authored icon: [path, weight, tint, solid, opacity, relations?] rows.
+ *  `bake` is the set's static bake (the product set's by default; the life set passes its own). */
+export function glyphParts(ic, bake = staticSvg) {
+  const items = collect(bake(ic));
   const parts = [], owner = [];
   items.forEach((it, k) => { for (const p of partsOf(it)) { parts.push(p); owner.push(k); } });
   parts.forEach((part, pi) => {

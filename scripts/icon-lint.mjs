@@ -6,10 +6,18 @@
 //   node scripts/icon-lint.mjs --strict              exit 1 when any glyph fails a physics rule (K0–K7)
 //   node scripts/icon-lint.mjs --proposals <module>  lint a proposals module (exits 1 on failure)
 //   node scripts/icon-lint.mjs --only group,ungroup  lint named icons only
+//   node scripts/icon-lint.mjs --life                the life set against the same grammar (the feelings
+//                                                    vessel is the one plate the grammar allows as a body)
+//   node scripts/icon-lint.mjs --feelings            the feelings construction (§K): vessel + trace, on
+//                                                    the keyline, one tint whose valence is the feeling's;
+//                                                    exits 1 on failure
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { ICONS } from '../packages/metalui/icons/src/icons.mjs';
+import { readFileSync } from 'node:fs';
 import { glyphParts, isMorphable } from './lib/morph-parts.mjs';
+import { LIFE_GLYPHS, lifeStaticSvg } from './lib/life-icons.mjs';
+import { root } from './lib/emit.mjs';
 
 /** The grammar's numbers (docs/ICON-GRAMMAR.md §3). One place, so the doc and the lint agree. */
 export const GRAMMAR = {
@@ -79,14 +87,55 @@ function part(row) {
     centroid: [(box[0] + box[2]) / 2, (box[1] + box[3]) / 2] };
 }
 
+// The feelings vessel: a tinted disc of r 9.3 about the grid centre (life.mjs V()).
+const VESSEL_R = 9.3;
+function isVessel(p) {
+  const w = p.box[2] - p.box[0], h = p.box[3] - p.box[1];
+  return Math.abs(w - 2 * VESSEL_R) < 0.2 && Math.abs(h - 2 * VESSEL_R) < 0.2 && Math.hypot(p.centroid[0] - 12, p.centroid[1] - 12) < 0.1;
+}
+
+// ---------- the feelings construction (docs/ICON-GRAMMAR.md §K) ----------
+const TINT = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8')).foundations.tint;
+const VALENCE = { '+': 'pleasant', 0: 'neutral', '-': 'unpleasant' };
+/** A feeling is the vessel plus one to three marks inside it, and carries exactly one tint whose
+ *  valence is the feeling's own. Returns { fails, info }. */
+export function lintFeeling(g, rows) {
+  const fails = [];
+  const parts = rows.map(part);
+  const vessel = parts.find((p) => p.kind === 'plate' && isVessel(p));
+  if (!vessel) fails.push('§K no vessel: every feeling is the r 9.3 disc about the centre');
+  const marks = parts.filter((p) => p !== vessel);
+  if (marks.length < 1 || marks.length > 3) fails.push(`§K marks ${marks.length} (one to three: the trace and its beads or level)`);
+  for (const [i, m] of parts.entries()) {
+    if (m === vessel) continue;
+    // A level is a fill clipped to the vessel: read back as a window, it is inside by construction.
+    if ((rows[i][5] ?? []).some(([kind, j]) => kind === 'inside' && parts[j] === vessel)) continue;
+    const far = Math.max(...m.points.map(([x, y]) => Math.hypot(x - 12, y - 12)));
+    if (far > VESSEL_R + 0.9) fails.push(`§K a ${m.kind} reaches ${f1(far)}u from the centre: the trace stays inside the vessel`);
+  }
+  const families = Object.entries(TINT).filter(([k, t]) => !k.startsWith('$') && k !== 'field-shift' && t.feelings?.includes(g.name));
+  if (families.length !== 1) fails.push(`§K tints ${families.length} (exactly one family in tokens.json names it)`);
+  // DS-42: a tint names the kind of feeling, not its quadrant, so a neutral feeling may carry a
+  // pleasant kind (curious is wonder). What it may never do is cross valence: a pleasant feeling in
+  // an unpleasant family, or the reverse.
+  else {
+    const [fam, t] = families[0], v = VALENCE[g.val];
+    if ((v === 'pleasant' && t.valence === 'unpleasant') || (v === 'unpleasant' && t.valence === 'pleasant')) fails.push(`§K tint ${fam} is ${t.valence}, the feeling is ${v}`);
+  }
+  const info = `vessel ${vessel ? 'yes' : 'no'} · ${marks.map((m) => `${m.kind} ${f1(m.material)}`).join(', ')} · tint ${families.map(([k]) => k).join('/') || 'none'}`;
+  return { fails, info };
+}
+
 // ---------- the rules ----------
 const f1 = (n) => (+n).toFixed(1);
 /** Returns { fails: string[], warns: string[], info: string } for one glyph's rows. */
-export function lint(rows) {
+export function lint(rows, { vessel = false } = {}) {
   const G = GRAMMAR, fails = [], warns = [];
   const parts = rows.map(part);
   if (!isMorphable(rows)) fails.push('K0 solid plate: a character glyph, not in the morph family (it changes by the drum)');
-  for (const p of parts) if (p.kind === 'plate') fails.push('K1 plate: a tinted area is a wire\'s fill, not a plate');
+  // §K: a feeling's vessel is the one plate the grammar allows, and it is the body.
+  const allowed = vessel ? parts.find((p) => p.kind === 'plate' && isVessel(p)) : null;
+  for (const p of parts) if (p.kind === 'plate' && p !== allowed) fails.push('K1 plate: a tinted area is a wire\'s fill, not a plate');
   if (parts.length < G.parts[0] || parts.length > G.parts[1]) fails.push(`K2 parts ${parts.length} (${G.parts[0]}–${G.parts[1]})`);
   const body = parts.reduce((a, b) => (b.material > a.material ? b : a), parts[0]);
   const marks = parts.filter((p) => p !== body);
@@ -94,7 +143,7 @@ export function lint(rows) {
   for (const m of marks) if (m.material > G.mark) fails.push(`K2 mark ${f1(m.material)}u (at most ${G.mark}): two bodies`);
   const total = parts.reduce((s, p) => s + p.material, 0);
   if (total < G.material[0] || total > G.material[1]) fails.push(`K3 material ${f1(total)}u (${G.material[0]}–${G.material[1]})`);
-  if (!(body.kind === 'ring' || (body.kind === 'wire' && body.tint > 0))) fails.push(`K4 body is a ${body.kind}${body.kind === 'wire' ? ' without tint' : ''} (a ring, or a tinted wire)`);
+  if (!(body.kind === 'ring' || (body.kind === 'wire' && body.tint > 0) || body === allowed)) fails.push(`K4 body is a ${body.kind}${body.kind === 'wire' ? ' without tint' : ''} (a ring, or a tinted wire)`);
   for (const m of marks) if (!(m.kind === 'bead' || m.kind === 'wire' || m.kind === 'ring')) fails.push(`K4 mark is a ${m.kind}`);
   const [k0, k1] = G.keyline, span = Math.max(body.box[2] - body.box[0], body.box[3] - body.box[1]);
   if (body.box[0] < k0 - 0.05 || body.box[1] < k0 - 0.05 || body.box[2] > k1 + 0.05 || body.box[3] > k1 + 0.05) fails.push(`K5 body box ${body.box.map(f1).join(',')} leaves the ${k0}–${k1} keyline square`);
@@ -123,13 +172,31 @@ export function lint(rows) {
 }
 
 // ---------- run ----------
+if (flag('--feelings')) {
+  let bad = 0;
+  const feelings = LIFE_GLYPHS.filter((g) => g.cat === 'feelings');
+  for (const g of feelings) {
+    let rows;
+    try { rows = glyphParts(g, lifeStaticSvg); } catch (e) { bad++; console.log(`FAIL  ${g.name.padEnd(12)} unreadable: ${e.message}`); continue; }
+    const { fails, info } = lintFeeling(g, rows);
+    if (fails.length) bad++;
+    console.log(`${fails.length ? 'FAIL' : 'pass'}  ${g.name.padEnd(12)} ${info}`);
+    for (const m of fails) console.log(`        ✗ ${m}`);
+  }
+  console.log(`\n${feelings.length - bad} of ${feelings.length} feelings follow the construction`);
+  process.exit(bad ? 1 : 0);
+}
 const only = arg('--only')?.split(',');
 let icons = ICONS;
+const life = flag('--life');
+if (life) icons = LIFE_GLYPHS;
 if (arg('--proposals')) icons = (await import(pathToFileURL(resolve(arg('--proposals'))).href)).PROPOSALS;
 if (only) icons = icons.filter((ic) => only.includes(ic.name));
 let failed = 0;
 for (const ic of icons) {
-  const { fails, warns, info } = lint(glyphParts(ic));
+  let rows;
+  try { rows = life ? glyphParts(ic, lifeStaticSvg) : glyphParts(ic); } catch (e) { console.log(`FAIL  ${ic.name.padEnd(11)} unreadable: ${e.message}`); failed++; continue; }
+  const { fails, warns, info } = lint(rows, { vessel: life && ic.cat === 'feelings' });
   const ok = fails.length === 0;
   if (!ok) failed++;
   console.log(`${ok ? 'pass' : 'FAIL'}  ${ic.name.padEnd(11)} ${info}`);

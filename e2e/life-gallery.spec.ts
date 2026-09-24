@@ -40,3 +40,15 @@ test('life glyphs stay still under reduced motion', async ({ page }) => {
   await page.waitForTimeout(300);
   expect(await white.evaluate((el) => getComputedStyle(el).transform)).toBe(rest);
 });
+
+// Feelings construction (import plan §3.3): the composer draws every named feeling from its values.
+test('the composer draws every feeling the four variables name', async ({ page }) => {
+  await open(page, '/icons/life', 'bone');
+  const figures = page.getByTestId('feelings-values').locator('figure');
+  await expect(figures).toHaveCount(12);
+  for (const fig of await figures.all()) {
+    await expect(fig.getByRole('img')).toHaveCount(2); // composed and authored
+    expect(await fig.locator('svg').first().locator('circle.v').count()).toBe(1);
+  }
+  await page.locator('section', { hasText: 'The feelings language' }).first().screenshot({ path: 'docs/captures/web/feelings-composer-bone.png' });
+});

@@ -72,6 +72,20 @@ What the grammar deliberately does not say: how many parts overlap, how long a w
 
 `node scripts/icon-lint.mjs` reads every icon exactly as the morph build does and reports, per icon, what breaks which rule (K0–K6 fail; K7–K8 warn). `--proposals <module>` lints a proposals module and exits 1 on any failure; `--strict` does the same for the set; `--only a,b` narrows it. Today 4 of 30 pass (draw, search, zoom-in, zoom-out): the set predates the grammar, and that is the redesign list in §5.
 
+## K. The feelings construction
+
+The life set's feelings (21 today) are one construction, so they read as one family at 14 px and extend without drawing freehand. Numbers live once, in `scripts/icon-lint.mjs` (`lintFeeling`), so this section and the lint cannot disagree.
+
+| | Rule | Reason | Origin |
+|---|---|---|---|
+| K-a | **The vessel is the body.** Every feeling is the r 9.3 disc about (12, 12), tinted at .17 when untinted and empty when tinted (DS-42). It is the one plate the grammar allows (an amendment to K1 and K4 for this construction only). | The self as a soft round screen, echoing the keeper's; one body shared by every feeling makes the set a morph space by construction. | Kamui 05 §3 |
+| K-b | **One to three marks, inside the vessel.** The trace and its beads or level. A level is a fill clipped to the vessel (a window, K1), so it is inside by construction. | A trace, not an illustration; faces collapse into emoji at 14 px. | Kamui 05 §3 |
+| K-c | **Four variables choose the marks.** Position = valence (lifted, centred, sunk); shape = energy (flat, smooth wave, sharp zigzag); level = capacity (low, full, brimming and choppy); dots = attention (held in a ring, spread, a fading row, alone). A new feeling is authored by choosing values; the composer on `/icons/life` draws any combination. | The grammar composes: relieved, restless or afraid extend it instead of inventing a picture. | Kamui 05 §3 |
+| K-d | **Exactly one tint, never across valence.** One family in `tokens.json foundations.tint` names the feeling. The tint names the kind of feeling (DS-42), so a neutral feeling may carry a pleasant kind (curious is wonder), but a pleasant feeling never carries an unpleasant family, or the reverse. | Colour says what kind, never how good; crossing valence would make the colour lie. | DS-42 |
+| K-e | **Heavy states stay calm.** A sunk line is not a frown; only dull is dead flat. | Icons never judge. | Kamui 05 §3 |
+
+`node scripts/icon-lint.mjs --feelings` checks K-a, K-b and K-d over the set and exits 1 on a failure; `--life` runs the full grammar (K0–K8) over the life set, with the vessel allowed as a body. Today 21 of 21 feelings follow the construction; `hopeful` was redrawn under K1 to get there (its dawn was a disc under a half-plane clip, now a chord-closed tinted wire).
+
 ## 4. Building an icon under the grammar
 
 The step-by-step spec an author, human or agent, follows.

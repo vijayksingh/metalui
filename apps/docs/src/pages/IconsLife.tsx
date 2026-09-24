@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { LifeIcon, LIFE_CATALOG, LIFE_CATEGORIES, LIFE_ICON_NAMES, searchLifeIcons, type LifeCategory, type LifeIconName } from '@unlocalhosted/metalui/icons/life';
 import { Bench, Code, CopyButton, PageHeader, Rules, Section, TokenTable } from '../ui/doc';
+import { FeelingsComposer } from '../demos/FeelingsComposer';
 
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 const CATS = Object.keys(LIFE_CATEGORIES) as LifeCategory[];
@@ -146,6 +147,15 @@ export default function IconsLife() {
             <Code label="SwiftUI" code={swift} />
           </div>
         </div>
+      </Section>
+
+      <Section
+        title="The feelings language"
+        lede="No faces. Every feeling is the same vessel, a soft round screen of radius 9.3, holding a trace read through four variables: position is valence (lifted, centred, sunk), shape is energy (flat, smooth, sharp), level is capacity (low, full, brimming) and dots are attention (held, spread, fading, alone). A new feeling is authored by choosing values. Turn the dials; each feeling below shows its composed reading beside the authored glyph."
+      >
+        <Bench caption="Composer · the dials are the four variables and the tint">
+          <FeelingsComposer />
+        </Bench>
       </Section>
 
       <Section title="On a line" lede="One glyph per block, trailing after a middle dot in ink3, ink2 when the block is hovered; feelings carry their tint. The block is the glyph’s host: hovering anywhere on it plays the glyph.">
