@@ -90,6 +90,31 @@
       "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."
     },
     {
+      "name": "lens-bar",
+      "type": "registry:ui",
+      "title": "Lens bar",
+      "description": "A floating frosted pill that names a lens's question, counts its matches, says where the answer came from and switches views with a compact segmented control; pin keeps it as a live region, close ends it.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/lens-bar/lens-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/lens-bar/lens-bar.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/lens-bar/lens-bar.css",
+          "type": "registry:file",
+          "target": "components/metalui/lens-bar/lens-bar.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/lens-bar.md. SwiftUI: MetalLensBar in the MetalUI Swift package."
+    },
+    {
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",

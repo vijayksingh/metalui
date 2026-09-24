@@ -729,6 +729,19 @@ public enum MetalRegion {
     public static let rowDimple: Double = 14.0
 }
 
+/// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalLensBarMetrics {
+    public static let height: Double = 36.0
+    public static let padStart: Double = 14.0
+    public static let padEnd: Double = 6.0
+    public static let gap: Double = 8.0
+    public static let queryMax: Double = 340.0
+    public static let glyph: Double = 14.0
+    public static let iconButton: Double = 28.0
+    public static let enterDrop: Double = 8.0
+    public static let enterScale: Double = 0.98
+}
+
 /// The segmented control (KAMUI-04): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
 public enum MetalSegmentedMetrics {
     public static let trackPad: Double = 3.0

@@ -226,4 +226,17 @@ final class MetalCaptures: XCTestCase {
             capture("segmented-\(colorway.rawValue)", view)
         }
     }
+
+    func testLensBar() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 20) {
+                MetalLensBar(query: "open tasks about the poster", count: 6, source: .jev, mode: .constant(.list), onPin: {}, onClose: {})
+                MetalLensBar(query: "lunch this week", source: .asking, mode: .constant(.place), onPin: {}, onClose: {})
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("lens-bar-\(colorway.rawValue)", view)
+        }
+    }
 }

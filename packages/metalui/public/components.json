@@ -56,6 +56,24 @@
       "sheet": "Kamui 03 §5, DS-31"
     },
     {
+      "name": "lens-bar",
+      "title": "Lens bar",
+      "status": "alpha",
+      "description": "A floating frosted pill that names a lens's question, counts its matches, says where the answer came from and switches views with a compact segmented control; pin keeps it as a live region, close ends it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "LensBar",
+        "base": "@base-ui/react/toolbar"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLensBar"
+      },
+      "registry": "https://metalui.dev/r/lens-bar.json",
+      "agent": "https://metalui.dev/r/lens-bar.md",
+      "sheet": "Kamui 04 §4"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

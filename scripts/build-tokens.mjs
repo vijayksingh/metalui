@@ -173,6 +173,11 @@ const SE = T.segmented;
 const SE_KEYS = Object.keys(SE).filter((k) => !k.startsWith('$'));
 const segmentedVars = SE_KEYS.map((k) => `  --mu-segmented-${k}: ${SE[k]}px;`).join('\n');
 
+// ---------- lens bar (tokens.json lensbar) ----------
+const LB = T.lensbar;
+const LB_KEYS = Object.keys(LB).filter((k) => !k.startsWith('$'));
+const lensbarVars = LB_KEYS.map((k) => `  --mu-lensbar-${k}: ${k === 'enter-scale' ? LB[k] : `${LB[k]}px`};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -199,6 +204,7 @@ ${engravingVars}
 ${provenanceVars}
 ${regionVars}
 ${segmentedVars}
+${lensbarVars}
 ${typeVars}
 ${travel}
 }
@@ -582,6 +588,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${LB.$use}
+public enum MetalLensBarMetrics {
+${LB_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(LB[k])}`).join('\n')}
+}
+
 /// ${SE.$use}
 public enum MetalSegmentedMetrics {
 ${SE_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(SE[k])}`).join('\n')}
