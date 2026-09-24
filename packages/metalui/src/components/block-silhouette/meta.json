@@ -1,0 +1,19 @@
+{
+  "name": "block-silhouette",
+  "title": "Block silhouette",
+  "status": "alpha",
+  "description": "A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).",
+  "base": "none (decorative; aria-hidden: the canvas announces the blocks, not their silhouettes)",
+  "react": {
+    "export": "BlockSilhouette",
+    "files": [
+      "block-silhouette.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBlockSilhouette",
+    "file": "swift/Sources/MetalUI/Components/MetalBlockSilhouette.swift"
+  },
+  "agent": "block-silhouette.agent.md",
+  "layer": "component"
+}

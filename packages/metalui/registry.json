@@ -17,6 +17,24 @@
       ]
     },
     {
+      "name": "block-silhouette",
+      "type": "registry:ui",
+      "title": "Block silhouette",
+      "description": "A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/block-silhouette/block-silhouette.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/block-silhouette/block-silhouette.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
+    },
+    {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",

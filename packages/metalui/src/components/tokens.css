@@ -1511,6 +1511,39 @@
   --mu-r-code-card-tint-comment: #6D6E73;
   --mu-r-code-card-tint-number: #9EC2FF;
   --mu-r-code-card-chip-inset: 10px;
+  /* silhouette: the native reference layer-only LOD (CanvasScene lodColor), re-authored per block kind */
+  --mu-r-silhouette-code-background:
+    /* mu-recipe:silhouette:0 */ linear-gradient(#232326, #1A1A1C);
+  --mu-r-silhouette-code-shadow:
+    /* mu-recipe:silhouette:1 */ inset 0 1px 0 rgba(255,255,255,.06),
+    /* mu-recipe:silhouette:2 */ 0 0 0 .5px rgba(0,0,0,.5);
+  --mu-r-silhouette-link-background:
+    /* mu-recipe:silhouette:3 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-silhouette-link-shadow:
+    /* mu-recipe:silhouette:4 */ 0 0 0 6px #1D1D1F,
+    /* mu-recipe:silhouette:5 */ 0 0 0 6.5px rgba(0,0,0,.6);
+  --mu-r-silhouette-swatch-background:
+    /* mu-recipe:silhouette:6 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-silhouette-image-background:
+    /* mu-recipe:silhouette:7 */ linear-gradient(rgba(255,255,255,.10), rgba(0,0,0,.10)),
+    /* mu-recipe:silhouette:8 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-silhouette-text-radius: 4px;
+  --mu-r-silhouette-text-bar: 8px;
+  --mu-r-silhouette-text-line: 22px;
+  --mu-r-silhouette-code-radius: 12px;
+  --mu-r-silhouette-code-pad: 12px;
+  --mu-r-silhouette-code-bar: 7px;
+  --mu-r-silhouette-code-line: 20px;
+  --mu-r-silhouette-code-ink: rgba(255,255,255,.16);
+  --mu-r-silhouette-link-radius: 16px;
+  --mu-r-silhouette-swatch-radius: 22px;
+  --mu-r-silhouette-image-radius: 16px;
+  --mu-r-silhouette-file-radius: 14px;
+  --mu-r-silhouette-region-radius: 26px;
+  --mu-r-silhouette-region-pad: 28px;
+  --mu-r-silhouette-region-font: 600 56px/1.1 var(--mu-sans);
+  --mu-r-silhouette-region-tracking: -0.02em;
+  --mu-r-silhouette-self-fade: 160ms;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1525,6 +1558,13 @@
     0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
   --mu-r-link-card-screen-background:
     radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-silhouette-link-background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-silhouette-swatch-background:
+    color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-silhouette-image-background:
+    linear-gradient(rgba(255,255,255,.10), rgba(0,0,0,.10)),
+    color-mix(in srgb, var(--mu-self) 100%, transparent);
 }
 :root,
 [data-mu-colorway="bone"] {
@@ -1824,6 +1864,16 @@
   --mu-r-glyph-ink-ink: #1B1B1D;
   --mu-r-glyph-ink-ink2: #5C5C60;
   --mu-r-glyph-ink-ink3: #9A9A9D;
+  --mu-r-silhouette-file-background:
+    /* mu-recipe:silhouette:9 */ linear-gradient(#FCFBF9, #F0EFEB);
+  --mu-r-silhouette-file-shadow:
+    /* mu-recipe:silhouette:11 */ 0 0 0 .5px rgba(24,22,16,.08);
+  --mu-r-silhouette-region-background:
+    /* mu-recipe:silhouette:13 */ linear-gradient(rgba(40,38,32,.05), rgba(40,38,32,.025));
+  --mu-r-silhouette-region-shadow:
+    /* mu-recipe:silhouette:15 */ inset 0 0 0 1px rgba(40,38,32,.08);
+  --mu-r-silhouette-text-ink: rgba(27,27,29,.16);
+  --mu-r-silhouette-region-ink: rgba(40,38,32,.42);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2122,6 +2172,16 @@
   --mu-r-glyph-ink-ink: #F2F2F0;
   --mu-r-glyph-ink-ink2: #A6A6A9;
   --mu-r-glyph-ink-ink3: #77777B;
+  --mu-r-silhouette-file-background:
+    /* mu-recipe:silhouette:10 */ linear-gradient(#2C2C2F, #202022);
+  --mu-r-silhouette-file-shadow:
+    /* mu-recipe:silhouette:12 */ 0 0 0 .5px rgba(0,0,0,.45);
+  --mu-r-silhouette-region-background:
+    /* mu-recipe:silhouette:14 */ linear-gradient(rgba(255,255,255,.035), rgba(255,255,255,.015));
+  --mu-r-silhouette-region-shadow:
+    /* mu-recipe:silhouette:16 */ inset 0 0 0 1px rgba(255,255,255,.07);
+  --mu-r-silhouette-text-ink: rgba(242,242,240,.16);
+  --mu-r-silhouette-region-ink: rgba(255,255,255,.4);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2421,5 +2481,15 @@
     --mu-r-glyph-ink-ink: #F2F2F0;
     --mu-r-glyph-ink-ink2: #A6A6A9;
     --mu-r-glyph-ink-ink3: #77777B;
+    --mu-r-silhouette-file-background:
+      linear-gradient(#2C2C2F, #202022);
+    --mu-r-silhouette-file-shadow:
+      0 0 0 .5px rgba(0,0,0,.45);
+    --mu-r-silhouette-region-background:
+      linear-gradient(rgba(255,255,255,.035), rgba(255,255,255,.015));
+    --mu-r-silhouette-region-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.07);
+    --mu-r-silhouette-text-ink: rgba(242,242,240,.16);
+    --mu-r-silhouette-region-ink: rgba(255,255,255,.4);
   }
 }

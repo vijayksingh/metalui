@@ -684,6 +684,30 @@
   --color-code-card-tint-comment: var(--mu-r-code-card-tint-comment);
   --color-code-card-tint-number: var(--mu-r-code-card-tint-number);
   --spacing-code-card-chip-inset: var(--mu-r-code-card-chip-inset);
+  --spacing-silhouette-text-radius: var(--mu-r-silhouette-text-radius);
+  --radius-silhouette-text-radius: var(--mu-r-silhouette-text-radius);
+  --spacing-silhouette-text-bar: var(--mu-r-silhouette-text-bar);
+  --spacing-silhouette-text-line: var(--mu-r-silhouette-text-line);
+  --color-silhouette-text-ink: var(--mu-r-silhouette-text-ink);
+  --spacing-silhouette-code-radius: var(--mu-r-silhouette-code-radius);
+  --radius-silhouette-code-radius: var(--mu-r-silhouette-code-radius);
+  --spacing-silhouette-code-pad: var(--mu-r-silhouette-code-pad);
+  --spacing-silhouette-code-bar: var(--mu-r-silhouette-code-bar);
+  --spacing-silhouette-code-line: var(--mu-r-silhouette-code-line);
+  --color-silhouette-code-ink: var(--mu-r-silhouette-code-ink);
+  --spacing-silhouette-link-radius: var(--mu-r-silhouette-link-radius);
+  --radius-silhouette-link-radius: var(--mu-r-silhouette-link-radius);
+  --spacing-silhouette-swatch-radius: var(--mu-r-silhouette-swatch-radius);
+  --radius-silhouette-swatch-radius: var(--mu-r-silhouette-swatch-radius);
+  --spacing-silhouette-image-radius: var(--mu-r-silhouette-image-radius);
+  --radius-silhouette-image-radius: var(--mu-r-silhouette-image-radius);
+  --spacing-silhouette-file-radius: var(--mu-r-silhouette-file-radius);
+  --radius-silhouette-file-radius: var(--mu-r-silhouette-file-radius);
+  --spacing-silhouette-region-radius: var(--mu-r-silhouette-region-radius);
+  --radius-silhouette-region-radius: var(--mu-r-silhouette-region-radius);
+  --spacing-silhouette-region-pad: var(--mu-r-silhouette-region-pad);
+  --tracking-silhouette-region-tracking: var(--mu-r-silhouette-region-tracking);
+  --color-silhouette-region-ink: var(--mu-r-silhouette-region-ink);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1577,6 +1601,45 @@
   font: var(--mu-r-code-card-code-font);
   letter-spacing: var(--mu-r-code-card-code-tracking);
 }
+@utility recipe-silhouette-code {
+  background: var(--mu-r-silhouette-code-background);
+  box-shadow: var(--mu-r-silhouette-code-shadow);
+}
+@utility recipe-silhouette-link {
+  background: var(--mu-r-silhouette-link-background);
+  box-shadow: var(--mu-r-silhouette-link-shadow);
+}
+@utility recipe-silhouette-swatch {
+  background: var(--mu-r-silhouette-swatch-background);
+}
+@utility recipe-silhouette-image {
+  background: var(--mu-r-silhouette-image-background);
+}
+@utility recipe-silhouette-file {
+  background: var(--mu-r-silhouette-file-background);
+  box-shadow: var(--mu-r-silhouette-file-shadow);
+}
+@utility recipe-silhouette-region {
+  background: var(--mu-r-silhouette-region-background);
+  box-shadow: var(--mu-r-silhouette-region-shadow);
+}
+@utility silhouette-text-bars {
+  background: repeating-linear-gradient(180deg, var(--mu-r-silhouette-text-ink) 0 var(--mu-r-silhouette-text-bar), transparent var(--mu-r-silhouette-text-bar) var(--mu-r-silhouette-text-line));
+}
+@utility silhouette-code-bars {
+  background: repeating-linear-gradient(180deg, var(--mu-r-silhouette-code-ink) 0 var(--mu-r-silhouette-code-bar), transparent var(--mu-r-silhouette-code-bar) var(--mu-r-silhouette-code-line));
+}
+@utility animate-silhouette-in {
+  animation: mu-silhouette-in var(--mu-r-silhouette-self-fade) var(--mu-spring-settle, ease-out) both;
+}
+@utility type-silhouette-region {
+  font: var(--mu-r-silhouette-region-font);
+  letter-spacing: var(--mu-r-silhouette-region-tracking);
+}
+@utility duration-silhouette-fade {
+  --tw-duration: var(--mu-r-silhouette-self-fade);
+  transition-duration: var(--mu-r-silhouette-self-fade);
+}
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
@@ -1587,6 +1650,9 @@
   from { opacity: 0; transform: translate(-50%, calc(var(--mu-cue-chip-rise) * var(--mu-travel-part))); }
 }
 @keyframes mu-cue-life {
+  from { opacity: 0; }
+}
+@keyframes mu-silhouette-in {
   from { opacity: 0; }
 }
 

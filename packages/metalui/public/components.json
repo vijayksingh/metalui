@@ -2,6 +2,23 @@
   "$description": "MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.",
   "components": [
     {
+      "name": "block-silhouette",
+      "title": "Block silhouette",
+      "status": "alpha",
+      "description": "A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "BlockSilhouette",
+        "base": "none (decorative; aria-hidden: the canvas announces the blocks, not their silhouettes)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBlockSilhouette"
+      },
+      "registry": "https://metalui.dev/r/block-silhouette.json",
+      "agent": "https://metalui.dev/r/block-silhouette.md"
+    },
+    {
       "name": "button",
       "title": "Button",
       "status": "alpha",

@@ -1818,6 +1818,51 @@ public enum MetalRecipes {
             "chip.inset": .number(10.0),
         ]
     )
+
+    /// A block seen from far away (below the far-zoom threshold, the core lod_policy, 0.35): one flat shape per kind with no text and no shadows beyond a hairline, cheap enough for thousands. Text is bars where its lines are (words only at rest, so no plate); code is its dark card with light bars; a link is its glass with the site tint; a swatch and an image are their colour; a file is a light plate; a region is its tray with its name, set large enough to read at that zoom. It fades in on settle when the zoom crosses the threshold. (the native reference layer-only LOD (CanvasScene lodColor), re-authored per block kind)
+    public static let silhouette = MetalObjectRecipe(
+        name: "silhouette",
+        layers: [
+            .init(part: "code", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(35.0, 35.0, 38.0, 1.0)), 0.0), .init(.color(MetalRGBA(26.0, 26.0, 28.0, 1.0)), 1.0)])), // mu-recipe:silhouette:0 linear-gradient(#232326, #1A1A1C)
+            .init(part: "code", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:silhouette:1 inset 0 1px 0 rgba(255,255,255,.06)
+            .init(part: "code", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:silhouette:2 0 0 0 .5px rgba(0,0,0,.5)
+            .init(part: "link", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:silhouette:3 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
+            .init(part: "link", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 6.0, paint: .color(MetalRGBA(29.0, 29.0, 31.0, 1.0)))), // mu-recipe:silhouette:4 0 0 0 6px #1D1D1F
+            .init(part: "link", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 6.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:silhouette:5 0 0 0 6.5px rgba(0,0,0,.6)
+            .init(part: "swatch", state: nil, colorway: nil, fill: .solid(.selfColor(alpha: 1.0))), // mu-recipe:silhouette:6 color-mix(in srgb, var(--mu-self) 100%, transparent)
+            .init(part: "image", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.1)), 0.0), .init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.1)), 1.0)])), // mu-recipe:silhouette:7 linear-gradient(rgba(255,255,255,.10), rgba(0,0,0,.10))
+            .init(part: "image", state: nil, colorway: nil, fill: .solid(.selfColor(alpha: 1.0))), // mu-recipe:silhouette:8 color-mix(in srgb, var(--mu-self) 100%, transparent)
+            .init(part: "file", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(252.0, 251.0, 249.0, 1.0)), 0.0), .init(.color(MetalRGBA(240.0, 239.0, 235.0, 1.0)), 1.0)])), // mu-recipe:silhouette:9 linear-gradient(#FCFBF9, #F0EFEB)
+            .init(part: "file", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(44.0, 44.0, 47.0, 1.0)), 0.0), .init(.color(MetalRGBA(32.0, 32.0, 34.0, 1.0)), 1.0)])), // mu-recipe:silhouette:10 linear-gradient(#2C2C2F, #202022)
+            .init(part: "file", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.08)))), // mu-recipe:silhouette:11 0 0 0 .5px rgba(24,22,16,.08)
+            .init(part: "file", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:silhouette:12 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "region", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.05)), 0.0), .init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.025)), 1.0)])), // mu-recipe:silhouette:13 linear-gradient(rgba(40,38,32,.05), rgba(40,38,32,.025))
+            .init(part: "region", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.035)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.015)), 1.0)])), // mu-recipe:silhouette:14 linear-gradient(rgba(255,255,255,.035), rgba(255,255,255,.015))
+            .init(part: "region", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.08)))), // mu-recipe:silhouette:15 inset 0 0 0 1px rgba(40,38,32,.08)
+            .init(part: "region", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:silhouette:16 inset 0 0 0 1px rgba(255,255,255,.07)
+        ],
+        props: [
+            "text.radius": .number(4.0),
+            "text.bar": .number(8.0),
+            "text.line": .number(22.0),
+            "text.ink": .perColorway(bone: "rgba(27,27,29,.16)", graphite: "rgba(242,242,240,.16)"),
+            "code.radius": .number(12.0),
+            "code.pad": .number(12.0),
+            "code.bar": .number(7.0),
+            "code.line": .number(20.0),
+            "code.ink": .text("rgba(255,255,255,.16)"),
+            "link.radius": .number(16.0),
+            "swatch.radius": .number(22.0),
+            "image.radius": .number(16.0),
+            "file.radius": .number(14.0),
+            "region.radius": .number(26.0),
+            "region.pad": .number(28.0),
+            "region.font": .text("600 56px/1.1 sans"),
+            "region.tracking": .text("-0.02em"),
+            "region.ink": .perColorway(bone: "rgba(40,38,32,.42)", graphite: "rgba(255,255,255,.4)"),
+            "self.fade": .text("160ms"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.
