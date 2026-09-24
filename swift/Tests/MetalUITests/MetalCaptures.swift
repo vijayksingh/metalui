@@ -355,4 +355,22 @@ final class MetalCaptures: XCTestCase {
             capture("toolbar-\(colorway.rawValue)", view)
         }
     }
+    func testCommandPalette() {
+        let items: [MetalCommandPaletteItem] = [
+            .init(id: "lens", label: "See “poster”", section: "LENS", icon: .search, hint: .readout("RULES")),
+            .init(id: "tag", label: "#poster", section: "LENSES", icon: .tag),
+            .init(id: "f1", label: "the font on the train poster was a condensed grotesk", section: "FRAGMENTS", icon: .document, hint: .readoutKey("8:52", "↩")),
+            .init(id: "f2", label: "poster refs from the studio", section: "FRAGMENTS", icon: .document, hint: .readout("9:10")),
+            .init(id: "undo", label: "Undo", section: "ACTIONS", icon: .undo, hint: .key("⌘Z")),
+            .init(id: "clear", label: "Clear the poster board", section: "ACTIONS", icon: .trash, danger: true),
+        ]
+        for colorway in MetalColorway.allCases {
+            let view = MetalCommandPalette(query: .constant("poster"), items: items, filter: false, status: "NATURAL LANGUAGE VIA JEV", onRun: { _, _ in }, onClose: {})
+                .environment(\.metalSnapshot, true)
+                .padding(28)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("command-palette-\(colorway.rawValue)", view)
+        }
+    }
 }

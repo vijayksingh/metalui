@@ -26,6 +26,7 @@ const router = createBrowserRouter([
       { path: 'foundations/transitions', lazy: lazy(() => import('./pages/foundations/Transitions')) },
       { path: 'components/button', lazy: lazy(() => import('./pages/components/Button')) },
       { path: 'components/toolbar', lazy: lazy(() => import('./pages/components/Toolbar')) },
+      { path: 'components/command-palette', lazy: lazy(() => import('./pages/components/CommandPalette')) },
       { path: 'components/toast', lazy: lazy(() => import('./pages/components/Toast')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },

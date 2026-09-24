@@ -1,0 +1,140 @@
+@import "../tokens.css";
+@import "../kbd/kbd.css";
+
+/* Command palette (KAMUI-06; Kamui 04 §3) on Base UI Dialog + inline Combobox. */
+.mu-palette-scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--mu-scrim);
+  transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface);
+}
+.mu-palette-scrim[data-starting-style], .mu-palette-scrim[data-ending-style] { opacity: 0; }
+.mu-palette-scrim[data-ending-style] { transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+
+.mu-palette {
+  position: fixed;
+  top: calc(var(--mu-palette-top) * 100vh);
+  left: 50%;
+  width: min(var(--mu-palette-width), calc(100vw - 32px));
+  padding: var(--mu-palette-pad);
+  border-radius: var(--mu-radius-card);
+  translate: -50% 0;
+  outline: 0;
+  /* Rises one nest from its trigger, on the surface spring; closes on release. */
+  transition:
+    opacity var(--mu-spring-surface-d) var(--mu-spring-surface),
+    transform var(--mu-spring-surface-d) var(--mu-spring-surface);
+}
+.mu-palette[data-starting-style], .mu-palette[data-ending-style] {
+  opacity: 0;
+  transform:
+    translateY(calc(var(--mu-palette-enter-rise) * -1 * var(--mu-travel-surface)))
+    scale(calc(1 - (1 - var(--mu-palette-enter-scale)) * var(--mu-travel-surface)));
+}
+.mu-palette[data-ending-style] {
+  transition:
+    opacity var(--mu-spring-release-d) var(--mu-spring-release),
+    transform var(--mu-spring-release-d) var(--mu-spring-release);
+}
+
+/* The field: a 44 well in the content role, caret green-deep. */
+.mu-palette-field {
+  display: flex;
+  align-items: center;
+  gap: var(--mu-palette-field-gap);
+  height: var(--mu-palette-field-height);
+  padding: 0 var(--mu-palette-field-pad-end) 0 var(--mu-palette-field-pad-start);
+  border-radius: var(--mu-palette-field-radius);
+  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
+  box-shadow: var(--mu-well);
+  cursor: text;
+}
+.mu-palette-field-glyph { display: inline-grid; flex: none; color: var(--mu-ink3); }
+.mu-palette-field-glyph > svg { width: var(--mu-palette-field-glyph); height: var(--mu-palette-field-glyph); }
+.mu-palette-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--mu-ink);
+  caret-color: var(--mu-green-deep);
+}
+.mu-palette-input::placeholder { color: var(--mu-ink3); }
+
+/* The list: sections of 36 rows; scrolls past 52 % of the window. */
+.mu-palette-list {
+  max-height: calc(var(--mu-palette-list-max) * 100vh);
+  overflow: auto;
+  /* The selected row's bar sits 2 outside the row: room for it inside the scroll clip. */
+  margin: 0 var(--mu-palette-bar-left);
+  padding: 4px calc(var(--mu-palette-bar-left) * -1) 2px;
+  scroll-padding: 4px 0;
+  outline: 0;
+}
+.mu-palette-list:empty { display: none; }
+.mu-palette-eng { color: var(--mu-engrave); text-shadow: 0 .5px 0 var(--mu-lip); }
+.mu-palette-sec {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--mu-palette-sec-pad-top) var(--mu-palette-row-pad) var(--mu-palette-sec-pad-bottom);
+}
+.mu-palette-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--mu-palette-row-gap);
+  height: var(--mu-palette-row-height);
+  padding: 0 var(--mu-palette-row-pad);
+  border-radius: var(--mu-radius-row);
+  color: var(--mu-ink);
+  cursor: pointer;
+  outline: 0;
+  user-select: none;
+}
+.mu-palette-row-glyph { display: inline-grid; flex: none; color: var(--mu-ink2); }
+.mu-palette-row-glyph > svg { width: var(--mu-palette-row-glyph); height: var(--mu-palette-row-glyph); }
+.mu-palette-row-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mu-palette-row-hint { display: flex; flex: none; align-items: center; gap: 6px; margin-left: auto; }
+/* Selected: a raised cap with a green-deep bar at the left. Instant: the list is scanned, not watched. */
+.mu-palette-row[data-highlighted] { background: var(--mu-row-on-bg); box-shadow: var(--mu-raise-sm); }
+.mu-palette-row[data-highlighted]::before {
+  content: "";
+  position: absolute;
+  left: var(--mu-palette-bar-left);
+  top: var(--mu-palette-bar-inset);
+  bottom: var(--mu-palette-bar-inset);
+  width: var(--mu-palette-bar-width);
+  border-radius: 2px;
+  background: var(--mu-green-deep);
+}
+.mu-palette-row[data-danger], .mu-palette-row[data-danger] .mu-palette-row-glyph { color: var(--mu-red); }
+.mu-palette-row[data-disabled] { opacity: .4; cursor: default; }
+.mu-palette-mark {
+  background: none;
+  color: inherit;
+  font-weight: var(--mu-palette-mark-weight);
+  text-decoration: underline;
+  text-decoration-color: var(--mu-palette-mark-color);
+  text-decoration-thickness: var(--mu-palette-mark-underline);
+  text-underline-offset: var(--mu-palette-mark-offset);
+}
+.mu-palette-empty:not(:empty) { padding: 14px var(--mu-palette-row-pad); color: var(--mu-ink3); }
+
+/* The footer: keys above an engraved rule. */
+.mu-palette-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--mu-palette-foot-gap);
+  margin-top: 4px;
+  padding: var(--mu-palette-foot-pad-top) var(--mu-palette-row-pad) var(--mu-palette-foot-pad-bottom);
+  border-top: 1px solid var(--mu-rule);
+  box-shadow: inset 0 1px 0 var(--mu-rule-lip);
+}
+.mu-palette-foot > span { display: flex; align-items: center; gap: 5px; }
+.mu-palette-foot > .mu-palette-status { margin-left: auto; }
+
+@media (prefers-contrast: more) {
+  .mu-palette-row[data-highlighted] { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise-sm); }
+}

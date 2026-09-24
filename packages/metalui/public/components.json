@@ -20,6 +20,24 @@
       "sheet": "KAMUI-15"
     },
     {
+      "name": "command-palette",
+      "title": "Command palette",
+      "status": "alpha",
+      "description": "⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "CommandPalette",
+        "base": "@base-ui/react/combobox"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCommandPalette, MetalCommandPaletteItem"
+      },
+      "registry": "https://metalui.dev/r/command-palette.json",
+      "agent": "https://metalui.dev/r/command-palette.md",
+      "sheet": "KAMUI-06"
+    },
+    {
       "name": "cue",
       "title": "Cue family",
       "status": "alpha",

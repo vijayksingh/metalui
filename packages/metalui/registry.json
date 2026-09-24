@@ -42,6 +42,31 @@
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
     },
     {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "title": "Command palette",
+      "description": "⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/command-palette/command-palette.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/command-palette/command-palette.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/command-palette/command-palette.css",
+          "type": "registry:file",
+          "target": "components/metalui/command-palette/command-palette.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
+    },
+    {
       "name": "cue",
       "type": "registry:ui",
       "title": "Cue family",

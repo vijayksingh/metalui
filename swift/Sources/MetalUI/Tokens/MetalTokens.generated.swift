@@ -40,6 +40,8 @@ public struct MetalColorwayTokens: Sendable {
     public let regionOverShade: [MetalShadow]
     public let raiseLite: [MetalShadow]
     public let rowHover: MetalRGBA
+    public let rowOnBg: MetalGradient
+    public let scrim: MetalRGBA
     public let scrubberMark: MetalRGBA
     public let scrubberDayTick: MetalRGBA
     public let raise: [MetalShadow]
@@ -131,6 +133,8 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(24, 22, 16, 0.1)),
         ],
         rowHover: MetalRGBA(255, 255, 255, 0.7),
+        rowOnBg: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(255, 255, 255, 1.0), 0.0), .init(MetalRGBA(246, 245, 242, 1.0), 1.0)]),
+        scrim: MetalRGBA(243, 243, 241, 0.25),
         scrubberMark: MetalRGBA(40, 38, 32, 0.28),
         scrubberDayTick: MetalRGBA(40, 38, 32, 0.18),
         raise: [
@@ -245,6 +249,8 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(0, 0, 0, 0.28)),
         ],
         rowHover: MetalRGBA(255, 255, 255, 0.06),
+        rowOnBg: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(51, 51, 55, 1.0), 0.0), .init(MetalRGBA(42, 42, 45, 1.0), 1.0)]),
+        scrim: MetalRGBA(14, 14, 15, 0.25),
         scrubberMark: MetalRGBA(255, 255, 255, 0.28),
         scrubberDayTick: MetalRGBA(255, 255, 255, 0.18),
         raise: [
@@ -733,6 +739,38 @@ public enum MetalRegion {
     public static let rowPadX: Double = 8.0
     public static let rowGap: Double = 9.0
     public static let rowDimple: Double = 14.0
+}
+
+/// The command palette (KAMUI-06): a 560 wide frost plate at the card radius, raise, padding 6, 16 % down the window over a page scrim at .25. A 44 tall field well (content role 15, caret green-deep, a 15 search glyph in ink3); sections as label engravings with a count (LENS, LENSES, FRAGMENTS, ACTIONS); rows 36 tall at the row radius in the ui role with a 14 glyph and keycaps or a readout on the right. Matches weigh 650 with a 1.5 green underline. The selected row is a raised cap (row-on-bg, raise-sm) with a 2.5 green-deep bar at the left; hover moves the selection; destructive rows are red. A footer of keycaps above an engraved rule. It rises one nest (y −6, scale .985) on the surface spring and closes on release.
+public enum MetalPaletteMetrics {
+    public static let width: Double = 560.0
+    public static let pad: Double = 6.0
+    public static let top: Double = 0.16
+    public static let listMax: Double = 0.52
+    public static let fieldHeight: Double = 44.0
+    public static let fieldRadius: Double = 17.0
+    public static let fieldPadStart: Double = 16.0
+    public static let fieldPadEnd: Double = 12.0
+    public static let fieldGap: Double = 10.0
+    public static let fieldGlyph: Double = 15.0
+    public static let secPadTop: Double = 12.0
+    public static let secPadBottom: Double = 6.0
+    public static let rowHeight: Double = 36.0
+    public static let rowPad: Double = 12.0
+    public static let rowGap: Double = 10.0
+    public static let rowGlyph: Double = 14.0
+    public static let barWidth: Double = 2.5
+    public static let barInset: Double = 10.0
+    public static let barLeft: Double = -2.0
+    public static let markWeight: Double = 650.0
+    public static let markUnderline: Double = 1.5
+    public static let markOffset: Double = 2.5
+    public static let markColor: MetalRGBA = MetalRGBA(63, 185, 122, 0.55)
+    public static let footGap: Double = 14.0
+    public static let footPadTop: Double = 10.0
+    public static let footPadBottom: Double = 6.0
+    public static let enterRise: Double = 6.0
+    public static let enterScale: Double = 0.985
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.

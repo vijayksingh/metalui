@@ -214,6 +214,12 @@ const TB = T.toolbar;
 const TB_KEYS = Object.keys(TB).filter((k) => !k.startsWith('$'));
 const toolbarVars = TB_KEYS.map((k) => `  --mu-toolbar-${k}: ${typeof TB[k] === 'number' ? (k.endsWith('-ms') ? `${TB[k]}ms` : `${TB[k]}px`) : TB[k]};`).join('\n');
 
+// ---------- palette (tokens.json palette): the command palette ----------
+const PL = T.palette;
+const PL_KEYS = Object.keys(PL).filter((k) => !k.startsWith("$"));
+const PL_RAW = new Set(["top", "list-max", "mark-weight", "enter-scale"]);
+const paletteVars = PL_KEYS.map((k) => `  --mu-palette-${k}: ${typeof PL[k] === "number" ? (PL_RAW.has(k) ? PL[k] : `${PL[k]}px`) : PL[k]};`).join("\n");
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -248,6 +254,7 @@ ${kbdVars}
 ${statusVars}
 ${toastVars}
 ${toolbarVars}
+${paletteVars}
 ${typeVars}
 ${travel}
 }
@@ -631,6 +638,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${PL.$use}
+public enum MetalPaletteMetrics {
+${PL_KEYS.map((k) => { const v = PL[k]; if (typeof v === "number") return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join("\n")}
+}
+
 /// ${LB.$use}
 public enum MetalToolbarMetrics {
 ${TB_KEYS.map((k) => { const v = TB[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`; }).join('\n')}
