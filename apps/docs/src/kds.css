@@ -773,3 +773,8 @@ html.rm .xr-dialogwrap { animation: none; }
 .xr-linkchip.is-action { color: rgba(255,255,255,.75); background: rgba(255,255,255,.08); cursor: pointer; transition: background .16s; }
 .xr-linkchip.is-action:hover { background: rgba(255,255,255,.16); }
 .xr-linkchip.is-lit { outline: 2px solid var(--green-deep); outline-offset: 2px; }
+/* x-ray on a narrow bench: callouts in a row under the model; overlays scroll and never hide under the header */
+.xr-bench { container-type: inline-size; }
+@container (max-width: 559px) { .xr-scene { margin-bottom: 120px; } .xr-callout.right { flex-direction: row; } }
+.xr-overlay { z-index: 100; overflow-y: auto; place-items: safe center; }
+.xr-overlay > .xr-sheet { margin: auto; }

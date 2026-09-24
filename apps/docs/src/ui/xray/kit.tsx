@@ -116,6 +116,9 @@ export function SpringPlot({ k, c, ms = 360, w = 220, h = 70 }: { k: number; c: 
 }
 
 /** A zoom that keeps an isometric model of w×h inside the bench, leaving room for the callout columns. */
+/** Below this bench width the callouts sit in a row under the model. */
+export const NARROW = 560;
+
 export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number, h: number, active: boolean) {
   const [room, setRoom] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
@@ -129,7 +132,9 @@ export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number,
   // the tilted model's footprint: rotateZ(-38°) then rotateX(58°) squashes its height by cos 58°
   const wide = w * 0.79 + h * 0.62;
   const tall = (w * 0.62 + h * 0.79) * 0.53 + 40;
-  return room[0] ? Math.min(1, (room[0] - 150) / wide, (room[1] - 150) / tall) : 1;
+  // narrow benches put the callouts in a row under the model, so the model can use the full width
+  const narrow = room[0] > 0 && room[0] < NARROW;
+  return room[0] ? Math.min(1, (room[0] - (narrow ? 40 : 150)) / wide, (room[1] - (narrow ? 250 : 150)) / tall) : 1;
 }
 
 export type Side = Record<string, ['left' | 'right', number]>;
@@ -159,11 +164,25 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
   const colX = (s: 'left' | 'right') => (s === 'left' ? 28 : box.w - 28);
+  const narrow = box.w > 0 && box.w < NARROW;
+  // narrow: one row under the model, ordered left to right by where each part sits on screen
+  const order = [...spots].sort((a, b) => (pts[a.id]?.[0] ?? 0) - (pts[b.id]?.[0] ?? 0)).map((x) => x.id);
+  const rowY = box.h - 84;
+  const rowX = (id: T) => ((order.indexOf(id) + 0.5) * box.w) / spots.length;
   return (
     <>
       <svg className="xr-leaders" width={box.w} height={box.h} aria-hidden>
         {spots.map((s) => {
           const p = pts[s.id]; if (!p) return null;
+          if (narrow) {
+            const x = rowX(s.id), y = rowY - 18;
+            return (
+              <g key={s.id} className={spot === s.id ? 'is-on' : ''}>
+                <path d={`M${x} ${y}V${y - 14}L${p[0]} ${p[1]}`} />
+                <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
+              </g>
+            );
+          }
           const [sd, fy] = side[s.id];
           const cx = sd === 'left' ? colX('left') + 36 : colX('right') - 36, cy = box.h * fy;
           const knee = sd === 'left' ? cx + 24 : cx - 24;
@@ -177,7 +196,7 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
       </svg>
       {spots.map((s) => {
         const [sd, fy] = side[s.id];
-        const style = sd === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy };
+        const style = narrow ? { left: rowX(s.id) - 18, top: rowY } : sd === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy };
         return (
           <button key={s.id} type="button" className={['xr-callout', sd, spot === s.id ? 'is-on' : ''].join(' ')} style={style} onClick={() => setSpot(s.id)} aria-pressed={spot === s.id} aria-label={`${s.title}: ${s.word}`} title={s.title}>
             <span className="xr-callout-ico"><Glyph id={s.id} /></span>

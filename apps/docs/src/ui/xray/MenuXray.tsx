@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Kbd, Menu, MenuItem, MenuSeparator, menuParts as M } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, tones, useRecipeLayers, useStateLayers, type LayerDef, type SpotDef } from './kit';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · MENU
@@ -80,6 +80,7 @@ export function MenuXray({ startOpen = false }: { startOpen?: boolean }) {
   const hover = useStateLayers('menu', 'hover', 'row');
   const sepL = useStateLayers('menu', '', 'sep');
   const cw = plate.colorway;
+  const btn = useRecipeLayers('button');
 
   const WIDTH = P.self['min-width'] + 20;
   const headH = m.heading ? P.heading['pad-top'] + 11 + P.heading['pad-bottom'] : 0;
@@ -116,8 +117,8 @@ export function MenuXray({ startOpen = false }: { startOpen?: boolean }) {
 
   const scene = (
     <>
-      <IsoCap x={0} y={0} w={120 * S} h={BTN * S} r={(BTN * S) / 2} z={0.5} wall={4} fill="linear-gradient(#FFFFFF,#F4F3F0)" shadow={scalePx('inset 0 0 4px 1px rgba(255,255,255,.85), 0 0 0 .5px rgba(24,22,16,.05), 0 1px 2px rgba(24,22,16,.07)', S)} wallTone={cw === 'graphite' ? '#1c1c1f' : '#d9d7d1'}>
-        <span style={{ font: `500 ${13 * S}px/1 var(--sans)`, color: '#1B1B1D' }}>Actions</span>
+      <IsoCap x={0} y={0} w={120 * S} h={BTN * S} r={(BTN * S) / 2} z={0.5} wall={4} fill={btn.fill} shadow={scalePx(btn.shadows.slice(0, 4).join(', '), S)} wallTone={tones(cw).wall}>
+        <span style={{ font: `500 ${13 * S}px/1 var(--sans)`, color: 'var(--ink)' }}>Actions</span>
       </IsoCap>
       {exploded
         ? <Exploded layers={LAYERS} on={m.on} fill={plate.fill} shadows={plate.shadows} y={y0} w={W} h={Hmenu * S} r={plateR * S} z0={10} gap={14} focus={focus} scale={S} />
