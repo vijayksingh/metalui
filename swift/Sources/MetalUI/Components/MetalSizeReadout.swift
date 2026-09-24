@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Size readout: the KAMUI-14 readout on its own. Mirrors components/size-readout from MetalPresence.
+// Size readout: the selection readout on its own. Mirrors components/size-readout from MetalPresence.
 
 /// A graphite pill that reads a measured value: "● 320 × 214", "● 3 · 540 × 180", "● COPIED · PNG 130 × 215", "● 100 %".
 public struct MetalSizeReadout: View {
@@ -8,13 +8,15 @@ public struct MetalSizeReadout: View {
     let count: Int?
     let copied: String?
     let value: String?
+    let unit: String?
     let led: Bool
 
-    public init(size: CGSize = .zero, count: Int? = nil, copied: String? = nil, value: String? = nil, led: Bool = true) {
+    public init(size: CGSize = .zero, count: Int? = nil, copied: String? = nil, value: String? = nil, unit: String? = nil, led: Bool = true) {
         self.size = size
         self.count = count
         self.copied = copied
         self.value = value
+        self.unit = unit
         self.led = led
     }
 
@@ -23,7 +25,9 @@ public struct MetalSizeReadout: View {
         let dim = MetalPresence.readoutDim.color
         let role = MetalType.readout
         let label: Text = {
-            if let value { return Text(value) }
+            if let value {
+                return Text(value) + (unit.map { Text(" \($0)").foregroundColor(dim) } ?? Text(""))
+            }
             if let copied { return Text("COPIED ") + Text("·").foregroundColor(dim) + Text(" \(copied) \(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)") }
             if let count, count > 1 { return Text("\(count) ") + Text("·").foregroundColor(dim) + Text(" \(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)") }
             return Text("\(w) ") + Text("×").foregroundColor(dim) + Text(" \(h)")
