@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "glyph",
+  "type": "registry:ui",
+  "title": "Glyph",
+  "description": "A static icon at a size (14, 16) in an ink (ink, ink2, ink3); decorative.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/glyph/glyph.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/glyph/glyph.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport './glyph.css';\n\n/* GLYPH: a static icon at a size (14 small, 16 regular) in an ink (ink, ink2, ink3).\n * It is decorative (aria-hidden) and draws nothing itself: the icon inside inherits the ink. */\n\nexport interface GlyphProps extends React.HTMLAttributes<HTMLSpanElement> {\n  size?: 'small' | 'regular';\n  tone?: 'ink' | 'ink2' | 'ink3';\n}\n\nexport function Glyph({ size = 'small', tone = 'ink2', className, ...props }: GlyphProps) {\n  return <span aria-hidden data-size={size} data-tone={tone} className={className ? `mu-glyph ${className}` : 'mu-glyph'} {...props} />;\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/glyph/glyph.css",
+      "type": "registry:file",
+      "target": "components/metalui/glyph/glyph.css",
+      "content": "@import \"../tokens.css\";\n\n/* Glyph: a static icon at a size in an ink. Its values are the glyph recipe (--mu-r-glyph-*). */\n.mu-glyph { display: inline-grid; place-items: center; flex: none; }\n.mu-glyph[data-tone=\"ink\"] { color: var(--mu-r-glyph-ink-ink); }\n.mu-glyph[data-tone=\"ink2\"] { color: var(--mu-r-glyph-ink-ink2); }\n.mu-glyph[data-tone=\"ink3\"] { color: var(--mu-r-glyph-ink-ink3); }\n.mu-glyph[data-size=\"small\"] > svg { width: var(--mu-r-glyph-size-small); height: var(--mu-r-glyph-size-small); }\n.mu-glyph[data-size=\"regular\"] > svg { width: var(--mu-r-glyph-size-regular); height: var(--mu-r-glyph-size-regular); }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: MetalGlyph in the MetalUI Swift package."
+}
