@@ -593,7 +593,7 @@ html.rm .xr-iso, html.rm .xr-cap, html.rm .xr-face, html.rm .xr-hot .xr-bill, ht
 @media (max-width: 900px) { .xr { grid-template-columns: minmax(0, 1fr); } .xr-scene { zoom: .6; } }
 
 /* ============================================================ FLOATING TABLE: real components drifting on the home hero */
-.drift { position: relative; height: 520px; border-radius: 36px; overflow: hidden;
+.drift { position: relative; height: 680px; border-radius: 36px; overflow: hidden;
   background: linear-gradient(color-mix(in srgb, var(--ink) 1.6%, transparent), color-mix(in srgb, var(--ink) .6%, transparent));
   box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.06), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px var(--rule-lip); }
 [data-mu-colorway="graphite"] .drift { background: rgba(255,255,255,.012); box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4); }
@@ -738,3 +738,17 @@ html.rm .xr-toastwrap { animation: none; }
 .xr-face:has(> .xr-menuface) { place-items: stretch; }
 .xr-menuhead { box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--ink3); }
 .xr-menurow { display: flex; align-items: center; box-sizing: border-box; flex: none; cursor: pointer; transition: background .16s; }
+/* x-ray, dialog: page, dimming sheet, dialog */
+.xr-dialogwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
+.xr-dialogwrap.is-arriving { animation: xr-dialog-in var(--spring-surface-d, .5s) var(--spring-surface, ease-out) both; }
+@keyframes xr-dialog-in { from { transform: translate3d(0, -8px, 0) scale(.985); } }
+.xr-sheet3d { cursor: pointer; }
+.xr-dialogface { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
+.xr-face:has(> .xr-dialogface) { place-items: stretch; }
+.xr-dfield { display: flex; align-items: center; color: var(--ink); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.xr-dbtn { display: inline-flex; align-items: center; border-radius: 999px; font-weight: 500; color: var(--ink); background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.xr-dfield.is-focus, .xr-dbtn.is-focus { outline: 3px solid var(--mu-focus, #3FB97A); outline-offset: 2px; }
+.xr-pagelines { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
+.xr-face:has(> .xr-pagelines) { place-items: stretch; }
+.xr-pagelines > i { display: block; border-radius: 99px; background: color-mix(in srgb, var(--ink) 9%, transparent); }
+html.rm .xr-dialogwrap { animation: none; }
