@@ -123,6 +123,23 @@
       "agent": "https://metalui.dev/r/glass-face.md"
     },
     {
+      "name": "glyph",
+      "title": "Glyph",
+      "status": "alpha",
+      "description": "A static icon at a size (14, 16) in an ink (ink, ink2, ink3); decorative.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Glyph",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalGlyph"
+      },
+      "registry": "https://metalui.dev/r/glyph.json",
+      "agent": "https://metalui.dev/r/glyph.md"
+    },
+    {
       "name": "hover-engraving",
       "title": "Hover engraving",
       "status": "alpha",

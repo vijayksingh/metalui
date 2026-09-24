@@ -1,0 +1,20 @@
+{
+  "name": "glyph",
+  "title": "Glyph",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A static icon at a size (14, 16) in an ink (ink, ink2, ink3); decorative.",
+  "base": "none",
+  "react": {
+    "export": "Glyph",
+    "files": [
+      "glyph.tsx",
+      "glyph.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalGlyph",
+    "file": "swift/Sources/MetalUI/Components/MetalGlyph.swift"
+  },
+  "agent": "glyph.agent.md"
+}

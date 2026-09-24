@@ -186,6 +186,29 @@
       "docs": "Agent guide: https://metalui.dev/r/glass-face.md. SwiftUI: MetalGlassFace in the MetalUI Swift package."
     },
     {
+      "name": "glyph",
+      "type": "registry:ui",
+      "title": "Glyph",
+      "description": "A static icon at a size (14, 16) in an ink (ink, ink2, ink3); decorative.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/glyph/glyph.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/glyph/glyph.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/glyph/glyph.css",
+          "type": "registry:file",
+          "target": "components/metalui/glyph/glyph.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: MetalGlyph in the MetalUI Swift package."
+    },
+    {
       "name": "hover-engraving",
       "type": "registry:ui",
       "title": "Hover engraving",

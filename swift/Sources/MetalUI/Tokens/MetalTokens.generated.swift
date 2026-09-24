@@ -1668,6 +1668,21 @@ public enum MetalRecipes {
             "self.fade": .text("160ms"),
         ]
     )
+
+    /// A static glyph set at a size in an ink: the lens beside a query, a field's leading search mark, a menu row's icon. It draws nothing of its own; the icon inherits the ink. (reference style.css #lensBar svg, .pal-field svg, .tb-search svg, .pal-row svg)
+    public static let glyph = MetalObjectRecipe(
+        name: "glyph",
+        layers: [
+
+        ],
+        props: [
+            "size.small": .number(14.0),
+            "size.regular": .number(16.0),
+            "ink.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "ink.ink2": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "ink.ink3": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

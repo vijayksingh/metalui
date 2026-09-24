@@ -1364,6 +1364,9 @@
   --mu-r-row-rail-color: #3FB97A;
   --mu-r-row-self-maybe: 0.55;
   --mu-r-row-self-fade: 160ms;
+  /* glyph: reference style.css #lensBar svg, .pal-field svg, .tb-search svg, .pal-row svg */
+  --mu-r-glyph-size-small: 14px;
+  --mu-r-glyph-size-regular: 16px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1672,6 +1675,9 @@
     /* mu-recipe:row:29 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:row:30 */ 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-r-row-text-checked: #9A9A9D;
+  --mu-r-glyph-ink-ink: #1B1B1D;
+  --mu-r-glyph-ink-ink2: #5C5C60;
+  --mu-r-glyph-ink-ink3: #9A9A9D;
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -1967,6 +1973,9 @@
     /* mu-recipe:row:34 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:row:35 */ 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-r-row-text-checked: #77777B;
+  --mu-r-glyph-ink-ink: #F2F2F0;
+  --mu-r-glyph-ink-ink2: #A6A6A9;
+  --mu-r-glyph-ink-ink3: #77777B;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2263,5 +2272,8 @@
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
     --mu-r-row-text-checked: #77777B;
+    --mu-r-glyph-ink-ink: #F2F2F0;
+    --mu-r-glyph-ink-ink2: #A6A6A9;
+    --mu-r-glyph-ink-ink3: #77777B;
   }
 }
