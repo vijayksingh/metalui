@@ -43,6 +43,47 @@ Rules for inline demos:
 - Each one is keyboard-reachable, and shows what it does on focus as well as on hover.
 - Each one is decorative-safe: turn motion off and the sentence still reads.
 
+### Expressive on hover
+
+Every inline part rewards the pointer, and the reward teaches something:
+- **Label:** its layers peel apart (ink, lip, groove).
+- **A spring word:** its curve draws under the word as it moves.
+- **A swatch dot:** it opens into the full lit object.
+- **A component name:** it renders the component, cycling through its states.
+
+The hover shows the *why* in miniature, not a tooltip of text.
+
+## Teach the craft: reading the docs is learning to build a design system
+
+The docs don't just describe MetalUI. Every page also shows how the thinking went, so a reader leaves able to build their own system. Four devices do this:
+
+**1. The decision beat.** Every non-obvious choice is shown as a decision, not a fact:
+- *the naive version, live* (a flat grey fill; `transition: 200ms ease`; a one-off radius);
+- *what goes wrong*, as a demo (it looks like a sticker, not an object; it snaps when interrupted; nested corners fight);
+- *the decision* (a recipe with light, rim and contact shadow; a spring with mass; `outer = inner + padding`);
+- *toggle between them*;
+- *one line on the cost* of the decision (more layers to maintain; one more token to learn).
+
+**2. The layer trail.** Every page shows which layer the thing belongs to (foundation, component, block) and walks down through it. A block page highlights its components. Each component page shows its recipe. Each recipe links to its tokens. The reader learns the architecture by moving through it.
+
+**3. Rules with their reasons.** Each rule in MetalUI is stated once, with the failure it prevents shown live:
+- one recipe per look: two slightly different greys drifting apart, side by side;
+- no literals: the lint firing on a pasted hex, then the fix;
+- neutral names: a product-named prop leaking into a reusable part;
+- metric-neutral cues: text jumping when a tag pill appears.
+
+**4. A learning path.** A short, ordered track on the home page, *Build a system with us*. Each step is a page with its own demo:
+1. *Start from a material, not a palette.* One surface under one light; why every value follows from it.
+2. *Name values once.* Tokens, colorways, and why Graphite is not an inverted Bone.
+3. *Recipes.* Layers as data, and how one recipe feeds CSS and Swift.
+4. *Motion has mass.* Spring classes from stiffness and damping, and interruption.
+5. *Type as a system.* Roles, not sizes; tabular figures; the lip.
+6. *Primitives and blocks.* Composition by slots; when custom is honest.
+7. *Behaviour contracts.* Keys, focus and dismissal written once, implemented twice.
+8. *Keeping it true.* Lints, recipe parity, pixel gates, neutral names. Why drift is a tooling problem, not a discipline problem.
+
+The voice through all of this is a craftsperson showing their bench: this is what we tried, this is what broke, this is what we chose and what it cost.
+
 ## Every component and block page contains
 
 1. **The hero:** the real component, interactive, in its most typical state. No prose above it except the name and one line.
