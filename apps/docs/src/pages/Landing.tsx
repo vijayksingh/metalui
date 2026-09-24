@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router';
 import { Button, Kbd, Segmented } from '@unlocalhosted/metalui';
 import { FloatingTable, type XrayKind } from '../ui/floating';
-import { ButtonXray } from '../ui/xray/ButtonXray';
-import { SegmentedXray } from '../ui/xray/SegmentedXray';
+import { XrayOverlay } from '../ui/xray';
 import { useColorway, type Colorway } from '../app/colorway';
 
 /* The front door: nothing but objects hanging in space, one engraved line in each
@@ -36,14 +35,10 @@ export default function Landing() {
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
         <Button cap="primary" onClick={enter}>Read the docs</Button>
-        <span className="eng">⏎ read the docs · click the dark button or the Day/Week control to see inside · <Kbd size="small">esc</Kbd> back</span>
+        <span className="eng">⏎ read the docs · click the dark button, the Day/Week control or ⌘K to see inside · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
-      {xray && (
-        <div className="xr-overlay" role="dialog" aria-modal="true" aria-label={xray === 'segmented' ? 'Segmented control, x-ray' : 'Button, x-ray'} onClick={(e) => { if (e.target === e.currentTarget) setXray(null); }}>
-          <div className="xr-sheet">{xray === 'segmented' ? <SegmentedXray startOpen /> : <ButtonXray startOpen />}</div>
-        </div>
-      )}
+      {xray && <XrayOverlay kind={xray} onClose={() => setXray(null)} />}
     </div>
   );
 }

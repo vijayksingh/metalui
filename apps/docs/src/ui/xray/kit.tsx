@@ -15,7 +15,7 @@ import { tokens } from '../../lib/tokens';
 
 export interface SpotDef<T extends string> { id: T; title: string; word: string }
 
-export type GlyphName = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers' | 'well' | 'thumb' | 'slide';
+export type GlyphName = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers' | 'well' | 'thumb' | 'slide' | 'surface';
 
 export function Glyph({ id, size = 15 }: { id: GlyphName; size?: number }) {
   const c = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true };
@@ -28,6 +28,7 @@ export function Glyph({ id, size = 15 }: { id: GlyphName; size?: number }) {
     case 'layers': return <svg {...c}><path d="m12 4 8 4-8 4-8-4 8-4Z" /><path d="m4 12 8 4 8-4" /><path d="m4 16 8 4 8-4" /></svg>;
     case 'well': return <svg {...c}><path d="M3 9h3.5a2 2 0 0 1 2 2v2.5a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V11a2 2 0 0 1 2-2H21" /><path d="M9.5 12.5h5" strokeDasharray="1.5 2" /></svg>;
     case 'thumb': return <svg {...c}><rect x="3" y="8" width="18" height="10" rx="5" strokeOpacity=".45" /><rect x="5" y="5.5" width="8" height="9" rx="4" /></svg>;
+    case 'surface': return <svg {...c}><rect x="2.5" y="12" width="19" height="7" rx="3.5" /><rect x="8" y="5" width="8" height="8" rx="2.5" /></svg>;
     case 'slide': return <svg {...c}><rect x="10" y="7" width="9" height="8" rx="4" /><path d="M3 11h4M4.5 8.5 3 11l1.5 2.5" /><path d="M5 19c2 0 3-2 5.5-2s3 2 5 2 2.5-1 3.5-1" /></svg>;
   }
 }
@@ -170,5 +171,152 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
         );
       })}
     </>
+  );
+}
+
+/* ───────────────────────── model parts ───────────────────────── */
+
+/** Turn a shadow's offset to follow the light (0° is straight above), and scale its strength. */
+export function aim(v: string, deg: number, k: number) {
+  const a = (deg * Math.PI) / 180;
+  return alphaK(v, k).replace(/^(inset\s+)?(-?[\d.]+)(px)?\s+(-?[\d.]+)(px)?/, (_, inset = '', x, _u1, y) => {
+    const X = Number(x) * Math.cos(a) - Number(y) * Math.sin(a), Y = Number(x) * Math.sin(a) + Number(y) * Math.cos(a);
+    return `${inset}${X.toFixed(2)}px ${Y.toFixed(2)}px`;
+  });
+}
+
+/** Wall colours for the sides of a raised part and the rim of a tray. */
+export function tones(colorway: string) {
+  return colorway === 'graphite' ? { wall: '#1c1c1f', rim: '#2a2a2d' } : { wall: '#d9d7d1', rim: '#f4f3ef' };
+}
+
+/** A raised part: stacked slices for its side wall, then its top face. Sizes are already scaled. */
+export function IsoCap({ x = 0, y = 0, w, h, r, z = 0, wall = 7, fill, shadow, wallTone, transition, children }: { x?: number; y?: number; w: number; h: number; r: number; z?: number; wall?: number; fill: string; shadow: string; wallTone: string; transition?: string; children?: React.ReactNode }) {
+  return (
+    <div className="xr-thumb" style={{ transform: `translate(${x}px, ${y}px)`, transition }}>
+      {Array.from({ length: wall }, (_, i) => (
+        <div key={i} className="xr-slice" style={{ width: w, height: h, borderRadius: r, transition, transform: `translateZ(${z + i * 1.4}px)`, background: i === 0 || fill === 'transparent' ? 'transparent' : wallTone }} />
+      ))}
+      <div className="xr-face" style={{ width: w, height: h, borderRadius: r, transition, transform: `translateZ(${z + wall * 1.4}px)`, background: fill, boxShadow: shadow }}>{children}</div>
+    </div>
+  );
+}
+export const capTop = (z: number, wall = 7) => z + wall * 1.4;
+
+/** A tray pressed into the page: its floor, and a rim that rises around it. */
+export function IsoTray({ x = 0, y = 0, w, h, r, depth = 8, fill, shadow, colorway }: { x?: number; y?: number; w: number; h: number; r: number; depth?: number; fill: string; shadow: string; colorway: string }) {
+  const t = tones(colorway);
+  const n = 5;
+  return (
+    <div className="xr-thumb" style={{ transform: `translate(${x}px, ${y}px)` }}>
+      <div className="xr-face is-flat" style={{ width: w, height: h, borderRadius: r, transform: 'translateZ(0.5px)', background: fill, boxShadow: shadow }} />
+      {Array.from({ length: n }, (_, i) => (
+        <div key={i} className="xr-ring" style={{ width: w, height: h, borderRadius: r, transform: `translateZ(${((i + 1) / n) * depth}px)`, borderColor: i === n - 1 ? t.rim : t.wall }} />
+      ))}
+    </div>
+  );
+}
+
+export interface LayerDef { name: string; why: string }
+
+/** Layers pulled apart: one flat face per layer, stacked upward. */
+export function Exploded({ layers, on, fill, shadows, x = 0, y = 0, w, h, r, z0 = 0, gap = 14, focus, scale }: { layers: LayerDef[]; on: boolean[]; fill: string; shadows: string[]; x?: number; y?: number; w: number; h: number; r: number; z0?: number; gap?: number; focus: string | null; scale: number }) {
+  return (
+    <>
+      {layers.map((l, i) => (
+        <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', on[i] ? '' : 'is-off'].join(' ')}
+          style={{ width: w, height: h, borderRadius: r, transform: `translate(${x}px, ${y}px) translateZ(${z0 + i * gap}px)`, background: i === 0 ? fill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(shadows[i - 1] ?? '', scale) }}>
+          <span className="xr-tag eng">{l.name}</span>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/** The layer list in a card: each layer explained, with a switch. */
+export function LayerList({ groups, focus, setFocus }: { groups: { title?: string; layers: LayerDef[]; on: boolean[]; toggle: (i: number, v: boolean) => void }[]; focus: string | null; setFocus: (n: string | null) => void }) {
+  return (
+    <ol className="xr-layers">
+      {groups.flatMap((g) => [
+        ...(g.title ? [<li key={`h-${g.title}`} className="xr-layers-head eng">{g.title}</li>] : []),
+        ...g.layers.map((l, i) => (
+          <li key={l.name} className={[focus === l.name ? 'is-focus' : '', g.on[i] ? '' : 'is-off'].join(' ')} onPointerEnter={() => setFocus(l.name)} onPointerLeave={() => setFocus(null)}>
+            <Switch label={l.name} on={g.on[i]} onChange={(v) => g.toggle(i, v)} />
+            <p>{l.why}</p>
+          </li>
+        )),
+      ])}
+    </ol>
+  );
+}
+
+/** Light direction and strength dials, the same on every x-ray. */
+export function LightDials({ deg, k, set }: { deg: number; k: number; set: (p: { lightDeg?: number; lightK?: number }) => void }) {
+  return (
+    <div className="xr-dials">
+      <Dial label="Direction" value={deg} min={-90} max={90} step={5} fmt={(v) => (v === 0 ? 'top' : v < 0 ? `${-v}° left` : `${v}° right`)} onChange={(lightDeg) => set({ lightDeg })} />
+      <Dial label="Strength" value={k} min={0} max={1.5} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(lightK) => set({ lightK })} />
+    </div>
+  );
+}
+
+export function Proof({ children, column }: { children: React.ReactNode; column?: boolean }) {
+  return <div className="xr-proof" style={column ? { flexDirection: 'column', gap: 10 } : { justifyContent: 'center' }}>{children}</div>;
+}
+
+/* ───────────────────────── the frame ───────────────────────── */
+
+/**
+ * Everything around the model: the solid view, the bench, the floor, the anchors,
+ * the callouts, the sun, Reset / Solid, the hint and the card.
+ */
+export function XrayFrame<T extends GlyphName>(props: {
+  xray: boolean; setXray: (v: boolean) => void;
+  spots: SpotDef<T>[]; side: Record<T, ['left' | 'right', number]>; spot: T; setSpot: (s: T) => void;
+  solid: React.ReactNode; W: number; H: number; scene: React.ReactNode;
+  anchors: Record<T, [number, number, number]>;
+  sun?: { deg: number; k: number; z: number };
+  hint?: string; onReset: () => void; deps: unknown[];
+  card: React.ReactNode;
+}) {
+  const { xray, setXray, spots, side, spot, setSpot, W, H, anchors, sun } = props;
+  const bench = React.useRef<HTMLDivElement>(null);
+  const fit = useFit(bench, W, H, xray);
+  const current = spots.find((x) => x.id === spot)!;
+  return (
+    <div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+      <div className="xr-bench" ref={bench}>
+        {!xray && <div className="xr-solid" onClick={() => setXray(true)}>{props.solid}</div>}
+        {xray && (
+          <div className="xr-scene" style={{ width: W, height: H, zoom: fit }}>
+            <div className="xr-iso">
+              <div className="xr-floor" />
+              {props.scene}
+              {sun && (
+                <div className="xr-sun" style={{ transform: `translate3d(${W / 2 + Math.sin((sun.deg * Math.PI) / 180) * (W * 0.6)}px, ${H / 2 - Math.cos((sun.deg * Math.PI) / 180) * (H * 1.8)}px, ${sun.z}px)`, opacity: 0.35 + 0.65 * Math.min(1, sun.k) }}>
+                  <span className="xr-bill"><Glyph id="light" /></span>
+                </div>
+              )}
+              {spots.map((s) => {
+                const [x, y, z] = anchors[s.id];
+                return <i key={s.id} className="xr-anchor" data-spot={s.id} style={{ transform: `translate3d(${x}px, ${y}px, ${z}px)` }} />;
+              })}
+            </div>
+          </div>
+        )}
+        {xray && <Callouts bench={bench} spots={spots} side={side} spot={spot} setSpot={setSpot} deps={[...props.deps, fit]} />}
+        <div className="xr-hint eng">{xray ? props.hint ?? 'Pick an icon to learn about that part' : 'Try it, then open the x-ray'}</div>
+        <div className="xr-actions">
+          {xray && <button type="button" className="status" onClick={props.onReset}><span className="led off" />Reset</button>}
+          <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
+        </div>
+      </div>
+      {xray && (
+        <div className="xr-card raised" key={spot}>
+          <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
+          {props.card}
+        </div>
+      )}
+    </div>
   );
 }

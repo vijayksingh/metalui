@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { ButtonXray } from '../ui/xray/ButtonXray';
-import { SegmentedXray } from '../ui/xray/SegmentedXray';
+import { XrayOverlay } from '../ui/xray';
 import { FloatingTable, type XrayKind } from '../ui/floating';
 
 /* The overview, laid out like the reference design-language site's home:
@@ -35,11 +34,7 @@ export default function Home() {
         </div>
 
         <FloatingTable mode="table" onXray={setXray} />
-        {xray && (
-          <div className="xr-overlay" role="dialog" aria-modal="true" aria-label={xray === 'segmented' ? 'Segmented control, x-ray' : 'Button, x-ray'} onClick={(e) => { if (e.target === e.currentTarget) setXray(null); }} onKeyDown={(e) => { if (e.key === 'Escape') setXray(null); }}>
-            <div className="xr-sheet">{xray === 'segmented' ? <SegmentedXray startOpen /> : <ButtonXray startOpen />}</div>
-          </div>
-        )}
+        {xray && <XrayOverlay kind={xray} onClose={() => setXray(null)} />}
       </section>
 
       <section className="sec" id="two-halves">

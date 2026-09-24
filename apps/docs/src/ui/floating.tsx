@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Button, Checkbox, Kbd, LinkCard, Mark, Segmented, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
+import type { XrayKind } from './xray';
+
+export type { XrayKind };
 
 /* ─────────────────────────────────────────────────────────
  * THE FLOATING TABLE
@@ -64,7 +67,7 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'key', table: ['84%', '72%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], node: () => <div style={{ zoom: 1.4 }}><Kbd>⌘K</Kbd></div> },
+  { id: 'key', table: ['84%', '72%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
   {
     id: 'toolbar', table: ['20%', '82%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'],
     node: () => (
@@ -78,8 +81,6 @@ const ITEMS: Item[] = [
     ),
   },
 ];
-
-export type XrayKind = 'button' | 'segmented';
 
 export function FloatingTable({ mode, onXray }: { mode: 'space' | 'table'; onXray: (which: XrayKind) => void }) {
   const [chip, setChip] = React.useState(true);

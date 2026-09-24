@@ -7,6 +7,7 @@ import { CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, TokenTable }
 import { Beat, Compare, LayerTrail, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { tokens } from '../../lib/tokens';
+import { KbdXray } from '../../ui/xray/KbdXray';
 
 /* ─────────────────────────────────────────────────────────
  * KEYCAP on the component template
@@ -29,7 +30,7 @@ const USAGE = [
 export default function KbdPage() {
   return (
     <>
-      <PageHeader title="Keycap" lede="A key's glyph on a small raised cap: in a search field, a palette footer, a toast's Undo, a tooltip. Shown, never pressed.">
+      <PageHeader title="Keycap" lede="Shows a keyboard key, like ⌘K. Used in search fields, menu footers, toasts and tooltips. It is only shown, never pressed.">
         <LayerTrail
           down={[{ label: 'the key recipe', to: '/foundations/materials' }, { label: 'the readout role', to: '/foundations/typography' }]}
           here="Keycap"
@@ -57,6 +58,10 @@ export default function KbdPage() {
         </Stage>
         <CodeScreen tabs={USAGE} />
       </section>
+
+      <Section id="x-ray" title="X-ray" lede="See what the key is made of. Click an icon to learn about one part and change it.">
+        <KbdXray />
+      </Section>
 
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">
