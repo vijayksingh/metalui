@@ -11,39 +11,11 @@
 
 /* The site's base layer only. Everything else is Tailwind utilities from the generated theme
    (type-doc-* is the reading scale, material-stage the demo object, syn-* the code inks). */
+@import "./kds.css" layer(base);
+
+/* The reference site's stylesheet (kds.css) carries the page, shell, prose, stage and cues.
+   This layer only adds what the reference didn't have: twinkleplop's token classes. */
 @layer base {
-  html {
-    background: var(--mu-page);
-    color: var(--mu-ink);
-    font-family: var(--mu-sans);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
-  html[data-mu-colorway="graphite"] { background: var(--mu-page-dark); }
-
-  /* The canvas the objects rest on: a fine grain, multiplied on bone, screened on graphite. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: .5;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .48  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-  html[data-mu-colorway="graphite"] body::before { mix-blend-mode: screen; opacity: .35; }
-
-  ::selection { background: color-mix(in srgb, var(--mu-green) 40%, transparent); color: var(--mu-ink); }
-  :focus-visible { outline: var(--mu-focus-width) solid var(--mu-green-deep); outline-offset: var(--mu-focus-offset); }
-  a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  * { scrollbar-width: thin; scrollbar-color: var(--mu-ink3) transparent; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
-  }
-
   /* Highlighted code (twinkleplop's token classes) in the syntax inks. The inks follow the
      colorway of the nearest [data-mu-colorway], so a code screen can set its own. */
   .twinkleplop { color: var(--mu-syn-text); }

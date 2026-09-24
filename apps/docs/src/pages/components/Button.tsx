@@ -155,7 +155,7 @@ function CapIsAnObject() {
       code={{ label: 'tokens.json › recipes.button', lang: 'json', code: JSON.stringify(RECIPE.layers.filter((l: { colorway?: string; state?: string }) => l.colorway === 'bone' && !l.state), null, 2) }}
     >
       <Compare
-        zoom={2.25}
+        zoom={1.6}
         items={[
           { label: 'flat fill', node: <Button tabIndex={-1} className="bg-s! shadow-none!">Cancel</Button> },
           { label: 'cap recipe', lit: true, node: <Button tabIndex={-1}>Cancel</Button> },

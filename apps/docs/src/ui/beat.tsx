@@ -129,7 +129,7 @@ export function Beat({ id, title, setup, caption, cost, bar, controls, code, slo
 }
 
 /** Specimens side by side, magnified so the detail reads at rest; each named by a tag above it. */
-export function Compare({ items, zoom = 2 }: { items: { label: string; note?: string; node: React.ReactNode; lit?: boolean }[]; zoom?: number }) {
+export function Compare({ items, zoom = 1.6 }: { items: { label: string; note?: string; node: React.ReactNode; lit?: boolean }[]; zoom?: number }) {
   return (
     <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-rule">
       {items.map((it) => (

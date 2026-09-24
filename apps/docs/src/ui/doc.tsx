@@ -19,44 +19,50 @@ import { highlight, langOf, type Lang } from '../lib/highlight';
  *   Table      hairline rows, sentence-case heads
  * ───────────────────────────────────────────────────────── */
 
-/** Page title, lede, and the meta lines under them (layer trail, spec line). */
-export function PageHeader({ title, lede, children }: { title: string; lede: React.ReactNode; children?: React.ReactNode }) {
+/** The reference page head: engraved kicker, the title, the lede, then status tags and meta lines. */
+export function PageHeader({ title, lede, kicker, tags, children }: { title: string; lede: React.ReactNode; kicker?: string; tags?: { label: string; href?: string; led?: 'green' | 'blue' | 'amber' | 'off' }[]; children?: React.ReactNode }) {
+  const { pathname } = useLocation();
+  const auto = kicker ?? pathname.split('/').filter(Boolean).map((p) => p.replace(/-/g, ' ')).join(' · ');
   return (
-    <header id="head" className="mb-48 flex scroll-mt-80 flex-col">
-      <div className="flex items-start justify-between gap-16">
-        <h1 className="type-doc-title text-balance text-ink">{title}</h1>
+    <header id="head" className="page-head">
+      <span className="eng">{auto || 'MetalUI · Soft Hardware'}</span>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+        <h1>{title}</h1>
         <CopyPageButton />
       </div>
-      <p className="type-doc-lede mt-8 max-w-measure text-pretty text-ink2">{lede}</p>
-      {children && <div className="mt-20 flex flex-col gap-6">{children}</div>}
+      <p>{lede}</p>
+      {tags && (
+        <div className="status-row">
+          {tags.map((t) => {
+            const inner = <><span className={['led', t.led && t.led !== 'green' ? t.led : ''].join(' ')} />{t.label}</>;
+            return t.href ? <a key={t.label} className="status" href={t.href}>{inner}</a> : <span key={t.label} className="status">{inner}</span>;
+          })}
+        </div>
+      )}
+      {children && <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 18 }}>{children}</div>}
     </header>
   );
 }
 
-/** A section: its heading runs a hairline to the column's edge; the lede sits on the measure. */
+/** The reference section: an h2 with a hover anchor, an optional sub line, then its content. */
 export function Section({ title, lede, children, id }: { title: string; lede?: React.ReactNode; children?: React.ReactNode; id?: string }) {
   return (
-    <section id={id} className="mt-64 flex scroll-mt-80 flex-col gap-20 first:mt-0">
-      <div className="flex flex-col gap-8">
-        <h2 className="type-doc-heading flex items-center gap-16 text-ink">
-          <span className="shrink-0">{title}</span>
-          <span aria-hidden className="h-1 flex-1 bg-rule" />
-        </h2>
-        {lede && <p className="type-doc-prose max-w-measure text-pretty text-ink2">{lede}</p>}
-      </div>
+    <section id={id} className="sec">
+      <h2>{id && <a className="anchor" href={`#${id}`} aria-label={`Link to ${title}`}>#</a>}{title}</h2>
+      {lede && <p className="sec-sub">{lede}</p>}
       {children}
     </section>
   );
 }
 
-/** Running prose on the measure. */
+/** Running prose. */
 export function Prose({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <p className={`type-doc-prose max-w-measure text-pretty text-ink2 ${className}`}>{children}</p>;
+  return <p className={['lede', className].join(' ')}>{children}</p>;
 }
 
-/** Inline code in prose and tables. */
+/** Inline code: quiet mono in the running text. */
 export function C({ children }: { children: React.ReactNode }) {
-  return <code className="type-doc-code rounded-key bg-s-lo px-4 py-1 text-ink ring-1 ring-rule">{children}</code>;
+  return <code>{children}</code>;
 }
 
 /** A small mono chip naming a specimen inside a stage: "flat fill", "recipe". */
@@ -85,41 +91,35 @@ export interface StageProps {
   stageRef?: React.Ref<HTMLDivElement>;
 }
 
-/** A light object on the page that holds a specimen. Sized to its content; never a slab. */
-export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', bleed = true, stageRef }: StageProps) {
+/** The reference stage: specimens sit on the table; the caption is engraved at its foot. */
+export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', stageRef }: StageProps) {
   return (
-    <figure className={['flex flex-col gap-12', bleed ? 'lg:-mx-60' : ''].join(' ')}>
+    <figure style={{ margin: 0 }}>
       <div
+        ref={stageRef}
         data-md="skip"
         data-mu-colorway={tone === 'dark' ? 'graphite' : undefined}
-        className="material-stage overflow-hidden rounded-plate"
+        className={['stage', className].join(' ')}
+        style={tone === 'dark' ? { background: 'var(--page)', ...style } : style}
       >
-        <div ref={stageRef} style={style} className={['relative flex items-center justify-center px-20 py-32 sm:px-40 sm:py-40', className].join(' ')}>
-          {children}
-        </div>
-        {bar && <div className="flex flex-wrap items-center justify-between gap-12 border-t border-rule bg-stage-bar px-12 py-8">{bar}</div>}
+        {children}
+        {(caption || cost) && (
+          <div className="cap">
+            {caption && <span className="eng">{caption}</span>}
+            {cost && <span className="eng" style={{ display: 'block', marginTop: 4, opacity: 0.8 }}>Cost · {cost}</span>}
+          </div>
+        )}
       </div>
-      {(caption || cost) && (
-        <figcaption className="type-doc-caption mx-auto flex max-w-measure flex-col gap-2 px-8 text-center text-balance text-ink3">
-          {caption && <span>{caption}</span>}
-          {cost && <span><span className="font-medium text-ink2">Cost:</span> {cost}</span>}
-        </figcaption>
-      )}
+      {bar && <div className="status-row" style={{ justifyContent: 'center', margin: '-8px 0 24px' }}>{bar}</div>}
     </figure>
   );
 }
 
-/** The older name, kept so every page takes the new stage. `tone="page"` is the same stage. */
-export function Bench({ caption, children, className, style, tone }: { caption?: string; children: React.ReactNode; className?: string; style?: React.CSSProperties; tone?: 'well' | 'page' }) {
-  void tone;
-  return <Stage caption={caption && sentence(caption)} className={className} style={style}>{children}</Stage>;
+/** The older name, kept so every page takes the stage. */
+export function Bench({ caption, children, className, style }: { caption?: string; children: React.ReactNode; className?: string; style?: React.CSSProperties; tone?: 'well' | 'page' }) {
+  return <Stage caption={caption} className={className} style={style}>{children}</Stage>;
 }
 
-/** "on a light surface · small in a footer" → "On a light surface, small in a footer." */
-function sentence(s: string) {
-  const t = s.replace(/\s·\s/g, ', ').trim();
-  return t.charAt(0).toUpperCase() + t.slice(1) + (/[.!?]$/.test(t) ? '' : '.');
-}
 
 export interface Rule {
   id: string;
@@ -150,30 +150,12 @@ export function Rules({ rules }: { rules: Rule[] }) {
 /** A reference table: hairline rows, sentence-case heads. `mono` lists the columns set in code. */
 export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'], mono = [0, 1] }: { rows: React.ReactNode[][]; head?: string[]; mono?: number[] }) {
   return (
-    <div className="-mx-4 overflow-x-auto px-4">
-      <table className="w-full border-collapse text-left">
-        <thead>
-          <tr>
-            {head.map((h) => (
-              <th key={h} className="type-doc-caption border-b border-rule pb-8 pr-16 font-medium text-ink3">{h}</th>
-            ))}
-          </tr>
-        </thead>
+    <div className="table-wrap">
+      <table className="tok-table">
+        <thead><tr>{head.map((h) => <th key={h}>{h}</th>)}</tr></thead>
         <tbody>
           {rows.map((cells, i) => (
-            <tr key={i} className="border-b border-rule last:border-0">
-              {cells.map((c, j) => (
-                <td
-                  key={j}
-                  className={[
-                    'py-10 pr-16 align-baseline',
-                    !mono.includes(j) ? 'type-doc-caption min-w-160 text-ink2' : j === 0 ? 'type-doc-code whitespace-nowrap text-ink' : 'type-doc-code text-ink2',
-                  ].join(' ')}
-                >
-                  {c}
-                </td>
-              ))}
-            </tr>
+            <tr key={i}>{cells.map((c, j) => <td key={j}>{mono.includes(j) && typeof c === 'string' ? <code>{c}</code> : c}</td>)}</tr>
           ))}
         </tbody>
       </table>
@@ -268,21 +250,23 @@ export function CodeScreen({ tabs }: { tabs: { id: string; label: string; file: 
   const [tab, setTab] = React.useState(tabs[0].id);
   const current = tabs.find((t) => t.id === tab)!;
   return (
-    <div className="recipe-glass-face rounded-glass-face-radius p-glass-face-pad">
-      <div data-mu-colorway="graphite" className="recipe-code-card-screen overflow-hidden rounded-glass-face-screen-radius">
-        <div data-md="skip" className="flex items-center justify-between gap-12 pb-2 pl-14 pr-6 pt-6">
-          <span className="type-label text-syn-punct">{current.file}</span>
-          <div className="flex items-center gap-6">
-            {tabs.length > 1 && <Segmented size="compact" aria-label="Platform" value={tab} onValueChange={(v) => setTab(v as string)} options={tabs.map((t) => ({ value: t.id, label: t.label }))} />}
-            <CopyButton text={current.code} />
+    <div className="code-screen">
+      <div className="code-bar" data-md="skip">
+        <span className="eng">{current.file}</span>
+        {tabs.length > 1 && (
+          <div className="seg sm" role="radiogroup" aria-label="Platform" style={{ background: 'rgba(255,255,255,.06)', boxShadow: 'none' }}>
+            {tabs.map((t) => (
+              <button key={t.id} type="button" role="radio" aria-checked={t.id === tab} onClick={() => setTab(t.id)} style={{ color: t.id === tab ? '#fff' : 'rgba(255,255,255,.55)' }}>{t.label}</button>
+            ))}
           </div>
-        </div>
-        {tabs.map((t) => (
-          <div key={t.id} hidden={t.id !== tab} data-label={t.file}>
-            <Lines code={t.code} lang={t.lang} numbers className="type-doc-code px-10 pb-16 pt-8" />
-          </div>
-        ))}
+        )}
+        <CopyButton text={current.code} />
       </div>
+      {tabs.map((t) => (
+        <pre key={t.id} hidden={t.id !== tab} data-label={t.file} data-mu-colorway="graphite" style={{ paddingTop: 44 }}>
+          <Lines code={t.code} lang={t.lang} numbers />
+        </pre>
+      ))}
     </div>
   );
 }
