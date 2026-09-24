@@ -10,7 +10,7 @@ public struct MetalLabel: View {
         case readout
         case readoutDim = "readout-dim"
         case onGraphite = "on-graphite"
-        case dark
+        case dark, name, detail
 
         var fontPart: String {
             switch self {
