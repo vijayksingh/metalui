@@ -44,6 +44,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
       { to: '/components/hover-engraving', label: 'Hover engraving' },
       { to: '/components/provenance-tooltip', label: 'Provenance tooltip' },
+      { to: '/components/region', label: 'Region' },
     ],
   },
   {

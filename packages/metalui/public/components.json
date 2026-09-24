@@ -74,6 +74,24 @@
       "sheet": "Kamui 03 §5"
     },
     {
+      "name": "region",
+      "title": "Region",
+      "status": "alpha",
+      "description": "A drawn rectangle with a name that carries a rule: a sunk well with a head (name, rule, count), a drop-target state, dim and past states, renaming, and a pinned-lens form as a frosted plate with rows.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Region, RegionRow",
+        "base": "none (a group; its rows and dimples are real controls)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRegion, MetalRegionRow"
+      },
+      "registry": "https://metalui.dev/r/region.json",
+      "agent": "https://metalui.dev/r/region.md",
+      "sheet": "Kamui 04 §7"
+    },
+    {
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",

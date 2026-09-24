@@ -163,6 +163,11 @@ const PV = T.provenance;
 const PV_KEYS = Object.keys(PV).filter((k) => !k.startsWith('$'));
 const provenanceVars = PV_KEYS.map((k) => `  --mu-provenance-${k}: ${typeof PV[k] === 'number' ? (k.endsWith('-ms') ? `${PV[k]}ms` : `${PV[k]}px`) : PV[k]};`).join('\n');
 
+// ---------- region (tokens.json region) ----------
+const RG = T.region;
+const RG_KEYS = Object.keys(RG).filter((k) => !k.startsWith('$'));
+const regionVars = RG_KEYS.map((k) => `  --mu-region-${k}: ${typeof RG[k] === 'number' ? (k === 'dim' ? RG[k] : `${RG[k]}px`) : RG[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -187,6 +192,7 @@ ${cueVars}
 ${suggestionVars}
 ${engravingVars}
 ${provenanceVars}
+${regionVars}
 ${typeVars}
 ${travel}
 }
@@ -563,7 +569,13 @@ public enum MetalProvenance {
 ${PV_KEYS.map((k) => { const v = PV[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; if (/em$/.test(v)) return `    /// In em.\n    public static let ${camel(k)}: Double = ${num(parseFloat(v))}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance);
+const swiftRegion = `
+/// ${RG.$use}
+public enum MetalRegion {
+${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

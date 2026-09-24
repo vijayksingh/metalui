@@ -193,4 +193,24 @@ final class MetalCaptures: XCTestCase {
             capture("provenance-tooltip-\(colorway.rawValue)", view)
         }
     }
+
+    func testRegion() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(alignment: .top, spacing: 20) {
+                MetalRegionView(name: "friday", rule: "dates them friday", count: 2).frame(width: 200, height: 140)
+                MetalRegionView(name: "Done", rule: "marks tasks done", dropRule: "drop to mark tasks done", state: .over).frame(width: 200, height: 140)
+                MetalRegionView(name: "#poster", rule: "tags them #poster", state: .dim).frame(width: 200, height: 140)
+                MetalRegionView(name: "open tasks", rule: "lens · live", lens: true) {
+                    VStack(spacing: 2) {
+                        MetalRegionRow("Send the poster", meta: "FRI") { MetalDimple(isOn: .constant(false), label: "Send the poster") }
+                        MetalRegionRow("Call the printer", checked: true) { MetalDimple(isOn: .constant(true), label: "Call the printer") }
+                    }
+                }.frame(width: 260, height: 160)
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("region-\(colorway.rawValue)", view)
+        }
+    }
 }

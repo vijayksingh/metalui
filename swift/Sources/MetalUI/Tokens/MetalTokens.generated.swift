@@ -34,6 +34,12 @@ public struct MetalColorwayTokens: Sendable {
     public let engravingBg: MetalRGBA
     public let engravingEmphasis: MetalRGBA
     public let engravingTagRing: MetalRGBA
+    public let regionFill: MetalGradient
+    public let regionSh: [MetalShadow]
+    public let regionLensFill: MetalGradient
+    public let regionOverShade: [MetalShadow]
+    public let raiseLite: [MetalShadow]
+    public let rowHover: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -103,6 +109,26 @@ public enum MetalTokens {
         engravingBg: MetalRGBA(252, 251, 249, 0.92),
         engravingEmphasis: MetalRGBA(40, 38, 32, 0.62),
         engravingTagRing: MetalRGBA(40, 38, 32, 0.2),
+        regionFill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(40, 38, 32, 0.028), 0.0), .init(MetalRGBA(40, 38, 32, 0.012), 1.0)]),
+        regionSh: [
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(60, 55, 40, 0.07)),
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.035)),
+            MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.9)),
+        ],
+        regionLensFill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(252, 251, 249, 0.55), 0.0), .init(MetalRGBA(246, 245, 242, 0.45), 1.0)]),
+        regionOverShade: [
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(60, 55, 40, 0.07)),
+        ],
+        raiseLite: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
+            MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
+            MetalShadow(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, color: MetalRGBA(110, 100, 80, 0.06)),
+            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(24, 22, 16, 0.04)),
+            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(24, 22, 16, 0.04)),
+            MetalShadow(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, color: MetalRGBA(24, 22, 16, 0.08)),
+            MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(24, 22, 16, 0.1)),
+        ],
+        rowHover: MetalRGBA(255, 255, 255, 0.7),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -195,6 +221,26 @@ public enum MetalTokens {
         engravingBg: MetalRGBA(34, 34, 37, 0.92),
         engravingEmphasis: MetalRGBA(255, 255, 255, 0.55),
         engravingTagRing: MetalRGBA(255, 255, 255, 0.2),
+        regionFill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(255, 255, 255, 0.02), 0.0), .init(MetalRGBA(255, 255, 255, 0.01), 1.0)]),
+        regionSh: [
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.5)),
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.35)),
+            MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
+        ],
+        regionLensFill: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(44, 44, 47, 0.55), 0.0), .init(MetalRGBA(37, 37, 39, 0.45), 1.0)]),
+        regionOverShade: [
+            MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.5)),
+        ],
+        raiseLite: [
+            MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.05)),
+            MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.09)),
+            MetalShadow(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.3)),
+            MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.4)),
+            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.2)),
+            MetalShadow(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, color: MetalRGBA(0, 0, 0, 0.2)),
+            MetalShadow(inset: false, x: 0.0, y: 22.0, blur: 40.0, spread: -18.0, color: MetalRGBA(0, 0, 0, 0.28)),
+        ],
+        rowHover: MetalRGBA(255, 255, 255, 0.06),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -660,4 +706,25 @@ public enum MetalProvenance {
     public static let tracking: Double = 0.05
     public static let ink: MetalRGBA = MetalRGBA(233, 233, 235, 1.0)
     public static let dim: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
+}
+
+/// A region: a drawn rectangle on the canvas with a name that carries a rule (Done ticks, To do makes tasks, a date dates, any other name tags). A sunk well at rest; over is the drop-target state (green fill, 1 pt ring, the rule reads 'drop to …' in green); dim under an in-place lens; gone when it did not exist at the scrubbed time; a pinned lens is a frosted plate with rows instead of a well. Radius from the ladder by size: hero (30) when the short side is at least big-at, else card (24). Values are the medium demo's .region; per-colorway fills are region-* in the colorways.
+public enum MetalRegion {
+    public static let bigAt: Double = 240.0
+    public static let headHeight: Double = 44.0
+    public static let headPadTop: Double = 14.0
+    public static let headPadX: Double = 18.0
+    public static let headGap: Double = 10.0
+    public static let overRing: MetalRGBA = MetalRGBA(63, 185, 122, 0.45)
+    public static let overFillTop: MetalRGBA = MetalRGBA(120, 214, 165, 0.07)
+    public static let overFillBot: MetalRGBA = MetalRGBA(120, 214, 165, 0.03)
+    public static let overRule: MetalRGBA = MetalRGBA(47, 158, 99, 1.0)
+    public static let dim: Double = 0.35
+    public static let lensBlur: Double = 10.0
+    public static let bodyInset: Double = 12.0
+    public static let bodyTop: Double = 46.0
+    public static let rowPadY: Double = 5.0
+    public static let rowPadX: Double = 8.0
+    public static let rowGap: Double = 9.0
+    public static let rowDimple: Double = 14.0
 }

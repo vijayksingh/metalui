@@ -1,0 +1,86 @@
+@import "../tokens.css";
+
+/* Region (Kamui 04 §7, the medium demo's .region). Every value is --mu-region-* or a colorway token. */
+.mu-region {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--mu-radius-card);
+  background: var(--mu-region-fill);
+  box-shadow: var(--mu-region-sh);
+  transition:
+    background var(--mu-spring-settle-d) var(--mu-spring-settle),
+    box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle),
+    opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-region[data-big] { border-radius: var(--mu-radius-hero); }
+/* Over: a block is dragged above it. The drop target lights and the rule says what the drop will do. */
+.mu-region[data-over] {
+  background: linear-gradient(var(--mu-region-over-fill-top), var(--mu-region-over-fill-bot));
+  box-shadow: var(--mu-region-over-shade), inset 0 0 0 1px var(--mu-region-over-ring);
+}
+.mu-region[data-over] .mu-region-rule { color: var(--mu-region-over-rule); text-shadow: none; }
+.mu-region[data-dim] { opacity: var(--mu-region-dim); }
+.mu-region[data-past] { opacity: 0; pointer-events: none; }
+/* A pinned lens: a frosted plate that lists its matches instead of a well that holds blocks. */
+.mu-region[data-lens] {
+  background: var(--mu-region-lens-fill);
+  box-shadow: var(--mu-raise-lite);
+  -webkit-backdrop-filter: blur(var(--mu-region-lens-blur));
+  backdrop-filter: blur(var(--mu-region-lens-blur));
+}
+@media (prefers-reduced-transparency: reduce) {
+  .mu-region[data-lens] { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+.mu-region-head {
+  position: absolute;
+  inset: 0 0 auto 0;
+  box-sizing: border-box;
+  height: var(--mu-region-head-height);
+  padding: var(--mu-region-head-pad-top) var(--mu-region-head-pad-x) 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--mu-region-head-gap);
+  cursor: grab;
+}
+.mu-region-name { min-width: 20px; white-space: nowrap; color: var(--mu-ink); outline: none; }
+.mu-region-name:empty::before, .mu-region-name[data-empty]::before { content: attr(data-placeholder); color: var(--mu-ink3); font-weight: 500; }
+input.mu-region-name {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: text;
+  caret-color: var(--mu-green-deep);
+  field-sizing: content;
+}
+input.mu-region-name::placeholder { color: var(--mu-ink3); font-weight: 500; }
+.mu-region-rule { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); }
+.mu-region-count { color: var(--mu-ink3); }
+.mu-region-body {
+  position: absolute;
+  left: var(--mu-region-body-inset);
+  right: var(--mu-region-body-inset);
+  top: var(--mu-region-body-top);
+  bottom: var(--mu-region-body-inset);
+  overflow: hidden;
+}
+
+/* A row in a pinned lens region. */
+.mu-region-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mu-region-row-gap);
+  padding: var(--mu-region-row-pad-y) var(--mu-region-row-pad-x);
+  border-radius: var(--mu-radius-row);
+  color: var(--mu-ink);
+  cursor: pointer;
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-region-row:hover { background: var(--mu-row-hover); box-shadow: var(--mu-raise-sm); }
+.mu-region-row:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+.mu-region-row > .mu-region-row-text { flex: 1; min-width: 0; }
+.mu-region-row[data-checked] > .mu-region-row-text { color: var(--mu-ink3); text-decoration: line-through; }
+.mu-region-row > .mu-region-row-meta { margin-left: auto; padding-top: 3px; }
+.mu-region-row .mu-dimple:not([data-ghost]) { width: var(--mu-region-row-dimple); height: var(--mu-region-row-dimple); border-radius: var(--mu-cue-ghost-radius); }
+.mu-region-empty { padding: 10px 8px; color: var(--mu-ink2); }
