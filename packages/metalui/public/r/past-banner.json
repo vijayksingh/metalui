@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "past-banner",
+  "type": "registry:ui",
+  "title": "Past banner",
+  "description": "The only chrome that changes while the canvas is scrubbed into the past: a graphite pill with the MEMORY engraving, the moment viewed, and Back to Now.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/past-banner/past-banner.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/past-banner/past-banner.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Button } from '@base-ui/react/button';\nimport './past-banner.css';\n\n/* ─────────────────────────────────────────────────────────\n * PAST BANNER (Kamui 04 §13)\n *   scrubbed  drops in one nest from above on the surface spring (a crossfade under Reduce Motion)\n *   shows     MEMORY · the moment viewed · Back to Now ⎋\n *   back      the cap presses 1; the host returns to the present and unmounts it\n * The only chrome that changes while in the past. It is a live status, so the moment is announced.\n * ───────────────────────────────────────────────────────── */\n\nexport interface PastBannerProps {\n  /** The moment viewed, as a person reads it: \"viewing Tue 23 Sep · 14:10\". */\n  moment: string;\n  onBack: () => void;\n  className?: string;\n}\n\n/** Says the canvas is showing the past, and brings it back. Shown only while scrubbed. */\nexport function PastBanner({ moment, onBack, className }: PastBannerProps) {\n  return (\n    <div role=\"status\" className={['mu-pastbanner', 'mu-frost-graphite', 'type-ui', className].filter(Boolean).join(' ')}>\n      <span className=\"mu-pastbanner-engrave mu-type-label\">MEMORY</span>\n      <span>{moment}</span>\n      <Button className=\"mu-pastbanner-back type-ui\" onClick={onBack} aria-keyshortcuts=\"Escape\">\n        Back to Now <span aria-hidden className=\"mu-pastbanner-key\">⎋</span>\n      </Button>\n    </div>\n  );\n}\n"
+    },
+    {
+      "path": "packages/metalui/src/components/past-banner/past-banner.css",
+      "type": "registry:file",
+      "target": "components/metalui/past-banner/past-banner.css",
+      "content": "@import \"../tokens.css\";\n\n/* Past banner (Kamui 04 §13, the medium demo's #pastBanner). */\n.mu-pastbanner {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--mu-pastbanner-gap);\n  height: var(--mu-pastbanner-height);\n  padding: 0 var(--mu-pastbanner-pad-end) 0 var(--mu-pastbanner-pad-start);\n  border-radius: 999px;\n  color: var(--mu-pastbanner-ink);\n  white-space: nowrap;\n  /* One nest from above, on the surface spring; a crossfade under Reduce Motion. */\n  animation: mu-pastbanner-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;\n}\n@keyframes mu-pastbanner-in {\n  from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * -1 * var(--mu-travel-surface))); }\n}\n.mu-pastbanner-engrave { color: var(--mu-pastbanner-engrave); text-shadow: 0 -1px 0 var(--mu-pastbanner-engrave-lip); }\n.mu-pastbanner-back {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  height: var(--mu-pastbanner-button-height);\n  padding: 0 var(--mu-pastbanner-button-pad);\n  border: 0;\n  border-radius: 999px;\n  color: inherit;\n  background: var(--mu-pastbanner-button-bg);\n  cursor: pointer;\n  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-release-d) var(--mu-spring-release);\n}\n.mu-pastbanner-back:hover { background: var(--mu-pastbanner-button-hover); }\n.mu-pastbanner-back:active { transform: translateY(var(--mu-motion-press)); transition-duration: 50ms; }\n.mu-pastbanner-back:focus-visible { outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset); }\n.mu-pastbanner-key { color: var(--mu-pastbanner-engrave); }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/past-banner.md. SwiftUI: MetalPastBanner in the MetalUI Swift package."
+}

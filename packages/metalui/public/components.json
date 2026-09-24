@@ -92,6 +92,24 @@
       "sheet": "Kamui 04 §5 (a Dial/Slider skin)"
     },
     {
+      "name": "past-banner",
+      "title": "Past banner",
+      "status": "alpha",
+      "description": "The only chrome that changes while the canvas is scrubbed into the past: a graphite pill with the MEMORY engraving, the moment viewed, and Back to Now.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PastBanner",
+        "base": "@base-ui/react/button"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPastBanner"
+      },
+      "registry": "https://metalui.dev/r/past-banner.json",
+      "agent": "https://metalui.dev/r/past-banner.md",
+      "sheet": "Kamui 04 §13"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

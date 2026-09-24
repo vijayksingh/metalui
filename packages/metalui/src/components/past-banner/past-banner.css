@@ -1,0 +1,36 @@
+@import "../tokens.css";
+
+/* Past banner (Kamui 04 §13, the medium demo's #pastBanner). */
+.mu-pastbanner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-pastbanner-gap);
+  height: var(--mu-pastbanner-height);
+  padding: 0 var(--mu-pastbanner-pad-end) 0 var(--mu-pastbanner-pad-start);
+  border-radius: 999px;
+  color: var(--mu-pastbanner-ink);
+  white-space: nowrap;
+  /* One nest from above, on the surface spring; a crossfade under Reduce Motion. */
+  animation: mu-pastbanner-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}
+@keyframes mu-pastbanner-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * -1 * var(--mu-travel-surface))); }
+}
+.mu-pastbanner-engrave { color: var(--mu-pastbanner-engrave); text-shadow: 0 -1px 0 var(--mu-pastbanner-engrave-lip); }
+.mu-pastbanner-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--mu-pastbanner-button-height);
+  padding: 0 var(--mu-pastbanner-button-pad);
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  background: var(--mu-pastbanner-button-bg);
+  cursor: pointer;
+  transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-release-d) var(--mu-spring-release);
+}
+.mu-pastbanner-back:hover { background: var(--mu-pastbanner-button-hover); }
+.mu-pastbanner-back:active { transform: translateY(var(--mu-motion-press)); transition-duration: 50ms; }
+.mu-pastbanner-back:focus-visible { outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset); }
+.mu-pastbanner-key { color: var(--mu-pastbanner-engrave); }

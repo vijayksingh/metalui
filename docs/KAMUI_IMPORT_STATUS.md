@@ -55,8 +55,8 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 | 6 | Region | shipped | `78c214b` | React `Region` (`name`, `rule`, `dropRule`, `count`, `over`, `dim`, `past`, `lens`, `renaming`, `onRename`, `onRenameCancel`, `width`, `height`) and `RegionRow` (`checked`, `lead`, `meta`); CSS `--mu-region-*`, `--mu-raise-lite`, `--mu-row-hover`; Swift `MetalRegionView(name:rule:dropRule:count:state:lens:renaming:onRename:rows:)`, `MetalRegionRow`, `MetalRegion`. Derived to confirm: graphite region fill, shade and lens plate. |
 | 7a | Segmented control | shipped | `ab19895` | React `Segmented` (`options`, `value`, `defaultValue`, `onValueChange`, `size: 'compact'\|'regular'`, `aria-label`; Base UI RadioGroup); CSS `--mu-segmented-*`; Swift `MetalSegmented(_:selection:options:size:)`. |
 | 7b | Lens bar | shipped | `2795903` | React `LensBar` (`query`, `count`, `source: 'asking'\|'jev'\|'local'\|null`, `mode`, `onModeChange`, `modes`, `onPin`, `onClose`, `glyphs: { lens, pin, close }`; Base UI Toolbar); CSS `--mu-lensbar-*`; Swift `MetalLensBar(query:count:source:mode:modes:onPin:onClose:)`, `MetalLensMode`, `MetalLensSource`. |
-| 8 | Memory scrubber | shipped | see `feat(objects): memory scrubber` | React `MemoryScrubber` (`start`, `end`, `value: number\|null`, `onValueChange`, `marks`, `format`, `glyph`; Base UI Slider); CSS `--mu-scrubber-*`; Swift `MetalMemoryScrubber(range:selection:marks:format:)`, `MetalScrubberMetrics`. |
-| 9 | Past banner | pending | | |
+| 8 | Memory scrubber | shipped | `a83b74b` | React `MemoryScrubber` (`start`, `end`, `value: number\|null`, `onValueChange`, `marks`, `format`, `glyph`; Base UI Slider); CSS `--mu-scrubber-*`; Swift `MetalMemoryScrubber(range:selection:marks:format:)`, `MetalScrubberMetrics`. |
+| 9 | Past banner | shipped | see `feat(objects): past banner` | React `PastBanner` (`moment`, `onBack`); CSS `--mu-pastbanner-*`; Swift `MetalPastBanner(moment:onBack:)`, `MetalPastBannerMetrics`. |
 | 10 | Tool strip | pending | | |
 | 11 | Size readout | pending | | |
 

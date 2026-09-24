@@ -184,6 +184,11 @@ const SC_KEYS = Object.keys(SC).filter((k) => !k.startsWith('$'));
 const SC_UNITLESS = new Set(['fill-opacity', 'snap', 'step-ms', 'large-step-ms']);
 const scrubberVars = SC_KEYS.map((k) => `  --mu-scrubber-${k}: ${typeof SC[k] === 'number' ? (SC_UNITLESS.has(k) ? SC[k] : `${SC[k]}px`) : SC[k]};`).join('\n');
 
+// ---------- past banner (tokens.json pastbanner) ----------
+const PB = T.pastbanner;
+const PB_KEYS = Object.keys(PB).filter((k) => !k.startsWith('$'));
+const pastbannerVars = PB_KEYS.map((k) => `  --mu-pastbanner-${k}: ${typeof PB[k] === 'number' ? `${PB[k]}px` : PB[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -212,6 +217,7 @@ ${regionVars}
 ${segmentedVars}
 ${lensbarVars}
 ${scrubberVars}
+${pastbannerVars}
 ${typeVars}
 ${travel}
 }
@@ -596,6 +602,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
 /// ${LB.$use}
+public enum MetalPastBannerMetrics {
+${PB_KEYS.map((k) => { const v = PB[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
+}
+
+/// ${SC.$use}
 public enum MetalScrubberMetrics {
 ${SC_KEYS.filter((k) => typeof SC[k] === 'number').map((k) => `    public static let ${camel(k)}: Double = ${num(SC[k])}`).join('\n')}
     public static let knobSh: [MetalShadow] = ${swiftValue(SC['knob-sh'])[1].replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}

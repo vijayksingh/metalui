@@ -255,4 +255,14 @@ final class MetalCaptures: XCTestCase {
             capture("memory-scrubber-\(colorway.rawValue)", view)
         }
     }
+
+    func testPastBanner() {
+        for colorway in MetalColorway.allCases {
+            let view = MetalPastBanner(moment: "viewing Tue 23 Sep · 14:10") {}
+                .padding(28)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("past-banner-\(colorway.rawValue)", view)
+        }
+    }
 }

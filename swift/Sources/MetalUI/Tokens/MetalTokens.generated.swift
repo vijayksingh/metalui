@@ -736,6 +736,21 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalPastBannerMetrics {
+    public static let height: Double = 34.0
+    public static let padStart: Double = 14.0
+    public static let padEnd: Double = 6.0
+    public static let gap: Double = 10.0
+    public static let ink: MetalRGBA = MetalRGBA(237, 237, 239, 1.0)
+    public static let engrave: MetalRGBA = MetalRGBA(255, 255, 255, 0.4)
+    public static let engraveLip: MetalRGBA = MetalRGBA(0, 0, 0, 0.6)
+    public static let buttonHeight: Double = 24.0
+    public static let buttonPad: Double = 10.0
+    public static let buttonBg: MetalRGBA = MetalRGBA(255, 255, 255, 0.09)
+    public static let buttonHover: MetalRGBA = MetalRGBA(255, 255, 255, 0.15)
+}
+
+/// The memory scrubber: time as a dimension of the surface. A well track (10 tall) with a green intent fill up to the knob, tick marks for blocks and edits, day labels beneath, a knurled anodized knob, and a MEMORY readout above with NOW while in the past. Arrows step an hour, Shift a day; the knob rides the part spring when it jumps (a click, a key), and follows the pointer exactly while dragged. Within 1 % of now it snaps to now.
 public enum MetalScrubberMetrics {
     public static let width: Double = 330.0
     public static let height: Double = 50.0

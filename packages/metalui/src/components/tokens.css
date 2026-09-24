@@ -272,6 +272,17 @@
   --mu-scrubber-step-ms: 3600000;
   --mu-scrubber-large-step-ms: 86400000;
   --mu-scrubber-snap: 0.01;
+  --mu-pastbanner-height: 34px;
+  --mu-pastbanner-pad-start: 14px;
+  --mu-pastbanner-pad-end: 6px;
+  --mu-pastbanner-gap: 10px;
+  --mu-pastbanner-ink: #EDEDEF;
+  --mu-pastbanner-engrave: rgba(255,255,255,.4);
+  --mu-pastbanner-engrave-lip: rgba(0,0,0,.6);
+  --mu-pastbanner-button-height: 24px;
+  --mu-pastbanner-button-pad: 10px;
+  --mu-pastbanner-button-bg: rgba(255,255,255,.09);
+  --mu-pastbanner-button-hover: rgba(255,255,255,.15);
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
