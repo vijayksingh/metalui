@@ -798,6 +798,9 @@
   background: var(--mu-r-glass-face-glare-background);
   box-shadow: var(--mu-r-glass-face-glare-shadow);
 }
+@utility glass-face-glare {
+  &::after { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: var(--mu-r-glass-face-glare-background); box-shadow: var(--mu-r-glass-face-glare-shadow); }
+}
 @utility recipe-hover-engraving {
   background: var(--mu-r-hover-engraving-self-background);
   box-shadow: var(--mu-r-hover-engraving-self-shadow);

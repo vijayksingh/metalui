@@ -8,8 +8,7 @@
   "react": {
     "export": "GlassFace",
     "files": [
-      "glass-face.tsx",
-      "glass-face.css"
+      "glass-face.tsx"
     ]
   },
   "swift": {

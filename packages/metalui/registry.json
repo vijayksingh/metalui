@@ -209,11 +209,6 @@
           "path": "packages/metalui/src/components/glass-face/glass-face.tsx",
           "type": "registry:ui",
           "target": "components/metalui/glass-face/glass-face.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/glass-face/glass-face.css",
-          "type": "registry:file",
-          "target": "components/metalui/glass-face/glass-face.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/glass-face.md. SwiftUI: MetalGlassFace in the MetalUI Swift package."
