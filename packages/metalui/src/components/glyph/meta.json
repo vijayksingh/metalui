@@ -8,8 +8,7 @@
   "react": {
     "export": "Glyph",
     "files": [
-      "glyph.tsx",
-      "glyph.css"
+      "glyph.tsx"
     ]
   },
   "swift": {

@@ -242,11 +242,6 @@
           "path": "packages/metalui/src/components/glyph/glyph.tsx",
           "type": "registry:ui",
           "target": "components/metalui/glyph/glyph.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/glyph/glyph.css",
-          "type": "registry:file",
-          "target": "components/metalui/glyph/glyph.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: MetalGlyph in the MetalUI Swift package."
