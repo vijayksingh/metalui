@@ -10,7 +10,7 @@ import './label.css';
  *   count, cell       a mono number; a mono table cell
  *   value, value-small  a measured value in mono (22, 12)
  *   display, display-quiet  a large line and its quieter continuation
- *   readout, readout-dim  mono on graphite and its dim part
+ *   readout, readout-dim  mono on graphite, and the same in its dim ink
  *   on-graphite       sans text on graphite chrome
  *   dark              an engraving on dark chrome
  * tone="accent" turns it green without a lip (a rule that says what a drop will do).

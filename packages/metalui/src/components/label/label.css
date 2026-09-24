@@ -16,7 +16,7 @@
 .mu-label[data-variant="display-quiet"] { font: var(--mu-r-label-display-quiet-font); letter-spacing: var(--mu-r-label-display-quiet-tracking); color: var(--mu-r-label-display-quiet-color); }
 .mu-label[data-variant="readout"] { font: var(--mu-r-label-readout-font); letter-spacing: var(--mu-r-label-readout-tracking); color: var(--mu-r-label-readout-color); }
 .mu-label[data-variant="on-graphite"] { font: var(--mu-r-label-on-graphite-font); letter-spacing: var(--mu-r-label-on-graphite-tracking); color: var(--mu-r-label-on-graphite-color); }
-.mu-label[data-variant="readout-dim"] { font-style: normal; color: var(--mu-r-label-readout-dim-color); }
+.mu-label[data-variant="readout-dim"] { font: var(--mu-r-label-readout-font); font-style: normal; letter-spacing: var(--mu-r-label-readout-tracking); color: var(--mu-r-label-readout-dim-color); }
 .mu-label[data-variant="display"], .mu-label[data-variant="display-quiet"] { white-space: normal; }
 /* Accent: green, no lip; it cross-fades on settle when a host toggles it. */
 .mu-label { transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); }
