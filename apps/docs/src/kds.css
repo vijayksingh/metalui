@@ -720,3 +720,9 @@ html.rm .xr-chipwrap { animation: none; transition: none; }
 html.rm .xr-caret { animation: none; }
 .xr-badgeface { display: flex; align-items: center; width: 100%; height: 100%; font-family: var(--mono); font-weight: 500; color: var(--ink2); white-space: nowrap; }
 .xr-tool { position: absolute; left: 0; top: 0; transform-style: preserve-3d; cursor: pointer; }
+/* x-ray, tooltip: the label floats high over its tool, joined by a dashed stem */
+.xr-tipwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
+.xr-tipwrap > * { transition: opacity var(--spring-settle-d, .44s) var(--spring-settle, ease-out); }
+.xr-tipwrap:not(.is-shown) > * { opacity: 0; }
+.xr-tipface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .05em; }
+.xr-stem { position: absolute; width: 0; border-left: 2px dashed color-mix(in srgb, var(--green-deep) 60%, transparent); transform-origin: 0 0; transition: opacity .3s; }

@@ -8,6 +8,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/tooltip/t
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { TooltipXray } from '../../ui/xray/TooltipXray';
 
 function IconButton({ label, children, ...props }: { label: string; children: React.ReactNode } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
@@ -47,6 +48,9 @@ export default function TooltipPage() {
           </div>
         </Bench>
         <SwiftCapture name="tooltip" maxWidth={300} />
+      </Section>
+      <Section id="x-ray" title="X-ray" lede="See how the tooltip works. Click an icon to learn about one part and change it.">
+        <TooltipXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[
