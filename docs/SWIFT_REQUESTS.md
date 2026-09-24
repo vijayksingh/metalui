@@ -91,6 +91,8 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **`MetalButton`** (recipe `button`): new caps `link` (green mono word, no cap, no press), `graphite` (24 tall light cap on graphite), `strip` and `stripDanger` (28 tall flat caps in a graphite tool strip; hover fill, pressed well, 1.5 green focus ring).
 - **`.metalTooltip`**: the label takes a view; a `dim:` detail in the key ink; `wrap` lets a note wrap at 280.
 - **`MetalMark`**: new kind `match` (weight 650, green .55 underline 1.5, offset 2.5), result rows only.
+- **`MetalKbd`**: new surface `plain`, which draws no cap because the host paints the key. The toast's Undo ⌘Z uses it with the toast recipe's key ink.
+- **Tailwind (web only):** tokens.json now carries `$utilities` (raw declarations) on recipes, on layout groups (`engraving`, `region`, `presence`, `palette`) and on `motion` and `swap`, plus a top-level `animations` map. These are CSS-only; the Swift generator skips `$` keys and `animations`, and no Swift value changed.
 
 ### Blocks
 
