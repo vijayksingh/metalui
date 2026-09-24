@@ -1,0 +1,17 @@
+name: Visual parity guardrails
+on:
+  push:
+  pull_request:
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run lint:literals
+      - run: npm run check:recipes

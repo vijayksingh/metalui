@@ -10,7 +10,10 @@
   "scripts": {
     "dev": "npm run dev -w @metalui/docs",
     "generate": "node scripts/build-tokens.mjs && node scripts/build-icons.mjs && node scripts/build-morph.mjs && node scripts/build-registry.mjs && node scripts/build-agent-docs.mjs",
-    "check": "node scripts/build-tokens.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check",
+    "check": "node scripts/build-tokens.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check && node scripts/lint-literals.mjs && node scripts/check-recipe-parity.mjs",
+    "lint:literals": "node scripts/lint-literals.mjs",
+    "check:recipes": "node scripts/check-recipe-parity.mjs",
+    "hooks:install": "node scripts/install-hooks.mjs",
     "symbols": "node scripts/build-symbols.mjs",
     "symbols:check": "node scripts/build-symbols.mjs --check",
     "typecheck": "npm run typecheck --workspaces --if-present",
