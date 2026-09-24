@@ -14,6 +14,7 @@ public struct MetalColorwayTokens: Sendable {
     public let icon: MetalRGBA
     public let engrave: MetalRGBA
     public let lip: MetalRGBA
+    public let lipShadow: [MetalShadow]
     public let rule: MetalRGBA
     public let ruleLip: MetalRGBA
     public let thumbHi: MetalRGBA
@@ -80,14 +81,17 @@ public enum MetalTokens {
         s: MetalRGBA(246, 245, 242, 1.0),
         sLo: MetalRGBA(240, 239, 235, 1.0),
         wellTop: MetalRGBA(230, 229, 225, 1.0),
-        wellBot: MetalRGBA(236, 235, 231, 1.0),
+        wellBot: MetalRGBA(237, 236, 232, 1.0),
         ink: MetalRGBA(27, 27, 29, 1.0),
         ink2: MetalRGBA(92, 92, 96, 1.0),
-        ink3: MetalRGBA(130, 130, 133, 1.0),
+        ink3: MetalRGBA(154, 154, 157, 1.0),
         icon: MetalRGBA(58, 58, 61, 1.0),
-        engrave: MetalRGBA(40, 38, 32, 0.56),
-        lip: MetalRGBA(255, 255, 255, 0.55),
-        rule: MetalRGBA(0, 0, 0, 0.06),
+        engrave: MetalRGBA(40, 38, 32, 0.46),
+        lip: MetalRGBA(255, 255, 255, 0.95),
+        lipShadow: [
+            MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.95)),
+        ],
+        rule: MetalRGBA(0, 0, 0, 0.075),
         ruleLip: MetalRGBA(255, 255, 255, 0.5),
         thumbHi: MetalRGBA(255, 255, 255, 1.0),
         thumbLo: MetalRGBA(247, 246, 243, 1.0),
@@ -205,6 +209,9 @@ public enum MetalTokens {
         icon: MetalRGBA(214, 214, 216, 1.0),
         engrave: MetalRGBA(255, 255, 255, 0.38),
         lip: MetalRGBA(0, 0, 0, 0.35),
+        lipShadow: [
+            MetalShadow(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.35)),
+        ],
         rule: MetalRGBA(0, 0, 0, 0.45),
         ruleLip: MetalRGBA(255, 255, 255, 0.035),
         thumbHi: MetalRGBA(58, 58, 61, 1.0),
@@ -333,6 +340,7 @@ public enum MetalShared {
     public static let warning: MetalRGBA = MetalRGBA(228, 178, 94, 1.0)
     public static let photon: MetalRGBA = MetalRGBA(243, 217, 164, 1.0)
     public static let focus: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
+    public static let zero: Double = 0.0
 }
 
 public enum MetalCaps {
@@ -496,6 +504,229 @@ public enum MetalTint: String, CaseIterable, Sendable {
         case .iris: return "unpleasant"
         }
     }
+}
+
+/// Object recipes (tokens.json `recipes`): every layer of each object's look, per part and state,
+/// from the medium demo's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).
+public enum MetalRecipes {
+    /// A colour swatch chip: a hard, glossy body in its own colour, a sheen, an engraved hex, a recessed LED dimple. (prototypes/medium/style.css .swatchobj)
+    public static let swatch = MetalObjectRecipe(
+        name: "swatch",
+        layers: [
+            .init(part: "self", state: nil, colorway: nil, fill: .linear(angle: 135.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.22)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.0)), 0.45), .init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.1)), 1.0)])), // mu-recipe:swatch:0 linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,0) 45%, rgba(0,0,0,.10))
+            .init(part: "self", state: nil, colorway: nil, fill: .solid(.selfColor(alpha: 1.0))), // mu-recipe:swatch:1 color-mix(in srgb, var(--mu-self) 100%, transparent)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.45)))), // mu-recipe:swatch:2 inset 0 1px 0 rgba(255,255,255,.45)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: -1.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.18)))), // mu-recipe:swatch:3 inset 0 -1.5px 0 rgba(0,0,0,.18)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:swatch:4 inset 0 0 6px 2px rgba(255,255,255,.12)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:swatch:5 0 1px 2px rgba(0,0,0,.12)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 14.0, blur: 26.0, spread: -12.0, paint: .selfColor(alpha: 0.53))), // mu-recipe:swatch:6 0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent)
+            .init(part: "led", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.28)))), // mu-recipe:swatch:7 rgba(0,0,0,.28)
+            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.4)))), // mu-recipe:swatch:8 inset 0 1px 2px rgba(0,0,0,.4)
+            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.25)))), // mu-recipe:swatch:9 0 1px 0 rgba(255,255,255,.25)
+        ],
+        props: [
+            "self.size": .number(76.0),
+            "self.radius": .number(22.0),
+            "label.font": .text("600 9.5px/1 mono"),
+            "label.tracking": .text("0.04em"),
+            "label.x": .number(10.0),
+            "label.y": .number(9.0),
+            "label.ink-dark": .text("rgba(0,0,0,.55)"),
+            "label.ink-light": .text("rgba(255,255,255,.8)"),
+            "led.size": .number(8.0),
+            "led.inset": .number(10.0),
+        ]
+    )
+
+    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (prototypes/medium/style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing)
+    public static let dimple = MetalObjectRecipe(
+        name: "dimple",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(230.0, 229.0, 225.0, 1.0)), 0.0), .init(.color(MetalRGBA(237.0, 236.0, 232.0, 1.0)), 1.0)])), // mu-recipe:dimple:0 linear-gradient(#E6E5E1, #EDECE8)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(20.0, 20.0, 21.0, 1.0)), 0.0), .init(.color(MetalRGBA(24.0, 24.0, 26.0, 1.0)), 1.0)])), // mu-recipe:dimple:1 linear-gradient(#141415, #18181A)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.1)))), // mu-recipe:dimple:2 inset 0 2px 6px -1px rgba(60,55,40,.10)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.03)))), // mu-recipe:dimple:3 inset 0 0 0 .5px rgba(0,0,0,.03)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:dimple:4 inset 0 -2px 4px -2px rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:dimple:5 inset 0 2px 6px -1px rgba(0,0,0,.6)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:dimple:6 inset 0 0 0 .5px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:dimple:7 inset 0 -2px 4px -2px rgba(255,255,255,.05)
+            .init(part: "self", state: "hover", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(225.0, 224.0, 220.0, 1.0)), 0.0), .init(.color(MetalRGBA(234.0, 233.0, 229.0, 1.0)), 1.0)])), // mu-recipe:dimple:8 linear-gradient(#E1E0DC, #EAE9E5)
+            .init(part: "self", state: "hover", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(26.0, 26.0, 28.0, 1.0)), 0.0), .init(.color(MetalRGBA(31.0, 31.0, 33.0, 1.0)), 1.0)])), // mu-recipe:dimple:9 linear-gradient(#1A1A1C, #1F1F21)
+            .init(part: "self", state: "on", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(30.0, 30.0, 32.0, 1.0)), 1.0)])), // mu-recipe:dimple:10 linear-gradient(#303033, #1E1E20)
+            .init(part: "self", state: "on", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:dimple:11 inset 0 1px 0 rgba(255,255,255,.12)
+            .init(part: "self", state: "on", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:dimple:12 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: "ghost", colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.0)))), // mu-recipe:dimple:13 rgba(0,0,0,0)
+            .init(part: "self", state: "ghost", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.16)))), // mu-recipe:dimple:14 inset 0 0 0 1px rgba(40,38,32,.16)
+            .init(part: "self", state: "ghost", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.1)))), // mu-recipe:dimple:15 inset 0 2px 4px -2px rgba(60,55,40,.10)
+            .init(part: "self", state: "ghost", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.18)))), // mu-recipe:dimple:16 inset 0 0 0 1px rgba(255,255,255,.18)
+            .init(part: "self", state: "ghost", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.4)))), // mu-recipe:dimple:17 inset 0 2px 4px -2px rgba(0,0,0,.4)
+            .init(part: "self", state: "ghost-hover", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.55)))), // mu-recipe:dimple:18 inset 0 0 0 1px rgba(63,185,122,.55)
+            .init(part: "doing", state: nil, colorway: nil, fill: .linear(angle: 90.0, stops: [.init(.color(MetalRGBA(63.0, 185.0, 122.0, 1.0)), 0.5), .init(.color(MetalRGBA(63.0, 185.0, 122.0, 0.0)), 0.5)])), // mu-recipe:dimple:19 linear-gradient(90deg, #3FB97A 50%, rgba(63,185,122,0) 50%)
+        ],
+        props: [
+            "self.size": .number(16.0),
+            "self.radius": .number(6.0),
+            "self.x": .number(-25.0),
+            "self.y": .number(2.5),
+            "self.row-size": .number(14.0),
+            "self.row-radius": .number(5.0),
+            "self.fade": .text("160ms"),
+            "tick.x": .number(5.0),
+            "tick.y": .number(2.5),
+            "tick.w": .number(4.0),
+            "tick.h": .number(8.0),
+            "tick.stroke": .number(1.6),
+            "tick.rotate": .text("42deg"),
+            "tick.color": .text("#FFFFFF"),
+            "tick.draw": .text("220ms"),
+            "tick.delay": .text("40ms"),
+            "ghost.x": .number(-27.0),
+            "ghost.y": .number(3.5),
+            "ghost.size": .number(14.0),
+            "ghost.radius": .number(5.0),
+            "doing.inset": .number(4.5),
+            "doing.radius": .number(3.0),
+            "doing.opacity": .text("0.8"),
+        ]
+    )
+
+    /// A region: a sunk well with an engraved head (name, rule, count); over: a green drop-target; a pinned lens: a frosted plate. (prototypes/medium/style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr)
+    public static let region = MetalObjectRecipe(
+        name: "region",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.028)), 0.0), .init(.color(MetalRGBA(40.0, 38.0, 32.0, 0.012)), 1.0)])), // mu-recipe:region:0 linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012))
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.02)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.01)), 1.0)])), // mu-recipe:region:1 linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01))
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.07)))), // mu-recipe:region:2 inset 0 2px 6px -1px rgba(60,55,40,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.035)))), // mu-recipe:region:3 inset 0 0 0 .5px rgba(0,0,0,.035)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:region:4 inset 0 -2px 4px -2px rgba(255,255,255,.9)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:region:5 inset 0 2px 6px -1px rgba(0,0,0,.5)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:region:6 inset 0 0 0 .5px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:region:7 inset 0 -2px 4px -2px rgba(255,255,255,.05)
+            .init(part: "self", state: "over", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(120.0, 214.0, 165.0, 0.07)), 0.0), .init(.color(MetalRGBA(120.0, 214.0, 165.0, 0.03)), 1.0)])), // mu-recipe:region:8 linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03))
+            .init(part: "self", state: "over", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.07)))), // mu-recipe:region:9 inset 0 2px 6px -1px rgba(60,55,40,.07)
+            .init(part: "self", state: "over", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:region:10 inset 0 2px 6px -1px rgba(0,0,0,.5)
+            .init(part: "self", state: "over", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.45)))), // mu-recipe:region:11 inset 0 0 0 1px rgba(63,185,122,.45)
+            .init(part: "self", state: "lens", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(252.0, 251.0, 249.0, 0.55)), 0.0), .init(.color(MetalRGBA(246.0, 245.0, 242.0, 0.45)), 1.0)])), // mu-recipe:region:12 linear-gradient(rgba(252,251,249,.55), rgba(246,245,242,.45))
+            .init(part: "self", state: "lens", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(44.0, 44.0, 47.0, 0.55)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 39.0, 0.45)), 1.0)])), // mu-recipe:region:13 linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45))
+        ],
+        props: [
+            "self.radius": .number(26.0),
+            "self.radius-big": .number(26.0),
+            "self.dim": .text("0.35"),
+            "head.height": .number(44.0),
+            "head.pad-top": .number(14.0),
+            "head.pad-x": .number(18.0),
+            "head.gap": .number(10.0),
+            "name.font": .text("640 13.5px/1.2 sans"),
+            "name.tracking": .text("-0.01em"),
+            "count.font": .text("500 10px/1 mono"),
+            "rule-over.color": .text("#2F9E63"),
+            "body.inset": .number(12.0),
+            "body.top": .number(46.0),
+            "lens.blur": .number(10.0),
+        ]
+    )
+
+    /// A suggestion chip beside its block: a small frosted pill with a green hairline, the question, its confidence, accept and dismiss. (prototypes/medium/style.css .suggs, .sugg, .sugg .eng, .sugg button)
+    public static let suggestionChip = MetalObjectRecipe(
+        name: "suggestion-chip",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(252.0, 251.0, 249.0, 0.7)))), // mu-recipe:suggestion-chip:0 rgba(252,251,249,.7)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(44.0, 44.0, 47.0, 0.7)))), // mu-recipe:suggestion-chip:1 rgba(44,44,47,.7)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 0.4)))), // mu-recipe:suggestion-chip:2 inset 0 0 0 .5px rgba(63,185,122,.4)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:suggestion-chip:3 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:suggestion-chip:4 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:suggestion-chip:5 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:suggestion-chip:6 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:suggestion-chip:7 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:suggestion-chip:8 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:suggestion-chip:9 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:suggestion-chip:10 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:suggestion-chip:11 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:suggestion-chip:12 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "button", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:suggestion-chip:13 rgba(0,0,0,.06)
+            .init(part: "button", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:suggestion-chip:14 rgba(255,255,255,.08)
+        ],
+        props: [
+            "self.height": .number(20.0),
+            "self.pad-left": .number(9.0),
+            "self.pad-right": .number(3.0),
+            "self.gap": .number(2.0),
+            "self.font": .text("500 11.5px/20px sans"),
+            "self.rest-opacity": .text("0.62"),
+            "conf.font-size": .number(8.5),
+            "conf.margin-left": .number(2.0),
+            "conf.margin-right": .number(3.0),
+            "button.w": .number(18.0),
+            "button.h": .number(16.0),
+            "button.font": .text("500 11px/1 sans"),
+            "row.gap": .number(6.0),
+            "row.offset": .number(12.0),
+        ]
+    )
+
+    /// The medium's graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (prototypes/medium/style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
+    public static let toolbar = MetalObjectRecipe(
+        name: "toolbar",
+        layers: [
+            .init(part: "self", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 40.0, 43.0, 0.94)), 0.0), .init(.color(MetalRGBA(27.0, 27.0, 29.0, 0.96)), 1.0)])), // mu-recipe:toolbar:0 linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96))
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toolbar:1 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:toolbar:2 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:toolbar:3 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:toolbar:4 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:toolbar:5 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:toolbar:6 0 12px 28px -10px rgba(0,0,0,.34)
+            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toolbar:7 0 30px 60px -24px rgba(0,0,0,.30)
+            .init(part: "tool", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:toolbar:8 linear-gradient(#303033, #262628)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:toolbar:9 inset 0 1px 0 rgba(255,255,255,.09)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: -1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toolbar:10 inset 0 -1px 0 rgba(0,0,0,.3)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:11 0 0 0 .5px rgba(0,0,0,.8)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 1.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:toolbar:12 0 1px 1px rgba(0,0,0,.35)
+            .init(part: "tool", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.25)))), // mu-recipe:toolbar:13 0 2px 4px -1px rgba(0,0,0,.25)
+            .init(part: "tool", state: "pressed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(20.0, 20.0, 21.0, 1.0)), 0.0), .init(.color(MetalRGBA(25.0, 25.0, 26.0, 1.0)), 1.0)])), // mu-recipe:toolbar:14 linear-gradient(#141415, #19191A)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:toolbar:15 inset 0 1px 3px rgba(0,0,0,.7)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:16 inset 0 0 0 .5px rgba(0,0,0,.8)
+            .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:toolbar:17 0 1px 0 rgba(255,255,255,.06)
+            .init(part: "led", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(217.0, 255.0, 233.0, 1.0)), 0.18), .init(.color(MetalRGBA(123.0, 234.0, 174.0, 1.0)), 0.42), .init(.color(MetalRGBA(47.0, 182.0, 115.0, 1.0)), 1.0)])), // mu-recipe:toolbar:18 radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673)
+            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(123.0, 234.0, 174.0, 0.6)))), // mu-recipe:toolbar:19 0 0 2px rgba(123,234,174,.6)
+            .init(part: "sep", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:toolbar:20 rgba(0,0,0,.55)
+            .init(part: "sep", state: nil, colorway: nil, shadow: .init(inset: false, x: 1.0, y: 0.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toolbar:21 1px 0 0 rgba(255,255,255,.055)
+            .init(part: "search", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(18.0, 18.0, 19.0, 1.0)), 0.0), .init(.color(MetalRGBA(23.0, 23.0, 24.0, 1.0)), 1.0)])), // mu-recipe:toolbar:22 linear-gradient(#121213, #171718)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:toolbar:23 inset 0 2px 6px -1px rgba(0,0,0,.6)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:toolbar:24 inset 0 0 0 .5px rgba(0,0,0,.35)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:toolbar:25 inset 0 -2px 4px -2px rgba(255,255,255,.05)
+            .init(part: "kbd", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:toolbar:26 linear-gradient(#303033, #262628)
+            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:toolbar:27 inset 0 1px 0 rgba(255,255,255,.09)
+            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:28 0 0 0 .5px rgba(0,0,0,.8)
+        ],
+        props: [
+            "self.pad": .number(7.0),
+            "self.gap": .number(6.0),
+            "self.radius": .number(24.0),
+            "self.blur": .text("blur(22px) saturate(1.6)"),
+            "tool.size": .number(38.0),
+            "tool.radius": .number(15.0),
+            "tool.glyph": .number(16.0),
+            "tool.ink": .text("#D6D6D8"),
+            "tool.press": .number(1.0),
+            "tool.press-time": .text("50ms"),
+            "tool.shadow-time": .text("90ms"),
+            "led.size": .number(4.0),
+            "led.inset": .number(5.0),
+            "sep.height": .number(22.0),
+            "sep.margin": .number(3.0),
+            "search.height": .number(38.0),
+            "search.min-width": .number(196.0),
+            "search.radius": .number(15.0),
+            "search.pad-left": .number(12.0),
+            "search.pad-right": .number(8.0),
+            "search.gap": .number(8.0),
+            "search.ink": .text("#8E8E93"),
+            "search.font": .text("500 13px/1 sans"),
+            "search.glyph": .number(14.0),
+            "kbd.ink": .text("#A6A6A9"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

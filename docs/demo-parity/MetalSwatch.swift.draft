@@ -1,0 +1,69 @@
+import SwiftUI
+
+/// A colour swatch chip (the medium demo's .swatchobj): a hard, glossy body in its own colour — a
+/// 135° sheen, a bright top edge and dark bottom rim, an inner glow, a contact shadow and a drop
+/// shadow in its own colour — the hex engraved in dark or light ink by luminance, and a recessed LED
+/// dimple. Its look is `MetalRecipes.swatch` (tokens.json recipes.swatch).
+public struct MetalSwatch: View {
+    let color: MetalRGBA
+    let label: String
+    let action: (() -> Void)?
+
+    public init(_ color: MetalRGBA, label: String, action: (() -> Void)? = nil) {
+        self.color = color
+        self.label = label
+        self.action = action
+    }
+
+    private static let r = MetalRecipes.swatch
+    private static func n(_ key: String) -> CGFloat { CGFloat(r.number(key) ?? 0) }
+
+    /// Rec. 601 luma, as the demo: above 150 the engraving is dark.
+    static func darkInk(_ c: MetalRGBA) -> Bool {
+        let luma = 0.299 * c.red + 0.587 * c.green + 0.114 * c.blue
+        return luma > 150
+    }
+
+    public var body: some View {
+        let size = Self.n("self.size")
+        let shape = RoundedRectangle(cornerRadius: Self.n("self.radius"), style: .continuous)
+        let ink = MetalRGBA.css(Self.r.text(Self.darkInk(color) ? "label.ink-dark" : "label.ink-light") ?? "")
+        ZStack(alignment: .bottomLeading) {
+            Color.clear
+            Text(label)
+                .font(Self.r.font("label.font"))
+                .tracking(Self.r.tracking("label.tracking", size: Self.r.fontSize("label.font")))
+                .foregroundStyle(ink.color)
+                .padding(.leading, Self.n("label.x"))
+                .padding(.bottom, Self.n("label.y"))
+        }
+        .overlay(alignment: .topTrailing) {
+            Color.clear
+                .frame(width: Self.n("led.size"), height: Self.n("led.size"))
+                .metalObjectRecipe(Self.r, part: "led", in: Circle())
+                .padding(Self.n("led.inset"))
+        }
+        .frame(width: size, height: size)
+        .metalObjectRecipe(Self.r, part: "self", in: shape, self: color)
+        .contentShape(shape)
+        .onTapGesture { action?() }
+        .accessibilityElement()
+        .accessibilityLabel("Colour \(label)")
+        .accessibilityAddTraits(action == nil ? [] : .isButton)
+    }
+}
+
+extension MetalRGBA {
+    /// `rgba(r,g,b,a)` or `#RRGGBB` as written in a recipe prop.
+    static func css(_ s: String) -> MetalRGBA {
+        let t = s.trimmingCharacters(in: .whitespaces)
+        if t.hasPrefix("#") {
+            let hex = String(t.dropFirst())
+            let v = Int(hex.count == 3 ? hex.map { "\($0)\($0)" }.joined() : hex, radix: 16) ?? 0
+            return MetalRGBA(Double((v >> 16) & 255), Double((v >> 8) & 255), Double(v & 255), 1)
+        }
+        let inner = t.drop { $0 != "(" }.dropFirst().prefix { $0 != ")" }
+        let p = inner.split(separator: ",").map { Double($0.trimmingCharacters(in: .whitespaces)) ?? 0 }
+        return MetalRGBA(p.count > 0 ? p[0] : 0, p.count > 1 ? p[1] : 0, p.count > 2 ? p[2] : 0, p.count > 3 ? p[3] : 1)
+    }
+}

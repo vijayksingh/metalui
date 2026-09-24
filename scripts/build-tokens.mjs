@@ -2,6 +2,9 @@
 // `--check` fails instead of writing when an output is stale.
 import { readFileSync } from 'node:fs';
 import { root, emit, finish } from './lib/emit.mjs';
+import { buildRecipes } from './lib/recipes.mjs';
+
+const RECIPES = buildRecipes(JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8')).recipes);
 
 const T = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8'));
 
@@ -305,6 +308,23 @@ ${decl(CW.graphite).replace(/^/gm, '  ')}
 ${tintClasses}
 
 ${frostClasses}
+
+/* Object recipes (tokens.json recipes): every layer of each object's look, from the medium demo. */
+:root {
+${RECIPES.css.root}
+}
+:root,
+[data-mu-colorway="bone"] {
+${RECIPES.css.bone}
+}
+[data-mu-colorway="graphite"] {
+${RECIPES.css.graphite}
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mu-colorway="bone"]) {
+${RECIPES.css.graphite.replace(/\/\* mu-recipe:[^*]+\*\/ /g, '').replace(/^/gm, '  ')}
+  }
+}
 `;
 emit('packages/metalui/src/components/tokens.css', css);
 
@@ -383,7 +403,7 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
 }
 @utility engraved {
   color: var(--mu-engrave);
-  text-shadow: 0 .5px 0 var(--mu-lip);
+  text-shadow: var(--mu-lip-shadow);
 }
 `;
 emit('packages/metalui/src/components/theme.css', theme);
@@ -655,7 +675,7 @@ public enum MetalRegion {
 ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + RECIPES.swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
 /// ${BT.$use}
 public enum MetalButtonMetrics {
 ${BT_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(BT[k])}`).join("\n")}

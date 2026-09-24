@@ -18,14 +18,16 @@
   --mu-success: #AAD47C;
   --mu-warning: #E4B25E;
   --mu-photon: #F3D9A4;
-  --mu-mono: "Martian Mono", "Martian Mono Variable", "SF Mono", ui-monospace, monospace;
-  --mu-mono-stretch: 87.5%;
-  --mu-mono-code-stretch: 75%;
+  --mu-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mu-mono-stretch: 100%;
+  --mu-mono-code-stretch: 100%;
   --mu-pixel: "Doto", "Doto Variable", "Martian Mono", ui-monospace, monospace;
-  --mu-sans: "Geist", "Geist Variable", -apple-system, system-ui, sans-serif;
+  --mu-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
   --mu-ease-press: cubic-bezier(.3,.0,.2,1);
   --mu-ease-slide: cubic-bezier(.22,.9,.25,1);
   --mu-focus: #3FB97A;
+  --mu-zero: 0;
+  --mu-round: 50%;
   /* part: k=170 c=16 ζ=0.61 · parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop */
   --mu-spring-part: linear(0, 0.0207, 0.0757, 0.1547, 0.2492, 0.3518, 0.4565, 0.5588, 0.6551, 0.743, 0.8209, 0.888, 0.9441, 0.9895, 1.0249, 1.0512, 1.0694, 1.0806, 1.0861, 1.0869, 1.084, 1.0785, 1.0711, 1.0626, 1.0535, 1.0444, 1.0357, 1.0275, 1.0201, 1.0136, 1.0081, 1.0035, 0.9998, 0.997, 0.995, 0.9936, 0.9928, 0.9924, 0.9925, 0.9928, 0.9934, 0.994, 0.9948, 0.9956, 0.9964, 0.9971, 0.9978, 0.9984, 1);
   --mu-spring-part-d: 0.6s;
@@ -416,7 +418,7 @@
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
-  --mu-type-content-tracking: -0.015em;
+  --mu-type-content-tracking: -0.012em;
   --mu-type-title: 600 13.5px/18px var(--mu-sans);
   --mu-type-title-tracking: -0.01em;
   --mu-type-lead: 500 13.5px/20px var(--mu-sans);
@@ -427,7 +429,7 @@
   --mu-type-body-tracking: -0.005em;
   --mu-type-meta: 400 11px/14px var(--mu-sans);
   --mu-type-meta-tracking: 0;
-  --mu-type-label: 500 9px/12px var(--mu-mono);
+  --mu-type-label: 400 9px/12px var(--mu-mono);
   --mu-type-label-tracking: 0.11em;
   --mu-type-readout: 500 10.5px/14px var(--mu-mono);
   --mu-type-readout-tracking: 0.02em;
@@ -474,13 +476,13 @@
 
 /* Type roles: the only sizes, weights and trackings components use. */
 .mu-type-display { font: 600 18px/24px var(--mu-sans); letter-spacing: -0.022em; }
-.mu-type-content { font: 500 15px/20px var(--mu-sans); letter-spacing: -0.015em; }
+.mu-type-content { font: 500 15px/20px var(--mu-sans); letter-spacing: -0.012em; }
 .mu-type-title { font: 600 13.5px/18px var(--mu-sans); letter-spacing: -0.01em; }
 .mu-type-lead { font: 500 13.5px/20px var(--mu-sans); letter-spacing: -0.01em; }
 .mu-type-ui { font: 500 12.5px/16px var(--mu-sans); letter-spacing: -0.005em; }
 .mu-type-body { font: 400 12.5px/18px var(--mu-sans); letter-spacing: -0.005em; }
 .mu-type-meta { font: 400 11px/14px var(--mu-sans); letter-spacing: 0; }
-.mu-type-label { font: 500 9px/12px var(--mu-mono); letter-spacing: 0.11em; font-stretch: var(--mu-mono-stretch); text-transform: uppercase; }
+.mu-type-label { font: 400 9px/12px var(--mu-mono); letter-spacing: 0.11em; font-stretch: var(--mu-mono-stretch); text-transform: uppercase; }
 .mu-type-readout { font: 500 10.5px/14px var(--mu-mono); letter-spacing: 0.02em; font-stretch: var(--mu-mono-stretch); font-variant-numeric: tabular-nums; }
 .mu-type-code { font: 400 10.5px/17px var(--mu-mono); letter-spacing: 0; font-stretch: var(--mu-mono-code-stretch); }
 .mu-type-pixel { font: 700 40px/44px var(--mu-pixel); letter-spacing: 0; }
@@ -492,14 +494,15 @@
   --mu-s: #F6F5F2;
   --mu-s-lo: #F0EFEB;
   --mu-well-top: #E6E5E1;
-  --mu-well-bot: #ECEBE7;
+  --mu-well-bot: #EDECE8;
   --mu-ink: #1B1B1D;
   --mu-ink2: #5C5C60;
-  --mu-ink3: #828285;
+  --mu-ink3: #9A9A9D;
   --mu-icon: #3A3A3D;
-  --mu-engrave: rgba(40,38,32,.56);
-  --mu-lip: rgba(255,255,255,.55);
-  --mu-rule: rgba(0,0,0,.06);
+  --mu-engrave: rgba(40,38,32,.46);
+  --mu-lip: rgba(255,255,255,.95);
+  --mu-lip-shadow: 0 1px 0 rgba(255,255,255,.95);
+  --mu-rule: rgba(0,0,0,.075);
   --mu-rule-lip: rgba(255,255,255,.5);
   --mu-thumb-hi: #FFFFFF;
   --mu-thumb-lo: #F7F6F3;
@@ -563,6 +566,7 @@
   --mu-icon: #D6D6D8;
   --mu-engrave: rgba(255,255,255,.38);
   --mu-lip: rgba(0,0,0,.35);
+  --mu-lip-shadow: 0 .5px 0 rgba(0,0,0,.35);
   --mu-rule: rgba(0,0,0,.45);
   --mu-rule-lip: rgba(255,255,255,.035);
   --mu-thumb-hi: #3A3A3D;
@@ -629,6 +633,7 @@
     --mu-icon: #D6D6D8;
     --mu-engrave: rgba(255,255,255,.38);
     --mu-lip: rgba(0,0,0,.35);
+    --mu-lip-shadow: 0 .5px 0 rgba(0,0,0,.35);
     --mu-rule: rgba(0,0,0,.45);
     --mu-rule-lip: rgba(255,255,255,.035);
     --mu-thumb-hi: #3A3A3D;
@@ -714,4 +719,277 @@
   .mu-frost-strip { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise); }
   .mu-frost-plate { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise); }
   .mu-frost-graphite { box-shadow: inset 0 0 0 1px rgba(255,255,255,.45), var(--mu-frost-graphite-shadow); }
+}
+
+/* Object recipes (tokens.json recipes): every layer of each object's look, from the medium demo. */
+:root {
+  /* swatch: prototypes/medium/style.css .swatchobj */
+  --mu-r-swatch-self-background:
+    /* mu-recipe:swatch:0 */ linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,0) 45%, rgba(0,0,0,.10)),
+    /* mu-recipe:swatch:1 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-swatch-self-shadow:
+    /* mu-recipe:swatch:2 */ inset 0 1px 0 rgba(255,255,255,.45),
+    /* mu-recipe:swatch:3 */ inset 0 -1.5px 0 rgba(0,0,0,.18),
+    /* mu-recipe:swatch:4 */ inset 0 0 6px 2px rgba(255,255,255,.12),
+    /* mu-recipe:swatch:5 */ 0 1px 2px rgba(0,0,0,.12),
+    /* mu-recipe:swatch:6 */ 0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
+  --mu-r-swatch-led-background:
+    /* mu-recipe:swatch:7 */ rgba(0,0,0,.28);
+  --mu-r-swatch-led-shadow:
+    /* mu-recipe:swatch:8 */ inset 0 1px 2px rgba(0,0,0,.4),
+    /* mu-recipe:swatch:9 */ 0 1px 0 rgba(255,255,255,.25);
+  --mu-r-swatch-self-size: 76px;
+  --mu-r-swatch-self-radius: 22px;
+  --mu-r-swatch-label-font: 600 9.5px/1 var(--mu-mono);
+  --mu-r-swatch-label-tracking: 0.04em;
+  --mu-r-swatch-label-x: 10px;
+  --mu-r-swatch-label-y: 9px;
+  --mu-r-swatch-label-ink-dark: rgba(0,0,0,.55);
+  --mu-r-swatch-label-ink-light: rgba(255,255,255,.8);
+  --mu-r-swatch-led-size: 8px;
+  --mu-r-swatch-led-inset: 10px;
+  /* dimple: prototypes/medium/style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing */
+  --mu-r-dimple-self-on-background:
+    /* mu-recipe:dimple:10 */ linear-gradient(#303033, #1E1E20);
+  --mu-r-dimple-self-on-shadow:
+    /* mu-recipe:dimple:11 */ inset 0 1px 0 rgba(255,255,255,.12),
+    /* mu-recipe:dimple:12 */ 0 1px 2px rgba(0,0,0,.2);
+  --mu-r-dimple-self-ghost-background:
+    /* mu-recipe:dimple:13 */ rgba(0,0,0,0);
+  --mu-r-dimple-self-ghost-hover-shadow:
+    /* mu-recipe:dimple:18 */ inset 0 0 0 1px rgba(63,185,122,.55);
+  --mu-r-dimple-doing-background:
+    /* mu-recipe:dimple:19 */ linear-gradient(90deg, #3FB97A 50%, rgba(63,185,122,0) 50%);
+  --mu-r-dimple-self-size: 16px;
+  --mu-r-dimple-self-radius: 6px;
+  --mu-r-dimple-self-x: -25px;
+  --mu-r-dimple-self-y: 2.5px;
+  --mu-r-dimple-self-row-size: 14px;
+  --mu-r-dimple-self-row-radius: 5px;
+  --mu-r-dimple-self-fade: 160ms;
+  --mu-r-dimple-tick-x: 5px;
+  --mu-r-dimple-tick-y: 2.5px;
+  --mu-r-dimple-tick-w: 4px;
+  --mu-r-dimple-tick-h: 8px;
+  --mu-r-dimple-tick-stroke: 1.6px;
+  --mu-r-dimple-tick-rotate: 42deg;
+  --mu-r-dimple-tick-color: #FFFFFF;
+  --mu-r-dimple-tick-draw: 220ms;
+  --mu-r-dimple-tick-delay: 40ms;
+  --mu-r-dimple-ghost-x: -27px;
+  --mu-r-dimple-ghost-y: 3.5px;
+  --mu-r-dimple-ghost-size: 14px;
+  --mu-r-dimple-ghost-radius: 5px;
+  --mu-r-dimple-doing-inset: 4.5px;
+  --mu-r-dimple-doing-radius: 3px;
+  --mu-r-dimple-doing-opacity: 0.8;
+  /* region: prototypes/medium/style.css .region, .region.over, .region .rhead, .rname, .rrule, .rcount, .region.lensr */
+  --mu-r-region-self-over-background:
+    /* mu-recipe:region:8 */ linear-gradient(rgba(120,214,165,.07), rgba(120,214,165,.03));
+  --mu-r-region-self-radius: 26px;
+  --mu-r-region-self-radius-big: 26px;
+  --mu-r-region-self-dim: 0.35;
+  --mu-r-region-head-height: 44px;
+  --mu-r-region-head-pad-top: 14px;
+  --mu-r-region-head-pad-x: 18px;
+  --mu-r-region-head-gap: 10px;
+  --mu-r-region-name-font: 640 13.5px/1.2 var(--mu-sans);
+  --mu-r-region-name-tracking: -0.01em;
+  --mu-r-region-count-font: 500 10px/1 var(--mu-mono);
+  --mu-r-region-rule-over-color: #2F9E63;
+  --mu-r-region-body-inset: 12px;
+  --mu-r-region-body-top: 46px;
+  --mu-r-region-lens-blur: 10px;
+  /* suggestion-chip: prototypes/medium/style.css .suggs, .sugg, .sugg .eng, .sugg button */
+  --mu-r-suggestion-chip-self-height: 20px;
+  --mu-r-suggestion-chip-self-pad-left: 9px;
+  --mu-r-suggestion-chip-self-pad-right: 3px;
+  --mu-r-suggestion-chip-self-gap: 2px;
+  --mu-r-suggestion-chip-self-font: 500 11.5px/20px var(--mu-sans);
+  --mu-r-suggestion-chip-self-rest-opacity: 0.62;
+  --mu-r-suggestion-chip-conf-font-size: 8.5px;
+  --mu-r-suggestion-chip-conf-margin-left: 2px;
+  --mu-r-suggestion-chip-conf-margin-right: 3px;
+  --mu-r-suggestion-chip-button-w: 18px;
+  --mu-r-suggestion-chip-button-h: 16px;
+  --mu-r-suggestion-chip-button-font: 500 11px/1 var(--mu-sans);
+  --mu-r-suggestion-chip-row-gap: 6px;
+  --mu-r-suggestion-chip-row-offset: 12px;
+  /* toolbar: prototypes/medium/style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
+  --mu-r-toolbar-self-background:
+    /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+  --mu-r-toolbar-self-shadow:
+    /* mu-recipe:toolbar:1 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:toolbar:2 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:toolbar:3 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:toolbar:4 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:toolbar:5 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:toolbar:6 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:toolbar:7 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-toolbar-tool-background:
+    /* mu-recipe:toolbar:8 */ linear-gradient(#303033, #262628);
+  --mu-r-toolbar-tool-shadow:
+    /* mu-recipe:toolbar:9 */ inset 0 1px 0 rgba(255,255,255,.09),
+    /* mu-recipe:toolbar:10 */ inset 0 -1px 0 rgba(0,0,0,.3),
+    /* mu-recipe:toolbar:11 */ 0 0 0 .5px rgba(0,0,0,.8),
+    /* mu-recipe:toolbar:12 */ 0 1px 1px rgba(0,0,0,.35),
+    /* mu-recipe:toolbar:13 */ 0 2px 4px -1px rgba(0,0,0,.25);
+  --mu-r-toolbar-tool-pressed-background:
+    /* mu-recipe:toolbar:14 */ linear-gradient(#141415, #19191A);
+  --mu-r-toolbar-tool-pressed-shadow:
+    /* mu-recipe:toolbar:15 */ inset 0 1px 3px rgba(0,0,0,.7),
+    /* mu-recipe:toolbar:16 */ inset 0 0 0 .5px rgba(0,0,0,.8),
+    /* mu-recipe:toolbar:17 */ 0 1px 0 rgba(255,255,255,.06);
+  --mu-r-toolbar-led-background:
+    /* mu-recipe:toolbar:18 */ radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673);
+  --mu-r-toolbar-led-shadow:
+    /* mu-recipe:toolbar:19 */ 0 0 2px rgba(123,234,174,.6);
+  --mu-r-toolbar-sep-background:
+    /* mu-recipe:toolbar:20 */ rgba(0,0,0,.55);
+  --mu-r-toolbar-sep-shadow:
+    /* mu-recipe:toolbar:21 */ 1px 0 0 rgba(255,255,255,.055);
+  --mu-r-toolbar-search-background:
+    /* mu-recipe:toolbar:22 */ linear-gradient(#121213, #171718);
+  --mu-r-toolbar-search-shadow:
+    /* mu-recipe:toolbar:23 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:toolbar:24 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:toolbar:25 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-toolbar-kbd-background:
+    /* mu-recipe:toolbar:26 */ linear-gradient(#303033, #262628);
+  --mu-r-toolbar-kbd-shadow:
+    /* mu-recipe:toolbar:27 */ inset 0 1px 0 rgba(255,255,255,.09),
+    /* mu-recipe:toolbar:28 */ 0 0 0 .5px rgba(0,0,0,.8);
+  --mu-r-toolbar-self-pad: 7px;
+  --mu-r-toolbar-self-gap: 6px;
+  --mu-r-toolbar-self-radius: 24px;
+  --mu-r-toolbar-self-blur: blur(22px) saturate(1.6);
+  --mu-r-toolbar-tool-size: 38px;
+  --mu-r-toolbar-tool-radius: 15px;
+  --mu-r-toolbar-tool-glyph: 16px;
+  --mu-r-toolbar-tool-ink: #D6D6D8;
+  --mu-r-toolbar-tool-press: 1px;
+  --mu-r-toolbar-tool-press-time: 50ms;
+  --mu-r-toolbar-tool-shadow-time: 90ms;
+  --mu-r-toolbar-led-size: 4px;
+  --mu-r-toolbar-led-inset: 5px;
+  --mu-r-toolbar-sep-height: 22px;
+  --mu-r-toolbar-sep-margin: 3px;
+  --mu-r-toolbar-search-height: 38px;
+  --mu-r-toolbar-search-min-width: 196px;
+  --mu-r-toolbar-search-radius: 15px;
+  --mu-r-toolbar-search-pad-left: 12px;
+  --mu-r-toolbar-search-pad-right: 8px;
+  --mu-r-toolbar-search-gap: 8px;
+  --mu-r-toolbar-search-ink: #8E8E93;
+  --mu-r-toolbar-search-font: 500 13px/1 var(--mu-sans);
+  --mu-r-toolbar-search-glyph: 14px;
+  --mu-r-toolbar-kbd-ink: #A6A6A9;
+}
+:root,
+[data-mu-colorway="bone"] {
+  --mu-r-dimple-self-background:
+    /* mu-recipe:dimple:0 */ linear-gradient(#E6E5E1, #EDECE8);
+  --mu-r-dimple-self-shadow:
+    /* mu-recipe:dimple:2 */ inset 0 2px 6px -1px rgba(60,55,40,.10),
+    /* mu-recipe:dimple:3 */ inset 0 0 0 .5px rgba(0,0,0,.03),
+    /* mu-recipe:dimple:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.95);
+  --mu-r-dimple-self-hover-background:
+    /* mu-recipe:dimple:8 */ linear-gradient(#E1E0DC, #EAE9E5);
+  --mu-r-dimple-self-ghost-shadow:
+    /* mu-recipe:dimple:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
+    /* mu-recipe:dimple:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
+  --mu-r-region-self-background:
+    /* mu-recipe:region:0 */ linear-gradient(rgba(40,38,32,.028), rgba(40,38,32,.012));
+  --mu-r-region-self-shadow:
+    /* mu-recipe:region:2 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
+    /* mu-recipe:region:3 */ inset 0 0 0 .5px rgba(0,0,0,.035),
+    /* mu-recipe:region:4 */ inset 0 -2px 4px -2px rgba(255,255,255,.9);
+  --mu-r-region-self-over-shadow:
+    /* mu-recipe:region:9 */ inset 0 2px 6px -1px rgba(60,55,40,.07),
+    /* mu-recipe:region:11 */ inset 0 0 0 1px rgba(63,185,122,.45);
+  --mu-r-region-self-lens-background:
+    /* mu-recipe:region:12 */ linear-gradient(rgba(252,251,249,.55), rgba(246,245,242,.45));
+  --mu-r-suggestion-chip-self-background:
+    /* mu-recipe:suggestion-chip:0 */ rgba(252,251,249,.7);
+  --mu-r-suggestion-chip-self-shadow:
+    /* mu-recipe:suggestion-chip:2 */ inset 0 0 0 .5px rgba(63,185,122,.4),
+    /* mu-recipe:suggestion-chip:3 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:suggestion-chip:4 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:suggestion-chip:5 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:suggestion-chip:6 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:suggestion-chip:7 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-suggestion-chip-button-hover-background:
+    /* mu-recipe:suggestion-chip:13 */ rgba(0,0,0,.06);
+}
+[data-mu-colorway="graphite"] {
+  --mu-r-dimple-self-background:
+    /* mu-recipe:dimple:1 */ linear-gradient(#141415, #18181A);
+  --mu-r-dimple-self-shadow:
+    /* mu-recipe:dimple:5 */ inset 0 2px 6px -1px rgba(0,0,0,.6),
+    /* mu-recipe:dimple:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:dimple:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-dimple-self-hover-background:
+    /* mu-recipe:dimple:9 */ linear-gradient(#1A1A1C, #1F1F21);
+  --mu-r-dimple-self-ghost-shadow:
+    /* mu-recipe:dimple:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
+    /* mu-recipe:dimple:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
+  --mu-r-region-self-background:
+    /* mu-recipe:region:1 */ linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
+  --mu-r-region-self-shadow:
+    /* mu-recipe:region:5 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
+    /* mu-recipe:region:6 */ inset 0 0 0 .5px rgba(0,0,0,.35),
+    /* mu-recipe:region:7 */ inset 0 -2px 4px -2px rgba(255,255,255,.05);
+  --mu-r-region-self-over-shadow:
+    /* mu-recipe:region:10 */ inset 0 2px 6px -1px rgba(0,0,0,.5),
+    inset 0 0 0 1px rgba(63,185,122,.45);
+  --mu-r-region-self-lens-background:
+    /* mu-recipe:region:13 */ linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
+  --mu-r-suggestion-chip-self-background:
+    /* mu-recipe:suggestion-chip:1 */ rgba(44,44,47,.7);
+  --mu-r-suggestion-chip-self-shadow:
+    inset 0 0 0 .5px rgba(63,185,122,.4),
+    /* mu-recipe:suggestion-chip:8 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:suggestion-chip:9 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:suggestion-chip:10 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:suggestion-chip:11 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:suggestion-chip:12 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-suggestion-chip-button-hover-background:
+    /* mu-recipe:suggestion-chip:14 */ rgba(255,255,255,.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mu-colorway="bone"]) {
+    --mu-r-dimple-self-background:
+      linear-gradient(#141415, #18181A);
+    --mu-r-dimple-self-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.6),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-dimple-self-hover-background:
+      linear-gradient(#1A1A1C, #1F1F21);
+    --mu-r-dimple-self-ghost-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.18),
+      inset 0 2px 4px -2px rgba(0,0,0,.4);
+    --mu-r-region-self-background:
+      linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.01));
+    --mu-r-region-self-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.5),
+      inset 0 0 0 .5px rgba(0,0,0,.35),
+      inset 0 -2px 4px -2px rgba(255,255,255,.05);
+    --mu-r-region-self-over-shadow:
+      inset 0 2px 6px -1px rgba(0,0,0,.5),
+      inset 0 0 0 1px rgba(63,185,122,.45);
+    --mu-r-region-self-lens-background:
+      linear-gradient(rgba(44,44,47,.55), rgba(37,37,39,.45));
+    --mu-r-suggestion-chip-self-background:
+      rgba(44,44,47,.7);
+    --mu-r-suggestion-chip-self-shadow:
+      inset 0 0 0 .5px rgba(63,185,122,.4),
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-suggestion-chip-button-hover-background:
+      rgba(255,255,255,.08);
+  }
 }

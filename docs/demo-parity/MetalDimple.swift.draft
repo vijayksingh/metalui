@@ -1,0 +1,76 @@
+import SwiftUI
+
+/// A task's checkbox (the medium demo's .dimple): a recessed well that turns into a dark pressed key
+/// with a white tick drawn on (not sprung, DS-21). `doing` shows the half-filled green square; `ghost`
+/// the hollow ring of a task Jev inferred. Its look is `MetalRecipes.dimple` (tokens.json recipes.dimple).
+public struct MetalDimple: View {
+    @Binding var isOn: Bool
+    let doing: Bool
+    let ghost: Bool
+    let label: String
+
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var hovering = false
+    @State private var drawn: CGFloat = 1
+
+    public init(isOn: Binding<Bool>, doing: Bool = false, ghost: Bool = false, label: String) {
+        _isOn = isOn
+        self.doing = doing
+        self.ghost = ghost
+        self.label = label
+    }
+
+    private static let r = MetalRecipes.dimple
+    private static func n(_ key: String) -> CGFloat { CGFloat(r.number(key) ?? 0) }
+
+    public var body: some View {
+        let r = Self.r
+        let side = ghost ? Self.n("ghost.size") : Self.n("self.size")
+        let shape = RoundedRectangle(cornerRadius: ghost ? Self.n("ghost.radius") : Self.n("self.radius"), style: .continuous)
+        let state: String? = isOn ? "on" : ghost ? (hovering ? "ghost-hover" : "ghost") : (hovering ? "hover" : nil)
+        Button {
+            isOn.toggle()
+            guard isOn else { return }
+            drawn = 0
+            // 220 ms after a 40 ms beat, ease-out; instant under Reduce Motion.
+            withAnimation(reduceMotion ? nil : .easeOut(duration: MetalCue.tickMs / 1000).delay(MetalCue.tickDelayMs / 1000)) { drawn = 1 }
+        } label: {
+            ZStack {
+                Color.clear.metalObjectRecipe(r, part: "self", state: state, in: shape)
+                if isOn {
+                    MetalTickShape()
+                        .trim(from: 0, to: drawn)
+                        .stroke(MetalCue.tick.color, style: StrokeStyle(lineWidth: Self.n("tick.stroke"), lineCap: .round, lineJoin: .round))
+                        .padding(side * 0.3)
+                }
+                if doing && !isOn {
+                    let inner = side - 2 * Self.n("doing.inset")
+                    Color.clear
+                        .frame(width: inner, height: inner)
+                        .metalObjectRecipe(r, part: "doing", in: RoundedRectangle(cornerRadius: Self.n("doing.radius"), style: .continuous))
+                        .opacity(MetalCue.doingOpacity)
+                }
+            }
+            .frame(width: side, height: side)
+            .contentShape(shape)
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .opacity(isEnabled ? 1 : 0.4)
+        .accessibilityLabel(label)
+        .accessibilityValue(isOn ? "done" : doing ? "in progress" : "open")
+        .accessibilityAddTraits(.isToggle)
+    }
+}
+
+/// The dimple's tick, drawn with trim(0 → 1).
+struct MetalTickShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX, y: rect.minY + rect.height * 0.55))
+        p.addLine(to: CGPoint(x: rect.minX + rect.width * 0.38, y: rect.maxY))
+        p.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        return p
+    }
+}

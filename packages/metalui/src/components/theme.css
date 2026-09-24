@@ -2,8 +2,8 @@
 /* Tailwind v4 theme for Soft Hardware. Import after "tailwindcss" and ./tokens.css. */
 @theme {
   --spacing: 1px;
-  --font-sans: "Geist", "Geist Variable", -apple-system, system-ui, sans-serif;
-  --font-mono: "Martian Mono", "Martian Mono Variable", "SF Mono", ui-monospace, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-pixel: "Doto", "Doto Variable", "Martian Mono", ui-monospace, monospace;
   --radius-key: 6px;
   --radius-row: 12px;
@@ -55,7 +55,7 @@
 }
 @utility type-content {
   font: 500 15px/20px var(--mu-sans);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.012em;
 }
 @utility type-title {
   font: 600 13.5px/18px var(--mu-sans);
@@ -78,7 +78,7 @@
   letter-spacing: 0;
 }
 @utility type-label {
-  font: 500 9px/12px var(--mu-mono);
+  font: 400 9px/12px var(--mu-mono);
   letter-spacing: 0.11em;
   font-stretch: var(--mu-mono-stretch);
   text-transform: uppercase;
@@ -184,5 +184,5 @@
 }
 @utility engraved {
   color: var(--mu-engrave);
-  text-shadow: 0 .5px 0 var(--mu-lip);
+  text-shadow: var(--mu-lip-shadow);
 }
