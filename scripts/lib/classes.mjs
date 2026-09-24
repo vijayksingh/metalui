@@ -4,13 +4,13 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const LITERAL = /const\s+[A-Z][A-Z0-9_]*[^=\n]*=\s*(?:\{[\s\S]*?\n\};|'[^']*'|`[^`]*`)|className="[^"]*"|className=\{`[^`]*`\}/g;
+const LITERAL = /const\s+[A-Z][A-Z0-9_]*[^=\n]*=\s*(?:\{[\s\S]*?\};|'[^']*'|`[^`]*`)|className="[^"]*"|className=\{`[^`]*`\}/g;
 const STRING = /'([^']*)'|`([^`]*)`|"([^"]*)"/g;
 
 export function classTokens(dir) {
   const tokens = [];
   for (const f of readdirSync(dir).filter((f) => f.endsWith('.tsx'))) {
-    const src = readFileSync(join(dir, f), 'utf8');
+    const src = readFileSync(join(dir, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
     for (const block of src.match(LITERAL) ?? []) {
       for (const m of block.matchAll(STRING)) {
         if (block[m.index + m[0].length] === ':') continue; // an object key ('strip-danger': …)
