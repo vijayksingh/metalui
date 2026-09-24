@@ -654,3 +654,20 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 .xr-callout-txt b { font: 600 12.5px/16px var(--sans); letter-spacing: -.01em; color: var(--ink); }
 .xr-callout-txt small { font: 400 11px/14px var(--sans); color: var(--ink3); }
 .xr-callout.is-on .xr-callout-txt small { color: var(--ink2); }
+/* x-ray dials and layer notes */
+.xr-actions { position: absolute; top: 18px; right: 18px; z-index: 4; display: flex; gap: 8px; }
+.xr-actions .status { cursor: pointer; }
+.xr-close { display: none; }
+.xr-dials { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+.xr-dial { display: flex; flex-direction: column; gap: 8px; }
+.xr-dial-head { display: flex; justify-content: space-between; align-items: baseline; font: 500 12px/16px var(--sans); color: var(--ink); }
+.xr-dial-head .readout-t { color: var(--ink2); }
+.xr-switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; font: 500 12px/16px var(--sans); color: var(--ink); cursor: pointer; }
+.xr-layers { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; max-height: 360px; overflow-y: auto; }
+.xr-layers li { padding: 10px 12px; border-radius: 14px; transition: background .2s; }
+.xr-layers li.is-focus { background: color-mix(in srgb, var(--green-deep) 8%, transparent); }
+.xr-layers li p { margin: 6px 0 0; font: 400 12px/18px var(--sans); color: var(--ink2); }
+.xr-layers li.is-off p { color: var(--ink3); }
+.xr-face.is-layer.is-focus { outline: 2px solid var(--green-deep); outline-offset: 3px; }
+.xr-face.is-layer.is-off { opacity: .18; }
+.xr-card { max-height: calc(100vh - 120px); overflow-y: auto; }
