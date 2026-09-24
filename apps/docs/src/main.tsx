@@ -56,6 +56,8 @@ const router = createBrowserRouter([
       { path: 'components/lasso', lazy: lazy(() => import('./pages/components/Lasso')) },
       { path: 'components/block-silhouette', lazy: lazy(() => import('./pages/components/BlockSilhouette')) },
       { path: 'components/code-card', lazy: lazy(() => import('./pages/components/CodeCard')) },
+      { path: 'components/switch', lazy: lazy(() => import('./pages/components/Switch')) },
+      { path: 'components/settings', lazy: lazy(() => import('./pages/components/Settings')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
       { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },
