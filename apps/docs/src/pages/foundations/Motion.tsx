@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { Button } from '@unlocalhosted/metalui';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 
@@ -52,6 +53,73 @@ function ride(config: object, props: string[]) {
   const d = settleTime(k, c);
   const ease = curve(k, c, d);
   return props.map((p) => `${p} ${d.toFixed(3)}s ${ease}`).join(', ');
+}
+
+type Reduced = 'unchanged' | 'crossfade' | 'instant';
+const REDUCED_WORDS: Record<Reduced, string> = {
+  unchanged: 'plays as authored',
+  crossfade: 'no travel, fades in place',
+  instant: 'applies at once',
+};
+
+/** Every class arriving from one step away, as Reduce Motion resolves it (tokens.json springs.*.reduced). */
+function ReducedMotionBench() {
+  const [reduce, setReduce] = React.useState(false);
+  const [phase, setPhase] = React.useState<'from' | 'to'>('to');
+  const [system, setSystem] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setSystem(mq.matches);
+    const on = () => setSystem(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  const replay = () => {
+    setPhase('from');
+    requestAnimationFrame(() => requestAnimationFrame(() => setPhase('to')));
+  };
+  const active = reduce || system;
+  return (
+    <div className="flex w-full flex-col gap-16" data-mu-motion={reduce ? 'reduce' : undefined}>
+      <div className="flex flex-wrap items-center justify-between gap-12">
+        <div className="flex items-center gap-8">
+          <Button onClick={replay}>Replay</Button>
+          <button
+            type="button"
+            aria-pressed={reduce}
+            onClick={() => setReduce((v) => !v)}
+            className={['type-ui h-32 cursor-pointer rounded-pill px-15 text-ink', reduce ? 'material-pressed' : 'material-cap'].join(' ')}
+          >
+            Reduce motion
+          </button>
+        </div>
+        <span className="type-readout text-ink2">{system ? 'system: reduce' : 'system: full'} · {active ? 'reduced' : 'full motion'}</span>
+      </div>
+      <div className="flex flex-col">
+        {(Object.entries(S) as [string, { reduced: Reduced }][]).map(([k, s]) => (
+          <div key={k} data-md="row" className="grid grid-cols-[88px_1fr_160px] items-center gap-12 border-b border-[var(--mu-rule)] py-10 last:border-0 max-md:grid-cols-[72px_1fr]">
+            <span className="type-readout text-ink">{k}</span>
+            <div className="material-well relative h-24 overflow-hidden rounded-pill">
+              <span
+                className="material-thumb absolute left-[calc(50%-8px)] top-4 size-16 rounded-full"
+                style={{
+                  opacity: phase === 'to' ? 1 : 0,
+                  transform: phase === 'to' ? 'none' : `translateX(calc(-24px * var(--mu-travel-${k})))`,
+                  transition:
+                    phase === 'to'
+                      ? `transform var(--mu-spring-${k}-d) var(--mu-spring-${k}), opacity var(--mu-spring-${k}-d) var(--mu-spring-${k})`
+                      : 'none',
+                }}
+              />
+            </div>
+            <span className="type-meta text-ink2 max-md:col-span-2">
+              <b className="font-medium text-ink">{active ? s.reduced : 'full'}</b> · {active ? REDUCED_WORDS[s.reduced] : 'rides its spring'}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function Motion() {
@@ -109,6 +177,12 @@ export default function Motion() {
 
       <Section title="Mass classes" lede="Every moving thing belongs to a class, and each class has one spring. Half is when a motion is visibly underway; near is when it reads as done. There is no separate duration table: every timing comes from these.">
         <TokenTable head={['Class', 'Spring', 'Timing', 'Moves']} rows={massRows} mono={[0, 1, 2]} />
+      </Section>
+
+      <Section title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion.">
+        <Bench caption="Each class arrives from one step away · Replay, then turn Reduce motion on and replay">
+          <ReducedMotionBench />
+        </Bench>
       </Section>
 
       <Section title="Specimens" lede="Each specimen rides its own spring, live from the dial panel. Press, hover, or use Play all.">
@@ -215,7 +289,7 @@ export default function Motion() {
             { id: 'M4', title: 'Light stays put', body: 'Elevation changes are part of the motion. Lifting grows the ambient shadow, pressing collapses it into a well, and a surface rising from its cap grows from contact shadow to floating ambient. Highlights stay on the top-left edges.', origin: 'Ours' },
             { id: 'M5', title: 'Distances come from the grid', body: 'A press is the cap’s depth (1). A swap turns one step (4). A surface rises one nest (6), and a refusal reaches one nest. A view changes by two steps (8). A panel travels its own extent. Defocus is half the travel.', origin: 'Ours' },
             { id: 'M6', title: 'Frequency decides whether anything moves', body: 'What is done a hundred times a day (shortcuts, arrowing through a list, the palette toggle) does not animate. Motion is kept for what is seen occasionally.', origin: 'Adapted · Animations on the Web (Emil Kowalski)' },
-            { id: 'M7', title: 'Reduced motion keeps meaning', body: 'Travel, scale, focus and overshoot go; crossfades and color stay. A press still moves 1, because that is feedback, not decoration.', origin: 'Adapted · Animations on the Web, beUI' },
+            { id: 'M7', title: 'Reduced motion keeps meaning', body: 'Each class has one resolution, written in tokens.json: travel classes (part, object, hinge, refusal) apply at once, surfaces and settles fade in place, and release plays as authored, because a press of one point is feedback, not decoration. Color changes stay.', origin: 'Adapted · Animations on the Web, beUI; Kamui’s motion roles' },
             { id: 'M8', title: 'Interruptible by construction', body: 'State changes use transitions and springs, which continue from wherever the object is. Keyframes are only for one-shot gestures such as an icon’s press or a refusal.', origin: 'Adapted · Animations on the Web' },
           ]}
         />

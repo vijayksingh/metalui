@@ -64,7 +64,5 @@
   cursor: default;
 }
 
-/* Press travel is feedback and stays; the spring does not. */
-@media (prefers-reduced-motion: reduce) {
-  .mu-button { transition-duration: 0s; }
-}
+/* Reduce Motion: the press rides release, which the policy keeps unchanged (tokens.json
+   springs.release.reduced). One point of travel with no overshoot is feedback, not decoration. */

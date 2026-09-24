@@ -29,6 +29,27 @@ const springs = Object.entries(T.springs)
     `  --mu-spring-${k}-near: ${s.near};`,
   ].join('\n'))
   .join('\n');
+// Reduce Motion, per spring class (foundations.reduced-motion). Components multiply enter and
+// exit offsets by --mu-travel-<class>, and ride --mu-spring-<class>-d; both resolve here, from
+// the media query or from data-mu-motion="reduce" on any ancestor.
+const travel = Object.keys(T.springs).map((k) => `  --mu-travel-${k}: 1;`).join('\n');
+const reducedDecls = Object.entries(T.springs)
+  .map(([k, s]) => [
+    s.reduced !== 'unchanged' ? `  --mu-travel-${k}: 0;` : null,
+    s.reduced === 'instant' ? `  --mu-spring-${k}-d: 0s;` : null,
+  ].filter(Boolean).join('\n'))
+  .filter(Boolean)
+  .join('\n');
+const reducedMotion = `/* Reduce Motion: ${Object.entries(T.springs).map(([k, s]) => `${k} ${s.reduced}`).join(', ')}. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+${reducedDecls.replace(/^/gm, '  ')}
+  }
+}
+[data-mu-motion="reduce"] {
+${reducedDecls}
+}`;
+
 const caps = Object.entries(T.caps).map(([k, c]) => decl(c, `${k}-`)).join('\n');
 const motion = Object.entries(T.motion)
   .filter(([k]) => !k.startsWith('$'))
@@ -82,7 +103,10 @@ ${caps}
 ${motion}
 ${swap}
 ${foundationVars}
+${travel}
 }
+
+${reducedMotion}
 
 /* Type roles: the only sizes, weights and trackings components use. */
 ${typeClasses}
@@ -302,6 +326,36 @@ ${swiftCaps}
 
 public enum MetalSprings {
 ${swiftSprings}
+}
+
+/// How a spring class resolves under Reduce Motion (foundations.reduced-motion).
+public enum MetalReducedMotion: String, Sendable {
+    /// Plays as authored: the motion is feedback, not decoration.
+    case unchanged
+    /// Travel and scale go; opacity stays and rides the crossfade spring.
+    case crossfade
+    /// The new state applies at once.
+    case instant
+}
+
+/// The mass classes. Pick the class; the spring and its Reduce Motion policy follow.
+public enum MetalSpringClass: String, CaseIterable, Sendable {
+${Object.entries(T.springs).map(([k, s]) => `    /// ${s.use}\n    case ${k}`).join('\n')}
+
+    public var spring: MetalSpring {
+        switch self {
+${Object.keys(T.springs).map((k) => `        case .${k}: return MetalSprings.${k}`).join('\n')}
+        }
+    }
+
+    public var reducedMotion: MetalReducedMotion {
+        switch self {
+${Object.entries(T.springs).map(([k, s]) => `        case .${k}: return .${s.reduced}`).join('\n')}
+        }
+    }
+
+    /// The class whose spring carries a crossfade under Reduce Motion.
+    public static let crossfade: MetalSpringClass = .${F['reduced-motion'].crossfade}
 }
 
 /// ${F.tint.$use}

@@ -92,6 +92,41 @@
   --mu-focus-offset: 2px;
   --mu-focus-width: 2px;
   --mu-select-offset: 6px;
+  --mu-travel-part: 1;
+  --mu-travel-object: 1;
+  --mu-travel-hinge: 1;
+  --mu-travel-surface: 1;
+  --mu-travel-settle: 1;
+  --mu-travel-release: 1;
+  --mu-travel-refusal: 1;
+}
+
+/* Reduce Motion: part instant, object instant, hinge instant, surface crossfade, settle crossfade, release unchanged, refusal instant. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --mu-travel-part: 0;
+    --mu-spring-part-d: 0s;
+    --mu-travel-object: 0;
+    --mu-spring-object-d: 0s;
+    --mu-travel-hinge: 0;
+    --mu-spring-hinge-d: 0s;
+    --mu-travel-surface: 0;
+    --mu-travel-settle: 0;
+    --mu-travel-refusal: 0;
+    --mu-spring-refusal-d: 0s;
+  }
+}
+[data-mu-motion="reduce"] {
+  --mu-travel-part: 0;
+  --mu-spring-part-d: 0s;
+  --mu-travel-object: 0;
+  --mu-spring-object-d: 0s;
+  --mu-travel-hinge: 0;
+  --mu-spring-hinge-d: 0s;
+  --mu-travel-surface: 0;
+  --mu-travel-settle: 0;
+  --mu-travel-refusal: 0;
+  --mu-spring-refusal-d: 0s;
 }
 
 /* Type roles: the only sizes, weights and trackings components use. */

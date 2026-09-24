@@ -46,7 +46,6 @@ private struct MetalButtonBody: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.isFocused) private var isFocused
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let isDown = isEnabled && configuration.isPressed
@@ -66,7 +65,8 @@ private struct MetalButtonBody: View {
                     Color.clear.metalRecipe(recipes.up, in: shape).opacity(isDown ? 0 : 1)
                     Color.clear.metalRecipe(recipes.down, in: shape).opacity(isDown ? 1 : 0)
                 }
-                .animation(reduceMotion ? nil : MetalButtonMetrics.fade, value: isDown)
+                // A color change, not motion: it stays under Reduce Motion, like the CSS .18s.
+                .animation(MetalButtonMetrics.fade, value: isDown)
             }
             .overlay {
                 if isFocused && isEnabled {
@@ -76,8 +76,8 @@ private struct MetalButtonBody: View {
                 }
             }
             .offset(y: isDown ? MetalButtonMetrics.pressTravel : 0)
-            // Press travel is feedback and stays under Reduce Motion; the spring does not.
-            .animation(reduceMotion ? nil : MetalSprings.release.animation, value: isDown)
+            // The press rides release, which Reduce Motion keeps unchanged (MetalMotion).
+            .metalAnimation(.release, value: isDown)
             .opacity(isEnabled ? 1 : MetalButtonMetrics.disabledOpacity)
     }
 

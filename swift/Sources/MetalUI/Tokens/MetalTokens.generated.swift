@@ -256,6 +256,61 @@ public enum MetalSprings {
     public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
 }
 
+/// How a spring class resolves under Reduce Motion (foundations.reduced-motion).
+public enum MetalReducedMotion: String, Sendable {
+    /// Plays as authored: the motion is feedback, not decoration.
+    case unchanged
+    /// Travel and scale go; opacity stays and rides the crossfade spring.
+    case crossfade
+    /// The new state applies at once.
+    case instant
+}
+
+/// The mass classes. Pick the class; the spring and its Reduce Motion policy follow.
+public enum MetalSpringClass: String, CaseIterable, Sendable {
+    /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
+    case part
+    /// objects: cards lifting and landing on the table
+    case object
+    /// anything on a hinge: flaps, lids, drawers that tilt
+    case hinge
+    /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
+    case surface
+    /// arrivals and footprints: content coming into place, a control growing to new content
+    case settle
+    /// departures and letting go: content leaving, a pressed cap returning
+    case release
+    /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
+    case refusal
+
+    public var spring: MetalSpring {
+        switch self {
+        case .part: return MetalSprings.part
+        case .object: return MetalSprings.object
+        case .hinge: return MetalSprings.hinge
+        case .surface: return MetalSprings.surface
+        case .settle: return MetalSprings.settle
+        case .release: return MetalSprings.release
+        case .refusal: return MetalSprings.refusal
+        }
+    }
+
+    public var reducedMotion: MetalReducedMotion {
+        switch self {
+        case .part: return .instant
+        case .object: return .instant
+        case .hinge: return .instant
+        case .surface: return .crossfade
+        case .settle: return .crossfade
+        case .release: return .unchanged
+        case .refusal: return .instant
+        }
+    }
+
+    /// The class whose spring carries a crossfade under Reduce Motion.
+    public static let crossfade: MetalSpringClass = .settle
+}
+
 /// Valence tints color feelings and energy glyphs only: hue carries valence (warm pleasant, cool unpleasant), saturation carries energy (vivid activated, muted settled). Never red or green, never on words, off under Increase Contrast and by one setting (data-mu-untinted).
 public enum MetalTint: String, CaseIterable, Sendable {
     /// pleasant · activated: happy, excited, energised, proud
