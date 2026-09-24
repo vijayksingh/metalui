@@ -41,16 +41,18 @@ export interface TooltipProps {
   delay?: number;
   /** Its own distance from the trigger (clear a chip the trigger shows on hover); default 10. */
   offset?: number;
+  /** A class on the popup (a block's hook). */
+  className?: string;
 }
 
 /** Names an icon-only control and its key, one hover away. */
-function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap, delay, offset }: TooltipProps) {
+function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap, delay, offset, className }: TooltipProps) {
   return (
     <BaseTooltip.Root open={open}>
       <BaseTooltip.Trigger delay={delay} render={children} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={offset ?? gap()} collisionPadding={8}>
-          <BaseTooltip.Popup className="mu-tooltip" data-wrap={wrap ? '' : undefined}>
+          <BaseTooltip.Popup className={className ? `mu-tooltip ${className}` : 'mu-tooltip'} data-wrap={wrap ? '' : undefined}>
             {label}
             {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}
           </BaseTooltip.Popup>
