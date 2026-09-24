@@ -12,7 +12,7 @@ export default function SizeReadoutPage() {
   const d = useDialKit('Size readout', { width: [320, 20, 900, 1], height: [214, 20, 900, 1], count: [1, 1, 20, 1], zoom: [100, 25, 400, 25] });
   return (
     <>
-      <PageHeader title="Size readout" lede="A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. It is the the object sheet readout; the Selection frame places one under its object, and this is the same pill on its own." />
+      <PageHeader title="Size readout" lede="A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. It is the object sheet's readout; the Selection frame places one under its object, and this is the same pill on its own." />
       <Section title="Readings" lede="Dials: the size, the count, the zoom. Figures are tabular, so the pill never jitters as the value changes.">
         <Bench caption="size · multi · copied · zoom">
           <div className="flex flex-wrap items-center justify-center gap-24">
