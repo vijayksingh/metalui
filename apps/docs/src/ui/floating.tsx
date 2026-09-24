@@ -66,7 +66,7 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'link', table: ['46%', '3.5%'], space: ['56%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], node: () => <LinkCard href="https://lanterns.photo/night-market" /> },
+  { id: 'link', table: ['46%', '3.5%'], space: ['56%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
   { id: 'swatch', table: ['84.5%', '4%'], space: ['82%', '34%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray }) => <Swatch hex="#FF6B3D" label="Colour" onClick={() => openXray('swatch')} /> },
   {
     id: 'button', table: ['36%', '24%'], space: ['42%', '48%', 80, -6], dur: '20s', drift: ['28px', '-14px'], live: true,

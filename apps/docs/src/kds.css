@@ -766,3 +766,10 @@ html.rm .xr-dialogwrap { animation: none; }
 .xr-pinput { width: 100%; height: 34px; margin-top: 12px; box-sizing: border-box; padding: 0 12px; border: 0; border-radius: 12px; font: 500 13px var(--sans); color: var(--ink); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); outline: none; }
 .xr-pinput:focus-visible { box-shadow: var(--well), 0 0 0 2px var(--green-deep); }
 .xr-palette-solid { position: relative; overflow: hidden; }
+/* x-ray, link card: the screen set into the bezel, its chips and type */
+.xr-face.xr-linkscreen { display: flex; flex-direction: column; justify-content: flex-end; box-sizing: border-box; overflow: hidden; }
+.xr-linkchip { position: absolute; display: flex; align-items: center; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: rgba(255,255,255,.8); background: rgba(20,20,22,.5); white-space: nowrap; }
+.xr-linkchip > i { display: block; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0); }
+.xr-linkchip.is-action { color: rgba(255,255,255,.75); background: rgba(255,255,255,.08); cursor: pointer; transition: background .16s; }
+.xr-linkchip.is-action:hover { background: rgba(255,255,255,.16); }
+.xr-linkchip.is-lit { outline: 2px solid var(--green-deep); outline-offset: 2px; }
