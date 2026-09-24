@@ -29,6 +29,7 @@ for (const meta of components()) {
   for (const { file, token } of classTokens(dir)) {
     const u = utilityOf(token);
     if (/[[(]/.test(u)) errors.push(`${meta.dir}/${file}: ${token}: an arbitrary value; take it from the theme`);
+    if (/^(group|peer)(\/[\w-]+)?$/.test(token)) continue; // a marker that names a group for group-*: variants
     all.push({ where: `${meta.dir}/${file}`, token });
   }
 }
