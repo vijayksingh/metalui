@@ -540,3 +540,69 @@ td:first-child strong { white-space: nowrap; }
   .hero-dock { flex-direction: column; align-items: stretch; }
   .hero-side { flex-wrap: wrap; }
 }
+
+/* ============================================================ X-RAY: a component opened up on a blueprint */
+.xr { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; margin: 0 0 24px; }
+.xr-measure { position: absolute; visibility: hidden; font: var(--mu-type-ui); letter-spacing: -.005em; white-space: nowrap; }
+.xr-bench { position: relative; display: grid; place-items: center; min-height: 380px; padding: 72px 40px 64px; border-radius: 30px; overflow: hidden;
+  background: linear-gradient(color-mix(in srgb, var(--ink) 1.8%, transparent), color-mix(in srgb, var(--ink) .8%, transparent));
+  box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.07), inset 0 0 0 .5px rgba(0,0,0,.035), inset 0 -2px 4px -2px var(--rule-lip); }
+[data-mu-colorway="graphite"] .xr-bench { background: rgba(255,255,255,.012); box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4); }
+.xr-grid { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease;
+  background-image: linear-gradient(color-mix(in srgb, var(--green-deep) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--green-deep) 14%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px; background-position: center; }
+.xr[data-xray] .xr-grid { opacity: 1; }
+.xr-specimen { position: relative; perspective: 1400px; }
+.xr-solid { position: absolute; left: 0; top: 0; transition: opacity var(--spring-settle-d) var(--spring-settle), filter var(--spring-settle-d) var(--spring-settle); }
+.xr-solid .mu-button { cursor: zoom-in; }
+.xr[data-xray] .xr-solid { opacity: 0; filter: blur(2px); pointer-events: none; }
+.xr-stack { position: absolute; inset: 0; transform-style: preserve-3d; opacity: 0; transition: opacity var(--spring-settle-d) var(--spring-settle), transform var(--spring-object-d) var(--spring-object); }
+.xr[data-xray] .xr-stack { opacity: .55; }
+.xr-stack.is-exploded { opacity: 1 !important; transform: rotateX(56deg) rotateZ(-22deg) translateY(96px); }
+.xr[data-exploded] .xr-hot:not(.is-on) { opacity: .28; }
+.xr[data-exploded] .xr-bench { min-height: 440px; }
+.xr-plane { position: absolute; left: 0; top: 0; transform-style: preserve-3d; transition: transform var(--spring-object-d) var(--spring-object); }
+.xr-plane-fill { position: absolute; inset: 0; border-radius: 999px; }
+.xr-stack.is-exploded .xr-plane { transform: translateZ(calc(var(--i) * 38px)); }
+.xr-stack.is-exploded .xr-plane-fill { outline: 1px dashed color-mix(in srgb, var(--green-deep) 70%, transparent); outline-offset: 2px; }
+.xr-plane-name { position: absolute; left: calc(100% + 14px); top: 50%; transform: translateY(-50%) rotateZ(22deg); white-space: nowrap; }
+.xr-wire { position: absolute; max-width: none; overflow: visible; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
+.xr[data-xray] .xr-wire { opacity: 1; }
+.xr-stack.is-exploded ~ .xr-wire { opacity: .12; }
+.xr-outline { fill: none; stroke: var(--green-deep); stroke-width: 1.25; stroke-dasharray: 5 4; }
+.xr-dim { fill: none; stroke: var(--ink3); stroke-width: 1; }
+.xr-guide { fill: none; stroke: var(--ink3); stroke-width: 1; stroke-dasharray: 2 3; }
+.xr-page { fill: none; stroke: var(--ink3); stroke-width: 1; stroke-dasharray: 1 4; }
+.xr-wire .is-hot { stroke: var(--green-deep); stroke-width: 1.75; stroke-dasharray: none; }
+.xr-num { font: 500 10.5px var(--mono); font-stretch: var(--mono-stretch); fill: var(--ink2); letter-spacing: .02em; }
+.xr-hot { position: absolute; z-index: 3; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; display: grid; place-items: center;
+  font: 500 10.5px/1 var(--mono); color: var(--ink); background: var(--btn-bg); box-shadow: var(--btn-sh), 0 0 0 1.25px var(--green-deep);
+  animation: xr-pop var(--spring-object-d) var(--spring-object) both; transition: transform var(--spring-release-d) var(--spring-release); }
+.xr-hot:hover { transform: scale(1.12); }
+.xr-hot.is-on { color: #fff; background: var(--green-deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green-deep) 22%, transparent); }
+@keyframes xr-pop { from { opacity: 0; transform: scale(.4); } }
+.xr-hint { position: absolute; left: 0; right: 0; bottom: 20px; text-align: center; }
+.xr-close { position: absolute; top: 18px; right: 18px; cursor: pointer; }
+.xr-card { border-radius: 24px; padding: 18px 20px 20px; animation: rise var(--spring-surface-d) var(--spring-surface) both; }
+.xr-card p { margin: 10px 0 0; font: 400 13px/20px var(--sans); color: var(--ink2); }
+.xr-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; padding: 14px; border-radius: 16px; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+html.rm .xr-stack, html.rm .xr-plane, html.rm .xr-hot, html.rm .xr-card { transition: none; animation: none; }
+@media (max-width: 900px) { .xr { grid-template-columns: minmax(0, 1fr); } }
+
+/* ============================================================ FLOATING TABLE: real components drifting on the home hero */
+.drift { position: relative; height: 520px; border-radius: 36px; overflow: hidden;
+  background: linear-gradient(color-mix(in srgb, var(--ink) 1.6%, transparent), color-mix(in srgb, var(--ink) .6%, transparent));
+  box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.06), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px var(--rule-lip); }
+[data-mu-colorway="graphite"] .drift { background: rgba(255,255,255,.012); box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4); }
+.drift-item { position: absolute; animation: drift var(--dur, 22s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+.drift-item:hover, .drift-item:focus-within { animation-play-state: paused; }
+.drift-item.is-live { cursor: zoom-in; }
+.drift-item.is-live::after { content: "X-ray"; position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); opacity: 0; transition: opacity .2s;
+  font: 500 9px/12px var(--mono); letter-spacing: .11em; text-transform: uppercase; color: var(--green-deep); white-space: nowrap; }
+.drift-item.is-live:hover::after { opacity: 1; }
+@keyframes drift { from { transform: translate(0, 0) rotate(var(--r0, 0deg)); } to { transform: translate(var(--dx, 40px), var(--dy, -24px)) rotate(var(--r1, 0deg)); } }
+html.rm .drift-item { animation: none; }
+@media (prefers-reduced-motion: reduce) { .drift-item { animation: none; } }
+.xr-overlay { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 24px; background: color-mix(in srgb, var(--page) 70%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); animation: rise var(--spring-surface-d) var(--spring-surface) both; }
+.xr-overlay > .xr-sheet { width: min(980px, 100%); }

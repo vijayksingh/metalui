@@ -8,6 +8,7 @@ import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalBu
 import { C, CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, Tag, TokenTable } from '../../ui/doc';
 import { Beat, Compare, LayerTrail, SlowSwitch, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { ButtonXray } from '../../ui/xray/ButtonXray';
 import { useColorway } from '../../app/colorway';
 import { tokens } from '../../lib/tokens';
 
@@ -61,6 +62,9 @@ export default function ButtonPage() {
         />
       </PageHeader>
       <Hero />
+      <Section id="x-ray" title="X-ray" lede="Open the button up. Click it, then click the numbers to see how each part is built: type, the pill rule, light, shadow, the press and its layers.">
+        <ButtonXray />
+      </Section>
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">
           <CapIsAnObject />
