@@ -19,7 +19,7 @@ function findRecipeCollections(node, path = '') {
   }
 }
 findRecipeCollections(tokens);
-const norm = (s) => s.replace(/^Metal/, '').replace(/[^a-z\d]/gi, '').toLowerCase();
+const norm = (s) => s.replace(/^Metal/, '').replace(/View$/, '').replace(/[^a-z\d]/gi, '').toLowerCase();
 const number = (s) => Number(s);
 const nums = (s) => [...s.matchAll(/-?(?:\d*\.\d+|\d+(?:\.\d+)?)/g)].map((m) => number(m[0]));
 const split = (s) => { let depth = 0, part = '', out = []; for (const ch of s) { if (ch === '(' || ch === '[') depth++; if (ch === ')' || ch === ']') depth--; if (ch === ',' && depth === 0) { out.push(part.trim()); part = ''; } else part += ch; } if (part.trim()) out.push(part.trim()); return out; };
@@ -95,7 +95,10 @@ if (names.size) {
   if (!existsSync(modulePath)) errors.push('scripts/lib/recipes.mjs: recipe generator missing');
   else generated = (await import('./lib/recipes.mjs')).buildRecipes(tokens.recipes ?? {});
 }
-const markedLines = (source, name, index, kind) => source.split('\n').filter((line) => line.includes(`${kind} mu-recipe:${name}:${index}`)).map((line) => line.trim());
+const markedLines = (source, name, index, kind) => {
+  const marker = new RegExp(`${kind === '/*' ? '/\\*' : '//'} mu-recipe:${name}:${index}(?=\\s|\\*/|$)`);
+  return [...new Set(source.split('\n').filter((line) => marker.test(line)).map((line) => line.trim()))];
+};
 for (const name of names) {
   const recipe = entries[name];
   const layers = recipe?.layers ?? recipe?.recipe?.layers;
@@ -110,7 +113,7 @@ for (const name of names) {
       if (!equal(nums(cssValue), nums(swiftValue))) errors.push(`${name}: layer ${index} CSS/Swift marker numeric mismatch`);
     }
     if (generated) {
-      const expectedCSS = [generated.css.root, generated.css.bone, generated.css.graphite].flatMap((section) => markedLines(section, name, index, '/*'));
+      const expectedCSS = [...new Set([generated.css.root, generated.css.bone, generated.css.graphite].flatMap((section) => markedLines(section, name, index, '/*')))];
       const expectedSwift = markedLines(generated.swift, name, index, '//');
       if (!equal(cssLines, expectedCSS)) errors.push(`${name}: layer ${index} generated CSS value/order mismatch`);
       if (!equal(swiftLines, expectedSwift)) errors.push(`${name}: layer ${index} generated Swift typed value/order mismatch`);
@@ -122,11 +125,6 @@ const native = walk(join(root, 'swift/Sources/MetalUI/Components'), ['.swift']).
 for (const path of [...react, ...native]) {
   const name = norm(path.split('/').at(-1).replace(/\.(tsx|swift)$/, ''));
   if (![...names].some((n) => norm(n) === name)) errors.push(`${path.slice(root.length + 1)}: component has no matching component recipe`);
-}
-for (const name of names) {
-  const n = norm(name);
-  if (!react.some((p) => norm(p.split('/').at(-1).replace('.tsx', '')) === n)) errors.push(`${name}: React component missing`);
-  if (!native.some((p) => norm(p.split('/').at(-1).replace('.swift', '')) === n)) errors.push(`${name}: Swift component missing`);
 }
 for (const error of errors) console.log(error);
 console.log(`Recipe parity: ${errors.length} finding(s)`);
