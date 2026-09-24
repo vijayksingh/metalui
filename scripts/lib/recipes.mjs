@@ -1,3 +1,7 @@
+
+// Swift reserves some words a recipe may be named after (switch, default, …): escape them.
+const SWIFT_KEYWORDS = new Set(['switch', 'case', 'default', 'class', 'struct', 'enum', 'func', 'let', 'var', 'if', 'else', 'for', 'in', 'while', 'return', 'import', 'protocol', 'extension', 'static', 'self', 'Self', 'true', 'false', 'nil', 'repeat', 'break', 'continue', 'guard', 'where', 'do', 'catch', 'throw', 'throws', 'init', 'deinit', 'subscript', 'operator', 'is', 'as', 'try', 'super', 'internal', 'private', 'public', 'fileprivate', 'open', 'inout', 'defer', 'fallthrough', 'typealias', 'associatedtype']);
+const swiftName = (n) => (SWIFT_KEYWORDS.has(n) ? `\`${n}\`` : n);
 // Object recipes as data (tokens.json `recipes`): every layer of an object's look — fills
 // (gradients, solid colors, the object's own color), shadow stacks (inset and outer), text-shadow
 // lips — and its sizes, radii and type, per part and per state, taken from the reference design's CSS.
@@ -249,7 +253,7 @@ export function buildRecipes(recipes) {
         }),
     );
     swift.push(`    /// ${r.$use ?? obj}${r.$source ? ` (${r.$source})` : ''}
-    public static let ${camel(obj)} = MetalObjectRecipe(
+    public static let ${swiftName(camel(obj))} = MetalObjectRecipe(
         name: "${obj}",
         layers: [
 ${r.layers.map((l, i) => `            ${swiftLayer(l)}, // mu-recipe:${obj}:${i} ${cssValue(l.value)}`).join('\n')}

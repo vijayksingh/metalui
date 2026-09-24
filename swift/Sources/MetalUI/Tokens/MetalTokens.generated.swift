@@ -1885,7 +1885,7 @@ public enum MetalRecipes {
     )
 
     /// A switch for a setting that is on or off, and takes effect at once: a sunk pill track with a raised round thumb. On, the thumb slides right on the part spring (it may overshoot against the end) and the track fills with a soft green; off, it slides back and the track is a plain well. Pressing stretches the thumb toward where it is going. Focus: the green ring at offset 2. Disabled: 40 %. (the reference design site .tog (track well, thumb raise-sm, on gradient); Base UI Switch)
-    public static let switch = MetalObjectRecipe(
+    public static let `switch` = MetalObjectRecipe(
         name: "switch",
         layers: [
             .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(225.0, 224.0, 220.0, 1.0)), 0.0), .init(.color(MetalRGBA(234.0, 233.0, 229.0, 1.0)), 1.0)])), // mu-recipe:switch:0 linear-gradient(#E1E0DC, #EAE9E5)
