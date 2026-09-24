@@ -111,3 +111,50 @@ public struct MetalSpring: Equatable, Sendable {
         .interpolatingSpring(mass: 1, stiffness: stiffness, damping: damping)
     }
 }
+
+/// A font family in the Soft Hardware type system.
+public enum MetalFontFamily: String, Sendable {
+    /// Geist: UI and reading.
+    case sans
+    /// Martian Mono: engravings, readouts, keycaps and code.
+    case mono
+    /// Doto: dot-matrix display readouts in widgets.
+    case pixel
+}
+
+/// One type role, as the CSS `.mu-type-*` class writes it.
+public struct MetalTypeRole: Equatable, Sendable {
+    public let name: String
+    public let family: MetalFontFamily
+    public let size: Double
+    public let line: Double
+    public let weight: Int
+    /// Letter spacing in em.
+    public let tracking: Double
+    /// Width axis as a fraction (1 = normal; Martian Mono runs at 0.875, code at 0.75).
+    public let stretch: Double
+    public let uppercase: Bool
+    public let tabular: Bool
+    /// The largest size the role grows to with the host's text size; nil means it stays fixed.
+    /// Layouts reserve this size.
+    public let maxSize: Double?
+
+    public init(
+        name: String, family: MetalFontFamily, size: Double, line: Double, weight: Int,
+        tracking: Double, stretch: Double, uppercase: Bool, tabular: Bool, maxSize: Double?
+    ) {
+        self.name = name
+        self.family = family
+        self.size = size
+        self.line = line
+        self.weight = weight
+        self.tracking = tracking
+        self.stretch = stretch
+        self.uppercase = uppercase
+        self.tabular = tabular
+        self.maxSize = maxSize
+    }
+
+    /// Letter spacing in points at the role's size.
+    public var trackingPoints: Double { tracking * size }
+}
