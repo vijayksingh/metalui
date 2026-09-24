@@ -10,6 +10,15 @@ const tokens = JSON.parse(read('tokens/tokens.json'));
 const css = read('packages/metalui/src/components/tokens.css');
 const swift = read('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift');
 const errors = [];
+function findRecipeCollections(node, path = '') {
+  if (!node || typeof node !== 'object' || Array.isArray(node)) return;
+  for (const [key, value] of Object.entries(node)) {
+    const next = path ? `${path}.${key}` : key;
+    if (key === 'recipes' && next !== 'recipes' && next !== 'frost.recipes') errors.push(`${next}: recipe collection has no CSS/Swift parser`);
+    else if (key !== 'recipes') findRecipeCollections(value, next);
+  }
+}
+findRecipeCollections(tokens);
 const norm = (s) => s.replace(/^Metal/, '').replace(/[^a-z\d]/gi, '').toLowerCase();
 const number = (s) => Number(s);
 const nums = (s) => [...s.matchAll(/-?(?:\d*\.\d+|\d+(?:\.\d+)?)/g)].map((m) => number(m[0]));
