@@ -21,6 +21,7 @@ public struct MetalRegionView<Rows: View>: View {
     let count: Int?
     let state: MetalRegionState
     let lens: Bool
+    let showsHeader: Bool
     @Binding var renaming: Bool
     let onRename: (String) -> Void
     let rows: Rows
@@ -33,7 +34,8 @@ public struct MetalRegionView<Rows: View>: View {
 
     public init(
         name: String, rule: String? = nil, dropRule: String? = nil, count: Int? = nil, state: MetalRegionState = .rest,
-        lens: Bool = false, renaming: Binding<Bool> = .constant(false), onRename: @escaping (String) -> Void = { _ in },
+        lens: Bool = false, showsHeader: Bool = true,
+        renaming: Binding<Bool> = .constant(false), onRename: @escaping (String) -> Void = { _ in },
         @ViewBuilder rows: () -> Rows = { EmptyView() }
     ) {
         self.name = name
@@ -42,6 +44,7 @@ public struct MetalRegionView<Rows: View>: View {
         self.count = count
         self.state = state
         self.lens = lens
+        self.showsHeader = showsHeader
         _renaming = renaming
         self.onRename = onRename
         self.rows = rows()
@@ -54,15 +57,17 @@ public struct MetalRegionView<Rows: View>: View {
             let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
             ZStack(alignment: .topLeading) {
                 background(shape, t)
-                VStack(alignment: .leading, spacing: 0) {
-                    head(t).frame(height: MetalRegion.headHeight, alignment: .top)
-                    if lens {
-                        rows.padding(.horizontal, MetalRegion.bodyInset).padding(.bottom, MetalRegion.bodyInset)
+                if showsHeader {
+                    VStack(alignment: .leading, spacing: 0) {
+                        head(t).frame(height: MetalRegion.headHeight, alignment: .top)
+                        if lens {
+                            rows.padding(.horizontal, MetalRegion.bodyInset).padding(.bottom, MetalRegion.bodyInset)
+                        }
                     }
                 }
             }
         }
-        .opacity(state == .past ? 0 : state == .dim ? MetalRegion.dim : 1)
+        .opacity(state == .past ? .zero : state == .dim ? MetalRegion.dim : MetalRegion.overRule.alpha)
         .allowsHitTesting(state != .past)
         .metalAnimation(.settle, value: state)
         .accessibilityElement(children: .contain)
