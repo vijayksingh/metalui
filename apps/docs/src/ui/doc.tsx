@@ -100,18 +100,24 @@ export function Stage({ caption, cost, bar, children, className = '', style, ton
         data-md="skip"
         data-mu-colorway={tone === 'dark' ? 'graphite' : undefined}
         className={['stage', className].join(' ')}
-        style={tone === 'dark' ? { background: 'var(--page)', ...style } : style}
+        style={{ ...(tone === 'dark' ? { background: 'var(--page)' } : null), ...((caption || cost) ? { paddingBottom: 28, rowGap: 24 } : null), ...style }}
       >
         {children}
-        {(caption || cost) && (
-          <div className="cap">
-            {caption && <span className="eng">{caption}</span>}
-            {cost && <span className="eng" style={{ display: 'block', marginTop: 4, opacity: 0.8 }}>Cost · {cost}</span>}
-          </div>
-        )}
+        {(caption || cost) && <StageCaption caption={caption} cost={cost} />}
       </div>
       {bar && <div className="status-row" style={{ justifyContent: 'center', margin: '-8px 0 24px' }}>{bar}</div>}
     </figure>
+  );
+}
+
+/** Short captions are engraved like the reference; a sentence reads as quiet text. Both sit in flow at the stage's foot. */
+function StageCaption({ caption, cost }: { caption?: React.ReactNode; cost?: React.ReactNode }) {
+  const long = typeof caption === 'string' && caption.length > 64;
+  return (
+    <div style={{ flexBasis: '100%', textAlign: 'center', marginTop: 4 }}>
+      {caption && (long ? <span className="t-body ink2" style={{ display: 'block', maxWidth: 620, margin: '0 auto' }}>{caption}</span> : <span className="eng">{caption}</span>)}
+      {cost && <span className="t-meta ink3" style={{ display: 'block', marginTop: 6 }}><b style={{ fontWeight: 500 }}>Cost:</b> {cost}</span>}
+    </div>
   );
 }
 
