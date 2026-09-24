@@ -663,11 +663,11 @@ Send the poster <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cu
 
 # Menu and correction popover
 
-A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. Kamui brief: 03 §5 (corrections), 04 §8 (correction popover), §18 (menu row, popover); behaviour: the medium demo's `#pop`.
+A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
 
 ## Use it for
 
-- **The correction popover**: right-click a cue for what it is not ("Not a Task", "Not Coffee", "Ignore “4pm”"), Reset Corrections, Ask Jev Again, Gather Similar; the heading is the cue's provenance.
+- **The correction popover**: right-click a cue for what it is not ("Not a Task", "Not Coffee", "Ignore “4pm”"), Reset Corrections, Ask Recognizer Again, Gather Similar; the heading is the cue's provenance.
 - A "more" button's actions; a block's right-click actions.
 
 ## Don't use it for
@@ -698,7 +698,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 ## API
 
 ```tsx
-<ContextMenu heading="NOTE · TASK BY JEV 0.82" menu={<>
+<ContextMenu heading="NOTE · TASK BY SYNC 0.82" menu={<>
   <MenuItem onSelect={() => correct({ task: false })}>Not a Task</MenuItem>
   <MenuItem onSelect={resetCorrections}>Reset Corrections</MenuItem>
   <MenuSeparator />

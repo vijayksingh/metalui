@@ -360,11 +360,6 @@
           "path": "packages/metalui/src/components/menu/menu.tsx",
           "type": "registry:ui",
           "target": "components/metalui/menu/menu.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/menu/menu.css",
-          "type": "registry:file",
-          "target": "components/metalui/menu/menu.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/menu.md. SwiftUI: MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:) in the MetalUI Swift package."

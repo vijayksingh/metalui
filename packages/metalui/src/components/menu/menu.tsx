@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
-import './menu.css';
 
 /* ─────────────────────────────────────────────────────────
  * MENU and CORRECTION POPOVER (the brief, 04 §8, §18; the reference design's #pop) on Base UI Menu
@@ -15,6 +14,17 @@ import './menu.css';
  *   ⎋ / click outside  closes, nothing runs
  * ───────────────────────────────────────────────────────── */
 
+/* Styled with the theme's utilities (the menu recipe): a frosted plate that fades in on settle and out on
+ * release; rows highlight under the pointer or the keys; destructive rows are red. */
+const POSITIONER = 'mu-menu-positioner z-menu-z';
+const PLATE = 'mu-menu min-w-menu-min-width p-menu-pad rounded-menu-radius outline-none recipe-menu backdrop-menu-blur menu-origin transition-opacity ease-settle duration-settle data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:ease-release data-ending-style:duration-release reduce-transparency:opaque-frost';
+const HEADING = 'mu-menu-heading pt-menu-heading-pad-top px-menu-heading-pad-x pb-menu-heading-pad-bottom type-label engraved';
+const ROW = 'mu-menu-row mu-icon-trigger flex items-center gap-menu-row-gap h-menu-row-height px-menu-row-pad rounded-menu-row-radius type-menu-row text-ink cursor-default outline-none select-none data-highlighted:recipe-menu-row-hover data-danger:text-red data-disabled:opacity-menu-row-disabled';
+const GLYPH = 'mu-menu-glyph inline-grid flex-none text-ink2 in-data-danger:text-red [&>svg]:size-menu-row-glyph';
+const LABEL = 'mu-menu-label flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap';
+const KEY = 'mu-menu-key ml-menu-row-key-gap';
+const SEP = 'mu-menu-sep h-menu-sep-thickness my-menu-sep-inset-y mx-menu-sep-inset-x recipe-menu-sep';
+
 function offset() {
   if (typeof window === 'undefined') return 6;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-menu-offset')) || 6;
@@ -22,10 +32,10 @@ function offset() {
 
 function Plate({ heading, children }: { heading?: string; children: React.ReactNode }) {
   return (
-    <BaseMenu.Popup className="mu-menu">
+    <BaseMenu.Popup className={PLATE}>
       {heading ? (
         <BaseMenu.Group>
-          <BaseMenu.GroupLabel className="mu-menu-heading mu-type-label">{heading}</BaseMenu.GroupLabel>
+          <BaseMenu.GroupLabel className={HEADING}>{heading}</BaseMenu.GroupLabel>
           {children}
         </BaseMenu.Group>
       ) : children}
@@ -52,7 +62,7 @@ export function Menu({ trigger, heading, side = 'bottom', align = 'start', child
     <BaseMenu.Root open={open} onOpenChange={onOpenChange ? (o) => onOpenChange(o) : undefined}>
       <BaseMenu.Trigger render={trigger} />
       <BaseMenu.Portal>
-        <BaseMenu.Positioner className="mu-menu-positioner" side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+        <BaseMenu.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
           <Plate heading={heading}>{children}</Plate>
         </BaseMenu.Positioner>
       </BaseMenu.Portal>
@@ -78,7 +88,7 @@ export function ContextMenu({ menu, heading, children }: ContextMenuProps) {
     <BaseContextMenu.Root>
       <BaseContextMenu.Trigger render={children} />
       <BaseContextMenu.Portal>
-        <BaseContextMenu.Positioner className="mu-menu-positioner" collisionPadding={8}>
+        <BaseContextMenu.Positioner className={POSITIONER} collisionPadding={8}>
           <Plate heading={heading}>{menu}</Plate>
         </BaseContextMenu.Positioner>
       </BaseContextMenu.Portal>
@@ -102,15 +112,15 @@ export interface MenuItemProps {
 /** A 30 row. */
 export function MenuItem({ onSelect, icon, shortcut, danger, disabled, children }: MenuItemProps) {
   return (
-    <BaseMenu.Item className="mu-menu-row mu-type-ui mu-icon-trigger" onClick={onSelect} disabled={disabled} data-danger={danger ? '' : undefined}>
-      {icon && <span aria-hidden className="mu-menu-glyph">{icon}</span>}
-      <span className="mu-menu-label">{children}</span>
-      {shortcut && <Kbd size="small" className="mu-menu-key">{shortcut}</Kbd>}
+    <BaseMenu.Item className={ROW} onClick={onSelect} disabled={disabled} data-danger={danger ? '' : undefined}>
+      {icon && <span aria-hidden className={GLYPH}>{icon}</span>}
+      <span className={LABEL}>{children}</span>
+      {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
     </BaseMenu.Item>
   );
 }
 
 /** An engraved rule between groups of rows. */
 export function MenuSeparator() {
-  return <BaseMenu.Separator className="mu-menu-sep" />;
+  return <BaseMenu.Separator className={SEP} />;
 }

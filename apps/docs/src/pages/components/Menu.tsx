@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { ContextMenu, Cue, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/menu/menu.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/menu/menu.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMenu.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';

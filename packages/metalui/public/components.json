@@ -289,8 +289,7 @@
         "symbol": "MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:)"
       },
       "registry": "https://metalui.dev/r/menu.json",
-      "agent": "https://metalui.dev/r/menu.md",
-      "sheet": "Kamui 04 §8, §18"
+      "agent": "https://metalui.dev/r/menu.md"
     },
     {
       "name": "past-banner",

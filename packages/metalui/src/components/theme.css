@@ -1368,6 +1368,9 @@
   background: var(--mu-r-menu-sep-background);
   box-shadow: var(--mu-r-menu-sep-shadow);
 }
+@utility menu-origin {
+  transform-origin: var(--transform-origin);
+}
 @utility z-menu-z {
   z-index: var(--mu-r-menu-self-z);
 }
