@@ -60,6 +60,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/cue', label: 'Cue family' },
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
       { to: '/components/link-card', label: 'Link card' },
+      { to: '/components/code-card', label: 'Code card' },
       { to: '/components/hover-engraving', label: 'Hover engraving' },
       { to: '/components/provenance-tooltip', label: 'Provenance tooltip' },
       { to: '/components/region', label: 'Region' },
