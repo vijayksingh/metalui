@@ -12,6 +12,7 @@ import './tooltip.css';
  *   edge      flips to the other side near the edge (Base UI collision avoidance)
  *   leave     fades out on settle; a press hides it
  * "SELECT · V": the name, then the key dimmed. Never interactive: pointer passes through.
+ * wrap: a longer note (where a thing came from) wraps at 280, its detail in Tooltip.Dim.
  * ───────────────────────────────────────────────────────── */
 
 const delayMs = () => {
@@ -24,8 +25,8 @@ const gap = () => {
 };
 
 export interface TooltipProps {
-  /** What the control is: "Select". The trigger still needs its own accessible name (aria-label). */
-  label: string;
+  /** What the control is: "Select", or a note with a Tooltip.Dim detail. The trigger still needs its own accessible name (aria-label). */
+  label: React.ReactNode;
   /** The key, shown dimmed after the name: "V", "⌘Z". */
   shortcut?: string;
   /** Where it sits. Default top; it flips near the edge. */
@@ -34,16 +35,18 @@ export interface TooltipProps {
   children: React.ReactElement;
   /** Controlled open state (a docs still, a test). */
   open?: boolean;
+  /** A note that wraps at the max width instead of one line. */
+  wrap?: boolean;
 }
 
 /** Names an icon-only control and its key, one hover away. */
-export function Tooltip({ label, shortcut, side = 'top', children, open }: TooltipProps) {
+function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap }: TooltipProps) {
   return (
     <BaseTooltip.Root open={open}>
       <BaseTooltip.Trigger render={children} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={gap()} collisionPadding={8}>
-          <BaseTooltip.Popup className="mu-tooltip">
+          <BaseTooltip.Popup className="mu-tooltip" data-wrap={wrap ? '' : undefined}>
             {label}
             {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}
           </BaseTooltip.Popup>
@@ -52,6 +55,13 @@ export function Tooltip({ label, shortcut, side = 'top', children, open }: Toolt
     </BaseTooltip.Root>
   );
 }
+
+/** The dimmed part of a tooltip: a key, or a note's detail ("· 14:10 · confident"). */
+function Dim({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  return <span className={className ? `mu-tooltip-key ${className}` : 'mu-tooltip-key'} {...props} />;
+}
+
+export const Tooltip = Object.assign(TooltipRoot, { Root: TooltipRoot, Dim });
 
 /** Groups tooltips: after one shows, the next trigger shows its own at once. Wrap a toolbar or a panel. */
 export function TooltipProvider({ children }: { children: React.ReactNode }) {

@@ -1451,7 +1451,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 
 # Tooltip
 
-Names an icon-only control and its key, one hover away. React: `Tooltip`, `TooltipProvider` from `@unlocalhosted/metalui` (Base UI Tooltip). SwiftUI: `.metalTooltip(_:shortcut:edge:)`. Kamui brief: 04 §2 (tools), §8; behaviour: the medium demo's `#tip`.
+Names an icon-only control and its key, one hover away. React: `Tooltip`, `TooltipProvider` from `@unlocalhosted/metalui` (Base UI Tooltip). SwiftUI: `.metalTooltip(_:shortcut:edge:)`. Behaviour: the reference design's `#tip`.
 
 ## Use it for
 
@@ -1459,7 +1459,7 @@ Names an icon-only control and its key, one hover away. React: `Tooltip`, `Toolt
 
 ## Don't use it for
 
-- Where a cue came from: use `ProvenanceTooltip` (readout role, 380 ms, the source and confidence).
+- Where a cue came from: use the `ProvenanceTooltip` block (a wrapped note with its detail in `Tooltip.Dim`).
 - Anything to click or read at length: use a popover or a menu. A tooltip holds no controls.
 - A control that already shows its name in words.
 
@@ -1467,6 +1467,8 @@ Names an icon-only control and its key, one hover away. React: `Tooltip`, `Toolt
 
 - **Chip**: a graphite pill (`.mu-frost-graphite` fill and shadow), padding 5 × 9, the label role (9 mono uppercase), ink `#E9E9EB`.
 - **Key**: after a middle dot, dimmed (`#8E8E93`): `SELECT · V`.
+- **Dim** (`Tooltip.Dim`): the same dimmed ink for any detail in a `label` node.
+- **Wrap** (`wrap`): a longer note wraps at 280 instead of one line.
 - **Placement**: 10 from the trigger, above by default; flips near the edge.
 
 ## States and motion
@@ -1498,7 +1500,7 @@ Button(action: undo) { MetalIcon(.undo, size: 16) }
 ## Rules
 
 - Every icon-only control has one, and its own accessible name; the tooltip is visual.
-- One line. Name, then key. No sentences, no punctuation beyond the middle dot.
+- One line. Name, then key. No sentences, no punctuation beyond the middle dot. Only a block's note (`wrap`) runs longer.
 
 ## Accessibility
 

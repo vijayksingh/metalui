@@ -19,6 +19,7 @@
   /* A fade on settle: it is information, not an arrival. */
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
+.mu-tooltip[data-wrap] { white-space: normal; }
 .mu-tooltip[data-starting-style], .mu-tooltip[data-ending-style] { opacity: var(--mu-zero); }
 .mu-tooltip[data-instant] { transition: none; }
 .mu-tooltip-key { color: var(--mu-r-tooltip-key-ink); }

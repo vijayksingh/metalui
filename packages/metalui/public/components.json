@@ -550,7 +550,7 @@
       "name": "tooltip",
       "title": "Tooltip",
       "status": "alpha",
-      "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip.",
+      "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip. wrap makes a longer note that wraps at 280 with its detail in Tooltip.Dim.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Tooltip, TooltipProvider",
@@ -561,8 +561,7 @@
         "symbol": "View.metalTooltip(_:shortcut:edge:)"
       },
       "registry": "https://metalui.dev/r/tooltip.json",
-      "agent": "https://metalui.dev/r/tooltip.md",
-      "sheet": "KAMUI-01/02 tooltips"
+      "agent": "https://metalui.dev/r/tooltip.md"
     },
     {
       "name": "well",

@@ -765,7 +765,7 @@
       "name": "tooltip",
       "type": "registry:ui",
       "title": "Tooltip",
-      "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip.",
+      "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip. wrap makes a longer note that wraps at 280 with its detail in Tooltip.Dim.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],

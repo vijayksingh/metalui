@@ -2,10 +2,25 @@
   "name": "tooltip",
   "title": "Tooltip",
   "status": "alpha",
-  "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip.",
-  "sheet": "KAMUI-01/02 tooltips",
+  "description": "Names an icon-only control and its key: a graphite pill chip in the label role, SELECT · V with the key dimmed, 10 from the trigger after 120 ms, grouped so the next trigger shows at once; flips near the edge; fades on settle. Built on Base UI Tooltip. wrap makes a longer note that wraps at 280 with its detail in Tooltip.Dim.",
   "base": "@base-ui/react/tooltip",
-  "react": { "export": "Tooltip, TooltipProvider", "files": ["tooltip.tsx", "tooltip.css"] },
-  "swift": { "symbol": "View.metalTooltip(_:shortcut:edge:)", "file": "swift/Sources/MetalUI/Components/MetalTooltip.swift" },
-  "agent": "tooltip.agent.md"
+  "react": {
+    "export": "Tooltip, TooltipProvider",
+    "files": [
+      "tooltip.tsx",
+      "tooltip.css"
+    ]
+  },
+  "swift": {
+    "symbol": "View.metalTooltip(_:shortcut:edge:)",
+    "file": "swift/Sources/MetalUI/Components/MetalTooltip.swift"
+  },
+  "agent": "tooltip.agent.md",
+  "layer": "component",
+  "slots": {
+    "Tooltip": [
+      "Root",
+      "Dim"
+    ]
+  }
 }
