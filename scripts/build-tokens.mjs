@@ -153,6 +153,11 @@ const SG_KEYS = Object.keys(SG).filter((k) => !k.startsWith('$'));
 const SG_UNITLESS = new Set(['rest-opacity', 'enter-scale']);
 const suggestionVars = SG_KEYS.map((k) => `  --mu-suggestion-${k}: ${typeof SG[k] === 'number' ? (SG_UNITLESS.has(k) ? SG[k] : `${SG[k]}px`) : SG[k]};`).join('\n');
 
+// ---------- engraving (tokens.json engraving) ----------
+const EG = T.engraving;
+const EG_KEYS = Object.keys(EG).filter((k) => !k.startsWith('$'));
+const engravingVars = EG_KEYS.map((k) => `  --mu-engraving-${k}: ${k.endsWith('-ms') ? `${EG[k]}ms` : `${EG[k]}px`};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -175,6 +180,7 @@ ${frostVars}
 ${presenceVars}
 ${cueVars}
 ${suggestionVars}
+${engravingVars}
 ${typeVars}
 ${travel}
 }
@@ -539,7 +545,13 @@ public enum MetalSuggestion {
 ${SG_KEYS.map((k) => { const v = SG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion);
+const swiftEngraving = `
+/// ${EG.$use}
+public enum MetalEngraving {
+${EG_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(EG[k])}`).join('\n')}
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving);
 
 // ---------- Swift foundations ----------
 const em = (v) => num(parseFloat(v));

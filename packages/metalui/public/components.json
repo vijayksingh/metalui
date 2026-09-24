@@ -38,6 +38,24 @@
       "sheet": "KAMUI-08 (dimple), Kamui 03 §3"
     },
     {
+      "name": "hover-engraving",
+      "title": "Hover engraving",
+      "status": "alpha",
+      "description": "A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "HoverEngraving",
+        "base": "none (a note on its block; the block points aria-describedby at it)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalHoverEngraving"
+      },
+      "registry": "https://metalui.dev/r/hover-engraving.json",
+      "agent": "https://metalui.dev/r/hover-engraving.md",
+      "sheet": "Kamui 03 §5, DS-31"
+    },
+    {
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",

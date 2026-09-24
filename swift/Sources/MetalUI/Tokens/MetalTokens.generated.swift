@@ -31,6 +31,9 @@ public struct MetalColorwayTokens: Sendable {
     public let cueUrlInk: MetalRGBA
     public let suggestionBg: MetalRGBA
     public let suggestionButtonHover: MetalRGBA
+    public let engravingBg: MetalRGBA
+    public let engravingEmphasis: MetalRGBA
+    public let engravingTagRing: MetalRGBA
     public let raise: [MetalShadow]
     public let raiseSm: [MetalShadow]
     public let well: [MetalShadow]
@@ -97,6 +100,9 @@ public enum MetalTokens {
         cueUrlInk: MetalRGBA(53, 88, 201, 1.0),
         suggestionBg: MetalRGBA(252, 251, 249, 0.7),
         suggestionButtonHover: MetalRGBA(0, 0, 0, 0.06),
+        engravingBg: MetalRGBA(252, 251, 249, 0.92),
+        engravingEmphasis: MetalRGBA(40, 38, 32, 0.62),
+        engravingTagRing: MetalRGBA(40, 38, 32, 0.2),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -186,6 +192,9 @@ public enum MetalTokens {
         cueUrlInk: MetalRGBA(143, 176, 255, 1.0),
         suggestionBg: MetalRGBA(44, 44, 47, 0.7),
         suggestionButtonHover: MetalRGBA(255, 255, 255, 0.08),
+        engravingBg: MetalRGBA(34, 34, 37, 0.92),
+        engravingEmphasis: MetalRGBA(255, 255, 255, 0.55),
+        engravingTagRing: MetalRGBA(255, 255, 255, 0.2),
         raise: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
@@ -618,4 +627,22 @@ public enum MetalSuggestion {
     public static let buttonHeight: Double = 16.0
     public static let offsetX: Double = -2.0
     public static let offsetY: Double = 10.0
+}
+
+/// The hover engraving: a block's identity, shown on a dwell, never on a pass. A frosted pill beside the first line of a text block (below a material one) in the label role, engraved: kind · time · edits · other life events · derived tags · the recognizer's status, with an LED. Hidden while selected or writing. Values are the medium demo's .meta.
+public enum MetalEngraving {
+    public static let height: Double = 22.0
+    public static let pad: Double = 10.0
+    public static let gap: Double = 8.0
+    public static let blur: Double = 12.0
+    public static let dwellMs: Double = 420.0
+    public static let rise: Double = 2.0
+    public static let slide: Double = 3.0
+    public static let besideGap: Double = 4.0
+    public static let besideTop: Double = 9.0
+    public static let belowGap: Double = 8.0
+    public static let tagHeight: Double = 15.0
+    public static let tagPad: Double = 6.0
+    public static let tagGap: Double = 4.0
+    public static let led: Double = 5.0
 }

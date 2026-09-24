@@ -164,4 +164,19 @@ final class MetalCaptures: XCTestCase {
             capture("suggestion-chip-\(colorway.rawValue)", view)
         }
     }
+
+    func testHoverEngraving() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(alignment: .leading, spacing: 16) {
+                MetalHoverEngraving(kind: "LOG", details: ["07:40", "SLEEP 6 H", "ALSO TIRED"], status: (.live, "JEV ✓"))
+                MetalHoverEngraving(kind: "TASK", details: ["TOMORROW 16:00"], tags: ["poster"], status: (.live, "JEV ✓"))
+                MetalHoverEngraving(kind: "LUNCH? 0.71", status: (.waiting, "ASKING JEV…"))
+                MetalHoverEngraving(kind: "NOT SENT", details: ["LOOKS LIKE A SECRET"], status: (.off, "KEPT ON THIS MAC"))
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("hover-engraving-\(colorway.rawValue)", view)
+        }
+    }
 }

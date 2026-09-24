@@ -1,0 +1,69 @@
+@import "../tokens.css";
+
+/* Hover engraving (Kamui 03 §5, the medium demo's .meta). Every value is --mu-engraving-* or a colorway token. */
+.mu-engraving {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--mu-engraving-gap);
+  height: var(--mu-engraving-height);
+  padding: 0 var(--mu-engraving-pad);
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--mu-engraving-bg);
+  -webkit-backdrop-filter: blur(var(--mu-engraving-blur));
+  backdrop-filter: blur(var(--mu-engraving-blur));
+  box-shadow: var(--mu-raise-sm);
+  opacity: 0;
+  /* Leaving is immediate: no delay on the way out. */
+  transition:
+    opacity var(--mu-spring-settle-d) var(--mu-spring-settle),
+    transform var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+/* Beside the first line of a text block, so a stacked list below stays readable. */
+.mu-engraving[data-placement="beside"] {
+  left: calc(100% + var(--mu-engraving-beside-gap));
+  top: var(--mu-engraving-beside-top);
+  transform: translateX(calc(var(--mu-engraving-slide) * -1 * var(--mu-travel-settle)));
+}
+/* Under a material block (a link, an image, a swatch). */
+.mu-engraving[data-placement="below"] {
+  left: 0;
+  top: calc(100% + var(--mu-engraving-below-gap));
+  transform: translateY(calc(var(--mu-engraving-rise) * -1 * var(--mu-travel-settle)));
+}
+/* A dwell, not a pass: the host must stay hovered for 420 ms. */
+.mu-icon-trigger:hover > .mu-engraving:not([data-open="false"]),
+.mu-engraving[data-open="true"] {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--mu-engraving-dwell-ms);
+}
+.mu-engraving[data-open="true"][data-immediate] { transition-delay: 0s; }
+.mu-engraving-text { color: var(--mu-engrave); text-shadow: 0 .5px 0 var(--mu-lip); }
+.mu-engraving-text b { font-weight: 500; color: var(--mu-engraving-emphasis); }
+.mu-engraving-tags { display: flex; gap: var(--mu-engraving-tag-gap); }
+.mu-engraving-tags > span {
+  height: var(--mu-engraving-tag-height);
+  line-height: var(--mu-engraving-tag-height);
+  padding: 0 var(--mu-engraving-tag-pad);
+  border-radius: 999px;
+  color: var(--mu-engrave);
+  box-shadow: inset 0 0 0 .5px var(--mu-engraving-tag-ring);
+}
+.mu-engraving-led {
+  display: inline-block;
+  width: var(--mu-engraving-led);
+  height: var(--mu-engraving-led);
+  margin-right: 4px;
+  border-radius: 50%;
+  vertical-align: 1px;
+  box-shadow: var(--mu-led-ring);
+}
+.mu-engraving-led[data-led="live"] { background: var(--mu-led-green); }
+.mu-engraving-led[data-led="waiting"] { background: var(--mu-led-amber); }
+.mu-engraving-led[data-led="failed"] { background: var(--mu-led-red); }
+.mu-engraving-led[data-led="off"] { background: var(--mu-led-off); }
+@media (prefers-reduced-transparency: reduce) { .mu-engraving { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; } }

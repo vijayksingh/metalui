@@ -1,0 +1,11 @@
+{
+  "name": "hover-engraving",
+  "title": "Hover engraving",
+  "status": "alpha",
+  "description": "A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.",
+  "sheet": "Kamui 03 §5, DS-31",
+  "base": "none (a note on its block; the block points aria-describedby at it)",
+  "react": { "export": "HoverEngraving", "files": ["hover-engraving.tsx", "hover-engraving.css"] },
+  "swift": { "symbol": "MetalHoverEngraving", "file": "swift/Sources/MetalUI/Components/MetalHoverEngraving.swift" },
+  "agent": "hover-engraving.agent.md"
+}

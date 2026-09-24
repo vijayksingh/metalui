@@ -10,5 +10,6 @@
 
 - [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release. It comes with standard, primary and destructive caps.
 - [Cue family](https://metalui.dev/r/cue.md): Recognition made visible on the text: date, duration, amount, measurement, tag, derived tag and hex cues that never move a letter; the URL host pill and the inferred pill; the dimple, ghost dimple and urgency LED in the margin; the trailing life glyph.
+- [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.
 - [Selection frame](https://metalui.dev/r/selection-frame.md): KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.

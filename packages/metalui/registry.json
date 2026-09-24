@@ -67,6 +67,29 @@
       "docs": "Agent guide: https://metalui.dev/r/cue.md. SwiftUI: MetalDimple, MetalCueURLPill, MetalCueInferred, MetalCueUrgency, MetalCueLife, Text.metalCue(_:) in the MetalUI Swift package."
     },
     {
+      "name": "hover-engraving",
+      "type": "registry:ui",
+      "title": "Hover engraving",
+      "description": "A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/hover-engraving/hover-engraving.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/hover-engraving/hover-engraving.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/hover-engraving/hover-engraving.css",
+          "type": "registry:file",
+          "target": "components/metalui/hover-engraving/hover-engraving.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."
+    },
+    {
       "name": "selection-frame",
       "type": "registry:ui",
       "title": "Selection frame",

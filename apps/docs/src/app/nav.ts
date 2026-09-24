@@ -42,6 +42,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/selection-frame', label: 'Selection frame' },
       { to: '/components/cue', label: 'Cue family' },
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
+      { to: '/components/hover-engraving', label: 'Hover engraving' },
     ],
   },
   {
