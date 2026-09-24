@@ -10,6 +10,7 @@ public struct MetalSuggestionChip: View {
     let hostHovered: Bool
     let onAccept: () -> Void
     let onDismiss: () -> Void
+    let onHoverChange: (Bool) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var arrived = false
@@ -17,12 +18,13 @@ public struct MetalSuggestionChip: View {
     private enum Action: Hashable { case accept, dismiss }
     @FocusState private var focusedAction: Action?
 
-    public init(label: String, confidence: Double, hostHovered: Bool = false, onAccept: @escaping () -> Void, onDismiss: @escaping () -> Void) {
+    public init(label: String, confidence: Double, hostHovered: Bool = false, onAccept: @escaping () -> Void, onDismiss: @escaping () -> Void, onHoverChange: @escaping (Bool) -> Void = { _ in }) {
         self.label = label
         self.confidence = confidence
         self.hostHovered = hostHovered
         self.onAccept = onAccept
         self.onDismiss = onDismiss
+        self.onHoverChange = onHoverChange
     }
 
     public var body: some View {
@@ -44,7 +46,7 @@ public struct MetalSuggestionChip: View {
         .opacity(arrived ? (hostHovered || hovering || focusedAction != nil ? .one : MetalSuggestion.restOpacity) : .zero)
         .offset(y: arrived || !travel ? 0 : -MetalSuggestion.enterRise)
         .scaleEffect(arrived || !travel ? .one : MetalSuggestion.enterScale)
-        .onHover { hovering = $0 }
+        .onHover { hovering = $0; onHoverChange($0) }
         .metalAnimation(.settle, value: hovering || hostHovered || focusedAction != nil)
         .onAppear { withMetalAnimation(.settle, reduceMotion: reduceMotion) { arrived = true } }
         .accessibilityElement(children: .contain)
