@@ -24,3 +24,4 @@
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: the label, the confidence, and accept and dismiss buttons. Faint until the block is hovered.
 - [Toast](https://metalui.dev/r/toast.md): The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.
 - [Tool strip](https://metalui.dev/r/tool-strip.md): A graphite toolbar of verbs over a click selection: Tasks, Summarise, Gather, Region, Export, and Send away after an engraved separator. Rises 4 on the part spring.
+- [Toolbar and tool button](https://metalui.dev/r/toolbar.md): A frosted capsule strip of circular 36 tool caps (frost in the colorway, or graphite), latched tools pressed with a green LED, engraved separators, a search well, and tooltips with the key. Built on Base UI Toolbar, Toggle and Tooltip.

@@ -209,6 +209,11 @@ const TT = T.toast;
 const TT_KEYS = Object.keys(TT).filter((k) => !k.startsWith('$'));
 const toastVars = TT_KEYS.map((k) => `  --mu-toast-${k}: ${typeof TT[k] === 'number' ? (k.endsWith('-ms') ? `${TT[k]}ms` : k === 'enter-scale' ? TT[k] : `${TT[k]}px`) : TT[k]};`).join('\n');
 
+// ---------- toolbar (tokens.json toolbar) ----------
+const TB = T.toolbar;
+const TB_KEYS = Object.keys(TB).filter((k) => !k.startsWith('$'));
+const toolbarVars = TB_KEYS.map((k) => `  --mu-toolbar-${k}: ${typeof TB[k] === 'number' ? (k.endsWith('-ms') ? `${TB[k]}ms` : `${TB[k]}px`) : TB[k]};`).join('\n');
+
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
@@ -242,6 +247,7 @@ ${toolstripVars}
 ${kbdVars}
 ${statusVars}
 ${toastVars}
+${toolbarVars}
 ${typeVars}
 ${travel}
 }
@@ -626,6 +632,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
 /// ${LB.$use}
+public enum MetalToolbarMetrics {
+${TB_KEYS.map((k) => { const v = TB[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`; }).join('\n')}
+}
+
+/// ${TT.$use}
 public enum MetalToastMetrics {
 ${TT_KEYS.map((k) => { const v = TT[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val.replace(/\n {8}\]/, '\n    ]').replace(/\n {12}/g, '\n        ')}`; }).join('\n')}
 }

@@ -405,6 +405,31 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tool-strip.md. SwiftUI: MetalToolStrip in the MetalUI Swift package."
+    },
+    {
+      "name": "toolbar",
+      "type": "registry:ui",
+      "title": "Toolbar and tool button",
+      "description": "A frosted capsule strip of circular 36 tool caps (frost in the colorway, or graphite), latched tools pressed with a green LED, engraved separators, a search well, and tooltips with the key. Built on Base UI Toolbar, Toggle and Tooltip.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/toolbar/toolbar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/toolbar/toolbar.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/toolbar/toolbar.css",
+          "type": "registry:file",
+          "target": "components/metalui/toolbar/toolbar.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/toolbar.md. SwiftUI: MetalToolbar, MetalToolButton, MetalToolbarSeparator in the MetalUI Swift package."
     }
   ]
 }

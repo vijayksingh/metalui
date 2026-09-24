@@ -1,0 +1,87 @@
+@import "../tokens.css";
+@import "../kbd/kbd.css";
+
+/* Toolbar and tool button (KAMUI-01/02; Kamui 04 §2) on Base UI Toolbar and Toggle. */
+.mu-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mu-toolbar-gap);
+  padding: var(--mu-toolbar-pad);
+  border-radius: var(--mu-radius-card);
+  /* Enters one nest from its edge on the surface spring. */
+  animation: mu-toolbar-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}
+@keyframes mu-toolbar-in { from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * var(--mu-travel-surface))); } }
+.mu-tool {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mu-toolbar-tool);
+  height: var(--mu-toolbar-tool);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--mu-icon);
+  background: var(--mu-btn-bg);
+  box-shadow: var(--mu-btn-sh);
+  cursor: pointer;
+  /* A tool's state is instant (it changes a hundred times a day); only the press travels, on release. */
+  transition: transform var(--mu-spring-release-d) var(--mu-spring-release);
+  -webkit-tap-highlight-color: transparent;
+}
+.mu-tool > svg { width: var(--mu-toolbar-glyph); height: var(--mu-toolbar-glyph); }
+.mu-tool:hover { color: var(--mu-ink); }
+.mu-tool:active, .mu-tool[data-pressed] { transform: translateY(var(--mu-motion-press)); background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); color: var(--mu-ink); }
+.mu-tool:active { transition-duration: 50ms; }
+.mu-tool[data-pressed]::after {
+  content: "";
+  position: absolute;
+  top: var(--mu-toolbar-led-inset);
+  right: var(--mu-toolbar-led-inset);
+  width: var(--mu-toolbar-led);
+  height: var(--mu-toolbar-led);
+  border-radius: 50%;
+  background: var(--mu-led-green);
+  box-shadow: var(--mu-led-ring), var(--mu-status-bloom);
+}
+.mu-tool:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+.mu-tool[data-disabled] { opacity: .4; cursor: default; }
+.mu-toolbar-sep { width: 1px; height: var(--mu-toolbar-sep-height); margin: 0 3px; background: var(--mu-rule); box-shadow: 1px 0 0 var(--mu-rule-lip); }
+.mu-toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--mu-toolbar-tool);
+  min-width: var(--mu-toolbar-search-min);
+  padding: 0 7px 0 12px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--mu-ink3);
+  background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
+  box-shadow: var(--mu-well);
+  cursor: text;
+}
+.mu-toolbar-search > svg { width: 14px; height: 14px; }
+.mu-toolbar-search > .mu-kbd { margin-left: auto; }
+.mu-toolbar-search:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+
+/* Graphite: the medium's strip, dark in both colorways. */
+.mu-toolbar[data-variant="graphite"] .mu-tool { color: var(--mu-toolbar-graphite-ink); background: var(--mu-toolbar-graphite-cap-bg); box-shadow: var(--mu-toolbar-graphite-cap-sh); }
+.mu-toolbar[data-variant="graphite"] .mu-tool:hover { color: var(--mu-toolstrip-ink-hover); }
+.mu-toolbar[data-variant="graphite"] .mu-tool:is(:active, [data-pressed]) { background: var(--mu-toolbar-graphite-pressed-bg); box-shadow: var(--mu-toolbar-graphite-pressed-sh); color: var(--mu-toolstrip-ink-hover); }
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-sep { background: var(--mu-toolstrip-sep); box-shadow: 1px 0 0 var(--mu-toolstrip-sep-lip); }
+.mu-toolbar[data-variant="graphite"] .mu-toolbar-search { color: var(--mu-toolbar-graphite-hint); background: var(--mu-toolbar-graphite-well); box-shadow: var(--mu-toolbar-graphite-well-sh); }
+
+/* The tool tooltip: a graphite label chip with the key, above, after 120 ms. */
+.mu-tool-tip {
+  padding: 5px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--mu-cue-chip-ink);
+  background: var(--mu-frost-graphite-fill);
+  box-shadow: var(--mu-frost-graphite-shadow);
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-tool-tip[data-starting-style], .mu-tool-tip[data-ending-style] { opacity: 0; }
+/* On the frost strip the search well's keycap is the light cap. */
+.mu-toolbar[data-variant="frost"] .mu-toolbar-search .mu-kbd { color: var(--mu-ink2); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); }

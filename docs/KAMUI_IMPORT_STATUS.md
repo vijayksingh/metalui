@@ -68,8 +68,8 @@ From `kamui/docs/architecture/medium/LLD/WEB_CLIENT.md` §2 (`src/chrome/*`) and
 |---|---|---|---|---|---|
 | 12 | Kbd (keycap) | 04 §9 | shipped | `5995723` | React `Kbd` (`size: 'default'\|'small'`, `surface: 'default'\|'strip'\|'sunk'`, `label`); CSS `--mu-kbd-*`; Swift `MetalKbd(_:size:surface:label:)`. |
 | 13 | LED and status pill | 04 §10 | shipped | `5bef3ec` | React `Led` (`kind: 'live'\|'waiting'\|'failed'\|'link'\|'off'`, `size`), `StatusBadge` (`led`, `hint`); CSS `--mu-status-*`; Swift `MetalLED(_:size:)`, `MetalStatusBadge(_:led:hint:)`. |
-| 14 | Toast | 04 §12 | shipped | see `feat(components): toast` | React `ToastProvider` (once at the root) + `useToast().show({ title, sub, undo, tone: 'default'\|'success'\|'error', timeout })` (Base UI Toast); CSS `--mu-toast-*`; Swift `MetalToast`, `MetalToastModel`, `.metalToast($toast)`. |
-| 15 | Toolbar and tool button | 04 §2 | pending | | |
+| 14 | Toast | 04 §12 | shipped | `0259239` | React `ToastProvider` (once at the root) + `useToast().show({ title, sub, undo, tone: 'default'\|'success'\|'error', timeout })` (Base UI Toast); CSS `--mu-toast-*`; Swift `MetalToast`, `MetalToastModel`, `.metalToast($toast)`. |
+| 15 | Toolbar and tool button | 04 §2 | shipped | see `feat(components): toolbar and tool button` | React `Toolbar` (`variant: 'frost'\|'graphite'`, `aria-label`), `ToolButton` (`label`, `shortcut`, `icon`, `pressed`, `onPressedChange`, `onClick`), `ToolbarSeparator`, `ToolbarSearch` (Base UI Toolbar, Toggle, Tooltip); CSS `--mu-toolbar-*`; Swift `MetalToolbar(_:variant:content:)`, `MetalToolButton(_:icon:shortcut:latched:action:)`, `MetalToolbarSeparator`. |
 | 16 | Command palette | 04 §3 | pending | | |
 | 17 | Tooltip and popover / correction menu | 04 §8, §18 | pending | | |
 | 18 | Button refit: compact 28 variant | 04 §1 | pending | | |

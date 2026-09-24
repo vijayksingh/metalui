@@ -333,4 +333,26 @@ final class MetalCaptures: XCTestCase {
             capture("toast-\(colorway.rawValue)", view)
         }
     }
+
+    func testToolbar() {
+        for colorway in MetalColorway.allCases {
+            let tools = { (variant: MetalToolbar<AnyView>.Variant) in
+                MetalToolbar("Tools", variant: variant) {
+                    AnyView(Group {
+                        MetalToolButton("Select", icon: .select, latched: true) {}
+                        MetalToolButton("Write", icon: .text) {}
+                        MetalToolButton("Region", icon: .region) {}
+                        MetalToolButton("Ink", icon: .draw) {}
+                        MetalToolbarSeparator()
+                        MetalToolButton("Undo", icon: .undo) {}
+                    })
+                }
+            }
+            let view = VStack(spacing: 20) { tools(.graphite); tools(.frost) }
+                .padding(28)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("toolbar-\(colorway.rawValue)", view)
+        }
+    }
 }

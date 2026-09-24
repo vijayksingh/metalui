@@ -736,6 +736,42 @@ public enum MetalRegion {
 }
 
 /// The lens bar: a floating frosted pill at the top centre that names the question a lens asks, how many blocks match, where the answer came from, and switches views with a compact segmented control; pin keeps it as a live region, close ends it. It drops in one step from above, from .98, on the surface spring.
+public enum MetalToolbarMetrics {
+    public static let tool: Double = 36.0
+    public static let pad: Double = 6.0
+    public static let gap: Double = 6.0
+    public static let glyph: Double = 16.0
+    public static let led: Double = 4.0
+    public static let ledInset: Double = 5.0
+    public static let sepHeight: Double = 22.0
+    public static let tipDelayMs: Double = 120.0
+    public static let tipGap: Double = 10.0
+    public static let searchMin: Double = 196.0
+    public static let graphiteCapBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(48, 48, 51, 1.0), 0.0), .init(MetalRGBA(38, 38, 40, 1.0), 1.0)])
+    public static let graphiteCapSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.09)),
+        MetalShadow(inset: true, x: 0.0, y: -1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.3)),
+        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.8)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 1.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.35)),
+        MetalShadow(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.25)),
+    ]
+    public static let graphitePressedBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(20, 20, 21, 1.0), 0.0), .init(MetalRGBA(25, 25, 26, 1.0), 1.0)])
+    public static let graphitePressedSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.7)),
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.8)),
+        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.06)),
+    ]
+    public static let graphiteInk: MetalRGBA = MetalRGBA(214, 214, 216, 1.0)
+    public static let graphiteWell: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(18, 18, 19, 1.0), 0.0), .init(MetalRGBA(23, 23, 24, 1.0), 1.0)])
+    public static let graphiteWellSh: [MetalShadow] = [
+        MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.6)),
+        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.35)),
+        MetalShadow(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, color: MetalRGBA(255, 255, 255, 0.05)),
+    ]
+    public static let graphiteHint: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
+}
+
+/// The toast (KAMUI-20): the result of a person's own action, with Undo, never recognition. A 44 tall smoked pill at the bottom centre, 92 above the dock, in the ui role: the result, a dimmed detail after a middle dot, and an Undo cap with its key. One at a time. It arrives one nest from below from .97 on settle and leaves on release. Undoable results stay 5 s, plain ones 2.6 s; errors stay until resolved; success always carries its check.
 public enum MetalToastMetrics {
     public static let height: Double = 44.0
     public static let padStart: Double = 16.0

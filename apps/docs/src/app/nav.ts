@@ -38,6 +38,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/kbd', label: 'Keycap' },
       { to: '/components/status', label: 'LED and status badge' },
       { to: '/components/toast', label: 'Toast' },
+      { to: '/components/toolbar', label: 'Toolbar' },
     ],
   },
   {

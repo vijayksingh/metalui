@@ -288,6 +288,24 @@
       "registry": "https://metalui.dev/r/tool-strip.json",
       "agent": "https://metalui.dev/r/tool-strip.md",
       "sheet": "Kamui 04 §11"
+    },
+    {
+      "name": "toolbar",
+      "title": "Toolbar and tool button",
+      "status": "alpha",
+      "description": "A frosted capsule strip of circular 36 tool caps (frost in the colorway, or graphite), latched tools pressed with a green LED, engraved separators, a search well, and tooltips with the key. Built on Base UI Toolbar, Toggle and Tooltip.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch",
+        "base": "@base-ui/react/toolbar"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalToolbar, MetalToolButton, MetalToolbarSeparator"
+      },
+      "registry": "https://metalui.dev/r/toolbar.json",
+      "agent": "https://metalui.dev/r/toolbar.md",
+      "sheet": "KAMUI-01/02"
     }
   ]
 }

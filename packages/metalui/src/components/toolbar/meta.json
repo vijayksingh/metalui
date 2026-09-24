@@ -1,0 +1,11 @@
+{
+  "name": "toolbar",
+  "title": "Toolbar and tool button",
+  "status": "alpha",
+  "description": "A frosted capsule strip of circular 36 tool caps (frost in the colorway, or graphite), latched tools pressed with a green LED, engraved separators, a search well, and tooltips with the key. Built on Base UI Toolbar, Toggle and Tooltip.",
+  "sheet": "KAMUI-01/02",
+  "base": "@base-ui/react/toolbar",
+  "react": { "export": "Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch", "files": ["toolbar.tsx", "toolbar.css"] },
+  "swift": { "symbol": "MetalToolbar, MetalToolButton, MetalToolbarSeparator", "file": "swift/Sources/MetalUI/Components/MetalToolbar.swift" },
+  "agent": "toolbar.agent.md"
+}

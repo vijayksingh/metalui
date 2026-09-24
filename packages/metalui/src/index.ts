@@ -1,6 +1,7 @@
 // @unlocalhosted/metalui: React components on Base UI. Import '@unlocalhosted/metalui/styles.css' once.
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';
+export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';
 export { ToastProvider, useToast, type ToastOptions, type ToastTone } from './components/toast/toast';
 export { Led, StatusBadge, type LedProps, type LedKind, type StatusBadgeProps } from './components/status/status';
 export { Cue, CueUrl, CueInferred, CueUrgency, CueLife, Dimple, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps, type DimpleProps } from './components/cue/cue';
