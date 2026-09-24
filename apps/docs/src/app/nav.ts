@@ -55,6 +55,7 @@ export const NAV: NavGroup[] = [
     items: [
       { to: '/components/selection-frame', label: 'Selection frame' },
       { to: '/components/snap-guides', label: 'Snap guides' },
+      { to: '/components/lasso', label: 'Lasso' },
       { to: '/components/cue', label: 'Cue family' },
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
       { to: '/components/link-card', label: 'Link card' },
