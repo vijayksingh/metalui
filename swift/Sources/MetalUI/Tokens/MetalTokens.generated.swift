@@ -317,7 +317,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
     public static let crossfade: MetalSpringClass = .settle
 }
 
-/// Feelings tints color the glyph's stroke, and its duotone body follows at the usual opacity, so the line itself evokes the feeling. A tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength, which the glyph's shape shows. Every stroke speaks at the orange's voice (chroma about 0.19) and clears 3.3:1 on bone and 4.5:1 on graphite. Glyphs only, never words, never status or intent; off under Increase Contrast and inside data-mu-untinted.
+/// Feelings tints color the glyph's stroke, so the line itself evokes the feeling; a tinted glyph's vessel is not filled, and any other duotone part follows the stroke at its usual opacity. A tint names the kind of feeling (joy, affection, calm, wonder, neutral, low, tension), never its strength, which the glyph's shape shows. Every stroke speaks at the orange's voice (chroma about 0.19) and clears 3.3:1 on bone and 4.5:1 on graphite. Glyphs only, never words, never status or intent; off under Increase Contrast and inside data-mu-untinted.
 public enum MetalTint: String, CaseIterable, Sendable {
     /// joy: happy, excited, energised, proud, party
     case ember
