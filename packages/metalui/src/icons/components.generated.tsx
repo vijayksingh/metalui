@@ -73,3 +73,5 @@ export const TaskIcon = createIcon("task", "TaskIcon");
 export const TagIcon = createIcon("tag", "TagIcon");
 /** Calendar. Hover: the rings lift. Press: the page turns in. */
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");
+/** Document. Hover: the second line writes on. Press: the lines redraw. */
+export const DocumentIcon = createIcon("document", "DocumentIcon");

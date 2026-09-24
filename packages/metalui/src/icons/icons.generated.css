@@ -115,3 +115,6 @@
 /* calendar */
 .mu-icon.mu-ic-calendar .cb{transform-origin:12px 20.2px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-calendar,.mu-ic-calendar:is(:hover,[data-hover])):not([data-static]) .cr{transform:translateY(-.9px)} .mu-icon.mu-ic-calendar[data-press] .cb{animation:cl-p .34s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:scaleY(.94)}}}
+/* document */
+.mu-icon.mu-ic-document .dl{stroke-dasharray:1 2} .mu-icon.mu-ic-document .d2{transform-origin:8.6px 15.8px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-document,.mu-ic-document:is(:hover,[data-hover])):not([data-static]) .d2{transform:scaleX(1.7)} .mu-icon.mu-ic-document[data-press] .dl{animation:dc-p .36s cubic-bezier(.3,.1,.2,1) both} .mu-icon.mu-ic-document[data-press] .d2{animation-delay:.06s} @keyframes dc-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}

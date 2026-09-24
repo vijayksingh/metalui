@@ -39,6 +39,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case task = "task"
     case tag = "tag"
     case calendar = "calendar"
+    case document = "document"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -80,6 +81,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return "Task"
         case .tag: return "Tag"
         case .calendar: return "Calendar"
+        case .document: return "Document"
         }
     }
 
@@ -121,6 +123,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return .tools
         case .tag: return .tools
         case .calendar: return .tools
+        case .document: return .tools
         }
     }
 
@@ -163,6 +166,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return 0.12
         case .tag: return 0.12
         case .calendar: return 0.08
+        case .document: return 0.1
         }
     }
 
@@ -205,6 +209,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return nil
         case .tag: return nil
         case .calendar: return nil
+        case .document: return nil
         }
     }
 
@@ -247,6 +252,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return false
         case .tag: return false
         case .calendar: return false
+        case .document: return false
         }
     }
 
@@ -289,6 +295,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .task: return 1.85
         case .tag: return 1.85
         case .calendar: return 1.85
+        case .document: return 1.85
         }
     }
 }

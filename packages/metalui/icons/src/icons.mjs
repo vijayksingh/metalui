@@ -328,4 +328,13 @@ export const ICONS = [
   mo: `@H .cr{transform:translateY(-.9px)}
        @P .cb{animation:cl-p .34s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:scaleY(.94)}}`,
   shape: 'Page 17 × 15 r3.2, tinted .08; header rule on the 10 line; binding rings at the 8 and 16 detents.' },
+
+// A document: the page with a folded corner. Body: the page. Marks: two lines of text.
+{ name: 'document', cat: 'Tools', label: 'Document', hover: 'the second line writes on', press: 'the lines redraw',
+  body: `<path class="f" style="--duo:.1" d="M7.2 3.5h6.4l5 5v10a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path class="dl" pathLength="1" d="M8.6 12.4h6.8"/><path class="dl d2" pathLength="1" d="M8.6 15.8h4"/>`,
+  base: `& .dl{stroke-dasharray:1 2} & .d2{transform-origin:8.6px 15.8px}`,
+  mo: `@H .d2{transform:scaleX(1.7)}
+       @P .dl{animation:dc-p .36s cubic-bezier(.3,.1,.2,1) both} @P .d2{animation-delay:.06s}
+       @keyframes dc-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
+  shape: 'Page 13.4 × 17 with a 5-unit fold, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines.' },
 ];

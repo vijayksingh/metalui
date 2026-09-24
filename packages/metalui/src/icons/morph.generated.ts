@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "region", "task", "tag", "calendar"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "region", "task", "tag", "calendar", "document"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -190,5 +190,10 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M3.5 10L20.5 10", 1.7, 0, 0, 1],
     ["M8.2 3.4L8.2 6.8", 1.7, 0, 0, 1],
     ["M15.8 3.4L15.8 6.8", 1.7, 0, 0, 1],
+  ],
+  "document": [
+    ["M7.2 3.5L13.6 3.5L18.6 8.5L18.6 18.5C18.6 19.6 17.7 20.5 16.6 20.5L7.2 20.5C6.1 20.5 5.2 19.6 5.2 18.5L5.2 5.5C5.2 4.4 6.1 3.5 7.2 3.5Z", 1.7, 0.1, 0, 1],
+    ["M8.6 12.4L15.4 12.4", 1.7, 0, 0, 1],
+    ["M8.6 15.8L12.6 15.8", 1.7, 0, 0, 1],
   ],
 };

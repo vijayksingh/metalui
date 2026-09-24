@@ -763,6 +763,27 @@ export const ICON_CATALOG = {
     body: "<rect class=\"cb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5.2\" width=\"17\" height=\"15\" rx=\"3.2\"/><path d=\"M3.5 10h17\"/><path class=\"cr\" d=\"M8.2 3.4v3.4M15.8 3.4v3.4\"/>",
     sw16: 1.85,
   },
+  /* ─────────────────────────────────────────────────────────
+   * DOCUMENT · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the second line writes on
+   * PRESS one-shot (from the current pose)
+   *          the lines redraw
+   *     0ms   .dl plays dc-p (360ms)
+   *    60ms   .d2 plays (inherits) (360ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "document": {
+    label: "Document",
+    category: "Tools",
+    hover: "the second line writes on",
+    press: "the lines redraw",
+    pressMs: 420,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M7.2 3.5h6.4l5 5v10a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z\"/><path class=\"dl\" pathLength=\"1\" d=\"M8.6 12.4h6.8\"/><path class=\"dl d2\" pathLength=\"1\" d=\"M8.6 15.8h4\"/>",
+    sw16: 1.85,
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
