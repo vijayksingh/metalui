@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lasso",
+  "type": "registry:ui",
+  "title": "Lasso",
+  "description": "The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/lasso/lasso.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/lasso/lasso.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { SizeReadout } from '../size-readout/size-readout';\n\n/* ─────────────────────────────────────────────────────────\n * LASSO (the native reference's lasso overlay)\n *\n * Dragging on empty canvas draws a box; everything it touches will be selected.\n *\n *   rest      nothing\n *   drawing   a 1 pt intent-green hairline over a faint intent fill (no ants, no glow),\n *             following the pointer in the same frame; under it, centred, a graphite\n *             readout counts what the box holds: ● 3 blocks. No readout while it holds\n *             nothing: a count is the one thing the box cannot show by its shape.\n *   release   the box fades on the release spring; the selection it made takes over\n *   graphite  the lighter green and a slightly stronger fill\n * The line and the readout keep their screen size at every zoom (pass the canvas scale).\n * Drawn in world coordinates inside the transformed world; hidden from assistive tech:\n * the selection it makes is announced, not the box.\n * ───────────────────────────────────────────────────────── */\n\nexport interface LassoRect { x: number; y: number; width: number; height: number }\n\nexport interface LassoProps {\n  /** The box in world coordinates, from where the drag began to the pointer; null when not drawing. */\n  rect: LassoRect | null;\n  /** How many objects the box touches now. */\n  count: number;\n  /** The canvas scale (1 at 100 %). */\n  scale?: number;\n  /** The unit after the count. Default \"block\" / \"blocks\". */\n  unit?: (count: number) => string;\n  className?: string;\n}\n\nconst BOX = 'mu-lasso pointer-events-none absolute presence-lasso presence-guide-leave data-[state=leaving]:opacity-0 data-[state=drawing]:transition-none reduced-motion:transition-none';\nconst READOUT = 'presence-lasso-readout';\n\nconst blocks = (n: number) => (n === 1 ? 'block' : 'blocks');\n\n/** The box a drag on empty canvas draws, with the count it will select. */\nexport function Lasso({ rect, count, scale = 1, unit = blocks, className }: LassoProps) {\n  // Keep the last box while it fades after the drag ends.\n  const [last, setLast] = React.useState<{ rect: LassoRect; count: number } | null>(rect ? { rect, count } : null);\n  React.useLayoutEffect(() => { if (rect) setLast({ rect, count }); }, [rect, count]);\n  const leaving = !rect && !!last;\n  React.useEffect(() => {\n    if (!leaving) return;\n    const t = window.setTimeout(() => setLast(null), 400);\n    return () => window.clearTimeout(t);\n  }, [leaving]);\n  const draw = rect ? { rect, count } : last;\n  if (!draw) return null;\n  const r = draw.rect;\n  // A drag up or left gives a negative size; the box is the same either way.\n  const x = r.width < 0 ? r.x + r.width : r.x, y = r.height < 0 ? r.y + r.height : r.y;\n  return (\n    <div\n      aria-hidden\n      data-state={leaving ? 'leaving' : 'drawing'}\n      className={className ? `${BOX} ${className}` : BOX}\n      style={{ left: x, top: y, width: Math.abs(r.width), height: Math.abs(r.height), '--mu-canvas-scale': scale } as React.CSSProperties}\n    >\n      {draw.count > 0 && <SizeReadout className={READOUT} value={draw.count} unit={unit(draw.count)} />}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/lasso.md. SwiftUI: MetalLasso in the MetalUI Swift package."
+}

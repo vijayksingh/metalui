@@ -1,0 +1,19 @@
+{
+  "name": "lasso",
+  "title": "Lasso",
+  "status": "alpha",
+  "description": "The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.",
+  "base": "none (decorative; aria-hidden: the selection it makes is announced)",
+  "react": {
+    "export": "Lasso",
+    "files": [
+      "lasso.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalLasso",
+    "file": "swift/Sources/MetalUI/Components/MetalLasso.swift"
+  },
+  "agent": "lasso.agent.md",
+  "layer": "component"
+}

@@ -279,6 +279,24 @@
       "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
     },
     {
+      "name": "lasso",
+      "type": "registry:ui",
+      "title": "Lasso",
+      "description": "The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/lasso/lasso.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/lasso/lasso.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/lasso.md. SwiftUI: MetalLasso in the MetalUI Swift package."
+    },
+    {
       "name": "link-card",
       "type": "registry:ui",
       "title": "Link card",

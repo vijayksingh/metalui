@@ -11,7 +11,8 @@ import { Label } from '../label/label';
  *   ● 320 × 214     an object's size
  *   ● 3 · 540 × 180 a multi-selection
  *   ● COPIED · PNG 130 × 215   a copy, for 900 ms (the host times it)
- *   ● 100 %         any other short value */
+ *   ● 100 %         any other short value
+ *   ● 3 blocks      a value with a dimmed unit (the lasso's count) */
 
 export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   width?: number;
@@ -22,6 +23,8 @@ export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElem
   copied?: string | null;
   /** Any other short value in place of the size: "100 %". */
   value?: React.ReactNode;
+  /** A dimmed word after the value: "blocks". */
+  unit?: React.ReactNode;
   /** Hide the LED (a readout that is not live). */
   led?: boolean;
 }
@@ -35,14 +38,14 @@ const Mark = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const SizeReadout = React.forwardRef<HTMLSpanElement, SizeReadoutProps>(function SizeReadout(
-  { width = 0, height = 0, count, copied, value, led = true, className, ...props },
+  { width = 0, height = 0, count, copied, value, unit, led = true, className, ...props },
   ref,
 ) {
   const w = Math.round(width), h = Math.round(height);
   return (
     <Surface ref={ref} as="span" material="graphite-deep" radius="pill" className={className ? `${READOUT} ${className}` : READOUT} {...props}>
       {led && <Led kind="live" />}
-      {value !== undefined ? <V>{value}</V> : copied ? (
+      {value !== undefined ? <><V>{value}</V>{unit !== undefined && <Mark>{unit}</Mark>}</> : copied ? (
         <><V>COPIED</V><Mark>·</Mark><V>{copied} {w}</V><Mark>×</Mark><V>{h}</V></>
       ) : count && count > 1 ? (
         <><V>{count}</V><Mark>·</Mark><V>{w}</V><Mark>×</Mark><V>{h}</V></>
