@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { HoverEngraving, type EngravingStatus } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/hover-engraving/hover-engraving.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/hover-engraving/hover-engraving.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/hover-engraving/hover-engraving.agent.md?raw';
+import reactSource from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.tsx?raw';
+import cssSource from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.css?raw';
+import agentGuide from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalHoverEngraving.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const LIST: { text: string; kind: string; details: string[]; tags?: string[]; status?: { led: EngravingStatus; text: string } }[] = [
-  { text: 'slept badly, up at 5', kind: 'LOG', details: ['07:40', 'SLEEP 6 H', 'ALSO TIRED'], status: { led: 'live', text: 'JEV ✓' } },
-  { text: 'send the poster tomorrow 4pm', kind: 'TASK', details: ['TOMORROW 16:00'], tags: ['poster'], status: { led: 'live', text: 'JEV ✓' } },
-  { text: 'lunch with Priya', kind: 'LUNCH? 0.71', details: [], status: { led: 'waiting', text: 'ASKING JEV…' } },
+  { text: 'slept badly, up at 5', kind: 'LOG', details: ['07:40', 'SLEEP 6 H', 'ALSO TIRED'], status: { led: 'live', text: 'RECOGNIZER ✓' } },
+  { text: 'send the poster tomorrow 4pm', kind: 'TASK', details: ['TOMORROW 16:00'], tags: ['poster'], status: { led: 'live', text: 'RECOGNIZER ✓' } },
+  { text: 'lunch with Priya', kind: 'LUNCH? 0.71', details: [], status: { led: 'waiting', text: 'ASKING…' } },
   { text: 'sk-live-4f9a…', kind: 'NOT SENT', details: ['LOOKS LIKE A SECRET'], status: { led: 'off', text: 'KEPT ON THIS MAC' } },
 ];
 
@@ -63,9 +63,9 @@ export default function HoverEngravingPage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'H1', title: 'A dwell, not a pass', body: '420 ms of hover before it shows; nothing on the way out.', origin: 'Kamui demo polish log, DS-31' },
+            { id: 'H1', title: 'A dwell, not a pass', body: '420 ms of hover before it shows; nothing on the way out.', origin: 'reference design' },
             { id: 'H2', title: 'Beside the first line', body: 'Never under a text block, where it would cover the next line of a list. Under a material block only.', origin: 'DS-31' },
-            { id: 'H3', title: 'Hidden while selected or writing', body: 'The ring and readout speak then.', origin: 'Kamui 03 §5' },
+            { id: 'H3', title: 'Hidden while selected or writing', body: 'The ring and readout speak then.', origin: 'reference brief' },
             { id: 'H4', title: 'It repeats, it never informs alone', body: 'The label role never carries information on its own; the engraving names what the block already shows, and is the block’s description for assistive tech.', origin: 'DS-06' },
           ]}
         />

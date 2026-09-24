@@ -189,21 +189,21 @@
       "name": "hover-engraving",
       "type": "registry:ui",
       "title": "Hover engraving",
-      "description": "A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.",
+      "description": "A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/hover-engraving/hover-engraving.tsx",
+          "path": "packages/metalui/src/blocks/hover-engraving/hover-engraving.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/hover-engraving/hover-engraving.tsx"
+          "target": "components/metalui/blocks/hover-engraving/hover-engraving.tsx"
         },
         {
-          "path": "packages/metalui/src/components/hover-engraving/hover-engraving.css",
+          "path": "packages/metalui/src/blocks/hover-engraving/hover-engraving.css",
           "type": "registry:file",
-          "target": "components/metalui/hover-engraving/hover-engraving.css"
+          "target": "components/metalui/blocks/hover-engraving/hover-engraving.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/hover-engraving.md. SwiftUI: MetalHoverEngraving in the MetalUI Swift package."

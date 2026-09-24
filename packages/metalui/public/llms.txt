@@ -15,7 +15,7 @@
 - [Dialog](https://metalui.dev/r/dialog.md): A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.
 - [Field](https://metalui.dev/r/field.md): Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.
 - [Glass face](https://metalui.dev/r/glass-face.md): A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.
-- [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: a frosted pill beside its first line, engraved in the label role: kind, time, edits, other events, derived tags and the recognizer's status with an LED.
+- [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.

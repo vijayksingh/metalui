@@ -1,10 +1,15 @@
 'use client';
 
 import * as React from 'react';
+import { Surface } from '../../components/surface/surface';
+import { Label } from '../../components/label/label';
+import { Chip } from '../../components/chip/chip';
+import { Led } from '../../components/status/status';
 import './hover-engraving.css';
 
 /* ─────────────────────────────────────────────────────────
- * HOVER ENGRAVING (the brief, DS-31, the reference design's .meta)
+ * HOVER ENGRAVING (the reference design's .meta): a composition
+ *   Surface(tip, pill) › Label(engraved) <b>kind</b> · details + Chip(tag) × n + Label(engraved) Led status
  *
  *   pass      the pointer crosses the block: nothing
  *   dwell     the block stays hovered 420 ms: the engraving fades in on settle,
@@ -33,17 +38,17 @@ export interface HoverEngravingProps extends Omit<React.HTMLAttributes<HTMLSpanE
   immediate?: boolean;
 }
 
-/**
- * The block's identity, on a dwell. Place it as a direct child of the block (position: relative, with the
- * class mu-icon-trigger), and point the block's aria-describedby at its id.
- */
+/** A block's identity on a dwell: what it is, when, and where it came from. */
 export const HoverEngraving = React.forwardRef<HTMLSpanElement, HoverEngravingProps>(function HoverEngraving(
   { kind, details = [], tags = [], status, placement = 'beside', open, immediate, className, ...props },
   ref,
 ) {
   return (
-    <span
+    <Surface
       ref={ref}
+      as="span"
+      material="tip"
+      radius="pill"
       role="note"
       data-placement={placement}
       data-open={open === undefined ? undefined : String(open)}
@@ -51,21 +56,21 @@ export const HoverEngraving = React.forwardRef<HTMLSpanElement, HoverEngravingPr
       className={className ? `mu-engraving ${className}` : 'mu-engraving'}
       {...props}
     >
-      <span className="mu-engraving-text mu-type-label">
+      <Label variant="engraved">
         <b>{kind}</b>
         {details.map((d) => ` · ${d}`).join('')}
-      </span>
+      </Label>
       {tags.length > 0 && (
         <span className="mu-engraving-tags">
-          {tags.map((t) => <span key={t}>#{t}</span>)}
+          {tags.map((t) => <Chip key={t} variant="tag">#{t}</Chip>)}
         </span>
       )}
       {status && (
-        <span className="mu-engraving-text mu-type-label">
-          <span className="mu-engraving-led" data-led={status.led} aria-hidden />
+        <Label variant="engraved" className="mu-engraving-status">
+          <Led kind={status.led} />
           {status.text}
-        </span>
+        </Label>
       )}
-    </span>
+    </Surface>
   );
 });

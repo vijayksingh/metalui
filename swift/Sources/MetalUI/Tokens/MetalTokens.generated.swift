@@ -1885,6 +1885,10 @@ public enum MetalEngraving {
     public static let tagPad: Double = 6.0
     public static let tagGap: Double = 4.0
     public static let led: Double = 5.0
+    public static let ledGap: Double = 4.0
+    public static let ledLift: Double = 1.0
+    public static let fadeMs: Double = 160.0
+    public static let moveMs: Double = 200.0
 }
 
 /// Provenance's timing and placement: one hover away from every cue (380 ms), 8 above it or 34 above a cue that shows its own value chip. If the app guessed, the number is shown: hidden confidence is a bug. Its look is the tooltip recipe; radius, pad, max-width, tracking, ink and dim stay only until the Swift port reads it. Values are the reference design's #tip.

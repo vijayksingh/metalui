@@ -1,0 +1,27 @@
+{
+  "name": "hover-engraving",
+  "title": "Hover engraving",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "surface",
+    "label",
+    "chip",
+    "status"
+  ],
+  "description": "A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.",
+  "base": "none (a note on its block; the block points aria-describedby at it)",
+  "react": {
+    "export": "HoverEngraving",
+    "files": [
+      "hover-engraving.tsx",
+      "hover-engraving.css"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalHoverEngraving",
+    "file": "swift/Sources/MetalUI/Components/MetalHoverEngraving.swift"
+  },
+  "agent": "hover-engraving.agent.md"
+}

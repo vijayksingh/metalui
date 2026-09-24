@@ -283,7 +283,7 @@ A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) 
 
 # Hover engraving
 
-A block's identity, shown on a dwell, never on a pass. React: `HoverEngraving` from `@unlocalhosted/metalui`. SwiftUI: `.metalHoverEngraving(...)` or `MetalHoverEngraving`. the reference brief: 03 §5, DS-31.
+A block's identity, shown on a dwell, never on a pass. A composition block. React: `HoverEngraving` from `@unlocalhosted/metalui`. SwiftUI: `.metalHoverEngraving(...)` or `MetalHoverEngraving`.
 
 ## Use it for
 
@@ -297,7 +297,7 @@ A block's identity, shown on a dwell, never on a pass. React: `HoverEngraving` f
 
 ## Anatomy
 
-A 22 tall frosted pill (`engraving-bg`, blur 12, `raise-sm`) with 10 padding and 8 gaps: the text in the `label` role, engraved with the lip, the kind emphasised; derived tags as hollow 15 tall pills; the recognizer's status after a 5 pt LED (green live, amber waiting, red failed, off). Beside the first line of a text block (4 to the right, 9 down); below a material block (8 under). It never covers the next line of a stacked list.
+`Surface material="tip" radius="pill"` (frosted, blur 12, a small raise), 22 tall with 10 padding and 8 gaps: `Label variant="engraved"` with the kind as its `<b>` emphasis; derived tags as `Chip variant="tag"`; the recognizer's status in a `Label` after a `Led` (green live, amber waiting, red failed, off). Beside the first line of a text block (4 to the right, 9 down); below a material block (8 under). It never covers the next line of a stacked list.
 
 ## States and motion
 
@@ -307,7 +307,7 @@ A 22 tall frosted pill (`engraving-bg`, blur 12, `raise-sm`) with 10 padding and
 | dwell 420 ms | shown | settle fade, sliding 3 in (beside) or 2 down (below) |
 | leave | hidden at once | settle, no delay |
 | selected, writing | hidden (`open={false}`) | – |
-| Reduce Transparency | opaque `frost-opaque` fill, no blur | – |
+| Reduce Transparency | the surface turns opaque, no blur | – |
 
 Reduce Motion: settle is a crossfade, so it fades in place.
 
