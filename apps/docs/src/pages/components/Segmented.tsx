@@ -7,6 +7,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/segmented
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSegmented.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { SegmentedXray } from '../../ui/xray/SegmentedXray';
 
 const VIEWS = ['place', 'list', 'table', 'timeline', 'gallery'].map((v) => ({ value: v, label: v }));
 
@@ -17,7 +18,7 @@ export default function SegmentedPage() {
     <>
       <PageHeader
         title="Segmented control"
-        lede="A pill of pills: one of a few views or modes, always visible. The selected segment is a raised thumb that glides along the well on the part spring, because the track has ends. Built on Base UI RadioGroup."
+        lede="Pick one of a few options. All options are always visible. The chosen one sits on a raised thumb that slides when you pick another. Built on Base UI RadioGroup."
       />
       <Section title="Playground" lede="Click or use the arrow keys. Dials: the size (28 regular, 24 compact), how many segments, disabled.">
         <Bench caption={`${d.size} · ${view}`}>
@@ -31,6 +32,9 @@ export default function SegmentedPage() {
           </div>
         </Bench>
         <SwiftCapture name="segmented" maxWidth={520} />
+      </Section>
+      <Section id="x-ray" title="X-ray" lede="See what the control is made of. Click an icon to learn about one part and change it.">
+        <SegmentedXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[

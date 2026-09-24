@@ -74,6 +74,20 @@ export function springCurve(k: number, c: number, ms = 360, step = 4) {
   return pts;
 }
 
+/** A spring as a CSS easing: linear() samples until it settles, and the time that takes. */
+export function springEasing(k: number, c: number) {
+  let x = 0, v = 0, t = 0; const dt = 1 / 1000; const xs: number[] = [0];
+  while (t < 3000) {
+    for (let i = 0; i < 4; i++) { const a = -k * (x - 1) - c * v; v += a * dt; x += v * dt; t += 1; }
+    xs.push(x);
+    if (t > 60 && Math.abs(x - 1) < 0.002 && Math.abs(v) < 0.05) break;
+  }
+  const step = Math.max(1, Math.floor(xs.length / 48));
+  const pts = xs.filter((_, i) => i % step === 0).map((n) => Number(n.toFixed(4)));
+  pts[pts.length - 1] = 1;
+  return { css: `linear(${pts.join(', ')})`, ms: t };
+}
+
 /** A spring curve drawn as a path in a w×h box; the dashed line is the target. Values over 1 draw above it. */
 export function SpringPlot({ k, c, ms = 360, w = 220, h = 70 }: { k: number; c: number; ms?: number; w?: number; h?: number }) {
   const pts = React.useMemo(() => springCurve(k, c, ms), [k, c, ms]);
@@ -86,6 +100,21 @@ export function SpringPlot({ k, c, ms = 360, w = 220, h = 70 }: { k: number; c: 
       <path d={d} fill="none" stroke="var(--green-deep)" strokeWidth="1.5" />
     </svg>
   );
+}
+
+/** A zoom that keeps an isometric model of w×h inside the bench, leaving room for the callout columns. */
+export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number, h: number, active: boolean) {
+  const [room, setRoom] = React.useState(0);
+  React.useLayoutEffect(() => {
+    if (!active) return;
+    const el = bench.current; if (!el) return;
+    const read = () => setRoom(el.clientWidth);
+    read();
+    const ro = new ResizeObserver(read); ro.observe(el);
+    return () => ro.disconnect();
+  }, [bench, active]);
+  const footprint = w * 0.79 + h * 0.62;
+  return room ? Math.min(1, (room - 150) / footprint) : 1;
 }
 
 export type Side = Record<string, ['left' | 'right', number]>;

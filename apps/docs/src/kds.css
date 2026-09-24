@@ -671,3 +671,17 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 .xr-face.is-layer.is-focus { outline: 2px solid var(--green-deep); outline-offset: 3px; }
 .xr-face.is-layer.is-off { opacity: .18; }
 .xr-card { max-height: calc(100vh - 120px); overflow-y: auto; }
+/* x-ray, segmented: a tray with a rim, a sliding thumb, labels above it */
+.xr-ring { position: absolute; left: 0; top: 0; box-sizing: border-box; border: 7px solid; border-radius: 999px; pointer-events: none; transition: transform var(--spring-object-d) var(--spring-object); }
+.xr-thumb { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+.xr-labels { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.xr-seglabel { position: absolute; display: grid; place-items: center; padding: 0; border: 0; background: none; font: 500 27.6px/1 var(--sans); white-space: nowrap; cursor: pointer; pointer-events: auto; }
+.xr-seglabel:focus-visible { outline: 2px solid var(--mu-focus); outline-offset: -4px; border-radius: 999px; }
+.xr-layers-head { padding: 12px 12px 2px; }
+.xr-seg-vars { display: inline-flex; }
+html.rm .xr-thumb, html.rm .xr-thumb * { transition: none !important; }
+/* x-ray layout: the card sits beside the bench when there is room, and under it when there is not */
+.xr { display: flex; flex-wrap: wrap; align-items: flex-start; }
+.xr > .xr-bench { flex: 1 1 540px; min-width: 0; }
+.xr > .xr-card { flex: 1 1 300px; max-width: 100%; }
+.xr > .xr-measure { flex: none; }
