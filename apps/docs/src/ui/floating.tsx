@@ -39,9 +39,10 @@ interface Item {
 
 const ITEMS: Item[] = [
   {
-    id: 'lines', table: ['5%', '9%'], space: ['8%', '20%', -260, 14], dur: '26s', drift: ['30px', '18px'],
-    node: () => (
-      <div className="hero-frags" style={{ gap: 12, maxWidth: 270 }}>
+    id: 'lines', table: ['5%', '9%'], space: ['8%', '20%', -260, 14], dur: '26s', drift: ['30px', '18px'], live: true,
+    // a checkbox opens its x-ray
+    node: ({ openXray }) => (
+      <div className="hero-frags" style={{ gap: 12, maxWidth: 270 }} onClick={(e) => { if ((e.target as HTMLElement).closest('.mu-dimple')) openXray('checkbox'); }}>
         <Line task="open">call printer about paper stock <Mark kind="date" resolved="Fri 25 Sep · 16:00">tomorrow 4pm</Mark></Line>
         <Line task="done">pick the grotesk <Mark kind="tag">#type</Mark></Line>
         <Line><Mark kind="measurement">slept 6h</Mark> · <Mark kind="measurement">mood 3</Mark></Line>

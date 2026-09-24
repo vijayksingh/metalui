@@ -688,3 +688,6 @@ html.rm .xr-thumb, html.rm .xr-thumb * { transition: none !important; }
 /* objects hanging behind the camera's plane must still take the pointer */
 .space, .space-camera { pointer-events: none; }
 .space .drift-item { pointer-events: auto; }
+/* x-ray, checkbox: the tick is the bottom and right edges of a small box, turned; it draws on */
+.xr-tick { position: absolute; box-sizing: border-box; border: solid #fff; animation-name: mu-checkbox-tick; animation-timing-function: var(--mu-ease-slide, ease-out); animation-fill-mode: both; }
+html.rm .xr-tick { animation: none; }

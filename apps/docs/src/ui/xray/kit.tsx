@@ -15,7 +15,7 @@ import { tokens } from '../../lib/tokens';
 
 export interface SpotDef<T extends string> { id: T; title: string; word: string }
 
-export type GlyphName = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers' | 'well' | 'thumb' | 'slide' | 'surface';
+export type GlyphName = 'type' | 'shape' | 'light' | 'shadow' | 'press' | 'layers' | 'well' | 'thumb' | 'slide' | 'surface' | 'tick' | 'states';
 
 export function Glyph({ id, size = 15 }: { id: GlyphName; size?: number }) {
   const c = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true };
@@ -29,6 +29,8 @@ export function Glyph({ id, size = 15 }: { id: GlyphName; size?: number }) {
     case 'well': return <svg {...c}><path d="M3 9h3.5a2 2 0 0 1 2 2v2.5a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V11a2 2 0 0 1 2-2H21" /><path d="M9.5 12.5h5" strokeDasharray="1.5 2" /></svg>;
     case 'thumb': return <svg {...c}><rect x="3" y="8" width="18" height="10" rx="5" strokeOpacity=".45" /><rect x="5" y="5.5" width="8" height="9" rx="4" /></svg>;
     case 'surface': return <svg {...c}><rect x="2.5" y="12" width="19" height="7" rx="3.5" /><rect x="8" y="5" width="8" height="8" rx="2.5" /></svg>;
+    case 'tick': return <svg {...c}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>;
+    case 'states': return <svg {...c}><rect x="3" y="9" width="6" height="6" rx="2" /><rect x="15" y="9" width="6" height="6" rx="2" fill="currentColor" /><path d="M10.5 12h3" /></svg>;
     case 'slide': return <svg {...c}><rect x="10" y="7" width="9" height="8" rx="4" /><path d="M3 11h4M4.5 8.5 3 11l1.5 2.5" /><path d="M5 19c2 0 3-2 5.5-2s3 2 5 2 2.5-1 3.5-1" /></svg>;
   }
 }
@@ -52,6 +54,16 @@ export function Switch({ label, on, onChange }: { label: string; on: boolean; on
       <span className="tog sm"><input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)} aria-label={label} /><span className="tr" /><span className="th" /></span>
     </label>
   );
+}
+
+/** One part's layers for the current colorway and a state ('' is rest), in recipe order. */
+export function useStateLayers(recipe: keyof typeof tokens.recipes, state: string, part = 'self') {
+  const { colorway } = useColorway();
+  const r = tokens.recipes[recipe] as { layers: { part: string; prop: string; value: string; colorway?: string; state?: string }[] };
+  const ls = r.layers.filter((l) => l.part === part && (!l.colorway || l.colorway === colorway) && (l.state ?? '') === state);
+  const fill = ls.find((l) => l.prop === 'background')?.value ?? 'transparent';
+  const shadows = ls.filter((l) => l.prop === 'shadow').map((l) => l.value);
+  return { fill, shadows, colorway };
 }
 
 /** One part's layers for the current colorway, in recipe order. */
