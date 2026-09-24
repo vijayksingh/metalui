@@ -8,8 +8,7 @@
   "react": {
     "export": "Field, SearchField",
     "files": [
-      "field.tsx",
-      "field.css"
+      "field.tsx"
     ]
   },
   "swift": {
