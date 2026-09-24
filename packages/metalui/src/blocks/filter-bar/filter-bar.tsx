@@ -8,7 +8,6 @@ import { Label } from '../../components/label/label';
 import { Led } from '../../components/status/status';
 import { Segmented, type SegmentedOption } from '../../components/segmented/segmented';
 import { IconButton } from '../../components/icon-button/icon-button';
-import './filter-bar.css';
 
 /* ─────────────────────────────────────────────────────────
  * FILTER BAR (the reference design's #lensBar): a composition on Base UI Toolbar
@@ -20,6 +19,11 @@ import './filter-bar.css';
  *   view      the segmented thumb glides on the part spring
  * A filter never moves anything: it names the question and switches how the answer is shown.
  * ───────────────────────────────────────────────────────── */
+
+/* Layout from the lensbar group; it drops one step from above, from .98, on the surface spring. */
+const BAR = 'mu-filterbar inline-flex items-center gap-lensbar-gap h-lensbar-height pl-lensbar-pad-start pr-lensbar-pad-end animate-filterbar-in';
+const QUERY = 'mu-filterbar-query max-w-lensbar-query-max overflow-hidden text-ellipsis';
+const NOTE = 'mu-filterbar-note [&>.mu-led]:mr-lensbar-note-led-gap';
 
 export type FilterView = 'place' | 'list' | 'table' | 'timeline' | 'gallery';
 
@@ -55,15 +59,15 @@ export function FilterBar({ query, count, note, view = 'place', onViewChange, vi
   return (
     <Toolbar.Root
       aria-label={`Filter: ${query}`}
-      render={<Surface material="frost" radius="pill" className={className ? `mu-filterbar ${className}` : 'mu-filterbar'} />}
+      render={<Surface material="frost" radius="pill" className={className ? `${BAR} ${className}` : BAR} />}
     >
       <Glyph>{glyphs.filter}</Glyph>
-      <Label variant="query" className="mu-filterbar-query">{query}</Label>
+      <Label variant="query" className={QUERY}>{query}</Label>
       {count !== undefined && (
         <Label variant="engraved" aria-live="polite">{count} {count === 1 ? 'MATCH' : 'MATCHES'}</Label>
       )}
       {note && (
-        <Label variant="engraved" className="mu-filterbar-note">
+        <Label variant="engraved" className={NOTE}>
           {note.pending && <Led kind="waiting" />}
           {note.text}
         </Label>

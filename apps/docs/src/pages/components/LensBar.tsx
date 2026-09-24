@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { LensBar, type LensMode } from '@unlocalhosted/metalui';
 import { CloseIcon, PinIcon, SearchIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalLensBar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';

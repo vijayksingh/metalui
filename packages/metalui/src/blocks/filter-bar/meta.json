@@ -17,8 +17,7 @@
   "react": {
     "export": "FilterBar, LensBar",
     "files": [
-      "filter-bar.tsx",
-      "filter-bar.css"
+      "filter-bar.tsx"
     ]
   },
   "swift": {

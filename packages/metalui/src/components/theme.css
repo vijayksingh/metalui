@@ -1956,3 +1956,9 @@
 @utility animate-suggestion-in {
   animation: mu-suggestion-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
 }
+@keyframes mu-filterbar-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-lensbar-enter-drop) * -1 * var(--mu-travel-surface))) scale(calc(1 - (1 - var(--mu-lensbar-enter-scale)) * var(--mu-travel-surface))); }
+}
+@utility animate-filterbar-in {
+  animation: mu-filterbar-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}

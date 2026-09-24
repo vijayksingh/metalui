@@ -176,11 +176,6 @@
           "path": "packages/metalui/src/blocks/filter-bar/filter-bar.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/filter-bar/filter-bar.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/filter-bar/filter-bar.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/filter-bar/filter-bar.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/filter-bar.md. SwiftUI: MetalFilterBar in the MetalUI Swift package."
