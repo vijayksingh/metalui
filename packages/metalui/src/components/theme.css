@@ -1940,3 +1940,9 @@
 @utility animate-toolstrip-in {
   animation: mu-toolstrip-in var(--mu-spring-part-d) var(--mu-spring-part) both;
 }
+@keyframes mu-pastbanner-in {
+  from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * -1 * var(--mu-travel-surface))); }
+}
+@utility animate-pastbanner-in {
+  animation: mu-pastbanner-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}

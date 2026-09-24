@@ -15,8 +15,7 @@
   "react": {
     "export": "PastBanner",
     "files": [
-      "past-banner.tsx",
-      "past-banner.css"
+      "past-banner.tsx"
     ]
   },
   "swift": {

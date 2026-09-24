@@ -373,11 +373,6 @@
           "path": "packages/metalui/src/blocks/past-banner/past-banner.tsx",
           "type": "registry:ui",
           "target": "components/metalui/blocks/past-banner/past-banner.tsx"
-        },
-        {
-          "path": "packages/metalui/src/blocks/past-banner/past-banner.css",
-          "type": "registry:file",
-          "target": "components/metalui/blocks/past-banner/past-banner.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/past-banner.md. SwiftUI: MetalPastBanner in the MetalUI Swift package."
