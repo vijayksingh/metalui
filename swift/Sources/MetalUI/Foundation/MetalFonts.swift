@@ -32,7 +32,7 @@ public enum MetalFonts {
     static func systemWeight(_ css: Int) -> CGFloat {
         let table: [(Double, CGFloat)] = [
             (100, NSFont.Weight.ultraLight.rawValue), (200, NSFont.Weight.thin.rawValue), (300, NSFont.Weight.light.rawValue),
-            (400, NSFont.Weight.regular.rawValue), (500, NSFont.Weight.canvas.rawValue), (600, NSFont.Weight.semibold.rawValue),
+            (400, NSFont.Weight.regular.rawValue), (500, 0.23 /* NSFont.Weight for 500 */), (600, NSFont.Weight.semibold.rawValue),
             (700, NSFont.Weight.bold.rawValue), (800, NSFont.Weight.heavy.rawValue), (900, NSFont.Weight.black.rawValue),
         ]
         let w = min(max(Double(css), 100), 900)
