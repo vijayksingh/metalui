@@ -128,6 +128,24 @@
       "sheet": "Kamui 04 §5 (a Dial/Slider skin)"
     },
     {
+      "name": "menu",
+      "title": "Menu and correction popover",
+      "status": "alpha",
+      "description": "A frosted plate of 30 rows (frost-strong at .92, radius 18, padding 6, at least 200 wide) from a trigger or at the pointer: an engraved heading says what it acts on, pointer and keyboard share one highlight, keys at the right, destructive rows red, engraved separators; fades on settle. The correction popover is its right-click form. Built on Base UI Menu and Context Menu.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Menu, ContextMenu, MenuItem, MenuSeparator",
+        "base": "@base-ui/react/menu"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:)"
+      },
+      "registry": "https://metalui.dev/r/menu.json",
+      "agent": "https://metalui.dev/r/menu.md",
+      "sheet": "Kamui 04 §8, §18"
+    },
+    {
       "name": "past-banner",
       "title": "Past banner",
       "status": "alpha",

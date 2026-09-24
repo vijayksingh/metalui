@@ -41,6 +41,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/toolbar', label: 'Toolbar' },
       { to: '/components/command-palette', label: 'Command palette' },
       { to: '/components/tooltip', label: 'Tooltip' },
+      { to: '/components/menu', label: 'Menu' },
     ],
   },
   {

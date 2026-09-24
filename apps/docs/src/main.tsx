@@ -28,6 +28,7 @@ const router = createBrowserRouter([
       { path: 'components/toolbar', lazy: lazy(() => import('./pages/components/Toolbar')) },
       { path: 'components/command-palette', lazy: lazy(() => import('./pages/components/CommandPalette')) },
       { path: 'components/tooltip', lazy: lazy(() => import('./pages/components/Tooltip')) },
+      { path: 'components/menu', lazy: lazy(() => import('./pages/components/Menu')) },
       { path: 'components/toast', lazy: lazy(() => import('./pages/components/Toast')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },

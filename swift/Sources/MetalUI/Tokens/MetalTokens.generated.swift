@@ -42,6 +42,8 @@ public struct MetalColorwayTokens: Sendable {
     public let rowHover: MetalRGBA
     public let rowOnBg: MetalGradient
     public let scrim: MetalRGBA
+    public let menuBg: MetalRGBA
+    public let menuRowHover: MetalRGBA
     public let scrubberMark: MetalRGBA
     public let scrubberDayTick: MetalRGBA
     public let raise: [MetalShadow]
@@ -135,6 +137,8 @@ public enum MetalTokens {
         rowHover: MetalRGBA(255, 255, 255, 0.7),
         rowOnBg: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(255, 255, 255, 1.0), 0.0), .init(MetalRGBA(246, 245, 242, 1.0), 1.0)]),
         scrim: MetalRGBA(243, 243, 241, 0.25),
+        menuBg: MetalRGBA(251, 250, 248, 0.92),
+        menuRowHover: MetalRGBA(0, 0, 0, 0.05),
         scrubberMark: MetalRGBA(40, 38, 32, 0.28),
         scrubberDayTick: MetalRGBA(40, 38, 32, 0.18),
         raise: [
@@ -251,6 +255,8 @@ public enum MetalTokens {
         rowHover: MetalRGBA(255, 255, 255, 0.06),
         rowOnBg: MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(51, 51, 55, 1.0), 0.0), .init(MetalRGBA(42, 42, 45, 1.0), 1.0)]),
         scrim: MetalRGBA(14, 14, 15, 0.25),
+        menuBg: MetalRGBA(34, 34, 37, 0.92),
+        menuRowHover: MetalRGBA(255, 255, 255, 0.06),
         scrubberMark: MetalRGBA(255, 255, 255, 0.28),
         scrubberDayTick: MetalRGBA(255, 255, 255, 0.18),
         raise: [
@@ -739,6 +745,22 @@ public enum MetalRegion {
     public static let rowPadX: Double = 8.0
     public static let rowGap: Double = 9.0
     public static let rowDimple: Double = 14.0
+}
+
+/// Menus and the correction popover (Kamui 03 §5, 04 §8, §18): a frosted plate denser than the palette (menu-bg, frost-strong at .92), raise, radius plate (18), padding 6, at least 200 wide, 6 from its trigger or at the pointer. An optional heading engraving says what the menu acts on (the provenance of a cue: NOTE · TASK BY JEV 0.82). Rows are 30 tall at the row radius (12: the plate nests 6) in the ui role, a 14 glyph, the key at the right; pointer and keyboard share one highlighted state (menu-row-hover). Destructive rows are red. Engraved separators. It fades in on settle and out on release; no travel.
+public enum MetalMenuMetrics {
+    public static let minWidth: Double = 200.0
+    public static let pad: Double = 6.0
+    public static let offset: Double = 6.0
+    public static let headingPadTop: Double = 6.0
+    public static let headingPadX: Double = 8.0
+    public static let headingPadBottom: Double = 8.0
+    public static let rowHeight: Double = 30.0
+    public static let rowPad: Double = 10.0
+    public static let rowGap: Double = 8.0
+    public static let rowGlyph: Double = 14.0
+    public static let sepInsetY: Double = 5.0
+    public static let sepInsetX: Double = 8.0
 }
 
 /// The tooltip: every icon-only control names itself and its key, one hover away. A graphite chip in the label role (uppercase mono), the key dimmed after a middle dot: SELECT · V. 10 above its trigger after 120 ms (moving to the next trigger shows the next at once), flipping below near the top edge; a fade on settle. Information, never an action: it takes no pointer and holds nothing to click.

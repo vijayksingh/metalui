@@ -391,4 +391,28 @@ final class MetalCaptures: XCTestCase {
             capture("tooltip-\(colorway.rawValue)", view)
         }
     }
+    func testMenu() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(alignment: .top, spacing: 28) {
+                MetalMenuPanel(heading: "Note · task by Jev 0.82", items: [
+                    MetalMenuItem("Not a Task") {},
+                    MetalMenuItem("Reset Corrections") {},
+                    MetalMenuItem("Ask Jev Again") {},
+                    .separator,
+                    MetalMenuItem("Gather Similar", icon: .search) {},
+                ], onClose: {})
+                MetalMenuPanel(items: [
+                    MetalMenuItem("Duplicate", icon: .duplicate, shortcut: "⌘D") {},
+                    MetalMenuItem("Pin", icon: .pin, shortcut: "⇧P") {},
+                    MetalMenuItem("Share", icon: .share, disabled: true) {},
+                    .separator,
+                    MetalMenuItem("Delete", icon: .trash, shortcut: "⌫", danger: true) {},
+                ], onClose: {})
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("menu-\(colorway.rawValue)", view)
+        }
+    }
 }

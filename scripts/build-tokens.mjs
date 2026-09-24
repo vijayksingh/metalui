@@ -219,6 +219,11 @@ const TP = T.tooltip;
 const TP_KEYS = Object.keys(TP).filter((k) => !k.startsWith("$"));
 const tooltipVars = TP_KEYS.map((k) => `  --mu-tooltip-${k}: ${typeof TP[k] === "number" ? (k.endsWith("-ms") ? `${TP[k]}ms` : `${TP[k]}px`) : TP[k]};`).join("\n");
 
+// ---------- menu (tokens.json menu) ----------
+const MN = T.menu;
+const MN_KEYS = Object.keys(MN).filter((k) => !k.startsWith("$"));
+const menuVars = MN_KEYS.map((k) => `  --mu-menu-${k}: ${MN[k]}px;`).join("\n");
+
 // ---------- palette (tokens.json palette): the command palette ----------
 const PL = T.palette;
 const PL_KEYS = Object.keys(PL).filter((k) => !k.startsWith("$"));
@@ -260,6 +265,7 @@ ${statusVars}
 ${toastVars}
 ${toolbarVars}
 ${tooltipVars}
+${menuVars}
 ${paletteVars}
 ${typeVars}
 ${travel}
@@ -644,6 +650,11 @@ ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    p
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+/// ${MN.$use}
+public enum MetalMenuMetrics {
+${MN_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(MN[k])}`).join("\n")}
+}
+
 /// ${TP.$use}
 public enum MetalTooltipMetrics {
 ${TP_KEYS.map((k) => { const v = TP[k]; if (typeof v === "number") return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join("\n")}

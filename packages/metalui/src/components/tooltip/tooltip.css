@@ -1,6 +1,8 @@
 @import "../tokens.css";
 
 /* Tooltip (Kamui 04 §2, §8; the medium demo's #tip) on Base UI Tooltip. */
+/* Above menus and toasts: it names what is under the pointer. */
+.mu-tooltip-positioner { z-index: 70; }
 .mu-tooltip {
   max-width: var(--mu-tooltip-max-width);
   padding: var(--mu-tooltip-pad-y) var(--mu-tooltip-pad-x);

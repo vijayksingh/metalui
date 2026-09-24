@@ -1,0 +1,11 @@
+{
+  "name": "menu",
+  "title": "Menu and correction popover",
+  "status": "alpha",
+  "description": "A frosted plate of 30 rows (frost-strong at .92, radius 18, padding 6, at least 200 wide) from a trigger or at the pointer: an engraved heading says what it acts on, pointer and keyboard share one highlight, keys at the right, destructive rows red, engraved separators; fades on settle. The correction popover is its right-click form. Built on Base UI Menu and Context Menu.",
+  "sheet": "Kamui 04 §8, §18",
+  "base": "@base-ui/react/menu",
+  "react": { "export": "Menu, ContextMenu, MenuItem, MenuSeparator", "files": ["menu.tsx", "menu.css"] },
+  "swift": { "symbol": "MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:)", "file": "swift/Sources/MetalUI/Components/MetalMenu.swift" },
+  "agent": "menu.agent.md"
+}

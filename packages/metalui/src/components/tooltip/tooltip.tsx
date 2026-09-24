@@ -42,7 +42,7 @@ export function Tooltip({ label, shortcut, side = 'top', children, open }: Toolt
     <BaseTooltip.Root open={open}>
       <BaseTooltip.Trigger render={children} />
       <BaseTooltip.Portal>
-        <BaseTooltip.Positioner side={side} sideOffset={gap()} collisionPadding={8}>
+        <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={gap()} collisionPadding={8}>
           <BaseTooltip.Popup className="mu-tooltip mu-type-label">
             {label}
             {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}

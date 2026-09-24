@@ -188,6 +188,31 @@
       "docs": "Agent guide: https://metalui.dev/r/memory-scrubber.md. SwiftUI: MetalMemoryScrubber in the MetalUI Swift package."
     },
     {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu and correction popover",
+      "description": "A frosted plate of 30 rows (frost-strong at .92, radius 18, padding 6, at least 200 wide) from a trigger or at the pointer: an engraved heading says what it acts on, pointer and keyboard share one highlight, keys at the right, destructive rows red, engraved separators; fades on settle. The correction popover is its right-click form. Built on Base UI Menu and Context Menu.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/menu/menu.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/menu/menu.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/menu/menu.css",
+          "type": "registry:file",
+          "target": "components/metalui/menu/menu.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/menu.md. SwiftUI: MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:) in the MetalUI Swift package."
+    },
+    {
       "name": "past-banner",
       "type": "registry:ui",
       "title": "Past banner",

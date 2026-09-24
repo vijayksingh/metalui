@@ -1,0 +1,59 @@
+@import "../tokens.css";
+@import "../kbd/kbd.css";
+
+/* Menu and the correction popover (Kamui 04 §8, §18; the medium demo's #pop) on Base UI Menu. */
+/* Above a toast (50): a menu is what the person is acting in now. */
+.mu-menu-positioner { z-index: 60; }
+.mu-menu {
+  min-width: var(--mu-menu-min-width);
+  padding: var(--mu-menu-pad);
+  border-radius: var(--mu-radius-plate);
+  outline: 0;
+  background: var(--mu-menu-bg);
+  box-shadow: var(--mu-raise);
+  -webkit-backdrop-filter: var(--mu-backdrop);
+  backdrop-filter: var(--mu-backdrop);
+  transform-origin: var(--transform-origin);
+  /* A fade on settle, out on release: a menu appears where it is, it does not travel. */
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+.mu-menu[data-starting-style], .mu-menu[data-ending-style] { opacity: 0; }
+.mu-menu[data-ending-style] { transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+.mu-menu-heading {
+  padding: var(--mu-menu-heading-pad-top) var(--mu-menu-heading-pad-x) var(--mu-menu-heading-pad-bottom);
+  color: var(--mu-engrave);
+  text-shadow: 0 .5px 0 var(--mu-lip);
+}
+.mu-menu-row {
+  display: flex;
+  align-items: center;
+  gap: var(--mu-menu-row-gap);
+  height: var(--mu-menu-row-height);
+  padding: 0 var(--mu-menu-row-pad);
+  border-radius: var(--mu-radius-row);
+  color: var(--mu-ink);
+  cursor: default;
+  outline: 0;
+  user-select: none;
+}
+.mu-menu-glyph { display: inline-grid; flex: none; color: var(--mu-ink2); }
+.mu-menu-glyph > svg { width: var(--mu-menu-row-glyph); height: var(--mu-menu-row-glyph); }
+.mu-menu-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mu-menu-key { margin-left: 12px; }
+/* Pointer and keyboard share one highlighted state. Instant: a menu is scanned. */
+.mu-menu-row[data-highlighted] { background: var(--mu-menu-row-hover); }
+.mu-menu-row[data-danger], .mu-menu-row[data-danger] .mu-menu-glyph { color: var(--mu-red); }
+.mu-menu-row[data-disabled] { opacity: .4; }
+.mu-menu-sep {
+  height: 1px;
+  margin: var(--mu-menu-sep-inset-y) var(--mu-menu-sep-inset-x);
+  background: var(--mu-rule);
+  box-shadow: 0 1px 0 var(--mu-rule-lip);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .mu-menu { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .mu-menu { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge), var(--mu-raise); }
+  .mu-menu-row[data-highlighted] { box-shadow: inset 0 0 0 1px var(--mu-contrast-edge); }
+}
