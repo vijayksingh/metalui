@@ -37,15 +37,19 @@ export interface TooltipProps {
   open?: boolean;
   /** A note that wraps at the max width instead of one line. */
   wrap?: boolean;
+  /** Its own hover delay in ms (a note waits longer than a name); default the provider's. */
+  delay?: number;
+  /** Its own distance from the trigger (clear a chip the trigger shows on hover); default 10. */
+  offset?: number;
 }
 
 /** Names an icon-only control and its key, one hover away. */
-function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap }: TooltipProps) {
+function TooltipRoot({ label, shortcut, side = 'top', children, open, wrap, delay, offset }: TooltipProps) {
   return (
     <BaseTooltip.Root open={open}>
-      <BaseTooltip.Trigger render={children} />
+      <BaseTooltip.Trigger delay={delay} render={children} />
       <BaseTooltip.Portal>
-        <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={gap()} collisionPadding={8}>
+        <BaseTooltip.Positioner className="mu-tooltip-positioner" side={side} sideOffset={offset ?? gap()} collisionPadding={8}>
           <BaseTooltip.Popup className="mu-tooltip" data-wrap={wrap ? '' : undefined}>
             {label}
             {shortcut && <span className="mu-tooltip-key"> · {shortcut}</span>}
@@ -64,6 +68,6 @@ function Dim({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
 export const Tooltip = Object.assign(TooltipRoot, { Root: TooltipRoot, Dim });
 
 /** Groups tooltips: after one shows, the next trigger shows its own at once. Wrap a toolbar or a panel. */
-export function TooltipProvider({ children }: { children: React.ReactNode }) {
-  return <BaseTooltip.Provider delay={delayMs()}>{children}</BaseTooltip.Provider>;
+export function TooltipProvider({ children, delay }: { children: React.ReactNode; delay?: number }) {
+  return <BaseTooltip.Provider delay={delay ?? delayMs()}>{children}</BaseTooltip.Provider>;
 }

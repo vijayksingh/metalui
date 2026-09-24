@@ -14,8 +14,6 @@
   color: var(--mu-r-tooltip-self-ink);
   background: var(--mu-r-tooltip-self-background);
   box-shadow: var(--mu-r-tooltip-self-shadow);
-  -webkit-backdrop-filter: var(--mu-r-tooltip-self-blur);
-  backdrop-filter: var(--mu-r-tooltip-self-blur);
   /* A fade on settle: it is information, not an arrival. */
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
@@ -23,6 +21,3 @@
 .mu-tooltip[data-starting-style], .mu-tooltip[data-ending-style] { opacity: var(--mu-zero); }
 .mu-tooltip[data-instant] { transition: none; }
 .mu-tooltip-key { color: var(--mu-r-tooltip-key-ink); }
-@media (prefers-reduced-transparency: reduce) {
-  .mu-tooltip { background: var(--mu-frost-graphite-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
-}

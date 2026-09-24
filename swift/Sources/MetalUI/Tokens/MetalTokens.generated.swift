@@ -1476,7 +1476,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A graphite label that names what is under the pointer, with its key. (reference style.css #tip, #tip .dim, .tb-tip)
+    /// A graphite label that names what is under the pointer, with its key; no backdrop, as the reference #tip. (reference style.css #tip, #tip .dim, .tb-tip)
     public static let tooltip = MetalObjectRecipe(
         name: "tooltip",
         layers: [
@@ -1498,7 +1498,6 @@ public enum MetalRecipes {
             "self.tracking": .text("0.05em"),
             "self.ink": .text("#E9E9EB"),
             "self.z": .text("70"),
-            "self.blur": .text("blur(22px) saturate(1.6)"),
             "key.ink": .text("#8E8E93"),
         ]
     )

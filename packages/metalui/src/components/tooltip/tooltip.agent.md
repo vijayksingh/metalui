@@ -14,10 +14,11 @@ Names an icon-only control and its key, one hover away. React: `Tooltip`, `Toolt
 
 ## Anatomy
 
-- **Chip**: a graphite pill (`.mu-frost-graphite` fill and shadow), padding 5 × 9, the label role (9 mono uppercase), ink `#E9E9EB`.
+- **Chip**: the graphite fill and shadow with no backdrop, radius 11, padding 6 × 10, 10 mono at 1.45, tracked .05em, ink `#E9E9EB`.
 - **Key**: after a middle dot, dimmed (`#8E8E93`): `SELECT · V`.
 - **Dim** (`Tooltip.Dim`): the same dimmed ink for any detail in a `label` node.
 - **Wrap** (`wrap`): a longer note wraps at 280 instead of one line.
+- **Delay and offset** (`delay`, `offset`): a note waits longer than a name (380 against 120) and can sit clear of a chip its trigger shows.
 - **Placement**: 10 from the trigger, above by default; flips near the edge.
 
 ## States and motion
@@ -28,7 +29,6 @@ Names an icon-only control and its key, one hover away. React: `Tooltip`, `Toolt
 | hover / focus, 120 ms | the chip | fades in on settle |
 | next trigger in the group | the next chip at once | instant |
 | leave / press | gone | fades out on settle |
-| Reduce Transparency | opaque graphite | – |
 
 ## API
 
@@ -57,4 +57,4 @@ Button(action: undo) { MetalIcon(.undo, size: 16) }
 
 ## Tokens
 
-`--mu-tooltip-*`, `--mu-frost-graphite-*`, `--mu-spring-settle`. Swift: `MetalTooltipMetrics`.
+The tooltip recipe, `--mu-tooltip-delay-ms`, `--mu-tooltip-gap`, `--mu-spring-settle`. Swift: `MetalTooltipMetrics`.
