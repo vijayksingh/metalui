@@ -564,9 +564,9 @@ export const LIFE_CATALOG = {
     hoverMs: 500,
     synonyms: ["hopeful","optimistic","looking up","things are turning","promising","encouraged"],
     hook: "jev:valence/energy",
-    defs: "<clipPath id=\"&-h\"><rect x=\"0\" y=\"0\" width=\"24\" height=\"12.8\"/></clipPath>",
-    body: "<circle class=\"v d\" style=\"--duo:0.17\" cx=\"12\" cy=\"12\" r=\"9.3\"/><path d=\"M5.8 14.6h12.4\"/><g clip-path=\"url(#&-h)\"><circle class=\"dw f\" style=\"--duo:.3\" cx=\"12\" cy=\"14.6\" r=\"3.1\"/></g>",
-    body16: "<circle class=\"v d\" style=\"--duo:0.17\" cx=\"12\" cy=\"12\" r=\"9.3\"/><g transform=\"matrix(1.12 0 0 1.12 -1.44 -1.44)\"><path d=\"M5.8 14.6h12.4\"/><g clip-path=\"url(#&-h)\"><circle class=\"dw f\" style=\"--duo:.3\" cx=\"12\" cy=\"14.6\" r=\"3.1\"/></g></g>",
+    defs: "",
+    body: "<circle class=\"v d\" style=\"--duo:0.17\" cx=\"12\" cy=\"12\" r=\"9.3\"/><path d=\"M5.8 14.6h12.4\"/><path class=\"dw f\" style=\"--duo:.3\" d=\"M9.48 12.8A3.1 3.1 0 0 1 14.52 12.8\"/>",
+    body16: "<circle class=\"v d\" style=\"--duo:0.17\" cx=\"12\" cy=\"12\" r=\"9.3\"/><g transform=\"matrix(1.12 0 0 1.12 -1.44 -1.44)\"><path d=\"M5.8 14.6h12.4\"/><path class=\"dw f\" style=\"--duo:.3\" d=\"M9.48 12.8A3.1 3.1 0 0 1 14.52 12.8\"/></g>",
     sw16: 1.72,
   },
   /* Grateful · Feelings & mind · hover: a drop lands in the full vessel (800 ms) */

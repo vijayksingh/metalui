@@ -224,8 +224,8 @@ export const GLYPHS = [
   grammar: 'still line, lifted; faint reflection' },
 
 { name: 'hopeful', cat: 'feelings', label: 'Hopeful', syn: ['hopeful', 'optimistic', 'looking up', 'things are turning', 'promising', 'encouraged'], val: '+', en: 'lo', hook: 'jev:valence/energy', hover: 'dawn lifts over the line',
-  defs: `<clipPath id="&-h"><rect x="0" y="0" width="24" height="12.8"/></clipPath>`,
-  body: `${V()}<path d="M5.8 14.6h12.4"/><g clip-path="url(#&-h)"><circle class="dw f" style="--duo:.3" cx="12" cy="14.6" r="3.1"/></g>`,
+  // The dawn is a chord-closed tinted wire (K4), not a disc under a half-plane clip (K1).
+  body: `${V()}<path d="M5.8 14.6h12.4"/><path class="dw f" style="--duo:.3" d="M9.48 12.8A3.1 3.1 0 0 1 14.52 12.8"/>`,
   base: `& .dw{transform-origin:12px 14.6px}`,
   mo: `@H .dw{transform:translateY(-1.3px)}`,
   grammar: 'line with a disc rising above it' },
