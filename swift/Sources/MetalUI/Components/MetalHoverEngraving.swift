@@ -38,38 +38,47 @@ public struct MetalHoverEngraving: View {
 
     public var body: some View {
         let t = colorway.tokens
+        let recipe = MetalRecipes.hoverEngraving
+        let lip = MetalRecipes.label.textShadows("engraved", colorway: MetalRecipeColorway(colorway)).first
         let role = MetalType.label
-        HStack(spacing: MetalEngraving.gap) {
-            (Text(kind).foregroundColor(t.engravingEmphasis.color) + Text(details.map { " · \($0)" }.joined()).foregroundColor(t.engrave.color))
+        HStack(spacing: recipe.points("self.gap")) {
+            (Text(kind).foregroundColor((recipe.color("emphasis.color", colorway: MetalRecipeColorway(colorway)) ?? t.engravingEmphasis).color) + Text(details.map { " · \($0)" }.joined()).foregroundColor(t.engrave.color))
                 .font(.metal(role)).tracking(role.trackingPoints)
-                .shadow(color: t.lip.color, radius: 0, x: 0, y: 0.5)
+                .shadow(color: (lip?.color ?? t.lip).color, radius: lip?.blur ?? .zero, x: lip?.x ?? .zero, y: lip?.y ?? .zero)
             if !tags.isEmpty {
-                HStack(spacing: MetalEngraving.tagGap) {
+                HStack(spacing: recipe.points("tag.gap")) {
                     ForEach(tags, id: \.self) { tag in
                         Text("#\(tag)".uppercased())
-                            .font(.metal(role)).tracking(role.trackingPoints)
+                            .font(recipe.font("tag.font"))
+                            .tracking(recipe.tracking("tag.tracking", size: recipe.fontSize("tag.font")))
                             .foregroundColor(t.engrave.color)
-                            .padding(.horizontal, MetalEngraving.tagPad)
-                            .frame(height: MetalEngraving.tagHeight)
-                            .overlay { Capsule().strokeBorder(t.engravingTagRing.color, lineWidth: 0.5) }
+                            .padding(.horizontal, recipe.points("tag.pad"))
+                            .frame(height: recipe.points("tag.height"))
+                            .metalObjectRecipe(recipe, part: "tag", in: Capsule())
                     }
                 }
             }
             if let (led, text) = status {
-                HStack(spacing: 4) {
-                    Circle().fill(led.led.gradient(diameter: MetalEngraving.led)).frame(width: MetalEngraving.led, height: MetalEngraving.led)
+                HStack(spacing: recipe.points("led.gap")) {
+                    Circle().fill(led.led.gradient(diameter: recipe.points("led.size")))
+                        .frame(width: recipe.points("led.size"), height: recipe.points("led.size"))
+                        .background { MetalOuterShadows(layers: recipe.shadows("led", colorway: MetalRecipeColorway(colorway)), shape: Circle()) }
                     Text(text).font(.metal(role)).tracking(role.trackingPoints).foregroundColor(t.engrave.color)
                 }
             }
         }
         .textCase(.uppercase)
-        .padding(.horizontal, MetalEngraving.pad)
-        .frame(height: MetalEngraving.height)
+        .padding(.horizontal, recipe.points("self.pad"))
+        .frame(height: recipe.points("self.height"))
         .background {
             let shape = Capsule(style: .continuous)
             ZStack {
                 if !reduceTransparency { MetalBackdropView(backdrop: MetalBackdrop(blur: MetalEngraving.blur, saturation: 1, dark: colorway == .graphite)).clipShape(shape) }
-                Color.clear.metalRecipe(MetalRecipe(fill: .solid(reduceTransparency ? t.frostOpaque : t.engravingBg), shadows: t.raiseSm), in: shape)
+                if reduceTransparency {
+                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(t.frostOpaque), shadows: recipe.shadows("self", colorway: MetalRecipeColorway(colorway))), in: shape)
+                } else {
+                    Color.clear.metalObjectRecipe(recipe, part: "self", in: shape)
+                }
             }
         }
         .fixedSize()
@@ -93,7 +102,7 @@ private struct MetalHoverEngravingModifier: ViewModifier {
             .onHover { hovering = $0 }
             .overlay(alignment: placement == .beside ? .topTrailing : .bottomLeading) {
                 engraving
-                    .opacity(shown ? 1 : 0)
+                    .opacity(shown ? .one : .zero)
                     .offset(x: placement == .beside && !shown && travel ? -MetalEngraving.slide : 0, y: placement == .below && !shown && travel ? -MetalEngraving.rise : 0)
                     .alignmentGuide(.trailing) { d in placement == .beside ? -MetalEngraving.besideGap : d[.trailing] }
                     .alignmentGuide(.top) { _ in placement == .beside ? -MetalEngraving.besideTop : 0 }

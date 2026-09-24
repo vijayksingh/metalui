@@ -130,6 +130,11 @@ public struct MetalObjectRecipe: Equatable, Sendable {
         layers(part, state: state, colorway: colorway).compactMap { if case .shadow(let s) = $0.value { return s.shadow(self: own) } else { return nil } }
     }
 
+    /// Text-shadow layers of a part, including the colorway's engraved lip.
+    public func textShadows(_ part: String, state: String? = nil, colorway: MetalRecipeColorway = .bone) -> [MetalShadow] {
+        layers(part, state: state, colorway: colorway).compactMap { if case .textShadow(let s) = $0.value { return s.shadow() } else { return nil } }
+    }
+
     /// A number prop in points; zero when the recipe has none.
     public func points(_ key: String) -> Double { number(key) ?? .zero }
 
