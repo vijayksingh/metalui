@@ -7,8 +7,7 @@
   "react": {
     "export": "SizeReadout",
     "files": [
-      "size-readout.tsx",
-      "size-readout.css"
+      "size-readout.tsx"
     ]
   },
   "swift": {

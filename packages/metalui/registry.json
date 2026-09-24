@@ -548,11 +548,6 @@
           "path": "packages/metalui/src/components/size-readout/size-readout.tsx",
           "type": "registry:ui",
           "target": "components/metalui/size-readout/size-readout.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/size-readout/size-readout.css",
-          "type": "registry:file",
-          "target": "components/metalui/size-readout/size-readout.css"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."

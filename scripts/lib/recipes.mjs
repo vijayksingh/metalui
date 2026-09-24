@@ -219,7 +219,7 @@ export function buildRecipes(recipes) {
         if (k === 'font' || k === 'transform') continue;
         if (k === 'dash') { utilities.push(`@utility dash-${n} {\n  stroke-dasharray: ${ref(k)};\n}`); continue; }
         if (k === 'tracking') themeVars.push(`  --tracking-${n}: ${ref(k)};`);
-        else if (/^\d+(\.\d+)?ms$/.test(str)) utilities.push(`@utility duration-${n} {\n  transition-duration: ${ref(k)};\n}`);
+        else if (/^\d+(\.\d+)?ms$/.test(str)) utilities.push(`@utility duration-${n} {\n  --tw-duration: ${ref(k)};\n  transition-duration: ${ref(k)};\n}`);
         else if (/^(#|rgba?\(|hsla?\(|transparent$|white$|black$)/.test(str)) themeVars.push(`  --color-${n}: ${ref(k)};`);
         else if (/^blur\(/.test(str)) utilities.push(`@utility backdrop-${n} {\n  -webkit-backdrop-filter: ${ref(k)};\n  backdrop-filter: ${ref(k)};\n}`);
         else if (k === 'transition') utilities.push(`@utility transition-${stem(part)} {\n  transition: ${ref(k)};\n}`);

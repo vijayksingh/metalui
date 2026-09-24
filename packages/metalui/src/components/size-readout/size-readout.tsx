@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Surface } from '../surface/surface';
 import { Led } from '../status/status';
 import { Label } from '../label/label';
-import './size-readout.css';
 
 /* SIZE READOUT (the reference design's .readout): Surface(graphite-deep, pill) › Led(live) + Label(readout)
  * with its × and · in Label(readout-dim). A component, not a block: the Selection frame places one
@@ -27,6 +26,8 @@ export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElem
   led?: boolean;
 }
 
+const READOUT = 'mu-readout inline-flex items-center gap-presence-readout-gap-inner h-presence-readout-height pl-presence-readout-pad-start pr-presence-readout-pad-end whitespace-nowrap transition-opacity ease-settle duration-settle';
+
 // Each figure and mark is its own flex item, 6 apart, as the reference's text runs are.
 const V = ({ children }: { children: React.ReactNode }) => <Label variant="readout">{children}</Label>;
 const Mark = ({ children }: { children: React.ReactNode }) => (
@@ -39,7 +40,7 @@ export const SizeReadout = React.forwardRef<HTMLSpanElement, SizeReadoutProps>(f
 ) {
   const w = Math.round(width), h = Math.round(height);
   return (
-    <Surface ref={ref} as="span" material="graphite-deep" radius="pill" className={className ? `mu-readout ${className}` : 'mu-readout'} {...props}>
+    <Surface ref={ref} as="span" material="graphite-deep" radius="pill" className={className ? `${READOUT} ${className}` : READOUT} {...props}>
       {led && <Led kind="live" />}
       {value !== undefined ? <V>{value}</V> : copied ? (
         <><V>COPIED</V><Mark>·</Mark><V>{copied} {w}</V><Mark>×</Mark><V>{h}</V></>

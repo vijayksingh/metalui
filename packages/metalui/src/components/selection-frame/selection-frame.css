@@ -1,5 +1,4 @@
 @import "../tokens.css";
-@import "../size-readout/size-readout.css";
 
 /* Selection frame (the reference design's .selring, .nub and .readout). Every value is a --mu-presence-* token (tokens.json presence).
    The frame is an overlay laid over its host: the host is position: relative, the frame fills it,

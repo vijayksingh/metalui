@@ -723,6 +723,7 @@
   &::before { content: ''; position: absolute; inset: var(--mu-r-checkbox-doing-inset); border-radius: var(--mu-r-checkbox-doing-radius); background: var(--mu-r-checkbox-doing-background); opacity: var(--mu-r-checkbox-doing-opacity); }
 }
 @utility duration-checkbox-fade {
+  --tw-duration: var(--mu-r-checkbox-self-fade);
   transition-duration: var(--mu-r-checkbox-self-fade);
 }
 @utility opacity-checkbox-disabled {
@@ -735,9 +736,11 @@
   stroke-width: var(--mu-r-checkbox-tick-stroke);
 }
 @utility duration-checkbox-tick-draw {
+  --tw-duration: var(--mu-r-checkbox-tick-draw);
   transition-duration: var(--mu-r-checkbox-tick-draw);
 }
 @utility duration-checkbox-tick-delay {
+  --tw-duration: var(--mu-r-checkbox-tick-delay);
   transition-duration: var(--mu-r-checkbox-tick-delay);
 }
 @utility opacity-checkbox-doing-opacity {
@@ -776,9 +779,11 @@
   backdrop-filter: var(--mu-r-toolbar-self-blur);
 }
 @utility duration-toolbar-tool-press-time {
+  --tw-duration: var(--mu-r-toolbar-tool-press-time);
   transition-duration: var(--mu-r-toolbar-tool-press-time);
 }
 @utility duration-toolbar-tool-shadow-time {
+  --tw-duration: var(--mu-r-toolbar-tool-shadow-time);
   transition-duration: var(--mu-r-toolbar-tool-shadow-time);
 }
 @utility stroke-width-toolbar-sep-width {
@@ -816,12 +821,15 @@
   backdrop-filter: var(--mu-r-hover-engraving-self-blur);
 }
 @utility duration-hover-engraving-dwell {
+  --tw-duration: var(--mu-r-hover-engraving-self-dwell);
   transition-duration: var(--mu-r-hover-engraving-self-dwell);
 }
 @utility duration-hover-engraving-fade {
+  --tw-duration: var(--mu-r-hover-engraving-self-fade);
   transition-duration: var(--mu-r-hover-engraving-self-fade);
 }
 @utility duration-hover-engraving-move {
+  --tw-duration: var(--mu-r-hover-engraving-self-move);
   transition-duration: var(--mu-r-hover-engraving-self-move);
 }
 @utility weight-hover-engraving-emphasis-weight {
@@ -903,9 +911,11 @@
   box-shadow: var(--mu-r-button-strip-focus-shadow);
 }
 @utility duration-button-press {
+  --tw-duration: var(--mu-r-button-self-press);
   transition-duration: var(--mu-r-button-self-press);
 }
 @utility duration-button-fade {
+  --tw-duration: var(--mu-r-button-self-fade);
   transition-duration: var(--mu-r-button-self-fade);
 }
 @utility opacity-button-disabled {
@@ -919,6 +929,7 @@
   letter-spacing: var(--mu-r-button-compact-tracking);
 }
 @utility duration-button-compact-move {
+  --tw-duration: var(--mu-r-button-compact-move);
   transition-duration: var(--mu-r-button-compact-move);
 }
 @utility transition-button-compact {
@@ -1182,9 +1193,11 @@
   background: var(--mu-r-icon-button-mini-hover-background);
 }
 @utility duration-icon-button-tool-press-time {
+  --tw-duration: var(--mu-r-icon-button-tool-press-time);
   transition-duration: var(--mu-r-icon-button-tool-press-time);
 }
 @utility duration-icon-button-tool-shadow-time {
+  --tw-duration: var(--mu-r-icon-button-tool-shadow-time);
   transition-duration: var(--mu-r-icon-button-tool-shadow-time);
 }
 @utility transition-icon-button-tool {
@@ -1194,6 +1207,7 @@
   font: var(--mu-r-icon-button-mini-font);
 }
 @utility duration-icon-button-fade {
+  --tw-duration: var(--mu-r-icon-button-self-fade);
   transition-duration: var(--mu-r-icon-button-self-fade);
 }
 @utility transition-icon-button {
@@ -1292,6 +1306,7 @@
   letter-spacing: var(--mu-r-segmented-segment-tracking);
 }
 @utility duration-segmented-segment-fade {
+  --tw-duration: var(--mu-r-segmented-segment-fade);
   transition-duration: var(--mu-r-segmented-segment-fade);
 }
 @utility opacity-segmented-segment-disabled {
@@ -1365,6 +1380,7 @@
   font: var(--mu-r-toast-undo-font);
 }
 @utility duration-toast-undo-press {
+  --tw-duration: var(--mu-r-toast-undo-press);
   transition-duration: var(--mu-r-toast-undo-press);
 }
 @utility recipe-row-list-hover {
@@ -1392,6 +1408,7 @@
   opacity: var(--mu-r-row-self-maybe);
 }
 @utility duration-row-fade {
+  --tw-duration: var(--mu-r-row-self-fade);
   transition-duration: var(--mu-r-row-self-fade);
 }
 @utility transition-row {
@@ -1420,4 +1437,369 @@
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
+}
+
+/* The layout groups as theme values, and each spring's duration (duration-settle, …). */
+@theme inline {
+  --spacing-presence-ring-width: var(--mu-presence-ring-width);
+  --color-presence-ring: var(--mu-presence-ring);
+  --spacing-presence-collar-width: var(--mu-presence-collar-width);
+  --color-presence-collar: var(--mu-presence-collar);
+  --spacing-presence-lite-width: var(--mu-presence-lite-width);
+  --color-presence-lite: var(--mu-presence-lite);
+  --spacing-presence-band-outside: var(--mu-presence-band-outside);
+  --spacing-presence-band-inside: var(--mu-presence-band-inside);
+  --spacing-presence-edge-light-width: var(--mu-presence-edge-light-width);
+  --color-presence-edge-light: var(--mu-presence-edge-light);
+  --spacing-presence-hover-dot: var(--mu-presence-hover-dot);
+  --spacing-presence-handle: var(--mu-presence-handle);
+  --spacing-presence-capsule-length: var(--mu-presence-capsule-length);
+  --spacing-presence-capsule-thickness: var(--mu-presence-capsule-thickness);
+  --spacing-presence-handle-hit: var(--mu-presence-handle-hit);
+  --spacing-presence-readout-height: var(--mu-presence-readout-height);
+  --spacing-presence-readout-gap: var(--mu-presence-readout-gap);
+  --spacing-presence-readout-pad-start: var(--mu-presence-readout-pad-start);
+  --spacing-presence-readout-pad-end: var(--mu-presence-readout-pad-end);
+  --spacing-presence-readout-gap-inner: var(--mu-presence-readout-gap-inner);
+  --color-presence-readout-ink: var(--mu-presence-readout-ink);
+  --color-presence-readout-dim: var(--mu-presence-readout-dim);
+  --spacing-presence-readout-led: var(--mu-presence-readout-led);
+  --spacing-cue-gutter: var(--mu-cue-gutter);
+  --spacing-cue-dimple: var(--mu-cue-dimple);
+  --spacing-cue-dimple-top: var(--mu-cue-dimple-top);
+  --color-cue-tick: var(--mu-cue-tick);
+  --spacing-cue-tick-width: var(--mu-cue-tick-width);
+  --spacing-cue-doing-inset: var(--mu-cue-doing-inset);
+  --spacing-cue-doing-radius: var(--mu-cue-doing-radius);
+  --spacing-cue-ghost: var(--mu-cue-ghost);
+  --spacing-cue-ghost-radius: var(--mu-cue-ghost-radius);
+  --spacing-cue-ghost-reach: var(--mu-cue-ghost-reach);
+  --color-cue-ghost-hover: var(--mu-cue-ghost-hover);
+  --spacing-cue-urgency-led: var(--mu-cue-urgency-led);
+  --spacing-cue-urgency-left: var(--mu-cue-urgency-left);
+  --color-cue-date-underline: var(--mu-cue-date-underline);
+  --spacing-cue-date-thickness: var(--mu-cue-date-thickness);
+  --spacing-cue-underline-offset: var(--mu-cue-underline-offset);
+  --spacing-cue-quiet-thickness: var(--mu-cue-quiet-thickness);
+  --color-cue-measure-underline: var(--mu-cue-measure-underline);
+  --spacing-cue-measure-thickness: var(--mu-cue-measure-thickness);
+  --spacing-cue-measure-offset: var(--mu-cue-measure-offset);
+  --spacing-cue-tag-pad-y: var(--mu-cue-tag-pad-y);
+  --spacing-cue-tag-pad-x: var(--mu-cue-tag-pad-x);
+  --spacing-cue-hex-thickness: var(--mu-cue-hex-thickness);
+  --spacing-cue-hex-offset: var(--mu-cue-hex-offset);
+  --spacing-cue-swatch: var(--mu-cue-swatch);
+  --spacing-cue-swatch-radius: var(--mu-cue-swatch-radius);
+  --spacing-cue-url-height: var(--mu-cue-url-height);
+  --spacing-cue-url-pad-start: var(--mu-cue-url-pad-start);
+  --spacing-cue-url-pad-end: var(--mu-cue-url-pad-end);
+  --spacing-cue-url-gap: var(--mu-cue-url-gap);
+  --spacing-cue-url-glyph: var(--mu-cue-url-glyph);
+  --color-cue-url-bg: var(--mu-cue-url-bg);
+  --color-cue-url-bg-hover: var(--mu-cue-url-bg-hover);
+  --spacing-cue-inferred-height: var(--mu-cue-inferred-height);
+  --spacing-cue-inferred-pad: var(--mu-cue-inferred-pad);
+  --spacing-cue-inferred-gap: var(--mu-cue-inferred-gap);
+  --spacing-cue-chip-gap: var(--mu-cue-chip-gap);
+  --spacing-cue-chip-rise: var(--mu-cue-chip-rise);
+  --color-cue-chip-ink: var(--mu-cue-chip-ink);
+  --spacing-cue-chip-pad-y: var(--mu-cue-chip-pad-y);
+  --spacing-cue-chip-pad-x: var(--mu-cue-chip-pad-x);
+  --spacing-cue-life-gap-before: var(--mu-cue-life-gap-before);
+  --spacing-cue-life-gap-after: var(--mu-cue-life-gap-after);
+  --spacing-cue-life-drop: var(--mu-cue-life-drop);
+  --spacing-suggestion-height: var(--mu-suggestion-height);
+  --spacing-suggestion-pad-start: var(--mu-suggestion-pad-start);
+  --spacing-suggestion-pad-end: var(--mu-suggestion-pad-end);
+  --spacing-suggestion-gap: var(--mu-suggestion-gap);
+  --color-suggestion-ring: var(--mu-suggestion-ring);
+  --spacing-suggestion-enter-rise: var(--mu-suggestion-enter-rise);
+  --spacing-suggestion-button-width: var(--mu-suggestion-button-width);
+  --spacing-suggestion-button-height: var(--mu-suggestion-button-height);
+  --spacing-suggestion-offset-x: var(--mu-suggestion-offset-x);
+  --spacing-suggestion-offset-y: var(--mu-suggestion-offset-y);
+  --spacing-suggestion-conf-margin-start: var(--mu-suggestion-conf-margin-start);
+  --spacing-suggestion-conf-margin-end: var(--mu-suggestion-conf-margin-end);
+  --spacing-engraving-height: var(--mu-engraving-height);
+  --spacing-engraving-pad: var(--mu-engraving-pad);
+  --spacing-engraving-gap: var(--mu-engraving-gap);
+  --spacing-engraving-blur: var(--mu-engraving-blur);
+  --spacing-engraving-rise: var(--mu-engraving-rise);
+  --spacing-engraving-slide: var(--mu-engraving-slide);
+  --spacing-engraving-beside-gap: var(--mu-engraving-beside-gap);
+  --spacing-engraving-beside-top: var(--mu-engraving-beside-top);
+  --spacing-engraving-below-gap: var(--mu-engraving-below-gap);
+  --spacing-engraving-tag-height: var(--mu-engraving-tag-height);
+  --spacing-engraving-tag-pad: var(--mu-engraving-tag-pad);
+  --spacing-engraving-tag-gap: var(--mu-engraving-tag-gap);
+  --spacing-engraving-led: var(--mu-engraving-led);
+  --spacing-engraving-led-gap: var(--mu-engraving-led-gap);
+  --spacing-engraving-led-lift: var(--mu-engraving-led-lift);
+  --spacing-provenance-offset: var(--mu-provenance-offset);
+  --spacing-provenance-chip-offset: var(--mu-provenance-chip-offset);
+  --spacing-provenance-radius: var(--mu-provenance-radius);
+  --spacing-provenance-pad-y: var(--mu-provenance-pad-y);
+  --spacing-provenance-pad-x: var(--mu-provenance-pad-x);
+  --spacing-provenance-max-width: var(--mu-provenance-max-width);
+  --color-provenance-ink: var(--mu-provenance-ink);
+  --color-provenance-dim: var(--mu-provenance-dim);
+  --spacing-region-big-at: var(--mu-region-big-at);
+  --spacing-region-head-height: var(--mu-region-head-height);
+  --spacing-region-head-pad-top: var(--mu-region-head-pad-top);
+  --spacing-region-head-pad-x: var(--mu-region-head-pad-x);
+  --spacing-region-head-gap: var(--mu-region-head-gap);
+  --color-region-over-ring: var(--mu-region-over-ring);
+  --color-region-over-fill-top: var(--mu-region-over-fill-top);
+  --color-region-over-fill-bot: var(--mu-region-over-fill-bot);
+  --color-region-over-rule: var(--mu-region-over-rule);
+  --spacing-region-lens-blur: var(--mu-region-lens-blur);
+  --spacing-region-body-inset: var(--mu-region-body-inset);
+  --spacing-region-body-top: var(--mu-region-body-top);
+  --spacing-region-row-pad-y: var(--mu-region-row-pad-y);
+  --spacing-region-row-pad-x: var(--mu-region-row-pad-x);
+  --spacing-region-row-gap: var(--mu-region-row-gap);
+  --spacing-region-row-dimple: var(--mu-region-row-dimple);
+  --spacing-region-name-min: var(--mu-region-name-min);
+  --spacing-region-row-meta-top: var(--mu-region-row-meta-top);
+  --spacing-segmented-track-pad: var(--mu-segmented-track-pad);
+  --spacing-segmented-compact: var(--mu-segmented-compact);
+  --spacing-segmented-regular: var(--mu-segmented-regular);
+  --spacing-segmented-focus-width: var(--mu-segmented-focus-width);
+  --spacing-lensbar-height: var(--mu-lensbar-height);
+  --spacing-lensbar-pad-start: var(--mu-lensbar-pad-start);
+  --spacing-lensbar-pad-end: var(--mu-lensbar-pad-end);
+  --spacing-lensbar-gap: var(--mu-lensbar-gap);
+  --spacing-lensbar-query-max: var(--mu-lensbar-query-max);
+  --spacing-lensbar-glyph: var(--mu-lensbar-glyph);
+  --spacing-lensbar-icon-button: var(--mu-lensbar-icon-button);
+  --spacing-lensbar-enter-drop: var(--mu-lensbar-enter-drop);
+  --spacing-lensbar-note-led-gap: var(--mu-lensbar-note-led-gap);
+  --spacing-scrubber-width: var(--mu-scrubber-width);
+  --spacing-scrubber-height: var(--mu-scrubber-height);
+  --spacing-scrubber-track-top: var(--mu-scrubber-track-top);
+  --spacing-scrubber-track: var(--mu-scrubber-track);
+  --spacing-scrubber-inset: var(--mu-scrubber-inset);
+  --spacing-scrubber-mark-width: var(--mu-scrubber-mark-width);
+  --spacing-scrubber-mark-height: var(--mu-scrubber-mark-height);
+  --spacing-scrubber-days-top: var(--mu-scrubber-days-top);
+  --spacing-scrubber-day-tick: var(--mu-scrubber-day-tick);
+  --spacing-scrubber-knob: var(--mu-scrubber-knob);
+  --spacing-scrubber-knob-top: var(--mu-scrubber-knob-top);
+  --spacing-scrubber-readout-gap: var(--mu-scrubber-readout-gap);
+  --spacing-scrubber-readout-glyph: var(--mu-scrubber-readout-glyph);
+  --spacing-scrubber-glyph-gap: var(--mu-scrubber-glyph-gap);
+  --spacing-scrubber-glyph-drop: var(--mu-scrubber-glyph-drop);
+  --spacing-pastbanner-height: var(--mu-pastbanner-height);
+  --spacing-pastbanner-pad-start: var(--mu-pastbanner-pad-start);
+  --spacing-pastbanner-pad-end: var(--mu-pastbanner-pad-end);
+  --spacing-pastbanner-gap: var(--mu-pastbanner-gap);
+  --color-pastbanner-ink: var(--mu-pastbanner-ink);
+  --color-pastbanner-engrave: var(--mu-pastbanner-engrave);
+  --color-pastbanner-engrave-lip: var(--mu-pastbanner-engrave-lip);
+  --spacing-pastbanner-button-height: var(--mu-pastbanner-button-height);
+  --spacing-pastbanner-button-pad: var(--mu-pastbanner-button-pad);
+  --color-pastbanner-button-bg: var(--mu-pastbanner-button-bg);
+  --color-pastbanner-button-hover: var(--mu-pastbanner-button-hover);
+  --spacing-pastbanner-key-gap: var(--mu-pastbanner-key-gap);
+  --spacing-toolstrip-pad: var(--mu-toolstrip-pad);
+  --spacing-toolstrip-gap: var(--mu-toolstrip-gap);
+  --spacing-toolstrip-gap-above: var(--mu-toolstrip-gap-above);
+  --spacing-toolstrip-button-height: var(--mu-toolstrip-button-height);
+  --spacing-toolstrip-button-pad: var(--mu-toolstrip-button-pad);
+  --color-toolstrip-ink: var(--mu-toolstrip-ink);
+  --color-toolstrip-ink-hover: var(--mu-toolstrip-ink-hover);
+  --color-toolstrip-hover: var(--mu-toolstrip-hover);
+  --color-toolstrip-active: var(--mu-toolstrip-active);
+  --color-toolstrip-danger: var(--mu-toolstrip-danger);
+  --color-toolstrip-sep: var(--mu-toolstrip-sep);
+  --color-toolstrip-sep-lip: var(--mu-toolstrip-sep-lip);
+  --spacing-toolstrip-sep-height: var(--mu-toolstrip-sep-height);
+  --spacing-toolstrip-enter-rise: var(--mu-toolstrip-enter-rise);
+  --spacing-kbd-small: var(--mu-kbd-small);
+  --spacing-kbd-min-small: var(--mu-kbd-min-small);
+  --spacing-kbd-pad-small: var(--mu-kbd-pad-small);
+  --spacing-status-led: var(--mu-status-led);
+  --spacing-status-led-small: var(--mu-status-led-small);
+  --spacing-status-badge-pad-start: var(--mu-status-badge-pad-start);
+  --spacing-status-badge-pad-end: var(--mu-status-badge-pad-end);
+  --spacing-toast-pad-start: var(--mu-toast-pad-start);
+  --spacing-toast-pad-end: var(--mu-toast-pad-end);
+  --color-toast-bg: var(--mu-toast-bg);
+  --color-toast-sub: var(--mu-toast-sub);
+  --spacing-toast-undo-pad-start: var(--mu-toast-undo-pad-start);
+  --spacing-toast-undo-pad-end: var(--mu-toast-undo-pad-end);
+  --spacing-toast-enter-rise: var(--mu-toast-enter-rise);
+  --spacing-toolbar-tool: var(--mu-toolbar-tool);
+  --spacing-toolbar-glyph: var(--mu-toolbar-glyph);
+  --spacing-toolbar-led: var(--mu-toolbar-led);
+  --spacing-toolbar-search-min: var(--mu-toolbar-search-min);
+  --color-toolbar-graphite-ink: var(--mu-toolbar-graphite-ink);
+  --color-toolbar-graphite-hint: var(--mu-toolbar-graphite-hint);
+  --spacing-button-compact-size: var(--mu-button-compact-size);
+  --spacing-tooltip-gap: var(--mu-tooltip-gap);
+  --spacing-menu-offset: var(--mu-menu-offset);
+  --spacing-palette-width: var(--mu-palette-width);
+  --spacing-palette-pad: var(--mu-palette-pad);
+  --spacing-palette-field-height: var(--mu-palette-field-height);
+  --spacing-palette-field-radius: var(--mu-palette-field-radius);
+  --spacing-palette-field-pad-start: var(--mu-palette-field-pad-start);
+  --spacing-palette-field-pad-end: var(--mu-palette-field-pad-end);
+  --spacing-palette-field-gap: var(--mu-palette-field-gap);
+  --spacing-palette-field-glyph: var(--mu-palette-field-glyph);
+  --spacing-palette-sec-pad-top: var(--mu-palette-sec-pad-top);
+  --spacing-palette-sec-pad-bottom: var(--mu-palette-sec-pad-bottom);
+  --spacing-palette-row-height: var(--mu-palette-row-height);
+  --spacing-palette-row-pad: var(--mu-palette-row-pad);
+  --spacing-palette-row-gap: var(--mu-palette-row-gap);
+  --spacing-palette-row-glyph: var(--mu-palette-row-glyph);
+  --spacing-palette-bar-width: var(--mu-palette-bar-width);
+  --spacing-palette-bar-inset: var(--mu-palette-bar-inset);
+  --spacing-palette-bar-left: var(--mu-palette-bar-left);
+  --spacing-palette-mark-underline: var(--mu-palette-mark-underline);
+  --spacing-palette-mark-offset: var(--mu-palette-mark-offset);
+  --color-palette-mark-color: var(--mu-palette-mark-color);
+  --spacing-palette-foot-gap: var(--mu-palette-foot-gap);
+  --spacing-palette-foot-pad-top: var(--mu-palette-foot-pad-top);
+  --spacing-palette-foot-pad-bottom: var(--mu-palette-foot-pad-bottom);
+  --spacing-palette-enter-rise: var(--mu-palette-enter-rise);
+  --spacing-palette-list-pad-top: var(--mu-palette-list-pad-top);
+  --spacing-palette-list-pad-bottom: var(--mu-palette-list-pad-bottom);
+  --spacing-palette-hint-gap: var(--mu-palette-hint-gap);
+  --spacing-palette-bar-radius: var(--mu-palette-bar-radius);
+  --spacing-palette-empty-pad-y: var(--mu-palette-empty-pad-y);
+  --spacing-palette-foot-margin-top: var(--mu-palette-foot-margin-top);
+  --spacing-palette-foot-key-gap: var(--mu-palette-foot-key-gap);
+  --spacing-palette-edge: var(--mu-palette-edge);
+  --spacing-palette-bar-outset: var(--mu-palette-bar-outset);
+  --color-presence-dot: var(--mu-presence-dot);
+  --color-cue-quiet: var(--mu-cue-quiet);
+  --color-cue-tag-bg: var(--mu-cue-tag-bg);
+  --color-cue-url-ink: var(--mu-cue-url-ink);
+  --color-suggestion-bg: var(--mu-suggestion-bg);
+  --color-suggestion-button-hover: var(--mu-suggestion-button-hover);
+  --color-engraving-bg: var(--mu-engraving-bg);
+  --color-engraving-emphasis: var(--mu-engraving-emphasis);
+  --color-engraving-tag-ring: var(--mu-engraving-tag-ring);
+  --color-menu-bg: var(--mu-menu-bg);
+  --color-menu-row-hover: var(--mu-menu-row-hover);
+  --color-scrubber-mark: var(--mu-scrubber-mark);
+}
+@utility opacity-presence-readout-writing {
+  opacity: var(--mu-presence-readout-writing);
+}
+@utility duration-presence-copied-ms {
+  --tw-duration: var(--mu-presence-copied-ms);
+  transition-duration: var(--mu-presence-copied-ms);
+}
+@utility duration-cue-tick-ms {
+  --tw-duration: var(--mu-cue-tick-ms);
+  transition-duration: var(--mu-cue-tick-ms);
+}
+@utility duration-cue-tick-delay-ms {
+  --tw-duration: var(--mu-cue-tick-delay-ms);
+  transition-duration: var(--mu-cue-tick-delay-ms);
+}
+@utility opacity-cue-doing-opacity {
+  opacity: var(--mu-cue-doing-opacity);
+}
+@utility duration-cue-life-ms {
+  --tw-duration: var(--mu-cue-life-ms);
+  transition-duration: var(--mu-cue-life-ms);
+}
+@utility opacity-suggestion-rest-opacity {
+  opacity: var(--mu-suggestion-rest-opacity);
+}
+@utility opacity-suggestion-enter-scale {
+  opacity: var(--mu-suggestion-enter-scale);
+}
+@utility duration-engraving-dwell-ms {
+  --tw-duration: var(--mu-engraving-dwell-ms);
+  transition-duration: var(--mu-engraving-dwell-ms);
+}
+@utility duration-engraving-fade-ms {
+  --tw-duration: var(--mu-engraving-fade-ms);
+  transition-duration: var(--mu-engraving-fade-ms);
+}
+@utility duration-engraving-move-ms {
+  --tw-duration: var(--mu-engraving-move-ms);
+  transition-duration: var(--mu-engraving-move-ms);
+}
+@utility duration-provenance-delay-ms {
+  --tw-duration: var(--mu-provenance-delay-ms);
+  transition-duration: var(--mu-provenance-delay-ms);
+}
+@utility opacity-region-dim {
+  opacity: var(--mu-region-dim);
+}
+@utility opacity-lensbar-enter-scale {
+  opacity: var(--mu-lensbar-enter-scale);
+}
+@utility opacity-scrubber-fill-opacity {
+  opacity: var(--mu-scrubber-fill-opacity);
+}
+@utility opacity-scrubber-snap {
+  opacity: var(--mu-scrubber-snap);
+}
+@utility opacity-toast-enter-scale {
+  opacity: var(--mu-toast-enter-scale);
+}
+@utility duration-toast-undo-ms {
+  --tw-duration: var(--mu-toast-undo-ms);
+  transition-duration: var(--mu-toast-undo-ms);
+}
+@utility duration-toast-plain-ms {
+  --tw-duration: var(--mu-toast-plain-ms);
+  transition-duration: var(--mu-toast-plain-ms);
+}
+@utility duration-button-press-ms {
+  --tw-duration: var(--mu-button-press-ms);
+  transition-duration: var(--mu-button-press-ms);
+}
+@utility duration-button-fade-ms {
+  --tw-duration: var(--mu-button-fade-ms);
+  transition-duration: var(--mu-button-fade-ms);
+}
+@utility opacity-button-disabled {
+  opacity: var(--mu-button-disabled);
+}
+@utility duration-tooltip-delay-ms {
+  --tw-duration: var(--mu-tooltip-delay-ms);
+  transition-duration: var(--mu-tooltip-delay-ms);
+}
+@utility opacity-palette-top {
+  opacity: var(--mu-palette-top);
+}
+@utility opacity-palette-list-max {
+  opacity: var(--mu-palette-list-max);
+}
+@utility opacity-palette-enter-scale {
+  opacity: var(--mu-palette-enter-scale);
+}
+@utility duration-part {
+  --tw-duration: var(--mu-spring-part-d);
+  transition-duration: var(--mu-spring-part-d);
+}
+@utility duration-object {
+  --tw-duration: var(--mu-spring-object-d);
+  transition-duration: var(--mu-spring-object-d);
+}
+@utility duration-hinge {
+  --tw-duration: var(--mu-spring-hinge-d);
+  transition-duration: var(--mu-spring-hinge-d);
+}
+@utility duration-surface {
+  --tw-duration: var(--mu-spring-surface-d);
+  transition-duration: var(--mu-spring-surface-d);
+}
+@utility duration-settle {
+  --tw-duration: var(--mu-spring-settle-d);
+  transition-duration: var(--mu-spring-settle-d);
+}
+@utility duration-release {
+  --tw-duration: var(--mu-spring-release-d);
+  transition-duration: var(--mu-spring-release-d);
+}
+@utility duration-refusal {
+  --tw-duration: var(--mu-spring-refusal-d);
+  transition-duration: var(--mu-spring-refusal-d);
 }
