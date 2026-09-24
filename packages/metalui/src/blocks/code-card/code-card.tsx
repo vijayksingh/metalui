@@ -21,17 +21,29 @@ const KEYWORDS = /\b(func|let|var|if|else|return|for|in|while|const|function|imp
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 /** The reference tinting, on escaped text: strings, a trailing comment, keywords, types, numbers. */
+/* One pass over each escaped line: every token is tinted once, so no pattern can match inside the
+ * markup another inserted. Order is priority: a string or a comment wins over what is inside it. */
+const TOKEN = new RegExp(
+  [
+    '(&quot;.*?&quot;|&#39;.*?&#39;)', // 1 string
+    '(\\/\\/.*$|#(?![\\d]).*$)', // 2 comment
+    `${KEYWORDS.source}`, // 3 keyword
+    '\\b([A-Z][A-Za-z0-9]+)\\b', // 4 type
+    '(?<![\\w#&])(\\d+(?:\\.\\d+)?)\\b', // 5 number (not an entity's digits)
+  ].join('|'),
+  'g',
+);
+const CLASS = ['', 'mu-code-st', 'mu-code-cm', 'mu-code-kw', 'mu-code-ty', 'mu-code-nu'];
+
 export function tintCode(code: string, maxLines = 18) {
   return code
     .split('\n')
     .slice(0, maxLines)
     .map((l, i) => {
-      const h = esc(l)
-        .replace(/(&quot;.*?&quot;|&#39;.*?&#39;)/g, '<span class="mu-code-st">$1</span>')
-        .replace(/(\/\/.*$|#.*$)/, '<span class="mu-code-cm">$1</span>')
-        .replace(KEYWORDS, '<span class="mu-code-kw">$1</span>')
-        .replace(/\b([A-Z][A-Za-z0-9]+)\b/g, '<span class="mu-code-ty">$1</span>')
-        .replace(/(?<![\w#])(\d+(?:\.\d+)?)\b/g, '<span class="mu-code-nu">$1</span>');
+      const h = esc(l).replace(TOKEN, (m, ...groups) => {
+        const k = groups.slice(0, 5).findIndex((g) => g !== undefined) + 1;
+        return k ? `<span class="${CLASS[k]}">${m}</span>` : m;
+      });
       return `<span class="mu-code-ln">${i + 1}</span>${h}`;
     })
     .join('\n');
