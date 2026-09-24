@@ -171,9 +171,27 @@ public struct MetalObjectRecipe: Equatable, Sendable {
         return parts.dropFirst().first.flatMap { Double($0.split(separator: "p").first ?? "") } ?? 13
     }
 
+    /// The line height in a CSS font shorthand, in points.
+    public func lineHeight(_ key: String) -> Double {
+        let font = text(key) ?? ""
+        guard let spec = font.split(separator: " ").dropFirst().first,
+              let raw = spec.split(separator: "/").dropFirst().first else { return fontSize(key) }
+        if raw.hasSuffix("px") { return Double(raw.dropLast(2)) ?? fontSize(key) }
+        return (Double(raw) ?? 1) * fontSize(key)
+    }
+
+    /// Numeric arguments of generated CSS filter props such as `blur(8px) saturate(1.4)`.
+    public func filterNumber(_ key: String, function: String) -> Double? {
+        guard let value = text(key), let start = value.range(of: function + "("),
+              let end = value[start.upperBound...].firstIndex(of: ")") else { return nil }
+        let argument = value[start.upperBound..<end].replacingOccurrences(of: "px", with: "")
+        return Double(argument)
+    }
+
     /// An em letter-spacing prop ("0.04em") in points at `size`.
     public func tracking(_ key: String, size: Double) -> Double {
         let s = text(key) ?? "0"
+        if s.hasSuffix("px") { return Double(s.dropLast(2)) ?? 0 }
         return (Double(s.replacingOccurrences(of: "em", with: "")) ?? 0) * size
     }
 
