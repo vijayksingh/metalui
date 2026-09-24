@@ -2,16 +2,18 @@
   "name": "selection-frame",
   "title": "Selection frame",
   "status": "alpha",
-  "description": "KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
-  "sheet": "KAMUI-14",
+  "description": "The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
   "base": "none (an object; the host carries aria-selected)",
   "react": {
     "export": "SelectionFrame",
-    "files": ["selection-frame.tsx", "selection-frame.css"]
+    "files": [
+      "selection-frame.tsx"
+    ]
   },
   "swift": {
     "symbol": "MetalSelectionFrame",
     "file": "swift/Sources/MetalUI/Components/MetalSelectionFrame.swift"
   },
-  "agent": "selection-frame.agent.md"
+  "agent": "selection-frame.agent.md",
+  "layer": "component"
 }

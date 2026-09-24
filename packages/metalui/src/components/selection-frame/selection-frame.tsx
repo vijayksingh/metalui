@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { SizeReadout } from '../size-readout/size-readout';
-import './selection-frame.css';
 
 /* ─────────────────────────────────────────────────────────
- * SELECTION FRAME · KAMUI-14 (the demo's renderSelection, as one object)
+ * SELECTION FRAME (the reference's renderSelection, as one object)
  *
  * rest      nothing: a borderless object has no edge at rest
  * hover     faint corner dots where the handles will be (settle fade);
@@ -57,6 +56,36 @@ export interface SelectionFrameProps extends Omit<React.HTMLAttributes<HTMLDivEl
   onHandlePointerDown?: (handle: SelectionHandle, event: React.PointerEvent<HTMLSpanElement>) => void;
 }
 
+/* Every value is the presence group. The frame fills its host (the host is position: relative) and
+ * every part is placed from the host's box, so the ring tracks the object in the same frame; the parts
+ * read the frame's state, variant and mode through the sf group. */
+const FRAME = 'mu-selection-frame group/sf absolute inset-0 pointer-events-none presence-frame';
+/* 1.25 green at offset 6 and a flat 3.5 collar outside it, never a blur; lite is one quiet ring. It
+ * enters once, from 1.02 on the part spring; resizing never replays it. */
+const RING = 'mu-sf-ring absolute presence-ring opacity-0 group-data-[state=selected]/sf:opacity-100 group-data-[variant=lite]/sf:presence-ring-lite group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-in';
+/* Hover: only the faint corner dots, where the handles will be. */
+const DOT = 'mu-sf-dot absolute size-presence-hover-dot -translate-1/2 rounded-round bg-presence-dot opacity-0 transition-opacity duration-settle ease-settle group-data-[state=hover]/sf:opacity-100';
+/* The edge light: the pointer entered the band on one edge. */
+const EDGE = 'mu-sf-edge absolute opacity-0 transition-opacity duration-settle ease-settle data-on:opacity-100';
+const EDGE_AT = { n: 'presence-edge-n', e: 'presence-edge-e', s: 'presence-edge-s', w: 'presence-edge-w' };
+/* Handles on the ring line: round caps at the corners, capsules at the edge midpoints, each with a hit
+ * area 7 wider; on text the n and s capsules are grips. */
+const HANDLE = 'mu-sf-handle absolute -translate-1/2 rounded-pill pointer-events-auto touch-none after:absolute after:-inset-presence-handle-hit after:rounded-pill group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-fade';
+const SHAPE = {
+  nw: 'size-presence-handle', ne: 'size-presence-handle', se: 'size-presence-handle', sw: 'size-presence-handle',
+  e: 'w-presence-capsule-thickness h-presence-capsule-length', w: 'w-presence-capsule-thickness h-presence-capsule-length',
+  n: 'w-presence-capsule-length h-presence-capsule-thickness', s: 'w-presence-capsule-length h-presence-capsule-thickness',
+};
+const RESIZE = {
+  nw: 'presence-handle cursor-nwse-resize', se: 'presence-handle cursor-nwse-resize',
+  ne: 'presence-handle cursor-nesw-resize', sw: 'presence-handle cursor-nesw-resize',
+  e: 'presence-handle cursor-ew-resize', w: 'presence-handle cursor-ew-resize',
+  n: 'presence-handle cursor-ns-resize', s: 'presence-handle cursor-ns-resize',
+};
+const GRIP = 'presence-grip cursor-grab';
+/* The readout sits 16 under the object, centred; .78 while writing, 1 while moving. */
+const READOUT = 'absolute presence-readout-at group-data-[mode=writing]/sf:opacity-presence-readout-writing group-data-[mode=moving]/sf:opacity-100';
+
 const HANDLES: SelectionHandle[] = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
 // Handle centres on the ring line, as fractions of the host box plus the offset outward.
 const AT: Record<SelectionHandle, [number, number, number, number]> = {
@@ -92,7 +121,7 @@ function useHostSize(ref: React.RefObject<HTMLDivElement | null>, enabled: boole
 }
 
 /**
- * KAMUI-14: the one selection for every kind of object. Place it as the last child of the object
+ * The one selection for every kind of object. Place it as the last child of the object
  * (position: relative). For a borderless object the ring and its handles are the boundary.
  */
 export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFrameProps>(function SelectionFrame(
@@ -127,16 +156,16 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
       data-variant={variant}
       data-mode={mode}
       data-entrance={entrance ? '' : undefined}
-      className={className ? `mu-selection-frame ${className}` : 'mu-selection-frame'}
+      className={className ? `${FRAME} ${className}` : FRAME}
       style={{ '--mu-sf-radius': `${radius}px`, ...style } as React.CSSProperties}
       {...props}
     >
-      <span className="mu-sf-ring" />
+      <span className={RING} />
       {state === 'hover' || state === 'rest'
-        ? (['nw', 'ne', 'se', 'sw'] as SelectionHandle[]).map((c) => <span key={c} className="mu-sf-dot" style={place(c)} />)
+        ? (['nw', 'ne', 'se', 'sw'] as SelectionHandle[]).map((c) => <span key={c} className={DOT} style={place(c)} />)
         : null}
       {(['n', 'e', 's', 'w'] as SelectionEdge[]).map((e) => (
-        <span key={e} className="mu-sf-edge" data-edge={e} data-on={edge === e && state !== 'selected' ? '' : undefined} />
+        <span key={e} className={`${EDGE} ${EDGE_AT[e]}`} data-edge={e} data-on={edge === e && state !== 'selected' ? '' : undefined} />
       ))}
       {showHandles &&
         HANDLES.map((k) => {
@@ -144,7 +173,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
           return (
             <span
               key={k}
-              className="mu-sf-handle"
+              className={`${HANDLE} ${SHAPE[k]} ${grip ? GRIP : RESIZE[k]}`}
               data-handle={k}
               data-grip={grip ? '' : undefined}
               title={grip ? 'Drag to move' : handles === 'text' ? 'Drag to set the width · double-click to fit the text' : undefined}
@@ -153,7 +182,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
             />
           );
         })}
-      {selected && readout && box && <SizeReadout width={box.width} height={box.height} count={count} copied={copiedShown} />}
+      {selected && readout && box && <SizeReadout className={READOUT} width={box.width} height={box.height} count={count} copied={copiedShown} />}
     </div>
   );
 });

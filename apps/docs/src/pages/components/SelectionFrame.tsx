@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { SelectionFrame, SlidingIndicator, type SelectionEdge, type SelectionHandle } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/selection-frame/selection-frame.tsx?raw';
-import cssSource from '../../../../../packages/metalui/src/components/selection-frame/selection-frame.css?raw';
+import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/selection-frame/selection-frame.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSelectionFrame.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
@@ -23,7 +23,7 @@ function edgeAt(e: React.PointerEvent<HTMLElement>, band: number): SelectionEdge
   return v <= band ? k : null;
 }
 
-/* A text block as the medium draws it: words only at rest, the frosted plate on hover and while writing.
+/* A text block as the canvas draws it: words only at rest, the frosted plate on hover and while writing.
  * Click selects; a second click writes; ⎋ finishes and selects quietly; e/w and corner dots set the width. */
 function TextBlock({ radius, handles, entrance }: { radius: number; handles: 'object' | 'text' | 'none'; entrance: boolean }) {
   const [sel, setSel] = React.useState<'none' | 'click' | 'quiet'>('none');
@@ -126,10 +126,10 @@ export default function SelectionFramePage() {
     <>
       <PageHeader
         title="Selection frame"
-        lede="KAMUI-14: the one selection for every kind of object. A 1.25 green ring with a flat collar sits six points outside the object, eight handles sit on the ring, and a graphite readout under it reads the object's measured frame. At rest a borderless object shows nothing; on hover, only faint corner dots and the edge light where the pointer enters its band."
+        lede="the object sheet: the one selection for every kind of object. A 1.25 green ring with a flat collar sits six points outside the object, eight handles sit on the ring, and a graphite readout under it reads the object's measured frame. At rest a borderless object shows nothing; on hover, only faint corner dots and the edge light where the pointer enters its band."
       />
 
-      <Section title="Playground" lede="A text block as the medium draws it. The ring, handles and readout re-measure in the same frame as each keystroke and never replay their entrance. Dials: the block's radius, its handles, and the entrance.">
+      <Section title="Playground" lede="A text block as the canvas draws it. The ring, handles and readout re-measure in the same frame as each keystroke and never replay their entrance. Dials: the block's radius, its handles, and the entrance.">
         <Bench caption={`radius ${d.block.radius} · ring ${d.block.radius + 6} · handles ${d.block.handles}`} className="min-h-[260px]">
           <TextBlock radius={d.block.radius} handles={d.block.handles as 'text'} entrance={d.block.entrance} />
         </Bench>
@@ -200,11 +200,11 @@ export default function SelectionFramePage() {
       <Section title="Rules">
         <Rules
           rules={[
-            { id: 'S1', title: 'One selection for every kind', body: 'Text, image, card, region, file: the same ring at the same offset. For a borderless object the ring and dots are the boundary.', origin: 'Kamui 03 §7, DS-29' },
-            { id: 'S2', title: 'The readout reads the measured frame', body: 'Fractional layout size, rounded for display, re-read in the same frame as the layout. Never a constant.', origin: 'Kamui demo polish log' },
+            { id: 'S1', title: 'One selection for every kind', body: 'Text, image, card, region, file: the same ring at the same offset. For a borderless object the ring and dots are the boundary.', origin: 'reference brief' },
+            { id: 'S2', title: 'The readout reads the measured frame', body: 'Fractional layout size, rounded for display, re-read in the same frame as the layout. Never a constant.', origin: 'reference design' },
             { id: 'S3', title: 'Finishing is quiet', body: 'A selection made by ⎋ or ⌘↩ is a lite ring and its readout; it never raises the tool strip over the neighbours.', origin: 'DS-31' },
-            { id: 'S4', title: 'The ring enters once', body: 'From 1.02 on the part spring when it becomes selected; typing, resizing and moving never replay it.', origin: 'Kamui demo' },
-            { id: 'S5', title: 'Hover never changes layout', body: 'Only the corner dots and the edge light: overlays, not borders.', origin: 'Kamui 03 §2' },
+            { id: 'S4', title: 'The ring enters once', body: 'From 1.02 on the part spring when it becomes selected; typing, resizing and moving never replay it.', origin: 'reference design' },
+            { id: 'S5', title: 'Hover never changes layout', body: 'Only the corner dots and the edge light: overlays, not borders.', origin: 'reference brief' },
           ]}
         />
       </Section>

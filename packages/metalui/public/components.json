@@ -397,7 +397,7 @@
       "name": "selection-frame",
       "title": "Selection frame",
       "status": "alpha",
-      "description": "KAMUI-14, the one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
+      "description": "The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "SelectionFrame",
@@ -408,8 +408,7 @@
         "symbol": "MetalSelectionFrame"
       },
       "registry": "https://metalui.dev/r/selection-frame.json",
-      "agent": "https://metalui.dev/r/selection-frame.md",
-      "sheet": "KAMUI-14"
+      "agent": "https://metalui.dev/r/selection-frame.md"
     },
     {
       "name": "size-readout",

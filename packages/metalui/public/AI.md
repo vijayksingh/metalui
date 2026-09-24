@@ -1005,7 +1005,7 @@ First paint and resizes place the thumb without motion. Reduce Motion: the thumb
 
 # Selection frame
 
-KAMUI-14: the one selection for every kind of object. React: `SelectionFrame` from `@unlocalhosted/metalui`. SwiftUI: `.metalSelectionFrame(_:)` on the object, or `MetalSelectionFrame(size:)` for an overlay drawn apart from it. Sheet reference: KAMUI-14. There is no Base UI part: it is an object, and the host carries the selection semantics.
+the object sheet: the one selection for every kind of object. React: `SelectionFrame` from `@unlocalhosted/metalui`. SwiftUI: `.metalSelectionFrame(_:)` on the object, or `MetalSelectionFrame(size:)` for an overlay drawn apart from it. Sheet reference: the object sheet. There is no Base UI part: it is an object, and the host carries the selection semantics.
 
 ## Use it for
 

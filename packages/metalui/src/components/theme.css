@@ -1926,6 +1926,36 @@
 @utility opacity-palette-enter-scale {
   opacity: var(--mu-palette-enter-scale);
 }
+@utility presence-frame {
+  --o: var(--mu-select-offset); border-radius: inherit;
+}
+@utility presence-ring {
+  inset: calc(var(--o) * -1); border-radius: calc(var(--mu-sf-radius, var(--mu-zero)) + var(--o)); box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-ring-width) var(--mu-presence-ring), var(--mu-zero) var(--mu-zero) var(--mu-zero) calc(var(--mu-presence-ring-width) + var(--mu-presence-collar-width)) var(--mu-presence-collar);
+}
+@utility presence-ring-lite {
+  box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-lite-width) var(--mu-presence-lite); @media (prefers-contrast: more) { box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-presence-ring-width) var(--mu-presence-ring); }
+}
+@utility presence-readout-at {
+  left: 50%; top: calc(100% + var(--mu-presence-readout-gap)); transform: translateX(-50%);
+}
+@utility presence-handle {
+  background: var(--mu-presence-handle-bg); box-shadow: var(--mu-presence-handle-sh);
+}
+@utility presence-grip {
+  background: var(--mu-presence-grip-bg); box-shadow: var(--mu-presence-grip-sh);
+}
+@utility presence-edge-n {
+  left: 0; right: 0; height: var(--mu-presence-edge-light-width); top: calc(var(--mu-presence-edge-light-width) / -2); background: linear-gradient(90deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
+@utility presence-edge-s {
+  left: 0; right: 0; height: var(--mu-presence-edge-light-width); bottom: calc(var(--mu-presence-edge-light-width) / -2); background: linear-gradient(90deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
+@utility presence-edge-e {
+  top: 0; bottom: 0; width: var(--mu-presence-edge-light-width); right: calc(var(--mu-presence-edge-light-width) / -2); background: linear-gradient(180deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
+@utility presence-edge-w {
+  top: 0; bottom: 0; width: var(--mu-presence-edge-light-width); left: calc(var(--mu-presence-edge-light-width) / -2); background: linear-gradient(180deg, transparent, var(--mu-presence-edge-light) 22%, var(--mu-presence-edge-light) 78%, transparent);
+}
 @utility region-motion {
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
@@ -1982,4 +2012,16 @@
 }
 @utility animate-filterbar-in {
   animation: mu-filterbar-in var(--mu-spring-surface-d) var(--mu-spring-surface) both;
+}
+@keyframes mu-sf-in {
+  from { opacity: 0; transform: scale(var(--mu-presence-enter-scale)); }
+}
+@utility animate-sf-in {
+  animation: mu-sf-in var(--mu-spring-part-d) var(--mu-spring-part) both;
+}
+@keyframes mu-sf-fade {
+  from { opacity: 0; }
+}
+@utility animate-sf-fade {
+  animation: mu-sf-fade var(--mu-spring-part-d) var(--mu-spring-part) both;
 }
