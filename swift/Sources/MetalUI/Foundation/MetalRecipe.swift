@@ -93,13 +93,26 @@ struct MetalOuterShadows<S: Shape>: View {
     private var stack: some View {
         ZStack {
             ForEach(Array(layers.enumerated().reversed()), id: \.offset) { _, layer in
-                shape
+                // The spread grows or shrinks the path, never the layout: a large negative spread on a
+                // small object (raise's −36 on a 36 pt bar) must collapse the shadow, not grow the view.
+                MetalSpreadShape(base: shape, spread: layer.spread)
                     .fill(layer.color.color)
-                    .padding(-layer.spread)
                     .offset(x: layer.x, y: layer.y)
                     .blur(radius: layer.blur / 2)
             }
         }
+    }
+}
+
+/// `base` grown (or shrunk) by `spread` on every side; empty when it shrinks past nothing, as CSS does.
+struct MetalSpreadShape<Base: Shape>: Shape {
+    let base: Base
+    let spread: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        let r = rect.insetBy(dx: -spread, dy: -spread)
+        guard r.width > 0, r.height > 0 else { return Path() }
+        return base.path(in: r)
     }
 }
 
