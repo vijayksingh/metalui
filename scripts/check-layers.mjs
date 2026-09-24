@@ -15,9 +15,16 @@ const errors = [];
 const imports = (file) => [...readFileSync(file, 'utf8').matchAll(/(?:import|export)\s[^'"]*?from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g)].map((m) => m[1] ?? m[2]);
 const filesOf = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => /\.(tsx?|css)$/.test(f)).map((f) => join(dir, f)) : []);
 
+const blockNames = new Set(blocks().map((b) => b.name));
 for (const meta of primitives()) {
   for (const file of filesOf(join(src, meta.dir))) {
-    for (const spec of imports(file)) if (/(^|\/)blocks\//.test(spec)) errors.push(`${meta.dir}: a component imports a block (${spec})`);
+    for (const spec of imports(file)) {
+      if (/(^|\/)blocks\//.test(spec)) errors.push(`${meta.dir}: a component imports a block (${spec})`);
+      // a sibling path: another component, which must exist (a block that moved leaves a dangling path)
+      const sib = spec.match(/^\.\.\/([\w-]+)\//);
+      if (sib && blockNames.has(sib[1])) errors.push(`${meta.dir}: a component imports a block by its old path (${spec})`);
+      else if (sib && !existsSync(join(src, 'components', sib[1]))) errors.push(`${meta.dir}: imports a component that does not exist (${spec})`);
+    }
   }
   if (meta.layer !== 'component') errors.push(`${meta.dir}: meta.json layer must be "component"`);
 }
