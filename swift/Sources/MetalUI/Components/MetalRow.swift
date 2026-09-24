@@ -153,7 +153,7 @@ public struct MetalRegionResultRow: View {
                         .font(.metal(MetalType.ui))
                         .foregroundColor((checked ? t.ink3 : t.ink).color)
                         .strikethrough(checked)
-                        .lineLimit(1)
+                        .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: .zero)
                     if let meta {
                         Text(meta.uppercased())
