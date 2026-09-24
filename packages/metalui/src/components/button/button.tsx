@@ -9,16 +9,16 @@ import './button.css';
  * `primary` is the dark cap, and `destructive` is the one red cap. Use at
  * most one primary or destructive cap per group.
  */
-export type ButtonCap = 'standard' | 'primary' | 'destructive';
+export type ButtonCap = 'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger';
 
 export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
-  /** default: 32 tall. compact: 28, 12 pt, raise-sm (the medium's pills: "seed a sample day", "lenses ⌘K"). */
+  /** default: 32 tall. compact: 26, 12 pt, raise-sm (the canvas pills: "seed a sample day", "lenses ⌘K"). The link, graphite and strip caps set their own size. */
   size?: 'default' | 'compact';
 }
 
 /**
- * A press-in pill button (KAMUI-15). While held it sinks 1px and its shadow
+ * A press-in pill button. While held it sinks 1px and its shadow
  * collapses into a well; on release it springs back. MetalUI icons inside it
  * play their hover pose and press one-shot from the whole button.
  */

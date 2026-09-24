@@ -85,3 +85,43 @@
 .mu-button[data-size="compact"]:hover { color: var(--mu-ink); }
 .mu-button[data-size="compact"]:active:not([data-disabled]) { background: var(--mu-r-button-compact-background); box-shadow: var(--mu-r-button-compact-pressed-shadow); }
 .mu-button[data-size="compact"] > svg { width: var(--mu-r-button-compact-glyph); height: var(--mu-r-button-compact-glyph); }
+
+/* Caps that set their own size (size is ignored).
+ *   link          a mono word in green, no cap (READ ALL)
+ *   graphite      a quiet light cap on graphite chrome (a banner's action)
+ *   strip         a flat cap in a graphite tool strip; lights on hover, sinks on press
+ *   strip-danger  the same in red */
+.mu-button:is([data-cap="link"], [data-cap="graphite"], [data-cap="strip"], [data-cap="strip-danger"]) { box-shadow: none; }
+.mu-button[data-cap="link"] {
+  height: auto;
+  padding: var(--mu-zero);
+  border-radius: var(--mu-zero);
+  font: var(--mu-r-button-link-font);
+  letter-spacing: var(--mu-r-button-link-tracking);
+  color: var(--mu-r-button-link-ink);
+  background: transparent;
+}
+.mu-button[data-cap="link"]:active:not([data-disabled]) { transform: none; background: transparent; box-shadow: none; }
+.mu-button[data-cap="graphite"] {
+  height: var(--mu-r-button-graphite-height);
+  padding: var(--mu-zero) var(--mu-r-button-graphite-pad);
+  font: var(--mu-r-button-graphite-font);
+  letter-spacing: var(--mu-r-button-graphite-tracking);
+  color: var(--mu-r-button-graphite-ink);
+  background: var(--mu-r-button-graphite-background);
+}
+.mu-button[data-cap="graphite"]:active:not([data-disabled]) { background: var(--mu-r-button-graphite-background); box-shadow: none; }
+.mu-button:is([data-cap="strip"], [data-cap="strip-danger"]) {
+  height: var(--mu-r-button-strip-height);
+  padding: var(--mu-zero) var(--mu-r-button-strip-pad);
+  border-radius: var(--mu-r-button-strip-radius);
+  font: var(--mu-r-button-strip-font);
+  letter-spacing: var(--mu-r-button-strip-tracking);
+  color: var(--mu-r-button-strip-ink);
+  background: transparent;
+}
+.mu-button[data-cap="strip"]:hover { color: var(--mu-r-button-strip-ink-hover); }
+.mu-button:is([data-cap="strip"], [data-cap="strip-danger"]):hover { background: var(--mu-r-button-strip-hover-background); }
+.mu-button:is([data-cap="strip"], [data-cap="strip-danger"]):active:not([data-disabled]) { background: var(--mu-r-button-strip-pressed-background); box-shadow: none; }
+.mu-button[data-cap="strip-danger"] { color: var(--mu-r-button-strip-danger-ink); }
+.mu-button:is([data-cap="strip"], [data-cap="strip-danger"]):focus-visible { outline: var(--mu-zero); box-shadow: var(--mu-zero) var(--mu-zero) var(--mu-zero) var(--mu-r-button-strip-focus-width) var(--mu-green-deep); }

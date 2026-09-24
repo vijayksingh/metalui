@@ -32,7 +32,7 @@ SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import Me
 
 # Button
 
-A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on Base UI `Button`. SwiftUI: `MetalButton`, or `.buttonStyle(MetalButtonStyle(cap:))`. Sheet reference: KAMUI-15.
+A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on Base UI `Button`. SwiftUI: `MetalButton`, or `.buttonStyle(MetalButtonStyle(cap:))`.
 
 ## Use it for
 
@@ -49,15 +49,21 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
 - The **label** is text, optionally with a leading MetalUI icon at 16px and a 6px gap.
-- **Compact** (`size="compact"`): 28 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The medium's pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
+- **Compact** (`size="compact"`): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
+
+## Caps that set their own size
+
+- `link`: a mono word in green, 9 pt, tracked 0.1em, no cap and no press (READ ALL beside a readout).
+- `graphite`: a 24 tall quiet light cap on graphite chrome (a banner's Back to now).
+- `strip` / `strip-danger`: a 28 tall flat cap (radius 11) in a graphite tool strip; lights on hover, sinks into a dark well on press; focus is a 1.5 green ring. `strip-danger` is red.
 
 ## API
 
 | React prop | SwiftUI | Values | Default |
 |---|---|---|---|
-| `cap` | `cap:` | `standard`, `primary`, `destructive` | `standard` |
-| `size` | `size:` | `default` (32), `compact` (28) | `default` |
+| `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
+| `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |

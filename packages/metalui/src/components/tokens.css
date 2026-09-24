@@ -959,7 +959,13 @@
   --mu-r-status-badge-gap: 7px;
   --mu-r-status-badge-font: 500 9.5px/1 var(--mu-mono);
   --mu-r-status-badge-tracking: 0.1em;
-  /* button: reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn */
+  /* button: reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger */
+  --mu-r-button-graphite-background:
+    /* mu-recipe:button:36 */ rgba(255,255,255,.09);
+  --mu-r-button-strip-hover-background:
+    /* mu-recipe:button:37 */ rgba(255,255,255,.08);
+  --mu-r-button-strip-pressed-background:
+    /* mu-recipe:button:38 */ rgba(0,0,0,.35);
   --mu-r-button-self-height: 32px;
   --mu-r-button-self-pad: 15px;
   --mu-r-button-self-gap: 6px;
@@ -977,6 +983,23 @@
   --mu-r-button-compact-font: 500 12px/1 var(--mu-sans);
   --mu-r-button-compact-tracking: 0;
   --mu-r-button-compact-move: 90ms;
+  --mu-r-button-link-font: 500 9px/1 var(--mu-mono);
+  --mu-r-button-link-tracking: 0.1em;
+  --mu-r-button-link-ink: #3FB97A;
+  --mu-r-button-graphite-height: 24px;
+  --mu-r-button-graphite-pad: 10px;
+  --mu-r-button-graphite-font: 500 12px/1 var(--mu-sans);
+  --mu-r-button-graphite-tracking: 0;
+  --mu-r-button-graphite-ink: #EDEDEF;
+  --mu-r-button-strip-height: 28px;
+  --mu-r-button-strip-pad: 10px;
+  --mu-r-button-strip-radius: 11px;
+  --mu-r-button-strip-font: 500 12px/1 var(--mu-sans);
+  --mu-r-button-strip-tracking: 0;
+  --mu-r-button-strip-ink: #D6D6D8;
+  --mu-r-button-strip-ink-hover: #FFFFFF;
+  --mu-r-button-strip-focus-width: 1.5px;
+  --mu-r-button-strip-danger-ink: #FF8A7E;
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */
   --mu-r-kbd-strip-background:
     /* mu-recipe:kbd:12 */ linear-gradient(#303033, #262628);

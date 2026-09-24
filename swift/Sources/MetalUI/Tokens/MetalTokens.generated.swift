@@ -850,7 +850,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (26 tall). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn)
+    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (26 tall). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger)
     public static let button = MetalObjectRecipe(
         name: "button",
         layers: [
@@ -890,6 +890,9 @@ public enum MetalRecipes {
             .init(part: "compact", state: "pressed", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.08)))), // mu-recipe:button:33 inset 0 0 0 .5px rgba(0,0,0,.08)
             .init(part: "compact", state: "pressed", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 2.5, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:34 inset 0 1px 2.5px rgba(0,0,0,.6)
             .init(part: "compact", state: "pressed", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:button:35 inset 0 0 0 .5px rgba(0,0,0,.5)
+            .init(part: "graphite", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:button:36 rgba(255,255,255,.09)
+            .init(part: "strip", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:button:37 rgba(255,255,255,.08)
+            .init(part: "strip", state: "pressed", colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:button:38 rgba(0,0,0,.35)
         ],
         props: [
             "self.height": .number(32.0),
@@ -909,6 +912,23 @@ public enum MetalRecipes {
             "compact.font": .text("500 12px/1 sans"),
             "compact.tracking": .text("0"),
             "compact.move": .text("90ms"),
+            "link.font": .text("500 9px/1 mono"),
+            "link.tracking": .text("0.1em"),
+            "link.ink": .text("#3FB97A"),
+            "graphite.height": .number(24.0),
+            "graphite.pad": .number(10.0),
+            "graphite.font": .text("500 12px/1 sans"),
+            "graphite.tracking": .text("0"),
+            "graphite.ink": .text("#EDEDEF"),
+            "strip.height": .number(28.0),
+            "strip.pad": .number(10.0),
+            "strip.radius": .number(11.0),
+            "strip.font": .text("500 12px/1 sans"),
+            "strip.tracking": .text("0"),
+            "strip.ink": .text("#D6D6D8"),
+            "strip.ink-hover": .text("#FFFFFF"),
+            "strip.focus-width": .number(1.5),
+            "strip-danger.ink": .text("#FF8A7E"),
         ]
     )
 
