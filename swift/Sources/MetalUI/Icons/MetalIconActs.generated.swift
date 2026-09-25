@@ -1398,6 +1398,95 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.9 4.8L13.1 4.8M19.2 10.9L19.2 13.1M13.1 19.2L10.9 19.2M4.8 13.1L4.8 10.9", parts: [5], stroke: 0.6, fill: .none, opacity: 1.0),
             ]
         ),
+        .share: MetalIconAct(
+            duration: 0.9,
+            caption: "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",
+            parts: [
+            MetalIconActPart(
+                name: "arrow", origin: CGPoint(x: 12.0, y: 14.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1778, x: 0.0, y: 1.3, r: 0.0, sx: 1.0, sy: 0.86, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2778, x: 0.0, y: -1.6, r: 0.0, sx: 1.0, sy: 1.07, ease: .linear),
+                    .init(0.4, x: 0.0, y: -2.8, r: 0.0, sx: 1.0, sy: 1.04, ease: .linear),
+                    .init(0.4111, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7111, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7222, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [
+                    .init(0.0, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1778, 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2778, 1.0, ease: .linear),
+                    .init(0.4, 0.0, ease: .linear),
+                    .init(0.4111, 0.0, ease: .linear),
+                    .init(0.7111, 0.0, ease: .linear),
+                    .init(0.7222, 1.0, ease: .linear),
+                    .init(1.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "next", origin: CGPoint(x: 12.0, y: 14.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 4.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.3, x: 0.0, y: 4.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4333, x: 0.0, y: 1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5556, x: 0.0, y: -0.6, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6556, x: 0.0, y: 0.15, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.7222, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7389, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 4.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.3, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4333, 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5556, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6556, 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.7222, 1.0, ease: .linear),
+                    .init(0.7389, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "tray", origin: CGPoint(x: 12.0, y: 20.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1778, x: 0.0, y: 0.0, r: 0.0, sx: 1.03, sy: 0.95, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2333, x: 0.0, y: 0.0, r: 0.0, sx: 1.03, sy: 0.95, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "puff", origin: CGPoint(x: 12.0, y: 9.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .linear),
+                    .init(0.2444, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5333, x: 0.0, y: 0.0, r: 0.0, sx: 1.5, sy: 1.5, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2444, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3, 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5333, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M8.4 9.6L7.4 9.6C6.0745 9.6 5 10.6745 5 12L5 17.6C5 18.9255 6.0745 20 7.4 20L16.6 20C17.9255 20 19 18.9255 19 17.6L19 12C19 10.6745 17.9255 9.6 16.6 9.6L15.6 9.6", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 14.2L12 3.9M8.9 7L12 3.9L15.1 7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 14.2L12 3.9M8.9 7L12 3.9L15.1 7", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M9.9 9.2L8.7 8M14.1 9.2L15.3 8", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .synced: MetalIconAct(
             duration: 1.1,
             caption: "The satellite winds back, laps the core once and clicks home into its slot.",

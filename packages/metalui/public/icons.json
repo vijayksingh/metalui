@@ -455,11 +455,20 @@
       "component": "ShareIcon",
       "label": "Share · Export",
       "category": "Actions",
-      "hover": "arrow lifts out of the tray",
-      "press": "arrow leaves, a new one rises",
-      "pressMs": 420,
+      "hover": "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",
+        "durationMs": 900,
+        "stages": [
+          "Crouch",
+          "Send",
+          "Rise again"
+        ]
+      },
       "tuned16": false,
-      "construction": "Open tray (r2.4) with a 10u arrow."
+      "construction": "Open tray (r2.4) with a 10u arrow. Motion (study): the arrow crouches 1.3 into the tray and squashes .86, pushes off (the tray floor gives and springs back), leaves 2.6 up fading out, while the next arrow (an accent) rises from 4.2 down inside the tray and settles; the part takes over at rest; two air puffs open at the mouth on push-off."
     },
     {
       "name": "undo",

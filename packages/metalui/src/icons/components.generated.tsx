@@ -53,7 +53,7 @@ export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
 export const PinIcon = createIcon("pin", "PinIcon");
 /** Board. Hover: ribbon lengthens. Press: drops into place. */
 export const BoardIcon = createIcon("board", "BoardIcon");
-/** Share · Export. Hover: arrow lifts out of the tray. Press: arrow leaves, a new one rises. */
+/** Share · Export. Hover: The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.. Press: plays the same act. */
 export const ShareIcon = createIcon("share", "ShareIcon");
 /** Undo. Hover: head reaches back. Press: arrow arcs back and returns. */
 export const UndoIcon = createIcon("undo", "UndoIcon");

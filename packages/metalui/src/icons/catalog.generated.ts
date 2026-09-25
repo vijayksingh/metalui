@@ -607,24 +607,27 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * SHARE · EXPORT · Actions
+   * SHARE · EXPORT · Actions · one act, 900ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          arrow lifts out of the tray
-   * PRESS one-shot (from the current pose)
-   *          arrow leaves, a new one rises
-   *     0ms   .ar plays sh-p (420ms)
+   * Crouch → Send → Rise again
+   *          The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.
+   *  arrow      0 → 160 → 250 → 360 → 370 → 640 → 650 → 900ms
+   *  next       0 → 270 → 390 → 500 → 590 → 650 → 665 → 900ms
+   *  tray       0 → 160 → 210 → 900ms
+   *  puff       0 → 220 → 270 → 480 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "share": {
     label: "Share · Export",
     category: "Actions",
-    hover: "arrow lifts out of the tray",
-    press: "arrow leaves, a new one rises",
-    pressMs: 420,
+    hover: "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",
+    press: "plays the same act",
+    pressMs: 900,
     defs: "",
-    body: "<path class=\"tray\" d=\"M8.4 9.6H7.4A2.4 2.4 0 0 0 5 12v5.6a2.4 2.4 0 0 0 2.4 2.4h9.2a2.4 2.4 0 0 0 2.4-2.4V12a2.4 2.4 0 0 0-2.4-2.4h-1\"/><g class=\"ar\"><path d=\"M12 14.2V3.9M8.9 7 12 3.9 15.1 7\"/></g>",
+    body: "<g data-part=\"tray\"><path d=\"M8.4 9.6H7.4A2.4 2.4 0 0 0 5 12v5.6a2.4 2.4 0 0 0 2.4 2.4h9.2a2.4 2.4 0 0 0 2.4-2.4V12a2.4 2.4 0 0 0-2.4-2.4h-1\"/></g><g data-part=\"arrow\"><path d=\"M12 14.2V3.9M8.9 7 12 3.9 15.1 7\"/></g><path class=\"ac\" data-part=\"next\" opacity=\"0\" d=\"M12 14.2V3.9M8.9 7 12 3.9 15.1 7\"/><path class=\"ac\" data-part=\"puff\" opacity=\"0\" d=\"M9.9 9.2 8.7 8M14.1 9.2 15.3 8\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":900,"caption":"The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.","stages":["Crouch","Send","Rise again"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17778,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.86)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27778,"transform":"translate(0px,-1.6px) rotate(0deg) scale(1,1.07)","opacity":1,"easing":"linear"},{"offset":0.4,"transform":"translate(0px,-2.8px) rotate(0deg) scale(1,1.04)","opacity":0,"easing":"linear"},{"offset":0.41111,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.71111,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.72222,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"next","keyframes":[{"offset":0,"transform":"translate(0px,4.2px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.3,"transform":"translate(0px,4.2px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.43333,"transform":"translate(0px,1.1px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.55556,"transform":"translate(0px,-0.6px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65556,"transform":"translate(0px,0.15px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.72222,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1},{"offset":0.73889,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(0px,4.2px) rotate(0deg) scale(1,1)","opacity":0}]},{"part":"tray","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17778,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,0.95)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.23333,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,0.95)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.24444,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.53333,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * UNDO · Actions
