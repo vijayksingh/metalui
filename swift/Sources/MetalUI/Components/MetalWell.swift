@@ -51,7 +51,7 @@ public struct MetalWell<Content: View>: View {
         let ring = MetalRecipes.folder.color("region-ring.\(hue.rawValue)", colorway: cw)
 
         return ZStack {
-            MetalOuterShadows(layers: shadows.filter { !$0.inset }, shape: shape)
+            MetalOuterShadows(layers: shadows.filter { !$0.inset }, shape: shape, excludesInterior: true)
             if fills.count > 1 { fills[1].view(in: shape, self: nil) }
             Canvas(opaque: false, rendersAsynchronously: true) { context, size in
                 guard spacing > .zero, fade > .zero else { return }
