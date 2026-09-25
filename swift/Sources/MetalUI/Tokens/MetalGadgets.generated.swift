@@ -93,6 +93,16 @@ public enum MetalGadgetTokens {
     public static let contrastShadow: Double = 1.2
     public static let glintAbove: Double = 0.2
     public static let glintMs: Double = 420.0
+    public static let jackHole: Double = 0.44
+    public static let jackKnurls: Double = 12.0
+    public static let jackKnurl: (Double, Double) = (0.66, 0.88)
+    public static let jackMetal: (L: Double, C: Double, H: Double) = (0.78, 0.012, 230.0)
+    public static let jackFloor: Double = 0.24
+    public static let jackKnurlWidth: Double = 0.07
+    public static let jackKnurlAlpha: Double = 0.22
+    public static let jackGlow: Double = 0.8
+    /// The jack's nut on the 400-unit canvas when a Part is drawn alone.
+    public static let jackNut: Double = 260.0
     public static let holeFloorDrop: Double = 0.16
     public static let holeFloorDepthDrop: Double = 0.2
     public static let holeFloorChroma: Double = 0.7

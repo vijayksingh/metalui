@@ -1,0 +1,21 @@
+{
+  "name": "jack",
+  "title": "Jack",
+  "status": "alpha",
+  "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Jack",
+    "files": [
+      "jack.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalJack",
+    "file": "swift/Sources/MetalUI/Components/MetalJack.swift"
+  },
+  "agent": "jack.agent.md",
+  "layer": "part",
+  "page": "/components/jack",
+  "recipe": "gadgets"
+}

@@ -305,6 +305,24 @@ export const GADGETS = {
     "lipAlpha": 0.5,
     "trayRadius": 20
   },
+  "jack": {
+    "hole": 0.44,
+    "knurls": 12,
+    "knurl": [
+      0.66,
+      0.88
+    ],
+    "metal": [
+      0.78,
+      0.012,
+      230
+    ],
+    "floor": 0.24,
+    "alone": 260,
+    "knurlWidth": 0.07,
+    "knurlAlpha": 0.22,
+    "glow": 0.8
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,

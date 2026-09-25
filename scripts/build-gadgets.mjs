@@ -74,6 +74,16 @@ public enum MetalGadgetTokens {
     public static let contrastShadow: Double = ${num(G.host.contrast.shadow)}
     public static let glintAbove: Double = ${num(G.strike['glint-above'])}
     public static let glintMs: Double = ${num(G.strike['glint-ms'])}
+    public static let jackHole: Double = ${num(G.jack.hole)}
+    public static let jackKnurls: Double = ${num(G.jack.knurls)}
+    public static let jackKnurl: (Double, Double) = (${G.jack.knurl.map(num).join(', ')})
+    public static let jackMetal: (L: Double, C: Double, H: Double) = (${G.jack.metal.map(num).join(', ')})
+    public static let jackFloor: Double = ${num(G.jack.floor)}
+    public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
+    public static let jackKnurlAlpha: Double = ${num(G.jack['knurl-alpha'])}
+    public static let jackGlow: Double = ${num(G.jack.glow)}
+    /// The jack's nut on the 400-unit canvas when a Part is drawn alone.
+    public static let jackNut: Double = ${num(G.jack.alone)}
     public static let holeFloorDrop: Double = ${num(G.hole.floor.drop)}
     public static let holeFloorDepthDrop: Double = ${num(G.hole.floor['depth-drop'])}
     public static let holeFloorChroma: Double = ${num(G.hole.floor.chroma)}

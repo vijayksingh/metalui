@@ -26,6 +26,7 @@
 - [Glyph](https://metalui.dev/r/glyph.md): A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.
 - [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
+- [Jack](https://metalui.dev/r/jack.md): A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
 - [Lasso](https://metalui.dev/r/lasso.md): The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.

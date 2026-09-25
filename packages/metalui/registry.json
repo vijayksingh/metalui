@@ -43,6 +43,11 @@
           "target": "components/gadgets/host.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/jack.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/jack.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/slab.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/slab.ts"
@@ -386,6 +391,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
+    },
+    {
+      "name": "jack",
+      "type": "registry:ui",
+      "title": "Jack",
+      "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/jack/jack.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/jack/jack.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/jack.md. SwiftUI: MetalJack in the MetalUI Swift package."
     },
     {
       "name": "kbd",

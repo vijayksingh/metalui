@@ -308,6 +308,23 @@
       "agent": "https://metalui.dev/r/icon-button.md"
     },
     {
+      "name": "jack",
+      "title": "Jack",
+      "status": "alpha",
+      "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Jack",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalJack"
+      },
+      "registry": "https://metalui.dev/r/jack.json",
+      "agent": "https://metalui.dev/r/jack.md"
+    },
+    {
       "name": "kbd",
       "title": "Keycap",
       "status": "alpha",

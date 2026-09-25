@@ -160,6 +160,18 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Parts › Jack: dark and lit.
+    func testJack() {
+        let lits: [MetalJack.Lit?] = [nil, .live, .link, .waiting, .failed]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) { ForEach(0..<lits.count, id: \.self) { i in MetalJack(lit: lits[i], size: 112) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("jack-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

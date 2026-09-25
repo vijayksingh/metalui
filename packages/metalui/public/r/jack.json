@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "jack",
+  "type": "registry:ui",
+  "title": "Jack",
+  "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/jack/jack.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/jack/jack.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawJack, type JackSpec } from '../../gadgets/parts/jack';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Jack (a Part): a knurled satin-steel nut around a socket, on the gadget canvas. The socket is a cut,\n * dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.\n * A plug seats in it (the seat mechanism). Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface JackProps extends Omit<React.SVGProps<SVGSVGElement>, 'children'> {\n  /** A lamp glowing in the socket, in its signal colour. */\n  lit?: JackSpec['lit'];\n  knurls?: number;\n  /** Drawn size in pixels of a 400-unit canvas; the jack sits at its centre. */\n  size?: number;\n  host?: Host;\n}\n\nexport function Jack({ lit = null, knurls, size = 96, host: forced, ...props }: JackProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const d = React.useMemo(() => drawJack(`jack-${uid}`, { at: [200, 200], size: GADGETS.jack.alone, knurls, lit }, { tier, host }), [uid, knurls, lit, tier, host]);\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={lit ? `jack, lit ${lit}` : 'jack'} data-tier={tier} data-host={host} data-lit={lit ?? undefined} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.socket + d.nut }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/jack.md. SwiftUI: MetalJack in the MetalUI Swift package."
+}
