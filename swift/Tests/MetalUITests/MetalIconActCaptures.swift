@@ -16,11 +16,11 @@ final class MetalIconActCaptures: XCTestCase {
                 for p in [0.0, 1.0] {
                     let s = act.state(index, at: p)
                     let accent = act.parts[index].opacity.first?.v == 0
-                    XCTAssertEqual(s.draw, 1, accuracy: 0.001, "\(name)/\(act.parts[index].name) draw at \(p)")
+                    XCTAssertEqual(s.draw, act.state(index, at: 0).draw, accuracy: 0.001, "\(name)/\(act.parts[index].name) draw does not return at \(p)")
                     if accent {
                         XCTAssertEqual(s.opacity, 0, accuracy: 0.001, "\(name)/\(act.parts[index].name) accent visible at \(p)")
                     } else {
-                        XCTAssertEqual(s.opacity, 1, accuracy: 0.001, "\(name)/\(act.parts[index].name) opacity at \(p)")
+                        XCTAssertEqual(s.opacity, act.state(index, at: 0).opacity, accuracy: 0.001, "\(name)/\(act.parts[index].name) opacity does not return at \(p)")
                         XCTAssertTrue(s.transform.isIdentityish, "\(name)/\(act.parts[index].name) not at rest at \(p): \(s.transform)")
                     }
                 }

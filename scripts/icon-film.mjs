@@ -41,10 +41,13 @@ for (const colorway of ['bone', 'graphite']) {
       <div id="small" style="display:flex;gap:12px;align-items:end"></div>
     </div></body>`);
   await page.evaluate(({ svg, times, shipped }) => {
+    let n = 0;
+    // Each copy gets its own mask and clip ids, as the React Icon does per instance.
+    const own = (src) => { n += 1; return src.replace(/(id="|url\(#)(mu-[\w-]+?-)/g, `$1$2c${n}-`); };
     const add = (row, size, t) => {
       const cell = document.createElement('div');
       cell.style.cssText = 'display:grid;justify-items:center;gap:4px';
-      cell.innerHTML = svg;
+      cell.innerHTML = own(svg);
       const el = cell.querySelector('svg');
       el.setAttribute('width', size); el.setAttribute('height', size);
       if (size > 30) el.style.outline = '1px dashed rgba(127,127,127,.25)';
@@ -59,7 +62,7 @@ for (const colorway of ['bone', 'graphite']) {
     if (shipped) {
       const cell = document.createElement('div');
       cell.style.cssText = 'display:grid;justify-items:center;gap:4px';
-      cell.innerHTML = shipped;
+      cell.innerHTML = own(shipped);
       const el = cell.querySelector('svg');
       el.setAttribute('width', 96); el.setAttribute('height', 96);
       el.style.outline = '1px solid rgba(127,127,127,.5)';
