@@ -135,19 +135,24 @@ const ITEMS: Item[] = [
 /** An open x-ray, and the object it was opened from. */
 export interface XrayOpen { kind: XrayKind; from: string }
 
-/* The x-ray flight, in two beats:
- *   open    1 lift   the object rises toward you and floats to the middle of where the card will be
- *           2 open   the card grows out of it, and the object fades into the card
- *   close   the same backwards: the card shrinks into the object, which floats home
- * The sheet borrows the object's view-transition name while the object hides, so one
- * element seems to travel. The browser's own morph is a single straight line, so the
- * travelling box is re-keyed here, through the lift point. */
-const LIFT = 1.22;
+/* The x-ray flight. The model inside the x-ray card borrows the object's view-transition
+ * name while the object hides, so one thing seems to travel:
+ *   open    1 lift    the object rises a little off the table
+ *           2 fly     it flies to the model's place in the card, growing to the model's
+ *                     size and tilting as it goes, so it lands at the x-ray's angle with
+ *                     its face on the model's face; the card fades in around it
+ *           3 land    the object hands over to the model
+ *   close   the same backwards: the model lifts out of the card, turns flat and flies home
+ * The browser's own morph is one straight line with no tilt, so the travelling box and
+ * the tilt are keyed here. */
 const OPEN_MS = 1500;
-const CLOSE_MS = 1200;
-// the lift eases off the table and into the float; the card eases open and settles slowly
-const LIFT_EASE = 'cubic-bezier(.45, 0, .25, 1)';
-const SETTLE_EASE = 'cubic-bezier(.22, .8, .24, 1)';
+const CLOSE_MS = 1300;
+/** The x-ray's angle (.xr-iso): a flat face turned and laid back. */
+const ISO = 'rotateX(58deg) rotateZ(-38deg)';
+const FLAT = 'rotateX(0deg) rotateZ(0deg)';
+// the lift eases off the table; the flight starts slow and lands softly
+const LIFT_EASE = 'cubic-bezier(.3, 0, .2, 1)';
+const FLY_EASE = 'cubic-bezier(.55, 0, .2, 1)';
 
 function choreograph(name: string, dir: 'open' | 'close') {
   const html = document.documentElement;
@@ -162,22 +167,19 @@ function choreograph(name: string, dir: 'open' | 'close') {
   ua.cancel();
   const cs = getComputedStyle(html, pseudo('group'));
   const end = { transform: cs.transform === 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : cs.transform, width: cs.width, height: cs.height };
-  // the object's box and the card's box
-  const [small, big] = dir === 'open' ? [start, end] : [end, start];
-  const card = new DOMMatrix(big.transform);
-  const sw = parseFloat(small.width), sh = parseFloat(small.height);
-  const cx = card.m41 + parseFloat(big.width) / 2, cy = card.m42 + parseFloat(big.height) / 2;
-  // the lift point: the object's own size, over the card's middle, raised a little toward you
-  const lifted = { transform: `translate(${cx - sw / 2}px, ${cy - sh / 2 - 12}px) scale(${LIFT})`, width: small.width, height: small.height };
+  // the object's box, just raised off the table
+  const home = dir === 'open' ? start : end;
+  const lifted = { ...home, transform: `${home.transform} translateY(-14px) scale(1.08)` };
   const play = (part: string, frames: Keyframe[], duration: number) => html.animate(frames, { duration, fill: 'both', pseudoElement: pseudo(part) });
   if (dir === 'open') {
-    play('group', [{ ...start, offset: 0, easing: LIFT_EASE }, { ...lifted, offset: 0.45, easing: SETTLE_EASE }, { ...end, offset: 1 }], OPEN_MS);
-    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.5 }, { opacity: 0, offset: 0.75 }, { opacity: 0 }], OPEN_MS);
-    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.45 }, { opacity: 1, offset: 0.72 }, { opacity: 1 }], OPEN_MS);
+    play('group', [{ ...start, easing: LIFT_EASE }, { ...lifted, offset: 0.2, easing: FLY_EASE }, { ...end }], OPEN_MS);
+    // the object: flat through the lift, then tilting into the x-ray's angle as it flies
+    play('old', [{ transform: FLAT, opacity: 1 }, { transform: FLAT, offset: 0.24, easing: FLY_EASE }, { transform: ISO, opacity: 1, offset: 0.9 }, { transform: ISO, opacity: 0 }], OPEN_MS);
+    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.86 }, { opacity: 1 }], OPEN_MS);
   } else {
-    play('group', [{ ...start, offset: 0, easing: LIFT_EASE }, { ...lifted, offset: 0.42, easing: SETTLE_EASE }, { ...end, offset: 1 }], CLOSE_MS);
-    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.16 }, { opacity: 0, offset: 0.4 }, { opacity: 0 }], CLOSE_MS);
-    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.14 }, { opacity: 1, offset: 0.36 }, { opacity: 1 }], CLOSE_MS);
+    play('group', [{ ...start, easing: FLY_EASE }, { ...lifted, offset: 0.8, easing: LIFT_EASE }, { ...end }], CLOSE_MS);
+    play('old', [{ opacity: 1 }, { opacity: 0, offset: 0.1 }, { opacity: 0 }], CLOSE_MS);
+    play('new', [{ transform: ISO, opacity: 0 }, { transform: ISO, opacity: 1, offset: 0.08, easing: FLY_EASE }, { transform: FLAT, offset: 0.76 }, { transform: FLAT }], CLOSE_MS);
   }
 }
 

@@ -658,15 +658,18 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
 
-/* The x-ray flight (useXrayFlight keys the travelling box and the fades). Both ends stay
- * sharp: each snapshot keeps its own size, centred in the travelling box, except the card,
- * which grows with it. The page behind fades on its own. */
+/* The x-ray flight (useXrayFlight keys the travelling box, the tilt and the fades). The
+ * model in the card carries the object's name; the object's snapshot fills the travelling
+ * box without stretching, so it lands on the model's flat face and tilts with it. The card
+ * and the page behind cross-fade while it flies. */
+.xr-overlay[data-from] .xr-scene { view-transition-name: var(--flight); view-transition-class: float; }
 html[data-flight="open"]::view-transition-old(.float),
-html[data-flight="close"]::view-transition-new(.float) { inset: 0; margin: auto; width: auto; height: auto; }
-html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .6s; animation-delay: .55s; }
-html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .5s; }
+html[data-flight="close"]::view-transition-new(.float) { width: 100%; height: 100%; object-fit: contain; }
+html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .8s; animation-delay: .35s; }
+html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .6s; }
 html[data-flight] .drift-item:not([data-flying]) { view-transition-name: none !important; }
 .xr-overlay.is-flown { animation: none; }
+.xr-overlay.is-flown .xr-iso { animation: none; }
 /* x-ray callouts: two columns beside the model, leader lines to anchors on the object */
 .xr-bench { place-items: center; }
 .xr-anchor { position: absolute; left: 0; top: 0; width: 2px; height: 2px; }
