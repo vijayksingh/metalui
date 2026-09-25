@@ -395,24 +395,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1140,"caption":"The lens is pushed in along its handle and the plus under it is magnified.","stages":["Draw back","Push in","Magnify"],"tracks":[{"part":"tool","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14035,"transform":"translate(0.6px,0.6px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.30702,"transform":"translate(-1.45px,-1.45px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.57456,"transform":"translate(-1.2px,-1.2px) rotate(0deg) scale(1,1)"},{"offset":0.63158,"transform":"translate(-1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.84211,"transform":"translate(0.2px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"sign","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14035,"transform":"translate(0px,0px) rotate(0deg) scale(0.94,0.94)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.30702,"transform":"translate(0px,0px) rotate(0deg) scale(1.05,1.05)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34211,"transform":"translate(0px,0px) rotate(0deg) scale(1.36,1.36)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.60965,"transform":"translate(0px,0px) rotate(0deg) scale(1.2948,1.2948)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(0deg) scale(1.3,1.3)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89474,"transform":"translate(0px,0px) rotate(0deg) scale(0.97,0.97)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"throw","keyframes":[{"offset":0,"transform":"scale(1)","opacity":0},{"offset":0.34211,"transform":"scale(1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.40351,"transform":"scale(1.15)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61404,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * ZOOM OUT · Tools
+   * ZOOM OUT · Tools · one act, 1140ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          minus narrows, lens recedes
-   * PRESS one-shot (from the current pose)
-   *          lens shrinks
-   *     0ms   .sg plays zo-p (340ms)
+   * Ease in → Pull back → Recede
+   *          The lens is drawn back along its handle; the minus recedes and the old view closes in.
+   *  tool       0 → 150 → 360 → 665 → 720 → 960 → 1140ms
+   *  sign       0 → 150 → 360 → 400 → 705 → 760 → 1020 → 1140ms
+   *  field      0 → 380 → 480 → 700 → 1140ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "zoom-out": {
     label: "Zoom Out",
     category: "Tools",
-    hover: "minus narrows, lens recedes",
-    press: "lens shrinks",
-    pressMs: 340,
+    hover: "The lens is drawn back along its handle; the minus recedes and the old view closes in.",
+    press: "plays the same act",
+    pressMs: 1140,
     defs: "",
-    body: "<g class=\"sg\"><circle class=\"lens\" cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path class=\"hdl\" d=\"M15.2 15.2 19.8 19.8\"/><path class=\"pm\" d=\"M8.2 10.6h4.8\"/></g>",
+    body: "<g data-part=\"tool\"><circle cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path d=\"M15.2 15.2 19.8 19.8\"/><g data-part=\"sign\"><path d=\"M8.2 10.6h4.8\"/></g><path class=\"ac\" data-part=\"field\" opacity=\"0\" d=\"M7.4 8.3v-.9h.9M12.9 7.4h.9v.9M13.8 12.9v.9h-.9M8.3 13.8h-.9v-.9\" style=\"stroke-width:calc(var(--sw) * .6)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":1140,"caption":"The lens is drawn back along its handle; the minus recedes and the old view closes in.","stages":["Ease in","Pull back","Recede"],"tracks":[{"part":"tool","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13158,"transform":"translate(-0.5px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.31579,"transform":"translate(1.3px,1.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.58333,"transform":"translate(1.1px,1.1px) rotate(0deg) scale(1,1)"},{"offset":0.63158,"transform":"translate(1.1px,1.1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.84211,"transform":"translate(-0.2px,-0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"sign","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13158,"transform":"translate(0px,0px) rotate(0deg) scale(1.06,1.06)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.31579,"transform":"translate(0px,0px) rotate(0deg) scale(0.92,0.92)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.35088,"transform":"translate(0px,0px) rotate(0deg) scale(0.66,0.66)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.61842,"transform":"translate(0px,0px) rotate(0deg) scale(0.7035,0.7035)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(0deg) scale(0.7,0.7)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89474,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"field","keyframes":[{"offset":0,"transform":"scale(1.2)","opacity":0},{"offset":0.33333,"transform":"scale(1.2)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.42105,"transform":"scale(1.05)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61404,"transform":"scale(.8)","opacity":0},{"offset":1,"transform":"scale(1.2)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * FIT · Tools

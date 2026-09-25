@@ -239,11 +239,20 @@
       "component": "ZoomOutIcon",
       "label": "Zoom Out",
       "category": "Tools",
-      "hover": "minus narrows, lens recedes",
-      "press": "lens shrinks",
-      "pressMs": 340,
+      "hover": "The lens is drawn back along its handle; the minus recedes and the old view closes in.",
+      "press": "plays the same act",
+      "pressMs": 1140,
+      "motion": {
+        "caption": "The lens is drawn back along its handle; the minus recedes and the old view closes in.",
+        "durationMs": 1140,
+        "stages": [
+          "Ease in",
+          "Pull back",
+          "Recede"
+        ]
+      },
       "tuned16": false,
-      "construction": "Search lens + minus."
+      "construction": "Search lens + minus. Motion (study): the tool eases in .5 up its handle axis, is pulled back 1.3 down it and caught at 1.1 (part spring); the minus, a beat behind, recedes to .7; the corners of the old view appear at the rim and close in as they fade; released, all slide home."
     },
     {
       "name": "fit",
