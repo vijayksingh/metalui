@@ -14,6 +14,18 @@ extension MetalMechanism {
         held: nil
     )
 
+    /// The drums turn to the new count, the lowest first; each ticks past its digits and settles with a small knock.
+    public static let roll = MetalMechanism(
+        name: "roll", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .settle,
+        tracks: [
+
+        ],
+        cues: [.init(at: nil, until: nil, kind: .detent, slot: "drums", level: 0.35, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .settle, slot: "drums", level: 0.2, pitch: 1.0, gesture: nil)],
+        states: [:],
+        reduced: ["lamp", "sound"],
+        held: .init(slot: "drums", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 60.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.5, tickGap: 30.0, step: 240.0, roll: true, rest: 0.01)
+    )
+
     /// The plug lifts, its shadow opens, and it seats again with a click.
     public static let seat = MetalMechanism(
         name: "seat", momentary: true, duration: 910.0, stagger: 0.0, loops: false, phased: [], spring: .part,
@@ -36,7 +48,7 @@ extension MetalMechanism {
         cues: [.init(at: nil, until: nil, kind: .friction, slot: "caps", level: 1.0, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .detent, slot: "caps", level: 0.45, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "caps", level: 0.8, pitch: 1.0, gesture: nil)],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0)
+        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
     )
 
     /// The beam turns once around the glass; each blip lights as the beam crosses it, and fades.
@@ -52,5 +64,5 @@ extension MetalMechanism {
         held: nil
     )
 
-    public static let all: [MetalMechanism] = [press, seat, slide, sweep]
+    public static let all: [MetalMechanism] = [press, roll, seat, slide, sweep]
 }

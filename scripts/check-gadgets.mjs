@@ -86,6 +86,26 @@ for (const [name, scene] of Object.entries(scenes)) {
   drives[name] = { ...scene, samples, events };
 }
 emit('packages/metalui/src/gadgets/fixtures/drive-samples.json', JSON.stringify(drives) + '\n');
+// The roll through scripted scenes, from the web model: SwiftUI's twin must land on the same.
+const { RollModel } = await import(pathToFileURL(`${dir}/drive.ts`).href);
+const rollScenes = {
+  'carry-up': { actors: 3, start: 199, steps: [[0, 200]] },
+  'carry-down': { actors: 3, start: 200, steps: [[0, 199]] },
+  'far': { actors: 3, start: 0, steps: [[0, 999]] },
+  'changed-mid-roll': { actors: 2, start: 5, steps: [[0, 7], [60, 9]] },
+};
+const rolls = {};
+for (const [name, sc] of Object.entries(rollScenes)) {
+  const m = new RollModel('roll', sc.actors, sc.start), samples = [], events = [];
+  let next = 0;
+  for (let t = 0; t <= 1000; t += 20) {
+    while (next < sc.steps.length && sc.steps[next][0] <= t) { m.advance(sc.steps[next][0]); m.retarget(sc.steps[next][1]); next++; }
+    for (const e of m.advance(t)) events.push([e.kind, e.actor, +e.at.toFixed(6), +e.level.toFixed(6)]);
+    samples.push([t, ...m.x.map((x) => +x.toFixed(9))]);
+  }
+  rolls[name] = { ...sc, samples, events };
+}
+emit('packages/metalui/src/gadgets/fixtures/roll-samples.json', JSON.stringify(rolls) + '\n');
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 

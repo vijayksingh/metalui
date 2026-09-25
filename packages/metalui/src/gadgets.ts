@@ -23,4 +23,4 @@ export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
 export { drawGadget, driveTargets, driveDefault, renderGadgetSvg, describeGadget, formPoses, stateOf, type GadgetDraw, type DrawOptions } from './gadgets/draw';
 export { Gadget, type GadgetProps } from './gadgets/Gadget';
-export { createDrive, DriveModel, type Drive, type DriveEvent, type DriveName, type DriveOptions } from './gadgets/drive';
+export { createDrive, DriveModel, createRoll, RollModel, digitOf, type Drive, type DriveEvent, type DriveName, type DriveOptions, type Roll, type RollEvent, type RollOptions } from './gadgets/drive';

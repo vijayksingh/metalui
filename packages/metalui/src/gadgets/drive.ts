@@ -190,3 +190,144 @@ export function createDrive(name: DriveName, actors: (Element | null | undefined
     destroy() { if (raf) cancelAnimationFrame(raf); raf = 0; moving = false; scrape?.stop(); scrape = null; },
   };
 }
+
+// ---------- Roll: drums that turn round and round (a counter) ----------
+
+export type RollEvent =
+  | { kind: 'detent'; actor: number; at: number; level: number }
+  | { kind: 'settle'; actor: number; at: number; level: number };
+
+interface RollHeld { slot: string; stagger: number; tickMin: number; tickGap: number; rest: number; step: number }
+
+/** A count's digit for a drum: actors are listed highest place first, as a number is written. */
+export const digitOf = (count: number, actor: number, actors: number) => Math.floor(Math.max(0, count) / 10 ** (actors - 1 - actor)) % 10;
+
+/** The roll as numbers: each drum's position is unbounded (19.5 is between 9 and 0 on its second turn),
+ *  so counting up it only ever turns forward. Fixed steps, as the slide drive. */
+export class RollModel {
+  readonly held: RollHeld;
+  private readonly k: number;
+  private readonly c: number;
+  private readonly levels: { detent: number; settle: number };
+  x: number[]; v: number[]; target: number[];
+  private pending: ({ value: number; at: number } | null)[];
+  private lastTick: number[];
+  private moving: boolean[];
+  private count: number;
+  t = 0;
+
+  constructor(name: string, actors: number, count: number) {
+    const m = (MECHANISMS as unknown as Record<string, { held: RollHeld | null; spring: string; cues: { kind: string; level?: number }[] }>)[name];
+    if (!m?.held) throw new Error(`${name} is not a held mechanism`);
+    this.held = m.held;
+    const sp = SPRINGS[m.spring as keyof typeof SPRINGS] ?? SPRINGS.part;
+    this.k = sp.stiffness; this.c = sp.damping;
+    const level = (kind: string) => m.cues.find((q) => q.kind === kind)?.level ?? 0;
+    this.levels = { detent: level('detent'), settle: level('settle') };
+    this.count = Math.max(0, Math.round(count));
+    this.x = Array.from({ length: actors }, (_, i) => digitOf(this.count, i, actors));
+    this.v = this.x.map(() => 0); this.target = [...this.x];
+    this.pending = this.x.map(() => null); this.lastTick = this.x.map(() => -Infinity); this.moving = this.x.map(() => false);
+  }
+
+  /** A new count: each drum whose digit changes turns to it, forward counting up and back counting
+   *  down; the lowest first, each higher one `stagger` ms after the one below it. */
+  retarget(count: number) {
+    const next = Math.max(0, Math.round(count)), up = next >= this.count, n = this.x.length;
+    this.count = next;
+    let delay = 0;
+    for (let i = n - 1; i >= 0; i--) {
+      const from = this.pending[i]?.value ?? this.target[i], d = digitOf(next, i, n), now = ((from % 10) + 10) % 10;
+      const step = up ? (d - now + 10) % 10 : -((now - d + 10) % 10);
+      if (step === 0) continue;
+      this.pending[i] = { value: from + step, at: this.t + delay };
+      delay += this.held.stagger;
+    }
+  }
+
+  /** Every drum straight to its digit (reduced motion); each that moved ticks once, if sound is kept. */
+  snap(count: number, keepsSound: boolean): RollEvent[] {
+    const out: RollEvent[] = [], n = this.x.length;
+    this.count = Math.max(0, Math.round(count));
+    for (let i = 0; i < n; i++) {
+      const d = digitOf(this.count, i, n);
+      if (keepsSound && ((this.x[i] % 10) + 10) % 10 !== d) out.push({ kind: 'detent', actor: i, at: this.t, level: this.levels.detent });
+      this.x[i] = this.target[i] = d; this.v[i] = 0; this.pending[i] = null; this.moving[i] = false;
+    }
+    return out;
+  }
+
+  advance(to: number): RollEvent[] {
+    const out: RollEvent[] = [], h = 1 / this.held.step, hms = 1000 / this.held.step, H = this.held;
+    while (this.t + hms <= to + 1e-9) {
+      this.t += hms;
+      for (let i = 0; i < this.x.length; i++) {
+        const p = this.pending[i];
+        if (p && this.t >= p.at) { this.target[i] = p.value; this.pending[i] = null; this.moving[i] = true; }
+        const before = this.x[i];
+        this.v[i] += (-this.k * (this.x[i] - this.target[i]) - this.c * this.v[i]) * h;
+        this.x[i] += this.v[i] * h;
+        // A digit passed at speed ticks.
+        if (Math.floor(before + 0.5) !== Math.floor(this.x[i] + 0.5) && Math.abs(this.v[i]) >= H.tickMin && this.t - this.lastTick[i] >= H.tickGap) {
+          this.lastTick[i] = this.t;
+          out.push({ kind: 'detent', actor: i, at: this.t, level: this.levels.detent });
+        }
+        // Come to rest on its digit: a small knock, once.
+        if (this.moving[i] && !this.pending[i] && Math.abs(this.x[i] - this.target[i]) < H.rest && Math.abs(this.v[i]) < H.tickMin) {
+          this.moving[i] = false;
+          out.push({ kind: 'settle', actor: i, at: this.t, level: this.levels.settle });
+        }
+      }
+    }
+    return out;
+  }
+
+  get settled() { return this.pending.every((p) => !p) && this.moving.every((m) => !m) && this.v.every((v) => Math.abs(v) < 1e-2); }
+}
+
+export interface RollOptions {
+  reduced?: boolean;
+  sound?: Sound | null;
+  material?: SoundMaterial;
+  /** A drum's height on the canvas, for the pitch of its tick. */
+  partSize?: number;
+  onEvent?: (e: RollEvent) => void;
+  onFrame?: (values: number[]) => void;
+}
+
+export interface Roll { set(count: number): void; readonly values: number[]; readonly moving: boolean; readonly time: number; setOptions(o: Partial<RollOptions>): void; destroy(): void }
+
+/** Runs a roll on drawn drum strips: each strip is moved so its drum's digit sits in the window. */
+export function createRoll(name: string, strips: (Element | null | undefined)[], pitches: number[], count: number, options: RollOptions = {}): Roll {
+  const model = new RollModel(name, strips.length, count), D = GADGETS.drive;
+  const keeps = ((MECHANISMS as unknown as Record<string, { reduced: readonly string[] }>)[name]?.reduced ?? []).includes('sound');
+  let o = options, raf = 0, t0 = 0, moving = false;
+  const paint = () => strips.forEach((el, i) => el?.setAttribute('transform', `translate(0 ${+(-(((model.x[i] % 10) + 10) % 10) * pitches[i]).toFixed(3)})`));
+  const play = (e: RollEvent) => {
+    const m = o.material ?? 'ceramic', size = o.partSize ?? GADGETS.parts.drum.size[1];
+    o.sound?.strike(m, e.kind === 'detent' ? { size: size * D.detentSize, level: e.level, pitch: D.detentPitch } : { size, level: e.level });
+    o.onEvent?.(e);
+  };
+  const frame = () => {
+    raf = 0;
+    for (const e of model.advance(performance.now() - t0)) play(e);
+    paint();
+    o.onFrame?.([...model.x]);
+    if (model.settled) { moving = false; return; }
+    raf = requestAnimationFrame(frame);
+  };
+  paint();
+  return {
+    set(c) {
+      if (o.reduced) { for (const e of model.snap(c, keeps)) play(e); paint(); o.onFrame?.([...model.x]); return; }
+      if (!moving) { t0 = performance.now() - model.t; moving = true; }
+      model.retarget(c);
+      if (!raf) raf = requestAnimationFrame(frame);
+    },
+    get values() { return [...model.x]; },
+    get moving() { return moving; },
+    get time() { return model.t; },
+    setOptions(next) { o = { ...o, ...next }; },
+    destroy() { if (raf) cancelAnimationFrame(raf); raf = 0; moving = false; },
+  };
+}

@@ -15,6 +15,8 @@ export const strike = (at, slot, { level = 1, pitch = 1 } = {}) => ({ at, kind: 
 export const friction = (at, until, slot, level) => ({ at, until, kind: 'friction', slot, level });
 /** A held part sliding: its material scrapes as fast as it moves, so it has no time. */
 export const scrape = (slot, level) => ({ kind: 'friction', slot, level });
+/** A held part coming to rest (a drum on its digit): a small knock, so it has no time. */
+export const settle = (slot, level) => ({ kind: 'settle', slot, level });
 /** A held part hitting the end of its travel: a knock as hard as it hit, so it has no time. */
 export const stop = (slot, level) => ({ kind: 'stop', slot, level });
 /** A detent passed: fires per detent crossed by a held mechanism, so it has no time. */
@@ -81,12 +83,14 @@ export function validateMechanism(m) {
   else {
     const h = m.held;
     if (!slots.includes(h.slot)) bad.push(at(`held drives "${h.slot}", not a slot`));
-    if (!h.from || !h.to) bad.push(at('held needs from and to poses (value 0 and value 1)'));
+    if (!h.roll && (!h.from || !h.to)) bad.push(at('held needs from and to poses (value 0 and value 1)'));
     if (m.tracks?.length) bad.push(at('a held mechanism has no tracks; its poses come from the drive'));
-    for (const k of ['wall', 'impactFull', 'scrapeFull', 'tickMin', 'tickGap', 'step']) if (!(h[k] >= 0)) bad.push(at(`held.${k} is required`));
+    // A travel with walls (a slide) and a roll that turns round and round need different numbers.
+    const need = h.roll ? ['stagger', 'tickMin', 'tickGap', 'rest', 'step'] : ['wall', 'impactFull', 'scrapeFull', 'tickMin', 'tickGap', 'step'];
+    for (const k of need) if (!(h[k] >= 0)) bad.push(at(`held.${k} is required`));
     for (const c of m.cues ?? []) if (c.at !== undefined) bad.push(at(`held cue ${c.kind} has a time; held cues follow the motion`));
   }
-  for (const c of m.cues ?? []) if (c.kind === 'stop' && m.mode !== 'held') bad.push(at('only a held mechanism has a stop'));
+  for (const c of m.cues ?? []) if ((c.kind === 'stop' || c.kind === 'settle') && m.mode !== 'held') bad.push(at(`only a held mechanism has a ${c.kind}`));
   let beeps = 0;
   for (const c of m.cues ?? []) {
     if (c.kind === 'beep') beeps++;

@@ -21,7 +21,7 @@ public struct MetalMechanism: Sendable {
         public let part: String, frames: [Frame]
         public init(part: String, frames: [Frame]) { self.part = part; self.frames = frames }
     }
-    public enum CueKind: String, Sendable { case strike, lamp, beep, friction, detent, stop }
+    public enum CueKind: String, Sendable { case strike, lamp, beep, friction, detent, stop, settle }
     public struct Cue: Sendable {
         public let at: Double?, until: Double?, kind: CueKind, slot: String?, level: Double, pitch: Double, gesture: MetalLampGesture?
         public init(at: Double?, until: Double?, kind: CueKind, slot: String?, level: Double, pitch: Double, gesture: MetalLampGesture?) {
@@ -33,10 +33,13 @@ public struct MetalMechanism: Sendable {
     public struct Held: Sendable {
         public let slot: String, from: MetalMechanismPose, to: MetalMechanismPose
         public let detents: Int, stagger: Double, wall: Double, impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double
+        /// A roll turns round and round (a drum), with no walls; `rest` is how close and still is settled.
+        public let roll: Bool, rest: Double
         public init(slot: String, from: MetalMechanismPose, to: MetalMechanismPose, detents: Int, stagger: Double, wall: Double,
-                    impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double) {
+                    impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double, roll: Bool = false, rest: Double = 0) {
             self.slot = slot; self.from = from; self.to = to; self.detents = detents; self.stagger = stagger; self.wall = wall
             self.impactFull = impactFull; self.scrapeFull = scrapeFull; self.tickMin = tickMin; self.tickGap = tickGap; self.step = step
+            self.roll = roll; self.rest = rest
         }
     }
     public struct HeldPose: Sendable {

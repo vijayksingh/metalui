@@ -125,6 +125,54 @@ export const MECHANISMS = {
     ],
     "held": null
   },
+  "roll": {
+    "name": "roll",
+    "mode": "held",
+    "duration": 0,
+    "caption": "The drums turn to the new count, the lowest first; each ticks past its digits and settles with a small knock.",
+    "stages": [
+      "Turn",
+      "Carry",
+      "Settle"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "settle",
+    "slots": {
+      "drums": "actor",
+      "window": "cut",
+      "lamp": "lamp"
+    },
+    "tracks": [],
+    "cues": [
+      {
+        "kind": "detent",
+        "slot": "drums",
+        "level": 0.35
+      },
+      {
+        "kind": "settle",
+        "slot": "drums",
+        "level": 0.2
+      }
+    ],
+    "states": {},
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": {
+      "drive": "count",
+      "slot": "drums",
+      "roll": true,
+      "stagger": 60,
+      "tickMin": 0.5,
+      "tickGap": 30,
+      "rest": 0.01,
+      "step": 240
+    }
+  },
   "seat": {
     "name": "seat",
     "mode": "momentary",

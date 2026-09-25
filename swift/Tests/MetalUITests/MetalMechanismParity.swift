@@ -98,4 +98,31 @@ final class MetalMechanismParity: XCTestCase {
             }
         }
     }
+
+    func testTheRollTurnsLikeTheWeb() throws {
+        let scenes = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("roll-samples.json"))) as! [String: [String: Any]]
+        XCTAssertEqual(scenes.count, 4)
+        for (name, scene) in scenes {
+            let steps = scene["steps"] as! [[Double]]
+            var model = try XCTUnwrap(MetalRollModel(.roll, actors: scene["actors"] as! Int, count: scene["start"] as! Int))
+            var next = 0, events: [MetalRollModel.Event] = []
+            for row in scene["samples"] as! [[Double]] {
+                let t = row[0]
+                while next < steps.count, steps[next][0] <= t { _ = model.advance(to: steps[next][0]); model.retarget(Int(steps[next][1])); next += 1 }
+                events += model.advance(to: t)
+                for (i, x) in model.x.enumerated() { XCTAssertEqual(x, row[i + 1], accuracy: 1e-7, "\(name): drum \(i) at \(t) ms") }
+            }
+            let web = (scene["events"] as! [[Any]]).map { e -> MetalRollModel.Event in
+                let actor = e[1] as! Int, at = e[2] as! Double, level = e[3] as! Double
+                return (e[0] as! String) == "settle" ? .settle(actor: actor, at: at, level: level) : .detent(actor: actor, at: at, level: level)
+            }
+            XCTAssertEqual(events.count, web.count, "\(name): the same ticks and knocks")
+            for (a, b) in zip(events, web) {
+                switch (a, b) {
+                case let (.detent(i, t, _), .detent(j, u, _)), let (.settle(i, t, _), .settle(j, u, _)): XCTAssertEqual(i, j); XCTAssertEqual(t, u, accuracy: 1e-5)
+                default: XCTFail("\(name): \(a) where the web has \(b)")
+                }
+            }
+        }
+    }
 }

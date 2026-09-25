@@ -264,7 +264,7 @@ ${m.tracks.map((t) => `            .init(part: ${JSON.stringify(t.part)}, frames
         cues: [${m.cues.map(swiftCue).join(', ')}],
         states: [${Object.entries(m.states).map(([k, v]) => `${JSON.stringify(k)}: .init(hold: ${JSON.stringify(v.hold)}, pose: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...v.pose })})`).join(', ') || ':'}],
         reduced: [${m.reduced.map((r) => JSON.stringify(r)).join(', ')}],
-        held: ${m.held ? `.init(slot: ${JSON.stringify(m.held.slot)}, from: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.from })}, to: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.to })}, detents: ${m.held.detents ?? 0}, stagger: ${num(m.held.stagger ?? 0)}, wall: ${num(m.held.wall)}, impactFull: ${num(m.held.impactFull)}, scrapeFull: ${num(m.held.scrapeFull)}, tickMin: ${num(m.held.tickMin)}, tickGap: ${num(m.held.tickGap)}, step: ${num(m.held.step)})` : 'nil'}
+        held: ${m.held ? `.init(slot: ${JSON.stringify(m.held.slot)}, from: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.from })}, to: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.to })}, detents: ${m.held.detents ?? 0}, stagger: ${num(m.held.stagger ?? 0)}, wall: ${num(m.held.wall ?? 0)}, impactFull: ${num(m.held.impactFull ?? 1)}, scrapeFull: ${num(m.held.scrapeFull ?? 1)}, tickMin: ${num(m.held.tickMin)}, tickGap: ${num(m.held.tickGap)}, step: ${num(m.held.step)}, roll: ${!!m.held.roll}, rest: ${num(m.held.rest ?? 0)})` : 'nil'}
     )`).join('\n\n')}
 
     public static let all: [MetalMechanism] = [${MECHS.map((m) => m.name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())).join(', ')}]
