@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       { path: 'components/beeper', lazy: lazy(() => import('./pages/components/Beeper')) },
       { path: 'components/cap', lazy: lazy(() => import('./pages/components/Cap')) },
       { path: 'components/key', lazy: lazy(() => import('./pages/components/Key')) },
+      { path: 'components/bezel', lazy: lazy(() => import('./pages/components/Bezel')) },
       { path: 'gadgets/patch-bay', lazy: lazy(() => import('./pages/gadgets/PatchBay')) },
       { path: 'gadgets/fader-bank', lazy: lazy(() => import('./pages/gadgets/FaderBank')) },
       { path: 'gadgets/keycap-chord', lazy: lazy(() => import('./pages/gadgets/KeycapChord')) },

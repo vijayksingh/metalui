@@ -279,6 +279,21 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testBezel() {
+        let search = MetalGadgetModel.resolve(MetalGadgetPlacement(job: .find, feel: MetalGadgetFeel(v: 0.7, a: 0.8, w: 0.1)))
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalBezel(.stone, color: search.body, glass: search.face, size: 180)
+                MetalBezel(.metal, size: 180)
+                MetalBezel(.clay, opening: .square, rings: false, size: 180)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("bezel-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -48,6 +48,11 @@
           "target": "components/gadgets/parts/beeper.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/bezel.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/bezel.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/cable.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/cable.ts"
@@ -56,6 +61,11 @@
           "path": "packages/metalui/src/gadgets/parts/cap.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/cap.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/parts/glass.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/glass.ts"
         },
         {
           "path": "packages/metalui/src/gadgets/parts/jack.ts",
@@ -102,6 +112,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/beeper.md. SwiftUI: MetalBeeper in the MetalUI Swift package."
+    },
+    {
+      "name": "bezel",
+      "type": "registry:ui",
+      "title": "Bezel",
+      "description": "An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/bezel/bezel.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/bezel/bezel.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/bezel.md. SwiftUI: MetalBezel in the MetalUI Swift package."
     },
     {
       "name": "block-silhouette",

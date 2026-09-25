@@ -24,6 +24,8 @@ export interface ResolvedFeel {
   reach: Reach;
   body: ResolvedColor;
   accent: ResolvedColor;
+  /** A glass face's colour: the same feel in the glass face's light, icy ranges. */
+  face: ResolvedColor;
   /** The beeper's register (base MIDI) and scale, from weight and valence. */
   register: number;
   scale: 'major' | 'minor';
@@ -66,6 +68,14 @@ export function bodyColor(job: Job, feel: Feel, material: GadgetMaterial, statio
   return { L, C, H };
 }
 
+/** A glass face's OKLCH: the body's formula, clamped to the glass face's ranges (light, icy). */
+export function faceColor(job: Job, feel: Feel, station: number): Oklch {
+  const g = GADGETS.materials.glass as unknown as { faceL: readonly [number, number]; faceCCap: number };
+  const L = clamp(F.L.base + F.L.W * feel.w + F.L.V * (feel.v - 0.5), g.faceL[0], g.faceL[1]);
+  const C = clamp(F.C.base + F.C.A * feel.a * (F.C.VMix[0] + F.C.VMix[1] * feel.v), 0, g.faceCCap);
+  return { L, C, H: wrap(station + F.H.V * (feel.v - 0.5) + F.H.W * feel.w) };
+}
+
 /** The accent: house orange, or sky when the body sits near orange and is colourful enough to clash. */
 export function accentFor(bodyHue: number, bodyC = Infinity): Oklch {
   const A = GADGETS.accent, near = bodyC >= A.flipMinC && Math.abs(((bodyHue - A.warm[2] + 540) % 360) - 180) <= A.flipWithinDeg;
@@ -79,13 +89,14 @@ export function resolveFeel(p: Placement): ResolvedFeel {
   const station = p.station ?? job.stations[0];
   const b = bodyColor(p.job, p.feel, material, station);
   const a = accentFor(b.H, b.C);
+  const f = faceColor(p.job, p.feel, station);
   const [t0, t1] = F.register.thresholds, midi = F.register.baseMidi;
   const [bLight, bMid] = GADGETS.set.bands;
   return {
     job: p.job, feel: p.feel, material, materialBy: by, station,
     container: p.container ?? (job.containers[0] as Container),
     reach: p.reach ?? (job.reach as Reach),
-    body: color(b.L, b.C, b.H), accent: color(a.L, a.C, a.H),
+    body: color(b.L, b.C, b.H), accent: color(a.L, a.C, a.H), face: color(f.L, f.C, f.H),
     register: p.feel.w <= t0 ? midi[0] : p.feel.w <= t1 ? midi[1] : midi[2],
     scale: p.feel.v >= 0.5 ? 'major' : 'minor',
     band: b.L >= bLight ? 0 : b.L >= bMid ? 1 : 2,

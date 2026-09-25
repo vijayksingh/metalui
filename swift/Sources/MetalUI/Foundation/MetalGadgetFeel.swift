@@ -42,6 +42,8 @@ public struct MetalGadgetResolved: Sendable {
     public let reach: MetalSoundReach
     public let body: MetalOklch
     public let accent: MetalOklch
+    /// A glass face's colour: the same feel in the glass face's light, icy ranges.
+    public let face: MetalOklch
     public let register: Int
     public let scale: String
     public let band: Int
@@ -68,6 +70,14 @@ public enum MetalGadgetModel {
         return MetalOklch(L: L, C: C, H: wrap(station + t.hue.valence * (f.v - 0.5) + t.hue.weight * f.w))
     }
 
+    /// A glass face's colour: the body's formula, clamped to the glass face's ranges (light, icy).
+    public static func faceColor(job: MetalGadgetJob, feel f: MetalGadgetFeel, station: Double) -> MetalOklch {
+        let t = MetalGadgetFeelTokens.self
+        let L = clamp(t.lightness.base + t.lightness.weight * f.w + t.lightness.valence * (f.v - 0.5), t.glassFaceLightness.0, t.glassFaceLightness.1)
+        let C = clamp(t.chroma.base + t.chroma.arousal * f.a * (t.chroma.mix.0 + t.chroma.mix.1 * f.v), 0, t.glassFaceChromaCap)
+        return MetalOklch(L: L, C: C, H: wrap(station + t.hue.valence * (f.v - 0.5) + t.hue.weight * f.w))
+    }
+
     /// House orange, or sky when the body sits near orange and is colourful enough to clash.
     public static func accent(bodyHue: Double, bodyChroma: Double = .infinity) -> MetalOklch {
         let t = MetalGadgetFeelTokens.self
@@ -85,7 +95,7 @@ public enum MetalGadgetModel {
         let band = b.L >= t.setBands.0 ? 0 : b.L >= t.setBands.1 ? 1 : 2
         return MetalGadgetResolved(job: p.job, feel: p.feel, material: m, materialBy: by, station: station,
                                    container: p.container ?? p.job.containers[0], reach: p.reach ?? p.job.reach,
-                                   body: b, accent: accent(bodyHue: b.H, bodyChroma: b.C), register: register,
+                                   body: b, accent: accent(bodyHue: b.H, bodyChroma: b.C), face: faceColor(job: p.job, feel: p.feel, station: station), register: register,
                                    scale: p.feel.v >= 0.5 ? "major" : "minor", band: band)
     }
 

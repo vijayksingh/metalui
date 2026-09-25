@@ -30,7 +30,7 @@ final class MetalGadgetParity: XCTestCase {
             XCTAssertEqual(r.scale, e["scale"] as? String, "\(name) scale")
             XCTAssertEqual(r.container, e["container"] as? String, "\(name) container")
             XCTAssertEqual(r.reach.rawValue, e["reach"] as? String, "\(name) reach")
-            for (key, value) in [("body", r.body), ("accent", r.accent)] {
+            for (key, value) in [("body", r.body), ("accent", r.accent), ("face", r.face)] {
                 let ex = e[key] as! [String: Any]
                 XCTAssertEqual(value.L, ex["L"] as! Double, accuracy: 1e-3, "\(name) \(key) L")
                 XCTAssertEqual(value.C, ex["C"] as! Double, accuracy: 1e-3, "\(name) \(key) C")

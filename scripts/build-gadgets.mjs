@@ -149,6 +149,15 @@ public enum MetalGadgetTokens {
     public static let keyShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.key.shadow.map(num).join(', ')})
     public static let keyAlone: Double = ${num(G.key.alone)}
     public static let keyPress: (dy: Double, sx: Double, sy: Double) = (${G.key.press.map(num).join(', ')})
+    public static let bezelWidth: Double = ${num(G.bezel.width)}
+    public static let bezelOpeningRadius: Double = ${num(G.bezel['opening-radius'])}
+    public static let bezelDepth: Double = ${num(G.bezel.depth)}
+    public static let glassDepth: (centre: Double, rim: Double) = (${G.glass.depth.map(num).join(', ')})
+    public static let glassRings: [Double] = [${G.glass.rings.map(num).join(', ')}]
+    public static let glassLine: (width: Double, alpha: Double) = (${G.glass.line.map(num).join(', ')})
+    public static let glassCross: Double = ${num(G.glass.cross)}
+    public static let glassRim: (width: Double, alpha: Double) = (${G.glass.rim.map(num).join(', ')})
+    public static let glassGlare: (cx: Double, cy: Double, width: Double, height: Double, alpha: Double) = (${G.glass.glare.map(num).join(', ')})
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
@@ -278,6 +287,9 @@ ${rules}
     public static let accentCool: (L: Double, C: Double, H: Double) = (${G.accent.cool.map(num).join(', ')})
     public static let accentFlipWithin: Double = ${num(G.accent['flip-within-deg'])}
     public static let accentFlipMinChroma: Double = ${num(G.accent['flip-min-C'])}
+    /// A glass face's own ranges: light and icy, apart from a glass body's dark ones.
+    public static let glassFaceLightness: (Double, Double) = (${G.materials.glass['face-L'].map(num).join(', ')})
+    public static let glassFaceChromaCap: Double = ${num(G.materials.glass['face-C-cap'])}
     public static let accentMinChroma: Double = ${num(G.accent['min-C'])}
     public static let setHueGap: Double = ${num(G.set['hue-gap'])}
     public static let setHueMinChroma: Double = ${num(G.set['hue-min-C'])}

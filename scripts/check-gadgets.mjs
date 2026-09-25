@@ -59,6 +59,7 @@ for (const [name, p] of Object.entries(placements)) {
     material: r.material, station: r.station, container: r.container, reach: r.reach, register: r.register, scale: r.scale, band: r.band,
     body: { L: round(r.body.L), C: round(r.body.C), H: round(r.body.H), srgb: r.body.pigment.srgb },
     accent: { L: round(r.accent.L), C: round(r.accent.C), H: round(r.accent.H), srgb: r.accent.pigment.srgb },
+    face: { L: round(r.face.L), C: round(r.face.C), H: round(r.face.H), srgb: r.face.pigment.srgb },
   };
 }
 emit('packages/metalui/src/gadgets/fixtures/placements.resolved.json', JSON.stringify(resolved, null, 2) + '\n');

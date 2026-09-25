@@ -42,6 +42,9 @@ public enum MetalGadgetFeelTokens {
     public static let accentCool: (L: Double, C: Double, H: Double) = (0.75, 0.13, 235.0)
     public static let accentFlipWithin: Double = 40.0
     public static let accentFlipMinChroma: Double = 0.04
+    /// A glass face's own ranges: light and icy, apart from a glass body's dark ones.
+    public static let glassFaceLightness: (Double, Double) = (0.75, 0.88)
+    public static let glassFaceChromaCap: Double = 0.1
     public static let accentMinChroma: Double = 0.13
     public static let setHueGap: Double = 30.0
     public static let setHueMinChroma: Double = 0.04

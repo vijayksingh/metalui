@@ -1,0 +1,21 @@
+{
+  "name": "bezel",
+  "title": "Bezel",
+  "status": "alpha",
+  "description": "An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Bezel",
+    "files": [
+      "bezel.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBezel",
+    "file": "swift/Sources/MetalUI/Components/MetalBezel.swift"
+  },
+  "agent": "bezel.agent.md",
+  "layer": "part",
+  "page": "/components/bezel",
+  "recipe": "gadgets"
+}

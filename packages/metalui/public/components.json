@@ -19,6 +19,23 @@
       "agent": "https://metalui.dev/r/beeper.md"
     },
     {
+      "name": "bezel",
+      "title": "Bezel",
+      "status": "alpha",
+      "description": "An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Bezel",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBezel"
+      },
+      "registry": "https://metalui.dev/r/bezel.json",
+      "agent": "https://metalui.dev/r/bezel.md"
+    },
+    {
       "name": "block-silhouette",
       "title": "Block silhouette",
       "status": "alpha",

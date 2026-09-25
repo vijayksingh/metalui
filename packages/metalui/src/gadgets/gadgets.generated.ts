@@ -485,6 +485,37 @@ export const GADGETS = {
       0.96
     ]
   },
+  "bezel": {
+    "width": 22,
+    "openingRadius": 0.2,
+    "depth": 12
+  },
+  "glass": {
+    "depth": [
+      0.05,
+      0.09
+    ],
+    "rings": [
+      0.36,
+      0.68
+    ],
+    "line": [
+      1.4,
+      0.24
+    ],
+    "cross": 0.14,
+    "rim": [
+      0.07,
+      0.28
+    ],
+    "glare": [
+      0.36,
+      0.3,
+      0.68,
+      0.4,
+      0.4
+    ]
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,
@@ -827,6 +858,11 @@ export const GADGETS = {
           "glass-face",
           "cell",
           "backlight"
+        ],
+        "opening": [
+          "enum",
+          "round",
+          "square"
         ]
       },
       "strike": [
