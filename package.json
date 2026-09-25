@@ -21,6 +21,7 @@
     "build": "npm run check && npm run build -w @unlocalhosted/metalui && npm run build -w @metalui/docs",
     "test:e2e": "playwright test",
     "verify:package": "node scripts/verify-package.mjs",
+    "verify:registry": "node scripts/verify-package.mjs --registry",
     "check:layers": "node scripts/check-layers.mjs",
     "check:composition": "node scripts/check-composition.mjs",
     "check:slots": "node scripts/check-slots.mjs",

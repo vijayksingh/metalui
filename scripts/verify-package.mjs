@@ -1,25 +1,31 @@
 #!/usr/bin/env node
-// Exercise the actual npm tarball as a consumer, not the workspace symlink.
+// Exercise the npm tarball or published registry version as a consumer, not the workspace symlink.
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const registry = process.argv.includes('--registry');
+const pkg = JSON.parse(readFileSync(join(root, 'packages/metalui/package.json'), 'utf8'));
 const temp = mkdtempSync(join(tmpdir(), 'metalui-consumer-'));
 try {
-  const packed = JSON.parse(execFileSync('npm', [
+  const packed = registry ? null : JSON.parse(execFileSync('npm', [
     'pack', '--json', '--workspace', '@unlocalhosted/metalui', '--pack-destination', temp,
   ], { cwd: root, encoding: 'utf8' }))[0];
-  const names = new Set(packed.files.map((file) => file.path));
-  for (const path of ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/styles.css', 'dist/icons.css', 'dist/icons-life.css']) {
-    if (!names.has(path)) throw new Error(`npm tarball missing ${path}`);
+  const required = ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/styles.css', 'dist/icons.css', 'dist/icons-life.css'];
+  const names = new Set(packed?.files.map((file) => file.path) ?? []);
+  for (const path of required) {
+    if (packed && !names.has(path)) throw new Error(`npm tarball missing ${path}`);
   }
   execFileSync('npm', [
     'install', '--prefix', temp, '--ignore-scripts', '--no-audit', '--no-fund', '--no-save',
-    join(temp, packed.filename), 'react@^19', 'react-dom@^19',
+    registry ? `${pkg.name}@${pkg.version}` : join(temp, packed.filename), 'react@^19', 'react-dom@^19',
   ], { cwd: root, stdio: 'pipe' });
+  if (registry) for (const path of required) {
+    if (!existsSync(join(temp, 'node_modules', '@unlocalhosted', 'metalui', path))) throw new Error(`Registry package missing ${path}`);
+  }
   const smoke = `
 import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
@@ -37,7 +43,7 @@ if (css.includes('button,input,optgroup')) throw new Error('Global reset leaked 
   const script = join(temp, 'smoke.mjs');
   writeFileSync(script, smoke);
   execFileSync('node', [script], { cwd: temp, stdio: 'inherit' });
-  console.log(`Package consumer: ${packed.name}@${packed.version}, ${packed.files.length} files, React render and CSS passed`);
+  console.log(`Package consumer: ${pkg.name}@${pkg.version} from ${registry ? 'registry' : 'local tarball'}, React render and CSS passed`);
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }
