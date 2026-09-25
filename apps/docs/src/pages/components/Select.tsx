@@ -58,14 +58,14 @@ export default function SelectPage() {
   return (
     <ComponentPage
       title="Select"
-      lede="Pick one value from a list: an icon, a folder, a preset. It is a well that holds the value, and it opens a frosted list with your choice over it."
+      lede="Pick one value from a list: an icon, a folder, a preset. It is a raised cap you click, and it opens a frosted list with your choice over it."
       play={{ lede: 'Open one with a click or with ↵ and the arrow keys. Type a letter to jump. Try the compact one in the strip, and press "try without choosing" to see the missing-value ring.', node: <Play /> }}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
-        { id: 'SE1', title: 'A value, not an action', body: 'A select holds a value, so it is a well like a field. An action belongs in a Menu, from a button.', origin: 'Ours' },
+        { id: 'SE1', title: 'Clicked, so raised', body: 'A select is clicked, not typed into, so it is a raised cap like a button. It stays pressed in while the list is out. A field you type into is the sunk well.', origin: 'Soft Hardware' },
         { id: 'SE2', title: 'Few options side by side', body: 'Two to four short options that fit are a Segmented. Use a select when the list is longer or the labels are long.', origin: 'Ours' },
         { id: 'SE3', title: 'The choice stays in place', body: 'The list opens with the chosen row over the trigger, so the eye does not have to find it again.', origin: 'macOS pop-up button' },
         { id: 'SE4', title: 'Latched is the green LED', body: 'The chosen row shows the same green LED as a latched tool, not a checkmark.', origin: 'Soft Hardware' },

@@ -2125,7 +2125,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a sunk well like a field, because it holds a value, not an action: the value and an up-down chevron. Hover lightens the well a little; open deepens it. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Segmented instead. (Soft Hardware materials (the field well, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
+    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a raised cap like a button, because it is clicked, not typed into: the value and an up-down chevron. Hover lightens the cap a little; press sinks it, and it stays sunk while the list is out. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Segmented instead. (Soft Hardware materials (the button cap, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
     public static let select = MetalObjectRecipe(
         name: "select",
         layers: [
@@ -2149,7 +2149,6 @@ public enum MetalRecipes {
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
-            "veil.open": .perColorway(bone: "rgba(0,0,0,.035)", graphite: "rgba(0,0,0,.22)"),
             "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
             "led.size": .number(6.0),
             "led.slot": .number(14.0),

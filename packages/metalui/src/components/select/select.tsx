@@ -11,14 +11,14 @@ import { menuParts } from '../menu/menu';
  * preset. Two to four short options that fit side by side are a Segmented; a long list you
  * search is a combobox; an action is a Menu.
  *
- *   trigger   a sunk well (a field holds a value, it is not an action): the value, and an
+ *   trigger   a raised cap like a button (it is clicked, not typed into): the value, and an
  *             up-down chevron (it opens over itself, like a Mac pop-up button)
- *   rest      the well; the placeholder in ink3 when nothing is chosen
- *   hover     the well lightens a little; the chevron darkens
- *   open      the well deepens; the chevron is ink
+ *   rest      the cap; the placeholder in ink3 when nothing is chosen
+ *   hover     the cap lightens a little; the chevron darkens
+ *   open      the cap stays pressed in; the chevron is ink
  *   focus     the focus ring (keyboard only)
  *   disabled  40 %, no pointer
- *   invalid   a thin red ring inside the well (a required value is missing)
+ *   invalid   a thin red ring inside the cap (a required value is missing)
  *   list      the menu's frosted plate. With room, it opens with the chosen row over the
  *             trigger; without, below it. It grows from the trigger on the surface spring
  *             (scale .97 → 1, opacity), and fades out fast on close
@@ -62,7 +62,11 @@ export interface SelectProps<V extends string = string> {
   className?: string;
 }
 
-const TRIGGER = { regular: 'mu-select-trigger select-trigger select-regular recipe-well-field', compact: 'mu-select-trigger select-trigger select-compact recipe-well-field' };
+const PRESS = 'not-data-disabled:active:translate-y-button-travel not-data-disabled:active:duration-button-press not-data-disabled:active:ease-linear';
+const TRIGGER = {
+  regular: `mu-select-trigger select-trigger select-regular recipe-button transition-button ${PRESS} not-data-disabled:active:recipe-button-pressed data-popup-open:recipe-button-pressed`,
+  compact: `mu-select-trigger select-trigger select-compact recipe-button-compact transition-button-compact ${PRESS} not-data-disabled:active:recipe-button-compact-pressed data-popup-open:recipe-button-compact-pressed`,
+};
 const VALUE = 'mu-select-value select-value';
 const CHEVRON = 'mu-select-chevron select-chevron';
 const POSITIONER = 'mu-menu-positioner z-menu-z';
@@ -99,7 +103,7 @@ function Row<V extends string>({ option }: { option: SelectOption<V> }) {
   );
 }
 
-/** One value from a list of named options: a well that opens a frosted list. */
+/** One value from a list of named options: a raised cap that opens a frosted list. */
 export function Select<V extends string = string>({
   options, value, defaultValue, onValueChange, placeholder, size = 'regular', disabled, invalid, className, name, ...aria
 }: SelectProps<V>) {
