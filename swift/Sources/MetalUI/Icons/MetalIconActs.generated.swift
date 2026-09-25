@@ -598,5 +598,54 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 12C12 13.4359 10.8359 14.6 9.4 14.6C7.9641 14.6 6.8 13.4359 6.8 12C6.8 10.5641 7.9641 9.4 9.4 9.4C10.8359 9.4 12 10.5641 12 12Z", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .calendar: MetalIconAct(
+            duration: 1.0,
+            caption: "Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.",
+            parts: [
+            MetalIconActPart(
+                name: "leaf", origin: CGPoint(x: 12.0, y: 10.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.06, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.97, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.16, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.78, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.02, ease: .linear),
+                    .init(0.36, x: 0.0, y: -0.2, r: 0.0, sx: 1.0, sy: -0.35, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.44, x: 0.0, y: -0.4, r: 0.0, sx: 1.0, sy: -0.55, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.62, x: 0.0, y: -0.8, r: 0.0, sx: 1.0, sy: -0.6, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.06, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.16, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3, 1.0, ease: .linear),
+                    .init(0.36, 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.44, 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.62, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "rings", origin: CGPoint(x: 12.0, y: 5.1),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.28, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.36, x: 0.0, y: -1.4, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.665, x: 0.0, y: 0.1219, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.97, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M6.7 5.2L17.3 5.2C19.0673 5.2 20.5 6.6327 20.5 8.4L20.5 17C20.5 18.7673 19.0673 20.2 17.3 20.2L6.7 20.2C4.9327 20.2 3.5 18.7673 3.5 17L3.5 8.4C3.5 6.6327 4.9327 5.2 6.7 5.2Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0),
+            MetalIconActInk(d: "M3.5 10L20.5 10", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8.2 3.4L8.2 6.8M15.8 3.4L15.8 6.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M3.5 10L20.5 10L20.5 17C20.5 18.7673 19.0673 20.2 17.3 20.2L6.7 20.2C4.9327 20.2 3.5 18.7673 3.5 17Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            ]
+        ),
     ]
 }

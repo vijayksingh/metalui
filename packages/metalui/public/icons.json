@@ -550,11 +550,20 @@
       "component": "CalendarIcon",
       "label": "Calendar",
       "category": "Tools",
-      "hover": "the rings lift",
-      "press": "the page turns in",
-      "pressMs": 340,
+      "hover": "Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.",
+        "durationMs": 1000,
+        "stages": [
+          "Lift",
+          "Flip",
+          "Settle"
+        ]
+      },
       "tuned16": false,
-      "construction": "Page 17 × 15 r3.2, tinted .08; header rule on the 10 line; binding rings at the 8 and 16 detents."
+      "construction": "Page 17 × 15 r3.2, tinted .08; header rule on the 10 line; binding rings at the 8 and 16 detents. Motion (study): today's leaf (an accent the shape of the page below the rule) curls from its bottom edge and flips up about the header rule; passing the binding it kicks the rings 1.4 up, which drop back on the part spring; the leaf lies over the head and fades."
     },
     {
       "name": "document",

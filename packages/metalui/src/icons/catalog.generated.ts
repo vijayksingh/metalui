@@ -922,24 +922,25 @@ export const ICON_CATALOG = {
     motion: {"duration":900,"caption":"The cord tugs the tag by its eyelet, and it swings there and comes to hang still.","stages":["Tug","Swing","Hang"],"tracks":[{"part":"tag","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.15556,"transform":"translate(-1.2px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33333,"transform":"translate(0px,0px) rotate(14deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.51111,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(2.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.81111,"transform":"translate(0px,0px) rotate(-0.8deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"taut","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.27778,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.34444,"transform":"scale(.8)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62222,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * CALENDAR · Tools
+   * CALENDAR · Tools · one act, 1000ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the rings lift
-   * PRESS one-shot (from the current pose)
-   *          the page turns in
-   *     0ms   .cb plays cl-p (340ms)
+   * Lift → Flip → Settle
+   *          Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.
+   *  leaf       0 → 60 → 160 → 300 → 360 → 440 → 620 → 1000ms
+   *  rings      0 → 280 → 360 → 665 → 970 → 1000ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "calendar": {
     label: "Calendar",
     category: "Tools",
-    hover: "the rings lift",
-    press: "the page turns in",
-    pressMs: 340,
+    hover: "Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.",
+    press: "plays the same act",
+    pressMs: 1000,
     defs: "",
-    body: "<rect class=\"cb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5.2\" width=\"17\" height=\"15\" rx=\"3.2\"/><path d=\"M3.5 10h17\"/><path class=\"cr\" d=\"M8.2 3.4v3.4M15.8 3.4v3.4\"/>",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"3.5\" y=\"5.2\" width=\"17\" height=\"15\" rx=\"3.2\"/><path d=\"M3.5 10h17\"/><path data-part=\"rings\" d=\"M8.2 3.4v3.4M15.8 3.4v3.4\"/><path class=\"ac f\" data-part=\"leaf\" opacity=\"0\" style=\"--duo:.14\" d=\"M3.5 10h17v7a3.2 3.2 0 0 1-3.2 3.2H6.7a3.2 3.2 0 0 1-3.2-3.2Z\"/>",
     sw16: 1.85,
+    motion: {"duration":1000,"caption":"Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.","stages":["Lift","Flip","Settle"],"tracks":[{"part":"leaf","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.06,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.97)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.78)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.02)","opacity":1,"easing":"linear"},{"offset":0.36,"transform":"translate(0px,-0.2px) rotate(0deg) scale(1,-0.35)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.44,"transform":"translate(0px,-0.4px) rotate(0deg) scale(1,-0.55)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62,"transform":"translate(0px,-0.8px) rotate(0deg) scale(1,-0.6)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]},{"part":"rings","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.36,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.665,"transform":"translate(0px,0.1219px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.97,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * DOCUMENT · Tools

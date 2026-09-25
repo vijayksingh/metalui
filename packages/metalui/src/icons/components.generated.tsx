@@ -85,7 +85,7 @@ export const RegionIcon = createIcon("region", "RegionIcon");
 export const TaskIcon = createIcon("task", "TaskIcon");
 /** Tag. Hover: The cord tugs the tag by its eyelet, and it swings there and comes to hang still.. Press: plays the same act. */
 export const TagIcon = createIcon("tag", "TagIcon");
-/** Calendar. Hover: the rings lift. Press: the page turns in. */
+/** Calendar. Hover: Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.. Press: plays the same act. */
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");
 /** Document. Hover: the second line writes on. Press: the lines redraw. */
 export const DocumentIcon = createIcon("document", "DocumentIcon");
