@@ -2124,6 +2124,39 @@ public enum MetalRecipes {
             "region-ring.violet": .perColorway(bone: "rgba(124,92,196,.22)", graphite: "rgba(170,140,240,.2)"),
         ]
     )
+
+    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a sunk well like a field, because it holds a value, not an action: the value and an up-down chevron. Hover lightens the well a little; open deepens it. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Segmented instead. (Soft Hardware materials (the field well, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
+    public static let select = MetalObjectRecipe(
+        name: "select",
+        layers: [
+
+        ],
+        props: [
+            "regular.height": .number(32.0),
+            "regular.radius": .number(11.0),
+            "regular.pad-left": .number(12.0),
+            "regular.pad-right": .number(8.0),
+            "regular.gap": .number(8.0),
+            "regular.font": .text("500 13px/1 sans"),
+            "regular.min-width": .number(140.0),
+            "compact.height": .number(28.0),
+            "compact.radius": .number(9.0),
+            "compact.pad-left": .number(10.0),
+            "compact.pad-right": .number(6.0),
+            "compact.gap": .number(6.0),
+            "compact.font": .text("500 12.5px/1 sans"),
+            "compact.min-width": .number(112.0),
+            "chevron.size": .number(12.0),
+            "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
+            "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
+            "veil.open": .perColorway(bone: "rgba(0,0,0,.035)", graphite: "rgba(0,0,0,.22)"),
+            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
+            "led.size": .number(6.0),
+            "led.slot": .number(14.0),
+            "pop.scale": .text("0.97"),
+            "pop.offset": .number(6.0),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

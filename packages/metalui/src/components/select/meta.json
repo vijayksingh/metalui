@@ -1,0 +1,19 @@
+{
+  "name": "select",
+  "title": "Select",
+  "status": "alpha",
+  "description": "One value from a list of named options: a sunk well showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.",
+  "base": "@base-ui/react/select",
+  "react": {
+    "export": "Select",
+    "files": [
+      "select.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSelect",
+    "file": "swift/Sources/MetalUI/Components/MetalSelect.swift"
+  },
+  "agent": "select.agent.md",
+  "layer": "component"
+}

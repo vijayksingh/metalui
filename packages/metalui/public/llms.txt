@@ -40,6 +40,7 @@
 - [Row](https://metalui.dev/r/row.md): A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.
 - [Rule](https://metalui.dev/r/rule.md): An engraved groove between groups; graphite on dark chrome.
 - [Segmented control](https://metalui.dev/r/segmented.md): A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.
+- [Select](https://metalui.dev/r/select.md): One value from a list of named options: a sunk well showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.
 - [Selection frame](https://metalui.dev/r/selection-frame.md): The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.
 - [Settings](https://metalui.dev/r/settings.md): An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.
 - [Size readout](https://metalui.dev/r/size-readout.md): A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(graphite-deep) with a live Led and the value in Label(readout).

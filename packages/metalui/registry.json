@@ -613,6 +613,26 @@
       "docs": "Agent guide: https://metalui.dev/r/segmented.md. SwiftUI: MetalSegmented in the MetalUI Swift package."
     },
     {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "One value from a list of named options: a sunk well showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/select/select.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/select/select.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/select.md. SwiftUI: MetalSelect in the MetalUI Swift package."
+    },
+    {
       "name": "selection-frame",
       "type": "registry:ui",
       "title": "Selection frame",

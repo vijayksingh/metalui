@@ -64,6 +64,7 @@ export const NAV: NavGroup[] = [
       { to: '/components/perfect-preview', label: 'Perfect preview' },
       { to: '/components/line-handles', label: 'Line handles' },
       { to: '/components/folder', label: 'Folder' },
+      { to: '/components/select', label: 'Select' },
       { to: '/components/cue', label: 'Cue family' },
       { to: '/components/suggestion-chip', label: 'Suggestion chip' },
       { to: '/components/link-card', label: 'Link card' },
