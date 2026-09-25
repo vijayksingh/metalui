@@ -27,7 +27,7 @@ export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
 export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
 /** Eraser. Hover: it leans onto a scribble, ready. Press: it rubs back and forth, the scribble goes and crumbs fall. */
 export const EraserIcon = createIcon("eraser", "EraserIcon");
-/** Layout. Hover: tiles swap sides. Press: tiles settle together. */
+/** Layout. Hover: The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.. Press: plays the same act. */
 export const LayoutIcon = createIcon("layout", "LayoutIcon");
 /** Tidy. Hover: loose tiles snap to the guide. Press: guide pulses, tiles click home. */
 export const TidyIcon = createIcon("tidy", "TidyIcon");

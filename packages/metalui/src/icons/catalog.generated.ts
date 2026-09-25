@@ -303,26 +303,27 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * LAYOUT · Tools
+   * LAYOUT · Tools · one act, 1143ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          tiles swap sides
-   * PRESS one-shot (from the current pose)
-   *          tiles settle together
-   *     0ms   .lt plays lay-p (320ms)
-   *    40ms   .l1 plays lay-p1 (320ms)
-   *    80ms   .l2 plays lay-p1 (320ms)
+   * Draw apart → Snap → Seat
+   *          The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.
+   *  tall       0 → 190 → 250 → 370 → 726 → 1083 → 1143ms
+   *  top        0 → 220 → 280 → 400 → 756 → 1113 → 1143ms
+   *  bottom     0 → 250 → 310 → 430 → 786 → 1143ms
+   *  rule       0 → 370 → 420 → 760 → 1143ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "layout": {
     label: "Layout",
     category: "Tools",
-    hover: "tiles swap sides",
-    press: "tiles settle together",
-    pressMs: 400,
+    hover: "The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.",
+    press: "plays the same act",
+    pressMs: 1143,
     defs: "",
-    body: "<rect class=\"lt f\" style=\"--duo:.16\" x=\"3.6\" y=\"3.6\" width=\"7\" height=\"16.8\" rx=\"2.4\"/><rect class=\"l1\" x=\"13.4\" y=\"3.6\" width=\"7\" height=\"7\" rx=\"2.4\"/><rect class=\"l2\" x=\"13.4\" y=\"13.4\" width=\"7\" height=\"7\" rx=\"2.4\"/>",
+    body: "<g data-part=\"tall\"><rect class=\"f\" style=\"--duo:.16\" x=\"3.6\" y=\"3.6\" width=\"7\" height=\"16.8\" rx=\"2.4\"/></g><g data-part=\"top\"><rect x=\"13.4\" y=\"3.6\" width=\"7\" height=\"7\" rx=\"2.4\"/></g><g data-part=\"bottom\"><rect x=\"13.4\" y=\"13.4\" width=\"7\" height=\"7\" rx=\"2.4\"/></g><path class=\"ac\" data-part=\"rule\" opacity=\"0\" d=\"M12 4.6v14.8\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
     sw16: 1.85,
+    motion: {"duration":1143,"caption":"The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.","stages":["Draw apart","Snap","Seat"],"tracks":[{"part":"tall","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16623,"transform":"translate(-1.1px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21872,"transform":"translate(-1.155px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.32371,"transform":"translate(0px,0px) rotate(0deg) scale(0.84,1.06)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63517,"transform":"translate(0px,0px) rotate(0deg) scale(1.0158,0.9941)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.94751,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"top","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.19248,"transform":"translate(1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.24497,"transform":"translate(1.365px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.34996,"transform":"translate(0px,0px) rotate(0deg) scale(0.84,1.06)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66142,"transform":"translate(0px,0px) rotate(0deg) scale(1.0158,0.9941)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.97375,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"bottom","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21872,"transform":"translate(1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27122,"transform":"translate(1.365px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3762,"transform":"translate(0px,0px) rotate(0deg) scale(0.84,1.06)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.68766,"transform":"translate(0px,0px) rotate(0deg) scale(1.0158,0.9941)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"rule","keyframes":[{"offset":0,"transform":"scale(1,.4)","opacity":0},{"offset":0.32371,"transform":"scale(1,.4)","opacity":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.36745,"transform":"scale(1,1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66492,"transform":"scale(1,1.04)","opacity":0},{"offset":1,"transform":"scale(1,.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * TIDY · Tools

@@ -159,11 +159,20 @@
       "component": "LayoutIcon",
       "label": "Layout",
       "category": "Tools",
-      "hover": "tiles swap sides",
-      "press": "tiles settle together",
-      "pressMs": 400,
+      "hover": "The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.",
+      "press": "plays the same act",
+      "pressMs": 1143,
+      "motion": {
+        "caption": "The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.",
+        "durationMs": 1143,
+        "stages": [
+          "Draw apart",
+          "Snap",
+          "Seat"
+        ]
+      },
       "tuned16": false,
-      "construction": "One tall + two square tiles, radius 2.4, 2.8u gutter."
+      "construction": "One tall + two square tiles, radius 2.4, 2.8u gutter. Motion (study): the columns are drawn apart (tall 1.1 left, squares 1.3 right), snap back onto the gutter squashing .84 against it in order tall, top, bottom, and spring out of the squash on the object spring; a gutter rule flashes at the seam."
     },
     {
       "name": "tidy",
