@@ -1323,7 +1323,7 @@ An engraved groove between groups. React: `Rule`. SwiftUI: `MetalRule`.
 
 # Select
 
-One value from a list of named options. React: `Select` from `@unlocalhosted/metalui`. SwiftUI: `MetalSelect` (not yet).
+One value from a list of named options. React: `Select` from `@unlocalhosted/metalui`. SwiftUI: `MetalSelect`.
 
 ## Use it for
 
@@ -1881,7 +1881,7 @@ First paint and resizes place the thumb without motion. Reduce Motion: the thumb
 
 # Tabs
 
-Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unlocalhosted/metalui`. SwiftUI: `MetalTabs` (not yet).
+Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unlocalhosted/metalui`. SwiftUI: `MetalTabs`.
 
 ## Use it for
 

@@ -2180,6 +2180,7 @@ public enum MetalRecipes {
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
+            "error.width": .number(1.0),
             "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
             "led.size": .number(6.0),
             "led.slot": .number(14.0),

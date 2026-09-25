@@ -22,15 +22,17 @@ public struct MetalLED: View {
     public enum Size: Sendable { case `default`, small }
     let kind: MetalLEDKind
     let size: Size
+    let diameter: CGFloat?
 
-    public init(_ kind: MetalLEDKind, size: Size = .default) {
+    public init(_ kind: MetalLEDKind, size: Size = .default, diameter: CGFloat? = nil) {
         self.kind = kind
         self.size = size
+        self.diameter = diameter
     }
 
     public var body: some View {
         let recipe = MetalRecipes.status
-        let d = recipe.points(size == .small ? "led.size-small" : "led.size")
+        let d = diameter ?? recipe.points(size == .small ? "led.size-small" : "led.size")
         Color.clear
             .frame(width: d, height: d)
             .metalObjectRecipe(recipe, part: "led", state: kind.recipeState, in: Circle())

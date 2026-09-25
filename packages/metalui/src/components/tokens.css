@@ -1706,6 +1706,7 @@
   --mu-r-select-compact-font: 500 12.5px/1.3 var(--mu-sans);
   --mu-r-select-compact-min-width: 112px;
   --mu-r-select-chevron-size: 12px;
+  --mu-r-select-error-width: 1px;
   --mu-r-select-led-size: 6px;
   --mu-r-select-led-slot: 14px;
   --mu-r-select-pop-scale: 0.97;

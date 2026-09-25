@@ -1,6 +1,6 @@
 # Select
 
-One value from a list of named options. React: `Select` from `@unlocalhosted/metalui`. SwiftUI: `MetalSelect` (not yet).
+One value from a list of named options. React: `Select` from `@unlocalhosted/metalui`. SwiftUI: `MetalSelect`.
 
 ## Use it for
 

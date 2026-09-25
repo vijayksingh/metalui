@@ -109,7 +109,7 @@ public struct MetalSelect<Value: Hashable>: View {
         }
         .overlay {
             if invalid, let ring = recipe.color("error.ring", colorway: MetalRecipeColorway(colorway)) {
-                shape.strokeBorder(ring.color, lineWidth: MetalRecipes.well.points("region-dot.hue-edge"))
+                shape.strokeBorder(ring.color, lineWidth: recipe.points("error.width"))
             }
             if triggerFocused && isEnabled {
                 shape.inset(by: -(button.points("self.focus-offset") + button.points("self.focus-width") / 2))
@@ -202,7 +202,7 @@ public struct MetalSelect<Value: Hashable>: View {
         } label: {
             HStack(spacing: recipe.points("row.gap")) {
                 Group {
-                    if selection == option.value { MetalLED(.live, size: .small) }
+                    if selection == option.value { MetalLED(.live, diameter: select.points("led.size")) }
                     else { Color.clear }
                 }
                 .frame(width: select.points("led.slot"))
