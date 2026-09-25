@@ -3,6 +3,7 @@ import { Folder, Segmented, type FolderHue, type FolderPeek } from '@unlocalhost
 import reactSource from '../../../../../packages/metalui/src/components/folder/folder.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/folder/folder.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
+import { FolderUnfold } from '../../ui/FolderUnfold';
 
 /* ─────────────────────────────────────────────────────────
  * PUTTING A THING IN A FOLDER
@@ -169,6 +170,7 @@ export default function FolderPage() {
       title="Folder"
       lede="A folder on the canvas holds blocks and takes little space. Unfold it to work with what is inside."
       play={{ lede: 'Drag a photo, a link or a note onto the folder: it opens as you come over it, the thing goes into the pocket, and the flap swings shut. Try the colours.', node: <Play /> }}
+      more={[{ id: 'unfold', title: 'Unfold', lede: 'Double-click the folder: it opens into a region in its own colour and its blocks lay themselves out. Fold it back from the region\'s head.', node: <FolderUnfold /> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

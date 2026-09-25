@@ -14,6 +14,8 @@ export interface WellProps extends React.HTMLAttributes<HTMLElement> {
   radius?: WellRadius;
   /** A region well lit as a drop target. */
   over?: boolean;
+  /** A region unfolded from a folder is washed in the folder's colour (neutral, red, amber, green, blue, violet). */
+  hue?: 'neutral' | 'red' | 'amber' | 'green' | 'blue' | 'violet';
   as?: 'div' | 'span' | 'label';
 }
 
@@ -32,10 +34,11 @@ const RADII: Record<WellRadius, string> = {
   row: 'rounded-well-radius-row',
 };
 
-export const Well = React.forwardRef<HTMLElement, WellProps>(function Well({ variant, radius, over, as = 'div', className, ...props }, ref) {
+export const Well = React.forwardRef<HTMLElement, WellProps>(function Well({ variant, radius, over, hue, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const look = variant === 'region' && over ? OVER : VARIANTS[variant];
   const placed = /(^|\s)(fixed|absolute|sticky|static)(\s|$)/.test(typeof className === 'string' ? className : '');
-  const own = `mu-well box-border${placed ? '' : ' relative'} transition-well ${look}${radius ? ` ${RADII[radius]}` : ''}`;
-  return <Tag ref={ref} data-variant={variant} data-radius={radius} data-over={over ? '' : undefined} className={className ? `${own} ${className}` : own} {...props} />;
+  const tint = variant === 'region' && hue && hue !== 'neutral' ? ' region-hue' : '';
+  const own = `mu-well box-border${placed ? '' : ' relative'} transition-well ${look}${radius ? ` ${RADII[radius]}` : ''}${tint}`;
+  return <Tag ref={ref} data-variant={variant} data-radius={radius} data-over={over ? '' : undefined} data-hue={tint ? hue : undefined} className={className ? `${own} ${className}` : own} {...props} />;
 });

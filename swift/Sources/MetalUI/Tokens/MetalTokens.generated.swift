@@ -2110,6 +2110,18 @@ public enum MetalRecipes {
             "fan.pocket-y": .text("70px"),
             "fan.pocket-r": .text("4deg"),
             "fan.max": .text("6"),
+            "region-wash.neutral": .perColorway(bone: "rgba(0,0,0,0)", graphite: "rgba(0,0,0,0)"),
+            "region-wash.red": .perColorway(bone: "rgba(216,69,59,.09)", graphite: "rgba(255,122,102,.08)"),
+            "region-wash.amber": .perColorway(bone: "rgba(224,161,42,.11)", graphite: "rgba(245,191,85,.08)"),
+            "region-wash.green": .perColorway(bone: "rgba(63,185,122,.10)", graphite: "rgba(120,214,165,.08)"),
+            "region-wash.blue": .perColorway(bone: "rgba(36,87,242,.08)", graphite: "rgba(111,155,255,.09)"),
+            "region-wash.violet": .perColorway(bone: "rgba(124,92,196,.09)", graphite: "rgba(170,140,240,.09)"),
+            "region-ring.neutral": .perColorway(bone: "rgba(0,0,0,0)", graphite: "rgba(0,0,0,0)"),
+            "region-ring.red": .perColorway(bone: "rgba(216,69,59,.22)", graphite: "rgba(255,122,102,.2)"),
+            "region-ring.amber": .perColorway(bone: "rgba(224,161,42,.22)", graphite: "rgba(245,191,85,.2)"),
+            "region-ring.green": .perColorway(bone: "rgba(63,185,122,.22)", graphite: "rgba(120,214,165,.2)"),
+            "region-ring.blue": .perColorway(bone: "rgba(36,87,242,.22)", graphite: "rgba(111,155,255,.2)"),
+            "region-ring.violet": .perColorway(bone: "rgba(124,92,196,.22)", graphite: "rgba(170,140,240,.2)"),
         ]
     )
 }

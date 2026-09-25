@@ -832,6 +832,18 @@
   --color-folder-shape-edge: var(--mu-r-folder-shape-edge);
   --color-folder-shape-light: var(--mu-r-folder-shape-light);
   --color-folder-shade-ink: var(--mu-r-folder-shade-ink);
+  --color-folder-region-wash-neutral: var(--mu-r-folder-region-wash-neutral);
+  --color-folder-region-wash-red: var(--mu-r-folder-region-wash-red);
+  --color-folder-region-wash-amber: var(--mu-r-folder-region-wash-amber);
+  --color-folder-region-wash-green: var(--mu-r-folder-region-wash-green);
+  --color-folder-region-wash-blue: var(--mu-r-folder-region-wash-blue);
+  --color-folder-region-wash-violet: var(--mu-r-folder-region-wash-violet);
+  --color-folder-region-ring-neutral: var(--mu-r-folder-region-ring-neutral);
+  --color-folder-region-ring-red: var(--mu-r-folder-region-ring-red);
+  --color-folder-region-ring-amber: var(--mu-r-folder-region-ring-amber);
+  --color-folder-region-ring-green: var(--mu-r-folder-region-ring-green);
+  --color-folder-region-ring-blue: var(--mu-r-folder-region-ring-blue);
+  --color-folder-region-ring-violet: var(--mu-r-folder-region-ring-violet);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -2011,7 +2023,7 @@
   flex: none; display: grid; place-items: center; min-width: var(--mu-r-folder-count-size); height: var(--mu-r-folder-count-size); box-sizing: border-box; padding: 0 var(--mu-r-folder-count-pad); border-radius: 99px; font: 600 10.5px/1 var(--mu-mono); font-variant-numeric: tabular-nums; color: var(--mu-ink); background: var(--mu-r-folder-count-background); box-shadow: var(--mu-r-folder-count-shadow);
 }
 @utility region-hue {
-  background-image: linear-gradient(var(--mu-folder-wash), var(--mu-folder-wash)); --mu-folder-wash: var(--mu-r-folder-wash-neutral); &[data-hue=neutral] { --mu-folder-wash: var(--mu-r-folder-wash-neutral); } &[data-hue=red] { --mu-folder-wash: var(--mu-r-folder-wash-red); } &[data-hue=amber] { --mu-folder-wash: var(--mu-r-folder-wash-amber); } &[data-hue=green] { --mu-folder-wash: var(--mu-r-folder-wash-green); } &[data-hue=blue] { --mu-folder-wash: var(--mu-r-folder-wash-blue); } &[data-hue=violet] { --mu-folder-wash: var(--mu-r-folder-wash-violet); }
+  &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--mu-region-wash); box-shadow: inset 0 0 0 1px var(--mu-region-ring); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); } &[data-hue=neutral] { --mu-region-wash: var(--mu-r-folder-region-wash-neutral); --mu-region-ring: var(--mu-r-folder-region-ring-neutral); } &[data-hue=red] { --mu-region-wash: var(--mu-r-folder-region-wash-red); --mu-region-ring: var(--mu-r-folder-region-ring-red); } &[data-hue=amber] { --mu-region-wash: var(--mu-r-folder-region-wash-amber); --mu-region-ring: var(--mu-r-folder-region-ring-amber); } &[data-hue=green] { --mu-region-wash: var(--mu-r-folder-region-wash-green); --mu-region-ring: var(--mu-r-folder-region-ring-green); } &[data-hue=blue] { --mu-region-wash: var(--mu-r-folder-region-wash-blue); --mu-region-ring: var(--mu-r-folder-region-ring-blue); } &[data-hue=violet] { --mu-region-wash: var(--mu-r-folder-region-wash-violet); --mu-region-ring: var(--mu-r-folder-region-ring-violet); }
 }
 @utility folder-shade {
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--mu-r-folder-back-height) + var(--mu-r-folder-back-tab-rise)); filter: var(--mu-r-folder-shape-shadow-blur); transform: translateY(14px) scale(.96, .92); transform-origin: 50% 100%; pointer-events: none;

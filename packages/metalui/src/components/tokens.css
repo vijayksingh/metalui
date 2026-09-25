@@ -2075,6 +2075,18 @@
   --mu-r-folder-shape-edge: rgba(24,22,16,.10);
   --mu-r-folder-shape-light: rgba(255,255,255,.95);
   --mu-r-folder-shade-ink: rgba(24,22,16,.16);
+  --mu-r-folder-region-wash-neutral: rgba(0,0,0,0);
+  --mu-r-folder-region-wash-red: rgba(216,69,59,.09);
+  --mu-r-folder-region-wash-amber: rgba(224,161,42,.11);
+  --mu-r-folder-region-wash-green: rgba(63,185,122,.10);
+  --mu-r-folder-region-wash-blue: rgba(36,87,242,.08);
+  --mu-r-folder-region-wash-violet: rgba(124,92,196,.09);
+  --mu-r-folder-region-ring-neutral: rgba(0,0,0,0);
+  --mu-r-folder-region-ring-red: rgba(216,69,59,.22);
+  --mu-r-folder-region-ring-amber: rgba(224,161,42,.22);
+  --mu-r-folder-region-ring-green: rgba(63,185,122,.22);
+  --mu-r-folder-region-ring-blue: rgba(36,87,242,.22);
+  --mu-r-folder-region-ring-violet: rgba(124,92,196,.22);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2442,6 +2454,18 @@
   --mu-r-folder-shape-edge: rgba(0,0,0,.55);
   --mu-r-folder-shape-light: rgba(255,255,255,.14);
   --mu-r-folder-shade-ink: rgba(0,0,0,.55);
+  --mu-r-folder-region-wash-neutral: rgba(0,0,0,0);
+  --mu-r-folder-region-wash-red: rgba(255,122,102,.08);
+  --mu-r-folder-region-wash-amber: rgba(245,191,85,.08);
+  --mu-r-folder-region-wash-green: rgba(120,214,165,.08);
+  --mu-r-folder-region-wash-blue: rgba(111,155,255,.09);
+  --mu-r-folder-region-wash-violet: rgba(170,140,240,.09);
+  --mu-r-folder-region-ring-neutral: rgba(0,0,0,0);
+  --mu-r-folder-region-ring-red: rgba(255,122,102,.2);
+  --mu-r-folder-region-ring-amber: rgba(245,191,85,.2);
+  --mu-r-folder-region-ring-green: rgba(120,214,165,.2);
+  --mu-r-folder-region-ring-blue: rgba(111,155,255,.2);
+  --mu-r-folder-region-ring-violet: rgba(170,140,240,.2);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2810,5 +2834,17 @@
     --mu-r-folder-shape-edge: rgba(0,0,0,.55);
     --mu-r-folder-shape-light: rgba(255,255,255,.14);
     --mu-r-folder-shade-ink: rgba(0,0,0,.55);
+    --mu-r-folder-region-wash-neutral: rgba(0,0,0,0);
+    --mu-r-folder-region-wash-red: rgba(255,122,102,.08);
+    --mu-r-folder-region-wash-amber: rgba(245,191,85,.08);
+    --mu-r-folder-region-wash-green: rgba(120,214,165,.08);
+    --mu-r-folder-region-wash-blue: rgba(111,155,255,.09);
+    --mu-r-folder-region-wash-violet: rgba(170,140,240,.09);
+    --mu-r-folder-region-ring-neutral: rgba(0,0,0,0);
+    --mu-r-folder-region-ring-red: rgba(255,122,102,.2);
+    --mu-r-folder-region-ring-amber: rgba(245,191,85,.2);
+    --mu-r-folder-region-ring-green: rgba(120,214,165,.2);
+    --mu-r-folder-region-ring-blue: rgba(111,155,255,.2);
+    --mu-r-folder-region-ring-violet: rgba(170,140,240,.2);
   }
 }

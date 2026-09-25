@@ -18,6 +18,8 @@ import { Row } from '../../components/row/row';
  * past    it did not exist at the scrubbed time: 0, and it takes no pointer
  * lens    a pinned lens: a frosted plate listing its matches as rows
  * rename  the name becomes a field; Enter commits, Escape restores
+ * hue     unfolded from a folder: the well is washed in the folder's colour, so you can always
+ *         tell which folder it is; folding it back returns it there
  * ───────────────────────────────────────────────────────── */
 
 /* Layout from the region group. The whole fades on settle: .35 when dim, gone (and no pointer) in the
@@ -35,11 +37,13 @@ export interface RegionRootProps extends React.HTMLAttributes<HTMLDivElement> {
   past?: boolean;
   /** A pinned lens: a frosted plate whose body lists rows. */
   lens?: boolean;
+  /** Unfolded from a folder: washed in the folder's colour. */
+  hue?: 'neutral' | 'red' | 'amber' | 'green' | 'blue' | 'violet';
   width?: number;
   height?: number;
 }
 
-const Root = React.forwardRef<HTMLDivElement, RegionRootProps>(function RegionRoot({ over, dim, past, lens, width, height, className, style, ...props }, ref) {
+const Root = React.forwardRef<HTMLDivElement, RegionRootProps>(function RegionRoot({ over, dim, past, lens, hue, width, height, className, style, ...props }, ref) {
   const shared = {
     ref: ref as React.Ref<HTMLElement>,
     role: 'group',
@@ -52,7 +56,7 @@ const Root = React.forwardRef<HTMLDivElement, RegionRootProps>(function RegionRo
     style: width === undefined ? style : { width, height, ...style },
     ...props,
   };
-  return lens ? <Surface material="lens" {...shared} /> : <Well variant="region" over={over} {...shared} />;
+  return lens ? <Surface material="lens" {...shared} /> : <Well variant="region" over={over} hue={hue} {...shared} />;
 });
 
 function Header({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
