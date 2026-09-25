@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switcher, inkColor } from '@unlocalhosted/metalui';
 import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
+import { fitFrame, settleWord } from '../lib/ink-word';
 
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK LAB (the Brush cursor page)
@@ -14,6 +15,9 @@ import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type 
  * Cost stays flat however long the word: a live stroke's frozen ink is outlined once, in chunks,
  * and only its tail is recomputed each frame; a finished stroke is outlined once, on lift.
  * The dials tune the assist for new strokes (per tool presets are the defaults).
+ * Words: a 600 ms pause, or a new stroke more than 1.2 x-heights past the word or 1.5 off its line,
+ * completes the word; it then settles (ink-word.ts) in one morph on MetalUI's settle spring (a
+ * crossfade under Reduce Motion). Settled · As written compares.
  * Copy strokes copies every stroke's raw samples (x, y, time, pressure) as JSON: real handwriting
  * for the engine's fixtures.
  * ───────────────────────────────────────────────────────── */
@@ -24,13 +28,38 @@ const LOOK: Record<AssistTool, { size: number; thinning: number; taper: number; 
   marker: { size: 10, thinning: 0.05, taper: 0, opacity: 0.45 },
 };
 
-interface Stroke { id: number; tool: AssistTool; raw: InkSample[]; live?: LiveInk; chunks: string[]; chunked: number; done?: string }
+interface Stroke {
+  id: number; tool: AssistTool; raw: InkSample[]; live?: LiveInk; chunks: string[]; chunked: number; done?: string;
+  /** The assisted ink as written, once lifted; the word settle's target; the morph's progress (0–1). */
+  ink?: InkSample[]; settled?: InkSample[]; morph?: number; settledPath?: string;
+}
+
+/* MetalUI's settle spring, read from its token (a CSS linear() curve and a duration), so the word's
+ * morph moves exactly like the rest of the system. */
+function settleSpring(): { ease: (t: number) => number; ms: number } {
+  const css = getComputedStyle(document.documentElement);
+  const pts = (css.getPropertyValue('--mu-spring-settle').match(/-?[\d.]+/g) ?? ['0', '1']).map(Number);
+  const ms = parseFloat(css.getPropertyValue('--mu-spring-settle-d')) * 1000 || 440;
+  return { ms, ease: (t) => { const x = Math.min(1, Math.max(0, t)) * (pts.length - 1), i = Math.floor(x); return i >= pts.length - 1 ? pts[pts.length - 1] : pts[i] + (pts[i + 1] - pts[i]) * (x - i); } };
+}
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const CHUNK = 32;
+/** Word finding (INK_ENGINE.md §4.8): a pause, or a gap past the word, or a new line. */
+const PAUSE = 600, WORD_GAP = 1.2, LINE_GAP = 1.5;
 
 /** The stroke's ink as outline paths: cached chunks of frozen ink and the live tail, or the finished whole. */
-function inkPaths(s: Stroke): string[] {
+function inkPaths(s: Stroke, written: boolean): string[] {
   const look = LOOK[s.tool];
+  if (s.settled && s.ink && !written) {
+    if (s.morph !== undefined && s.morph < 1 && !reducedMotion()) {
+      const e = settleSpring().ease(s.morph);
+      const pts = s.ink.map((q, i) => ({ ...q, x: q.x + (s.settled![i].x - q.x) * e, y: q.y + (s.settled![i].y - q.y) * e }));
+      return [outlinePath(pts, look.size, look.thinning, look.taper)];
+    }
+    s.settledPath ??= outlinePath(s.settled, look.size, look.thinning, look.taper);
+    return [s.settledPath];
+  }
   if (s.done) return [s.done];
   if (!s.live) return [];
   const { frozen, tail } = s.live.read();
@@ -69,6 +98,7 @@ const TAU = Math.PI * 2;
 export function AssistLab() {
   const [tool, setTool] = React.useState<AssistTool>('pen');
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
+  const [asWritten, setAsWritten] = React.useState<'settled' | 'written'>('settled');
   const [strokes, setStrokes] = React.useState<Stroke[]>([]);
   const d = useDialKit('Assisted ink', {
     settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
@@ -104,6 +134,8 @@ export function AssistLab() {
     try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* synthetic */ }
     e.preventDefault();
     const p = pos(e), t = e.timeStamp;
+    window.clearTimeout(pause.current);
+    if (startsNewWord(p.x, p.y)) completeWord();
     const s: Stroke = { id: Date.now(), tool, raw: [], live: new LiveInk(params(tool)), chunks: [], chunked: 0 };
     live.current = { s, last: { ...p, t } };
     feed(live.current, { ...p, t, pressure: 0.5 });
@@ -112,7 +144,9 @@ export function AssistLab() {
   const feed = (L: { s: Stroke }, sample: InkSample) => { L.s.raw.push(sample); L.s.live?.push(sample); };
   const move = (e: React.PointerEvent) => {
     const L = live.current; if (!L) return;
-    const events = (e.nativeEvent as PointerEvent).getCoalescedEvents?.() ?? [e.nativeEvent];
+    // Coalesced events carry every sample since the last frame; some browsers return an empty list.
+    const coalesced = (e.nativeEvent as PointerEvent).getCoalescedEvents?.();
+    const events = coalesced && coalesced.length ? coalesced : [e.nativeEvent];
     for (const ev of events) {
       const r = box.current!.getBoundingClientRect(), p = { x: ev.clientX - r.left, y: ev.clientY - r.top }, t = ev.timeStamp;
       feed(L, { ...p, t, pressure: pressureOf(e, p, t) });
@@ -120,12 +154,46 @@ export function AssistLab() {
     }
     bump(L.s);
   };
-  // On lift the stroke is outlined once, whole (the same ink as its live pieces), and cached.
+  // On lift the stroke is outlined once, whole (the same ink as its live pieces), and cached; it joins
+  // the word being written, and a pause of `PAUSE` ms completes the word.
+  const word = React.useRef<Stroke[]>([]);
+  const pause = React.useRef<number | undefined>(undefined);
   const finish = (st: Stroke) => {
     const look = LOOK[st.tool];
-    st.done = outlinePath(assistStroke(st.raw, params(st.tool)), look.size, look.thinning, look.taper);
+    st.ink = assistStroke(st.raw, params(st.tool));
+    st.done = outlinePath(st.ink, look.size, look.thinning, look.taper);
     st.live = undefined; st.chunks = [];
     bump(st);
+    if (st.tool === 'marker') return; // a marker is a highlighter: no words
+    word.current.push(st);
+    window.clearTimeout(pause.current);
+    pause.current = window.setTimeout(completeWord, PAUSE);
+  };
+  // A finished word settles with full context, in one morph on the settle spring.
+  const completeWord = () => {
+    window.clearTimeout(pause.current);
+    const strokesOfWord = word.current; word.current = [];
+    if (!strokesOfWord.length) return;
+    const result = settleWord(strokesOfWord.map((w) => w.ink!));
+    if (!result) return;
+    strokesOfWord.forEach((w, k) => { w.settled = result.strokes[k]; w.settledPath = undefined; w.morph = 0; });
+    bump(strokesOfWord[0]);
+    const { ms } = settleSpring(), start = performance.now();
+    const step = () => {
+      const t = (performance.now() - start) / ms;
+      for (const w of strokesOfWord) w.morph = Math.min(1, t);
+      bump(strokesOfWord[0]);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  // A new stroke far past the word, or off its line, completes the word first.
+  const startsNewWord = (x: number, y: number) => {
+    const ws = word.current; if (!ws.length) return false;
+    const F = fitFrame(ws.map((w) => w.ink!)), xh = F?.xHeight ?? 20;
+    const right = Math.max(...ws.flatMap((w) => w.ink!.map((q) => q.x)));
+    const base = F ? F.a + F.b * x : Math.max(...ws.flatMap((w) => w.ink!.map((q) => q.y)));
+    return x > right + WORD_GAP * xh || Math.abs(y - base) > LINE_GAP * xh + xh;
   };
   const up = () => { const L = live.current; live.current = null; if (L) finish(L.s); };
 
@@ -156,6 +224,7 @@ export function AssistLab() {
       <div className="flex flex-wrap items-center justify-center gap-12">
         <Switcher size="compact" aria-label="Tool" value={tool} onValueChange={setTool} options={[{ value: 'pen', label: 'Pen' }, { value: 'pencil', label: 'Pencil' }, { value: 'marker', label: 'Marker' }]} />
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
+        <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
         <Button size="compact" onClick={() => setStrokes([])}>Clear</Button>
         <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
@@ -165,11 +234,12 @@ export function AssistLab() {
           {strokes.map((s) => {
             const look = LOOK[s.tool];
             return (
-              <g key={s.id}>
+              <g key={s.id} data-settled={s.settled ? '' : undefined}>
                 {view !== 'assisted' && s.raw.length > 1 && (
                   <polyline points={s.raw.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--ink3)" strokeOpacity={view === 'both' ? 0.5 : 1} strokeWidth={view === 'both' ? 1 : look.size * 0.8} strokeLinecap="round" strokeLinejoin="round" />
                 )}
-                {view !== 'raw' && <g opacity={look.opacity}>{inkPaths(s).map((d, i) => <path key={i} d={d} fill={inkColor('ink')} />)}</g>}
+                {view !== 'raw' && reducedMotion() && s.settled && s.done && asWritten === 'settled' && (s.morph ?? 1) < 1 && <g opacity={look.opacity * (1 - (s.morph ?? 1))}><path d={s.done} fill={inkColor('ink')} /></g>}
+                {view !== 'raw' && <g opacity={look.opacity * (reducedMotion() && s.settled && asWritten === 'settled' && (s.morph ?? 1) < 1 ? (s.morph ?? 1) : 1)}>{inkPaths(s, asWritten === 'written').map((d, i) => <path key={i} d={d} fill={inkColor('ink')} />)}</g>}
               </g>
             );
           })}

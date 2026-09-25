@@ -158,11 +158,11 @@ function dehook(pts: InkSample[], limit: number): InkSample[] {
   return pts.slice(at);
 }
 
-const SIGMA_MIN = 6;
-
-function settle(raw: InkSample[], { settleMs, corner, sigmaPx }: AssistParams): InkSample[] {
-  if (raw.length < 3 || settleMs <= 0) return raw.map((p) => ({ ...p }));
-  // Corners, judged on a lightly levelled copy so a tremor's wiggle is not a corner.
+/** Corners: where a turn past `corner` degrees, judged over ~8 px on a lightly levelled copy (so a
+ * tremor's wiggle is not a corner), is one the pen slowed into (a hand slows into a real corner; a
+ * tremor does not). Returns the sample indices. */
+export function cornerCuts(raw: InkSample[], corner: number, settleMs: number): number[] {
+  if (raw.length < 5) return [];
   const soft = raw.map((p) => {
     let x = 0, y = 0, w = 0;
     for (const q of raw) { const dt = q.t - p.t; if (Math.abs(dt) > settleMs) continue; const k = Math.exp(-(dt * dt) / (2 * (settleMs / 2) ** 2)); x += k * q.x; y += k * q.y; w += k; }
@@ -184,6 +184,14 @@ function settle(raw: InkSample[], { settleMs, corner, sigmaPx }: AssistParams): 
     if (turned && here < 0.75 * Math.max(a.speed, b.speed)) cuts.push(i);
   }
   // Settle each piece between corners; its ends are pinned.
+  return cuts;
+}
+
+const SIGMA_MIN = 6;
+
+function settle(raw: InkSample[], { settleMs, corner, sigmaPx }: AssistParams): InkSample[] {
+  if (raw.length < 3 || settleMs <= 0) return raw.map((p) => ({ ...p }));
+  const cuts = cornerCuts(raw, corner, settleMs);
   // Speed-adaptive: a point's sigma covers at most `sigmaPx` of path, so a fast, small letter (an s)
   // keeps its shape while slow, shaky writing gets the full `settleMs`.
   const sigmaAt = raw.map((p, i) => {
