@@ -68,6 +68,11 @@
           "target": "components/gadgets/parts/cap.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/cell.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/cell.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/drum.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/drum.ts"
@@ -259,6 +264,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/cap.md. SwiftUI: MetalCap in the MetalUI Swift package."
+    },
+    {
+      "name": "cell",
+      "type": "registry:ui",
+      "title": "Cell",
+      "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/cell/cell.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/cell/cell.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/cell.md. SwiftUI: MetalCell in the MetalUI Swift package."
     },
     {
       "name": "checkbox",

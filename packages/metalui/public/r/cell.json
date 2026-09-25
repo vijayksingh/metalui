@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cell",
+  "type": "registry:ui",
+  "title": "Cell",
+  "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/cell/cell.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/cell/cell.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawCells, type CellSpec } from '../../gadgets/parts/cell';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Cell (a Part): raised blocks of translucent resin in a grid, lit from behind. `lit` is how many are\n * lit, a real number, so the cell filling now glows part way; they light from the bottom row up, left\n * to right. Dark, a cell is the resin's own colour; lit, the light comes through it, hottest at its\n * core, and spills onto the slab around it. Resin in the accent by default. Geometry is canvas units;\n * `size` is drawn pixels. */\n\nexport interface CellProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  cols?: number;\n  rows?: number;\n  gap?: number;\n  lit?: number;\n  /** The resin's pigment; defaults to the accent. */\n  color?: CellSpec['color'];\n  size?: number;\n  host?: Host;\n}\n\nexport function Cell({ cols = 4, rows = 4, gap = GADGETS.cell.alone[1], lit = 0, color, size = 96, host: forced, ...props }: CellProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const c = color ?? { L: wL, C: wC, H: wH };\n  // Drawn alone, a cell is the Part's `alone` side, shrunk so a big grid fits the body with a gap all round.\n  const m = Math.max(cols, rows), side = Math.min(GADGETS.cell.alone[0], (GADGETS.canvas.body[2] - (m + 1) * gap) / m);\n  const d = drawCells(`cell-${uid}`, { at: [200, 200], cols, rows, gap, size: side, lit, color: c }, { tier, host });\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`${cols} by ${rows} cells, ${Math.floor(lit)} lit`}\n      data-tier={tier} data-host={host} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.halo + d.body + d.glow }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/cell.md. SwiftUI: MetalCell in the MetalUI Swift package."
+}

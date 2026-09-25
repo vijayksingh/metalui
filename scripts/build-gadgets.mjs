@@ -188,6 +188,14 @@ public enum MetalGadgetTokens {
     public static let needleMajorWidth: Double = ${num(G.needle['major-width'])}
     public static let needleCrown: Double = ${num(G.needle.crown)}
     public static let needleCapShadow: Double = ${num(G.needle['cap-shadow'])}
+    public static let cellRadius: Double = ${num(G.cell.radius)}
+    public static let cellDrop: Double = ${num(G.cell.drop)}
+    public static let cellDepth: (share: Double, alpha: Double) = (${G.cell.depth.map(num).join(', ')})
+    public static let cellLit: (lift: Double, chroma: Double, turn: Double) = (${G.cell.lit.map(num).join(', ')})
+    public static let cellCore: (share: Double, lift: Double, turn: Double, chroma: Double) = (${G.cell.core.map(num).join(', ')})
+    public static let cellHalo: (blur: Double, alpha: Double) = (${G.cell.halo.map(num).join(', ')})
+    public static let cellShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cell.shadow.map(num).join(', ')})
+    public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}
     public static let rigRadius: Double = ${num(G.rig.radius)}

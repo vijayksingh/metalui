@@ -207,6 +207,14 @@ public enum MetalGadgetTokens {
     public static let needleMajorWidth: Double = 1.3
     public static let needleCrown: Double = 0.14
     public static let needleCapShadow: Double = 0.4
+    public static let cellRadius: Double = 0.23
+    public static let cellDrop: Double = 0.05
+    public static let cellDepth: (share: Double, alpha: Double) = (0.4, 0.1)
+    public static let cellLit: (lift: Double, chroma: Double, turn: Double) = (0.1, 1.25, 14.0)
+    public static let cellCore: (share: Double, lift: Double, turn: Double, chroma: Double) = (0.4, 0.2, 34.0, 0.95)
+    public static let cellHalo: (blur: Double, alpha: Double) = (0.32, 0.5)
+    public static let cellShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.09, 0.04, 0.1, 0.3)
+    public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0
     public static let rigRadius: Double = 91.0

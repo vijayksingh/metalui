@@ -138,6 +138,23 @@
       "agent": "https://metalui.dev/r/cap.md"
     },
     {
+      "name": "cell",
+      "title": "Cell",
+      "status": "alpha",
+      "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Cell",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCell"
+      },
+      "registry": "https://metalui.dev/r/cell.json",
+      "agent": "https://metalui.dev/r/cell.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

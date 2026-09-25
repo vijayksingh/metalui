@@ -1,0 +1,21 @@
+{
+  "name": "cell",
+  "title": "Cell",
+  "status": "alpha",
+  "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
+  "base": "none (SVG)",
+  "react": {
+    "export": "Cell",
+    "files": [
+      "cell.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCell",
+    "file": "swift/Sources/MetalUI/Components/MetalCell.swift"
+  },
+  "agent": "cell.agent.md",
+  "layer": "part",
+  "page": "/components/cell",
+  "recipe": "gadgets"
+}
