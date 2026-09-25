@@ -136,6 +136,24 @@ public enum MetalGadgetTokens {
     public static let beeperFallMs: Double = 70.0
     public static let beeperSampleMs: Double = 10.0
     public static let beeperAspect: Double = 0.5455
+    public static let capRadius: Double = 13.0
+    public static let capSide: Double = 4.0
+    public static let capSideDrop: Double = 0.1
+    public static let capRibs: Int = 3
+    public static let capPitch: Double = 8.0
+    public static let capSpan: Double = 0.57
+    public static let capGroove: (width: Double, alpha: Double) = (2.4, 0.24)
+    public static let capEdge: (width: Double, alpha: Double, dy: Double) = (1.1, 0.7, 1.8)
+    public static let capPointer: (from: Double, to: Double) = (0.3, 0.78)
+    public static let capPointerScale: Double = 1.4
+    public static let capGrooveInk: (drop: Double, floor: Double, gain: Double, add: Double, max: Double) = (0.45, 0.2, 1.3, 0.02, 0.12)
+    public static let capEdgeInk: (lift: Double, chroma: Double) = (0.1, 0.5)
+    public static let capPress: Double = 2.5
+    public static let capPressShadow: Double = 0.55
+    public static let capPressSpring = MetalSprings.release
+    public static let capCeramic: (L: Double, C: Double) = (0.93, 0.008)
+    public static let capAlone: Double = 200.0
+    public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.16, 0.1, 0.22, 0.36)
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = ["slab": (320.0, 320.0), "bezel": (320.0, 320.0), "glass-face": (276.0, 276.0), "backlight": (200.0, 200.0), "led": (22.0, 22.0), "keycap": (112.0, 112.0), "cap": (60.0, 44.0), "jack": (68.0, 68.0), "plug": (54.0, 54.0), "cable": (0.0, 0.0), "cell": (44.0, 44.0), "drum": (52.0, 88.0), "needle": (96.0, 8.0), "lid": (240.0, 160.0), "pull": (96.0, 14.0), "lens": (184.0, 184.0), "nib": (70.0, 20.0), "beeper": (44.0, 24.0), "label": (80.0, 16.0), "glyph": (24.0, 24.0)]
     public static let jackKnurlWidth: Double = 0.07

@@ -1,0 +1,21 @@
+{
+  "name": "cap",
+  "title": "Cap",
+  "status": "alpha",
+  "description": "The fader or knob cap a person moves: a face on its darker side wall, grip ribs or a pointer groove, and its own shadow. Pressed, it sinks toward the body. The cap you would touch wears the accent.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Cap",
+    "files": [
+      "cap.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCap",
+    "file": "swift/Sources/MetalUI/Components/MetalCap.swift"
+  },
+  "agent": "cap.agent.md",
+  "layer": "part",
+  "page": "/components/cap",
+  "recipe": "gadgets"
+}

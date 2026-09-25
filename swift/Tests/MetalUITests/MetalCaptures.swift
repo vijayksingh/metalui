@@ -223,6 +223,18 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testCap() {
+        let looks: [MetalCap] = [MetalCap(size: 120), MetalCap(material: .ceramic, size: 120), MetalCap(accent: true, size: 120),
+                                 MetalCap(ribs: 5, size: 120), MetalCap(shape: .knob, material: .ceramic, size: 120), MetalCap(shape: .knob, accent: true, size: 120)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) { ForEach(0..<looks.count, id: \.self) { i in looks[i] } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("cap-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

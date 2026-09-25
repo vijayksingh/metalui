@@ -87,6 +87,23 @@
       "agent": "https://metalui.dev/r/cable.md"
     },
     {
+      "name": "cap",
+      "title": "Cap",
+      "status": "alpha",
+      "description": "The fader or knob cap a person moves: a face on its darker side wall, grip ribs or a pointer groove, and its own shadow. Pressed, it sinks toward the body. The cap you would touch wears the accent.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Cap",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCap"
+      },
+      "registry": "https://metalui.dev/r/cap.json",
+      "agent": "https://metalui.dev/r/cap.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

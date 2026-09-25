@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cap",
+  "type": "registry:ui",
+  "title": "Cap",
+  "description": "The fader or knob cap a person moves: a face on its darker side wall, grip ribs or a pointer groove, and its own shadow. Pressed, it sinks toward the body. The cap you would touch wears the accent.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/cap/cap.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/cap/cap.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawCap, pressCap, type CapShape, type CapSpec } from '../../gadgets/parts/cap';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Cap (a Part): the fader or knob cap a person moves. A face on its darker side wall, grip ribs (a\n * fader) or a pointer groove (a knob), and its own shadow. `pressed` sinks the face toward the body\n * and draws its shadow in, on the release spring (at once with reduced motion). The cap you would\n * touch wears the accent. Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface CapProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  shape?: CapShape;\n  ribs?: number;\n  /** Wear the accent: the cap you would touch. Otherwise pale clay, or white ceramic. */\n  accent?: boolean;\n  material?: CapSpec['material'];\n  /** The face's pigment, OKLCH; overrides accent and material. */\n  color?: CapSpec['color'];\n  pressed?: boolean;\n  size?: number;\n  host?: Host;\n}\n\nexport function Cap({ shape = 'fader', ribs, accent = false, material = 'clay', color, pressed = false, size = 96, host: forced, ...props }: CapProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const clay = GADGETS.materials.clay as unknown as { sample: number };\n  const face = color ?? (accent ? { L: wL, C: wC, H: wH } : material === 'ceramic' ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clay.sample } : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: clay.sample });\n  // Drawn alone, the face is `alone` units wide on the canvas; its height keeps the Part's aspect.\n  const [pw, ph] = GADGETS.parts.cap.size;\n  const W = GADGETS.cap.alone, Hh = (W * ph) / pw;\n  const d = React.useMemo(() => drawCap(`cap-${uid}`, { at: [200, 200], size: [W, Hh], shape, ribs, color: face, material }, { tier, host }),\n    [uid, shape, ribs, face.L, face.C, face.H, material, tier, host, W, Hh]); // eslint-disable-line react-hooks/exhaustive-deps\n  React.useEffect(() => {\n    if (!ref.current) return;\n    pressCap(ref.current, pressed, { reduced: matchMedia('(prefers-reduced-motion: reduce)').matches });\n  }, [pressed, d]);\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`${shape} cap${accent ? ' (accent)' : ''}`}\n      data-tier={tier} data-host={host} data-pressed={pressed || undefined} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/cap.md. SwiftUI: MetalCap in the MetalUI Swift package."
+}

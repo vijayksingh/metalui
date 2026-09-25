@@ -407,6 +407,53 @@ export const GADGETS = {
     "fallMs": 70,
     "sampleMs": 10
   },
+  "cap": {
+    "radius": 13,
+    "side": 4,
+    "sideDrop": 0.1,
+    "ribs": 3,
+    "pitch": 8,
+    "span": 0.57,
+    "groove": [
+      2.4,
+      0.24
+    ],
+    "edge": [
+      1.1,
+      0.7,
+      1.8
+    ],
+    "pointer": [
+      0.3,
+      0.78
+    ],
+    "press": 2.5,
+    "pressShadow": 0.55,
+    "pressSpring": "release",
+    "ceramic": [
+      0.93,
+      0.008
+    ],
+    "alone": 200,
+    "shadow": [
+      0.16,
+      0.1,
+      0.22,
+      0.36
+    ],
+    "pointerScale": 1.4,
+    "grooveInk": [
+      0.45,
+      0.2,
+      1.3,
+      0.02,
+      0.12
+    ],
+    "edgeInk": [
+      0.1,
+      0.5
+    ]
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,

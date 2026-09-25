@@ -117,6 +117,24 @@ public enum MetalGadgetTokens {
     public static let beeperFallMs: Double = ${num(G.beeper['fall-ms'])}
     public static let beeperSampleMs: Double = ${num(G.beeper['sample-ms'])}
     public static let beeperAspect: Double = ${num(G.parts.beeper.size[1] / G.parts.beeper.size[0])}
+    public static let capRadius: Double = ${num(G.cap.radius)}
+    public static let capSide: Double = ${num(G.cap.side)}
+    public static let capSideDrop: Double = ${num(G.cap['side-drop'])}
+    public static let capRibs: Int = ${G.cap.ribs}
+    public static let capPitch: Double = ${num(G.cap.pitch)}
+    public static let capSpan: Double = ${num(G.cap.span)}
+    public static let capGroove: (width: Double, alpha: Double) = (${G.cap.groove.map(num).join(', ')})
+    public static let capEdge: (width: Double, alpha: Double, dy: Double) = (${G.cap.edge.map(num).join(', ')})
+    public static let capPointer: (from: Double, to: Double) = (${G.cap.pointer.map(num).join(', ')})
+    public static let capPointerScale: Double = ${num(G.cap['pointer-scale'])}
+    public static let capGrooveInk: (drop: Double, floor: Double, gain: Double, add: Double, max: Double) = (${G.cap['groove-ink'].map(num).join(', ')})
+    public static let capEdgeInk: (lift: Double, chroma: Double) = (${G.cap['edge-ink'].map(num).join(', ')})
+    public static let capPress: Double = ${num(G.cap.press)}
+    public static let capPressShadow: Double = ${num(G.cap['press-shadow'])}
+    public static let capPressSpring = MetalSprings.${G.cap['press-spring']}
+    public static let capCeramic: (L: Double, C: Double) = (${G.cap.ceramic.map(num).join(', ')})
+    public static let capAlone: Double = ${num(G.cap.alone)}
+    public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cap.shadow.map(num).join(', ')})
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
