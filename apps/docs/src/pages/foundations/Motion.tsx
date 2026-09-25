@@ -3,6 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Button } from '@unlocalhosted/metalui';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
+import { HopDemo } from '../../ui/HopDemo';
 
 /* ─────────────────────────────────────────────────────────
  * METAL MOTION: objects with mass, under one light
@@ -272,6 +273,12 @@ export default function Motion() {
         </div>
       </Section>
 
+      <Section title="Hop" lede="When a thing changes place, it hops: a short throw along a small arc, as if lifted and set down, instead of sliding across. A light stepping down a list hops near (the arc bows at most --mu-motion-hop-lift); a thing carried to another place hops far (--mu-motion-hop-lift-far). Both take --mu-motion-hop-duration, easing out. Click the card, then switch to Slide to feel the difference.">
+        <Bench on="canvas">
+          <HopDemo />
+        </Bench>
+      </Section>
+
       <Section title="Distances" lede="How far things move comes from the grid and the material, never from taste. Defocus is half the travel, like a lens pulling focus on what moved.">
         <TokenTable
           head={['Token', 'Value', 'What moves that far']}
@@ -290,7 +297,7 @@ export default function Motion() {
             { id: 'M4', title: 'Light stays put', body: 'Elevation changes are part of the motion. Lifting grows the ambient shadow, pressing collapses it into a well, and a surface rising from its cap grows from contact shadow to floating ambient. Highlights stay on the top-left edges.', origin: 'Ours' },
             { id: 'M5', title: 'Distances come from the grid', body: 'A press is the cap’s depth (1). A swap turns one step (4). A surface rises one nest (6), and a refusal reaches one nest. A view changes by two steps (8). A panel travels its own extent. Defocus is half the travel.', origin: 'Ours' },
             { id: 'M6', title: 'Frequency decides whether anything moves', body: 'What is done a hundred times a day (shortcuts, arrowing through a list, the palette toggle) does not animate. Motion is kept for what is seen occasionally.', origin: 'Adapted · Animations on the Web (Emil Kowalski)' },
-            { id: 'M7', title: 'Reduced motion keeps meaning', body: 'Each class has one resolution, written in tokens.json: travel classes (part, object, hinge, refusal) apply at once, surfaces and settles fade in place, and release plays as authored, because a press of one point is feedback, not decoration. Color changes stay.', origin: 'Adapted · Animations on the Web, beUI; Kamui’s motion roles' },
+            { id: 'M7', title: 'Reduced motion keeps meaning', body: 'Each class has one resolution, written in tokens.json: travel classes (part, object, hinge, refusal) apply at once, surfaces and settles fade in place, and release plays as authored, because a press of one point is feedback, not decoration. Color changes stay.', origin: 'Adapted · Animations on the Web, beUI' },
             { id: 'M8', title: 'Interruptible by construction', body: 'State changes use transitions and springs, which continue from wherever the object is. Keyframes are only for one-shot gestures such as an icon’s press or a refusal.', origin: 'Adapted · Animations on the Web' },
           ]}
         />

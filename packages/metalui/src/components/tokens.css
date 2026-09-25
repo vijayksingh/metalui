@@ -82,7 +82,14 @@
   --mu-motion-focus-content: 4px; /* defocus for a content change (half the travel) */
   --mu-motion-stagger: var(--mu-spring-release-half); /* offset between items: each starts as the previous is half gone */
   --mu-motion-hop-duration: 250ms; /* a hop: one short throw from stop to stop (a light down a list, a thing from one region to another), easing out */
+  --mu-motion-hop-duration-far: 340ms; /* a far hop's flight: long enough to feel it rise, hang and fall */
   --mu-motion-hop-lift: 14px; /* the most a hop's arc bows: its control point sits min(0.8 × distance, 14) off the straight line, so the arc peaks at half that */
+  --mu-motion-hop-lift-far: 72px; /* how high a far hop can rise, as a control-point lift: the top of its throw is half this (36), less for a short throw */
+  --mu-motion-hop-rise: 1.04; /* how much a far hop grows at the top of its arc: nearer the light, off the table */
+  --mu-motion-hop-rise-shadow: 0 14px 18px rgba(0,0,0,.16); /* the extra shadow a far hop casts at the top of its arc; it fades as the thing comes down */
+  --mu-motion-hop-crouch: 70ms; /* before a far hop leaves, it presses into the table: the effort that says it has weight */
+  --mu-motion-hop-land: 200ms; /* the landing after a far hop: it squashes on its base, rebounds and settles (the table is a stop, so it may bounce) */
+  --mu-motion-hop-squash: 0.95; /* how flat a far hop lands (its height; the width grows by half as much) */
   --mu-motion-hop-arc-ratio: 0.8; /* the fraction of a hop's distance that bounds its control point before the lift cap */
   --mu-swap-spring: var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-swap-turn: var(--mu-motion-step);
