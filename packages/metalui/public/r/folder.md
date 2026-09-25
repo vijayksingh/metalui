@@ -13,7 +13,7 @@ A folder on the canvas: the closed state of a container. React: `Folder` from `@
 
 ## Anatomy
 
-From the Soft Hardware sheet's stack folder, 220 × 204: a frosted, translucent back panel (150 tall, radius 26, tapering 10 per side toward the bottom) with a tab rising 16; up to three cards (114 × 148, radius 16) with a 62-tall picture and three lines; a frosted flap (106 tall, tapering 12 per side) with the name (title), `Folder · N blocks` (engraved) and the count chip.
+From the Soft Hardware sheet's stack folder, 220 × 204: a translucent paper back panel (150 tall, radius 26, tapering 10 per side toward the bottom) with a tab rising 16; up to three cards (114 × 148, radius 16) with a 62-tall picture and three lines; a near-opaque paper flap (106 tall, tapering 12 per side) with the name (title), `Folder · N blocks` (engraved) and the count chip.
 
 ## States and motion
 
@@ -25,7 +25,7 @@ From the Soft Hardware sheet's stack folder, 220 × 204: a frosted, translucent 
 | landing | – | shuts past rest to -4°, settles | hinge |
 | empty | none | -15° | – |
 
-Colour: `hue` = neutral (the sheet), red, amber, green, blue, violet; soft paper on the back, washed through the flap's blur. Reduce Motion: poses at once.
+Colour: `hue` = neutral (the sheet), red, amber, green, blue, violet; soft paper on the back, washed lightly on the paper flap. Reduce Motion: poses at once.
 
 ## API
 

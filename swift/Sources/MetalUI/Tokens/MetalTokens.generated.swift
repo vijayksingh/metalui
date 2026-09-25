@@ -2019,7 +2019,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A folder on the canvas: a thing that holds blocks and takes little space. A back panel with a tab, up to three of its blocks peeking up as cards, a frosted flap with its name, what it is and its count. Hover or focus fans the cards up and tips the flap back on the hinge spring; a block dragged over it opens it wider (open); a block landing closes the flap with a small bounce. It has one of six colours (neutral, red, amber, green, blue, violet) as soft paper; unfolded, it becomes a region washed in the same colour. (the Soft Hardware sheet's stack folder (.folder, .f-back, .f-card, .f-flap, .f-count); owner 2026-09-25 (colour, physical on the canvas))
+    /// A folder on the canvas: a thing that holds blocks and takes little space. A back panel with a tab, up to three of its blocks peeking up as cards, a paper flap with its name, what it is and its count. Hover or focus fans the cards up and tips the flap back on the hinge spring; a block dragged over it opens it wider (open); a block landing closes the flap with a small bounce. It has one of six colours (neutral, red, amber, green, blue, violet) as soft paper; unfolded, it becomes a region washed in the same colour. (the Soft Hardware sheet's stack folder (.folder, .f-back, .f-card, .f-flap, .f-count); owner 2026-09-25 (colour, physical on the canvas))
     public static let folder = MetalObjectRecipe(
         name: "folder",
         layers: [
@@ -2077,8 +2077,7 @@ public enum MetalRecipes {
             "flap.rest": .text("-15deg"),
             "flap.hover": .text("-45deg"),
             "flap.open": .text("-55deg"),
-            "flap.background": .perColorway(bone: "rgba(245,245,245,.85)", graphite: "rgba(40,40,43,.72)"),
-            "flap.blur": .perColorway(bone: "blur(6px) saturate(1.2)", graphite: "blur(8px) saturate(1.2)"),
+            "flap.background": .perColorway(bone: "rgba(246,245,242,.95)", graphite: "rgba(42,42,45,.93)"),
             "flap.border": .perColorway(bone: "rgba(151,151,151,.28)", graphite: "rgba(151,151,151,.22)"),
             "flap.shadow": .perColorway(bone: "inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.55), inset 2px 3px 4px -2px rgba(255,255,255,.9), 0 -1px 2px rgba(0,0,0,.02), 0 8px 18px -8px rgba(24,22,16,.10)", graphite: "inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4)"),
             "flap.taper": .number(12.0),
@@ -2105,8 +2104,7 @@ public enum MetalRecipes {
             "pose.c3-hover-r": .text("-9deg"),
             "pose.c3-open-y": .text("-106px"),
             "pose.c3-open-r": .text("-14deg"),
-            "shape.translucency": .text("84%"),
-            "shape.backdrop": .text("blur(12px) saturate(1.35)"),
+            "shape.translucency": .text("80%"),
             "shape.shadow-blur": .text("blur(14px)"),
             "shape.edge": .perColorway(bone: "rgba(24,22,16,.10)", graphite: "rgba(0,0,0,.55)"),
             "shape.light": .perColorway(bone: "rgba(255,255,255,.95)", graphite: "rgba(255,255,255,.14)"),

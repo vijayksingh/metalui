@@ -9,9 +9,11 @@ import { Label } from '../label/label';
  * A thing on the canvas that holds blocks and takes little space. It is the closed state of a
  * container; unfolded, the same container is a region washed in the folder's colour.
  *
- *   shape     the back (frosted, translucent: the canvas shows softly through) and the flap
+ *   shape     the back (translucent paper: the canvas shows softly through) and the flap
  *             taper slightly toward the bottom, like a pocket; their shadows are separate
- *             blurred layers, since the tapered outline is a clip
+ *             blurred layers, since the tapered outline is a clip. No backdrop blur
+ *             anywhere: the hinged flap makes the folder a 3D scene, and in Chrome a blur in
+ *             one ignores its clip and paints a square box. The flap is near-opaque paper.
  *   rest      the back panel with its tab; up to three of its blocks peek up as cards (-10,
  *             leaning 10°, 2°, -5°); the frosted flap tipped back 15° with the name, what it
  *             is and the count

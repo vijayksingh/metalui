@@ -1684,8 +1684,7 @@
   --mu-r-folder-pose-c3-hover-r: -9deg;
   --mu-r-folder-pose-c3-open-y: -106px;
   --mu-r-folder-pose-c3-open-r: -14deg;
-  --mu-r-folder-shape-translucency: 84%;
-  --mu-r-folder-shape-backdrop: blur(12px) saturate(1.35);
+  --mu-r-folder-shape-translucency: 80%;
   --mu-r-folder-shape-shadow-blur: blur(14px);
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
@@ -2067,8 +2066,7 @@
   --mu-r-folder-card-line-ink: #D4D4D4;
   --mu-r-folder-card-line-lg-ink: #C9C9C9;
   --mu-r-folder-card-line-blue: #B9CCF7;
-  --mu-r-folder-flap-background: rgba(245,245,245,.85);
-  --mu-r-folder-flap-blur: blur(6px) saturate(1.2);
+  --mu-r-folder-flap-background: rgba(246,245,242,.95);
   --mu-r-folder-flap-border: rgba(151,151,151,.28);
   --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.55), inset 2px 3px 4px -2px rgba(255,255,255,.9), 0 -1px 2px rgba(0,0,0,.02), 0 8px 18px -8px rgba(24,22,16,.10);
   --mu-r-folder-count-background: rgba(255,255,255,.7);
@@ -2434,8 +2432,7 @@
   --mu-r-folder-card-line-ink: #3C3C40;
   --mu-r-folder-card-line-lg-ink: #46464A;
   --mu-r-folder-card-line-blue: #34466E;
-  --mu-r-folder-flap-background: rgba(40,40,43,.72);
-  --mu-r-folder-flap-blur: blur(8px) saturate(1.2);
+  --mu-r-folder-flap-background: rgba(42,42,45,.93);
   --mu-r-folder-flap-border: rgba(151,151,151,.22);
   --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
   --mu-r-folder-count-background: rgba(255,255,255,.1);
@@ -2802,8 +2799,7 @@
     --mu-r-folder-card-line-ink: #3C3C40;
     --mu-r-folder-card-line-lg-ink: #46464A;
     --mu-r-folder-card-line-blue: #34466E;
-    --mu-r-folder-flap-background: rgba(40,40,43,.72);
-    --mu-r-folder-flap-blur: blur(8px) saturate(1.2);
+    --mu-r-folder-flap-background: rgba(42,42,45,.93);
     --mu-r-folder-flap-border: rgba(151,151,151,.22);
     --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
     --mu-r-folder-count-background: rgba(255,255,255,.1);
