@@ -507,11 +507,20 @@
       "component": "SyncErrorIcon",
       "label": "Sync Error",
       "category": "Status",
-      "hover": "the orbit tries to turn, catches and snaps back; the mark jumps",
-      "press": "orbit shivers once",
-      "pressMs": 420,
+      "hover": "The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.",
+      "press": "plays the same act",
+      "pressMs": 1185,
+      "motion": {
+        "caption": "The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.",
+        "durationMs": 1185,
+        "stages": [
+          "Heave",
+          "Catch",
+          "Rattle out"
+        ]
+      },
       "tuned16": false,
-      "construction": "Orbit with the same gap as Synced, core replaced by \"!\". Hover is Synced's own motion failing: the orbit starts to turn (18°, easing in, trying), catches and snaps back past rest, and the mark jumps as it catches. A one-shot on its own wrapper, so the press (the orbit shivers once) still plays while hovered."
+      "construction": "Orbit r7.6 with the same 85/15 dash as Synced turned −18°, the core replaced by \"!\" (4.2 stem, r1.05 dot). Motion (study): the ring winds back 4°, heaves 14° clockwise and catches; it rattles out on the refusal spring while a three-ray spark fires at its leading end and the mark jolts up 1.6 and lands squashed."
     },
     {
       "name": "capture",

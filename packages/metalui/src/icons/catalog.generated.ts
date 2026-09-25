@@ -767,24 +767,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1100,"caption":"The lost satellite swings back toward its slot, falls a unit short and is thrown back out.","stages":["Reach","Miss","Drift out"],"tracks":[{"part":"sat","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14545,"transform":"translate(0.5px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.4,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47273,"transform":"translate(-1.05px,1.05px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.61818,"transform":"translate(1px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75455,"transform":"translate(-0.3px,0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.87273,"transform":"translate(0.1px,-0.1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"core","keyframes":[{"offset":0,"opacity":0.55,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18182,"opacity":0.55,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.4,"opacity":0.95,"easing":"linear"},{"offset":0.47273,"opacity":0.95,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.52727,"opacity":0.2,"easing":"linear"},{"offset":0.70909,"opacity":0.2,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"opacity":0.55}]},{"part":"socket","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.22727,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.4,"transform":"scale(1)","opacity":0.7},{"offset":0.47273,"transform":"scale(1)","opacity":0.7,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65455,"transform":"scale(.7)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * SYNC ERROR · Status
+   * SYNC ERROR · Status · one act, 1185ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the orbit tries to turn, catches and snaps back; the mark jumps
-   * PRESS one-shot (from the current pose)
-   *          orbit shivers once
-   *     0ms   .or plays err-p (420ms)
+   * Heave → Catch → Rattle out
+   *          The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.
+   *  orbit      0 → 120 → 330 → 437 → 544 → 651 → 758 → 864 → 971 → 1078 → 1185ms
+   *  mark       0 → 330 → 400 → 520 → 620 → 730 → 1185ms
+   *  spark      0 → 320 → 350 → 560 → 1185ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "sync-error": {
     label: "Sync Error",
     category: "Status",
-    hover: "the orbit tries to turn, catches and snaps back; the mark jumps",
-    press: "orbit shivers once",
-    pressMs: 420,
+    hover: "The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.",
+    press: "plays the same act",
+    pressMs: 1185,
     defs: "",
-    body: "<g class=\"jm\"><g class=\"or\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" transform=\"rotate(-18 12 12)\"/></g></g><g class=\"mk\"><path class=\"ex\" d=\"M12 8.6v4.2\"/><circle class=\"exd s\" cx=\"12\" cy=\"15.7\" r=\"1.05\"/></g>",
+    body: "<g data-part=\"orbit\"><circle cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" stroke-dasharray=\"85 15\" transform=\"rotate(-18 12 12)\"/></g><g data-part=\"mark\"><path d=\"M12 8.6v4.2\"/><circle class=\"s\" cx=\"12\" cy=\"15.7\" r=\"1.05\"/></g><path class=\"ac\" data-part=\"spark\" opacity=\"0\" d=\"M16.85 3.95 17.39 2.88M17.78 5.15 18.95 4.88M17.47 6.63 18.43 7.36\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1185,"caption":"The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.","stages":["Heave","Catch","Rattle out"],"tracks":[{"part":"orbit","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.10127,"transform":"translate(0px,0px) rotate(-4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27848,"transform":"translate(0px,0px) rotate(14deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.36878,"transform":"translate(0px,0px) rotate(-7.3727deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.45907,"transform":"translate(0px,0px) rotate(3.8826deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.54937,"transform":"translate(0px,0px) rotate(-2.0447deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63966,"transform":"translate(0px,0px) rotate(1.0768deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.72911,"transform":"translate(0px,0px) rotate(-0.567deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.81941,"transform":"translate(0px,0px) rotate(0.2986deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.9097,"transform":"translate(0px,0px) rotate(-0.1573deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"mark","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27848,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33755,"transform":"translate(0px,-1.6px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.43882,"transform":"translate(0px,0.3px) rotate(0deg) scale(1.12,0.88)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.52321,"transform":"translate(0px,-0.25px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61603,"transform":"translate(0px,0.05px) rotate(0deg) scale(1.02,0.98)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"spark","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.27004,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.29536,"transform":"scale(.9)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47257,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * CAPTURE · Status
