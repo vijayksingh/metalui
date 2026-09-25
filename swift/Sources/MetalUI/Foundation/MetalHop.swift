@@ -50,17 +50,27 @@ private struct MetalHopModifier: ViewModifier {
     let side: MetalHop.Side
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var progress: CGFloat = 1
+    @State private var hopTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
         content
             .modifier(MetalHopEffect(from: from, to: to, side: side, progress: progress))
             .onChange(of: to) { _, _ in
+                hopTask?.cancel()
                 guard !reduceMotion else { progress = 1; return }
                 var reset = Transaction(animation: nil)
                 reset.disablesAnimations = true
                 withTransaction(reset) { progress = 0 }
-                withAnimation(.linear(duration: MetalMotionTokens.hopDuration)) { progress = 1 }
+                hopTask = Task { @MainActor in
+                    await Task.yield()
+                    guard !Task.isCancelled else { return }
+                    withAnimation(.linear(duration: MetalMotionTokens.hopDuration)) { progress = 1 }
+                }
             }
+            .onChange(of: reduceMotion) { _, reduced in
+                if reduced { hopTask?.cancel(); progress = 1 }
+            }
+            .onDisappear { hopTask?.cancel() }
     }
 }
 
