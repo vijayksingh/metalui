@@ -1,0 +1,22 @@
+/* The layers page scene: the picked layer's members get a dashed intent-green outline, held 14 out so it
+ * clears the selection frame's own ring; the rest stay as they are. */
+.layers-scene .layers-mark,
+.layers-scene :is(.mu-region-name, .mu-region-rule, .mu-region-count, .mu-folder-count, .mu-linkcard-tag, .mu-led) {
+  outline: var(--mu-switcher-focus-width) dashed transparent;
+  outline-offset: 4px;
+  transition: outline-color .16s ease, outline-offset .16s ease;
+}
+.layers-scene[data-lit='place'] [data-layer='place'],
+.layers-scene[data-lit='object'] [data-layer='object'],
+.layers-scene[data-lit='instrument'] [data-layer='instrument'],
+.layers-scene[data-lit='component'] [data-layer='component'],
+.layers-scene[data-lit='part'] :is(.mu-region-name, .mu-region-rule, .mu-region-count, .mu-folder-count, .mu-linkcard-tag, .mu-led) {
+  outline-color: var(--mu-focus);
+  outline-offset: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .layers-scene .layers-mark { transition: none; }
+}
+.layers-scene[data-lit='part'] :is(.mu-region-name, .mu-region-rule, .mu-region-count, .mu-folder-count, .mu-linkcard-tag, .mu-led) {
+  outline-offset: 3px;
+}

@@ -15,6 +15,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: 'overview', lazy: lazy(() => import('./pages/Home')) },
+      { path: 'layers', lazy: lazy(() => import('./pages/Layers')) },
       { path: 'foundations', lazy: lazy(() => import('./pages/foundations/Principles')) },
       { path: 'foundations/color', lazy: lazy(() => import('./pages/foundations/Color')) },
       { path: 'foundations/typography', lazy: lazy(() => import('./pages/foundations/Typography')) },
