@@ -8,6 +8,7 @@ import { emit, finish } from './lib/emit.mjs';
 import { staticSvg, SW } from './lib/static-svg.mjs';
 import { buildLife } from './lib/life-icons.mjs';
 import { validateStudy, studyBaseCss, studyCss, studyKeyframes } from '../packages/metalui/icons/src/motion.mjs';
+import { iconActsSwift } from './lib/icon-acts-swift.mjs';
 
 // ---------- spring easing as CSS linear() (identical to the reference builder) ----------
 function spring(z, T, n = 44) {
@@ -228,5 +229,6 @@ for (const { ic, t16 } of entries) {
   emit(`packages/metalui/public/icons/svg/16/${ic.name}.svg`, staticSvg(ic, t16?.sw ?? SW16, t16?.body ?? ic.body));
   emit(`packages/metalui/public/icons/svg-animated/${ic.name}.svg`, animatedSvg(ic));
 }
+emit('swift/Sources/MetalUI/Icons/MetalIconActs.generated.swift', iconActsSwift(ICONS));
 const lifeCount = buildLife();
 finish(`icons (${ICONS.length} product, ${lifeCount} life)`);

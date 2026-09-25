@@ -69,6 +69,35 @@ export const motion = (duration, caption, stages, tracks) => ({ duration, captio
 const PROPS = ['at', 'transform', 'opacity', 'draw', 'easing'];
 const NONE = (t) => !t || /^(none|translate\(0(px)?,\s*0(px)?\)|rotate\(0(deg)?\)|scale\(1(,\s*1)?\))(\s+(translate\(0(px)?,\s*0(px)?\)|rotate\(0(deg)?\)|scale\(1(,\s*1)?\)))*$/.test(t.trim());
 
+/**
+ * A transform as numbers { fns, x, y, r, sx, sy }. Only translate, rotate and scale, each at most
+ * once and in that order, so web (which interpolates function by function when two lists match)
+ * and SwiftUI (which interpolates the numbers) move identically.
+ */
+export function parsePose(transform) {
+  const out = { fns: [], x: 0, y: 0, r: 0, sx: 1, sy: 1 };
+  if (!transform || transform.trim() === 'none') return out;
+  const order = ['translate', 'rotate', 'scale'];
+  let last = -1;
+  for (const [, fn, args] of transform.matchAll(/(\w+)\(([^)]*)\)/g)) {
+    const v = args.split(/[\s,]+/).filter(Boolean).map((a) => parseFloat(a));
+    const base = fn.replace(/[XY]$/, '');
+    const at = order.indexOf(base);
+    if (at < 0) throw new Error(`transform "${transform}": ${fn} is not translate, rotate or scale`);
+    if (at <= last) throw new Error(`transform "${transform}": use translate, then rotate, then scale, each once`);
+    last = at;
+    out.fns.push(fn);
+    if (fn === 'translate') { out.x = v[0]; out.y = v[1] ?? 0; }
+    else if (fn === 'translateX') out.x = v[0];
+    else if (fn === 'translateY') out.y = v[0];
+    else if (fn === 'rotate') out.r = v[0];
+    else if (fn === 'scale') { out.sx = v[0]; out.sy = v[1] ?? v[0]; }
+    else if (fn === 'scaleX') out.sx = v[0];
+    else if (fn === 'scaleY') out.sy = v[0];
+  }
+  return out;
+}
+
 /** Build-time contract for one study against its body. Throws with every problem at once. */
 export function validateStudy(name, study, body) {
   const bad = [];
@@ -85,6 +114,11 @@ export function validateStudy(name, study, body) {
     if (f[f.length - 1]?.at !== study.duration) bad.push(`${where}: last frame must be at ${study.duration}`);
     for (let i = 1; i < f.length; i++) if (!(f[i].at > f[i - 1].at)) bad.push(`${where}: frame ${i} is not after frame ${i - 1}`);
     for (const fr of f) for (const k of Object.keys(fr)) if (!PROPS.includes(k)) bad.push(`${where}: "${k}" is not animatable (transform, opacity, draw)`);
+    const lists = new Set();
+    for (const fr of f) if (fr.transform !== undefined) {
+      try { const p = parsePose(fr.transform); if (p.fns.length) lists.add(p.fns.join(' ')); } catch (e) { bad.push(`${where}: ${e.message}`); }
+    }
+    if (lists.size > 1) bad.push(`${where}: every transform in a track uses the same functions (${[...lists].join(' | ')})`);
     // Return exactly (MOT-10): the act ends where it began, so nothing snaps when it is released.
     const first = f[0], last = f[f.length - 1];
     for (const k of ['transform', 'opacity', 'draw']) {

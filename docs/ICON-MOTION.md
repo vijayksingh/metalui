@@ -44,7 +44,7 @@ One source, three players:
 |---|---|---|
 | Web Animations | React `Icon` (`useActPlayback`) | plays once on pointer enter (not touch), focus-visible or click; finishes after the pointer leaves; ignores triggers mid-act |
 | CSS keyframes | standalone `svg-animated/*.svg`, and a page before hydration | plays while hovered or focused (or with `data-state="play"`); leaving cuts it short |
-| SwiftUI | `MetalIcon` (next layer) | the same tracks through `KeyframeAnimator` |
+| SwiftUI | `MetalIcon` → `MetalIconActView` (data in `MetalIconActs.generated.swift`) | plays once when its host is hovered or pressed; finishes; ignores triggers mid-act; the same keyframes and curves, evaluated as Web Animations does |
 
 Reduced motion plays nothing, and the rest glyph is complete on its own.
 
@@ -53,7 +53,10 @@ The build (`scripts/build-icons.mjs`) checks every study and fails when:
 - frames don't start at 0 and end at the duration, or aren't in time order;
 - a part doesn't return exactly to where it started;
 - an accent isn't hidden at the start and the end;
-- a property isn't transform, opacity or draw.
+- a property isn't transform, opacity or draw;
+- a track mixes transform lists (every transform in a track is translate, rotate, scale in that order, the same functions each time, so web and SwiftUI interpolate alike).
+
+The SwiftUI generator also refuses a moving part under a group with a static transform, and (for now) masks and clips on an icon with an act.
 
 ## Physical: it is hardware
 
@@ -128,5 +131,5 @@ Every icon's entry opens with its card, as a comment above it (see `select`):
 1. Write the card. If you can't say why a part moves or what wrong action it would suggest, stop there.
 2. Name the parts in the body (`data-part`) and set their pivots. Keep the drawn contour when it's sound.
 3. Write the timeline with the icon's own numbers. Reuse the engine and the curves, never another icon's performance.
-4. Film it frame by frame in bone and graphite (`svg-animated/<name>.svg` with `data-state="play"`, paused at each time), and look at it at 16 and 24 px.
+4. Film it frame by frame in bone and graphite (`svg-animated/<name>.svg` with `data-state="play"`, paused at each time), and look at it at 16 and 24 px. SwiftUI films every act too: `METALUI_CAPTURES=$PWD/docs/captures/swift swift test --filter MetalIconActCaptures` writes `icon-acts-<colorway>.png`.
 5. Check the end is at rest, re-triggers, reduced motion and the SVG export. Commit that one icon, then start the next.

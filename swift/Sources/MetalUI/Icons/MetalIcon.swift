@@ -5,7 +5,7 @@ import AppKit
 import UIKit
 #endif
 
-// The product glyphs as native custom SF Symbols (imported from Kamui's KamuiIcon / KamuiIconView).
+// The product glyphs as native custom SF Symbols (imported from the reference set's native icon views).
 //
 // Source of truth: packages/metalui/icons/src/icons.mjs. `npm run symbols` writes one variable symbol
 // template per glyph (Ultralight/Regular/Black masters, strokes outlined) into
@@ -169,7 +169,7 @@ extension View {
     }
 }
 
-// MARK: - Motion (the symbolEffect table, Kamui NATIVE.md §1)
+// MARK: - Motion (the symbolEffect table, from the reference set's native notes §1)
 
 /// The spring constants shared with the web (`--k-spring`, `--k-soft`).
 enum MetalIconSpring {
@@ -301,7 +301,8 @@ private struct MetalIconTilt: ViewModifier {
 /// - Colour follows the inherited foreground style.
 /// - Hover and press come from the hosting control (`metalIconInteraction`, set by `MetalButton`),
 ///   else from the pointer over the icon itself.
-/// - Static glyphs use `symbolEffect`; send-away, note, group, draw, link and keeper are SwiftUI shapes.
+/// - An icon with an act (docs/ICON-MOTION.md) plays it once from its host's hover or press
+///   (`MetalIconActView`). Others use `symbolEffect`; send-away, note, group, draw, link and the character glyph are SwiftUI shapes.
 ///   Under Reduce Motion the symbol is still and only the duotone brightens.
 public struct MetalIcon: View {
     let icon: MetalIconName
@@ -315,6 +316,7 @@ public struct MetalIcon: View {
     @State private var ownHover = false
     @State private var hoverCount = 0
     @State private var pressCount = 0
+    @State private var actStart: Date?
 
     public init(_ icon: MetalIconName, size: CGFloat = 16, weight: Font.Weight = .regular, interaction: MetalIconInteraction? = nil) {
         self.icon = icon
@@ -326,9 +328,18 @@ public struct MetalIcon: View {
     private var state: MetalIconInteraction { interaction ?? hostInteraction ?? MetalIconInteraction(isHovered: ownHover) }
     private var isSmall: Bool { size <= MetalIconBundle.smallCutMaximumPointSize }
 
+    /// The icon's act (docs/ICON-MOTION.md), when it has one and motion is allowed.
+    private var act: MetalIconAct? { reduceMotion ? nil : MetalIconAct.all[icon] }
+
+    /// One performance at a time: a trigger during the act is ignored.
+    private func playAct() {
+        guard act != nil, actStart == nil else { return }
+        actStart = Date()
+    }
+
     public var body: some View {
         let state = state
-        let motion = MetalIconMotion.resolve(icon, reduceMotion: reduceMotion)
+        let motion = act != nil ? MetalIconMotion.still : MetalIconMotion.resolve(icon, reduceMotion: reduceMotion)
         let duotone = (state.isHovered ? icon.hoverDuotone : icon.restingDuotone) * colorway.tokens.duoK
         content(motion: motion, state: state, duotone: duotone)
             .frame(width: size, height: size)
@@ -339,14 +350,27 @@ public struct MetalIcon: View {
                 guard interaction == nil, hostInteraction == nil else { return }
                 ownHover = hovering
             }
-            .onChange(of: state.isHovered) { _, hovered in if hovered { hoverCount += 1 } }
-            .onChange(of: state.isPressed) { _, pressed in if pressed { pressCount += 1 } }
+            .onChange(of: state.isHovered) { _, hovered in if hovered { hoverCount += 1; playAct() } }
+            .onChange(of: state.isPressed) { _, pressed in if pressed { pressCount += 1; playAct() } }
+            .task(id: actStart) {
+                guard let act, actStart != nil else { return }
+                try? await Task.sleep(for: .seconds(act.duration))
+                if !Task.isCancelled { actStart = nil }
+            }
             .accessibilityHidden(true)
     }
 
     @ViewBuilder
     private func content(motion: MetalIconMotion, state: MetalIconInteraction, duotone: Double) -> some View {
-        if motion.usesHeroShape {
+        if let act {
+            MetalIconActView(
+                act: act,
+                box: size,
+                lineUnits: MetalIconMetrics.strokeUnits(for: weight, regular: isSmall ? icon.smallStrokeUnits : 1.7),
+                duoK: colorway.tokens.duoK,
+                start: actStart
+            )
+        } else if motion.usesHeroShape {
             MetalIconHero(icon: icon, pose: MetalIconHeroPose(
                 box: size,
                 lineUnits: MetalIconMetrics.strokeUnits(for: weight, regular: isSmall ? icon.smallStrokeUnits : 1.7),

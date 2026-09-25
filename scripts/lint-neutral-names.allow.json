@@ -96,5 +96,12 @@
     "match": "Keeper",
     "lineIncludes": "name: 'keeper'",
     "reason": "The keeper mascot glyph is waiting on the owner's decision to remove it; drop this entry with the glyph."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Icons/MetalIcon.swift",
+    "word": "keeper",
+    "match": "keeper",
+    "lineIncludes": "case .sendAway, .note, .group, .draw, .link, .keeper",
+    "reason": "The keeper mascot glyph is waiting on the owner's decision to remove it; drop this entry with the glyph."
   }
 ]
