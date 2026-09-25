@@ -6,7 +6,7 @@
 //
 // Needs no dev server. docs/ICON-MOTION.md §Process step 4.
 import { chromium } from '@playwright/test';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { validateStudy } from '../packages/metalui/icons/src/motion.mjs';
 import { iconActsSwift } from './lib/icon-acts-swift.mjs';
@@ -23,6 +23,9 @@ if (!ic.study) throw new Error(`${name} has no study yet (packages/metalui/icons
 validateStudy(ic.name, ic.study, ic.body, ic.defs);
 iconActsSwift([ic]); // throws when SwiftUI could not play it
 const svg = animatedSvg(ic);
+// The shipped rest glyph, first in the strip: an act must not change the icon at rest.
+const shippedPath = `packages/metalui/public/icons/svg/${name}.svg`;
+const shipped = existsSync(shippedPath) ? readFileSync(shippedPath, 'utf8') : '';
 const d = ic.study.duration;
 const times = arg('--times')?.split(',').map(Number) ?? Array.from({ length: 12 }, (_, i) => Math.round((d * i) / 11));
 
@@ -37,7 +40,7 @@ for (const colorway of ['bone', 'graphite']) {
       <div id="big" style="display:flex;gap:12px"></div>
       <div id="small" style="display:flex;gap:12px;align-items:end"></div>
     </div></body>`);
-  await page.evaluate(({ svg, times }) => {
+  await page.evaluate(({ svg, times, shipped }) => {
     const add = (row, size, t) => {
       const cell = document.createElement('div');
       cell.style.cssText = 'display:grid;justify-items:center;gap:4px';
@@ -53,10 +56,20 @@ for (const colorway of ['bone', 'graphite']) {
         a.pause(); a.currentTime = t;
       }
     };
+    if (shipped) {
+      const cell = document.createElement('div');
+      cell.style.cssText = 'display:grid;justify-items:center;gap:4px';
+      cell.innerHTML = shipped;
+      const el = cell.querySelector('svg');
+      el.setAttribute('width', 96); el.setAttribute('height', 96);
+      el.style.outline = '1px solid rgba(127,127,127,.5)';
+      cell.append(Object.assign(document.createElement('span'), { textContent: 'shipped' }));
+      document.getElementById('big').append(cell);
+    }
     for (const t of times) add('big', 96, t);
     for (const t of times) { add('small', 24, t); }
     for (const t of times) { add('small', 16, t); }
-  }, { svg, times });
+  }, { svg, times, shipped });
   const file = `${out}/${name}-${colorway}.png`;
   await page.locator('#film').screenshot({ path: file });
   console.log(file);
