@@ -535,11 +535,20 @@
       "component": "CloseIcon",
       "label": "Close",
       "category": "Actions",
-      "hover": "its arms draw in toward the crossing, ready",
-      "press": "it folds into its centre and springs back out",
-      "pressMs": 360,
+      "hover": "A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.",
+      "press": "plays the same act",
+      "pressMs": 754,
+      "motion": {
+        "caption": "A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.",
+        "durationMs": 754,
+        "stages": [
+          "Mark",
+          "Cross out",
+          "Settle"
+        ]
+      },
       "tuned16": false,
-      "construction": "X on the circle keyline, arms 13.6u, always at 45°: a turn is no motion for an ×, it reads as loading. Hover draws both arms in toward the crossing (.86), a surface poised to fold up. Press folds it into its centre (.42) and springs it back out past the hover pose; the thing it closes goes the same way."
+      "construction": "X on the circle keyline, arms 13.6u, always at 45°: a turn is no motion for an ×, it reads as loading. Motion (study): crossed out in order. The first stroke draws back up its line and strikes down again, overrunning .5; the second does the same through it, knocking the first .8 along its travel at the crossing, where an impact ring opens; both settle on their springs."
     },
     {
       "name": "check",

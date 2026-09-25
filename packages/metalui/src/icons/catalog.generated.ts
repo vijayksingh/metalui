@@ -697,24 +697,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1143,"caption":"The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.","stages":["Draw back","Knock","Carry on"],"tracks":[{"part":"m1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13998,"transform":"translate(-2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21872,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1.16)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27997,"transform":"translate(0px,0px) rotate(0deg) scale(1.06,0.952)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.36745,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"m2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.21872,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24934,"transform":"translate(0px,0px) rotate(0deg) scale(0.86,1.1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31059,"transform":"translate(0px,0px) rotate(0deg) scale(1.042,0.97)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.39808,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"m3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.24934,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28871,"transform":"translate(0.6px,0px) rotate(0deg) scale(1.12,0.9)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3762,"transform":"translate(2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.68766,"transform":"translate(-0.1974px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"knock","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.25372,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.28871,"transform":"scale(.8)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50744,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * CLOSE · Actions
+   * CLOSE · Actions · one act, 754ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          its arms draw in toward the crossing, ready
-   * PRESS one-shot (from the current pose)
-   *          it folds into its centre and springs back out
-   *     0ms   .x plays cls-p (360ms)
+   * Mark → Cross out → Settle
+   *          A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.
+   *  x1         0 → 110 → 260 → 325 → 350 → 655 → 754ms
+   *  x2         0 → 230 → 320 → 440 → 754ms
+   *  impact     0 → 335 → 365 → 490 → 754ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "close": {
     label: "Close",
     category: "Actions",
-    hover: "its arms draw in toward the crossing, ready",
-    press: "it folds into its centre and springs back out",
-    pressMs: 360,
+    hover: "A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.",
+    press: "plays the same act",
+    pressMs: 754,
     defs: "",
-    body: "<path class=\"x\" d=\"M7.2 7.2l9.6 9.6M16.8 7.2l-9.6 9.6\"/>",
+    body: "<path data-part=\"x1\" pathLength=\"1\" d=\"M7.2 7.2l9.6 9.6\"/><path data-part=\"x2\" pathLength=\"1\" d=\"M16.8 7.2l-9.6 9.6\"/><circle class=\"ac\" data-part=\"impact\" opacity=\"0\" cx=\"12\" cy=\"12\" r=\"2.8\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
     sw16: 1.85,
+    motion: {"duration":754,"caption":"A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.","stages":["Mark","Cross out","Settle"],"tracks":[{"part":"x1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.14589,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34483,"transform":"translate(0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.43103,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.46419,"transform":"translate(-0.5657px,0.5657px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.8687,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"x2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"linear"},{"offset":0.30504,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.4244,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.58355,"transform":"translate(-0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0}]},{"part":"impact","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.4443,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48408,"transform":"scale(.8)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64987,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * CHECK · Actions

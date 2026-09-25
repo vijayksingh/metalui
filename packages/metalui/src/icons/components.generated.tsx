@@ -61,7 +61,7 @@ export const UndoIcon = createIcon("undo", "UndoIcon");
 export const RedoIcon = createIcon("redo", "RedoIcon");
 /** More. Hover: The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.. Press: plays the same act. */
 export const MoreIcon = createIcon("more", "MoreIcon");
-/** Close. Hover: its arms draw in toward the crossing, ready. Press: it folds into its centre and springs back out. */
+/** Close. Hover: A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.. Press: plays the same act. */
 export const CloseIcon = createIcon("close", "CloseIcon");
 /** Check. Hover: it nods yes about its vertex. Press: the tick is drawn again and lands with weight. */
 export const CheckIcon = createIcon("check", "CheckIcon");

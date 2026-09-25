@@ -1666,6 +1666,75 @@ extension MetalIconAct {
             MetalIconActInk(d: "M20.8 12C20.8 13.3255 19.7255 14.4 18.4 14.4C17.0745 14.4 16 13.3255 16 12C16 10.6745 17.0745 9.6 18.4 9.6C19.7255 9.6 20.8 10.6745 20.8 12Z", parts: [3], stroke: 0.6, fill: .none, opacity: 1.0),
             ]
         ),
+        .close: MetalIconAct(
+            duration: 0.754,
+            caption: "A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.",
+            parts: [
+            MetalIconActPart(
+                name: "x1", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1459, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3448, x: 0.3536, y: 0.3536, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.431, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.4642, x: -0.5657, y: 0.5657, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.8687, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: [
+                    .init(0.0, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1459, 0.3, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3448, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.431, 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.4642, 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.8687, 1.0, ease: .linear),
+                    .init(1.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ]
+            ),
+            MetalIconActPart(
+                name: "x2", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.305, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.4244, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5836, x: -0.3536, y: 0.3536, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: [
+                    .init(0.0, 1.0, ease: .linear),
+                    .init(0.305, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.4244, 0.3, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5836, 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, 1.0, ease: .linear),
+                ]
+            ),
+            MetalIconActPart(
+                name: "impact", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .linear),
+                    .init(0.4443, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4841, x: 0.0, y: 0.0, r: 0.0, sx: 0.8, sy: 0.8, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6499, x: 0.0, y: 0.0, r: 0.0, sx: 1.2, sy: 1.2, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.4443, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4841, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6499, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M7.2 7.2L16.8 16.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M16.8 7.2L7.2 16.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M14.8 12C14.8 13.5464 13.5464 14.8 12 14.8C10.4536 14.8 9.2 13.5464 9.2 12C9.2 10.4536 10.4536 9.2 12 9.2C13.5464 9.2 14.8 10.4536 14.8 12Z", parts: [2], stroke: 0.6, fill: .none, opacity: 1.0),
+            ]
+        ),
         .synced: MetalIconAct(
             duration: 1.1,
             caption: "The satellite winds back, laps the core once and clicks home into its slot.",
