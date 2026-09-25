@@ -13,6 +13,8 @@ export const MECHANISMS = {
       "Up"
     ],
     "stagger": 60,
+    "phase": null,
+    "loop": false,
     "spring": "release",
     "slots": {
       "keys": "actor",
@@ -134,6 +136,8 @@ export const MECHANISMS = {
       "Seat"
     ],
     "stagger": 0,
+    "phase": null,
+    "loop": false,
     "spring": "part",
     "slots": {
       "plug": "actor",
@@ -383,6 +387,8 @@ export const MECHANISMS = {
       "Settle"
     ],
     "stagger": 0,
+    "phase": null,
+    "loop": false,
     "spring": "part",
     "slots": {
       "caps": "actor",
@@ -430,5 +436,152 @@ export const MECHANISMS = {
       "tickGap": 40,
       "step": 240
     }
+  },
+  "sweep": {
+    "name": "sweep",
+    "mode": "momentary",
+    "duration": 1400,
+    "caption": "The beam turns once around the glass; each blip lights as the beam crosses it, and fades.",
+    "stages": [
+      "Turn",
+      "Cross",
+      "Fade"
+    ],
+    "stagger": 0,
+    "phase": {
+      "blips": {
+        "by": "angle",
+        "about": "beam"
+      }
+    },
+    "loop": true,
+    "spring": "part",
+    "slots": {
+      "beam": "actor",
+      "face": "trim",
+      "blips": "actor?",
+      "lamp": "lamp"
+    },
+    "tracks": [
+      {
+        "part": "beam",
+        "origin": "centre",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 1400,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 360,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.4,
+              0,
+              0.2,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "part": "blips",
+        "origin": "centre",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": 0,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 40,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": 1,
+            "ease": [
+              0.22,
+              1,
+              0.36,
+              1
+            ]
+          },
+          {
+            "at": 640,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": 0,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "at": 0,
+        "kind": "strike",
+        "slot": "blips",
+        "level": 0.3,
+        "pitch": 1
+      }
+    ],
+    "states": {
+      "stopped": {
+        "hold": "beam",
+        "pose": {
+          "r": 200
+        }
+      }
+    },
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": null
   }
 } as const;

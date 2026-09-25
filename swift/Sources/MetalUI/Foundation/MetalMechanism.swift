@@ -50,6 +50,10 @@ public struct MetalMechanism: Sendable {
     public let duration: Double
     /// ms between one actor and the next when a slot binds many (a chord's keys).
     public let stagger: Double
+    /// Plays again while the state that started it holds (a scope searching).
+    public let loops: Bool
+    /// Slots whose actors start at their own moment (a blip when the beam reaches it), given by the caller.
+    public let phased: [String]
     public let spring: MetalSpringClass
     public let tracks: [Track]
     public let cues: [Cue]
@@ -58,8 +62,8 @@ public struct MetalMechanism: Sendable {
     public let reduced: [String]
     public let held: Held?
 
-    public init(name: String, momentary: Bool, duration: Double, stagger: Double = 0, spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String], held: Held? = nil) {
-        self.name = name; self.momentary = momentary; self.duration = duration; self.stagger = stagger; self.spring = spring
+    public init(name: String, momentary: Bool, duration: Double, stagger: Double = 0, loops: Bool = false, phased: [String] = [], spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String], held: Held? = nil) {
+        self.name = name; self.momentary = momentary; self.duration = duration; self.stagger = stagger; self.loops = loops; self.phased = phased; self.spring = spring
         self.tracks = tracks; self.cues = cues; self.states = states; self.reduced = reduced; self.held = held
     }
 
@@ -106,7 +110,13 @@ public final class MetalMechanismPlayer {
 
     /// How many actors the current act moves (a chord's keys), each `stagger` ms after the last.
     public private(set) var actors = 1
-    private var total: Double { mechanism.duration + Double(actors - 1) * mechanism.stagger }
+    /// Each actor's own start, ms, for a phased slot (set by the caller for the current act).
+    public private(set) var offsets: [String: [Double]] = [:]
+    private func beginOf(_ part: String, _ i: Int) -> Double { offsets[part.components(separatedBy: ".")[0]]?[safe: i] ?? Double(i) * mechanism.stagger }
+    /// How long the current act runs: until its last actor's track ends.
+    public var total: Double {
+        mechanism.tracks.map { t in (0..<actors).map { beginOf(t.part, $0) + (t.frames.last?.at ?? 0) }.max() ?? 0 }.max().map { max($0, mechanism.duration) } ?? mechanism.duration
+    }
     public var playing: Bool { actStart.map { Date().timeIntervalSince($0) * 1000 < total } ?? false }
     /// Reduced motion drops the travel, unless the mechanism keeps it (a key still dips its few units).
     private var dropsTravel: Bool { reduced && !mechanism.reduced.contains("press") }
@@ -129,18 +139,20 @@ public final class MetalMechanismPlayer {
                     strike: (String) -> (material: MetalSoundMaterial, size: Double)? = { _ in nil },
                     lamp: ((MetalLampGesture) -> Void)? = nil, beep: (() -> Void)? = nil,
                     onCue: ((MetalMechanism.Cue, Double) -> Void)? = nil, actors: Int = 1,
-                    strikeActor: ((String, Int) -> (material: MetalSoundMaterial, size: Double)?)? = nil) -> Bool {
+                    strikeActor: ((String, Int) -> (material: MetalSoundMaterial, size: Double)?)? = nil,
+                    offsets: [String: [Double]] = [:]) -> Bool {
         guard mechanism.momentary, !playing else { return false }
         for item in pending { item.cancel() }
         pending = []
-        self.actors = max(1, actors)
+        self.actors = max(1, actors, offsets.values.map(\.count).max() ?? 0)
+        self.offsets = offsets
         for (at, cue, skipped) in schedule() where !skipped {
             // A strike on a slot of many actors strikes each of them, a stagger apart.
             // Each struck actor sounds in its own material when the caller says which that is.
             if cue.kind == .strike, let slot = cue.slot {
                 for i in 0..<self.actors {
                     guard let part = strikeActor?(slot, i) ?? strike(slot) else { continue }
-                    let when = dropsTravel ? at : at + Double(i) * mechanism.stagger
+                    let when = dropsTravel ? at : at + beginOf(slot, i)
                     sound?.strike(part.material, size: part.size, weight: weight, reach: reach, level: cue.level, delay: when / 1000, pitch: cue.pitch)
                 }
             }
@@ -204,9 +216,14 @@ public final class MetalMechanismPlayer {
     public func pose(_ part: String, actor: Int = 0, at date: Date = Date()) -> (pose: MetalMechanismPose, opacity: Double?) {
         if let start = actStart {
             let t = date.timeIntervalSince(start) * 1000
-            if t < total { return mechanism.sample(part, at: min(mechanism.duration, max(0, t - Double(actor) * mechanism.stagger))) }
+            if t < total { return mechanism.sample(part, at: min(mechanism.duration, max(0, t - beginOf(part, actor)))) }
         }
         let base = part.components(separatedBy: ".")[0], h = held[base] ?? .rest
         return (part.contains(".") ? MetalMechanismPose(x: h.x, y: h.y) : h, part.contains(".") ? 1 : nil)
     }
+}
+
+extension Array {
+    /// The element at `i`, or nil past the end.
+    subscript(safe i: Int) -> Element? { indices.contains(i) ? self[i] : nil }
 }

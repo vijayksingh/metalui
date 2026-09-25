@@ -16,6 +16,9 @@ import { drawBeeper } from './parts/beeper';
 import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
+import { drawBezel } from './parts/bezel';
+import { drawGlass } from './parts/glass';
+import { drawBacklight, type BacklightShape } from './parts/backlight';
 import { MECHANISMS } from './mechanisms.generated';
 
 export interface DrawOptions { state?: string; tier?: Tier; host?: Host; id?: string; lamp?: [string, string] }
@@ -24,6 +27,8 @@ export interface GadgetDraw {
   state: string;
   body: { defs: string; html: string };
   parts: { defs: string; html: string };
+  /** Over the parts: an inset gadget's glass surface and its frame (empty for a slab gadget). */
+  top: { defs: string; html: string };
   lamp: { defs: string; html: string };
   /** The spoken description: the spec's `describe` with {title} and {state}, then the state's hint. */
   description: string;
@@ -107,7 +112,18 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     cuts.push({ kind: 'slot', at: [p.at[0], p.at[1] + (y0 + y1) / 2], size: [sw, Math.abs(y1 - y0) + pad] });
   }
   const start = held ? driveTargets(spec, driveDefault(spec)) : [];
-  let body = { defs: '', html: '' };
+  let body = { defs: '', html: '' }, top = { defs: '', html: '' };
+  // An inset gadget: its face (the glass) is the body layer, the light in it the parts, and its surface
+  // and frame the top, so light sits inside the glass and under the frame.
+  let clip = '';
+  if (bodyPart && bodyPart.part === 'bezel') {
+    const bz = drawBezel(`${id}-body`, { at: bodyPart.at, size: sizeOf(bodyPart), material: resolved.material as GadgetMaterial, color: rs.body, opening: (bodyPart.params?.opening as 'round' | 'square' | undefined) ?? 'round', cuts }, { tier, host });
+    const facePart = spec.parts.find((p) => p.part === 'glass-face');
+    const g = drawGlass(`${id}-glass`, { at: bz.opening.at, size: bz.opening.size, shape: bz.opening.shape, color: resolved.face }, { tier });
+    clip = g.clip;
+    body = { defs: bz.defs + g.defs, html: `<g data-id="${facePart?.id ?? 'face'}">${g.glass}</g>` };
+    top = { defs: '', html: `${g.surface}${bz.shade}<g data-id="${bodyPart.id}">${bz.frame}</g>` };
+  }
   if (bodyPart && bodyPart.part === 'slab') {
     const s = drawSlab(`${id}-body`, { at: bodyPart.at, size: sizeOf(bodyPart), material: resolved.material as GadgetMaterial, color: rs.body, cuts }, { tier, host });
     body = { defs: s.defs, html: `<g data-id="${bodyPart.id}">${s.floors}` };
@@ -121,7 +137,7 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   }
 
   // The parts, lowest first: nuts and plates on the body, then cables, then plugs.
-  let defs = '', trims = '', cables = '', plugs = '';
+  let defs = '', trims = '', cables = '', plugs = '', lights = '';
   for (const p of spec.parts) {
     const size = sizeOf(p), pid = `${id}-${p.id}`;
     if (p.part === 'jack') {
@@ -145,6 +161,15 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       // A driven cap is drawn at its starting place, so the first paint (and the server's) shows it there.
       const k = driven.indexOf(p.id), y = k >= 0 && held ? (held.from.y ?? 0) + ((held.to.y ?? 0) - (held.from.y ?? 0)) * start[k] : 0;
       plugs += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}><g data-drive="${k}" transform="translate(0 ${+y.toFixed(3)})">${d.shadow}${d.body}</g></g>`;
+    } else if (p.part === 'backlight') {
+      // Light in the glass: a beam turned by its mechanism, blips lit by it (dark until then, unless the
+      // state says otherwise). Each is its own group, which a player moves or lights.
+      const shape = (p.params?.shape as BacklightShape | undefined) ?? 'glow', colorName = (p.params?.color as string | undefined) ?? 'glass';
+      const color = colorName === 'accent' ? { accent: true as const } : colorName === 'signal' ? { signal: rs.lamp[0] as LampSignal } : { glass: resolved.face };
+      const d = drawBacklight(pid, { at: p.at, size: size[0], shape, color });
+      defs += d.defs;
+      const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
+      lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`;
     } else if (p.part === 'key') {
       const r = byId[p.id], ceramic = p.material === 'ceramic';
       const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
@@ -172,7 +197,8 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   return {
     resolved, state,
     body,
-    parts: { defs, html: trims + cables + plugs },
+    parts: { defs, html: (lights ? `<g clip-path="url(#${clip})" data-part="bezel.light">${lights}</g>` : '') + trims + cables + plugs },
+    top,
     lamp: { defs: lamp.defs, html: lamp.body },
     description: describeGadget(spec, state),
   };
@@ -185,6 +211,6 @@ export function renderGadgetSvg(spec: GadgetSpec, o: DrawOptions & { size?: numb
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="${size}" height="${size}" role="img" data-gadget="${spec.name}" data-state="${d.state}" data-tier="${tier}">`
     + `<title>${esc(spec.title)}</title><desc>${esc(d.description)}</desc>`
-    + `<defs>${d.body.defs}${d.parts.defs}${d.lamp.defs}</defs>`
-    + `<g data-layer="body">${d.body.html}</g><g data-layer="parts">${d.parts.html}</g><g data-layer="lamp">${d.lamp.html}</g></svg>`;
+    + `<defs>${d.body.defs}${d.parts.defs}${d.top.defs}${d.lamp.defs}</defs>`
+    + `<g data-layer="body">${d.body.html}</g><g data-layer="parts">${d.parts.html}</g><g data-layer="top">${d.top.html}</g><g data-layer="lamp">${d.lamp.html}</g></svg>`;
 }

@@ -64,6 +64,18 @@ class Walk {
 
 const bbox = (at: number[], size: readonly number[]) => [at[0] - size[0] / 2, at[1] - size[1] / 2, at[0] + size[0] / 2, at[1] + size[1] / 2];
 const overlaps = (a: number[], b: number[]) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+/** Two footprints collide: circles for round parts (a lamp, a jack, a round face), boxes for the rest. */
+type Foot = { box: number[]; round: boolean };
+function collide(a: Foot, b: Foot): boolean {
+  const c = (f: Foot) => [(f.box[0] + f.box[2]) / 2, (f.box[1] + f.box[3]) / 2, Math.min(f.box[2] - f.box[0], f.box[3] - f.box[1]) / 2];
+  if (a.round && b.round) { const [ax, ay, ar] = c(a), [bx, by, br] = c(b); return Math.hypot(ax - bx, ay - by) < ar + br; }
+  if (a.round || b.round) {
+    const [cx, cy, r] = c(a.round ? a : b), box = (a.round ? b : a).box;
+    const dx = Math.max(box[0] - cx, 0, cx - box[2]), dy = Math.max(box[1] - cy, 0, cy - box[3]);
+    return Math.hypot(dx, dy) < r;
+  }
+  return overlaps(a.box, b.box);
+}
 
 /** Validates a gadget spec. On success returns the spec as typed. */
 export function validateGadget(input: unknown, path = '$'): Validation<GadgetSpec> {
@@ -93,7 +105,7 @@ function walkGadget(w: Walk, input: unknown, path: string) {
   const parts = Array.isArray(s.parts) ? s.parts : [];
   if (!Array.isArray(s.parts)) w.need(s, 'parts', path);
   else if (parts.length < L.parts[0] || parts.length > L.parts[1]) w.add(`${path}.parts`, 'field.range', `A gadget has ${L.parts[0]} to ${L.parts[1]} parts; this one has ${parts.length}.`);
-  const ids = new Map<string, { part: string; role: string; box: number[] }>();
+  const ids = new Map<string, { part: string; role: string; box: number[]; round: boolean; light: boolean }>();
   parts.forEach((p, i) => {
     const pp = `${path}.parts[${i}]`;
     if (!isObj(p)) return w.add(pp, 'field.type', 'A part placement is an object.');
@@ -125,8 +137,12 @@ function walkGadget(w: Walk, input: unknown, path: string) {
     if (at && p.part !== 'cable') {
       const box = bbox(at, size);
       if (box[0] < 0 || box[1] < 0 || box[2] > 400 || box[3] > 400) w.add(`${pp}.at`, 'part.offCanvas', `The ${p.part} runs off the 400-unit canvas.`, 'Move it inward or make it smaller.');
-      if (id !== undefined) ids.set(id, { part: p.part as string, role: p.role as string, box });
-    } else if (id !== undefined) ids.set(id, { part: p.part as string, role: p.role as string, box: [0, 0, 0, 0] });
+      // Round parts collide as circles; a glass face is round unless its shape says square.
+      const r = (def as unknown as { round?: boolean | string }).round, round = r === true || (typeof r === 'string' && (p.params as Obj | undefined)?.[r] !== 'square');
+      // Light (a lamp, a backlight) passes through: it never collides and never covers.
+      const light = def.materials.length === 1 && def.materials[0] === 'lamp';
+      if (id !== undefined) ids.set(id, { part: p.part as string, role: p.role as string, box, round, light });
+    } else if (id !== undefined) ids.set(id, { part: p.part as string, role: p.role as string, box: [0, 0, 0, 0], round: false, light: false });
   });
   // refs in params (a cable's from/to)
   parts.forEach((p, i) => {
@@ -152,10 +168,10 @@ function walkGadget(w: Walk, input: unknown, path: string) {
     for (const [cid, c] of all) if (c.role === 'cut' && !(c.box[0] >= body.box[0] && c.box[1] >= body.box[1] && c.box[2] <= body.box[2] && c.box[3] <= body.box[3]))
       w.add(`${path}.parts`, 'part.offCanvas', `The cut "${cid}" is not inside the body.`, 'Move it inside the body.');
   }
-  if (lamps.length === 1) for (const [oid, o] of all) if ((o.role === 'actor' || o.role === 'trim') && o.part !== 'cable' && overlaps(lamps[0][1].box, o.box))
+  if (lamps.length === 1) for (const [oid, o] of all) if ((o.role === 'actor' || o.role === 'trim') && o.part !== 'cable' && !o.light && collide(lamps[0][1], o))
     w.add(`${path}.parts`, 'part.overlap', `"${oid}" covers the lamp.`, 'Keep the lamp clear: it is how the gadget shows its state.');
-  const actors = all.filter(([, v]) => v.role === 'actor');
-  for (let i = 0; i < actors.length; i++) for (let j = i + 1; j < actors.length; j++) if (overlaps(actors[i][1].box, actors[j][1].box))
+  const actors = all.filter(([, v]) => v.role === 'actor' && !v.light);
+  for (let i = 0; i < actors.length; i++) for (let j = i + 1; j < actors.length; j++) if (collide(actors[i][1], actors[j][1]))
     w.add(`${path}.parts`, 'part.overlap', `"${actors[i][0]}" and "${actors[j][0]}" overlap; moving parts would collide.`, 'Space them apart.');
 
   // Ports

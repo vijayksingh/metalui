@@ -3,8 +3,9 @@
 // It is a slab with one cut, whose floor is the face instead of the slab's own shadow. Canvas units;
 // drawn by the React Part, the gadget renderer and SwiftUI (MetalBezel) (tokens gadgets.bezel).
 import { GADGETS, type GadgetMaterial } from '../gadgets.generated';
-import { drawSlab } from './slab';
-import { holeFilter, type Host, type Tier } from '../light';
+import { drawSlab, type Cut } from './slab';
+import { holeFilter, innerShadowFilter, type Host, type Tier } from '../light';
+import { glassPath } from './glass';
 
 export interface BezelSpec {
   at?: [number, number];
@@ -14,6 +15,8 @@ export interface BezelSpec {
   opening?: 'round' | 'square';
   /** The frame at its narrowest, units. */
   width?: number;
+  /** Other cuts through the frame (a lamp's hole), each with its own floor. */
+  cuts?: Cut[];
 }
 
 export interface BezelDraw {
@@ -25,6 +28,8 @@ export interface BezelDraw {
   frame: string;
   /** Where the face goes: its centre and size. */
   opening: { at: [number, number]; size: number; shape: 'round' | 'square' };
+  /** The frame's wall shadow as an overlay on the opening, for a face layered separately (the renderer). */
+  shade: string;
 }
 
 export function drawBezel(id: string, s: BezelSpec, o: { tier?: Tier; host?: Host } = {}): BezelDraw {
@@ -34,14 +39,19 @@ export function drawBezel(id: string, s: BezelSpec, o: { tier?: Tier; host?: Hos
   const cut = shape === 'round'
     ? { kind: 'hole' as const, at, size: [side, side] as [number, number], depth: B.depth }
     : { kind: 'tray' as const, at, size: [side, side] as [number, number], depth: B.depth, radius: side * B.openingRadius };
-  const slab = drawSlab(`${id}-frame`, { at, size, material: s.material, color: s.color, cuts: [cut] }, { tier, host: o.host });
+  const extra = s.cuts ?? [];
+  const slab = drawSlab(`${id}-frame`, { at, size, material: s.material, color: s.color, cuts: [cut, ...extra] }, { tier, host: o.host });
+  // The other cuts' floors (the opening's floor is the glass, drawn by the caller).
+  const floors = extra.length ? drawSlab(`${id}-floors`, { at, size, material: s.material, color: s.color, cuts: extra }, { tier, host: o.host }) : null;
   const flat = tier === 'flat';
-  const defs = slab.defs + (flat ? '' : holeFilter(`${id}-wall`));
+  const defs = slab.defs + (floors?.defs ?? '') + (flat ? '' : holeFilter(`${id}-wall`) + innerShadowFilter(`${id}-shade`));
+  const shade = flat ? '' : `<path d="${glassPath({ at, size: side, shape })}" fill="#000" filter="url(#${id}-shade)" data-part="bezel.shade"/>`;
   return {
     defs,
     wall: flat ? null : `${id}-wall`,
     sunk: (inside) => (flat ? `<g data-part="bezel.face">${inside}</g>` : `<g data-part="bezel.face" filter="url(#${id}-wall)">${inside}</g>`),
-    frame: `<g data-part="bezel">${slab.body}${slab.lips}</g>`,
+    frame: `<g data-part="bezel">${floors?.floors ?? ''}${slab.body}${slab.lips}</g>`,
     opening: { at, size: side, shape },
+    shade,
   };
 }

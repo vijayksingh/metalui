@@ -19,6 +19,10 @@ public struct MetalGadget: View {
     @State private var beeps = 0
     @State private var earcon: MetalEarcon?
     @State private var landing = 0
+    /// Where a sweep's beam stopped when its search ended: it stays there.
+    @State private var frozen: [String: Double] = [:]
+    /// Bumped when a looping act should play again.
+    @State private var loops = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// `value` drives a held gadget (its drive port, 0 to 1 for a number): its parts move to follow it.
@@ -62,6 +66,14 @@ public struct MetalGadget: View {
             ZStack(alignment: .topLeading) {
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { _ in
                     MetalSlab(r.material, color: body(r), cuts: cuts, size: size)
+                }
+                // An inset gadget: its glass in a bezel, with the light in the glass.
+                ForEach(spec.parts.filter { $0.role == "body" && $0.part == "bezel" }, id: \.id) { p in
+                    MetalBezel(r.material, color: body(r), glass: r.face, opening: p.params?["opening"]?.text == "square" ? .square : .round, size: size) {
+                        ZStack(alignment: .topLeading) {
+                            ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in light(q, r: r, at: timeline.date) }
+                        }
+                    }
                 }
                 ForEach(spec.parts.filter { $0.part == "jack" }, id: \.id) { p in
                     let s = footprint(p).0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.jackNut
@@ -115,6 +127,8 @@ public struct MetalGadget: View {
                 player = p
             }
             shown = state
+            // A looping act is an ongoing activity: shown in the state that starts it, it runs from the start.
+            if player?.mechanism.loops == true, spec.states[state]?.enter == "act", !reduceMotion { actAndLoop(bind: bind) }
         }
         .onChange(of: state) { _, next in enter(next, bind: bind) }
         .onChange(of: act) { play(bind: bind) }
@@ -153,6 +167,36 @@ public struct MetalGadget: View {
 
     private var driveMaterial: MetalSoundMaterial {
         spec.parts.first { $0.part == "cap" }?.material == "ceramic" ? .ceramic : .clay
+    }
+
+    /// Light in the glass: a beam turned by its mechanism (or where it stopped), blips lit by it (or
+    /// as the state says, else dark).
+    @ViewBuilder private func light(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let shape = MetalBacklight.Shape(rawValue: p.params?["shape"]?.text ?? "glow") ?? .glow
+        let tint: MetalBacklight.Tint = switch p.params?["color"]?.text { case "accent": .accent; case "signal": .signal(spec.states[state]?.lamp?.first ?? "live"); default: .glass(r.face) }
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }
+        let index = slot?.value.firstIndex(of: p.id) ?? 0
+        let playing = player?.playing ?? false
+        let posed = slot.flatMap { player?.pose($0.key, actor: index, at: date) }
+        let form = spec.states[state]?.form?[p.id]?.alpha
+        let alpha = playing ? posed?.opacity ?? (shape == .dot ? 0 : 1) : form ?? (shape == .dot ? 0 : 1)
+        let heading = playing ? posed?.pose.r ?? 0 : frozen[p.id] ?? 0
+        MetalBacklight(shape, color: tint, heading: heading, at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
+            .opacity(alpha)
+    }
+
+    /// Each phased actor's own start, ms: its angle around the part it is phased about, clockwise from
+    /// up, as a share of the act (a blip lights when the beam reaches it). The web computes the same.
+    private var phaseOffsets: [String: [Double]] {
+        guard let m = player?.mechanism, !m.phased.isEmpty, let beam = spec.mechanism.bind["beam"]?.first.flatMap(part) else { return [:] }
+        var out: [String: [Double]] = [:]
+        for slot in m.phased {
+            out[slot] = (spec.mechanism.bind[slot] ?? []).compactMap(part).map { q in
+                let deg = atan2(q.at[0] - beam.at[0], beam.at[1] - q.at[1]) * 180 / .pi
+                return (deg.truncatingRemainder(dividingBy: 360) + 360).truncatingRemainder(dividingBy: 360) / 360 * m.duration
+            }
+        }
+        return out
     }
 
     /// A key, its face moved by the press mechanism when its slot binds it.
@@ -229,7 +273,8 @@ public struct MetalGadget: View {
     /// as its Part's first material) at its own size.
     private func strikeActor(_ slot: String, _ i: Int) -> (material: MetalSoundMaterial, size: Double)? {
         guard let ids = spec.mechanism.bind[slot], i < ids.count, let p = part(ids[i]) else { return nil }
-        let m = p.material.flatMap(MetalSoundMaterial.init(rawValue:)) ?? .clay
+        // Light has no material of its own: a tick on it is the glass it shines through.
+        let m = p.part == "backlight" ? .glass : p.material.flatMap(MetalSoundMaterial.init(rawValue:)) ?? .clay
         return (m, footprint(p).0)
     }
 
@@ -247,6 +292,8 @@ public struct MetalGadget: View {
         lampGesture = nil
         player.reduced = reduceMotion
         let away = player.pose("plug").pose, far = hypot(away.x, away.y) > 2
+        // A sweep stopped mid-turn leaves its beam where it is.
+        if player.playing { for (slot, ids) in spec.mechanism.bind where slot == "beam" { for id in ids { frozen[id] = player.pose(slot).pose.r } } }
         player.holdPose("plug", formPose(bind["plug"], in: next))
         let st = spec.states[next], news = st?.beep.flatMap(MetalEarcon.init(rawValue:))
         landing += 1
@@ -260,7 +307,7 @@ public struct MetalGadget: View {
                 return
             }
             if far { player.land(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) }) }
-            else { player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) }, actors: manyActors, strikeActor: strikeActor) }
+            else { actAndLoop(bind: bind, news: news) }
         } else if let news { beep(news) }
     }
 
@@ -271,6 +318,18 @@ public struct MetalGadget: View {
         guard zeta < 1 else { return spring.duration }
         let wd = w * (1 - zeta * zeta).squareRoot()
         return (Double.pi - atan(wd / (zeta * w))) / wd
+    }
+
+    /// Plays the act; a looping mechanism plays again when it ends, while the state that started it holds.
+    private func actAndLoop(bind: [String: String], news: MetalEarcon? = nil) {
+        guard let player else { return }
+        player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) },
+                   actors: manyActors, strikeActor: strikeActor, offsets: phaseOffsets)
+        guard player.mechanism.loops, !reduceMotion, let started = shown else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + player.total / 1000) {
+            guard shown == started, spec.states[started]?.enter == "act" else { return }
+            actAndLoop(bind: bind, news: news)
+        }
     }
 
     private func play(bind: [String: String]) {

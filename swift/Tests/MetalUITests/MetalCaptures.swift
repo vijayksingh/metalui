@@ -313,6 +313,19 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetScope() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/scope.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(["rest", "found", "nothing"], id: \.self) { s in MetalGadget(spec: spec, state: s, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-scope-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

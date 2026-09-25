@@ -1,0 +1,12 @@
+{
+  "name": "scope",
+  "title": "Scope",
+  "status": "alpha",
+  "description": "A gadget for search: an ice-glass radar face sunk in a stone bezel. While it searches, a beam sweeps the glass and blips light as it crosses them, with a glass tick each; found, the blips stay lit. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/scope.gadget.json",
+  "uses": ["bezel", "glass-face", "backlight", "led"],
+  "page": "/gadgets/scope"
+}

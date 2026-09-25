@@ -162,8 +162,8 @@ public enum MetalGadgetTokens {
     public static let backlightSpread: Double = ${num(G.backlight.spread)}
     public static let backlightSlices: Int = ${G.backlight.slices}
     public static let backlightLead: (width: Double, alpha: Double) = (${G.backlight.lead.map(num).join(', ')})
+    /// A blip's hot core, a share of its radius.
     public static let backlightDot: Double = ${num(G.backlight.dot)}
-    public static let backlightCore: Double = ${num(G.backlight.core)}
     public static let backlightGlassLift: Double = ${num(G.backlight['glass-lift'])}
     public static let backlightAlpha: Double = ${num(G.backlight.alpha)}
     public static let backlightSliceAlpha: Double = ${num(G.backlight['slice-alpha'])}
@@ -250,7 +250,7 @@ emit('swift/Sources/MetalUI/Tokens/MetalMechanisms.generated.swift', `// Generat
 extension MetalMechanism {
 ${MECHS.map((m) => `    /// ${m.caption}
     public static let ${m.name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())} = MetalMechanism(
-        name: ${JSON.stringify(m.name)}, momentary: ${m.mode === 'momentary'}, duration: ${num(m.duration)}, stagger: ${num(m.stagger ?? 0)}, spring: .${m.spring},
+        name: ${JSON.stringify(m.name)}, momentary: ${m.mode === 'momentary'}, duration: ${num(m.duration)}, stagger: ${num(m.stagger ?? 0)}, loops: ${!!m.loop}, phased: [${Object.keys(m.phase ?? {}).map((k) => JSON.stringify(k)).join(', ')}], spring: .${m.spring},
         tracks: [
 ${m.tracks.map((t) => `            .init(part: ${JSON.stringify(t.part)}, frames: [${t.frames.map((f) => `.init(at: ${num(f.at)}, pose: ${swiftPose(f.pose)}, opacity: ${f.opacity === null ? 'nil' : num(f.opacity)}, ease: (${f.ease.map(num).join(', ')}))`).join(', ')}])`).join(',\n')}
         ],

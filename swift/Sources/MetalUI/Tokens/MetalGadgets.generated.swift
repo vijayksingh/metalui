@@ -181,8 +181,8 @@ public enum MetalGadgetTokens {
     public static let backlightSpread: Double = 70.0
     public static let backlightSlices: Int = 14
     public static let backlightLead: (width: Double, alpha: Double) = (2.4, 0.95)
-    public static let backlightDot: Double = 0.07
-    public static let backlightCore: Double = 0.35
+    /// A blip's hot core, a share of its radius.
+    public static let backlightDot: Double = 0.35
     public static let backlightGlassLift: Double = 0.14
     public static let backlightAlpha: Double = 0.85
     public static let backlightSliceAlpha: Double = 0.75

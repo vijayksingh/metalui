@@ -524,8 +524,7 @@ export const GADGETS = {
       2.4,
       0.95
     ],
-    "dot": 0.07,
-    "core": 0.35,
+    "dot": 0.35,
     "glassLift": 0.14,
     "alpha": 0.85,
     "sliceAlpha": 0.75,
@@ -777,7 +776,7 @@ export const GADGETS = {
     },
     "find": {
       "stations": [
-        220
+        250
       ],
       "reach": "world",
       "containers": [
@@ -915,11 +914,18 @@ export const GADGETS = {
       "materials": [
         "glass"
       ],
-      "params": {},
+      "params": {
+        "shape": [
+          "enum",
+          "round",
+          "square"
+        ]
+      },
       "strike": [
         "face",
         0.5
-      ]
+      ],
+      "round": "shape"
     },
     "backlight": {
       "size": [
@@ -947,7 +953,8 @@ export const GADGETS = {
           "beam",
           "dot"
         ]
-      }
+      },
+      "round": true
     },
     "led": {
       "size": [
@@ -957,7 +964,8 @@ export const GADGETS = {
       "materials": [
         "lamp"
       ],
-      "params": {}
+      "params": {},
+      "round": true
     },
     "key": {
       "size": [
@@ -1029,7 +1037,8 @@ export const GADGETS = {
       "strike": [
         "nut",
         0.7
-      ]
+      ],
+      "round": true
     },
     "plug": {
       "size": [
@@ -1052,7 +1061,8 @@ export const GADGETS = {
       "strike": [
         "body",
         0.85
-      ]
+      ],
+      "round": true
     },
     "cable": {
       "size": [

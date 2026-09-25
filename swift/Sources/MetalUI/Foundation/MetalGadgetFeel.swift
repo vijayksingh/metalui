@@ -104,11 +104,20 @@ public enum MetalGadgetModel {
     public struct SetProblem: Sendable { public let code: String; public let members: [String]; public let message: String }
 
     /// Gadgets side by side must not repeat themselves (the same rules as checkSet in resolve.ts).
+    static func seen(_ r: MetalGadgetResolved) -> MetalGadgetResolved {
+        guard r.container == "inset" else { return r }
+        let t = MetalGadgetFeelTokens.self, band = r.face.L >= t.setBands.0 ? 0 : r.face.L >= t.setBands.1 ? 1 : 2
+        return MetalGadgetResolved(job: r.job, feel: r.feel, material: .glass, materialBy: r.materialBy, station: r.station, container: r.container,
+                                   reach: r.reach, body: r.face, accent: r.accent, face: r.face, register: r.register, scale: r.scale, band: band)
+    }
+
     public static func checkSet(_ members: [(name: String, resolved: MetalGadgetResolved)]) -> [SetProblem] {
         let t = MetalGadgetFeelTokens.self
         var out: [SetProblem] = []
         for i in members.indices { for j in members.indices where j > i {
-            let (a, b) = (members[i], members[j]), (ra, rb) = (a.resolved, b.resolved), pair = [a.name, b.name]
+            let (a, b) = (members[i], members[j]), pair = [a.name, b.name]
+            // An inset gadget is seen through its glass: compare its face, as glass, not its frame.
+            let (ra, rb) = (seen(a.resolved), seen(b.resolved))
             let gap = abs((ra.station - rb.station + 540).truncatingRemainder(dividingBy: 360) - 180)
             let colourful = ra.body.C >= t.setHueMinChroma && rb.body.C >= t.setHueMinChroma      // a grey's hue is not seen
             if colourful, gap < t.setHueGap { out.append(.init(code: "set.hue", members: pair, message: "\(a.name) and \(b.name) sit \(Int(gap))° apart.")) }

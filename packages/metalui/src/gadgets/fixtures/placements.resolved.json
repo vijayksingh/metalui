@@ -190,7 +190,7 @@
   },
   "search": {
     "material": "stone",
-    "station": 220,
+    "station": 250,
     "container": "inset",
     "reach": "world",
     "register": 84,
@@ -199,8 +199,8 @@
     "body": {
       "L": 0.75,
       "C": 0.05,
-      "H": 221.6,
-      "srgb": "#8bb6c5"
+      "H": 251.6,
+      "srgb": "#97b1cd"
     },
     "accent": {
       "L": 0.72,
@@ -211,8 +211,8 @@
     "face": {
       "L": 0.834,
       "C": 0.1,
-      "H": 221.6,
-      "srgb": "#79d8f7"
+      "H": 251.6,
+      "srgb": "#a0cdff"
     }
   },
   "share": {

@@ -41,8 +41,9 @@ public struct MetalBacklight: View {
         ZStack(alignment: .topLeading) {
             switch shape {
             case .glow, .dot:
-                let r = shape == .glow ? R * MetalGadgetTokens.backlightGlow * 2 : R * MetalGadgetTokens.backlightDot
-                let core = shape == .dot ? MetalGadgetTokens.backlightCore : 0, span = (r + r) * unit
+                // A glow lights the part it sits in (its diameter); a dot is a blip, its diameter its own.
+                let r = shape == .glow ? R * MetalGadgetTokens.backlightGlow * 2 : R
+                let core = shape == .dot ? MetalGadgetTokens.backlightDot : 0, span = (r + r) * unit
                 Circle()
                     .fill(RadialGradient(stops: [.init(color: .white.opacity(alpha), location: 0), .init(color: color.opacity(alpha), location: core), .init(color: .clear, location: 1)],
                                          center: .center, startRadius: 0, endRadius: r * unit))

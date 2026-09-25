@@ -70,6 +70,16 @@ export function materialFilter(id: string, material: GadgetMaterial, o: LightOpt
 }
 
 /** A cut's wall: the top edge hides the light (the cut's own shadow, offset down-right, inside it). */
+/** A cut's top-wall shadow on its own (without the shape it falls on): for an overlay drawn over a
+ *  face whose contents are layered separately (an inset gadget's glass and the light in it). */
+export function innerShadowFilter(id: string): string {
+  const [dx, dy] = HOLE.offset;
+  return `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%">` +
+    `<feGaussianBlur in="SourceAlpha" stdDeviation="${HOLE.blur}" result="b"/><feOffset in="b" dx="${dx}" dy="${dy}" result="o"/>` +
+    `<feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/><feFlood flood-color="#000" flood-opacity="${HOLE.alpha}"/>` +
+    `<feComposite in2="rim" operator="in"/></filter>`;
+}
+
 export function holeFilter(id: string): string {
   const [dx, dy] = HOLE.offset;
   return `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%">` +

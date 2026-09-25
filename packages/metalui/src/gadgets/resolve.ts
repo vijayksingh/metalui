@@ -153,7 +153,10 @@ const lchVec = (c: Oklch): [number, number, number] => [c.L, c.C, c.H];
 export function checkSet(members: SetMember[]): SetProblem[] {
   const S = GADGETS.set, out: SetProblem[] = [];
   for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length; j++) {
-    const a = members[i], b = members[j], ra = a.resolved, rb = b.resolved, pair = [a.name, b.name];
+    const a = members[i], b = members[j], pair = [a.name, b.name];
+    // An inset gadget is seen through its glass: compare its face, as glass, not its frame.
+    const seen = (r: ResolvedFeel): ResolvedFeel => (r.container === 'inset' ? { ...r, body: r.face, material: 'glass', band: r.face.L >= GADGETS.set.bands[0] ? 0 : r.face.L >= GADGETS.set.bands[1] ? 1 : 2 } : r);
+    const ra = seen(a.resolved), rb = seen(b.resolved);
     const gap = Math.abs(((ra.station - rb.station + 540) % 360) - 180);
     const colourful = ra.body.C >= S.hueMinC && rb.body.C >= S.hueMinC;      // a grey's hue is not seen
     if (colourful && gap < S.hueGap) out.push({ code: 'set.hue', members: pair, message: `${a.name} (${ra.station}°) and ${b.name} (${rb.station}°) sit ${gap}° apart; gadgets side by side need ${S.hueGap}°.`, fix: `Give one of them another station of its job, or move it to another rig.` });

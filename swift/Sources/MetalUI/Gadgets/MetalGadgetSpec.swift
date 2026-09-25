@@ -44,7 +44,14 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         }
     }
     public struct Pose: Codable, Sendable, Hashable { public let x: Double?, y: Double?, r: Double?, sx: Double?, sy: Double? }
-    public struct Form: Codable, Sendable, Hashable { public let pose: Pose? }
+    public struct Form: Codable, Sendable, Hashable {
+        public let pose: Pose?
+        /// A param a state sets (a blip's `alpha`): its name and value.
+        public let param: String?
+        public let value: MetalGadgetParam?
+        /// The light a state gives a part (`alpha`), if it sets one.
+        var alpha: Double? { param == "alpha" ? value?.number : nil }
+    }
     public struct PartialFeel: Codable, Sendable, Hashable { public let v: Double?, a: Double?, w: Double? }
     public struct State: Codable, Sendable, Hashable {
         public let feel: PartialFeel?

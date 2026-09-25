@@ -55,16 +55,25 @@ export function validateMechanism(m) {
     if (!(m.duration > 0)) bad.push(at('duration must be positive'));
     if (m.held) bad.push(at('a momentary mechanism has no held drive'));
     if (m.stagger !== undefined && !(m.stagger >= 0)) bad.push(at('stagger is ms between actors, 0 or more'));
+    for (const [slot, ph] of Object.entries(m.phase ?? {})) {
+      if (!slots.includes(slot) || !slots.includes(ph.about)) bad.push(at(`phase ${slot} about ${ph.about}: both must be slots`));
+      if (ph.by !== 'angle') bad.push(at(`phase ${slot} is by "${ph.by}"; only angle is known`));
+    }
     for (const t of m.tracks ?? []) {
       const w = `${m.name}/${t.part}`, f = t.frames, base = t.part.split('.')[0];
       if (!slots.includes(base)) bad.push(`${w}: "${base}" is not a slot`);
       if (f[0]?.at !== 0) bad.push(`${w}: first frame must be at 0`);
-      if (f[f.length - 1]?.at !== m.duration) bad.push(`${w}: last frame must be at ${m.duration}`);
+      // A phased track (lit by another part's travel) runs on its own clock from its actor's moment.
+      const phased = !!m.phase?.[base];
+      if (!phased && f[f.length - 1]?.at !== m.duration) bad.push(`${w}: last frame must be at ${m.duration}`);
+      if (phased && f[f.length - 1]?.at > m.duration) bad.push(`${w}: a phased track ends within the act`);
       for (let i = 1; i < f.length; i++) if (!(f[i].at > f[i - 1].at)) bad.push(`${w}: frame ${i} is not after frame ${i - 1}`);
       const lists = new Set(f.filter((x) => x.transform).map((x) => parsePose(x.transform).fns.join(' ')));
       if (lists.size > 1) bad.push(`${w}: every transform uses the same functions`);
       const a = f.find((x) => x.transform)?.transform, b = [...f].reverse().find((x) => x.transform)?.transform;
-      if (a !== b) bad.push(`${w}: transform starts ${a} and ends ${b}; an act returns exactly`);
+      // A whole turn is a return: 360° looks exactly like 0°.
+      const same = (x, y) => { if (x === y) return true; const p = poseOf(x), q = poseOf(y); return p.x === q.x && p.y === q.y && p.sx === q.sx && p.sy === q.sy && ((p.r - q.r) % 360 + 360) % 360 === 0; };
+      if (!same(a, b)) bad.push(`${w}: transform starts ${a} and ends ${b}; an act returns exactly`);
       const oa = f.find((x) => x.opacity !== undefined)?.opacity, ob = [...f].reverse().find((x) => x.opacity !== undefined)?.opacity;
       if (oa !== ob) bad.push(`${w}: opacity starts ${oa} and ends ${ob}; an act returns exactly`);
     }
@@ -115,7 +124,7 @@ export function compileMechanism(m) {
   };
   let lastPose = null;
   return {
-    name: m.name, mode: m.mode, duration: m.duration ?? 0, caption: m.caption, stages: m.stages, stagger: m.stagger ?? 0,
+    name: m.name, mode: m.mode, duration: m.duration ?? 0, caption: m.caption, stages: m.stages, stagger: m.stagger ?? 0, phase: m.phase ?? null, loop: !!m.loop,
     spring: m.spring ?? 'part',
     slots: m.slots,
     tracks: (m.tracks ?? []).map((t) => ({

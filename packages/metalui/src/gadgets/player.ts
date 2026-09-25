@@ -18,7 +18,7 @@ export type Cue =
   | { kind: 'detent'; slot: string; level: number }
   | { kind: 'stop'; slot: string; level: number };
 interface Mechanism {
-  name: string; mode: 'momentary' | 'held'; duration: number; stagger?: number; spring: string; caption: string;
+  name: string; mode: 'momentary' | 'held'; duration: number; stagger?: number; loop?: boolean; phase?: Record<string, { by: string; about: string }> | null; spring: string; caption: string;
   tracks: readonly Track[]; cues: readonly Cue[]; states: Record<string, { hold: string; pose: Partial<Pose> }>; reduced: readonly string[];
 }
 
@@ -65,11 +65,18 @@ export interface PlayerOptions {
   onCue?: (e: CueEvent) => void;
   /** Every frame, each part's pose (for readouts and timelines). */
   onFrame?: (t: number, poses: Record<string, Pose>) => void;
+  /** Each actor's own start, ms, for a slot the mechanism phases (a blip lit when the beam reaches
+   *  it): the caller knows where the actors sit, so it says when each one's moment is. */
+  offsets?: Record<string, number[]>;
+  /** An act has finished (a looping mechanism's caller may play it again). */
+  onEnd?: () => void;
 }
 
 export interface Player {
   /** Plays the act. A second act while one plays is ignored (returns false). */
   act(): boolean;
+  /** Stops an act where it is (a state change): its pending lamp and beep are cancelled. */
+  stop(): void;
   /** Springs to a state's held pose (or rest with null), from wherever the part is now. */
   hold(state: string | null): void;
   /** Plays only the act's landing (its cues from the last strike on), now: for a part that came home
@@ -90,8 +97,9 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
   const m = MECHANISMS[name] as unknown as Mechanism;
   // A slot may bind many actors (a chord's keys): each plays the same track, `stagger` ms after the last.
   const actors = (part: string): Element[] => { const el = parts[part]; return !el ? [] : Array.isArray(el) ? el : [el]; };
-  const count = Math.max(1, ...m.tracks.map((t) => actors(t.part).length));
-  const total = m.duration + (count - 1) * (m.stagger ?? 0);
+  // When each actor of a slot starts: its phase offset if the caller gave one, else a stagger apart.
+  const startOf = (part: string, i: number) => o.offsets?.[part.split('.')[0]]?.[i] ?? i * (m.stagger ?? 0);
+  const totalOf = () => Math.max(m.duration, ...m.tracks.flatMap((t) => actors(t.part).map((_, i) => startOf(t.part, i) + t.frames[t.frames.length - 1].at)));
   let o: PlayerOptions = { speed: 1, ...options };
   const poses: Record<string, Pose> = {}, velocity: Record<string, Pose> = {}, target: Record<string, Pose> = {};
   for (const t of m.tracks) { poses[t.part] = { ...REST }; velocity[t.part] = { x: 0, y: 0, r: 0, sx: 0, sy: 0 }; target[t.part] = { ...REST }; }
@@ -113,13 +121,14 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       for (const tr of m.tracks) {
         const n = Math.max(1, actors(tr.part).length);
         for (let i = 0; i < n; i++) {
-          const s = sampleTrack(tr.frames, Math.min(Math.max(0, t - i * (m.stagger ?? 0)), m.duration));
+          const s = sampleTrack(tr.frames, Math.min(Math.max(0, t - startOf(tr.part, i)), m.duration));
           if (i === 0) poses[tr.part] = s.pose;
           apply(tr.part, s.pose, s.opacity, i);
         }
       }
+      const total = totalOf();
       o.onFrame?.(Math.min(t, total), { ...poses });
-      if (t >= total) act = null; else { raf = requestAnimationFrame(frame); return; }
+      if (t >= total) { act = null; o.onEnd?.(); } else { raf = requestAnimationFrame(frame); return; }
     }
     if (springing) stepSprings();
   };
@@ -163,9 +172,9 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
         if (cue.kind === 'friction') { o.onCue?.({ at: cue.at, cue, skipped: reduced ? 'reduced' : undefined }); continue; }
         if (reduced && !keep.has(cue.kind === 'strike' || cue.kind === 'beep' ? 'sound' : 'lamp')) { o.onCue?.({ at: cue.at, cue, skipped: 'reduced' }); continue; }
         // A strike on a slot of many actors strikes each of them, a stagger apart; a lamp or beep plays once.
-        const n = cue.kind === 'strike' ? count : 1;
+        const n = cue.kind === 'strike' ? Math.max(1, actors(cue.slot).length) : 1;
         for (let i = 0; i < n; i++) {
-          const at = reduced ? 0 : cue.at + i * (m.stagger ?? 0);
+          const at = reduced ? 0 : cue.at + (cue.kind === 'strike' ? startOf(cue.slot, i) : 0);
           // Strikes go to the audio clock now, so they land sample-accurately; the rest wait on timers.
           if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000, i);
           timers.push(window.setTimeout(() => {
@@ -206,6 +215,11 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       for (const part of Object.keys(target)) apply(part, poses[part], 1);
       springing = true;
       if (!raf) raf = requestAnimationFrame(frame);
+    },
+    stop() {
+      if (!act) return;
+      for (const id of act.timers) clearTimeout(id);
+      act = null;
     },
     land() {
       const strikes = m.cues.filter((c) => c.kind === 'strike') as Extract<Cue, { kind: 'strike' }>[];

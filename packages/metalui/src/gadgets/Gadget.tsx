@@ -63,6 +63,7 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
 
   React.useEffect(() => { if (!check.ok) onProblems?.(check.problems); }, [check]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const shown = React.useRef(first.current);
   // The player, bound to the Parts the mechanism names (its `bind`: slot → part id).
   const player = React.useRef<Player | null>(null);
   const beepFor = React.useRef<string | null>(null);
@@ -92,7 +93,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // a plug about itself, a key about its face.
     const moving: Record<string, Element[]> = {}, origins: Record<string, [number, number][]> = {}, bound: Record<string, string[]> = {};
     for (const [slot, ids] of Object.entries(valid.mechanism.bind)) {
-      const list = Array.isArray(ids) ? ids : [ids], els = list.map((id) => svg.querySelector(`[data-id="${id}"] [data-moves]`));
+      // What moves: the part's own group (light), or the element in it that moves (a key's face, a plug).
+      const list = Array.isArray(ids) ? ids : [ids], els = list.map((id) => svg.querySelector(`[data-id="${id}"][data-moves], [data-id="${id}"] [data-moves]`));
       if (!els.every(Boolean)) continue;
       moving[slot] = els as Element[]; bound[slot] = list;
       origins[slot] = list.map((id) => {
@@ -106,11 +108,28 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     const struck = (slot: string, i: number) => {
       const q = valid.parts.find((x) => x.id === bound[slot]?.[i]);
       const def = q ? (GADGETS.parts[q.part] as unknown as { size: readonly number[]; materials: readonly string[] }) : null;
-      const material = (!q || q.material === 'accent' || !q.material ? def?.materials.find((m) => m !== 'accent') ?? 'clay' : q.material) as 'clay';
+      const own = !q || q.material === 'accent' || !q.material ? def?.materials.find((m) => m !== 'accent') ?? 'clay' : q.material;
+      // Light has no material of its own: a tick on it is the glass it shines through.
+      const material = (own === 'lamp' ? 'glass' : own) as 'clay';
       return { material, size: (q?.size ?? def?.size ?? [GADGETS.parts.plug.size[0]])[0] as number };
     };
+    // A phased slot (blips lit by a beam): each actor's moment is its angle around the part it is
+    // phased about, clockwise from up, as a share of the act.
+    const mech = TIMELINES[valid.mechanism.name as MechanismName] as unknown as { duration: number; loop?: boolean; phase?: Record<string, { about: string }> | null };
+    const offsets: Record<string, number[]> = {};
+    for (const [slot, ph] of Object.entries(mech.phase ?? {})) {
+      const about = valid.parts.find((x) => x.id === bound[ph.about]?.[0]);
+      if (!about || !bound[slot]) continue;
+      offsets[slot] = bound[slot].map((id) => {
+        const q = valid.parts.find((x) => x.id === id)!, deg = (Math.atan2(q.at[0] - about.at[0], about.at[1] - q.at[1]) * 180) / Math.PI;
+        return (((deg % 360) + 360) % 360 / 360) * mech.duration;
+      });
+    }
     const p = createPlayer(valid.mechanism.name as MechanismName, moving, {
       origins,
+      offsets,
+      // A looping mechanism plays again while the state that started it holds.
+      onEnd: () => { if (mech.loop && valid.states[shown.current]?.enter === 'act' && !reducedMotion()) requestAnimationFrame(() => player.current?.act()); },
       reduced: reducedMotion(),
       onStrike: (cue, delay, i) => { const w = struck(cue.slot, i); sound?.strike(w.material, { size: w.size, weight: valid.feel.w, reach: valid.reach ?? 'world', level: cue.level, pitch: cue.pitch, delay }); },
       onLamp: (gesture) => setLampCue((c) => ({ gesture, beat: (c?.beat ?? 0) + 1 })),
@@ -131,6 +150,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     });
     if (held) p.holdPose('plug', held, { immediate: true });
     player.current = p;
+    // A looping act is an ongoing activity: shown in the state that starts it, it runs from the start.
+    if (mech.loop && valid.states[shown.current]?.enter === 'act' && !reducedMotion()) p.act();
     return () => { p.destroy(); swing?.destroy(); swing = null; player.current = null; };
   }, [parts]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -156,7 +177,6 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
 
   // A state change: parts spring to the state's poses, the lamp relights, and the state's news plays
   // (through the act when the state enters with one, else straight on the beeper).
-  const shown = React.useRef(first.current);
   React.useEffect(() => {
     if (!valid || state === shown.current) return;
     shown.current = state;
@@ -167,7 +187,18 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // A momentary mechanism's parts spring to the state's poses and may act; a held one stays where its value put it.
     const away = p?.pose('plug'), far = !!away && Math.hypot(away.x, away.y) > 2;
     p?.setOptions({ reduced: reducedMotion() });
+    p?.stop();                                                       // a running act stops where it is
     p?.holdPose('plug', formPoses(valid, state)[bind.plug] ?? null);
+    // Other parts a state poses (by their slot), and the light a state sets: blips dark unless it lights them.
+    for (const [pid, pose] of Object.entries(formPoses(valid, state))) {
+      const slot = Object.entries(valid.mechanism.bind).find(([, v]) => v === pid)?.[0];
+      if (slot && slot !== 'plug') p?.holdPose(slot, pose);
+    }
+    ref.current?.querySelectorAll<SVGGElement>('[data-layer="parts"] [data-id][data-moves]').forEach((el) => {
+      const id = el.getAttribute('data-id')!, f = st.form?.[id], dot = !!el.querySelector('[data-shape="dot"]');
+      if (!el.querySelector('[data-part="backlight"]')) return;
+      el.style.opacity = String(f && 'param' in f && f.param === 'alpha' ? Number(f.value) : dot ? 0 : 1);
+    });
     if (p && st.enter === 'act' && far && !reducedMotion()) landing.current = true;       // it flies home, then lands
     else if (p && st.enter === 'act' && far) p.land();
     else if (p && st.enter === 'act') p.act();
@@ -196,9 +227,10 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       data-gadget={valid.name} data-state={state} data-tier={tier} data-host={host} className="overflow-visible" {...props}>
       <title id={`g${uid}-t`}>{valid.title}</title>
       <desc id={`g${uid}-d`}>{drawn.description}</desc>
-      <defs dangerouslySetInnerHTML={{ __html: drawn.body.defs + parts.defs + lamp.defs }} />
+      <defs dangerouslySetInnerHTML={{ __html: drawn.body.defs + parts.defs + drawn.top.defs + lamp.defs }} />
       <g data-layer="body" pointerEvents="none" dangerouslySetInnerHTML={{ __html: drawn.body.html }} />
       <g data-layer="parts" pointerEvents="none" dangerouslySetInnerHTML={{ __html: parts.html }} />
+      <g data-layer="top" pointerEvents="none" dangerouslySetInnerHTML={{ __html: drawn.top.html }} />
       <g data-layer="lamp" pointerEvents="none" key={lampCue?.beat ?? 0} dangerouslySetInnerHTML={{ __html: lamp.html }} />
     </svg>
   );

@@ -11,7 +11,7 @@ import { LAMP_COLORS, type LampSignal } from './led';
 export type BacklightShape = 'glow' | 'beam' | 'dot';
 export interface BacklightSpec {
   at: [number, number];
-  /** The part it lights: its diameter, units. */
+  /** A glow's or beam's part (the glass it lights): its diameter, units. A dot's own diameter. */
   size: number;
   shape?: BacklightShape;
   /** A signal, the accent, or the glass's own colour lifted: pass the glass colour for 'glass'. */
@@ -33,7 +33,8 @@ export function backlightColor(c: BacklightSpec['color']): string {
 export function drawBacklight(id: string, s: BacklightSpec): { defs: string; body: string } {
   const [cx, cy] = s.at, R = s.size / 2, shape = s.shape ?? 'glow', a = s.alpha ?? K.alpha, col = backlightColor(s.color);
   if (shape === 'glow' || shape === 'dot') {
-    const r = shape === 'glow' ? R * K.glow * 2 : R * K.dot, core = shape === 'dot' ? K.core : 0;
+    // A glow lights the part it sits in (its size); a dot is a blip, its size its own.
+    const r = shape === 'glow' ? R * K.glow * 2 : R, core = shape === 'dot' ? K.dot : 0;
     const defs = `<radialGradient id="${id}-g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity="${n(a)}"/>`
       + `<stop offset="${n(core)}" stop-color="${col}" stop-opacity="${n(a)}"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></radialGradient>`;
     return { defs, body: `<g data-part="backlight" data-shape="${shape}"><circle cx="${n(cx)}" cy="${n(cy)}" r="${n(r)}" fill="url(#${id}-g)"/></g>` };
