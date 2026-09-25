@@ -20,7 +20,8 @@ import { TooltipXray } from './TooltipXray';
 
 /* Every x-ray, by the name the floating table and the overlays use. */
 export const XRAYS = {
-  button: { title: 'Button', View: ButtonXray },
+  // the table's New Canvas is a primary button, so its x-ray is too: it lands on a model of itself
+  button: { title: 'Button', View: (p: { startOpen?: boolean }) => <ButtonXray {...p} cap="primary" /> },
   switcher: { title: 'Switcher', View: SwitcherXray },
   kbd: { title: 'Keycap', View: KbdXray },
   swatch: { title: 'Swatch', View: SwatchXray },

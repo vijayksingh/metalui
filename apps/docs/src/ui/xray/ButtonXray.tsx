@@ -92,7 +92,10 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
   const W = d.W * S, HH = m.h * S, R = d.radius * S;
   const hover = 18 + m.lift * 14 - (pressed ? 12 * travel : 0);
   const exploded = spot === 'layers';
-  const wallTone = cap === 'primary' ? '#1c1c1f' : cap === 'destructive' ? '#a6352c' : recipe.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
+  // coloured caps: the wall is the face's bottom colour in shade; the ink is the cap's own, which flips per colorway
+  const faceBottom = (recipe.stops.at(-1) ?? '').replace(/\s+[\d.]+%$/, '');
+  const wallTone = cap !== 'standard' ? `color-mix(in srgb, ${faceBottom} 78%, #000)` : recipe.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
+  const ink = cap === 'standard' ? undefined : `var(--mu-r-button-${cap}-ink)`;
 
   const faceShadow = [...d.insets, ...(d.rim ? [d.rim] : [])].map((v) => scalePx(v, S)).join(', ') || 'none';
   const labelStyle: React.CSSProperties = { fontSize: m.size * S, fontWeight: m.weight, letterSpacing: `${m.track}em`, transform: m.optical ? 'translateY(-2px)' : 'translateY(3px)' };
@@ -122,7 +125,7 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
                 borderRadius: d.radius, fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em`,
                 background: pressed && pressedRecipe.fill !== 'transparent' ? pressedRecipe.fill : d.fill,
                 boxShadow: pressed && pressedRecipe.shadows.length ? pressedRecipe.shadows.join(', ') : d.cssShadow,
-                color: cap === 'standard' ? undefined : '#fff',
+                color: ink,
               }}
             >
               {icon !== 'none' && <Icon name={icon} size={m.h <= 24 ? 12 : m.h <= 32 ? 14 : m.h <= 40 ? 16 : 20} />}
@@ -150,7 +153,7 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
                     ))
                   : (
                     <div className="xr-face" style={{ width: W, height: HH, borderRadius: R, transform: `translateZ(${WALL * 1.6}px)`, background: d.fill, boxShadow: faceShadow }}>
-                      <span className="xr-label" style={{ ...labelStyle, color: cap === 'standard' ? undefined : '#fff' }}>{label}</span>
+                      <span className="xr-label" style={{ ...labelStyle, color: ink }}>{label}</span>
                       {spot === 'shape' && (
                         <svg className="xr-dims" viewBox={`-40 -40 ${W + 80} ${HH + 80}`} style={{ width: W + 80, height: HH + 80, left: -40, top: -40 }} aria-hidden>
                           <path d={`M-18 0V${HH}M-24 0H-12M-24 ${HH}H-12`} />

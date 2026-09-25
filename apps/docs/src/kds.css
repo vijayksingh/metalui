@@ -665,11 +665,24 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 .xr-overlay[data-from] .xr-scene { view-transition-name: var(--flight); view-transition-class: float; }
 html[data-flight="open"]::view-transition-old(.float),
 html[data-flight="close"]::view-transition-new(.float) { width: 100%; height: 100%; object-fit: contain; }
-html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .8s; animation-delay: .35s; }
-html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .6s; }
+html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .45s; }
+html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .5s; }
 html[data-flight] .drift-item:not([data-flying]) { view-transition-name: none !important; }
 .xr-overlay.is-flown { animation: none; }
 .xr-overlay.is-flown .xr-iso { animation: none; }
+/* Flown in, the x-ray composes around the object instead of arriving all at once: the bench
+ * and the card surface while the object is in the air, it lands on a set stage, then the
+ * callouts pop in one by one and their leader lines draw out to the model. (The browser keeps
+ * the incoming page live during the flight, so these play through it.) */
+.xr-overlay.is-flown .xr-bench { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .1s both; }
+.xr-overlay.is-flown .xr-card { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .26s both; }
+.xr-overlay.is-flown .xr-callout .xr-callout-ico { animation: xr-callout-in var(--spring-part-d, .6s) var(--spring-part, ease-out) calc(.92s + var(--i, 0) * 60ms) both; }
+.xr-overlay.is-flown .xr-leaders path, .xr-overlay.is-flown .xr-leaders circle { animation: xr-draw .42s cubic-bezier(.3, 0, .2, 1) calc(.98s + var(--i, 0) * 60ms) both; }
+.xr-overlay.is-flown .xr-hint, .xr-overlay.is-flown .xr-actions { animation: xr-fade .4s ease-out 1.1s both; }
+@keyframes xr-surface { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+@keyframes xr-callout-in { from { opacity: 0; transform: scale(.6); } }
+@keyframes xr-draw { from { stroke-dasharray: 0 800; } to { stroke-dasharray: 800 0; } }
+@keyframes xr-fade { from { opacity: 0; } }
 /* x-ray callouts: two columns beside the model, leader lines to anchors on the object */
 .xr-bench { place-items: center; }
 .xr-anchor { position: absolute; left: 0; top: 0; width: 2px; height: 2px; }

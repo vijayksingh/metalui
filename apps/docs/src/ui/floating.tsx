@@ -141,12 +141,14 @@ export interface XrayOpen { kind: XrayKind; from: string }
  *           2 fly     it flies to the model's place in the card, growing to the model's
  *                     size and tilting as it goes, so it lands at the x-ray's angle with
  *                     its face on the model's face; the card fades in around it
- *           3 land    the object hands over to the model
+ *           3 land    the object hands over to the model through the end of its flight
+ * Meanwhile the card composes around it (kds.css, .xr-overlay.is-flown): the bench and the
+ * card surface while it flies, and the callouts and their leader lines follow once it lands.
  *   close   the same backwards: the model lifts out of the card, turns flat and flies home
  * The browser's own morph is one straight line with no tilt, so the travelling box and
  * the tilt are keyed here. */
-const OPEN_MS = 1500;
-const CLOSE_MS = 1300;
+const OPEN_MS = 1100;
+const CLOSE_MS = 900;
 /** The x-ray's angle (.xr-iso): a flat face turned and laid back. */
 const ISO = 'rotateX(58deg) rotateZ(-38deg)';
 const FLAT = 'rotateX(0deg) rotateZ(0deg)';
@@ -174,12 +176,16 @@ function choreograph(name: string, dir: 'open' | 'close') {
   if (dir === 'open') {
     play('group', [{ ...start, easing: LIFT_EASE }, { ...lifted, offset: 0.2, easing: FLY_EASE }, { ...end }], OPEN_MS);
     // the object: flat through the lift, then tilting into the x-ray's angle as it flies
-    play('old', [{ transform: FLAT, opacity: 1 }, { transform: FLAT, offset: 0.24, easing: FLY_EASE }, { transform: ISO, opacity: 1, offset: 0.9 }, { transform: ISO, opacity: 0 }], OPEN_MS);
-    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.86 }, { opacity: 1 }], OPEN_MS);
+    // the object: flat through the lift, tilting into the x-ray's angle as it flies, and handing
+    // over to the model through its last stretch rather than at the very end
+    play('old', [{ transform: FLAT }, { transform: FLAT, offset: 0.2, easing: FLY_EASE }, { transform: ISO, offset: 0.85 }, { transform: ISO }], OPEN_MS);
+    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0, offset: 0.92 }, { opacity: 0 }], OPEN_MS);
+    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1, offset: 0.9 }, { opacity: 1 }], OPEN_MS);
   } else {
     play('group', [{ ...start, easing: FLY_EASE }, { ...lifted, offset: 0.8, easing: LIFT_EASE }, { ...end }], CLOSE_MS);
-    play('old', [{ opacity: 1 }, { opacity: 0, offset: 0.1 }, { opacity: 0 }], CLOSE_MS);
-    play('new', [{ transform: ISO, opacity: 0 }, { transform: ISO, opacity: 1, offset: 0.08, easing: FLY_EASE }, { transform: FLAT, offset: 0.76 }, { transform: FLAT }], CLOSE_MS);
+    play('old', [{ opacity: 1 }, { opacity: 0, offset: 0.14 }, { opacity: 0 }], CLOSE_MS);
+    play('new', [{ transform: ISO }, { transform: ISO, offset: 0.06, easing: FLY_EASE }, { transform: FLAT, offset: 0.76 }, { transform: FLAT }], CLOSE_MS);
+    play('new', [{ opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 1 }], CLOSE_MS);
   }
 }
 

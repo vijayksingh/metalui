@@ -172,12 +172,13 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
   return (
     <>
       <svg className="xr-leaders" width={box.w} height={box.h} aria-hidden>
-        {spots.map((s) => {
+        {spots.map((s, i) => {
           const p = pts[s.id]; if (!p) return null;
+          const at = { ['--i' as string]: i } as React.CSSProperties;
           if (narrow) {
             const x = rowX(s.id), y = rowY - 18;
             return (
-              <g key={s.id} className={spot === s.id ? 'is-on' : ''}>
+              <g key={s.id} className={spot === s.id ? 'is-on' : ''} style={at}>
                 <path d={`M${x} ${y}V${y - 14}L${p[0]} ${p[1]}`} />
                 <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
               </g>
@@ -187,16 +188,17 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
           const cx = sd === 'left' ? colX('left') + 36 : colX('right') - 36, cy = box.h * fy;
           const knee = sd === 'left' ? cx + 24 : cx - 24;
           return (
-            <g key={s.id} className={spot === s.id ? 'is-on' : ''}>
+            <g key={s.id} className={spot === s.id ? 'is-on' : ''} style={at}>
               <path d={`M${cx} ${cy}H${knee}L${p[0]} ${p[1]}`} />
               <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
             </g>
           );
         })}
       </svg>
-      {spots.map((s) => {
+      {spots.map((s, i) => {
         const [sd, fy] = side[s.id];
-        const style = narrow ? { left: rowX(s.id) - 18, top: rowY } : sd === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy };
+        // --i staggers the callouts when the x-ray composes around a flown-in object
+        const style = { ['--i' as string]: i, ...(narrow ? { left: rowX(s.id) - 18, top: rowY } : sd === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy }) };
         return (
           <button key={s.id} type="button" className={['xr-callout', sd, spot === s.id ? 'is-on' : ''].join(' ')} style={style} onClick={() => setSpot(s.id)} aria-pressed={spot === s.id} aria-label={`${s.title}: ${s.word}`} title={s.title}>
             <span className="xr-callout-ico"><Glyph id={s.id} /></span>
