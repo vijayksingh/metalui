@@ -647,5 +647,67 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.5 10L20.5 10L20.5 17C20.5 18.7673 19.0673 20.2 17.3 20.2L6.7 20.2C4.9327 20.2 3.5 18.7673 3.5 17Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
             ]
         ),
+        .document: MetalIconAct(
+            duration: 0.9,
+            caption: "A thumb folds the corner down, the page turns, and the next page's lines write in.",
+            parts: [
+            MetalIconActPart(
+                name: "flap", origin: CGPoint(x: 16.1, y: 6.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.0444, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: -0.15, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2222, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: -1.08, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3222, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: -1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.4444, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: 0.28, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5556, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: -0.1, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6667, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: 0.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 45.0, sx: 1.0, sy: 0.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.0444, 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2222, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3222, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.4444, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5556, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6667, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "l1", origin: CGPoint(x: 8.6, y: 12.4),
+                poses: [],
+                opacity: [],
+                draw: [
+                    .init(0.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3222, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3778, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ]
+            ),
+            MetalIconActPart(
+                name: "l2", origin: CGPoint(x: 8.6, y: 15.8),
+                poses: [],
+                opacity: [],
+                draw: [
+                    .init(0.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2222, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3333, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4889, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6889, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ]
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M7.2 3.5L13.6 3.5L18.6 8.5L18.6 18.5C18.6 19.6046 17.7046 20.5 16.6 20.5L7.2 20.5C6.0954 20.5 5.2 19.6046 5.2 18.5L5.2 5.5C5.2 4.3954 6.0954 3.5 7.2 3.5Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M8.6 12.4L15.4 12.4", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8.6 15.8L12.6 15.8", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12.564 6L19.636 6L16.1 2.464Z", parts: [0], stroke: 1.0, fill: .duotone(0.2), opacity: 1.0),
+            ]
+        ),
     ]
 }

@@ -570,11 +570,20 @@
       "component": "DocumentIcon",
       "label": "Document",
       "category": "Tools",
-      "hover": "the second line writes on",
-      "press": "the lines redraw",
-      "pressMs": 420,
+      "hover": "A thumb folds the corner down, the page turns, and the next page's lines write in.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "A thumb folds the corner down, the page turns, and the next page's lines write in.",
+        "durationMs": 900,
+        "stages": [
+          "Thumb",
+          "Turn",
+          "Read"
+        ]
+      },
       "tuned16": false,
-      "construction": "Page 13.4 × 17 with a 5-unit fold, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines."
+      "construction": "Page 13.4 × 17 with a 5-unit cut corner, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines. Motion (study): a corner flap (accent, tinted .2) folds about the cut diagonal onto the page, holds the crease, flicks back out past the edge and lies flat; meanwhile the lines erase and write back in, first then second: the page has turned."
     },
     {
       "name": "clock",

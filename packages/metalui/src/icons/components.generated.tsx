@@ -87,7 +87,7 @@ export const TaskIcon = createIcon("task", "TaskIcon");
 export const TagIcon = createIcon("tag", "TagIcon");
 /** Calendar. Hover: Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.. Press: plays the same act. */
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");
-/** Document. Hover: the second line writes on. Press: the lines redraw. */
+/** Document. Hover: A thumb folds the corner down, the page turns, and the next page's lines write in.. Press: plays the same act. */
 export const DocumentIcon = createIcon("document", "DocumentIcon");
 /** Time. Hover: an hour passes: the minute hand sweeps round as the hour hand moves one on. Press: the minute hand ticks forward a minute. */
 export const ClockIcon = createIcon("clock", "ClockIcon");

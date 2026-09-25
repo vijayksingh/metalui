@@ -943,25 +943,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1000,"caption":"Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.","stages":["Lift","Flip","Settle"],"tracks":[{"part":"leaf","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.06,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.97)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.78)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.02)","opacity":1,"easing":"linear"},{"offset":0.36,"transform":"translate(0px,-0.2px) rotate(0deg) scale(1,-0.35)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.44,"transform":"translate(0px,-0.4px) rotate(0deg) scale(1,-0.55)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62,"transform":"translate(0px,-0.8px) rotate(0deg) scale(1,-0.6)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]},{"part":"rings","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.36,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.665,"transform":"translate(0px,0.1219px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.97,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * DOCUMENT · Tools
+   * DOCUMENT · Tools · one act, 900ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the second line writes on
-   * PRESS one-shot (from the current pose)
-   *          the lines redraw
-   *     0ms   .dl plays dc-p (360ms)
-   *    60ms   .d2 plays (inherits) (360ms)
+   * Thumb → Turn → Read
+   *          A thumb folds the corner down, the page turns, and the next page's lines write in.
+   *  flap       0 → 40 → 200 → 290 → 400 → 500 → 600 → 900ms
+   *  l1         0 → 180 → 290 → 340 → 540 → 900ms
+   *  l2         0 → 200 → 300 → 440 → 620 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "document": {
     label: "Document",
     category: "Tools",
-    hover: "the second line writes on",
-    press: "the lines redraw",
-    pressMs: 420,
+    hover: "A thumb folds the corner down, the page turns, and the next page's lines write in.",
+    press: "plays the same act",
+    pressMs: 900,
     defs: "",
-    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M7.2 3.5h6.4l5 5v10a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z\"/><path class=\"dl\" pathLength=\"1\" d=\"M8.6 12.4h6.8\"/><path class=\"dl d2\" pathLength=\"1\" d=\"M8.6 15.8h4\"/>",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M7.2 3.5h6.4l5 5v10a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z\"/><path data-part=\"l1\" pathLength=\"1\" d=\"M8.6 12.4h6.8\"/><path data-part=\"l2\" pathLength=\"1\" d=\"M8.6 15.8h4\"/><path class=\"ac f\" data-part=\"flap\" opacity=\"0\" style=\"--duo:.2\" d=\"M12.564 6 19.636 6 16.1 2.464Z\"/>",
     sw16: 1.85,
+    motion: {"duration":900,"caption":"A thumb folds the corner down, the page turns, and the next page's lines write in.","stages":["Thumb","Turn","Read"],"tracks":[{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.04444,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.15)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.22222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1.08)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(45deg) scale(1,0.28)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55556,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0}]},{"part":"l1","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.32222,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.37778,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.6,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"l2","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22222,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.33333,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48889,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.68889,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * TIME · Status
