@@ -42,10 +42,12 @@ How one structure serves all four without compromise:
 /learn/<chapter>          one chapter each (§5)
 /foundations              Principles (the numbered rules)
 /foundations/<slug>       color · typography · radius · spacing · sizing · elevation · materials · motion · transitions (existing)
-/components               index: every primitive as a card (live, at rest), grouped by job
-/components/<slug>        one primitive
-/blocks                   index: compositions and custom objects, each showing its parts
-/blocks/<slug>            one block (moves out of /components/*; old URLs redirect)
+/parts, /parts/<slug>                 pieces with a look and no job (well, plate, label, LED, keycap)
+/components, /components/<slug>       controls you operate (button, select, tabs, menu)
+/objects, /objects/<slug>             things that stand for a person's stuff (folder, card, connector)
+/instruments, /instruments/<slug>     what the hand uses while acting (selection frame, lasso, cursor)
+/places, /places/<slug>               where things live (region, lens, the past)
+                                      each index shows its members live, at rest; layers per docs/COMPOSITION.md
 /icons                    product glyphs, gallery, motion, copy SVG
 /icons/life               life glyphs and the feelings composer
 /icons/<name>             one glyph: pose, press, sizes, SVG, SF Symbol name
@@ -70,7 +72,7 @@ Rules for URLs: lower-case slugs, singular component names (`/components/button`
 - **Sidebar** (left, sticky): the section groups above in this order: Start · Learn · Foundations · Components · Blocks · Icons · Patterns · Reference. Component and block groups show status readouts (`alpha`, a count). The sliding thumb stays.
 - **Header**: Search (`⌘K`), Colorway switch (Bone/Graphite), Motion switch (Reduce Motion on/off; the OS setting is the default), `AI.md`, GitHub. The Motion switch is new and required: every replay demo must be checkable under reduced motion without leaving the page.
 - **Right rail** (on pages taller than two screens): "On this page", with the reference anchors listed first (Usage · API · States · Keyboard · Tokens) and the teaching sections after. The rail is the builder's fast path.
-- **Layer trail** (top of every foundation, component and block page): `Foundations › Components › Blocks` with the current layer lit, followed by the concrete trail for this page: the recipes and tokens it uses (down), and the blocks that use it (up). Each item is a link. This is the architecture made navigable, and it is generated from `meta.json` `uses` and the tokens list.
+- **Layer trail** (top of every page): `Foundations › Parts › Components › Objects › Instruments › Places` with the current layer lit, followed by the concrete trail for this page: the recipes, tokens and earlier-layer members it uses (down), and the later-layer members that use it (up). Each item is a link. This is the architecture made navigable, and it is generated from `meta.json` `uses` and the tokens list.
 - **Bottom of page**: Previous/Next inside the section, and "Learn: chapter n" when a learning chapter covers this page.
 
 ### Search
@@ -222,7 +224,7 @@ Eight chapters at `/learn/<slug>`. Each is built around one live demo, teaches o
 | 3 | `recipes` | Looks are layers, and layers are data | The swatch or card anatomy: explode into fill, sheen, top highlight, rim, glow, contact shadow; edit one layer and see CSS and Swift update together | One recipe per look; how a layer stack renders on both platforms; why parity is a generator, not a review | `/foundations/materials`, `/reference/recipes`, Surface, Well, Swatch | Materials, every Anatomy beat |
 | 4 | `motion` | Motion has mass | The spring lab: pick a mass class, watch the puck and the curve, click twice mid-flight, toggle Reduce Motion | Springs from stiffness and damping, not durations; interruption; the reduced policy per class; the 1 pt press that stays | `/foundations/motion`, `/foundations/transitions`, `/reference/springs`, Button, Switcher | Motion, Transitions, every Replay beat |
 | 5 | `type` | Type is roles, not sizes | The role sheet: readout, label, ui, title; a timer in proportional vs tabular figures; the lip on an engraved label on and off | Roles as contracts; tabular figures where numbers change; the lip as material, not decoration | `/foundations/typography`, `/reference/type`, Label, Kbd, SizeReadout | Typography, Label |
-| 6 | `composition` | Primitives and blocks | A block (Tool strip) being assembled from its components in front of you, then rearranged by slots without forking | Direction of imports; slots over props; when custom is honest | `docs/COMPOSITION.md` rendered as `/foundations#layers`, `/blocks`, Tool strip, Region | every `composition` section, every block `anatomy` |
+| 6 | `composition` | Six layers | A Folder (object) being assembled from its parts in front of you, then rearranged by slots without forking | Direction of imports; slots over props; when custom is honest | `docs/COMPOSITION.md` rendered as `/foundations#layers`, `/blocks`, Tool strip, Region | every `composition` section, every block `anatomy` |
 | 7 | `contracts` | Behaviour is written once, implemented twice | The pressable keyboard driving Switcher in React and the Swift capture side by side | Keys, focus, dismissal and names as a contract in `agent.md`; what Base UI gives; what Swift must match | every `keyboard` section, `/start/agents` | Switcher, Menu, Dialog |
 | 8 | `keeping-true` | Drift is a tooling problem | A pasted hex literal, the lint firing, the fix; a recipe edited on one platform, the parity check failing; a product word in a prop name, the names lint | Lints, recipe parity, pixel gates, neutral names, `check:docs` itself | `docs/PARITY.md`, `docs/NEUTRAL_NAMES.md` rendered, `/reference/registry` | the contributor path |
 
