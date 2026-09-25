@@ -495,11 +495,20 @@
       "component": "RedoIcon",
       "label": "Redo",
       "category": "Actions",
-      "hover": "head reaches forward",
-      "press": "arrow arcs forward and returns",
-      "pressMs": 420,
+      "hover": "The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.",
+      "press": "plays the same act",
+      "pressMs": 1010,
+      "motion": {
+        "caption": "The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.",
+        "durationMs": 1010,
+        "stages": [
+          "Wind",
+          "Cast forward",
+          "Pay out"
+        ]
+      },
       "tuned16": false,
-      "construction": "Undo mirrored on x."
+      "construction": "Undo mirrored on x, baked into the paths: arc r4.6 about (9.4, 13.6). Motion (study): the hook winds back 7° about the arc centre, whips forward to 16° while the tail reels up into the curve (draw .74), an echo of the head carries on 2.4 right; it returns on the part spring and the tail pays back out."
     },
     {
       "name": "more",

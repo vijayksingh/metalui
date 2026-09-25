@@ -652,24 +652,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1010,"caption":"The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back.","stages":["Wind","Reel back","Pay out"],"tracks":[{"part":"hook","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"transform":"translate(0px,0px) rotate(7deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"transform":"translate(0px,0px) rotate(-16deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.39604,"transform":"translate(0px,0px) rotate(-15deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69802,"transform":"translate(0px,0px) rotate(1.306deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"line","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"strokeDashoffset":0.26,"easing":"linear"},{"offset":0.42574,"strokeDashoffset":0.26,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.71287,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"echo","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.30693,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34653,"transform":"translate(-1.1px,0px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.55446,"transform":"translate(-2.4px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * REDO · Actions
+   * REDO · Actions · one act, 1010ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          head reaches forward
-   * PRESS one-shot (from the current pose)
-   *          arrow arcs forward and returns
-   *     0ms   .ug plays rd-p (420ms)
+   * Wind → Cast forward → Pay out
+   *          The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.
+   *  hook       0 → 150 → 330 → 400 → 705 → 1010ms
+   *  line       0 → 150 → 330 → 430 → 720 → 1010ms
+   *  echo       0 → 310 → 350 → 560 → 1010ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "redo": {
     label: "Redo",
     category: "Actions",
-    hover: "head reaches forward",
-    press: "arrow arcs forward and returns",
-    pressMs: 420,
+    hover: "The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.",
+    press: "plays the same act",
+    pressMs: 1010,
     defs: "",
-    body: "<g transform=\"matrix(-1 0 0 1 24 0)\"><g class=\"ug\"><path class=\"uh\" d=\"M9 5.3 5.3 9 9 12.7\"/><path class=\"us\" d=\"M5.3 9h9.3a4.6 4.6 0 0 1 0 9.2h-4\"/></g></g>",
+    body: "<g data-part=\"hook\"><path d=\"M15 5.3 18.7 9 15 12.7\"/><path data-part=\"line\" pathLength=\"1\" d=\"M18.7 9H9.4a4.6 4.6 0 0 0 0 9.2h4\"/><path class=\"ac\" data-part=\"echo\" opacity=\"0\" d=\"M15 5.3 18.7 9 15 12.7\" style=\"stroke-width:calc(var(--sw) * .7)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":1010,"caption":"The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.","stages":["Wind","Cast forward","Pay out"],"tracks":[{"part":"hook","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"transform":"translate(0px,0px) rotate(-7deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"transform":"translate(0px,0px) rotate(16deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.39604,"transform":"translate(0px,0px) rotate(15deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69802,"transform":"translate(0px,0px) rotate(-1.306deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"line","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"strokeDashoffset":0.26,"easing":"linear"},{"offset":0.42574,"strokeDashoffset":0.26,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.71287,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"echo","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.30693,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34653,"transform":"translate(1.1px,0px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.55446,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * MORE · Actions
