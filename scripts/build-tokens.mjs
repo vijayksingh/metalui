@@ -663,7 +663,14 @@ ${swiftSprings}
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
     public static let hopDuration: Double = ${num(parseFloat(T.motion['hop-duration'].value) / 1000)}
+    public static let hopDurationFar: Double = ${num(parseFloat(T.motion['hop-duration-far'].value) / 1000)}
     public static let hopLift: Double = ${num(parseFloat(T.motion['hop-lift'].value))}
+    public static let hopLiftFar: Double = ${num(parseFloat(T.motion['hop-lift-far'].value))}
+    public static let hopRise: Double = ${num(parseFloat(T.motion['hop-rise'].value))}
+    public static let hopRiseShadow: MetalShadow = ${shadows(T.motion['hop-rise-shadow'].value)[0]}
+    public static let hopCrouch: Double = ${num(parseFloat(T.motion['hop-crouch'].value) / 1000)}
+    public static let hopLand: Double = ${num(parseFloat(T.motion['hop-land'].value) / 1000)}
+    public static let hopSquash: Double = ${num(parseFloat(T.motion['hop-squash'].value))}
     public static let hopArcRatio: Double = ${num(parseFloat(T.motion['hop-arc-ratio'].value))}
 }
 

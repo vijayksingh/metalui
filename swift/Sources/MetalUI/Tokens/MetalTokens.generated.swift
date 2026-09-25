@@ -448,7 +448,14 @@ public enum MetalSprings {
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
     public static let hopDuration: Double = 0.25
+    public static let hopDurationFar: Double = 0.34
     public static let hopLift: Double = 14.0
+    public static let hopLiftFar: Double = 72.0
+    public static let hopRise: Double = 1.04
+    public static let hopRiseShadow: MetalShadow = MetalShadow(inset: false, x: 0.0, y: 14.0, blur: 18.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.16))
+    public static let hopCrouch: Double = 0.07
+    public static let hopLand: Double = 0.2
+    public static let hopSquash: Double = 0.95
     public static let hopArcRatio: Double = 0.8
 }
 
