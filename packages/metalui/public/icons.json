@@ -47,11 +47,20 @@
       "component": "NoteIcon",
       "label": "Note",
       "category": "Tools",
-      "hover": "corner curls up",
-      "press": "lines write themselves in",
-      "pressMs": 420,
+      "hover": "The corner peels open, the lines are written fresh, and the corner is pressed back down.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "The corner peels open, the lines are written fresh, and the corner is pressed back down.",
+        "durationMs": 1000,
+        "stages": [
+          "Peel",
+          "Write",
+          "Fold"
+        ]
+      },
       "tuned16": false,
-      "construction": "Rounded square r3.5 with a diagonal corner cut; curl = animatable cut size c (5.3 rest, 7.2 hover). SwiftUI Shape with animatableData = c."
+      "construction": "Rounded square r3.5 with a diagonal corner cut and a folded flap (duo .2) in the cut. Motion (study): the flap is hinged on its crease (two nested parts whose ±45° turns cancel at scale 1, so it foreshortens only across the crease): it peels open to −.9 while the lines wipe back, the lines are written again, and the flap falls and slaps flat (1.1, then .95, 1.02) with a crease mark flicking off the corner."
     },
     {
       "name": "image",

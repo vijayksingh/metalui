@@ -5,7 +5,7 @@ import { createIcon } from './Icon';
 export const SelectIcon = createIcon("select", "SelectIcon");
 /** Text. Hover: The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.. Press: plays the same act. */
 export const TextIcon = createIcon("text", "TextIcon");
-/** Note. Hover: corner curls up. Press: lines write themselves in. */
+/** Note. Hover: The corner peels open, the lines are written fresh, and the corner is pressed back down.. Press: plays the same act. */
 export const NoteIcon = createIcon("note", "NoteIcon");
 /** Image. Hover: sun rises behind the ridge. Press: frame breathes, sun flares. */
 export const ImageIcon = createIcon("image", "ImageIcon");

@@ -68,25 +68,28 @@ export const ICON_CATALOG = {
     motion: {"duration":1100,"caption":"The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.","stages":["Lift","Strike","Caret"],"tracks":[{"part":"slug","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17273,"transform":"translate(0px,-2px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21818,"transform":"translate(0px,-2.2px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.29091,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.86)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34545,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.86)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66909,"transform":"translate(0px,0px) rotate(0deg) scale(0.9901,1.0138)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.99364,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"dent","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0},{"offset":0.28909,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31364,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54545,"transform":"translate(0px,0px) rotate(0deg) scale(1.4,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0}]},{"part":"caret","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0},{"offset":0.38182,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.47273,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.59091,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.60909,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.73636,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.75455,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.9,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.91818,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * NOTE · Tools
+   * NOTE · Tools · one act, 1000ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          corner curls up
-   * PRESS one-shot (from the current pose)
-   *          lines write themselves in
-   *     0ms   .nl plays note-w (360ms)
-   *    60ms   .n2 plays (inherits) (360ms)
+   * Peel → Write → Fold
+   *          The corner peels open, the lines are written fresh, and the corner is pressed back down.
+   *  flap       0 → 20 → 260 → 560 → 680 → 800 → 900 → 980 → 1000ms
+   *  crease     0 → 20 → 980 → 1000ms
+   *  line1      0 → 40 → 200 → 240 → 440 → 1000ms
+   *  line2      0 → 160 → 300 → 420 → 580 → 1000ms
+   *  slap       0 → 670 → 700 → 900 → 1000ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "note": {
     label: "Note",
     category: "Tools",
-    hover: "corner curls up",
-    press: "lines write themselves in",
-    pressMs: 420,
+    hover: "The corner peels open, the lines are written fresh, and the corner is pressed back down.",
+    press: "plays the same act",
+    pressMs: 1000,
     defs: "",
-    body: "<path class=\"nb\" d=\"M20.5 14.2V7A3.5 3.5 0 0 0 17 3.5H7A3.5 3.5 0 0 0 3.5 7v10A3.5 3.5 0 0 0 7 20.5h7.2Z\"/><path class=\"nf f\" style=\"--duo:.2\" d=\"M14.2 20.5v-3.9a2.4 2.4 0 0 1 2.4-2.4h3.9Z\"/><path class=\"nl\" pathLength=\"1\" d=\"M7.6 8.6h8.8\"/><path class=\"nl n2\" pathLength=\"1\" d=\"M7.6 12.2h4.8\"/>",
+    body: "<path d=\"M20.5 14.2V7A3.5 3.5 0 0 0 17 3.5H7A3.5 3.5 0 0 0 3.5 7v10A3.5 3.5 0 0 0 7 20.5h7.2Z\"/><g data-part=\"flap\"><g data-part=\"crease\"><path class=\"f\" style=\"--duo:.2\" d=\"M14.2 20.5v-3.9a2.4 2.4 0 0 1 2.4-2.4h3.9Z\"/></g></g><path data-part=\"line1\" pathLength=\"1\" d=\"M7.6 8.6h8.8\"/><path data-part=\"line2\" pathLength=\"1\" d=\"M7.6 12.2h4.8\"/><path class=\"ac\" data-part=\"slap\" opacity=\"0\" d=\"M18.4 21.1 21.1 18.4\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1000,"caption":"The corner peels open, the lines are written fresh, and the corner is pressed back down.","stages":["Peel","Write","Fold"],"tracks":[{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.02,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26,"transform":"translate(0px,0px) rotate(-45deg) scale(1,-0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.56,"transform":"translate(0px,0px) rotate(-45deg) scale(1,-0.82)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.68,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1.1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(-45deg) scale(1,0.95)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1.02)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.98,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"crease","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.02,"transform":"translate(0px,0px) rotate(45deg) scale(1,1)","easing":"linear"},{"offset":0.98,"transform":"translate(0px,0px) rotate(45deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"line1","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.04,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"strokeDashoffset":1,"easing":"linear"},{"offset":0.24,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"line2","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3,"strokeDashoffset":1,"easing":"linear"},{"offset":0.42,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.58,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"slap","keyframes":[{"offset":0,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.67,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.7,"transform":"translate(-0.3px,-0.3px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9,"transform":"translate(0.5px,0.5px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * IMAGE · Tools
