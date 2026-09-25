@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { flushSync } from 'react-dom';
 import { DialTimeline, useDialTimeline } from 'dialkit';
 import 'dialkit/styles.css';
 import { Folder, Region, Segmented, Well, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
@@ -6,9 +7,17 @@ import { Folder, Region, Segmented, Well, type FolderHue, type FolderPeek } from
 /* ─────────────────────────────────────────────────────────
  * FOLD AND UNFOLD · the region is a sheet that folds into the folder
  *
- * One timeline, played forward to fold and backward to unfold, so both are the same motion.
- * Every layer is a pure function of the playhead: scrub it in the DialKit dock, or play it
- * at ½× or ¼× to see every in-between.
+ * Fold is one DialKit timeline: every layer is a pure function of the playhead; scrub it in the
+ * dock, or play it at ½× or ¼× to see every in-between.
+ *
+ * Unfold keeps the owner's preferred motion (a container transform), not the fold reversed:
+ *    0ms   the flap opens and the cards rise out of the pocket (the folder's open pose)
+ *  200ms   the region opens out of the folder's footprint: a rounded clip grows to the full
+ *          region on the surface spring (no stretch, no wobble); the folder fades into it
+ *  280ms   the cards follow: each leaves its place in the fan for its place in the region,
+ *          straightening as it goes, back card first, 60 ms apart (object spring)
+ *  540ms   the region's head fades in
+ * When it ends, the timeline is put back at its start (the unfolded state), ready to fold.
  *
  *   0.00s  head      the region's head fades (0.14 s)
  *   0.14s  sheet     the region becomes the sheet: the same surface, the same place
@@ -85,6 +94,11 @@ interface Fan { x: number; y: number; lean: number }
 export function FolderUnfold() {
   const [hue, setHue] = React.useState<FolderHue>('violet');
   const [speed, setSpeed] = React.useState('1');
+  const [open, setOpen] = React.useState(false);
+  const [unfolding, setUnfolding] = React.useState(false);
+  const regionEl = React.useRef<HTMLDivElement>(null);
+  const folderWrap = React.useRef<HTMLDivElement>(null);
+  const still = React.useRef<Record<string, HTMLDivElement | null>>({});
   const box = React.useRef<HTMLDivElement>(null);
   const folder = React.useRef<HTMLDivElement>(null);
   const [geo, setGeo] = React.useState<{ root: Rect; fans: Fan[] } | null>(null);
@@ -147,6 +161,47 @@ export function FolderUnfold() {
   };
   React.useEffect(() => () => cancelAnimationFrame(drive.current), []);
 
+  // The owner's unfold: the region opens out of the folder's footprint and the cards follow.
+  const UNFOLD = { flap: 200, region: 640, card: 620, cardLag: 80, stagger: 60, fade: 220, head: 300, headDelay: 340 };
+  const cssVar = (name: string, fallback: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const unfold = async () => {
+    if (unfolding || tlRef.current.time < tlRef.current.duration - 1e-3) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    flushSync(() => setOpen(true));
+    await new Promise((r) => setTimeout(r, reduce ? 0 : UNFOLD.flap));
+    const o = box.current!.getBoundingClientRect();
+    // Each card starts exactly over its fan card (centre and lean), in the folder's open pose.
+    const starts = ITEMS.map((it, i) => {
+      const fan = folder.current!.querySelector<HTMLElement>(`[data-card="${it.id}"]`)!, r = fan.getBoundingClientRect(), sl = slotIn(i);
+      const mx = new DOMMatrix(getComputedStyle(fan).transform);
+      return `translate(${r.left + r.width / 2 - o.left - (sl.x + R.cw / 2)}px, ${r.top + r.height / 2 - o.top - (sl.y + R.ch / 2)}px) rotate(${(Math.atan2(mx.b, mx.a) * 180) / Math.PI}deg)`;
+    });
+    const f = folder.current!.querySelector('.folder-back')!.getBoundingClientRect();
+    const top = f.top - o.top - R.y, left = f.left - o.left - R.x;
+    const from = `inset(${top}px ${R.w - left - f.width}px ${R.h - top - f.height}px ${left}px round ${R.radius}px)`;
+    const full = `inset(0px 0px 0px 0px round ${R.radius}px)`;
+    flushSync(() => setUnfolding(true));
+    const reg = regionEl.current!, head = reg.querySelector<HTMLElement>('.mu-region-head');
+    const fanCards = ITEMS.map((it) => folder.current!.querySelector<HTMLElement>(`[data-card="${it.id}"]`)!);
+    const all: Animation[] = [];
+    if (!reduce) {
+      // Everything starts in this one task, so the first painted frame is the first frame of motion.
+      all.push(reg.animate([{ opacity: 1, clipPath: from }, { opacity: 1, clipPath: full }], { duration: UNFOLD.region, easing: cssVar('--mu-spring-surface', 'ease-out'), fill: 'forwards' }));
+      all.push(folderWrap.current!.animate([{ opacity: 1 }, { opacity: 0 }], { duration: UNFOLD.fade, easing: 'ease-out', fill: 'forwards' }));
+      all.push(...ITEMS.map((it, i) => still.current[it.id]!.animate(
+        [{ opacity: 1, transform: starts[i] }, { opacity: 1, transform: 'none' }],
+        { duration: UNFOLD.card, delay: UNFOLD.cardLag + i * UNFOLD.stagger, easing: cssVar('--mu-spring-object', 'ease-out'), fill: 'both' },
+      )));
+      if (head) all.push(head.animate([{ opacity: 0 }, { opacity: 1 }], { duration: UNFOLD.head, delay: UNFOLD.headDelay, easing: 'ease-out', fill: 'both' }));
+      fanCards.forEach((c) => { c.style.visibility = 'hidden'; });
+      await Promise.all(all.map((a) => a.finished));
+    }
+    // The unfolded state is the timeline's start: hand over, then let go of the animations.
+    flushSync(() => { tlRef.current.seek(0); setUnfolding(false); setOpen(false); });
+    all.forEach((a) => a.cancel());
+    fanCards.forEach((c) => { c.style.visibility = ''; });
+  };
+
   // ── Everything below is a pure function of the playhead. ──
   const time = tl.time;
   const atStart = time <= 1e-3, atEnd = time >= tl.duration - 1e-3;
@@ -183,15 +238,15 @@ export function FolderUnfold() {
         <style>{`.fold-demo .fold-region .mu-region-head{opacity:${head}}`}</style>
 
         {/* The region at rest (the playhead at 0 and through the head's fade). */}
-        <div className="fold-region" style={{ position: 'absolute', left: R.x, top: R.y, width: R.w, height: R.h, zIndex: 1, opacity: sheetOn || atEnd ? 0 : 1, pointerEvents: atStart ? 'auto' : 'none' }}>
+        <div ref={regionEl} className="fold-region" style={{ position: 'absolute', left: R.x, top: R.y, width: R.w, height: R.h, zIndex: 1, opacity: unfolding ? 1 : sheetOn || atEnd ? 0 : 1, pointerEvents: atStart ? 'auto' : 'none' }}>
           <Region name="poster refs" rule={`Folder · ${ITEMS.length} blocks`} count={ITEMS.length} width={R.w} height={R.h} {...hueVars} />
           {atStart && (
             <button type="button" className="eng" onClick={() => play(1)} style={{ position: 'absolute', right: 18, top: 14, background: 'none', border: 0, cursor: 'pointer' }}>fold ↑</button>
           )}
         </div>
-        {!sheetOn && !atEnd && (
+        {((!sheetOn && !atEnd) || unfolding) && (
           <div style={{ position: 'absolute', zIndex: 3, pointerEvents: 'none' }}>
-            {ITEMS.map((it, i) => { const p = slotIn(i); return <div key={it.id} style={{ position: 'absolute', left: p.x, top: p.y }}><Card peek={it} /></div>; })}
+            {ITEMS.map((it, i) => { const p = slotIn(i); return <div key={it.id} ref={(el) => { still.current[it.id] = el; }} style={{ position: 'absolute', left: p.x, top: p.y }}><Card peek={it} /></div>; })}
           </div>
         )}
 
@@ -241,8 +296,8 @@ export function FolderUnfold() {
         </div>
 
         {/* The folder: it takes over only at the end, when every layer matches it exactly. */}
-        <div style={{ position: 'absolute', left: '50%', top: FOLDER.top, translate: '-50% 0', zIndex: 5, opacity: atEnd ? 1 : 0, pointerEvents: atEnd ? 'auto' : 'none' }}>
-          <Folder ref={folder} name="poster refs" count={ITEMS.length} peeks={ITEMS} hue={hue} onUnfold={() => play(-1)} />
+        <div ref={folderWrap} style={{ position: 'absolute', left: '50%', top: FOLDER.top, translate: '-50% 0', zIndex: 5, opacity: atEnd ? 1 : 0, pointerEvents: atEnd && !unfolding ? 'auto' : 'none' }}>
+          <Folder ref={folder} name="poster refs" count={ITEMS.length} peeks={ITEMS} hue={hue} open={open} onUnfold={unfold} />
         </div>
         {atEnd && <span className="eng ink-hint">double-click the folder to unfold it</span>}
       </div>
