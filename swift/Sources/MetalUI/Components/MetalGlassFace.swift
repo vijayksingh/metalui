@@ -29,7 +29,7 @@ private struct MetalGlassBody<Content: View>: View {
         let r = MetalRecipes.glassFace
         guard let reach = r.number(screen + ".reach"),
               case .radial(let center, let stops)? = r.fills(screen).first else { return nil }
-        return (stops, UnitPoint(x: center.x, y: center.y), reach)
+        return (stops, UnitPoint(x: center.x, y: center.y), CGFloat(reach))
     }
 
     var body: some View {
