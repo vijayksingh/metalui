@@ -507,11 +507,20 @@
       "component": "BoardIcon",
       "label": "Board",
       "category": "Actions",
-      "hover": "ribbon lengthens",
-      "press": "drops into place",
-      "pressMs": 380,
+      "hover": "The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.",
+      "press": "plays the same act",
+      "pressMs": 776,
+      "motion": {
+        "caption": "The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.",
+        "durationMs": 776,
+        "stages": [
+          "Lift",
+          "Drop and catch",
+          "Hang"
+        ]
+      },
       "tuned16": false,
-      "construction": "Portrait ribbon, notch depth animatable (3.0 → 3.4) with the tail length."
+      "construction": "Portrait ribbon with a notch 3.0 deep. Motion (study): the ribbon lifts 1.6 gathering toward its top, drops and is caught .5 below rest, its tail running on to 1.05 before an object spring; catch marks flash either side of the top edge."
     },
     {
       "name": "share",

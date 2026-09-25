@@ -594,24 +594,25 @@ export const ICON_CATALOG = {
     motion: {"duration":1030,"caption":"The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.","stages":["Lift","Drive in","Settle"],"tracks":[{"part":"pin","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21359,"transform":"translate(0px,-1.4px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29126,"transform":"translate(0px,-1.5px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.37864,"transform":"translate(0px,0.9px) rotate(0deg) scale(1.04,0.93)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67476,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"shadow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.35,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21359,"transform":"translate(0px,0px) rotate(0deg) scale(0.6,1)","opacity":0.12,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29126,"transform":"translate(0px,0px) rotate(0deg) scale(0.6,1)","opacity":0.12,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.37864,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1)","opacity":0.7,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.40777,"transform":"translate(0px,0px) rotate(0deg) scale(1.3,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.70388,"transform":"translate(0px,0px) rotate(0deg) scale(0.9739,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.35}]},{"part":"shock","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.36893,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.41748,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62136,"transform":"scale(1.25)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * BOARD · Actions
+   * BOARD · Actions · one act, 776ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          ribbon lengthens
-   * PRESS one-shot (from the current pose)
-   *          drops into place
-   *     0ms   .bm plays bd-p (380ms)
+   * Lift → Drop and catch → Hang
+   *          The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.
+   *  ribbon     0 → 180 → 260 → 360 → 420 → 776ms
+   *  catch      0 → 350 → 400 → 620 → 776ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "board": {
     label: "Board",
     category: "Actions",
-    hover: "ribbon lengthens",
-    press: "drops into place",
-    pressMs: 380,
+    hover: "The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.",
+    press: "plays the same act",
+    pressMs: 776,
     defs: "",
-    body: "<path class=\"bm f\" style=\"--duo:.16\" d=\"M6.8 19.8V5.9a2.1 2.1 0 0 1 2.1-2.1h6.2a2.1 2.1 0 0 1 2.1 2.1v13.9l-4.3-3a1.6 1.6 0 0 0-1.8 0Z\"/>",
+    body: "<path data-part=\"ribbon\" class=\"f\" style=\"--duo:.16\" d=\"M6.8 19.8V5.9a2.1 2.1 0 0 1 2.1-2.1h6.2a2.1 2.1 0 0 1 2.1 2.1v13.9l-4.3-3a1.6 1.6 0 0 0-1.8 0Z\"/><path class=\"ac\" data-part=\"catch\" opacity=\"0\" d=\"M5.3 4.4h-1.3M18.7 4.4h1.3\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":776,"caption":"The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.","stages":["Lift","Drop and catch","Hang"],"tracks":[{"part":"ribbon","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.23196,"transform":"translate(0px,-1.6px) rotate(0deg) scale(1,0.96)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33505,"transform":"translate(0px,-1.7px) rotate(0deg) scale(1,0.96)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.46392,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54124,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,1.05)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"catch","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.45103,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.51546,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.79897,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * SHARE · EXPORT · Actions · one act, 900ms

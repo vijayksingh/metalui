@@ -51,7 +51,7 @@ export const GroupIcon = createIcon("group", "GroupIcon");
 export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
 /** Pin. Hover: The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.. Press: plays the same act. */
 export const PinIcon = createIcon("pin", "PinIcon");
-/** Board. Hover: ribbon lengthens. Press: drops into place. */
+/** Board. Hover: The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.. Press: plays the same act. */
 export const BoardIcon = createIcon("board", "BoardIcon");
 /** Share · Export. Hover: The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.. Press: plays the same act. */
 export const ShareIcon = createIcon("share", "ShareIcon");

@@ -1884,6 +1884,47 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.9 20.8L7.6 20.8M15.1 20.8L16.4 20.8", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .board: MetalIconAct(
+            duration: 0.776,
+            caption: "The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.",
+            parts: [
+            MetalIconActPart(
+                name: "ribbon", origin: CGPoint(x: 12.0, y: 3.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.232, x: 0.0, y: -1.6, r: 0.0, sx: 1.0, sy: 0.96, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3351, x: 0.0, y: -1.7, r: 0.0, sx: 1.0, sy: 0.96, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.4639, x: 0.0, y: 0.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5412, x: 0.0, y: 0.5, r: 0.0, sx: 1.0, sy: 1.05, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "catch", origin: CGPoint(x: 12.0, y: 4.4),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .linear),
+                    .init(0.451, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5155, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.799, x: 0.0, y: 0.0, r: 0.0, sx: 1.2, sy: 1.2, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.451, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5155, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.799, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M6.8 19.8L6.8 5.9C6.8 4.7402 7.7402 3.8 8.9 3.8L15.1 3.8C16.2598 3.8 17.2 4.7402 17.2 5.9L17.2 19.8L12.9 16.8C12.3569 16.4305 11.6431 16.4305 11.1 16.8Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M5.3 4.4L4 4.4M18.7 4.4L20 4.4", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .share: MetalIconAct(
             duration: 0.9,
             caption: "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",
