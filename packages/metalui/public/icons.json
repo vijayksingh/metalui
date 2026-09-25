@@ -735,11 +735,20 @@
       "component": "TaskIcon",
       "label": "Task",
       "category": "Tools",
-      "hover": "the tick nods yes inside its box",
-      "press": "the box presses in and comes back up ticked",
-      "pressMs": 380,
+      "hover": "The box is pressed down; while it is held the tick is written, and released it springs back up with a click.",
+      "press": "plays the same act",
+      "pressMs": 720,
+      "motion": {
+        "caption": "The box is pressed down; while it is held the tick is written, and released it springs back up with a click.",
+        "durationMs": 720,
+        "stages": [
+          "Press",
+          "Write",
+          "Release"
+        ]
+      },
       "tuned16": false,
-      "construction": "Dimple 14 × 14 r3.5, tinted .12, with the check tick at the size of the box. Hover is the check nod, a little smaller, about the tick's vertex. Press is completion by the item itself: the box presses in (.94) like a physical checkbox, and the tick draws in once the press has bottomed out (80 ms), the result of the press."
+      "construction": "Dimple 14 × 14 r3.5, tinted .12, with the check tick at the size of the box. Motion (study): completion by the item itself. The box is pressed down about its base (.92 tall, 1.03 wide) and the tick clears; held, the tick is written back in from the short leg with a beat at the corner; released, the box snaps up past rest and rings once and an outline of its rim clicks off it."
     },
     {
       "name": "tag",

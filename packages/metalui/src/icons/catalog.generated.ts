@@ -926,25 +926,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1040,"caption":"The frame is set down on the canvas, and its name writes into the head behind a caret.","stages":["Lift","Land","Name"],"tracks":[{"part":"frame","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.14423,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27885,"transform":"translate(0px,0px) rotate(0deg) scale(1.04,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62115,"transform":"translate(0px,0px) rotate(0deg) scale(0.9961,1.0079)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96442,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"name","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16346,"strokeDashoffset":1,"easing":"linear"},{"offset":0.34615,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"caret","keyframes":[{"offset":0,"transform":"translate(-3.6px,0px)","opacity":0},{"offset":0.30769,"transform":"translate(-3.6px,0px)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.34615,"transform":"translate(-3.6px,0px)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"transform":"translate(0px,0px)","opacity":1},{"offset":0.69231,"transform":"translate(0px,0px)","opacity":1,"easing":"linear"},{"offset":0.71154,"transform":"translate(0px,0px)","opacity":0,"easing":"linear"},{"offset":0.76923,"transform":"translate(0px,0px)","opacity":0,"easing":"linear"},{"offset":0.78846,"transform":"translate(0px,0px)","opacity":1,"easing":"linear"},{"offset":0.86538,"transform":"translate(0px,0px)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.92308,"transform":"translate(0px,0px)","opacity":0},{"offset":1,"transform":"translate(-3.6px,0px)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * TASK · Tools
+   * TASK · Tools · one act, 720ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the tick nods yes inside its box
-   * PRESS one-shot (from the current pose)
-   *          the box presses in and comes back up ticked
-   *     0ms   .tb plays tk-box (380ms)
-   *    80ms   .tk plays tk-p (300ms)
+   * Press → Write → Release
+   *          The box is pressed down; while it is held the tick is written, and released it springs back up with a click.
+   *  box        0 → 150 → 330 → 400 → 500 → 600 → 720ms
+   *  tick       0 → 100 → 110 → 160 → 230 → 255 → 330 → 720ms
+   *  rim        0 → 395 → 430 → 600 → 720ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "task": {
     label: "Task",
     category: "Tools",
-    hover: "the tick nods yes inside its box",
-    press: "the box presses in and comes back up ticked",
-    pressMs: 380,
+    hover: "The box is pressed down; while it is held the tick is written, and released it springs back up with a click.",
+    press: "plays the same act",
+    pressMs: 720,
     defs: "",
-    body: "<rect class=\"tb f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><g class=\"nd\"><path class=\"tk\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/></g>",
+    body: "<g data-part=\"box\"><rect class=\"f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><path data-part=\"tick\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/><rect class=\"ac\" data-part=\"rim\" opacity=\"0\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\" style=\"stroke-width:calc(var(--sw) * .45)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":720,"caption":"The box is pressed down; while it is held the tick is written, and released it springs back up with a click.","stages":["Press","Write","Release"],"tracks":[{"part":"box","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20833,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,0.92)","easing":"linear"},{"offset":0.45833,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,0.92)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.55556,"transform":"translate(0px,0px) rotate(0deg) scale(0.985,1.05)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69444,"transform":"translate(0px,0px) rotate(0deg) scale(1.006,0.985)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.83333,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.004)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"tick","keyframes":[{"offset":0,"opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13889,"opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":0.15278,"opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.22222,"opacity":1,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31944,"opacity":1,"strokeDashoffset":0.67,"easing":"linear"},{"offset":0.35417,"opacity":1,"strokeDashoffset":0.67,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.45833,"opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rim","keyframes":[{"offset":0,"transform":"scale(1.14)","opacity":0},{"offset":0.54861,"transform":"scale(1.14)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.59722,"transform":"scale(1.2)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.83333,"transform":"scale(1.29)","opacity":0},{"offset":1,"transform":"scale(1.14)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * TAG · Tools · one act, 900ms
