@@ -467,11 +467,20 @@
       "component": "SyncedIcon",
       "label": "Synced",
       "category": "Status",
-      "hover": "satellite advances along its orbit",
-      "press": "orbit completes a full turn",
-      "pressMs": 460,
+      "hover": "The satellite winds back, laps the core once and clicks home into its slot.",
+      "press": "plays the same act",
+      "pressMs": 1100,
+      "motion": {
+        "caption": "The satellite winds back, laps the core once and clicks home into its slot.",
+        "durationMs": 1100,
+        "stages": [
+          "Wind back",
+          "Lap",
+          "Click home"
+        ]
+      },
       "tuned16": false,
-      "construction": "Core r2.1, orbit r7.6 with a 63° gap centred on the satellite (r1.75, 12 o’clock). Native: rotate the orbit group; SF Symbol can use .symbolEffect(.rotate) on macOS 15+ or a custom rotation."
+      "construction": "Core r2.1, orbit r7.6 with a fixed 85/15 dash turned −18° so its 54° gap centres on the satellite (r1.75, 1:30). Motion (study): the satellite winds back 9° to the gap edge, laps the core once clockwise and strikes the gap's front edge 12° past its slot; the ring is shoved 6° and swings back while a detent ring opens at the slot."
     },
     {
       "name": "offline",

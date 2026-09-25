@@ -722,24 +722,27 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * SYNCED · Status
+   * SYNCED · Status · one act, 1100ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          satellite advances along its orbit
-   * PRESS one-shot (from the current pose)
-   *          orbit completes a full turn
-   *     0ms   .or plays syn-p (460ms)
+   * Wind back → Lap → Click home
+   *          The satellite winds back, laps the core once and clicks home into its slot.
+   *  sat        0 → 150 → 151 → 659 → 660 → 770 → 880 → 980 → 1100ms
+   *  lap        0 → 150 → 151 → 660 → 661 → 1100ms
+   *  orbit      0 → 655 → 720 → 830 → 940 → 1100ms
+   *  dock       0 → 650 → 700 → 980 → 1100ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "synced": {
     label: "Synced",
     category: "Status",
-    hover: "satellite advances along its orbit",
-    press: "orbit completes a full turn",
-    pressMs: 460,
+    hover: "The satellite winds back, laps the core once and clicks home into its slot.",
+    press: "plays the same act",
+    pressMs: 1100,
     defs: "",
-    body: "<circle class=\"core s\" cx=\"12\" cy=\"12\" r=\"2.1\"/><g class=\"or\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" transform=\"rotate(-18 12 12)\"/><circle class=\"sat s\" cx=\"17.37\" cy=\"6.63\" r=\"1.75\"/></g>",
+    body: "<circle class=\"s\" cx=\"12\" cy=\"12\" r=\"2.1\"/><g data-part=\"orbit\"><circle cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" stroke-dasharray=\"85 15\" transform=\"rotate(-18 12 12)\"/></g><circle class=\"s\" data-part=\"sat\" cx=\"17.37\" cy=\"6.63\" r=\"1.75\"/><circle class=\"ac s\" data-part=\"lap\" opacity=\"0\" cx=\"17.37\" cy=\"6.63\" r=\"1.75\"/><circle class=\"ac\" data-part=\"dock\" opacity=\"0\" cx=\"17.37\" cy=\"6.63\" r=\"3.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1100,"caption":"The satellite winds back, laps the core once and clicks home into its slot.","stages":["Wind back","Lap","Click home"],"tracks":[{"part":"sat","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13636,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.13727,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.59909,"transform":"translate(0px,0px) rotate(12deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.6,"transform":"translate(0px,0px) rotate(12deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.7,"transform":"translate(0px,0px) rotate(-3deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(1deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89091,"transform":"translate(0px,0px) rotate(-0.3deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"lap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.13636,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.13727,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.5,0,.45,.9)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(372deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.60091,"transform":"translate(0px,0px) rotate(372deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"orbit","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.59545,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.65455,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75455,"transform":"translate(0px,0px) rotate(-2deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.85455,"transform":"translate(0px,0px) rotate(0.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"dock","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.59091,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.63636,"transform":"scale(.8)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89091,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * OFFLINE · Status
