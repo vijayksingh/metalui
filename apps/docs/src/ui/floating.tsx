@@ -17,7 +17,7 @@ export type { XrayKind };
  *           perspective, drift slowly, and the camera leans toward the pointer
  *   table   the overview: the same objects laid flat in the docs' stage
  *
- *   Each object carries its own view-transition name, so "Read the docs" flies every
+ *   Each object carries its own view-transition name, so "Browse Components" flies every
  *   one of them from where it hangs in space to its place on the table.
  * ───────────────────────────────────────────────────────── */
 

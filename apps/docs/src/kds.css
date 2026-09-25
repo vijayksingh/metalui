@@ -653,7 +653,7 @@ html.rm .drift-item { animation: none; }
 html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var(--z, 0px)) rotateY(var(--turn, 0deg)); }
 @media (max-width: 700px) { .drift-item.in-space { zoom: .72; } .landing-line { font-size: 22px; line-height: 28px; } }
 
-/* "Read the docs": each object flies from space to its place on the table */
+/* "Browse Components": each object flies from space to its place on the table */
 ::view-transition-group(*) { animation-duration: .75s; animation-timing-function: var(--mu-spring-surface, cubic-bezier(.2,.7,.2,1)); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }

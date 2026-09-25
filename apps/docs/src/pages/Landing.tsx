@@ -6,7 +6,7 @@ import { XrayOverlay } from '../ui/xray';
 import { useColorway, type Colorway } from '../app/colorway';
 
 /* The front door: nothing but objects hanging in space, one engraved line in each
- * corner, and one way in. "Read the docs" flies every object onto the overview's table. */
+ * corner, and one way in. "Browse Components" flies every object onto the overview's table. */
 export default function Landing() {
   const navigate = useNavigate();
   const { colorway, setColorway } = useColorway();
@@ -34,8 +34,8 @@ export default function Landing() {
 
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
-        <Button cap="primary" onClick={enter}>Read the docs</Button>
-        <span className="eng">⏎ read the docs · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
+        <Button cap="primary" onClick={enter}>Browse Components</Button>
+        <span className="eng">⏎ browse components · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
       {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
