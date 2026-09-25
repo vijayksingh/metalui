@@ -27,6 +27,8 @@ import { Folder, Region, Segmented, Well, type FolderHue, type FolderPeek } from
  *   0.45s  cards     the cards ride the shrink into the folder's fan: never further along than
  *                    the sheet, so none ever pokes out below the flap; the front card leads,
  *                    each one behind it trails by 6 % of the shrink
+ *   0.14s  centre    the row of cards slides to the centre of the region (a soft spring), so the
+ *                    shrink draws them straight down into the pocket
  *   0.30s  material  the region's sunk surface gives way to the folder's materials: the back
  *                    becomes translucent paper, the flap is frosted glass (0.5 s)
  *   0.45s  shrink    back and flap shrink together onto the folder's own outline: the tab
@@ -115,6 +117,9 @@ export function FolderUnfold() {
       head: { at: 0, duration: 0.14, from: { o: 1 }, to: { o: 0 }, transition: { type: 'easing', duration: 0.14, ease: [0.4, 0, 1, 1] } },
       sheet: { at: 0.14, duration: 0 },
       fold: { at: 0.14, from: { a: 0 }, to: { a: ANGLE_END }, transition: { type: 'spring', stiffness: 120, damping: 14 } },
+      // As the fold starts, the row of cards centres itself in the region, so the shrink draws them
+      // straight down into the pocket instead of pulling them in from one side.
+      centre: { at: 0.14, from: { c: 0 }, to: { c: 1 }, transition: { type: 'spring', visualDuration: 0.4, bounce: 0.1 } },
       material: { at: 0.3, duration: 0.5, from: { m: 0 }, to: { m: 1 }, transition: { type: 'easing', duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
       // An ease-out that lands exactly at its end: no overshoot, no long tail, so the sheet is
       // exactly the folder's shape at the handoff.
@@ -226,8 +231,10 @@ export function FolderUnfold() {
   // flap's edge. The front card leads a little, the back card follows (CARD_LAG of the shrink each).
   const CARD_LAG = 0.06, n = ITEMS.length;
   const cardP = ITEMS.map((_, i) => { const lag = (n - 1 - i) * CARD_LAG; return Math.min(1, Math.max(0, (s - lag) / (1 - (n - 1) * CARD_LAG))); });
+  const row = n * R.cw + (n - 1) * R.gap, centreShift = (R.w - row) / 2 - R.pad;
+  const centre = tl.centre.current.c as number;
   const cardStyle = (i: number): React.CSSProperties => {
-    const from = slotIn(i), fan = geo?.fans[i];
+    const slot = slotIn(i), from = { x: slot.x + centreShift * centre, y: slot.y }, fan = geo?.fans[i];
     if (!fan) return { left: from.x, top: from.y };
     const p = cardP[i], cx = lerp(from.x + R.cw / 2, fan.x, p), cy = lerp(from.y + R.ch / 2, fan.y, p);
     return { left: cx - R.cw / 2, top: cy - R.ch / 2, transform: `rotate(${lerp(0, fan.lean, p)}deg)` };
