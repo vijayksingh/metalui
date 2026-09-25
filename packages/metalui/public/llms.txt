@@ -21,6 +21,7 @@
 - [Draw tools](https://metalui.dev/r/draw-tools.md): The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.
 - [Field](https://metalui.dev/r/field.md): Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.
 - [Filter bar](https://metalui.dev/r/filter-bar.md): Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.
+- [Folder](https://metalui.dev/r/folder.md): A folder on the canvas that holds blocks: a back panel with a tab, up to three blocks peeking up as cards, a frosted flap with its name and count; fans on hover, opens wide when a block is dragged over, swings shut when one lands; six paper colours.
 - [Glass face](https://metalui.dev/r/glass-face.md): A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.
 - [Glyph](https://metalui.dev/r/glyph.md): A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.
 - [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.

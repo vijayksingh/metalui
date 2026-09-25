@@ -773,6 +773,60 @@
   --spacing-perfect-line: var(--mu-r-perfect-self-line);
   --spacing-perfect-tune-centre: var(--mu-r-perfect-tune-centre);
   --spacing-perfect-tune-readout-gap: var(--mu-r-perfect-tune-readout-gap);
+  --spacing-folder-width: var(--mu-r-folder-self-width);
+  --spacing-folder-height: var(--mu-r-folder-self-height);
+  --spacing-folder-perspective: var(--mu-r-folder-self-perspective);
+  --spacing-folder-back-height: var(--mu-r-folder-back-height);
+  --spacing-folder-back-radius: var(--mu-r-folder-back-radius);
+  --radius-folder-back-radius: var(--mu-r-folder-back-radius);
+  --spacing-folder-back-tab-width: var(--mu-r-folder-back-tab-width);
+  --spacing-folder-back-tab-height: var(--mu-r-folder-back-tab-height);
+  --spacing-folder-back-tab-rise: var(--mu-r-folder-back-tab-rise);
+  --color-folder-hue-neutral-top: var(--mu-r-folder-hue-neutral-top);
+  --color-folder-hue-neutral-bottom: var(--mu-r-folder-hue-neutral-bottom);
+  --color-folder-hue-red-top: var(--mu-r-folder-hue-red-top);
+  --color-folder-hue-red-bottom: var(--mu-r-folder-hue-red-bottom);
+  --color-folder-hue-amber-top: var(--mu-r-folder-hue-amber-top);
+  --color-folder-hue-amber-bottom: var(--mu-r-folder-hue-amber-bottom);
+  --color-folder-hue-green-top: var(--mu-r-folder-hue-green-top);
+  --color-folder-hue-green-bottom: var(--mu-r-folder-hue-green-bottom);
+  --color-folder-hue-blue-top: var(--mu-r-folder-hue-blue-top);
+  --color-folder-hue-blue-bottom: var(--mu-r-folder-hue-blue-bottom);
+  --color-folder-hue-violet-top: var(--mu-r-folder-hue-violet-top);
+  --color-folder-hue-violet-bottom: var(--mu-r-folder-hue-violet-bottom);
+  --color-folder-wash-neutral: var(--mu-r-folder-wash-neutral);
+  --color-folder-wash-red: var(--mu-r-folder-wash-red);
+  --color-folder-wash-amber: var(--mu-r-folder-wash-amber);
+  --color-folder-wash-green: var(--mu-r-folder-wash-green);
+  --color-folder-wash-blue: var(--mu-r-folder-wash-blue);
+  --color-folder-wash-violet: var(--mu-r-folder-wash-violet);
+  --spacing-folder-card-width: var(--mu-r-folder-card-width);
+  --spacing-folder-card-height: var(--mu-r-folder-card-height);
+  --spacing-folder-card-radius: var(--mu-r-folder-card-radius);
+  --radius-folder-card-radius: var(--mu-r-folder-card-radius);
+  --spacing-folder-card-pad: var(--mu-r-folder-card-pad);
+  --spacing-folder-card-bottom: var(--mu-r-folder-card-bottom);
+  --spacing-folder-card-thumb: var(--mu-r-folder-card-thumb);
+  --spacing-folder-card-thumb-radius: var(--mu-r-folder-card-thumb-radius);
+  --radius-folder-card-thumb-radius: var(--mu-r-folder-card-thumb-radius);
+  --spacing-folder-card-line: var(--mu-r-folder-card-line);
+  --spacing-folder-card-line-lg: var(--mu-r-folder-card-line-lg);
+  --color-folder-card-background: var(--mu-r-folder-card-background);
+  --color-folder-card-border: var(--mu-r-folder-card-border);
+  --color-folder-card-line-ink: var(--mu-r-folder-card-line-ink);
+  --color-folder-card-line-lg-ink: var(--mu-r-folder-card-line-lg-ink);
+  --color-folder-card-line-blue: var(--mu-r-folder-card-line-blue);
+  --spacing-folder-flap-height: var(--mu-r-folder-flap-height);
+  --spacing-folder-flap-radius: var(--mu-r-folder-flap-radius);
+  --radius-folder-flap-radius: var(--mu-r-folder-flap-radius);
+  --spacing-folder-flap-pad-x: var(--mu-r-folder-flap-pad-x);
+  --spacing-folder-flap-pad-bottom: var(--mu-r-folder-flap-pad-bottom);
+  --color-folder-flap-background: var(--mu-r-folder-flap-background);
+  --color-folder-flap-border: var(--mu-r-folder-flap-border);
+  --spacing-folder-count-size: var(--mu-r-folder-count-size);
+  --spacing-folder-count-pad: var(--mu-r-folder-count-pad);
+  --color-folder-count-background: var(--mu-r-folder-count-background);
+  --spacing-folder-name-gap: var(--mu-r-folder-name-gap);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1918,6 +1972,61 @@
 @utility dash-perfect-tune-dash {
   stroke-dasharray: var(--mu-r-perfect-tune-dash);
 }
+@utility folder {
+  position: relative; width: var(--mu-r-folder-self-width); height: var(--mu-r-folder-self-height); perspective: var(--mu-r-folder-self-perspective); cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; --mu-folder-top: var(--mu-r-folder-hue-neutral-top); --mu-folder-bottom: var(--mu-r-folder-hue-neutral-bottom); --mu-folder-wash: var(--mu-r-folder-wash-neutral); &[data-hue=neutral] { --mu-folder-top: var(--mu-r-folder-hue-neutral-top); --mu-folder-bottom: var(--mu-r-folder-hue-neutral-bottom); --mu-folder-wash: var(--mu-r-folder-wash-neutral); } &[data-hue=red] { --mu-folder-top: var(--mu-r-folder-hue-red-top); --mu-folder-bottom: var(--mu-r-folder-hue-red-bottom); --mu-folder-wash: var(--mu-r-folder-wash-red); } &[data-hue=amber] { --mu-folder-top: var(--mu-r-folder-hue-amber-top); --mu-folder-bottom: var(--mu-r-folder-hue-amber-bottom); --mu-folder-wash: var(--mu-r-folder-wash-amber); } &[data-hue=green] { --mu-folder-top: var(--mu-r-folder-hue-green-top); --mu-folder-bottom: var(--mu-r-folder-hue-green-bottom); --mu-folder-wash: var(--mu-r-folder-wash-green); } &[data-hue=blue] { --mu-folder-top: var(--mu-r-folder-hue-blue-top); --mu-folder-bottom: var(--mu-r-folder-hue-blue-bottom); --mu-folder-wash: var(--mu-r-folder-wash-blue); } &[data-hue=violet] { --mu-folder-top: var(--mu-r-folder-hue-violet-top); --mu-folder-bottom: var(--mu-r-folder-hue-violet-bottom); --mu-folder-wash: var(--mu-r-folder-wash-violet); } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); border-radius: var(--mu-r-folder-back-radius); }
+}
+@utility folder-back {
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-back-height); border-radius: var(--mu-r-folder-back-radius); background: linear-gradient(180deg, var(--mu-folder-top), var(--mu-folder-bottom)); box-shadow: var(--mu-r-folder-back-shadow); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); &::before { content: ''; position: absolute; left: 0; top: calc(var(--mu-r-folder-back-tab-rise) * -1); width: var(--mu-r-folder-back-tab-width); height: var(--mu-r-folder-back-tab-height); border-radius: 20px 22px 0 0; background: inherit; box-shadow: var(--mu-r-folder-back-tab-shadow); }
+}
+@utility folder-card {
+  position: absolute; left: calc(50% - var(--mu-r-folder-card-width) / 2); bottom: var(--mu-r-folder-card-bottom); width: var(--mu-r-folder-card-width); height: var(--mu-r-folder-card-height); box-sizing: border-box; border-radius: var(--mu-r-folder-card-radius); padding: var(--mu-r-folder-card-pad) var(--mu-r-folder-card-pad) 0; overflow: hidden; background: var(--mu-r-folder-card-background); border: .5px solid var(--mu-r-folder-card-border); box-shadow: var(--mu-r-folder-card-shadow); transform-origin: 50% 100%; transform: translateY(var(--y)) rotate(var(--r)); transition: transform var(--mu-spring-object-d) var(--mu-spring-object); @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility folder-card-1 {
+  --y: var(--mu-r-folder-pose-c1-rest-y); --r: var(--mu-r-folder-pose-c1-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c1-hover-y); --r: var(--mu-r-folder-pose-c1-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c1-open-y); --r: var(--mu-r-folder-pose-c1-open-r); } z-index: 1;
+}
+@utility folder-card-2 {
+  --y: var(--mu-r-folder-pose-c2-rest-y); --r: var(--mu-r-folder-pose-c2-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c2-hover-y); --r: var(--mu-r-folder-pose-c2-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c2-open-y); --r: var(--mu-r-folder-pose-c2-open-r); } z-index: 2; transition-delay: .05s;
+}
+@utility folder-card-3 {
+  --y: var(--mu-r-folder-pose-c3-rest-y); --r: var(--mu-r-folder-pose-c3-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c3-hover-y); --r: var(--mu-r-folder-pose-c3-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c3-open-y); --r: var(--mu-r-folder-pose-c3-open-r); } z-index: 3; transition-delay: .1s;
+}
+@utility folder-thumb {
+  height: var(--mu-r-folder-card-thumb); border-radius: var(--mu-r-folder-card-thumb-radius); background-size: cover; background-position: center; margin-bottom: 9px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.08), inset 0 0 6px 1px rgba(255,255,255,.18);
+}
+@utility folder-line {
+  display: block; height: var(--mu-r-folder-card-line); border-radius: 99px; background: var(--mu-r-folder-card-line-ink); margin-bottom: 6px;
+}
+@utility folder-line-lg {
+  height: var(--mu-r-folder-card-line-lg); background: var(--mu-r-folder-card-line-lg-ink); margin-bottom: 9px;
+}
+@utility folder-line-blue {
+  background: var(--mu-r-folder-card-line-blue);
+}
+@utility folder-flap {
+  position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; border-radius: var(--mu-r-folder-flap-radius); padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; background: linear-gradient(var(--mu-folder-wash), var(--mu-folder-wash)), var(--mu-r-folder-flap-background); -webkit-backdrop-filter: var(--mu-r-folder-flap-blur); backdrop-filter: var(--mu-r-folder-flap-blur); border: .5px solid var(--mu-r-folder-flap-border); box-shadow: var(--mu-r-folder-flap-shadow); transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); .mu-folder:is(:hover,:focus-visible) & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility folder-land {
+  animation: mu-folder-land var(--mu-spring-hinge-d) var(--mu-spring-hinge);
+}
+@utility folder-label {
+  display: flex; flex-direction: column; gap: var(--mu-r-folder-name-gap); min-width: 0;
+}
+@utility folder-count {
+  flex: none; display: grid; place-items: center; min-width: var(--mu-r-folder-count-size); height: var(--mu-r-folder-count-size); box-sizing: border-box; padding: 0 var(--mu-r-folder-count-pad); border-radius: 99px; font: 600 10.5px/1 var(--mu-mono); font-variant-numeric: tabular-nums; color: var(--mu-ink); background: var(--mu-r-folder-count-background); box-shadow: var(--mu-r-folder-count-shadow);
+}
+@utility region-hue {
+  background-image: linear-gradient(var(--mu-folder-wash), var(--mu-folder-wash)); --mu-folder-wash: var(--mu-r-folder-wash-neutral); &[data-hue=neutral] { --mu-folder-wash: var(--mu-r-folder-wash-neutral); } &[data-hue=red] { --mu-folder-wash: var(--mu-r-folder-wash-red); } &[data-hue=amber] { --mu-folder-wash: var(--mu-r-folder-wash-amber); } &[data-hue=green] { --mu-folder-wash: var(--mu-r-folder-wash-green); } &[data-hue=blue] { --mu-folder-wash: var(--mu-r-folder-wash-blue); } &[data-hue=violet] { --mu-folder-wash: var(--mu-r-folder-wash-violet); }
+}
+@utility stroke-width-folder-width {
+  stroke-width: var(--mu-r-folder-self-width);
+}
+@utility stroke-width-folder-card-width {
+  stroke-width: var(--mu-r-folder-card-width);
+}
+@utility backdrop-folder-flap-blur {
+  -webkit-backdrop-filter: var(--mu-r-folder-flap-blur);
+  backdrop-filter: var(--mu-r-folder-flap-blur);
+}
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
@@ -1941,6 +2050,9 @@
 }
 @keyframes mu-perfect-done {
   from { opacity: var(--mu-r-perfect-self-opacity); } to { opacity: 0; }
+}
+@keyframes mu-folder-land {
+  0% { transform: rotateX(var(--mu-r-folder-flap-open)); } 55% { transform: rotateX(-4deg); } 100% { transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); }
 }
 
 /* The layout groups as theme values, and each spring's duration (duration-settle, …). */

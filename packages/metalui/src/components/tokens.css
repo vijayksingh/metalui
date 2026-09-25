@@ -1636,6 +1636,52 @@
   --mu-r-perfect-tune-centre: 3px;
   --mu-r-perfect-tune-dash: 3 3;
   --mu-r-perfect-tune-readout-gap: 14px;
+  /* folder: the Soft Hardware sheet's stack folder (.folder, .f-back, .f-card, .f-flap, .f-count); owner 2026-09-25 (colour, physical on the canvas) */
+  --mu-r-folder-self-width: 220px;
+  --mu-r-folder-self-height: 204px;
+  --mu-r-folder-self-perspective: 800px;
+  --mu-r-folder-back-height: 150px;
+  --mu-r-folder-back-radius: 26px;
+  --mu-r-folder-back-tab-width: 92px;
+  --mu-r-folder-back-tab-height: 40px;
+  --mu-r-folder-back-tab-rise: 16px;
+  --mu-r-folder-card-width: 114px;
+  --mu-r-folder-card-height: 148px;
+  --mu-r-folder-card-radius: 16px;
+  --mu-r-folder-card-pad: 10px;
+  --mu-r-folder-card-bottom: 20px;
+  --mu-r-folder-card-thumb: 62px;
+  --mu-r-folder-card-thumb-radius: 10px;
+  --mu-r-folder-card-line: 6px;
+  --mu-r-folder-card-line-lg: 8px;
+  --mu-r-folder-flap-height: 106px;
+  --mu-r-folder-flap-radius: 26px;
+  --mu-r-folder-flap-pad-x: 16px;
+  --mu-r-folder-flap-pad-bottom: 14px;
+  --mu-r-folder-flap-rest: -15deg;
+  --mu-r-folder-flap-hover: -45deg;
+  --mu-r-folder-flap-open: -55deg;
+  --mu-r-folder-count-size: 24px;
+  --mu-r-folder-count-pad: 7px;
+  --mu-r-folder-name-gap: 4px;
+  --mu-r-folder-pose-c1-rest-y: -10px;
+  --mu-r-folder-pose-c1-rest-r: 10deg;
+  --mu-r-folder-pose-c1-hover-y: -30px;
+  --mu-r-folder-pose-c1-hover-r: 14deg;
+  --mu-r-folder-pose-c1-open-y: -86px;
+  --mu-r-folder-pose-c1-open-r: 18deg;
+  --mu-r-folder-pose-c2-rest-y: -10px;
+  --mu-r-folder-pose-c2-rest-r: 2deg;
+  --mu-r-folder-pose-c2-hover-y: -37px;
+  --mu-r-folder-pose-c2-hover-r: -1deg;
+  --mu-r-folder-pose-c2-open-y: -96px;
+  --mu-r-folder-pose-c2-open-r: -3deg;
+  --mu-r-folder-pose-c3-rest-y: -10px;
+  --mu-r-folder-pose-c3-rest-r: -5deg;
+  --mu-r-folder-pose-c3-hover-y: -44px;
+  --mu-r-folder-pose-c3-hover-r: -9deg;
+  --mu-r-folder-pose-c3-open-y: -106px;
+  --mu-r-folder-pose-c3-open-r: -14deg;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1990,6 +2036,38 @@
   --mu-r-connector-halo-ink: rgba(63,185,122,.24);
   --mu-r-connector-end-ring-ink: #FFFFFF;
   --mu-r-connector-end-free-fill: #FFFFFF;
+  --mu-r-folder-back-shadow: inset 0 0 6px 2px rgba(255,255,255,.55), inset 0 10px 18px -10px rgba(90,80,60,.10), 0 1px 2px rgba(24,22,16,.05), 0 10px 22px -8px rgba(24,22,16,.08), 0 30px 56px -18px rgba(24,22,16,.14), 0 56px 100px -40px rgba(24,22,16,.12);
+  --mu-r-folder-back-tab-shadow: inset 0 0 6px 2px rgba(255,255,255,.55);
+  --mu-r-folder-hue-neutral-top: #E4E3DE;
+  --mu-r-folder-hue-neutral-bottom: #DAD9D4;
+  --mu-r-folder-hue-red-top: #F1D8CF;
+  --mu-r-folder-hue-red-bottom: #E7C5B9;
+  --mu-r-folder-hue-amber-top: #F2E4C6;
+  --mu-r-folder-hue-amber-bottom: #E9D5AC;
+  --mu-r-folder-hue-green-top: #D8E8D7;
+  --mu-r-folder-hue-green-bottom: #C7DCC6;
+  --mu-r-folder-hue-blue-top: #D6E2F0;
+  --mu-r-folder-hue-blue-bottom: #C3D3E7;
+  --mu-r-folder-hue-violet-top: #E2DAED;
+  --mu-r-folder-hue-violet-bottom: #D3C8E3;
+  --mu-r-folder-wash-neutral: rgba(0,0,0,0);
+  --mu-r-folder-wash-red: rgba(216,69,59,.10);
+  --mu-r-folder-wash-amber: rgba(224,161,42,.12);
+  --mu-r-folder-wash-green: rgba(63,185,122,.10);
+  --mu-r-folder-wash-blue: rgba(36,87,242,.08);
+  --mu-r-folder-wash-violet: rgba(124,92,196,.09);
+  --mu-r-folder-card-background: #F1F1F1;
+  --mu-r-folder-card-border: #E0E0E0;
+  --mu-r-folder-card-shadow: inset 3px 5px 3px -2px #FFFFFF, 0 1px 2px rgba(0,0,0,.05), 0 6px 14px -6px rgba(0,0,0,.12);
+  --mu-r-folder-card-line-ink: #D4D4D4;
+  --mu-r-folder-card-line-lg-ink: #C9C9C9;
+  --mu-r-folder-card-line-blue: #B9CCF7;
+  --mu-r-folder-flap-background: rgba(245,245,245,.85);
+  --mu-r-folder-flap-blur: blur(6px) saturate(1.2);
+  --mu-r-folder-flap-border: rgba(151,151,151,.28);
+  --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.55), inset 2px 3px 4px -2px rgba(255,255,255,.9), 0 -1px 2px rgba(0,0,0,.02), 0 8px 18px -8px rgba(24,22,16,.10);
+  --mu-r-folder-count-background: rgba(255,255,255,.7);
+  --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.9), inset 1px 2px 2px -1px #fff, 0 0 0 .5px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.06);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2322,6 +2400,38 @@
   --mu-r-connector-halo-ink: rgba(120,214,165,.24);
   --mu-r-connector-end-ring-ink: #1B1B1D;
   --mu-r-connector-end-free-fill: #1B1B1D;
+  --mu-r-folder-back-shadow: inset 0 0 6px 2px rgba(255,255,255,.2), 0 0 0 .5px rgba(0,0,0,.6), 0 30px 56px -18px rgba(0,0,0,.6), 0 56px 100px -40px rgba(0,0,0,.5);
+  --mu-r-folder-back-tab-shadow: inset 0 0 6px 2px rgba(255,255,255,.2);
+  --mu-r-folder-hue-neutral-top: #19191B;
+  --mu-r-folder-hue-neutral-bottom: #111112;
+  --mu-r-folder-hue-red-top: #2F1E1B;
+  --mu-r-folder-hue-red-bottom: #221513;
+  --mu-r-folder-hue-amber-top: #2D2619;
+  --mu-r-folder-hue-amber-bottom: #211B12;
+  --mu-r-folder-hue-green-top: #1C2B21;
+  --mu-r-folder-hue-green-bottom: #131E17;
+  --mu-r-folder-hue-blue-top: #1B2331;
+  --mu-r-folder-hue-blue-bottom: #131926;
+  --mu-r-folder-hue-violet-top: #251E2F;
+  --mu-r-folder-hue-violet-bottom: #1A1522;
+  --mu-r-folder-wash-neutral: rgba(0,0,0,0);
+  --mu-r-folder-wash-red: rgba(255,122,102,.10);
+  --mu-r-folder-wash-amber: rgba(245,191,85,.10);
+  --mu-r-folder-wash-green: rgba(120,214,165,.09);
+  --mu-r-folder-wash-blue: rgba(111,155,255,.10);
+  --mu-r-folder-wash-violet: rgba(170,140,240,.10);
+  --mu-r-folder-card-background: #2A2A2D;
+  --mu-r-folder-card-border: rgba(255,255,255,.06);
+  --mu-r-folder-card-shadow: inset 3px 5px 3px -2px rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.3), 0 6px 14px -6px rgba(0,0,0,.5);
+  --mu-r-folder-card-line-ink: #3C3C40;
+  --mu-r-folder-card-line-lg-ink: #46464A;
+  --mu-r-folder-card-line-blue: #34466E;
+  --mu-r-folder-flap-background: rgba(40,40,43,.72);
+  --mu-r-folder-flap-blur: blur(8px) saturate(1.2);
+  --mu-r-folder-flap-border: rgba(151,151,151,.22);
+  --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
+  --mu-r-folder-count-background: rgba(255,255,255,.1);
+  --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.14);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2655,5 +2765,37 @@
     --mu-r-connector-halo-ink: rgba(120,214,165,.24);
     --mu-r-connector-end-ring-ink: #1B1B1D;
     --mu-r-connector-end-free-fill: #1B1B1D;
+    --mu-r-folder-back-shadow: inset 0 0 6px 2px rgba(255,255,255,.2), 0 0 0 .5px rgba(0,0,0,.6), 0 30px 56px -18px rgba(0,0,0,.6), 0 56px 100px -40px rgba(0,0,0,.5);
+    --mu-r-folder-back-tab-shadow: inset 0 0 6px 2px rgba(255,255,255,.2);
+    --mu-r-folder-hue-neutral-top: #19191B;
+    --mu-r-folder-hue-neutral-bottom: #111112;
+    --mu-r-folder-hue-red-top: #2F1E1B;
+    --mu-r-folder-hue-red-bottom: #221513;
+    --mu-r-folder-hue-amber-top: #2D2619;
+    --mu-r-folder-hue-amber-bottom: #211B12;
+    --mu-r-folder-hue-green-top: #1C2B21;
+    --mu-r-folder-hue-green-bottom: #131E17;
+    --mu-r-folder-hue-blue-top: #1B2331;
+    --mu-r-folder-hue-blue-bottom: #131926;
+    --mu-r-folder-hue-violet-top: #251E2F;
+    --mu-r-folder-hue-violet-bottom: #1A1522;
+    --mu-r-folder-wash-neutral: rgba(0,0,0,0);
+    --mu-r-folder-wash-red: rgba(255,122,102,.10);
+    --mu-r-folder-wash-amber: rgba(245,191,85,.10);
+    --mu-r-folder-wash-green: rgba(120,214,165,.09);
+    --mu-r-folder-wash-blue: rgba(111,155,255,.10);
+    --mu-r-folder-wash-violet: rgba(170,140,240,.10);
+    --mu-r-folder-card-background: #2A2A2D;
+    --mu-r-folder-card-border: rgba(255,255,255,.06);
+    --mu-r-folder-card-shadow: inset 3px 5px 3px -2px rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.3), 0 6px 14px -6px rgba(0,0,0,.5);
+    --mu-r-folder-card-line-ink: #3C3C40;
+    --mu-r-folder-card-line-lg-ink: #46464A;
+    --mu-r-folder-card-line-blue: #34466E;
+    --mu-r-folder-flap-background: rgba(40,40,43,.72);
+    --mu-r-folder-flap-blur: blur(8px) saturate(1.2);
+    --mu-r-folder-flap-border: rgba(151,151,151,.22);
+    --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
+    --mu-r-folder-count-background: rgba(255,255,255,.1);
+    --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.14);
   }
 }

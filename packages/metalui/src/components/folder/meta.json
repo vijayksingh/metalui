@@ -1,0 +1,19 @@
+{
+  "name": "folder",
+  "title": "Folder",
+  "status": "alpha",
+  "description": "A folder on the canvas that holds blocks: a back panel with a tab, up to three blocks peeking up as cards, a frosted flap with its name and count; fans on hover, opens wide when a block is dragged over, swings shut when one lands; six paper colours.",
+  "base": "none (a button)",
+  "react": {
+    "export": "Folder",
+    "files": [
+      "folder.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalFolder",
+    "file": "swift/Sources/MetalUI/Components/MetalFolder.swift"
+  },
+  "agent": "folder.agent.md",
+  "layer": "component"
+}
