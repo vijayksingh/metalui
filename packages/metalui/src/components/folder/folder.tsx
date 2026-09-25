@@ -9,11 +9,11 @@ import { Label } from '../label/label';
  * A thing on the canvas that holds blocks and takes little space. It is the closed state of a
  * container; unfolded, the same container is a region washed in the folder's colour.
  *
- *   shape     the back (translucent paper: the canvas shows softly through) and the flap
+ *   shape     the back (translucent paper, no blur: the canvas shows softly through) and the flap
  *             taper slightly toward the bottom, like a pocket; their shadows are separate
- *             blurred layers, since the tapered outline is a clip. No backdrop blur
- *             anywhere: the hinged flap makes the folder a 3D scene, and in Chrome a blur in
- *             one ignores its clip and paints a square box. The flap is near-opaque paper.
+ *             blurred layers, since the tapered outline is a clip. The flap is frosted
+ *             glass: a clipped blur layer of its own (translateZ, back face hidden) under a
+ *             see-through fill, so the blur keeps the pocket's shape while the flap hinges
  *   rest      the back panel with its tab; up to three of its blocks peek up as cards (-10,
  *             leaning 10°, 2°, -5°); the frosted flap tipped back 15° with the name, what it
  *             is and the count
@@ -87,9 +87,10 @@ const FLAP_D = pocket(106, 12);
 const clip = (d: string): React.CSSProperties => ({ clipPath: `path('${d}')`, WebkitClipPath: `path('${d}')` });
 const EDGE = 'folder-edge';
 
-function Edge({ d, h }: { d: string; h: number }) {
+function Edge({ d, h, fill }: { d: string; h: number; fill?: boolean }) {
   return (
     <svg aria-hidden className={EDGE} viewBox={`0 0 ${W} ${h}`} preserveAspectRatio="none">
+      {fill && <path d={d} className="folder-flap-fill" />}
       <path d={d} className="folder-edge-light" style={clip(d)} />
       <path d={d} className="folder-edge-line" />
     </svg>
@@ -120,7 +121,7 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
       {...props}
     >
       <div aria-hidden className={SHADE}><div className="folder-shade-body" style={clip(BACK_D)} /></div>
-      <div aria-hidden className={BACK} style={clip(BACK_D)} />
+      <div aria-hidden className={`${BACK} folder-layer`} style={clip(BACK_D)} />
       <div aria-hidden className="folder-frame"><Edge d={BACK_D} h={166} /></div>
       {cards.map((c, i) => (
         <div key={i} aria-hidden className={CARD[slot(i)]}>
@@ -131,13 +132,17 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
         </div>
       ))}
       <div aria-hidden className={FLAP_SHADE}><div className="folder-shade-body" style={clip(FLAP_D)} /></div>
-      <div key={landed} aria-hidden className={landed ? `${FLAP} ${LAND}` : FLAP} style={clip(FLAP_D)}>
-        <Edge d={FLAP_D} h={106} />
+      <div key={landed} aria-hidden className={landed ? `${FLAP} ${LAND}` : FLAP}>
+        {/* The frost is its own clipped layer, so the blur keeps the pocket's shape while the flap hinges in 3D. */}
+        <div className="folder-frost" style={clip(FLAP_D)} />
+        <Edge d={FLAP_D} h={106} fill />
+        <div className="folder-flap-content">
         <div className={LABEL}>
           <Label variant="title" as="b">{name}</Label>
           <Label variant="engraved">{`Folder · ${count} ${count === 1 ? 'block' : 'blocks'}`}</Label>
         </div>
         <span className={COUNT}>{count}</span>
+        </div>
       </div>
     </div>
   );

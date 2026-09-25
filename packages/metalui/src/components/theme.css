@@ -822,9 +822,9 @@
   --radius-folder-flap-radius: var(--mu-r-folder-flap-radius);
   --spacing-folder-flap-pad-x: var(--mu-r-folder-flap-pad-x);
   --spacing-folder-flap-pad-bottom: var(--mu-r-folder-flap-pad-bottom);
-  --color-folder-flap-background: var(--mu-r-folder-flap-background);
   --color-folder-flap-border: var(--mu-r-folder-flap-border);
   --spacing-folder-flap-taper: var(--mu-r-folder-flap-taper);
+  --color-folder-flap-lift: var(--mu-r-folder-flap-lift);
   --spacing-folder-count-size: var(--mu-r-folder-count-size);
   --spacing-folder-count-pad: var(--mu-r-folder-count-pad);
   --color-folder-count-background: var(--mu-r-folder-count-background);
@@ -2008,7 +2008,7 @@
   background: var(--mu-r-folder-card-line-blue);
 }
 @utility folder-flap {
-  position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; background: linear-gradient(var(--mu-folder-wash), var(--mu-folder-wash)), var(--mu-r-folder-flap-background); box-shadow: var(--mu-r-folder-flap-shadow); transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); .mu-folder:is(:hover,:focus-visible) & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
+  position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; transform-style: preserve-3d; transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); .mu-folder:is(:hover,:focus-visible) & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility folder-land {
   animation: mu-folder-land var(--mu-spring-hinge-d) var(--mu-spring-hinge);
@@ -2043,11 +2043,30 @@
 @utility folder-frame {
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--mu-r-folder-back-height) + var(--mu-r-folder-back-tab-rise)); pointer-events: none;
 }
+@utility folder-frost {
+  position: absolute; inset: 0; -webkit-backdrop-filter: var(--mu-r-folder-flap-frost); backdrop-filter: var(--mu-r-folder-flap-frost); transform: translateZ(0); -webkit-backface-visibility: hidden; backface-visibility: hidden; will-change: transform; pointer-events: none;
+}
+@utility folder-flap-fill {
+  fill: color-mix(in srgb, var(--mu-folder-top) 55%, var(--mu-r-folder-flap-lift)); fill-opacity: var(--mu-r-folder-flap-fill-opacity); stroke: none; transition: fill var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+@utility folder-flap-content {
+  position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; width: 100%;
+}
+@utility folder-layer {
+  transform: translateZ(0); -webkit-backface-visibility: hidden; backface-visibility: hidden; will-change: transform;
+}
 @utility stroke-width-folder-width {
   stroke-width: var(--mu-r-folder-self-width);
 }
 @utility stroke-width-folder-card-width {
   stroke-width: var(--mu-r-folder-card-width);
+}
+@utility opacity-folder-flap-fill-opacity {
+  opacity: var(--mu-r-folder-flap-fill-opacity);
+}
+@utility backdrop-folder-flap-frost {
+  -webkit-backdrop-filter: var(--mu-r-folder-flap-frost);
+  backdrop-filter: var(--mu-r-folder-flap-frost);
 }
 @utility backdrop-folder-shape-shadow-blur {
   -webkit-backdrop-filter: var(--mu-r-folder-shape-shadow-blur);
