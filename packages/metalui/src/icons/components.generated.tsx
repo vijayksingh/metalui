@@ -13,7 +13,7 @@ export const ImageIcon = createIcon("image", "ImageIcon");
 export const LinkIcon = createIcon("link", "LinkIcon");
 /** Draw. Hover: The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.. Press: plays the same act. */
 export const DrawIcon = createIcon("draw", "DrawIcon");
-/** Pen. Hover: the nib glides and lays a wave of ink. Press: the nib presses: the line swells and a drop of ink blooms. */
+/** Pen. Hover: The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.. Press: plays the same act. */
 export const PenIcon = createIcon("pen", "PenIcon");
 /** Marker. Hover: it sweeps right and lays a see-through band. Press: it lifts back, then sweeps a fresh band. */
 export const MarkerIcon = createIcon("marker", "MarkerIcon");

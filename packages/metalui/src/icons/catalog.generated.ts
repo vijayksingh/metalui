@@ -156,26 +156,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1180,"caption":"The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.","stages":["Lift","Stroke","Return"],"tracks":[{"part":"pencil","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15254,"transform":"translate(-1.2px,-1.6px) rotate(-4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27119,"transform":"translate(-1.8px,0.3px) rotate(3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29237,"transform":"translate(-1.78px,0.12px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.39831,"transform":"translate(-0.03px,0.8px) rotate(5deg) scale(1,1)","easing":"linear"},{"offset":0.50424,"transform":"translate(1.73px,0.8px) rotate(5deg) scale(1,1)","easing":"linear"},{"offset":0.61017,"transform":"translate(3.5px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69492,"transform":"translate(3.4px,-1.5px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89831,"transform":"translate(-0.3px,0.25px) rotate(1deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"stroke","keyframes":[{"offset":0,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2839,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.29237,"transform":"none","opacity":1,"strokeDashoffset":0.99,"easing":"linear"},{"offset":0.61017,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.76271,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9322,"transform":"none","opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * PEN · Tools
+   * PEN · Tools · one act, 1280ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the nib glides and lays a wave of ink
-   * PRESS one-shot (from the current pose)
-   *          the nib presses: the line swells and a drop of ink blooms
-   *     0ms   .nib plays pn-dip (500ms)
-   *     0ms   .ln plays pn-swell (500ms)
-   *     0ms   .blot plays pn-blot (560ms)
+   * Set down → Write → Press
+   *          The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.
+   *  nib        0 → 150 → 270 → 280 → 370 → 460 → 550 → 640 → 720 → 770 → 870 → 940 → 1170 → 1280ms
+   *  ink        0 → 272 → 282 → 640 → 1000 → 1200 → 1280ms
+   *  drop       0 → 690 → 770 → 880 → 1000 → 1200 → 1280ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "pen": {
     label: "Pen",
     category: "Tools",
-    hover: "the nib glides and lays a wave of ink",
-    press: "the nib presses: the line swells and a drop of ink blooms",
-    pressMs: 560,
+    hover: "The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.",
+    press: "plays the same act",
+    pressMs: 1280,
     defs: "",
-    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.2 17.8c.8-.9 1.7-.9 2.4 0s1.6.9 2.4 0\"/><circle class=\"blot s\" cx=\"10\" cy=\"17.8\" r=\"1.7\" style=\"stroke:none\"/><g class=\"nib\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z\"/><path d=\"M12 19.4v-5\"/><circle class=\"s\" cx=\"12\" cy=\"12.4\" r=\".75\" style=\"stroke:none\"/></g></g>",
+    body: "<path class=\"ac\" data-part=\"ink\" opacity=\"0\" pathLength=\"1\" d=\"M3.6 17.8c.75-.9 1.45-.9 2.2 0s1.45.9 2.2 0\"/><circle class=\"s ac\" data-part=\"drop\" opacity=\"0\" cx=\"8\" cy=\"17.8\" r=\"1.5\" style=\"stroke:none\"/><g data-part=\"nib\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z\"/><path d=\"M12 19.4v-5\"/><circle class=\"s\" cx=\"12\" cy=\"12.4\" r=\".75\" style=\"stroke:none\"/></g></g>",
     sw16: 1.85,
+    motion: {"duration":1280,"caption":"The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.","stages":["Set down","Write","Press"],"tracks":[{"part":"nib","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.11719,"transform":"translate(-1.2px,-1px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21094,"transform":"translate(-1.6px,0.15px) rotate(2deg) scale(1,1)","easing":"linear"},{"offset":0.21875,"transform":"translate(-1.6px,0px) rotate(3deg) scale(1,1)","easing":"linear"},{"offset":0.28906,"transform":"translate(-0.5px,-0.68px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.35938,"transform":"translate(0.6px,0px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.42969,"transform":"translate(1.7px,0.68px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.5,"transform":"translate(2.8px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.5625,"transform":"translate(2.8px,0.6px) rotate(6deg) scale(1.06,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.60156,"transform":"translate(2.8px,0.5px) rotate(5.5deg) scale(1.04,0.95)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.67969,"transform":"translate(3px,-1.8px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.73438,"transform":"translate(2.95px,-1.9px) rotate(-3.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.91406,"transform":"translate(-0.25px,0.2px) rotate(1deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"ink","keyframes":[{"offset":0,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2125,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.22031,"transform":"none","opacity":1,"strokeDashoffset":0.99,"easing":"linear"},{"offset":0.5,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.78125,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9375,"transform":"none","opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"drop","keyframes":[{"offset":0,"transform":"scale(.2)","opacity":0},{"offset":0.53906,"transform":"scale(.2)","opacity":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.60156,"transform":"scale(1.12)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6875,"transform":"scale(.95)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.78125,"transform":"scale(1)","opacity":0.95,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9375,"transform":"scale(1.05)","opacity":0,"easing":"linear"},{"offset":1,"transform":"scale(.2)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * MARKER · Tools

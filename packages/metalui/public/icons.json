@@ -118,11 +118,20 @@
       "component": "PenIcon",
       "label": "Pen",
       "category": "Tools",
-      "hover": "the nib glides and lays a wave of ink",
-      "press": "the nib presses: the line swells and a drop of ink blooms",
-      "pressMs": 560,
+      "hover": "The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.",
+      "press": "plays the same act",
+      "pressMs": 1280,
+      "motion": {
+        "caption": "The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.",
+        "durationMs": 1280,
+        "stages": [
+          "Set down",
+          "Write",
+          "Press"
+        ]
+      },
       "tuned16": false,
-      "construction": "A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Hover glides the nib along a small wave and the ink follows its tip on the same spring. Press is pressure: the nib squashes toward the page, the line swells to 2.7, and a drop of ink blooms at the tip and soaks in."
+      "construction": "A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Motion (study): the nib sets down 1.6 left, rides a two-hump wave with its point while the ink (an accent) is drawn under it, presses at the end of the line (.6 down, squash .92) and a drop of ink blooms there and soaks in; it lets go and swings home."
     },
     {
       "name": "marker",
