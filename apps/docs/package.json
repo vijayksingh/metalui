@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 4193",
-    "build": "vite build",
+    "build": "vite build && node ../../scripts/build-site-discovery.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4193",
     "typecheck": "tsc --noEmit"
   },

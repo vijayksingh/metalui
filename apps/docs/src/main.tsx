@@ -5,6 +5,7 @@ import './styles.css';
 import { ColorwayProvider } from './app/colorway';
 import { Shell } from './app/Shell';
 import { NotFound } from './pages/NotFound';
+import { syncSiteMetadata } from './app/site-metadata';
 
 const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
 const DevAgentation = import.meta.env.DEV
@@ -69,6 +70,8 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+router.subscribe(({ location }) => { void syncSiteMetadata(location.pathname); });
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

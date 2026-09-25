@@ -15,6 +15,8 @@ Pages is connected to `vijayksingh/metalui`. Pushing `main` deploys the docs aut
 
 The docs build takes the library's generated registry, icon SVGs, `AI.md`, and manifests from `packages/metalui/public` through Vite's `publicDir`. They must be present in the deployed output along with the app assets.
 
+After Vite builds, `scripts/build-site-discovery.mjs` writes one static HTML file per route in the docs navigation, plus `sitemap.xml`, `robots.txt`, `site-meta.json`, and a real `404.html`. Cloudflare serves these HTML files at extensionless URLs. Each page has a canonical URL, its own description, crawlable content, and a Markdown agent-guide link. When adding a route, add it to both the router and navigation, then give it a description in the discovery script unless its component has a registry description. The build rejects missing descriptions or route mismatches. The component and icon agent files continue to come from `npm run generate`.
+
 For manual recovery, use the same source commit as the deployment you intend to restore:
 
 ```sh
@@ -23,4 +25,4 @@ npm run build -w @metalui/docs
 npx wrangler pages deploy apps/docs/dist --project-name metalui --branch main --commit-hash <commit-sha> --commit-dirty=false
 ```
 
-Verify the deployment URL first, then the normal visitor path. Check `/`, `/components/button`, `/icons`, `/r/button.json`, `/AI.md`, and an icon SVG on `https://metalui.dev`; open the site in a browser and exercise navigation. DNS and certificate activation can lag behind a successful Pages deployment. A `pages.dev` response alone does not prove the custom domain works.
+Verify the deployment URL first, then the normal visitor path. Check `/`, `/components/button`, `/icons`, `/r/button.json`, `/AI.md`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, and an icon SVG on `https://metalui.dev`; an unknown path should return 404. Open the site in a browser and exercise navigation. DNS and certificate activation can lag behind a successful Pages deployment. A `pages.dev` response alone does not prove the custom domain works.
