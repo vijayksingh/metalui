@@ -1593,6 +1593,16 @@
   --mu-r-brush-self-ring: 0.5px;
   --mu-r-brush-eraser-width: 1px;
   --mu-r-brush-eraser-dash: 3 2;
+  --mu-r-brush-cross-arm: 7px;
+  --mu-r-brush-cross-gap: 3px;
+  --mu-r-brush-cross-line: 1px;
+  --mu-r-brush-cross-halo: 3px;
+  --mu-r-brush-cross-hint-offset: 10px;
+  --mu-r-brush-cross-hint-size: 7px;
+  --mu-r-brush-marker-ratio: 0.42;
+  --mu-r-brush-marker-angle: -35deg;
+  --mu-r-brush-marker-ink: 0.4;
+  --mu-r-brush-pencil-ink: 0.8;
   /* draw: DRAWING.md DR-06 (five inks from the signal colours, three widths); the toolbar's latched well */
   --mu-r-draw-self-size: 28px;
   --mu-r-draw-self-bead: 14px;
@@ -1623,6 +1633,9 @@
   --mu-r-perfect-self-opacity: 0.7;
   --mu-r-perfect-self-hold: 450ms;
   --mu-r-perfect-self-morph: 180ms;
+  --mu-r-perfect-tune-centre: 3px;
+  --mu-r-perfect-tune-dash: 3 3;
+  --mu-r-perfect-tune-readout-gap: 14px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

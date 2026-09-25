@@ -1927,7 +1927,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The brush under the pointer while drawing or erasing on the canvas, in screen space: the pen is a disc in the ink colour at the stroke width times the zoom (never under min), with a hairline ring so it reads on any ink; the eraser is a dashed ring of the eraser width. It follows the pointer in the same frame and grows with pressure while drawing. (the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring)
+    /// The brush under the pointer while drawing or erasing on the canvas, in screen space: the pen is a disc in the ink colour at the stroke width times the zoom (never under min), with a hairline ring so it reads on any ink; the eraser is a dashed ring of the eraser width. It follows the pointer in the same frame and grows with pressure while drawing. Pencil: the same disc a little lighter. Marker: a flat chisel at 40 % ink, as wide as its band, tilted like the tip. Shapes (line, arrow, rectangle, ellipse): a thin crosshair with a gap at the centre, on a light halo, and a small sign of the shape at its lower right. (the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring)
     public static let brush = MetalObjectRecipe(
         name: "brush",
         layers: [
@@ -1941,6 +1941,16 @@ public enum MetalRecipes {
             "eraser.width": .number(1.0),
             "eraser.dash": .text("3 2"),
             "eraser.ink": .perColorway(bone: "rgba(27,27,29,.45)", graphite: "rgba(255,255,255,.45)"),
+            "cross.arm": .number(7.0),
+            "cross.gap": .number(3.0),
+            "cross.line": .number(1.0),
+            "cross.halo": .number(3.0),
+            "cross.hint-offset": .number(10.0),
+            "cross.hint-size": .number(7.0),
+            "marker.ratio": .text("0.42"),
+            "marker.angle": .text("-35deg"),
+            "marker.ink": .text("0.4"),
+            "pencil.ink": .text("0.8"),
         ]
     )
 
@@ -1992,7 +2002,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Hold to perfect (DRAWING.md DR-05). While a person holds the pen still at the end of a rough stroke, the clean shape the core fitted appears as a faint green outline that draws itself round over the hold time (450 ms): the outline is the timer. When it closes, the host morphs the drawn stroke into the clean shape (180 ms on the settle spring) while the outline fades. Moving again or Escape removes the outline at once and keeps the hand-drawn stroke. (DRAWING.md DR-05 and §6)
+    /// Hold to perfect (DRAWING.md DR-05). While a person holds the pen still at the end of a rough stroke, the clean shape the core fitted appears as a faint green outline that draws itself round over the hold time (450 ms): the outline is the timer. When it closes, the host morphs the drawn stroke into the clean shape (180 ms on the settle spring) while the outline fades. Moving again or Escape removes the outline at once and keeps the hand-drawn stroke. Keep holding after it snaps and the shape is in your hand: moving the pointer turns and resizes it around its centre, shown by a dashed guide from the centre to the pointer and a readout of the angle and size; the angle catches at 0°, 45° and 90°. Letting go places it. (DRAWING.md DR-05 and §6)
     public static let perfect = MetalObjectRecipe(
         name: "perfect",
         layers: [
@@ -2003,6 +2013,9 @@ public enum MetalRecipes {
             "self.opacity": .text("0.7"),
             "self.hold": .text("450ms"),
             "self.morph": .text("180ms"),
+            "tune.centre": .number(3.0),
+            "tune.dash": .text("3 3"),
+            "tune.readout-gap": .number(14.0),
         ]
     )
 }

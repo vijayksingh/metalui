@@ -738,6 +738,12 @@
   --color-brush-edge-ink: var(--mu-r-brush-self-edge-ink);
   --spacing-brush-eraser-width: var(--mu-r-brush-eraser-width);
   --color-brush-eraser-ink: var(--mu-r-brush-eraser-ink);
+  --spacing-brush-cross-arm: var(--mu-r-brush-cross-arm);
+  --spacing-brush-cross-gap: var(--mu-r-brush-cross-gap);
+  --spacing-brush-cross-line: var(--mu-r-brush-cross-line);
+  --spacing-brush-cross-halo: var(--mu-r-brush-cross-halo);
+  --spacing-brush-cross-hint-offset: var(--mu-r-brush-cross-hint-offset);
+  --spacing-brush-cross-hint-size: var(--mu-r-brush-cross-hint-size);
   --spacing-draw-size: var(--mu-r-draw-self-size);
   --spacing-draw-bead: var(--mu-r-draw-self-bead);
   --spacing-draw-gap: var(--mu-r-draw-self-gap);
@@ -765,6 +771,8 @@
   --radius-connector-label-radius: var(--mu-r-connector-label-radius);
   --spacing-connector-hit-width: var(--mu-r-connector-hit-width);
   --spacing-perfect-line: var(--mu-r-perfect-self-line);
+  --spacing-perfect-tune-centre: var(--mu-r-perfect-tune-centre);
+  --spacing-perfect-tune-readout-gap: var(--mu-r-perfect-tune-readout-gap);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1785,11 +1793,32 @@
 @utility brush-eraser {
   fill: none; stroke: var(--mu-r-brush-eraser-ink); stroke-width: var(--mu-r-brush-eraser-width); stroke-dasharray: var(--mu-r-brush-eraser-dash);
 }
+@utility brush-cross {
+  fill: none; stroke: var(--mu-r-brush-eraser-ink); stroke-width: var(--mu-r-brush-cross-line); stroke-linecap: round; stroke-linejoin: round;
+}
+@utility brush-cross-halo {
+  fill: none; stroke: var(--mu-r-brush-self-ring-ink); stroke-width: var(--mu-r-brush-cross-halo); stroke-linecap: round; stroke-linejoin: round;
+}
+@utility brush-marker {
+  opacity: var(--mu-r-brush-marker-ink);
+}
+@utility brush-pencil {
+  opacity: var(--mu-r-brush-pencil-ink);
+}
 @utility stroke-width-brush-eraser-width {
   stroke-width: var(--mu-r-brush-eraser-width);
 }
 @utility dash-brush-eraser-dash {
   stroke-dasharray: var(--mu-r-brush-eraser-dash);
+}
+@utility opacity-brush-marker-ratio {
+  opacity: var(--mu-r-brush-marker-ratio);
+}
+@utility opacity-brush-marker-ink {
+  opacity: var(--mu-r-brush-marker-ink);
+}
+@utility opacity-brush-pencil-ink {
+  opacity: var(--mu-r-brush-pencil-ink);
 }
 @utility draw-pick {
   position: relative; display: grid; place-items: center; width: var(--mu-r-draw-self-size); height: var(--mu-r-draw-self-size); padding: 0; border: 0; border-radius: var(--mu-round); background: transparent; cursor: pointer; transition: background .12s linear, box-shadow .12s linear; &[data-pressed] { background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; } &[data-disabled] { opacity: .4; cursor: default; }
@@ -1866,6 +1895,15 @@
 @utility perfect-done {
   stroke-dashoffset: 0; animation: mu-perfect-done var(--mu-r-perfect-self-morph) var(--mu-spring-settle) forwards;
 }
+@utility perfect-guide {
+  fill: none; stroke: var(--mu-presence-guide); stroke-width: calc(var(--mu-r-perfect-self-line) / var(--mu-canvas-scale, 1)); stroke-dasharray: var(--mu-r-perfect-tune-dash); stroke-linecap: round; [data-mu-colorway="graphite"] & { stroke: var(--mu-presence-guide-dark); }
+}
+@utility perfect-centre {
+  fill: var(--mu-presence-guide); [data-mu-colorway="graphite"] & { fill: var(--mu-presence-guide-dark); }
+}
+@utility perfect-readout {
+  position: absolute; transform: translate(var(--mu-r-perfect-tune-readout-gap), var(--mu-r-perfect-tune-readout-gap)) scale(calc(1 / var(--mu-canvas-scale, 1))); transform-origin: 0 0; padding: 2px 7px; border-radius: 7px; background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); font: var(--mu-type-ui); letter-spacing: var(--mu-type-ui-tracking); font-variant-numeric: tabular-nums; color: var(--mu-ink); white-space: nowrap; pointer-events: none;
+}
 @utility opacity-perfect-opacity {
   opacity: var(--mu-r-perfect-self-opacity);
 }
@@ -1876,6 +1914,9 @@
 @utility duration-perfect-morph {
   --tw-duration: var(--mu-r-perfect-self-morph);
   transition-duration: var(--mu-r-perfect-self-morph);
+}
+@utility dash-perfect-tune-dash {
+  stroke-dasharray: var(--mu-r-perfect-tune-dash);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
