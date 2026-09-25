@@ -1,20 +1,10 @@
-// The static bake (identical to the reference builder): the icon at rest, with transient parts
-// dropped and rest-pose transforms baked in. Shared by the SVG export and the morph geometry.
+// The static bake: the icon at rest, accents dropped. Shared by the SVG export and the morph geometry.
 export const SW = 1.7;
 
-const DROP = { select: ['rip'], text: ['car'], draw: ['ln'], search: ['gl'] };
-const BAKE = {
-  tidy: { t1: 'transform="translate(1.6 0) rotate(-5 7.2 6.4)"', t2: 'transform="translate(2.8 0) rotate(5 7.2 12)"', t3: 'transform="translate(.9 0) rotate(-3 7.2 17.6)"' },
-  group: { c1: 'transform="rotate(-8 9.7 16.4)"', c2: 'transform="rotate(5 14.3 17.4)"' },
-  ungroup: { u1: 'transform="rotate(-6 7.2 12.8)"', u2: 'transform="rotate(6 16.8 12.8)"' },
-  synced: { ring: 'stroke-dasharray="85 15"' },
-  'sync-error': { ring: 'stroke-dasharray="85 15"' },
-  offline: { ring: 'stroke-dasharray="76 24"' },
-  pin: { sh: 'opacity=".35"' },
-};
+// Hidden-at-rest parts are accents (class "ac"); rest poses are attributes in each act's body.
+
 // live: the same bake for an icon's act (the SwiftUI player): accents, data-part and pathLength stay.
 export function staticSvg(ic, sw = SW, body = ic.body, { live = false } = {}) {
-  const drop = live ? [] : DROP[ic.name] || [], bake = BAKE[ic.name] || {};
   const id = `mu-${ic.name}`;
   let s = (ic.defs && !body.includes('<defs>') ? `<defs>${ic.defs}</defs>` : '') + body;
   s = s.replace(/&-/g, id + '-');
@@ -22,7 +12,7 @@ export function staticSvg(ic, sw = SW, body = ic.body, { live = false } = {}) {
     const cm = attrs.match(/\sclass="([^"]*)"/);
     const classes = cm ? cm[1].split(/\s+/) : [];
     // Accents (class "ac") are hidden at rest and only exist during an act.
-    if (classes.some((c) => drop.includes(c) || (c === 'ac' && !live))) return sc ? '' : m;
+    if (!live && classes.includes('ac')) return sc ? '' : m;
     let a = attrs.replace(/\sclass="[^"]*"/, '');
     if (!live) a = a.replace(/\sdata-part="[^"]*"/, '');
     const st = a.match(/\sstyle="([^"]*)"/);
@@ -37,7 +27,6 @@ export function staticSvg(ic, sw = SW, body = ic.body, { live = false } = {}) {
     if (classes.includes('f')) a += ` fill="currentColor" fill-opacity="${duo}"`;
     if (classes.includes('s')) a += ` fill="currentColor" stroke="none"`;
     if (classes.includes('d')) a += ` fill="currentColor" fill-opacity="${duo}" stroke="none"`;
-    for (const c of classes) if (bake[c]) a += ' ' + bake[c];
     return `<${tag}${a}${sc}>`;
   });
   if (!live) s = s.replace(/\spathLength="1"/g, '');
