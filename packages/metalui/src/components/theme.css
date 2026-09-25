@@ -457,6 +457,14 @@
   --radius-well-radius-strip: var(--mu-r-well-radius-strip);
   --spacing-well-radius-row: var(--mu-r-well-radius-row);
   --radius-well-radius-row: var(--mu-r-well-radius-row);
+  --spacing-well-region-dot-spacing: var(--mu-r-well-region-dot-spacing);
+  --spacing-well-region-dot-offset: var(--mu-r-well-region-dot-offset);
+  --spacing-well-region-dot-center: var(--mu-r-well-region-dot-center);
+  --spacing-well-region-dot-core-radius: var(--mu-r-well-region-dot-core-radius);
+  --radius-well-region-dot-core-radius: var(--mu-r-well-region-dot-core-radius);
+  --spacing-well-region-dot-fade-radius: var(--mu-r-well-region-dot-fade-radius);
+  --radius-well-region-dot-fade-radius: var(--mu-r-well-region-dot-fade-radius);
+  --spacing-well-region-dot-hue-edge: var(--mu-r-well-region-dot-hue-edge);
   --tracking-label-engraved-tracking: var(--mu-r-label-engraved-tracking);
   --color-label-engraved-color: var(--mu-r-label-engraved-color);
   --tracking-label-small-tracking: var(--mu-r-label-small-tracking);
