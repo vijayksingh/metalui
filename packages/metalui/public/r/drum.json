@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drum",
+  "type": "registry:ui",
+  "title": "Drum",
+  "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/drum/drum.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/drum/drum.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawDrum, type DrumSpec } from '../../gadgets/parts/drum';\nimport { tierFor } from '../../gadgets/light';\n\n/* Drum (a Part): a numbered wheel seen through a window, shaded where it turns away, with a glint on\n * its upper curve. `value` is the digit in the window, a real number from 0 to 10 that wraps, so it can\n * stand between two digits while it rolls (the roll mechanism turns it in a gadget). The drum you would\n * read first wears the accent. Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface DrumProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  value?: number;\n  accent?: boolean;\n  face?: 'ceramic' | 'clay';\n  color?: DrumSpec['color'];\n  glyphs?: DrumSpec['glyphs'];\n  size?: number;\n}\n\nexport function Drum({ value = 0, accent = false, face = 'ceramic', color, glyphs, size = 96, ...props }: DrumProps) {\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const hue = (GADGETS.materials.clay as unknown as { sample: number }).sample;\n  const c = color ?? (accent ? { L: wL, C: wC, H: wH } : face === 'ceramic' ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: hue } : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: hue });\n  const [pw, ph] = GADGETS.parts.drum.size, W = GADGETS.drum.alone, H = (W * ph) / pw;\n  const d = drawDrum(`drum-${uid}`, { at: [200, 200], size: [W, H], value, color: c, glyphs }, { tier });\n  return (\n    <svg viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`drum showing ${Math.round(((value % 10) + 10) % 10) % 10}`}\n      data-tier={tier} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/drum.md. SwiftUI: MetalDrum in the MetalUI Swift package."
+}

@@ -552,6 +552,23 @@ export const GADGETS = {
       "#D5392A"
     ]
   },
+  "drum": {
+    "pitch": 36,
+    "radius": 4,
+    "glyph": 0.8,
+    "weight": 600,
+    "shade": [
+      0.36,
+      0.44
+    ],
+    "edge": 0.34,
+    "glint": [
+      0.24,
+      0.05,
+      0.28
+    ],
+    "alone": 150
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,

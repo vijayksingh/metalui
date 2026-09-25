@@ -24,6 +24,7 @@
 - [Dialog](https://metalui.dev/r/dialog.md): A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.
 - [Draw picks](https://metalui.dev/r/draw-picks.md): The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.
 - [Draw tools](https://metalui.dev/r/draw-tools.md): The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.
+- [Drum](https://metalui.dev/r/drum.md): A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.
 - [Field](https://metalui.dev/r/field.md): Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.
 - [Filter bar](https://metalui.dev/r/filter-bar.md): Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Switcher of views, and IconButton(ghost) pin and close. Formerly LensBar.
 - [Folder](https://metalui.dev/r/folder.md): A folder on the canvas that holds blocks: a back panel with a tab, up to three blocks peeking up as cards, a frosted flap with its name and count; fans on hover, opens wide when a block is dragged over, swings shut when one lands; six paper colours.

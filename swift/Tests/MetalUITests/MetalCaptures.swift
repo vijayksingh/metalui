@@ -326,6 +326,19 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testDrum() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalDrum(value: 0, size: 120); MetalDrum(value: 7, size: 120); MetalDrum(value: 9.5, size: 120)
+                MetalDrum(value: 3, accent: true, size: 120); MetalDrum(value: 4, face: .clay, size: 120)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("drum-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -274,6 +274,23 @@
       "agent": "https://metalui.dev/r/draw-tools.md"
     },
     {
+      "name": "drum",
+      "title": "Drum",
+      "status": "alpha",
+      "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Drum",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDrum"
+      },
+      "registry": "https://metalui.dev/r/drum.json",
+      "agent": "https://metalui.dev/r/drum.md"
+    },
+    {
       "name": "field",
       "title": "Field",
       "status": "alpha",

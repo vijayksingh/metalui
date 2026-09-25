@@ -1,0 +1,21 @@
+{
+  "name": "drum",
+  "title": "Drum",
+  "status": "alpha",
+  "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Drum",
+    "files": [
+      "drum.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalDrum",
+    "file": "swift/Sources/MetalUI/Components/MetalDrum.swift"
+  },
+  "agent": "drum.agent.md",
+  "layer": "part",
+  "page": "/components/drum",
+  "recipe": "gadgets"
+}

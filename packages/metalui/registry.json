@@ -68,6 +68,11 @@
           "target": "components/gadgets/parts/cap.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/drum.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/drum.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/glass.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/glass.ts"
@@ -403,6 +408,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
+    },
+    {
+      "name": "drum",
+      "type": "registry:ui",
+      "title": "Drum",
+      "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/drum/drum.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/drum/drum.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/drum.md. SwiftUI: MetalDrum in the MetalUI Swift package."
     },
     {
       "name": "field",
