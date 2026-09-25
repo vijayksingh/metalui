@@ -92,25 +92,25 @@ export const ICON_CATALOG = {
     motion: {"duration":1000,"caption":"The corner peels open, the lines are written fresh, and the corner is pressed back down.","stages":["Peel","Write","Fold"],"tracks":[{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.02,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26,"transform":"translate(0px,0px) rotate(-45deg) scale(1,-0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.56,"transform":"translate(0px,0px) rotate(-45deg) scale(1,-0.82)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.68,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1.1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(-45deg) scale(1,0.95)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1.02)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.98,"transform":"translate(0px,0px) rotate(-45deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"crease","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.02,"transform":"translate(0px,0px) rotate(45deg) scale(1,1)","easing":"linear"},{"offset":0.98,"transform":"translate(0px,0px) rotate(45deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"line1","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.04,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"strokeDashoffset":1,"easing":"linear"},{"offset":0.24,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"line2","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3,"strokeDashoffset":1,"easing":"linear"},{"offset":0.42,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.58,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"slap","keyframes":[{"offset":0,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.67,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.7,"transform":"translate(-0.3px,-0.3px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9,"transform":"translate(0.5px,0.5px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(-0.6px,-0.6px) rotate(0deg) scale(1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * IMAGE · Tools
+   * IMAGE · Tools · one act, 1100ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          sun rises behind the ridge
-   * PRESS one-shot (from the current pose)
-   *          frame breathes, sun flares
-   *     0ms   .fr plays img-f (360ms)
-   *     0ms   .sun plays img-s (400ms)
+   * Dip → Rise → Set
+   *          The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.
+   *  sun        0 → 180 → 440 → 560 → 760 → 1100ms
+   *  rays       0 → 460 → 530 → 780 → 1100ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "image": {
     label: "Image",
     category: "Tools",
-    hover: "sun rises behind the ridge",
-    press: "frame breathes, sun flares",
-    pressMs: 400,
+    hover: "The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.",
+    press: "plays the same act",
+    pressMs: 1100,
     defs: "<clipPath id=\"&-in\"><rect x=\"3.6\" y=\"5.1\" width=\"16.8\" height=\"13.8\" rx=\"2.6\"/></clipPath><mask id=\"&-sky\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><path d=\"M2 18.4 8.4 12a1.3 1.3 0 0 1 1.84 0L14.3 16l2-1.9a1.3 1.3 0 0 1 1.8 0L22 17.8V24H2Z\" fill=\"#000\" stroke=\"#000\" stroke-width=\"3.9\" stroke-linejoin=\"round\"/></mask>",
-    body: "<rect class=\"fr\" x=\"2.8\" y=\"4.3\" width=\"18.4\" height=\"15.4\" rx=\"3.4\"/><g clip-path=\"url(#&-in)\"><g mask=\"url(#&-sky)\"><circle class=\"sun s\" cx=\"16.9\" cy=\"11.9\" r=\"1.85\"/></g><path class=\"d\" d=\"M2 18.4 8.4 12a1.3 1.3 0 0 1 1.84 0L14.3 16l2-1.9a1.3 1.3 0 0 1 1.8 0L22 17.8V24H2Z\"/></g><path class=\"rg\" d=\"M3.4 17 8.4 12a1.3 1.3 0 0 1 1.84 0L14.3 16l2-1.9a1.3 1.3 0 0 1 1.8 0l2.6 2.5\"/>",
+    body: "<rect x=\"2.8\" y=\"4.3\" width=\"18.4\" height=\"15.4\" rx=\"3.4\"/><g clip-path=\"url(#&-in)\"><g mask=\"url(#&-sky)\"><circle class=\"s\" data-part=\"sun\" cx=\"16.9\" cy=\"11.9\" r=\"1.85\"/><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M19.2 8.3h1M17.75 10.81l.5.87M14.85 10.81l-.5.87M13.4 8.3h-1M14.85 5.79l-.5-.87M17.75 5.79l.5-.87\" style=\"stroke-width:calc(var(--sw) * .7)\"/></g><path class=\"d\" d=\"M2 18.4 8.4 12a1.3 1.3 0 0 1 1.84 0L14.3 16l2-1.9a1.3 1.3 0 0 1 1.8 0L22 17.8V24H2Z\"/></g><path d=\"M3.4 17 8.4 12a1.3 1.3 0 0 1 1.84 0L14.3 16l2-1.9a1.3 1.3 0 0 1 1.8 0l2.6 2.5\"/>",
     sw16: 1.85,
+    motion: {"duration":1100,"caption":"The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.","stages":["Dip","Rise","Set"],"tracks":[{"part":"sun","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16364,"transform":"translate(0.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.4,"transform":"translate(-0.7px,-3.8px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50909,"transform":"translate(-0.62px,-3.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69091,"transform":"translate(-0.6px,-3.45px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.41818,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48182,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.70909,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * LINK · Tools

@@ -7,7 +7,7 @@ export const SelectIcon = createIcon("select", "SelectIcon");
 export const TextIcon = createIcon("text", "TextIcon");
 /** Note. Hover: The corner peels open, the lines are written fresh, and the corner is pressed back down.. Press: plays the same act. */
 export const NoteIcon = createIcon("note", "NoteIcon");
-/** Image. Hover: sun rises behind the ridge. Press: frame breathes, sun flares. */
+/** Image. Hover: The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.. Press: plays the same act. */
 export const ImageIcon = createIcon("image", "ImageIcon");
 /** Link. Hover: links pull apart, bar thins. Press: snap together. */
 export const LinkIcon = createIcon("link", "LinkIcon");

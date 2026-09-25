@@ -67,11 +67,20 @@
       "component": "ImageIcon",
       "label": "Image",
       "category": "Tools",
-      "hover": "sun rises behind the ridge",
-      "press": "frame breathes, sun flares",
-      "pressMs": 400,
+      "hover": "The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.",
+      "press": "plays the same act",
+      "pressMs": 1100,
+      "motion": {
+        "caption": "The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.",
+        "durationMs": 1100,
+        "stages": [
+          "Dip",
+          "Rise",
+          "Set"
+        ]
+      },
       "tuned16": false,
-      "construction": "Landscape keyline. Sun is masked by the ridge (fill + 1u gap), so it can rise from behind it."
+      "construction": "Landscape keyline. Sun is masked by the ridge (fill + 1u gap), so it can rise from behind it. Motion (study): the sun dips 1.2 behind the ridge, climbs 3.8 into the sky, six short rays flare around it at the top (inside the frame clip, behind the ridge like the sun), and it sets back behind the ridge."
     },
     {
       "name": "link",
