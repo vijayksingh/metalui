@@ -172,7 +172,7 @@ private struct MetalRecipeModifier<S: InsettableShape>: ViewModifier {
                 MetalOuterShadows(
                     layers: recipe.shadows.filter { !$0.inset },
                     shape: shape,
-                    excludesInterior: fill.isTranslucent
+                    excludesInterior: true
                 )
                 if let backdrop = recipe.backdrop, !opaque {
                     MetalBackdropView(backdrop: backdrop).clipShape(shape)

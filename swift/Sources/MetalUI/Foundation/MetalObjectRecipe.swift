@@ -272,7 +272,7 @@ private struct MetalObjectRecipeModifier<S: InsettableShape>: ViewModifier {
         let shadows = stateShadows.isEmpty ? recipe.shadows(part, colorway: cw, self: own) : stateShadows
         content.background {
             ZStack {
-                MetalOuterShadows(layers: shadows.filter { !$0.inset }, shape: shape, excludesInterior: fills.contains(where: \.isTranslucent))
+                MetalOuterShadows(layers: shadows.filter { !$0.inset }, shape: shape, excludesInterior: true)
                 // CSS paints the first background layer on top
                 ForEach(Array(fills.enumerated().reversed()), id: \.offset) { _, fill in
                     fill.view(in: shape, self: own)
