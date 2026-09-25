@@ -1,0 +1,233 @@
+{
+  "settings": {
+    "material": "clay",
+    "station": 80,
+    "container": "slab",
+    "reach": "own",
+    "register": 84,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.717,
+      "C": 0.099,
+      "H": 78.8,
+      "srgb": "#c59c58"
+    },
+    "accent": {
+      "L": 0.75,
+      "C": 0.13,
+      "H": 235,
+      "srgb": "#4abaf4"
+    }
+  },
+  "shortcuts": {
+    "material": "ceramic",
+    "station": 95,
+    "container": "slab",
+    "reach": "own",
+    "register": 84,
+    "scale": "major",
+    "band": 0,
+    "body": {
+      "L": 0.839,
+      "C": 0.12,
+      "H": 97.8,
+      "srgb": "#dfcb6a"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "sync": {
+    "material": "stone",
+    "station": 195,
+    "container": "slab",
+    "reach": "world",
+    "register": 72,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.666,
+      "C": 0.05,
+      "H": 194.2,
+      "srgb": "#709e9d"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "storage": {
+    "material": "clay",
+    "station": 140,
+    "container": "slab",
+    "reach": "own",
+    "register": 72,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.661,
+      "C": 0.0486,
+      "H": 138,
+      "srgb": "#849a7d"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "account": {
+    "material": "glass",
+    "station": 260,
+    "container": "inset",
+    "reach": "others",
+    "register": 60,
+    "scale": "major",
+    "band": 2,
+    "body": {
+      "L": 0.381,
+      "C": 0.0486,
+      "H": 254,
+      "srgb": "#30445c"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "trash": {
+    "material": "rubber",
+    "station": 25,
+    "container": "slab",
+    "reach": "own",
+    "register": 60,
+    "scale": "minor",
+    "band": 2,
+    "body": {
+      "L": 0.366,
+      "C": 0.02,
+      "H": 15.4,
+      "srgb": "#493b3b"
+    },
+    "accent": {
+      "L": 0.75,
+      "C": 0.13,
+      "H": 235,
+      "srgb": "#4abaf4"
+    }
+  },
+  "capture": {
+    "material": "resin",
+    "station": 55,
+    "container": "inset",
+    "reach": "world",
+    "register": 84,
+    "scale": "major",
+    "band": 0,
+    "body": {
+      "L": 0.783,
+      "C": 0.1806,
+      "H": 57,
+      "srgb": "#ff9d4e"
+    },
+    "accent": {
+      "L": 0.75,
+      "C": 0.13,
+      "H": 235,
+      "srgb": "#4abaf4"
+    }
+  },
+  "search": {
+    "material": "stone",
+    "station": 220,
+    "container": "inset",
+    "reach": "world",
+    "register": 84,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.75,
+      "C": 0.05,
+      "H": 221.6,
+      "srgb": "#8bb6c5"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "share": {
+    "material": "metal",
+    "station": 230,
+    "container": "slab",
+    "reach": "world",
+    "register": 72,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.559,
+      "C": 0.08,
+      "H": 228.8,
+      "srgb": "#3b7d9a"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "memory": {
+    "material": "resin",
+    "station": 300,
+    "container": "slab",
+    "reach": "own",
+    "register": 84,
+    "scale": "major",
+    "band": 1,
+    "body": {
+      "L": 0.722,
+      "C": 0.0678,
+      "H": 300,
+      "srgb": "#ab9cca"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  },
+  "draw": {
+    "material": "ceramic",
+    "station": 330,
+    "container": "slab",
+    "reach": "own",
+    "register": 84,
+    "scale": "major",
+    "band": 0,
+    "body": {
+      "L": 0.844,
+      "C": 0.12,
+      "H": 334,
+      "srgb": "#fcaeec"
+    },
+    "accent": {
+      "L": 0.72,
+      "C": 0.19,
+      "H": 45,
+      "srgb": "#ff772e"
+    }
+  }
+}

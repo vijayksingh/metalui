@@ -1,0 +1,30 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "patch-bay", "title": "Sync",
+  "job": "link", "reach": "world", "feel": { "v": 0.7, "a": 0.8, "w": 0.4 },
+  "container": "slab", "station": 195, "material": "stone",
+  "parts": [
+    { "id": "body",   "part": "slab",   "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp",   "part": "led",    "at": [313, 78],  "role": "lamp" },
+    { "id": "jackA",  "part": "jack",   "at": [128, 180], "role": "trim" },
+    { "id": "jackB",  "part": "jack",   "at": [272, 180], "role": "trim" },
+    { "id": "plugA",  "part": "plug",   "at": [128, 180], "role": "actor", "material": "accent" },
+    { "id": "plugB",  "part": "plug",   "at": [272, 180], "role": "actor" },
+    { "id": "cable",  "part": "cable",  "at": [200, 200], "role": "trim", "params": { "from": "plugA", "to": "plugB", "sag": 34 } },
+    { "id": "beeper", "part": "beeper", "at": [96, 310],  "role": "trim", "params": { "slots": 5 } }
+  ],
+  "mechanism": { "name": "seat", "bind": { "plug": "plugA", "socket": "jackA", "lamp": "lamp", "beeper": "beeper" } },
+  "ports": {
+    "in":  { "state": { "kind": "state", "options": ["connected", "syncing", "done", "failed"], "default": "connected" } },
+    "out": { "healthy": { "kind": "boolean" }, "done": { "kind": "pulse" } }
+  },
+  "states": {
+    "rest":      { "lamp": ["off", "steady"] },
+    "connected": { "lamp": ["live", "steady"] },
+    "syncing":   { "feel": { "a": 1.0 }, "lamp": ["waiting", "breathe"], "form": { "plugA": { "pose": { "y": -7 } } } },
+    "done":      { "lamp": ["live", "steady"], "beep": "done", "enter": "act" },
+    "failed":    { "feel": { "v": 0.1, "w": 0.7 }, "lamp": ["failed", "blink2"], "beep": "failed",
+                   "form": { "plugA": { "pose": { "x": -22, "y": -46, "r": -14 } } }, "hint": "check your connection" }
+  },
+  "describe": "{title}: {state}"
+}

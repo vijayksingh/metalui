@@ -81,6 +81,39 @@ final class MetalCaptures: XCTestCase {
         .metalColorway(colorway)
     }
 
+    /// Foundations › Gadgets › The worked set: the eleven placements, resolved by MetalGadgetModel.
+    func testGadgetWorkedSet() {
+        let set: [(String, MetalGadgetPlacement)] = [
+            ("Settings", .init(job: .tune, feel: .init(v: 0.6, a: 0.5, w: 0.3))),
+            ("Shortcuts", .init(job: .command, feel: .init(v: 0.8, a: 0.8, w: 0.1))),
+            ("Sync", .init(job: .link, feel: .init(v: 0.7, a: 0.8, w: 0.4), station: 195, material: .stone)),
+            ("Storage", .init(job: .keep, feel: .init(v: 0.6, a: 0.2, w: 0.4), station: 140)),
+            ("Account", .init(job: .identify, feel: .init(v: 0.6, a: 0.2, w: 0.9))),
+            ("Trash", .init(job: .destroy, feel: .init(v: 0.3, a: 0.4, w: 0.9))),
+            ("Capture", .init(job: .take, feel: .init(v: 0.8, a: 0.9, w: 0.2))),
+            ("Search", .init(job: .find, feel: .init(v: 0.7, a: 0.8, w: 0.1))),
+            ("Share", .init(job: .link, feel: .init(v: 0.8, a: 0.7, w: 0.6), station: 230)),
+            ("Memory", .init(job: .keep, feel: .init(v: 0.7, a: 0.3, w: 0.3), station: 300, material: .resin)),
+            ("Draw", .init(job: .make, feel: .init(v: 0.9, a: 0.9, w: 0.1), material: .ceramic)),
+        ]
+        for colorway in MetalColorway.allCases {
+            let view = LazyVGrid(columns: Array(repeating: GridItem(.fixed(112), spacing: 12), count: 6), spacing: 12) {
+                ForEach(set, id: \.0) { name, placement in
+                    let r = MetalGadgetModel.resolve(placement)
+                    VStack(spacing: 4) {
+                        MetalMaterialSpecimen(r.material, lightness: r.body.L, chroma: r.body.C, hue: r.body.H, size: 104)
+                        Text(name).font(.metal(MetalType.ui)).foregroundStyle(colorway.tokens.ink.color)
+                        Text("\(r.job.rawValue) · \(r.material.rawValue)").font(.metal(MetalType.readout)).foregroundStyle(colorway.tokens.ink3.color)
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("gadgets-worked-set-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

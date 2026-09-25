@@ -124,10 +124,10 @@ public enum MetalGadgetLighting {
         // material cannot take a roughened height (it saturates), so the same roughness is applied
         // as the light and dark it produces once lit: a fine modulation around 1.
         if f.grainAmplitude > 0 {
-            var noise = CIFilter.randomGenerator().outputImage!.cropped(to: canvas)
+            var noise = noiseImage(canvas)
             noise = f.grainDirectional
                 ? noise.applyingFilter("CIMotionBlur", parameters: [kCIInputRadiusKey: 6 * unit, kCIInputAngleKey: 0])
-                : noise.applyingGaussianBlur(sigma: max(0.35, 0.5 / f.grainFrequency * unit))
+                : noise.applyingGaussianBlur(sigma: max(0.6, 0.9 / f.grainFrequency * unit))
             let k = CGFloat(f.grainAmplitude * MetalGadgetTokens.grainLitGain)
             let texture = noise.applyingFilter("CIColorMatrix", parameters: [
                 "inputRVector": CIVector(x: k, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: k, y: 0, z: 0, w: 0),
@@ -161,7 +161,7 @@ public enum MetalGadgetLighting {
             let slope = min(MetalGadgetTokens.fleckMax, f.flecks * MetalGadgetTokens.fleckScale)
             // A speck where the noise clears the cut, at full white; then the material's fleck strength.
             let gain = 1 / (1 - MetalGadgetTokens.fleckUniformCut)
-            let specks = CIFilter.randomGenerator().outputImage!.cropped(to: canvas)
+            let specks = noiseImage(canvas)
                 .applyingFilter("CIColorMatrix", parameters: [
                     "inputRVector": CIVector(x: 0, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 0, z: 0, w: 0),
                     "inputBVector": CIVector(x: 0, y: 0, z: 0, w: 0), "inputAVector": CIVector(x: gain, y: 0, z: 0, w: 0),
@@ -187,6 +187,12 @@ public enum MetalGadgetLighting {
         }
         let composed = lit.composited(over: shadow(f.contact).composited(over: shadow(f.cast)))
         return context.createCGImage(composed, from: canvas, format: .RGBA8, colorSpace: CGColorSpace(name: CGColorSpace.displayP3))
+    }
+
+    /// Uniform noise, opaque. Core Image's random image has random alpha too, and colour filters
+    /// un-premultiply before they read red, so red ÷ a random alpha would overshoot every threshold.
+    private static func noiseImage(_ canvas: CGRect) -> CIImage {
+        CIFilter.randomGenerator().outputImage!.settingAlphaOne(in: canvas).cropped(to: canvas)
     }
 
     /// The body's alpha: white inside the rounded rect, clear outside.

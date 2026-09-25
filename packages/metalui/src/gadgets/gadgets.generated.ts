@@ -357,6 +357,958 @@ export const GADGETS = {
     },
     "glintAbove": 0.2,
     "glintMs": 420
+  },
+  "feel": {
+    "L": {
+      "base": 0.88,
+      "W": -0.56,
+      "V": 0.05
+    },
+    "C": {
+      "base": 0.015,
+      "A": 0.2,
+      "VMix": [
+        0.6,
+        0.4
+      ]
+    },
+    "H": {
+      "V": 12,
+      "W": -8
+    },
+    "materialRules": [
+      [
+        "w>=0.8&v<=0.4",
+        "rubber"
+      ],
+      [
+        "w>=0.8",
+        "glass"
+      ],
+      [
+        "w>=0.5&a>=0.6",
+        "metal"
+      ],
+      [
+        "w>=0.5",
+        "stone"
+      ],
+      [
+        "a>=0.6",
+        "resin"
+      ],
+      [
+        "v>=0.7&w<=0.3",
+        "ceramic"
+      ],
+      [
+        "*",
+        "clay"
+      ]
+    ],
+    "register": {
+      "thresholds": [
+        0.33,
+        0.66
+      ],
+      "baseMidi": [
+        84,
+        72,
+        60
+      ]
+    },
+    "scales": {
+      "major": [
+        0,
+        2,
+        4,
+        7,
+        9
+      ],
+      "minor": [
+        0,
+        3,
+        5,
+        7,
+        10
+      ]
+    }
+  },
+  "jobs": {
+    "tune": {
+      "stations": [
+        80
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ]
+    },
+    "command": {
+      "stations": [
+        95
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ],
+      "pin": "ceramic"
+    },
+    "link": {
+      "stations": [
+        195,
+        230
+      ],
+      "reach": "world",
+      "containers": [
+        "slab",
+        "free"
+      ]
+    },
+    "keep": {
+      "stations": [
+        140,
+        300
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "inset"
+      ]
+    },
+    "identify": {
+      "stations": [
+        260
+      ],
+      "reach": "others",
+      "containers": [
+        "inset"
+      ],
+      "pin": "glass"
+    },
+    "destroy": {
+      "stations": [
+        25
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ],
+      "bodyCMax": 0.02
+    },
+    "take": {
+      "stations": [
+        55
+      ],
+      "reach": "world",
+      "containers": [
+        "inset"
+      ]
+    },
+    "find": {
+      "stations": [
+        220
+      ],
+      "reach": "world",
+      "containers": [
+        "inset"
+      ],
+      "pin": "stone"
+    },
+    "make": {
+      "stations": [
+        330
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "free"
+      ]
+    },
+    "signal": {
+      "stations": [
+        55,
+        80
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "inset",
+        "free"
+      ]
+    }
+  },
+  "accent": {
+    "warm": [
+      0.72,
+      0.19,
+      45
+    ],
+    "cool": [
+      0.75,
+      0.13,
+      235
+    ],
+    "flipWithinDeg": 40,
+    "minC": 0.13
+  },
+  "set": {
+    "hueGap": 30,
+    "bands": [
+      0.78,
+      0.5
+    ],
+    "deltaE": 0.08,
+    "cvdDeltaE": 0.06,
+    "slabRun": 3,
+    "panelLGap": 0.06
+  },
+  "parts": {
+    "slab": {
+      "size": [
+        320,
+        320
+      ],
+      "materials": [
+        "clay",
+        "stone",
+        "ceramic",
+        "rubber",
+        "metal",
+        "resin"
+      ],
+      "params": {
+        "cut": [
+          "enum",
+          "none",
+          "slot",
+          "hole",
+          "tray",
+          "well"
+        ],
+        "depth": [
+          "number",
+          0,
+          24
+        ],
+        "radius": [
+          "number",
+          4,
+          160
+        ]
+      },
+      "strike": [
+        "body",
+        0.6
+      ]
+    },
+    "bezel": {
+      "size": [
+        320,
+        320
+      ],
+      "materials": [
+        "stone",
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "width": [
+          "number",
+          16,
+          32
+        ],
+        "face": [
+          "enum",
+          "glass-face",
+          "cell",
+          "backlight"
+        ]
+      },
+      "strike": [
+        "frame",
+        0.5
+      ]
+    },
+    "glass-face": {
+      "size": [
+        276,
+        276
+      ],
+      "materials": [
+        "glass"
+      ],
+      "params": {},
+      "strike": [
+        "face",
+        0.5
+      ]
+    },
+    "backlight": {
+      "size": [
+        200,
+        200
+      ],
+      "materials": [
+        "lamp"
+      ],
+      "params": {
+        "alpha": [
+          "number",
+          0,
+          1
+        ],
+        "color": [
+          "enum",
+          "signal",
+          "accent"
+        ]
+      }
+    },
+    "led": {
+      "size": [
+        22,
+        22
+      ],
+      "materials": [
+        "lamp"
+      ],
+      "params": {}
+    },
+    "keycap": {
+      "size": [
+        112,
+        112
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "glyph": [
+          "string"
+        ]
+      },
+      "strike": [
+        "face",
+        1
+      ]
+    },
+    "cap": {
+      "size": [
+        60,
+        44
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "ribs": [
+          "number",
+          2,
+          5
+        ],
+        "shape": [
+          "enum",
+          "fader",
+          "knob"
+        ]
+      },
+      "strike": [
+        "face",
+        0.8
+      ]
+    },
+    "jack": {
+      "size": [
+        68,
+        68
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "knurls": [
+          "number",
+          8,
+          16
+        ]
+      },
+      "strike": [
+        "nut",
+        0.7
+      ]
+    },
+    "plug": {
+      "size": [
+        54,
+        54
+      ],
+      "materials": [
+        "clay",
+        "accent"
+      ],
+      "params": {
+        "stub": [
+          "enum",
+          "up",
+          "left",
+          "right",
+          "none"
+        ]
+      },
+      "strike": [
+        "body",
+        0.85
+      ]
+    },
+    "cable": {
+      "size": [
+        0,
+        0
+      ],
+      "materials": [
+        "rubber"
+      ],
+      "params": {
+        "sag": [
+          "number",
+          0,
+          90
+        ],
+        "from": [
+          "ref"
+        ],
+        "to": [
+          "ref"
+        ]
+      },
+      "strike": [
+        "tube",
+        0.2
+      ]
+    },
+    "cell": {
+      "size": [
+        44,
+        44
+      ],
+      "materials": [
+        "resin"
+      ],
+      "params": {
+        "cols": [
+          "number",
+          1,
+          8
+        ],
+        "rows": [
+          "number",
+          1,
+          8
+        ],
+        "gap": [
+          "number",
+          6,
+          14
+        ]
+      },
+      "strike": [
+        "cells",
+        0.5
+      ]
+    },
+    "drum": {
+      "size": [
+        52,
+        88
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "digits": [
+          "number",
+          10,
+          10
+        ],
+        "face": [
+          "enum",
+          "ceramic",
+          "clay"
+        ],
+        "glyphs": [
+          "enum",
+          "digits",
+          "ticks"
+        ]
+      },
+      "strike": [
+        "strip",
+        0.35
+      ]
+    },
+    "needle": {
+      "size": [
+        96,
+        8
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "arc": [
+          "number",
+          90,
+          150
+        ],
+        "ticks": [
+          "number",
+          5,
+          21
+        ],
+        "threshold": [
+          "number",
+          0,
+          1
+        ]
+      }
+    },
+    "lid": {
+      "size": [
+        240,
+        160
+      ],
+      "materials": [
+        "rubber",
+        "clay"
+      ],
+      "params": {
+        "hinge": [
+          "enum",
+          "back",
+          "left"
+        ],
+        "armed": [
+          "boolean"
+        ]
+      },
+      "strike": [
+        "lid",
+        0.9
+      ]
+    },
+    "pull": {
+      "size": [
+        96,
+        14
+      ],
+      "materials": [
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "style": [
+          "enum",
+          "bar",
+          "recess"
+        ]
+      },
+      "strike": [
+        "pull",
+        0.5
+      ]
+    },
+    "lens": {
+      "size": [
+        184,
+        184
+      ],
+      "materials": [
+        "glass",
+        "accent"
+      ],
+      "params": {
+        "ticks": [
+          "number",
+          12,
+          36
+        ],
+        "iris": [
+          "number",
+          0,
+          1
+        ]
+      },
+      "strike": [
+        "ring",
+        0.3
+      ]
+    },
+    "nib": {
+      "size": [
+        70,
+        20
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "angle": [
+          "number",
+          -30,
+          30
+        ]
+      },
+      "strike": [
+        "nib",
+        0.3
+      ]
+    },
+    "beeper": {
+      "size": [
+        44,
+        24
+      ],
+      "materials": [
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "slots": [
+          "number",
+          3,
+          7
+        ]
+      }
+    },
+    "label": {
+      "size": [
+        80,
+        16
+      ],
+      "materials": [
+        "clay"
+      ],
+      "params": {
+        "text": [
+          "string"
+        ]
+      }
+    },
+    "glyph": {
+      "size": [
+        24,
+        24
+      ],
+      "materials": [
+        "clay"
+      ],
+      "params": {
+        "name": [
+          "string"
+        ]
+      }
+    }
+  },
+  "mechanisms": {
+    "press": {
+      "mode": "momentary",
+      "slots": {
+        "keys": {
+          "parts": [
+            "keycap",
+            "cap"
+          ],
+          "many": true
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "slide": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count"
+      ],
+      "detents": true,
+      "slots": {
+        "caps": {
+          "parts": [
+            "cap"
+          ],
+          "many": true
+        },
+        "slot": {
+          "parts": [
+            "slab"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "seat": {
+      "mode": "momentary",
+      "slots": {
+        "plug": {
+          "parts": [
+            "plug"
+          ]
+        },
+        "socket": {
+          "parts": [
+            "jack"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        },
+        "beeper": {
+          "parts": [
+            "beeper"
+          ],
+          "optional": true
+        }
+      }
+    },
+    "turn": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count"
+      ],
+      "detents": true,
+      "slots": {
+        "ring": {
+          "parts": [
+            "lens",
+            "cap"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "flip": {
+      "mode": "held",
+      "drive": [
+        "boolean",
+        "state"
+      ],
+      "slots": {
+        "lid": {
+          "parts": [
+            "lid",
+            "cap"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "sweep": {
+      "mode": "momentary",
+      "slots": {
+        "beam": {
+          "parts": [
+            "backlight"
+          ]
+        },
+        "face": {
+          "parts": [
+            "glass-face"
+          ]
+        },
+        "blips": {
+          "parts": [
+            "backlight"
+          ],
+          "many": true,
+          "optional": true
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "roll": {
+      "mode": "held",
+      "drive": [
+        "count"
+      ],
+      "detents": true,
+      "slots": {
+        "drums": {
+          "parts": [
+            "drum"
+          ],
+          "many": true
+        },
+        "window": {
+          "parts": [
+            "slab"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "swing": {
+      "mode": "held",
+      "drive": [
+        "number"
+      ],
+      "slots": {
+        "needle": {
+          "parts": [
+            "needle"
+          ]
+        },
+        "face": {
+          "parts": [
+            "glass-face",
+            "bezel"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        },
+        "beeper": {
+          "parts": [
+            "beeper"
+          ],
+          "optional": true
+        }
+      }
+    },
+    "glow": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count"
+      ],
+      "slots": {
+        "light": {
+          "parts": [
+            "backlight"
+          ]
+        },
+        "cells": {
+          "parts": [
+            "cell"
+          ],
+          "many": true
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "slide-out": {
+      "mode": "momentary",
+      "slots": {
+        "tray": {
+          "parts": [
+            "slab"
+          ]
+        },
+        "pull": {
+          "parts": [
+            "pull"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    },
+    "dip": {
+      "mode": "momentary",
+      "slots": {
+        "nib": {
+          "parts": [
+            "nib"
+          ]
+        },
+        "well": {
+          "parts": [
+            "slab"
+          ]
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ]
+        }
+      }
+    }
+  },
+  "spec": {
+    "parts": [
+      2,
+      24
+    ],
+    "states": 8,
+    "ports": 4,
+    "nameMax": 32,
+    "pose": {
+      "x": 100,
+      "y": 100,
+      "r": 180,
+      "s": [
+        0.5,
+        1.5
+      ]
+    },
+    "detents": [
+      2,
+      60
+    ],
+    "rigGrid": [
+      4,
+      3
+    ],
+    "rigGadgets": [
+      2,
+      8
+    ],
+    "cables": [
+      1,
+      12
+    ],
+    "fanOut": 3
   }
 } as const;
 export type GadgetMaterial = 'clay' | 'ceramic' | 'resin' | 'stone' | 'glass' | 'metal' | 'rubber';

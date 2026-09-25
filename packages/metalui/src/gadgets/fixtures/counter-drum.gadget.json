@@ -1,0 +1,23 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "counter-drum", "title": "Streak",
+  "job": "keep", "feel": { "v": 0.8, "a": 0.3, "w": 0.3 }, "container": "slab", "station": 140,
+  "parts": [
+    { "id": "body",   "part": "slab", "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp",   "part": "led",  "at": [313, 78],  "role": "lamp" },
+    { "id": "window", "part": "slab", "at": [200, 200], "size": [204, 88], "role": "cut", "params": { "cut": "tray", "depth": 14 } },
+    { "id": "d2", "part": "drum", "at": [136, 200], "role": "actor", "params": { "digits": 10, "face": "ceramic" } },
+    { "id": "d1", "part": "drum", "at": [200, 200], "role": "actor", "params": { "digits": 10, "face": "ceramic" } },
+    { "id": "d0", "part": "drum", "at": [264, 200], "role": "actor", "params": { "digits": 10, "face": "ceramic" }, "material": "accent" }
+  ],
+  "mechanism": { "name": "roll", "bind": { "drums": ["d2", "d1", "d0"], "window": "window", "lamp": "lamp" }, "drive": "count" },
+  "ports": { "in": { "count": { "kind": "count", "max": 999, "default": 0 }, "reset": { "kind": "pulse" } },
+             "out": { "rolled": { "kind": "pulse" }, "count": { "kind": "count", "max": 999 } } },
+  "states": {
+    "rest":        { "lamp": ["off", "steady"] },
+    "counting":    { "lamp": ["live", "flicker"] },
+    "rolled-over": { "lamp": ["live", "blink2"], "beep": "done" },
+    "reset":       { "lamp": ["off", "steady"], "enter": "act" }
+  },
+  "describe": "{title}: {value} days"
+}

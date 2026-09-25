@@ -1,0 +1,14 @@
+{
+  "$use": "The worked placements from docs/proposals/tiles/model.md §2.3: both platforms must resolve these to the same numbers (placements.resolved.json).",
+  "settings":  { "job": "tune",     "feel": { "v": 0.6, "a": 0.5, "w": 0.3 } },
+  "shortcuts": { "job": "command",  "feel": { "v": 0.8, "a": 0.8, "w": 0.1 } },
+  "sync":      { "job": "link",     "feel": { "v": 0.7, "a": 0.8, "w": 0.4 }, "station": 195, "material": "stone" },
+  "storage":   { "job": "keep",     "feel": { "v": 0.6, "a": 0.2, "w": 0.4 }, "station": 140 },
+  "account":   { "job": "identify", "feel": { "v": 0.6, "a": 0.2, "w": 0.9 } },
+  "trash":     { "job": "destroy",  "feel": { "v": 0.3, "a": 0.4, "w": 0.9 } },
+  "capture":   { "job": "take",     "feel": { "v": 0.8, "a": 0.9, "w": 0.2 } },
+  "search":    { "job": "find",     "feel": { "v": 0.7, "a": 0.8, "w": 0.1 } },
+  "share":     { "job": "link",     "feel": { "v": 0.8, "a": 0.7, "w": 0.6 }, "station": 230 },
+  "memory":    { "job": "keep",     "feel": { "v": 0.7, "a": 0.3, "w": 0.3 }, "station": 300, "material": "resin" },
+  "draw":      { "job": "make",     "feel": { "v": 0.9, "a": 0.9, "w": 0.1 }, "material": "ceramic" }
+}

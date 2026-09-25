@@ -1,0 +1,12 @@
+{
+  "$schema": "metalui/rig@1",
+  "name": "reading", "title": "Reading",
+  "job": "keep", "feel": { "v": 0.8, "a": 0.3, "w": 0.3 }, "grid": [2, 1],
+  "gadgets": {
+    "today":  { "gadget": "needle-gauge", "at": [0, 0] },
+    "streak": { "gadget": "counter-drum", "at": [1, 0] }
+  },
+  "cables": [
+    { "from": "today.over", "to": "streak.count", "map": { "kind": "count", "step": 1 } }
+  ]
+}

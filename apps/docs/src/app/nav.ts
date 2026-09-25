@@ -40,6 +40,7 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/elevation', label: 'Elevation' },
       { to: '/foundations/materials', label: 'Materials' },
       { to: '/foundations/sound', label: 'Sound' },
+      { to: '/foundations/gadgets', label: 'Gadgets' },
       { to: '/foundations/motion', label: 'Motion' },
       { to: '/foundations/transitions', label: 'Transitions' },
     ],

@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "dev": "npm run dev -w @metalui/docs",
-    "generate": "node scripts/build-tokens.mjs && node scripts/build-gadgets.mjs && node scripts/build-icons.mjs && node scripts/build-morph.mjs && node scripts/build-registry.mjs && node scripts/build-agent-docs.mjs",
-    "check": "node scripts/build-tokens.mjs --check && node scripts/build-gadgets.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check && node scripts/lint-literals.mjs && node scripts/check-recipe-parity.mjs && node scripts/lint-neutral-names.mjs --report-only && node scripts/check-layers.mjs && node scripts/check-composition.mjs && node scripts/check-slots.mjs && node scripts/check-utilities.mjs",
+    "generate": "node scripts/build-tokens.mjs && node scripts/build-gadgets.mjs && node scripts/check-gadgets.mjs && node scripts/build-icons.mjs && node scripts/build-morph.mjs && node scripts/build-registry.mjs && node scripts/build-agent-docs.mjs",
+    "check": "node scripts/build-tokens.mjs --check && node scripts/build-gadgets.mjs --check && node scripts/check-gadgets.mjs --check && node scripts/build-icons.mjs --check && node scripts/build-morph.mjs --check && node scripts/build-registry.mjs --check && node scripts/build-agent-docs.mjs --check && node scripts/lint-literals.mjs && node scripts/check-recipe-parity.mjs && node scripts/lint-neutral-names.mjs --report-only && node scripts/check-layers.mjs && node scripts/check-composition.mjs && node scripts/check-slots.mjs && node scripts/check-utilities.mjs",
     "lint:names": "node scripts/lint-neutral-names.mjs",
     "lint:literals": "node scripts/lint-literals.mjs",
     "check:recipes": "node scripts/check-recipe-parity.mjs",
@@ -23,7 +23,8 @@
     "check:layers": "node scripts/check-layers.mjs",
     "check:composition": "node scripts/check-composition.mjs",
     "check:slots": "node scripts/check-slots.mjs",
-    "check:utilities": "node scripts/check-utilities.mjs"
+    "check:utilities": "node scripts/check-utilities.mjs",
+    "check:gadgets": "node scripts/check-gadgets.mjs --check"
   },
   "engines": {
     "node": ">=22"
