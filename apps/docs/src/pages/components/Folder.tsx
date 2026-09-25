@@ -1,18 +1,53 @@
 import * as React from 'react';
-import { Folder, Segmented, Surface, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
+import { Folder, Segmented, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/folder/folder.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/folder/folder.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
-/* Drag the card onto the folder: it opens as you hover, swings shut as it lands, and the card
- * joins the front. Pick a colour; tab to it to see the keyboard fan. */
+/* ─────────────────────────────────────────────────────────
+ * PUTTING A THING IN A FOLDER
+ *
+ *  drag     the thing follows the pointer; over the folder, the folder opens wide
+ *    0ms    let go over it: the folder stays open
+ *    0ms    the thing flies to the pocket's front slot on the object spring, turning to
+ *           the front card's lean and settling to a card's size
+ *  380ms    it sinks into the pocket, cut off exactly at the flap's edge as it goes
+ *  640ms    it is one of the folder's cards now: the folder closes, the flap swings shut
+ *           past rest and settles; the count goes up
+ *  let go anywhere else: the thing springs back to where it was
+ * ───────────────────────────────────────────────────────── */
+
+const TIMING = { fly: 380, sink: 260 };
+
+interface Thing { id: string; peek: FolderPeek; label: string; home: { x: number; y: number } }
 
 const START: FolderPeek[] = [
   { thumb: 'linear-gradient(135deg,#F2A56B,#E0673C 60%,#9E3B25)' },
   { thumb: 'radial-gradient(60% 60% at 30% 30%,#7FA8FF,#2B3F8F)', link: true },
   { thumb: 'linear-gradient(160deg,#3D4B45,#1E2623),radial-gradient(40% 40% at 70% 30%,#9FE3BF,transparent)' },
 ];
-const NEXT = ['linear-gradient(135deg,#F7D774,#D99A1E)', 'linear-gradient(135deg,#C9B6F2,#6E54C9)', 'linear-gradient(135deg,#9AD8C0,#2E8C6A)'];
+const THINGS: Thing[] = [
+  { id: 'photo', label: 'a photo', peek: { thumb: 'linear-gradient(135deg,#F7D774,#D99A1E 55%,#8C5A12)' }, home: { x: 36, y: 40 } },
+  { id: 'link', label: 'a link', peek: { thumb: 'linear-gradient(135deg,#C9B6F2,#6E54C9)', link: true }, home: { x: 36, y: 196 } },
+  { id: 'note', label: 'a note', peek: { thumb: 'linear-gradient(135deg,#9AD8C0,#2E8C6A)' }, home: { x: 176, y: 118 } },
+];
+
+/** A thing on the canvas, drawn as a folder card so it reads as the same object when it goes in. */
+function ThingCard({ peek, label }: { peek: FolderPeek; label: string }) {
+  return (
+    <div className="folder-card" style={{ position: 'relative', left: 0, bottom: 'auto', transform: 'none', transition: 'none' }} aria-label={label}>
+      <div className="folder-thumb" style={{ background: peek.thumb }} />
+      <i className="folder-line folder-line-lg" style={{ width: '70%' }} />
+      <i className={peek.link ? 'folder-line folder-line-blue' : 'folder-line'} />
+      <i className="folder-line" style={{ width: '60%' }} />
+    </div>
+  );
+}
+
+function springEase() {
+  if (typeof window === 'undefined') return 'ease-out';
+  return getComputedStyle(document.documentElement).getPropertyValue('--mu-spring-object').trim() || 'cubic-bezier(.2,.8,.2,1)';
+}
 
 function Play() {
   const [hue, setHue] = React.useState<FolderHue>('neutral');
@@ -20,59 +55,107 @@ function Play() {
   const [count, setCount] = React.useState(3);
   const [landed, setLanded] = React.useState(0);
   const [over, setOver] = React.useState(false);
-  const [card, setCard] = React.useState<{ x: number; y: number } | null>(null);
-  const home = { x: 40, y: 150 };
+  const [busy, setBusy] = React.useState(false);
+  const [left, setLeft] = React.useState(THINGS.map((t) => t.id));
+  const [pos, setPos] = React.useState<Record<string, { x: number; y: number }>>({});
+  const [dragging, setDragging] = React.useState<string | null>(null);
   const box = React.useRef<HTMLDivElement>(null);
   const folder = React.useRef<HTMLDivElement>(null);
-  const grab = React.useRef<{ dx: number; dy: number } | null>(null);
+  const els = React.useRef<Record<string, HTMLDivElement | null>>({});
+  const grab = React.useRef<{ id: string; dx: number; dy: number } | null>(null);
 
   const inside = (x: number, y: number) => {
     const f = folder.current!.getBoundingClientRect();
     return x > f.left && x < f.right && y > f.top && y < f.bottom;
   };
-  const at = card ?? home;
+
+  // The thing flies to the pocket's front slot, then sinks behind the flap.
+  const putIn = async (id: string) => {
+    const el = els.current[id]!, from = el.getBoundingClientRect();
+    const front = folder.current!.querySelector('.folder-card-3') ?? folder.current!;
+    const slot = front.getBoundingClientRect();
+    const flapTop = folder.current!.querySelector('.folder-flap')!.getBoundingClientRect().top;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setBusy(true);
+    if (!reduce) {
+      const dx = slot.left + slot.width / 2 - (from.left + from.width / 2);
+      const dy = slot.top + slot.height / 2 - (from.top + from.height / 2);
+      await el.animate(
+        [{ transform: 'translate(0,0) rotate(0deg)' }, { transform: `translate(${dx}px, ${dy}px) rotate(-14deg)` }],
+        { duration: TIMING.fly, easing: springEase(), fill: 'forwards' },
+      ).finished;
+      // Sink: down into the pocket, cut off at the flap's edge as it goes.
+      const r = el.getBoundingClientRect();
+      await el.animate(
+        [
+          { transform: `translate(${dx}px, ${dy}px) rotate(-14deg)`, clipPath: `inset(-40px -40px ${Math.max(0, r.bottom - flapTop)}px -40px)` },
+          { transform: `translate(${dx}px, ${dy + r.height}px) rotate(-10deg)`, clipPath: `inset(-40px -40px ${Math.max(0, r.bottom - flapTop) + r.height}px -40px)` },
+        ],
+        { duration: TIMING.sink, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' },
+      ).finished;
+    }
+    const thing = THINGS.find((t) => t.id === id)!;
+    setLeft((l) => l.filter((x) => x !== id));
+    setPeeks((p) => [...p, thing.peek].slice(-3));
+    setCount((n) => n + 1);
+    setOver(false);
+    setLanded((n) => n + 1);
+    setBusy(false);
+  };
+
+  const reset = () => { setLeft(THINGS.map((t) => t.id)); setPos({}); setPeeks(START); setCount(3); };
 
   return (
     <div className="flex w-full flex-col items-center gap-14">
       <div
         ref={box}
         className="snap-canvas"
-        style={{ height: 340, touchAction: 'none' }}
+        style={{ height: 380, touchAction: 'none' }}
         onPointerMove={(e) => {
-          if (!grab.current) return;
+          const g = grab.current; if (!g) return;
           const r = box.current!.getBoundingClientRect();
-          setCard({ x: e.clientX - r.left - grab.current.dx, y: e.clientY - r.top - grab.current.dy });
+          setPos((p) => ({ ...p, [g.id]: { x: e.clientX - r.left - g.dx, y: e.clientY - r.top - g.dy } }));
           setOver(inside(e.clientX, e.clientY));
         }}
         onPointerUp={(e) => {
-          if (!grab.current) return;
-          grab.current = null;
-          if (inside(e.clientX, e.clientY)) {
-            setPeeks((p) => [...p, { thumb: NEXT[count % NEXT.length] }].slice(-3));
-            setCount((n) => n + 1);
-            setLanded((n) => n + 1);
-          }
-          setOver(false);
-          setCard(null);
+          const g = grab.current; if (!g) return;
+          grab.current = null; setDragging(null);
+          if (inside(e.clientX, e.clientY)) void putIn(g.id);
+          else { setOver(false); setPos((p) => { const n = { ...p }; delete n[g.id]; return n; }); }
         }}
       >
-        <div style={{ position: 'absolute', left: '58%', top: 70, transform: 'translateX(-50%)' }}>
-          <Folder ref={folder} name="poster refs" count={count} peeks={peeks} hue={hue} open={over} landed={landed} />
+        <div style={{ position: 'absolute', left: '66%', top: 110, transform: 'translateX(-50%)' }}>
+          <Folder ref={folder} name="poster refs" count={count} peeks={peeks} hue={hue} open={over || busy} landed={landed} />
         </div>
-        <Surface
-          material="raise-sm"
-          radius="plate"
-          onPointerDown={(e) => {
-            // No text selection or native drag: the card itself moves.
-            e.preventDefault();
-            try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
-            const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-            grab.current = { dx: e.clientX - r.left, dy: e.clientY - r.top };
-          }}
-          style={{ position: 'absolute', left: at.x, top: at.y, width: 120, height: 64, display: 'grid', placeItems: 'center', cursor: 'grab', touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', zIndex: 10, transition: card ? 'none' : 'left .5s var(--mu-spring-object), top .5s var(--mu-spring-object)' }}
-        >
-          <span className="eng">drag me in</span>
-        </Surface>
+        {THINGS.filter((t) => left.includes(t.id)).map((t) => {
+          const at = pos[t.id] ?? t.home, held = dragging === t.id;
+          return (
+            <div
+              key={t.id}
+              ref={(el) => { els.current[t.id] = el; }}
+              onPointerDown={(e) => {
+                if (busy) return;
+                e.preventDefault();
+                try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
+                const r = e.currentTarget.getBoundingClientRect();
+                grab.current = { id: t.id, dx: e.clientX - r.left, dy: e.clientY - r.top };
+                setDragging(t.id);
+              }}
+              style={{
+                position: 'absolute', left: at.x, top: at.y, zIndex: held ? 30 : 20, cursor: held ? 'grabbing' : 'grab',
+                touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none',
+                scale: held ? '1.04' : '1', rotate: held ? '-2deg' : '0deg',
+                filter: held ? 'drop-shadow(0 18px 24px rgba(0,0,0,.18))' : 'none',
+                transition: held ? 'scale .2s var(--mu-spring-part), rotate .2s var(--mu-spring-part), filter .2s ease' : 'left .5s var(--mu-spring-object), top .5s var(--mu-spring-object), scale .3s var(--mu-spring-part), rotate .3s var(--mu-spring-part), filter .3s ease',
+              }}
+            >
+              <ThingCard peek={t.peek} label={t.label} />
+            </div>
+          );
+        })}
+        {!left.length && !busy && (
+          <button type="button" className="eng" onClick={reset} style={{ position: 'absolute', left: 36, bottom: 24, background: 'none', border: 0, cursor: 'pointer' }}>put them back</button>
+        )}
       </div>
       <Segmented
         size="compact"
@@ -90,7 +173,7 @@ export default function FolderPage() {
     <ComponentPage
       title="Folder"
       lede="A folder on the canvas holds blocks and takes little space. Unfold it to work with what is inside."
-      play={{ lede: 'Hover the folder to fan its cards. Drag the card onto it: it opens as you hover and swings shut as the card lands. Try the colours.', node: <Play /> }}
+      play={{ lede: 'Drag a photo, a link or a note onto the folder: it opens as you come over it, the thing goes into the pocket, and the flap swings shut. Try the colours.', node: <Play /> }}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
