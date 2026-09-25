@@ -2156,6 +2156,17 @@ public enum MetalRecipes {
             "pop.offset": .number(6.0),
         ]
     )
+
+    /// Switches which panel is shown. The tab list is the segmented track and gliding thumb (one look for 'pick one of a few'); what differs is behaviour: each tab owns a panel, and the new panel comes in from the side the thumb travelled to, a small drift and a fade on the settle spring. The first panel shows without motion. Picking a value with no panel is a Segmented. (Soft Hardware segmented track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern)
+    public static let tabs = MetalObjectRecipe(
+        name: "tabs",
+        layers: [
+
+        ],
+        props: [
+            "panel.drift": .number(6.0),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

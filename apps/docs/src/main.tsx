@@ -65,6 +65,7 @@ const router = createBrowserRouter([
       { path: 'components/line-handles', lazy: lazy(() => import('./pages/components/LineHandles')) },
       { path: 'components/folder', lazy: lazy(() => import('./pages/components/Folder')) },
       { path: 'components/select', lazy: lazy(() => import('./pages/components/Select')) },
+      { path: 'components/tabs', lazy: lazy(() => import('./pages/components/Tabs')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
       { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },

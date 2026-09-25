@@ -819,6 +819,26 @@
       "docs": "Agent guide: https://metalui.dev/r/switch.md. SwiftUI: MetalSwitch in the MetalUI Swift package."
     },
     {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tabs/tabs.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/tabs/tabs.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/tabs.md. SwiftUI: MetalTabs in the MetalUI Swift package."
+    },
+    {
       "name": "time-scrubber",
       "type": "registry:ui",
       "title": "Time scrubber",

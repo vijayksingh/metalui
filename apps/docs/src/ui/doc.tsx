@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
-import { Button, Segmented, SwapText } from '@unlocalhosted/metalui';
+import { Button, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
 import { highlight, langOf, type Lang } from '../lib/highlight';
@@ -236,14 +236,15 @@ function Lines({ code, lang, numbers, className = '' }: { code: string; lang: La
 }
 
 /** A quiet code object: a file name (or tabs), a copy button, highlighted lines. */
-export function Code({ code, label, lang, head, numbers = false, maxH = true }: { code: string; label?: string; lang?: Lang; head?: React.ReactNode; numbers?: boolean; maxH?: boolean }) {
+export function Code({ code, label, lang, head, numbers = false, maxH = true, wrap }: { code: string; label?: string; lang?: Lang; head?: React.ReactNode; numbers?: boolean; maxH?: boolean; wrap?: (lines: React.ReactNode) => React.ReactNode }) {
+  const lines = <Lines code={code} lang={lang ?? langOf(label)} numbers={numbers} className={['type-doc-code px-16 py-14', maxH ? 'max-h-440' : ''].join(' ')} />;
   return (
     <div className="material-stage overflow-hidden rounded-plate">
       <div data-md="skip" className="flex min-h-40 items-center justify-between gap-12 border-b border-rule py-6 pl-14 pr-6">
         {head ?? <span className="type-readout truncate text-ink3">{label ?? 'Code'}</span>}
         <CopyButton text={code} />
       </div>
-      <Lines code={code} lang={lang ?? langOf(label)} numbers={numbers} className={['type-doc-code px-16 py-14', maxH ? 'max-h-440' : ''].join(' ')} />
+      {wrap ? wrap(lines) : lines}
     </div>
   );
 }
@@ -290,11 +291,14 @@ export function SourceTabs({ tabs }: { tabs: { id: string; label: string; code: 
   const code = tabs.find((t) => t.id === tab)!;
   const lang: Lang = code.id === 'css' ? 'css' : code.id === 'swift' ? 'swift' : code.id === 'agent' ? 'md' : 'tsx';
   return (
-    <Code
-      code={code.code}
-      lang={lang}
-      numbers
-      head={<Segmented size="compact" aria-label="Source" value={tab} onValueChange={(v) => setTab(v as string)} options={tabs.map((t) => ({ value: t.id, label: t.label }))} />}
-    />
+    <Tabs value={tab} onValueChange={setTab}>
+      <Code
+        code={code.code}
+        lang={lang}
+        numbers
+        head={<TabList size="compact" aria-label="Source" items={tabs.map((t) => ({ value: t.id, label: t.label }))} />}
+        wrap={(lines) => tabs.map((t) => <TabPanel key={t.id} value={t.id}>{t.id === tab ? lines : null}</TabPanel>)}
+      />
+    </Tabs>
   );
 }

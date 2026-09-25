@@ -733,6 +733,23 @@
       "agent": "https://metalui.dev/r/switch.md"
     },
     {
+      "name": "tabs",
+      "title": "Tabs",
+      "status": "alpha",
+      "description": "Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Tabs",
+        "base": "@base-ui/react/tabs"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTabs"
+      },
+      "registry": "https://metalui.dev/r/tabs.json",
+      "agent": "https://metalui.dev/r/tabs.md"
+    },
+    {
       "name": "time-scrubber",
       "title": "Time scrubber",
       "status": "alpha",

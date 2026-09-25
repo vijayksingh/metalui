@@ -25,6 +25,7 @@ export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './compon
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { InkPicks, WidthPicks, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
 export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, type ConnectorFlow } from './components/connector/connector';
+export { Tabs, TabList, TabPanel, type TabsProps, type TabListProps, type TabPanelProps, type TabItem } from './components/tabs/tabs';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';
 export { LineHandles, type LineHandlesProps } from './components/line-handles/line-handles';

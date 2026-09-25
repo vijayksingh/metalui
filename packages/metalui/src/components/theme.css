@@ -865,6 +865,7 @@
   --spacing-select-led-size: var(--mu-r-select-led-size);
   --spacing-select-led-slot: var(--mu-r-select-led-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
+  --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -2142,6 +2143,9 @@
 @utility opacity-select-pop-scale {
   opacity: var(--mu-r-select-pop-scale);
 }
+@utility tabs-panel {
+  outline: none; &[data-ending-style] { display: none; } &[data-activation-direction='right'] { --mu-tabs-dir: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='left'] { --mu-tabs-dir: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } @media (prefers-reduced-motion: reduce) { &[data-activation-direction] { animation-name: mu-tabs-fade; } }
+}
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
@@ -2168,6 +2172,12 @@
 }
 @keyframes mu-folder-land {
   0% { transform: rotateX(var(--mu-r-folder-flap-open)); } 55% { transform: rotateX(-4deg); } 100% { transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); }
+}
+@keyframes mu-tabs-in {
+  from { opacity: 0; transform: translateX(calc(var(--mu-tabs-dir, 0) * var(--mu-r-tabs-panel-drift))); } to { opacity: 1; transform: none; }
+}
+@keyframes mu-tabs-fade {
+  from { opacity: 0; } to { opacity: 1; }
 }
 
 /* The layout groups as theme values, and each spring's duration (duration-settle, …). */

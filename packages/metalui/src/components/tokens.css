@@ -1706,6 +1706,8 @@
   --mu-r-select-led-slot: 14px;
   --mu-r-select-pop-scale: 0.97;
   --mu-r-select-pop-offset: 6px;
+  /* tabs: Soft Hardware segmented track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */
+  --mu-r-tabs-panel-drift: 6px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
