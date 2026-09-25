@@ -57,11 +57,12 @@ const f2 = (n: number) => +n.toFixed(2);
 
 /** The back's outline: a rounded rectangle whose bottom tapers by d, with a tab of height rise on
  *  the left. At rise 0 and d 0 it is the plain region; at the folder's numbers it is the folder. */
-function backPath(x: number, y: number, w: number, h: number, d: number, rise: number, tab: number, r: number) {
-  const y0 = y + rise, y1 = y + rise + h, k = r / h, tr = Math.min(18, rise + 2);
+function backPath(x: number, y: number, w: number, h: number, d: number, rise: number, tab: number, r: number, rb = r) {
+  // rb rounds the bottom (fold-line) corners: 0 while the sheet is flat, r once it has folded.
+  const y0 = y + rise, y1 = y + rise + h, k = r / h, kb = rb / h, tr = Math.min(18, rise + 2);
   return `M${f2(x)} ${f2(y0 + r)}L${f2(x)} ${f2(y + tr)}Q${f2(x)} ${f2(y)} ${f2(x + tr)} ${f2(y)}H${f2(x + tab - 14)}C${f2(x + tab - 4)} ${f2(y)} ${f2(x + tab)} ${f2(y0)} ${f2(x + tab + 12)} ${f2(y0)}`
-    + `H${f2(x + w - r)}Q${f2(x + w)} ${f2(y0)} ${f2(x + w - d * k)} ${f2(y0 + r)}L${f2(x + w - d + d * k)} ${f2(y1 - r)}Q${f2(x + w - d)} ${f2(y1)} ${f2(x + w - d - r)} ${f2(y1)}`
-    + `H${f2(x + d + r)}Q${f2(x + d)} ${f2(y1)} ${f2(x + d - d * k)} ${f2(y1 - r)}Z`;
+    + `H${f2(x + w - r)}Q${f2(x + w)} ${f2(y0)} ${f2(x + w - d * k)} ${f2(y0 + r)}L${f2(x + w - d + d * kb)} ${f2(y1 - rb)}Q${f2(x + w - d)} ${f2(y1)} ${f2(x + w - d - rb)} ${f2(y1)}`
+    + `H${f2(x + d + rb)}Q${f2(x + d)} ${f2(y1)} ${f2(x + d - d * kb)} ${f2(y1 - rb)}Z`;
 }
 /** The flap's outside, in its own box (w × h), narrowing by d toward the bottom. It is drawn on the
  *  face that is turned over twice (the face's flip, then the fold), so it stands upright, a pocket
@@ -216,7 +217,9 @@ export function FolderUnfold() {
   const backX = lerp(R.x, finalX, s), backY = lerp(R.y, finalY, s);        // the top of the tab (the back's top at first)
   const foldY = backY + rise + backH;                                        // the fold line: the back's bottom
   const flapH = lerp(STRIP, FOLDER.flap, s), flapTaper = lerp(0, FOLDER.flapTaper, s);
-  const backD = backPath(backX, backY, backW, backH, taper, rise, FOLDER.tab, R.radius);
+  // The fold-line corners round up as the flap turns (full by 60°), so the flat sheet has no notch.
+  const crease = R.radius * Math.min(1, Math.max(0, angle / 60));
+  const backD = backPath(backX, backY, backW, backH, taper, rise, FOLDER.tab, R.radius, crease);
   const flapD = flapPath(backW, flapH, flapTaper, R.radius);
 
   // Cards ride the shrink: a card is never further along than the sheet, so it can never pass the
@@ -275,11 +278,12 @@ export function FolderUnfold() {
           </div>
         ))}
 
-        {/* The flap: the bottom third on a hinge at the fold line. Inside, the region's surface
+        {/* The flap: the bottom third on a hinge at the fold line. Its fold-line corners round up as it
+            turns, matching the back above it (flat, the sheet is one piece; folded, two rounded ones). Inside, the region's surface
             (the same continuous surface as the back); outside, the folder's frosted glass. */}
         <div style={{ position: 'absolute', left: backX, top: foldY, width: backW, height: flapH, zIndex: 4, pointerEvents: 'none', opacity: sheetOn ? 1 : 0, perspective: 6000 }}>
           <div className="folder" data-hue={hue} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', perspective: 'none', cursor: 'default', transformOrigin: '50% 0', transformStyle: 'preserve-3d', transform: `rotateX(${angle}deg)` }}>
-            <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden', borderRadius: `0 0 ${R.radius}px ${R.radius}px`, opacity: 1 - m }}>
+            <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden', borderRadius: `${crease}px ${crease}px ${R.radius}px ${R.radius}px`, opacity: 1 - m }}>
               <div style={{ position: 'absolute', left: 0, top: -FOLD * (flapH / STRIP), width: '100%', height: R.h * (flapH / STRIP) }}>
                 <Well variant="region" radius="region" {...hueVars} style={{ position: 'absolute', inset: 0 }} />
               </div>
