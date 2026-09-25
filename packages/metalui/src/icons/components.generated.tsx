@@ -41,7 +41,7 @@ export const ZoomOutIcon = createIcon("zoom-out", "ZoomOutIcon");
 export const FitIcon = createIcon("fit", "FitIcon");
 /** Duplicate. Hover: The copy slides back onto the original, presses to take its impression, and is peeled off into place.. Press: plays the same act. */
 export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
-/** Delete · Send away. Hover: well turns, dot is drawn in. Press: dot is pulled into the centre and vanishes. */
+/** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: lid lifts on its hinge. Press: lid closes with a small settle. */
 export const TrashIcon = createIcon("trash", "TrashIcon");

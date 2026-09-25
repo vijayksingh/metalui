@@ -407,11 +407,20 @@
       "component": "SendAwayIcon",
       "label": "Delete · Send away",
       "category": "Actions",
-      "hover": "well turns, dot is drawn in",
-      "press": "dot is pulled into the centre and vanishes",
-      "pressMs": 490,
+      "hover": "The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.",
+      "press": "plays the same act",
+      "pressMs": 1245,
+      "motion": {
+        "caption": "The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.",
+        "durationMs": 1245,
+        "stages": [
+          "Wind up",
+          "Draw in",
+          "Rise again"
+        ]
+      },
       "tuned16": true,
-      "construction": "Archimedean spiral r = 1.05→8.5 over 1.62 turns, clockwise, outer end at −50°. Dot r1.4 at 38° ahead of the end on r8.35. Native: Shape with animatable phase; dot position is polar (θ, r)."
+      "construction": "Archimedean spiral r = 1.05→8.5 over 1.62 turns, clockwise, outer end at −50°. Dot r1.4 at 38° ahead of the end on r8.35, carried by two nested parts (orb turns about the centre, rad moves it along its radius). Motion (study): the well turns +26°, the dot is drawn 300° down the groove between the arms, shrinks and goes under with a gulp ring; a new dot rises on the rim."
     },
     {
       "name": "trash",
