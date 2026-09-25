@@ -630,11 +630,20 @@
       "component": "SeedIcon",
       "label": "Seed sample",
       "category": "Actions",
-      "hover": "the sprout grows",
-      "press": "the seed settles",
-      "pressMs": 340,
+      "hover": "The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.",
+      "press": "plays the same act",
+      "pressMs": 1040,
+      "motion": {
+        "caption": "The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.",
+        "durationMs": 1040,
+        "stages": [
+          "Lift",
+          "Plant",
+          "Take root"
+        ]
+      },
       "tuned16": false,
-      "construction": "Seed 11.2 × 13.2, tinted .14; sprout stem 2.6 and a tinted leaf from its top."
+      "construction": "Seed 11.2 × 13.2, tinted .14; sprout stem 2.6 and a tinted leaf from its top. Motion (study): the seed lifts 1.6 and lands on its bottom (squash .9, object spring); the sprout lags, sinks .5 into it and springs .7 past rest; the leaf flops 18° about its joint and swings back; two puffs of soil spread along the ground at its base."
     }
   ]
 }

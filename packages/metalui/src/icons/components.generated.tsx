@@ -93,5 +93,5 @@ export const DocumentIcon = createIcon("document", "DocumentIcon");
 export const ClockIcon = createIcon("clock", "ClockIcon");
 /** Me. Hover: Today's point runs back along your days and climbs to today again, drawing the trend behind it.. Press: plays the same act. */
 export const MeIcon = createIcon("me", "MeIcon");
-/** Seed sample. Hover: the sprout grows. Press: the seed settles. */
+/** Seed sample. Hover: The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.. Press: plays the same act. */
 export const SeedIcon = createIcon("seed", "SeedIcon");

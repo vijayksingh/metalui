@@ -1009,24 +1009,27 @@ export const ICON_CATALOG = {
     motion: {"duration":1000,"caption":"Today's point runs back along your days and climbs to today again, drawing the trend behind it.","stages":["Run back","Climb","Today"],"tracks":[{"part":"trend","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"linear"},{"offset":0.04,"strokeDashoffset":0,"easing":"linear"},{"offset":0.14,"strokeDashoffset":0.4177,"easing":"linear"},{"offset":0.2,"strokeDashoffset":0.6713,"easing":"linear"},{"offset":0.28,"strokeDashoffset":1,"easing":"linear"},{"offset":0.36,"strokeDashoffset":1,"easing":"linear"},{"offset":0.47,"strokeDashoffset":0.6713,"easing":"linear"},{"offset":0.55,"strokeDashoffset":0.4177,"easing":"linear"},{"offset":0.72,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"last","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.04,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.14,"transform":"translate(-3.4px,4.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.2,"transform":"translate(-6px,2.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.28,"transform":"translate(-8.8px,5.4px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.36,"transform":"translate(-8.8px,5.4px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.47,"transform":"translate(-6px,2.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.55,"transform":"translate(-3.4px,4.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.72,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.78,"transform":"translate(0.44px,-0.54px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.86,"transform":"translate(-0.06px,0.07px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"today","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.71,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77,"transform":"scale(.9)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.98,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * SEED SAMPLE · Actions
+   * SEED SAMPLE · Actions · one act, 1040ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the sprout grows
-   * PRESS one-shot (from the current pose)
-   *          the seed settles
-   *     0ms   .sd plays sd-p (340ms)
+   * Lift → Plant → Take root
+   *          The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.
+   *  seed       0 → 160 → 300 → 656 → 1013 → 1040ms
+   *  sprout     0 → 160 → 300 → 340 → 460 → 580 → 700 → 1040ms
+   *  leaf       0 → 260 → 360 → 500 → 640 → 780 → 1040ms
+   *  soil       0 → 290 → 330 → 560 → 1040ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "seed": {
     label: "Seed sample",
     category: "Actions",
-    hover: "the sprout grows",
-    press: "the seed settles",
-    pressMs: 340,
+    hover: "The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.",
+    press: "plays the same act",
+    pressMs: 1040,
     defs: "",
-    body: "<path class=\"sd f\" style=\"--duo:.14\" d=\"M12 7a5.6 6.6 0 1 1 0 13.2 5.6 6.6 0 1 1 0-13.2Z\"/><path class=\"sp\" d=\"M12 4.4V7\"/><path class=\"sp f\" style=\"--duo:.2\" d=\"M15.4 3.2c-.3 1.5-1.6 2.2-3.4 2 .5-1.5 1.8-2.2 3.4-2Z\"/>",
+    body: "<g data-part=\"seed\"><path class=\"f\" style=\"--duo:.14\" d=\"M12 7a5.6 6.6 0 1 1 0 13.2 5.6 6.6 0 1 1 0-13.2Z\"/><g data-part=\"sprout\"><path d=\"M12 4.4V7\"/><g data-part=\"leaf\"><path class=\"f\" style=\"--duo:.2\" d=\"M15.4 3.2c-.3 1.5-1.6 2.2-3.4 2 .5-1.5 1.8-2.2 3.4-2Z\"/></g></g></g><path class=\"ac\" data-part=\"soil\" opacity=\"0\" d=\"M8 21.3H6.8M16 21.3h1.2\" style=\"stroke-width:calc(var(--sw) * .75)\"/>",
     sw16: 1.85,
+    motion: {"duration":1040,"caption":"The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.","stages":["Lift","Plant","Take root"],"tracks":[{"part":"seed","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.15385,"transform":"translate(0px,-1.6px) rotate(0deg) scale(0.98,1.03)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28846,"transform":"translate(0px,0px) rotate(0deg) scale(1.06,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63077,"transform":"translate(0px,0px) rotate(0deg) scale(0.9941,1.0099)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.97404,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"sprout","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.15385,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28846,"transform":"translate(0px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32692,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44231,"transform":"translate(0px,-0.7px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55769,"transform":"translate(0px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.67308,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"leaf","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.25,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34615,"transform":"translate(0px,0px) rotate(18deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48077,"transform":"translate(0px,0px) rotate(-8deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"transform":"translate(0px,0px) rotate(3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75,"transform":"translate(0px,0px) rotate(-0.8deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"soil","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.27885,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31731,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.53846,"transform":"scale(1.35)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
 } satisfies Record<string, IconRecord>;
 
