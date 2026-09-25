@@ -432,6 +432,19 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testLid() {
+        let looks: [(Double, Bool, MetalLid.Hinge)] = [(0, false, .back), (18, false, .back), (70, false, .back), (18, true, .back), (40, true, .left)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                ForEach(0..<looks.count, id: \.self) { i in MetalLid(open: looks[i].0, armed: looks[i].1, hinge: looks[i].2, size: 160) }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("lid-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lid",
+  "type": "registry:ui",
+  "title": "Lid",
+  "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/lid/lid.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/lid/lid.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawLid, type LidSpec } from '../../gadgets/parts/lid';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Lid (a Part): a hinged flap over a bin's mouth, seen from above. `open` is degrees about its hinge\n * (the back edge, or the left): it foreshortens toward the hinge and its shadow falls further out as it\n * rises. `armed` makes its underside red, which glows into the gap as it opens. Near-black rubber by\n * default. Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface LidProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  open?: number;\n  armed?: boolean;\n  hinge?: LidSpec['hinge'];\n  material?: LidSpec['material'];\n  color?: LidSpec['color'];\n  size?: number;\n  host?: Host;\n}\n\nconst RUBBER = GADGETS.materials.rubber as unknown as { L: readonly [number, number]; CCap: number; sample: number };\n\nexport function Lid({ open = 0, armed = false, hinge = 'back', material = 'rubber', color, size = 96, host: forced, ...props }: LidProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const c = color ?? { L: (RUBBER.L[0] + RUBBER.L[1]) / 2, C: RUBBER.CCap, H: RUBBER.sample };\n  const [w, l] = GADGETS.lid.alone, dims: [number, number] = hinge === 'left' ? [l, w] : [w, l];\n  const d = drawLid(`lid-${uid}`, { at: [200, 200], size: dims, hinge, open, armed, color: c, material }, { tier, host });\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`lid, ${open > 0 ? `open ${Math.round(open)}°` : 'closed'}${armed ? ', armed' : ''}`}\n      data-tier={tier} data-host={host} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.mouth + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/lid.md. SwiftUI: MetalLid in the MetalUI Swift package."
+}

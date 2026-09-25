@@ -98,6 +98,11 @@
           "target": "components/gadgets/parts/led.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/lid.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/lid.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/needle.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/needle.ts"
@@ -694,6 +699,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
+    },
+    {
+      "name": "lid",
+      "type": "registry:ui",
+      "title": "Lid",
+      "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/lid/lid.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/lid/lid.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/lid.md. SwiftUI: MetalLid in the MetalUI Swift package."
     },
     {
       "name": "line-handles",

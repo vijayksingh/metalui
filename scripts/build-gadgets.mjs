@@ -197,6 +197,14 @@ public enum MetalGadgetTokens {
     public static let cellShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cell.shadow.map(num).join(', ')})
     public static let cellBacklight: (empty: Double, full: Double) = (${G.cell.backlight.map(num).join(', ')})
     public static let cellDye: Double = ${num(G.cell.dye)}
+    public static let lidRadius: Double = ${num(G.lid.radius)}
+    public static let lidGrip: (width: Double, height: Double, alpha: Double) = (${G.lid.grip.map(num).join(', ')})
+    public static let lidShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.lid.shadow.map(num).join(', ')})
+    public static let lidLift: Double = ${num(G.lid.lift)}
+    public static let lidMouth: (L: Double, chroma: Double) = (${G.lid.mouth.map(num).join(', ')})
+    public static let lidUnder: (reach: Double, alpha: Double) = (${G.lid.under.map(num).join(', ')})
+    public static let lidAngles: (open: Double, ajar: Double) = (${num(G.lid.open)}, ${num(G.lid.ajar)})
+    public static let lidAlone: (width: Double, length: Double) = (${G.lid.alone.map(num).join(', ')})
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

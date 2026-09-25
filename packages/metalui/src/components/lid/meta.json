@@ -1,0 +1,21 @@
+{
+  "name": "lid",
+  "title": "Lid",
+  "status": "alpha",
+  "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
+  "base": "none (SVG)",
+  "react": {
+    "export": "Lid",
+    "files": [
+      "lid.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalLid",
+    "file": "swift/Sources/MetalUI/Components/MetalLid.swift"
+  },
+  "agent": "lid.agent.md",
+  "layer": "part",
+  "page": "/components/lid",
+  "recipe": "gadgets"
+}

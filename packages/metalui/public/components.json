@@ -529,6 +529,23 @@
       "agent": "https://metalui.dev/r/led.md"
     },
     {
+      "name": "lid",
+      "title": "Lid",
+      "status": "alpha",
+      "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Lid",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLid"
+      },
+      "registry": "https://metalui.dev/r/lid.json",
+      "agent": "https://metalui.dev/r/lid.md"
+    },
+    {
       "name": "line-handles",
       "title": "Line handles",
       "status": "alpha",
