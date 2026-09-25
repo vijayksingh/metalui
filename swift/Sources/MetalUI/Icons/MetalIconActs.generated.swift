@@ -1455,6 +1455,53 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.9 4.8L13.1 4.8M19.2 10.9L19.2 13.1M13.1 19.2L10.9 19.2M4.8 13.1L4.8 10.9", parts: [5], stroke: 0.6, fill: .none, opacity: 1.0),
             ]
         ),
+        .duplicate: MetalIconAct(
+            duration: 1.183,
+            caption: "The copy slides back onto the original, presses to take its impression, and is peeled off into place.",
+            parts: [
+            MetalIconActPart(
+                name: "copy", origin: CGPoint(x: 14.5, y: 14.5),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1691, x: -3.0, y: -3.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2282, x: -3.2, y: -3.2, r: 0.0, sx: 0.92, sy: 0.92, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.279, x: -3.1, y: -3.1, r: 0.0, sx: 0.94, sy: 0.94, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3973, x: 1.4, y: 1.4, r: 7.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6982, x: -0.1382, y: -0.1382, r: -0.6908, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "glint", origin: CGPoint(x: 17.5, y: 17.5),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .linear),
+                    .init(0.5833, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6509, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.896, x: 0.0, y: 0.0, r: 0.0, sx: 1.1, sy: 1.1, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.5833, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6509, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.896, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M6.5 3.5L12.5 3.5C14.1569 3.5 15.5 4.8431 15.5 6.5L15.5 12.5C15.5 14.1569 14.1569 15.5 12.5 15.5L6.5 15.5C4.8431 15.5 3.5 14.1569 3.5 12.5L3.5 6.5C3.5 4.8431 4.8431 3.5 6.5 3.5Z", parts: [], stroke: 1.0, fill: .none, opacity: 1.0,
+                cuts: [
+                    MetalIconActCut(d: "M11.4 7L17.6 7C20.03 7 22 8.97 22 11.4L22 17.6C22 20.03 20.03 22 17.6 22L11.4 22C8.97 22 7 20.03 7 17.6L7 11.4C7 8.97 8.97 7 11.4 7Z", parts: [0], fill: true, stroke: 0.0, keep: false),
+                ]),
+            MetalIconActInk(d: "M11.5 8.5L17.5 8.5C19.1568 8.5 20.5 9.8431 20.5 11.5L20.5 17.5C20.5 19.1568 19.1568 20.5 17.5 20.5L11.5 20.5C9.8431 20.5 8.5 19.1568 8.5 17.5L8.5 11.5C8.5 9.8431 9.8431 8.5 11.5 8.5Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M14.5 12.3L14.5 16.7M12.3 14.5L16.7 14.5", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M18.9 15.2L18.9 17.1C18.9 17.8732 18.2732 18.5 17.5 18.5L15.6 18.5", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .share: MetalIconAct(
             duration: 0.9,
             caption: "The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.",

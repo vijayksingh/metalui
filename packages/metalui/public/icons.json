@@ -387,11 +387,20 @@
       "component": "DuplicateIcon",
       "label": "Duplicate",
       "category": "Actions",
-      "hover": "copy slides off the original",
-      "press": "copy stamps back and out",
-      "pressMs": 380,
+      "hover": "The copy slides back onto the original, presses to take its impression, and is peeled off into place.",
+      "press": "plays the same act",
+      "pressMs": 1183,
+      "motion": {
+        "caption": "The copy slides back onto the original, presses to take its impression, and is peeled off into place.",
+        "durationMs": 1183,
+        "stages": [
+          "Press",
+          "Peel off",
+          "Land"
+        ]
+      },
       "tuned16": false,
-      "construction": "Two 12u squares r3, offset 5u; the back one is masked by the front + 1.5u gap (so no outline crosses the copy)."
+      "construction": "Two 12u squares r3, offset 5u; the back one (source) is masked by the front + 1.5u gap, and that clearance moves with the copy. Motion (study): the copy slides 3u back onto the source, presses (.92), peels off 1.4u past rest with a 7° twist, and an edge light catches inside its landing corner."
     },
     {
       "name": "send-away",
