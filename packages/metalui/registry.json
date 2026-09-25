@@ -43,6 +43,11 @@
           "target": "components/gadgets/host.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/beeper.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/beeper.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/cable.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/cable.ts"
@@ -63,6 +68,25 @@
           "target": "components/gadgets/parts/slab.ts"
         }
       ]
+    },
+    {
+      "name": "beeper",
+      "type": "registry:ui",
+      "title": "Beeper",
+      "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/beeper/beeper.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/beeper/beeper.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/beeper.md. SwiftUI: MetalBeeper in the MetalUI Swift package."
     },
     {
       "name": "block-silhouette",

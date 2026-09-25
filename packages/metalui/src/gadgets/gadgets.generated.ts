@@ -387,6 +387,26 @@ export const GADGETS = {
     "spring": "hinge",
     "seatReach": 30
   },
+  "beeper": {
+    "alone": 240,
+    "radius": 0.3,
+    "slots": 5,
+    "slot": [
+      0.075,
+      0.6
+    ],
+    "span": 0.72,
+    "brass": [
+      0.5,
+      0.075,
+      82
+    ],
+    "litL": 0.8,
+    "lift": 0.023,
+    "riseMs": 12,
+    "fallMs": 70,
+    "sampleMs": 10
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,

@@ -37,4 +37,16 @@ final class MetalMechanismParity: XCTestCase {
         XCTAssertTrue(player.act())          // reduced acts have no travel, so the next act is not blocked
         XCTAssertFalse(player.act())         // a second act while one plays is ignored
     }
+
+    func testBeeperFlexesLikeTheWeb() throws {
+        let web = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("beeper-envelopes.json"))) as! [String: [[Double]]]
+        for earcon in MetalEarcon.allCases {
+            let rows = try XCTUnwrap(web[earcon.rawValue], "\(earcon) has no web envelope"), got = MetalBeeperEnvelope.samples(earcon)
+            XCTAssertEqual(got.count, rows.count, "\(earcon) sample count")
+            for (g, r) in zip(got, rows) {
+                XCTAssertEqual(g.at, r[0], accuracy: 1e-6, "\(earcon) at")
+                XCTAssertEqual(g.v, r[1], accuracy: 1e-3, "\(earcon) at \(r[0]) ms")
+            }
+        }
+    }
 }

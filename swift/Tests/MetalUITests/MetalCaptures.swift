@@ -198,6 +198,17 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testBeeper() {
+        let looks: [(Int, MetalSoundMaterial)] = [(3, .metal), (5, .metal), (7, .metal), (5, .clay)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) { ForEach(0..<looks.count, id: \.self) { i in MetalBeeper(slots: looks[i].0, material: looks[i].1, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("beeper-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -62,6 +62,10 @@ for (const [name, p] of Object.entries(placements)) {
   };
 }
 emit('packages/metalui/src/gadgets/fixtures/placements.resolved.json', JSON.stringify(resolved, null, 2) + '\n');
+// The beeper's flex envelope for every earcon, from the web Part: SwiftUI's twin must sample the same.
+const { beeperEnvelope } = await import(pathToFileURL(`${dir}/parts/beeper.ts`).href);
+const { SOUND } = await import(pathToFileURL(root('packages/metalui/src/sound/recipes.generated.ts')).href);
+emit('packages/metalui/src/gadgets/fixtures/beeper-envelopes.json', JSON.stringify(Object.fromEntries(Object.keys(SOUND.beeper.earcons).filter((k) => !k.startsWith('$')).map((e) => [e, beeperEnvelope(e).map((x) => [x.at, x.v])]))) + '\n');
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 

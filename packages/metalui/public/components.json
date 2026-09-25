@@ -2,6 +2,23 @@
   "$description": "MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.",
   "components": [
     {
+      "name": "beeper",
+      "title": "Beeper",
+      "status": "alpha",
+      "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Beeper",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBeeper"
+      },
+      "registry": "https://metalui.dev/r/beeper.json",
+      "agent": "https://metalui.dev/r/beeper.md"
+    },
+    {
       "name": "block-silhouette",
       "title": "Block silhouette",
       "status": "alpha",

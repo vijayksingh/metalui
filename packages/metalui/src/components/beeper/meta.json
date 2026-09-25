@@ -1,0 +1,21 @@
+{
+  "name": "beeper",
+  "title": "Beeper",
+  "status": "alpha",
+  "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Beeper",
+    "files": [
+      "beeper.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBeeper",
+    "file": "swift/Sources/MetalUI/Components/MetalBeeper.swift"
+  },
+  "agent": "beeper.agent.md",
+  "layer": "part",
+  "page": "/components/beeper",
+  "recipe": "gadgets"
+}

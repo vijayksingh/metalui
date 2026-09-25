@@ -8,6 +8,7 @@
 
 ## Components
 
+- [Beeper](https://metalui.dev/r/beeper.md): A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.
 - [Block silhouette](https://metalui.dev/r/block-silhouette.md): A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).
 - [Brush cursor](https://metalui.dev/r/brush-cursor.md): The pointer while drawing or erasing: a disc in the ink colour at the stroke width times the zoom, or a dashed ring the size of what the eraser removes; it follows the pointer in the same frame.
 - [Button](https://metalui.dev/r/button.md): A press-in pill button. It sinks 1px into a well while held and springs back on release: standard, primary and destructive caps at 32 or compact 26, and the link, graphite and strip caps. Tailwind v4 utilities from the theme.

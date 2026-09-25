@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "beeper",
+  "type": "registry:ui",
+  "title": "Beeper",
+  "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/beeper/beeper.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/beeper/beeper.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawBeeper, playBeeper, type BeeperSpec } from '../../gadgets/parts/beeper';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\nimport type { Earcon } from '../../sound/recipes.generated';\n\n/* Beeper (a Part): a grille plate over a brass piezo disc, the only source of tones in a gadget. Each\n * time `beat` changes with an `earcon` set, it plays that earcon's notes: the disc catches the light\n * and the plate lifts a hair (not with reduced motion). The sound is the caller's (`sound.beep`), so\n * the Part can show a beep that was muted. Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface BeeperProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  slots?: number;\n  material?: BeeperSpec['material'];\n  color?: BeeperSpec['color'];\n  earcon?: Earcon | null;\n  /** Change it to play `earcon` again. */\n  beat?: number;\n  size?: number;\n  host?: Host;\n}\n\nexport function Beeper({ slots, material = 'metal', color, earcon = null, beat = 0, size = 96, host: forced, ...props }: BeeperProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const d = React.useMemo(() => drawBeeper(`beeper-${uid}`, { at: [200, 200], size: GADGETS.beeper.alone, slots, material, color }, { tier, host }),\n    [uid, slots, material, color?.L, color?.C, color?.H, tier, host]); // eslint-disable-line react-hooks/exhaustive-deps\n  React.useEffect(() => {\n    if (!earcon || !beat || !ref.current) return;\n    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;\n    const played = playBeeper(ref.current, earcon, { reduced, width: GADGETS.beeper.alone });\n    return () => played.forEach((a) => a.cancel());\n  }, [beat]); // eslint-disable-line react-hooks/exhaustive-deps\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={earcon && beat ? `beeper: ${earcon}` : 'beeper'}\n      data-tier={tier} data-host={host} data-material={material} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/beeper.md. SwiftUI: MetalBeeper in the MetalUI Swift package."
+}
