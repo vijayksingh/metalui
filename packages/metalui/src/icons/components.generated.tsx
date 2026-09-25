@@ -11,7 +11,7 @@ export const NoteIcon = createIcon("note", "NoteIcon");
 export const ImageIcon = createIcon("image", "ImageIcon");
 /** Link. Hover: links pull apart, bar thins. Press: snap together. */
 export const LinkIcon = createIcon("link", "LinkIcon");
-/** Draw. Hover: tip slides and draws a stroke. Press: taps the paper. */
+/** Draw. Hover: The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.. Press: plays the same act. */
 export const DrawIcon = createIcon("draw", "DrawIcon");
 /** Pen. Hover: the nib glides and lays a wave of ink. Press: the nib presses: the line swells and a drop of ink blooms. */
 export const PenIcon = createIcon("pen", "PenIcon");

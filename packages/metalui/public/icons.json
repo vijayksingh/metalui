@@ -98,11 +98,20 @@
       "component": "DrawIcon",
       "label": "Draw",
       "category": "Tools",
-      "hover": "tip slides and draws a stroke",
-      "press": "taps the paper",
-      "pressMs": 320,
+      "hover": "The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.",
+      "press": "plays the same act",
+      "pressMs": 1180,
+      "motion": {
+        "caption": "The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.",
+        "durationMs": 1180,
+        "stages": [
+          "Lift",
+          "Stroke",
+          "Return"
+        ]
+      },
       "tuned16": false,
-      "construction": "Pencil built upright (body w4.6, eraser band at y8) then rotated 45°. Stroke is revealed by trim in sync with the pencil travelling on the same curve."
+      "construction": "Pencil built upright (body w4.6, eraser band at y8) then rotated 45°. Motion (study): the pencil lifts 1.6 back to the start of the line, is set down hard on its point, and drags 5.3 right along a soft swoop while the stroke (an accent) is drawn in step under its tip; it flicks off and swings home, and the stroke fades."
     },
     {
       "name": "pen",

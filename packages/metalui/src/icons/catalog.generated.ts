@@ -135,24 +135,25 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * DRAW · Tools
+   * DRAW · Tools · one act, 1180ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          tip slides and draws a stroke
-   * PRESS one-shot (from the current pose)
-   *          taps the paper
-   *     0ms   .pen plays pen-p (320ms)
+   * Lift → Stroke → Return
+   *          The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.
+   *  pencil     0 → 180 → 320 → 345 → 470 → 595 → 720 → 820 → 1060 → 1180ms
+   *  stroke     0 → 335 → 345 → 720 → 900 → 1100 → 1180ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "draw": {
     label: "Draw",
     category: "Tools",
-    hover: "tip slides and draws a stroke",
-    press: "taps the paper",
-    pressMs: 320,
+    hover: "The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.",
+    press: "plays the same act",
+    pressMs: 1180,
     defs: "",
-    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.6 17.45c1.05.7 2 .7 3 0\"/><g class=\"pen\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 14.4V5.8a2.6 2.6 0 0 1 5.2 0v8.6l-1.75 4a.9.9 0 0 1-1.7 0Z\"/><path d=\"M9.4 8.2h5.2\"/></g></g>",
+    body: "<path class=\"ac\" data-part=\"stroke\" opacity=\"0\" pathLength=\"1\" d=\"M3.7 17.5c1.8 1.2 3.5 1.2 5.3 0\"/><g data-part=\"pencil\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 14.4V5.8a2.6 2.6 0 0 1 5.2 0v8.6l-1.75 4a.9.9 0 0 1-1.7 0Z\"/><path d=\"M9.4 8.2h5.2\"/></g></g>",
     sw16: 1.85,
+    motion: {"duration":1180,"caption":"The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.","stages":["Lift","Stroke","Return"],"tracks":[{"part":"pencil","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15254,"transform":"translate(-1.2px,-1.6px) rotate(-4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27119,"transform":"translate(-1.8px,0.3px) rotate(3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29237,"transform":"translate(-1.78px,0.12px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.39831,"transform":"translate(-0.03px,0.8px) rotate(5deg) scale(1,1)","easing":"linear"},{"offset":0.50424,"transform":"translate(1.73px,0.8px) rotate(5deg) scale(1,1)","easing":"linear"},{"offset":0.61017,"transform":"translate(3.5px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69492,"transform":"translate(3.4px,-1.5px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89831,"transform":"translate(-0.3px,0.25px) rotate(1deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"stroke","keyframes":[{"offset":0,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2839,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.29237,"transform":"none","opacity":1,"strokeDashoffset":0.99,"easing":"linear"},{"offset":0.61017,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.76271,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9322,"transform":"none","opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * PEN · Tools

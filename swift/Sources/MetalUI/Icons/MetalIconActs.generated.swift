@@ -259,6 +259,64 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.4 17L8.4 12C8.6439 11.7557 8.9748 11.6185 9.32 11.6185C9.6652 11.6185 9.9961 11.7557 10.24 12L14.3 16L16.3 14.1C16.803 13.6174 17.597 13.6174 18.1 14.1L20.7 16.6", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
             ]
         ),
+        .draw: MetalIconAct(
+            duration: 1.18,
+            caption: "The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.",
+            parts: [
+            MetalIconActPart(
+                name: "pencil", origin: CGPoint(x: 5.5, y: 17.5),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1525, x: -1.2, y: -1.6, r: -4.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2712, x: -1.8, y: 0.3, r: 3.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2924, x: -1.78, y: 0.12, r: 4.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.3983, x: -0.03, y: 0.8, r: 5.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.5042, x: 1.73, y: 0.8, r: 5.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6102, x: 3.5, y: 0.0, r: 4.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6949, x: 3.4, y: -1.5, r: -3.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8983, x: -0.3, y: 0.25, r: 1.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "stroke", origin: CGPoint(x: 3.7, y: 17.5),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2839, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.2924, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6102, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7627, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9322, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2839, 0.0, ease: .linear),
+                    .init(0.2924, 1.0, ease: .linear),
+                    .init(0.6102, 1.0, ease: .linear),
+                    .init(0.7627, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9322, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                draw: [
+                    .init(0.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2839, 0.0, ease: .linear),
+                    .init(0.2924, 0.01, ease: .linear),
+                    .init(0.6102, 1.0, ease: .linear),
+                    .init(0.7627, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9322, 1.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ]
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M3.7 17.5C5.5 18.7 7.2 18.7 9 17.5", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M6.8645 12.4586L12.9456 6.3775C13.961 5.3621 15.6072 5.3621 16.6225 6.3775C17.6379 7.3928 17.6379 9.039 16.6225 10.0544L10.5414 16.1355L6.4756 17.7265C6.1307 17.8933 5.7181 17.8236 5.4473 17.5527C5.1764 17.2819 5.1067 16.8693 5.2735 16.5244Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M11.2485 8.0745L14.9255 11.7515", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ]
+        ),
         .line: MetalIconAct(
             duration: 1.0,
             caption: "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",
