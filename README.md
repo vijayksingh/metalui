@@ -70,7 +70,7 @@ npm run build
 swift build
 ```
 
-To contribute, open an issue or pull request against `main`. Run `npm run build`, `npm run typecheck`, `npm run verify:package`, and `swift build` before submitting. Release steps live in [docs/RELEASING.md](docs/RELEASING.md).
+To contribute, open an issue or pull request against `main`. Run `npm run build`, `npm run typecheck`, `npm run verify:package`, and `swift build` before submitting. Release steps live in [docs/RELEASING.md](docs/RELEASING.md); website deployment is documented in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 The docs site (`apps/docs`) is the design system reference: foundations (color, type, radius, spacing, sizing, elevation, motion), components and icons. Every page has a DialKit panel for tuning its values live.
 
