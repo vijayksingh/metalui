@@ -125,4 +125,23 @@ final class MetalMechanismParity: XCTestCase {
             }
         }
     }
+
+    func testTheRigLaysOutAndCarriesLikeTheWeb() throws {
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("rig-samples.json"))) as! [String: Any]
+        let catalog = try ["needle-gauge", "counter-drum"].reduce(into: [String: MetalGadgetSpec]()) { $0[$1] = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("\($1).gadget.json"))) }
+        var rig = MetalRigEngine(try MetalRigSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("reading.rig.json"))), catalog: catalog)
+        let layout = fixture["layout"] as! [String: Any]
+        XCTAssertEqual(rig.width, layout["width"] as! Double); XCTAssertEqual(rig.height, layout["height"] as! Double)
+        XCTAssertEqual(rig.modules.map { [$0.inst, "\(Int($0.at.x))", "\(Int($0.at.y))"] }, (layout["modules"] as! [[Any]]).map { ["\($0[0])", "\($0[1])", "\($0[2])"] })
+        XCTAssertEqual(rig.jacks.map { "\($0.inst).\($0.port)/\($0.out ? "out" : "in")@\(Int($0.at.x)),\(Int($0.at.y))" }, (layout["jacks"] as! [[Any]]).map { "\($0[0]).\($0[1])/\($0[2])@\($0[3]),\($0[4])" })
+        for (cord, web) in zip(rig.cords, layout["cables"] as! [[Any]]) { XCTAssertEqual(cord.length, web[6] as! Double, accuracy: 1e-6) }
+        for step in fixture["script"] as! [[String: Any]] {
+            let set = step["set"] as! [Any]
+            let hops = rig.set(set[0] as! String, set[1] as! String, .number(set[2] as! Double))
+            let web = step["hops"] as! [[Any]]
+            XCTAssertEqual(hops.count, web.count, "\(set)")
+            for (h, w) in zip(hops, web) { XCTAssertEqual(h.cable, w[0] as! Int); XCTAssertEqual(h.to, w[2] as! String); XCTAssertEqual(h.value, .number(w[3] as! Double)); XCTAssertEqual(h.hop, w[4] as! Int) }
+            XCTAssertEqual(rig.inputs["streak"]?["count"], .number(step["streak"] as! Double))
+        }
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "name": "reading-rig",
+  "title": "Reading rig",
+  "status": "alpha",
+  "description": "A rig: today's needle gauge wired to the streak counter by a patch cable. When today's minutes cross the line, a pulse runs along the cord and the streak rolls a day. Composed at runtime from a rig spec naming catalog gadgets.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/reading.rig.json",
+  "uses": ["needle-gauge", "counter-drum", "jack", "plug", "cable"],
+  "page": "/gadgets/reading-rig"
+}

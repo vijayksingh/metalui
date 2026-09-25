@@ -26,3 +26,5 @@ export { drawGadget, driveTargets, driveDefault, driveRange, driveShare, derived
 export { Gadget, type GadgetProps } from './gadgets/Gadget';
 export { createDrive, DriveModel, createRoll, RollModel, digitOf, type Drive, type DriveEvent, type DriveName, type DriveOptions, type Roll, type RollEvent, type RollOptions } from './gadgets/drive';
 export { SPRINGS, type SpringName } from './motion/springs.generated';
+export { layoutRig, createRigFlow, deriveOutputs, mapValue, rigSpecs, type RigLayout, type RigHop, type RigFlow, type PortValues } from './gadgets/rig-engine';
+export { Rig, type RigProps } from './gadgets/Rig';

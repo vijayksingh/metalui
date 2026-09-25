@@ -65,16 +65,19 @@ public struct MetalCable: View {
     let color: MetalOklch
     let size: Double
     let followEnds: Bool
+    let width: Double
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    public init(from: CGPoint, to: CGPoint, sag: Double? = nil, length: Double? = nil, color: MetalOklch? = nil, size: Double = 160, followEnds: Bool = false) {
+    /// `width` is the cord's width on the canvas (default a plug's stub).
+    public init(from: CGPoint, to: CGPoint, sag: Double? = nil, length: Double? = nil, color: MetalOklch? = nil, size: Double = 160, followEnds: Bool = false,
+                width: Double = MetalGadgetTokens.cableWidth) {
         let rubber = MetalGadgetTokens.cableRubber
-        self.from = from; self.to = to; self.sag = sag; self.length = length; self.size = size; self.followEnds = followEnds
+        self.from = from; self.to = to; self.sag = sag; self.length = length; self.size = size; self.followEnds = followEnds; self.width = width
         self.color = color ?? MetalOklch(L: rubber.L, C: rubber.C, H: MetalSoundMaterial.rubber.finish.sampleHue)
     }
 
     public var body: some View {
-        let unit = size / MetalGadgetTokens.canvas, w = MetalGadgetTokens.cableWidth * unit
+        let unit = size / MetalGadgetTokens.canvas, w = width * unit
         let droop = MetalCableGeometry.sag(from: from, to: to, sag: sag, length: length)
         let (c1, c2) = MetalCableGeometry.controls(from: from, to: to, sag: droop)
         let shape = MetalCableShape(from: from, to: to, c1: c1, c2: c2, followEnds: followEnds)

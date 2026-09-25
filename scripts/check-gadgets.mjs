@@ -106,6 +106,16 @@ for (const [name, sc] of Object.entries(rollScenes)) {
   rolls[name] = { ...sc, samples, events };
 }
 emit('packages/metalui/src/gadgets/fixtures/roll-samples.json', JSON.stringify(rolls) + '\n');
+// The reading rig laid out and run through a script of changes, from the web engine: MetalRig's twin
+// must lay it out and carry the same values the same way.
+const { layoutRig, createRigFlow } = await import(pathToFileURL(`${dir}/rig-engine.ts`).href);
+const rigCatalog = Object.fromEntries(fixtures.filter((f) => f.endsWith('.gadget.json')).map((f) => { const g = read(f); return [g.name, g]; }));
+const rigSpec = read('reading.rig.json'), rigLayout = layoutRig(rigSpec, rigCatalog), rigFlow = createRigFlow(rigSpec, rigCatalog);
+const script = [['today', 'value', 28], ['today', 'value', 34], ['today', 'value', 36], ['today', 'value', 10], ['today', 'value', 35]];
+emit('packages/metalui/src/gadgets/fixtures/rig-samples.json', JSON.stringify({
+  layout: { width: rigLayout.width, height: rigLayout.height, modules: rigLayout.modules.map((m) => [m.inst, ...m.at]), jacks: rigLayout.jacks.map((j) => [j.inst, j.port, j.dir, ...j.at]), cables: rigLayout.cables.map((c) => [c.from, c.to, ...c.a, ...c.b, +c.length.toFixed(6)]) },
+  script: script.map(([inst, port, v]) => ({ set: [inst, port, v], hops: rigFlow.set(inst, port, v).map((h) => [h.cable, h.from, h.to, h.value, h.hop]), streak: rigFlow.inputs.streak.count })),
+}) + '\n');
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 

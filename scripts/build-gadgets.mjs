@@ -188,6 +188,18 @@ public enum MetalGadgetTokens {
     public static let needleMajorWidth: Double = ${num(G.needle['major-width'])}
     public static let needleCrown: Double = ${num(G.needle.crown)}
     public static let needleCapShadow: Double = ${num(G.needle['cap-shadow'])}
+    public static let rigPitch: Double = ${num(G.rig.pitch)}
+    public static let rigPadding: Double = ${num(G.rig.padding)}
+    public static let rigRadius: Double = ${num(G.rig.radius)}
+    public static let rigTray: Double = ${num(G.rig.tray)}
+    public static let rigJack: Double = ${num(G.rig.jack)}
+    public static let rigGap: Double = ${num(G.rig.gap)}
+    public static let rigTop: Double = ${num(G.rig.top)}
+    public static let rigSpacing: Double = ${num(G.rig.spacing)}
+    public static let rigSlack: Double = ${num(G.rig.slack)}
+    public static let rigTravel: Double = ${num(G.rig.travel)}
+    public static let rigBead: (radius: Double, alpha: Double) = (${G.rig.bead.map(num).join(', ')})
+    public static let rigVoices: Int = ${G.rig.voices}
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}

@@ -387,6 +387,20 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testReadingRig() throws {
+        let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures")
+        let catalog = try ["needle-gauge", "counter-drum"].reduce(into: [String: MetalGadgetSpec]()) { $0[$1] = try MetalGadgetSpec.decode(Data(contentsOf: dir.appendingPathComponent("\($1).gadget.json"))) }
+        let spec = try MetalRigSpec.decode(Data(contentsOf: dir.appendingPathComponent("reading.rig.json")))
+        for colorway in MetalColorway.allCases {
+            let view = MetalRig(spec: spec, catalog: catalog, width: 560)
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-reading-rig-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

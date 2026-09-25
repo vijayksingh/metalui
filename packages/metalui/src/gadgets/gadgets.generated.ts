@@ -600,6 +600,23 @@ export const GADGETS = {
     "crown": 0.14,
     "capShadow": 0.4
   },
+  "rig": {
+    "pitch": 440,
+    "padding": 40,
+    "radius": 91,
+    "tray": 8,
+    "jack": 40,
+    "gap": 28,
+    "top": 110,
+    "spacing": 52,
+    "travel": 260,
+    "bead": [
+      7,
+      0.95
+    ],
+    "voices": 3,
+    "slack": 120
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,
