@@ -1,6 +1,10 @@
 /* ─────────────────────────────────────────────────────────
  * WORD SETTLE: a finished word, made better with full context
  *
+ * Owner (2026-09-25): whole-word moves made words worse, changing the whole word when one letter was
+ * broken. They are off (`wholeWord: false`); only local repairs run (today the short leg). The
+ * whole-word steps stay below for later, behind the flag.
+ *
  * Phase 2 of the ink engine (its design doc, §4.10). Runs once on a
  * finished word (the pen has moved on) over its assisted strokes, and returns where every sample
  * should settle. Sample count and order never change. Steps, in order:
@@ -41,6 +45,9 @@ export interface WordParams {
   budgetP50Xh: number;
   /** Trust: bottoms scatter at most this many x-heights (RMS) around the line; the line tilts at most this. */
   trustSpreadXh: number; trustTiltDeg: number;
+  /** Whole-word moves (levelling, straightening, size and slant evening). Off: the owner found they
+   * change the whole word when the problem is one broken letter; only local repairs run. */
+  wholeWord: boolean;
   /** Levelling: a word tilted between min and max degrees turns `levelGain` of the way to level, at most clamp. */
   levelGain: number; levelMinDeg: number; levelMaxDeg: number; levelClampDeg: number;
 }
@@ -54,6 +61,7 @@ export const WORD_PARAMS: WordParams = {
   xHeightMinPx: 4, xHeightMaxPx: 60,
   budgetP50Xh: 0.1,
   trustSpreadXh: 0.4, trustTiltDeg: 25,
+  wholeWord: false,
   levelGain: 0.5, levelMinDeg: 3, levelMaxDeg: 25, levelClampDeg: 8,
 };
 
@@ -163,18 +171,19 @@ export function settleWord(strokes: InkSample[][], p: WordParams = WORD_PARAMS, 
   const onLine = strokes.flatMap((st) => extrema(st).bottoms.map((i) => st[i].y - B0(st[i].x))).filter((r) => Math.abs(r) < 0.6 * xh);
   const spread = onLine.length ? Math.sqrt(onLine.reduce((a, r) => a + r * r, 0) / onLine.length) : Infinity;
   const trusted = !(onLine.length < 3 || spread > p.trustSpreadXh * xh || Math.abs(Math.atan(frame.b)) > (p.trustTiltDeg * Math.PI) / 180);
-  if (!trusted) {
+  if (!trusted || !p.wholeWord) {
     // Finishing a short leg needs only the letter's own legs, not a trusted baseline: it still runs.
     const out = strokes.map((st) => st.map((q) => ({ ...q })));
     const letterOk = out.map((st) => letterLike(st, frame));
     let extended = false;
     out.forEach((st, k) => { if (letterOk[k] && extendLegs(st, frame, p, corner, settleMs)) extended = true; });
+    if (!extended && !p.wholeWord) { lastWordNote = 'left as written: no broken letter it knows how to repair'; return null; }
     if (!extended) {
       const why = onLine.length < 3 ? `only ${onLine.length} letter bottoms on the line` : spread > p.trustSpreadXh * xh ? `its bottoms scatter ${(spread / xh).toFixed(2)} x-height around the line (limit ${p.trustSpreadXh})` : `it tilts ${Math.abs(Math.atan(frame.b) * 180 / Math.PI).toFixed(0)}° (steeper than ${p.trustTiltDeg}° reads as deliberate)`;
       lastWordNote = `left as written: its lines are unclear, ${why}`;
       return null;
     }
-    lastWordNote = 'a short leg finished; the rest left as written (lines unclear)';
+    lastWordNote = p.wholeWord ? 'a short leg finished; the rest left as written (lines unclear)' : 'a short leg finished; everything else left exactly as written';
     const m = out.flatMap((st, k) => st.map((q, i) => Math.hypot(q.x - strokes[k][i].x, q.y - strokes[k][i].y)));
     return { strokes: out, frame, budget: { p50: median(m), p95: quantile(m, 0.95), max: Math.max(...m) } };
   }
