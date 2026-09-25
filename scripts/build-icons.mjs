@@ -1,5 +1,5 @@
 // icons/src/icons.mjs → React catalog + scoped CSS + storyboards, standalone SVGs, icons.json.
-// The motion engine (spring curves, base CSS, selector expansion, static bake) is the Kamui
+// The motion engine (spring curves, base CSS, selector expansion, static bake) is the reference
 // icon builder's, unchanged except for the class names; every icon's geometry and motion is
 // copied verbatim, so the React icons move exactly like the approved sheet.
 import { ICONS } from '../packages/metalui/icons/src/icons.mjs';
@@ -8,7 +8,7 @@ import { emit, finish } from './lib/emit.mjs';
 import { staticSvg, SW } from './lib/static-svg.mjs';
 import { buildLife } from './lib/life-icons.mjs';
 
-// ---------- spring easing as CSS linear() (identical to the Kamui builder) ----------
+// ---------- spring easing as CSS linear() (identical to the reference builder) ----------
 function spring(z, T, n = 44) {
   const w = 4.6 / (z * T), wd = w * Math.sqrt(1 - z * z);
   const pts = [];
@@ -103,6 +103,16 @@ ${defs}${ic.body.replace(/&-/g, id + '-')}
 
 // ---------- outputs ----------
 const pascal = (n) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
+// Keyframes are global: two icons naming one the same plays the later one's on both.
+const keyframeOwner = new Map();
+for (const ic of ICONS) {
+  for (const [, kf] of (ic.mo || '').matchAll(/@keyframes ([\w-]+)/g)) {
+    const other = keyframeOwner.get(kf);
+    if (other && other !== ic.name) throw new Error(`icons: @keyframes ${kf} is defined by both ${other} and ${ic.name}`);
+    keyframeOwner.set(kf, ic.name);
+  }
+}
+
 const entries = ICONS.map((ic) => {
   const tracks = pressTrack(ic);
   const pressMs = tracks.reduce((m, t) => Math.max(m, t.delay + t.ms), 0);
