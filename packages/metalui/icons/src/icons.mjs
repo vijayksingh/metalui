@@ -442,7 +442,9 @@ export const ICONS = [
 
 // Each converted icon's act lives in acts/<name>.mjs (docs/ICON-MOTION.md): its body with named
 // parts, its study and its construction note. It replaces the entry's body and legacy motion.
-for (const file of readdirSync(new URL('./acts/', import.meta.url)).filter((f) => f.endsWith('.mjs')).sort()) {
+// MU_ICON_ACTS=a,b loads only those acts (the film tool, so one icon in progress never breaks another).
+const only = process.env.MU_ICON_ACTS?.split(',');
+for (const file of readdirSync(new URL('./acts/', import.meta.url)).filter((f) => f.endsWith('.mjs') && (!only || only.includes(f.slice(0, -4)))).sort()) {
   const name = file.slice(0, -4);
   const ic = ICONS.find((i) => i.name === name);
   if (!ic) throw new Error(`acts/${file}: no icon named ${name}`);

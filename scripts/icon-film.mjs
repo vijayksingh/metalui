@@ -8,12 +8,13 @@
 import { chromium } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { ICONS } from '../packages/metalui/icons/src/icons.mjs';
 import { validateStudy } from '../packages/metalui/icons/src/motion.mjs';
 import { iconActsSwift } from './lib/icon-acts-swift.mjs';
 import { animatedSvg } from './lib/icon-css.mjs';
 
 const name = process.argv[2];
+process.env.MU_ICON_ACTS = name;
+const { ICONS } = await import('../packages/metalui/icons/src/icons.mjs');
 const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined; };
 const out = resolve(arg('--out') ?? 'docs/captures/review');
 const ic = ICONS.find((i) => i.name === name);
