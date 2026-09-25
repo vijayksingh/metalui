@@ -142,6 +142,9 @@ export type Side = Record<string, ['left' | 'right', number]>;
 /** Icon callouts in two columns, each with a leader line to its anchor on the model. */
 export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpot, deps }: { bench: React.RefObject<HTMLDivElement | null>; spots: SpotDef<T>[]; side: Record<T, ['left' | 'right', number]>; spot: T; setSpot: (s: T) => void; deps: unknown[] }) {
   const [pts, setPts] = React.useState<Partial<Record<T, [number, number]>>>({});
+  // the callout under the pointer or the keyboard: its leader firms up before you choose it
+  const [near, setNear] = React.useState<T | null>(null);
+  const lineState = (id: T) => (spot === id ? 'is-on' : near === id ? 'is-near' : '');
   const [box, setBox] = React.useState({ w: 0, h: 0 });
   React.useLayoutEffect(() => {
     let raf = 0; const until = performance.now() + 1100;
@@ -178,9 +181,9 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
           if (narrow) {
             const x = rowX(s.id), y = rowY - 18;
             return (
-              <g key={s.id} className={spot === s.id ? 'is-on' : ''} style={at}>
+              <g key={s.id} className={lineState(s.id)} style={at}>
                 <path d={`M${x} ${y}V${y - 14}L${p[0]} ${p[1]}`} />
-                <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
+                <circle cx={p[0]} cy={p[1]} r={3} />
               </g>
             );
           }
@@ -188,9 +191,9 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
           const cx = sd === 'left' ? colX('left') + 36 : colX('right') - 36, cy = box.h * fy;
           const knee = sd === 'left' ? cx + 24 : cx - 24;
           return (
-            <g key={s.id} className={spot === s.id ? 'is-on' : ''} style={at}>
+            <g key={s.id} className={lineState(s.id)} style={at}>
               <path d={`M${cx} ${cy}H${knee}L${p[0]} ${p[1]}`} />
-              <circle cx={p[0]} cy={p[1]} r={spot === s.id ? 4 : 3} />
+              <circle cx={p[0]} cy={p[1]} r={3} />
             </g>
           );
         })}
@@ -200,7 +203,8 @@ export function Callouts<T extends GlyphName>({ bench, spots, side, spot, setSpo
         // --i staggers the callouts when the x-ray composes around a flown-in object
         const style = { ['--i' as string]: i, ...(narrow ? { left: rowX(s.id) - 18, top: rowY } : sd === 'left' ? { left: colX('left'), top: box.h * fy } : { right: 28, top: box.h * fy }) };
         return (
-          <button key={s.id} type="button" className={['xr-callout', sd, spot === s.id ? 'is-on' : ''].join(' ')} style={style} onClick={() => setSpot(s.id)} aria-pressed={spot === s.id} aria-label={`${s.title}: ${s.word}`} title={s.title}>
+          <button key={s.id} type="button" className={['xr-callout', sd, spot === s.id ? 'is-on' : ''].join(' ')} style={style} onClick={() => setSpot(s.id)}
+            onPointerEnter={() => setNear(s.id)} onPointerLeave={() => setNear(null)} onFocus={() => setNear(s.id)} onBlur={() => setNear(null)} aria-pressed={spot === s.id} aria-label={`${s.title}: ${s.word}`} title={s.title}>
             <span className="xr-callout-ico"><Glyph id={s.id} /></span>
           </button>
         );

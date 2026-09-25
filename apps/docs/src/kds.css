@@ -671,20 +671,33 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 .xr-overlay.is-flown .xr-bench { animation: xr-fade .5s cubic-bezier(.2, .8, .25, 1) .1s both; }
 .xr-overlay.is-flown .xr-card { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .26s both; }
 .xr-overlay.is-flown .xr-callout .xr-callout-ico { animation: xr-callout-in var(--spring-part-d, .6s) var(--spring-part, ease-out) calc(.92s + var(--i, 0) * 60ms) both; }
-.xr-overlay.is-flown .xr-leaders path, .xr-overlay.is-flown .xr-leaders circle { animation: xr-draw .42s cubic-bezier(.3, 0, .2, 1) calc(.98s + var(--i, 0) * 60ms) both; }
+.xr-overlay.is-flown .xr-leaders g { animation: xr-fade .42s ease-out calc(.98s + var(--i, 0) * 60ms) both; }
 .xr-overlay.is-flown .xr-hint, .xr-overlay.is-flown .xr-actions { animation: xr-fade .4s ease-out 1.1s both; }
 @keyframes xr-surface { from { opacity: 0; transform: translateY(14px) scale(.985); } }
 @keyframes xr-callout-in { from { opacity: 0; transform: scale(.6); } }
-@keyframes xr-draw { from { stroke-dasharray: 0 800; } to { stroke-dasharray: 800 0; } }
 @keyframes xr-fade { from { opacity: 0; } }
 /* x-ray callouts: two columns beside the model, leader lines to anchors on the object */
 .xr-bench { place-items: center; }
 .xr-anchor { position: absolute; left: 0; top: 0; width: 2px; height: 2px; }
 .xr-leaders { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: visible; max-width: none; }
-.xr-leaders path { fill: none; stroke: color-mix(in srgb, var(--ink3) 70%, transparent); stroke-width: 1; }
-.xr-leaders circle { fill: var(--page); stroke: var(--ink3); stroke-width: 1.25; }
-.xr-leaders .is-on path { stroke: var(--green-deep); stroke-width: 1.5; }
-.xr-leaders .is-on circle { fill: var(--green-deep); stroke: var(--green-deep); }
+/* Leader lines are the canvas's guide lines (presence tokens) and the anchors its connector
+ * ends: at rest a faint dotted trace with a hollow end; near (hover or focus on its callout)
+ * the dots firm up; on (the part you are reading) the dots stretch into the guide's green
+ * dash and the end fills, like an attached connector end. The dash pattern morphs between
+ * states on the part spring. */
+.xr-leaders path { fill: none; stroke: var(--ink3); stroke-opacity: .38; stroke-width: 1.25; stroke-linecap: round; stroke-dasharray: .01 4;
+  transition: stroke var(--spring-part-d) var(--spring-part), stroke-opacity var(--spring-part-d) var(--spring-part), stroke-dasharray var(--spring-part-d) var(--spring-part); }
+.xr-leaders circle { fill: var(--page); stroke: var(--ink3); stroke-opacity: .5; stroke-width: var(--mu-r-connector-end-ring, 1.5px); transform-box: fill-box; transform-origin: center;
+  transition: fill var(--spring-part-d) var(--spring-part), stroke var(--spring-part-d) var(--spring-part), stroke-opacity var(--spring-part-d) var(--spring-part), transform var(--spring-part-d) var(--spring-part); }
+.xr-leaders .is-near path { stroke: var(--ink2); stroke-opacity: .7; stroke-dasharray: 1.2 3.4; }
+.xr-leaders .is-near circle { fill: var(--ink2); stroke: var(--ink2); stroke-opacity: .7; }
+.xr-leaders .is-on path { stroke: var(--mu-presence-guide); stroke-opacity: 1; stroke-width: var(--mu-presence-guide-width, 1px); stroke-dasharray: var(--mu-presence-guide-dash, 3px) var(--mu-presence-guide-dash, 3px); stroke-linecap: butt; }
+.xr-leaders .is-on circle { fill: var(--mu-presence-guide); stroke: var(--mu-r-connector-end-ring-ink, #fff); stroke-opacity: 1; transform: scale(1.35);
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--mu-presence-guide) 55%, transparent)); }
+[data-mu-colorway="graphite"] .xr-leaders .is-on path { stroke: var(--mu-presence-guide-dark); }
+[data-mu-colorway="graphite"] .xr-leaders .is-on circle { fill: var(--mu-presence-guide-dark); stroke: var(--page); }
+html.rm .xr-leaders path, html.rm .xr-leaders circle { transition: none; }
+@media (prefers-reduced-motion: reduce) { .xr-leaders path, .xr-leaders circle { transition: none; } }
 .xr-callout { position: absolute; z-index: 3; display: flex; width: 36px; transform: translateY(-50%); cursor: pointer; }
 .xr-callout.right { flex-direction: row-reverse; text-align: right; }
 .xr-callout-ico { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; color: var(--ink2); background: var(--btn-bg); box-shadow: var(--btn-sh); transition: color .2s, background .2s, box-shadow .2s; }
