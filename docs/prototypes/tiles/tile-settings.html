@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fader bank tile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root { --spring-part: linear(0, .0757, .2492, .4565, .6551, .8209, .9441, 1.0249, 1.0694, 1.0869, 1.0785, 1.0626, 1.0444, 1.0275, 1.0136, 1.0035, .997, .9936, .9925, .9934, .9948, .9964, .9978, 1); }
+* { box-sizing: border-box; margin: 0; }
+body { font: 13px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; color: #1B1B1D; background: #F4F4F2; padding: 40px 16px 64px; }
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.lede { color: #5C5C60; max-width: 660px; margin: 6px 0 24px; }
+.stage { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 8px; border-radius: 24px; padding: 20px; }
+.stage.light { background: #F7F7F5; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.06); }
+.stage.dark { background: #0E0E0F; margin-top: 12px; }
+.stage svg { display: block; cursor: pointer; overflow: visible; }
+.cap { transition: transform .7s var(--spring-part); transform: translate(var(--x), var(--y)); }
+.c1 { --x: 128px; --y: 166px; } .c2 { --x: 200px; --y: 258px; } .c3 { --x: 272px; --y: 136px; }
+/* one act: a new mix. Hover on a pointer, or tap to toggle. */
+svg:is(:hover, .on) .c1 { --y: 244px; }
+svg:is(:hover, .on) .c2 { --y: 176px; transition-delay: 50ms; }
+svg:is(:hover, .on) .c3 { --y: 226px; transition-delay: 100ms; }
+@media (prefers-reduced-motion: reduce) { .cap { transition: none; } }
+/* The LED: a lamp behind a hole. At rest it is on, steady. While the faders
+   travel it flickers with activity (two quick pulses), then settles brighter,
+   spilling warm light onto the panel lip. Leaving eases it back. */
+.led-lamp, .led-core, .led-spill { transition: opacity .35s ease-out; }
+.led-lamp { opacity: .78; } .led-core { opacity: .35; } .led-spill { opacity: .3; }
+svg:is(:hover, .on) .led-lamp { opacity: 1; animation: led-lamp .8s linear both; }
+svg:is(:hover, .on) .led-core { opacity: 1; animation: led-core .8s linear both; }
+svg:is(:hover, .on) .led-spill { opacity: .85; animation: led-spill .8s linear both; }
+@keyframes led-lamp  { 0% { opacity: .78 } 10% { opacity: 1 } 22% { opacity: .5 } 34% { opacity: 1 } 46% { opacity: .62 } 60%, 100% { opacity: 1 } }
+@keyframes led-core  { 0% { opacity: .35 } 10% { opacity: 1 } 22% { opacity: .15 } 34% { opacity: 1 } 46% { opacity: .3 } 60%, 100% { opacity: 1 } }
+@keyframes led-spill { 0% { opacity: .3 } 10% { opacity: 1 } 22% { opacity: .2 } 34% { opacity: 1 } 46% { opacity: .35 } 60%, 100% { opacity: .85 } }
+@media (prefers-reduced-motion: reduce) { svg .led-lamp, svg .led-core, svg .led-spill { animation: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>One tile, lit properly</h1>
+  <p class="lede">Settings as a fader bank. One light from the upper left. The panel is a thick slab with rolled edges; the slots and the LED are cut into it. The caps are blocks standing on it, and each casts a soft shadow down and to the right. Grain is a slight roughness in the surface that the light picks up, plus sparse flecks. Shown at 320, 160, 64 and 32. Hover or tap: the faders move to a new mix, and the LED flickers with the activity, then settles bright.</p>
+  <div class="stage light" id="light"></div>
+  <div class="stage dark" id="dark"></div>
+</main>
+
+<template id="tile">
+<svg viewBox="0 0 400 400" role="img" aria-label="Settings">
+  <defs>
+    <!-- The panel: blurred alpha is its height; a faint noise is its roughness; one distant light shades it. -->
+    <filter id="panel" x="-15%" y="-15%" width="130%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="h0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="3" result="tex"/>
+      <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".025" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="1.12" lighting-color="#fff" result="light">
+        <feDistantLight azimuth="225" elevation="62"/>
+      </feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <!-- flecks, only on the part -->
+      <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".5"/></feComponentTransfer>
+      <!-- the slab's shadow on the ground -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="16" result="sb"/><feOffset in="sb" dx="6" dy="18" result="so"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".24"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="cb"/><feOffset in="cb" dx="1" dy="4" result="co"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".14"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+    </filter>
+    <!-- A cap: same light, a tighter bevel, and a cast shadow onto the panel. -->
+    <filter id="capf" x="-60%" y="-60%" width="240%" height="260%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="5" result="tex"/>
+      <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light">
+        <feDistantLight azimuth="225" elevation="62"/>
+      </feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="21" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="sb"/><feOffset in="sb" dx="9" dy="13" result="so"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".26"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".32"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+    </filter>
+    <!-- a hole's own darkness: shadow at the top where the wall hides the light -->
+    <filter id="holeShade" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/><feOffset in="b" dx="3" dy="6" result="o"/>
+      <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+      <feFlood flood-color="#000" flood-opacity=".55"/><feComposite in2="rim" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+    </filter>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544F"/><stop offset="1" stop-color="#7C7873"/></linearGradient>
+    <radialGradient id="ledOff" cx=".45" cy=".4" r=".65"><stop offset="0" stop-color="#8C4A2E"/><stop offset="1" stop-color="#5A2A18"/></radialGradient>
+    <radialGradient id="ledCore" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF1E2"/><stop offset=".5" stop-color="#FFD0A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFB27C" stop-opacity="0"/></radialGradient>
+    <radialGradient id="ledSpill" cx=".5" cy=".5" r=".5"><stop offset=".3" stop-color="#FF9A5C" stop-opacity=".9"/><stop offset=".6" stop-color="#FF9A5C" stop-opacity=".3"/><stop offset="1" stop-color="#FF8A4A" stop-opacity="0"/></radialGradient>
+    <filter id="ledHole" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="b"/><feOffset in="b" dx="2" dy="3.5" result="o"/>
+      <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+      <feFlood flood-color="#3A1405" flood-opacity=".6"/><feComposite in2="rim" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+    </filter>
+    <radialGradient id="ledg" cx=".45" cy=".45" r=".6"><stop offset="0" stop-color="#FFB27C"/><stop offset=".45" stop-color="#FA6A2E"/><stop offset="1" stop-color="#C9401A"/></radialGradient>
+    <linearGradient id="panelFill" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#D2D1CE"/><stop offset="1" stop-color="#C3C2BF"/></linearGradient>
+    <linearGradient id="whiteFace" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#F8F7F5"/><stop offset="1" stop-color="#E9E8E5"/></linearGradient>
+    <linearGradient id="orangeFace" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#F6A060"/><stop offset="1" stop-color="#EC8340"/></linearGradient>
+  </defs>
+
+  <!-- what you see through the cuts -->
+  <g filter="url(#holeShade)">
+    <rect x="119" y="104" width="18" height="212" rx="9" fill="url(#floor)"/>
+    <rect x="191" y="104" width="18" height="212" rx="9" fill="url(#floor)"/>
+    <rect x="263" y="104" width="18" height="212" rx="9" fill="url(#floor)"/>
+  </g>
+  <!-- the lamp, seen through its hole: a dark lens, the lit lamp over it, a hot core; the wall shades its top -->
+  <g filter="url(#ledHole)">
+    <circle cx="313" cy="78" r="11" fill="url(#ledOff)"/>
+    <circle class="led-lamp" cx="313" cy="78" r="11" fill="url(#ledg)"/>
+    <circle class="led-core" cx="314" cy="80" r="6" fill="url(#ledCore)"/>
+  </g>
+
+  <!-- the panel, with the slots and the LED cut out -->
+  <path filter="url(#panel)" fill="url(#panelFill)" fill-rule="evenodd" d="
+    M116,36 H284 A76,76 0 0 1 360,112 V280 A76,76 0 0 1 284,356 H116 A76,76 0 0 1 40,280 V112 A76,76 0 0 1 116,36 Z
+    M119,113 A9,9 0 0 1 137,113 V307 A9,9 0 0 1 119,307 Z
+    M191,113 A9,9 0 0 1 209,113 V307 A9,9 0 0 1 191,307 Z
+    M263,113 A9,9 0 0 1 281,113 V307 A9,9 0 0 1 263,307 Z
+    M302,78 A11,11 0 1 0 324,78 A11,11 0 1 0 302,78 Z"/>
+  <!-- the LED's light on the panel lip -->
+  <!-- the lamp's light on the panel around the hole (strongest on the lower lip, which faces into the hole) -->
+  <ellipse class="led-spill" cx="314" cy="81" rx="30" ry="28" fill="url(#ledSpill)" style="mix-blend-mode: screen"/>
+
+  <!-- engraved scale: a dark cut with a lit lower edge -->
+  <g stroke-linecap="round">
+    <g stroke="rgba(60,55,50,.26)" stroke-width="2">
+      <path d="M100,120h8M100,150h8M100,180h8M100,210h8M100,240h8M100,270h8M100,300h8"/>
+      <path d="M172,120h8M172,210h8M172,300h8"/>
+      <path d="M244,120h8M244,210h8M244,300h8"/>
+    </g>
+    <g stroke="rgba(255,255,255,.55)" stroke-width="1" transform="translate(0 1.6)">
+      <path d="M100,120h8M100,150h8M100,180h8M100,210h8M100,240h8M100,270h8M100,300h8"/>
+      <path d="M172,120h8M172,210h8M172,300h8"/>
+      <path d="M244,120h8M244,210h8M244,300h8"/>
+    </g>
+  </g>
+
+  <!-- the caps: a side wall under a face, grip ribs on the face -->
+  <g class="cap c1" filter="url(#capf)">
+    <rect x="-30" y="-20" width="60" height="46" rx="13" fill="#CFCDC9"/>
+    <rect x="-30" y="-24" width="60" height="44" rx="13" fill="url(#whiteFace)"/>
+    <path d="M-17,-10h34M-17,-2h34M-17,6h34" stroke="rgba(70,62,52,.2)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M-17,-8.2h34M-17,-.2h34M-17,7.8h34" stroke="rgba(255,255,255,.8)" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+  <g class="cap c2" filter="url(#capf)">
+    <rect x="-30" y="-20" width="60" height="46" rx="13" fill="#CF6E32"/>
+    <rect x="-30" y="-24" width="60" height="44" rx="13" fill="url(#orangeFace)"/>
+    <path d="M-17,-10h34M-17,-2h34M-17,6h34" stroke="rgba(120,40,5,.26)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M-17,-8.2h34M-17,-.2h34M-17,7.8h34" stroke="rgba(255,220,190,.55)" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+  <g class="cap c3" filter="url(#capf)">
+    <rect x="-30" y="-20" width="60" height="46" rx="13" fill="#CFCDC9"/>
+    <rect x="-30" y="-24" width="60" height="44" rx="13" fill="url(#whiteFace)"/>
+    <path d="M-17,-10h34M-17,-2h34M-17,6h34" stroke="rgba(70,62,52,.2)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M-17,-8.2h34M-17,-.2h34M-17,7.8h34" stroke="rgba(255,255,255,.8)" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+</svg>
+</template>
+
+<script>
+  const t = document.getElementById('tile').content;
+  for (const [id, sizes] of [['light', [320, 160, 64, 32]], ['dark', [160, 64, 32]]]) {
+    const host = document.getElementById(id);
+    for (const s of sizes) {
+      const svg = t.firstElementChild.cloneNode(true);
+      svg.setAttribute('width', s * 1.25); svg.setAttribute('height', s * 1.25);
+      svg.addEventListener('click', () => svg.classList.toggle('on'));
+      host.append(svg);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tile colour plane</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root { --spring-part: linear(0, .0757, .2492, .4565, .6551, .8209, .9441, 1.0249, 1.0694, 1.0869, 1.0785, 1.0626, 1.0444, 1.0275, 1.0136, 1.0035, .997, .9936, .9925, .9934, .9948, .9964, .9978, 1); --mono: "SF Mono", ui-monospace, Menlo, monospace; }
+* { box-sizing: border-box; margin: 0; }
+body { font: 13px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; color: #1B1B1D; background: #F4F4F2; padding: 40px 16px 64px; }
+main { max-width: 1040px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.lede { color: #5C5C60; max-width: 720px; margin: 6px 0 24px; }
+.eng { font: 600 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(40,38,32,.5); }
+.layout { display: grid; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+.card { border-radius: 24px; padding: 20px; background: #F7F7F5; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.06); }
+
+/* the plane */
+.plane { position: relative; width: 100%; aspect-ratio: 1; touch-action: none; user-select: none; }
+.plane canvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 28px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.08); }
+.axis { position: absolute; background: rgba(40,38,32,.18); pointer-events: none; }
+.axis.x { left: 0; right: 0; top: 50%; height: 1px; } .axis.y { top: 0; bottom: 0; left: 50%; width: 1px; }
+.pole { position: absolute; pointer-events: none; font: 600 9.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(40,38,32,.55); background: rgba(255,255,255,.6); padding: 4px 6px; border-radius: 6px; }
+.pole.t { top: 8px; left: 50%; translate: -50% 0; } .pole.b { bottom: 8px; left: 50%; translate: -50% 0; }
+.pole.l { left: 8px; top: 50%; translate: 0 -50%; } .pole.r { right: 8px; top: 50%; translate: 0 -50%; }
+.quad { position: absolute; pointer-events: none; font: 600 11px/1.25 -apple-system, system-ui; color: rgba(30,28,24,.62); }
+.quad small { display: block; font: 500 10px/1.35 -apple-system, system-ui; color: rgba(30,28,24,.45); margin-top: 2px; }
+.quad.q1 { right: 5%; top: 7%; text-align: right; } .quad.q2 { left: 5%; top: 7%; }
+.quad.q3 { left: 5%; bottom: 7%; } .quad.q4 { right: 5%; bottom: 7%; text-align: right; }
+.dot { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; cursor: grab; display: grid; place-items: center;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.25); }
+.dot::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1.5px rgba(255,255,255,.8); }
+.dot.ghost { width: 18px; height: 18px; margin: -9px 0 0 -9px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.9), 0 1px 3px rgba(0,0,0,.2); }
+.dot.ghost::after { width: 7px; height: 7px; }
+.dot:active { cursor: grabbing; }
+.dot b { position: absolute; top: calc(100% + 5px); left: 50%; translate: -50% 0; white-space: nowrap; font: 600 9.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: rgba(30,28,24,.7); background: rgba(255,255,255,.72); padding: 3px 5px; border-radius: 5px; }
+.dot.ghost b { font-weight: 500; color: rgba(30,28,24,.5); }
+
+/* tiles */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.tilecell { display: grid; justify-items: center; gap: 8px; padding: 14px 8px 12px; border-radius: 20px; background: #F2F2F0; }
+.tilecell .meta { display: flex; gap: 8px; align-items: center; }
+.chip { display: inline-flex; gap: 3px; }
+.chip i { width: 12px; height: 12px; border-radius: 4px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
+svg.tile { display: block; cursor: pointer; overflow: visible; }
+.future { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.future div { border-radius: 14px; padding: 10px; background: #F2F2F0; display: grid; gap: 6px; }
+.future .sw { height: 44px; border-radius: 12px; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.1); }
+.future .sw i { position: absolute; right: 8px; top: 8px; width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.rules { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 24px; color: #5C5C60; }
+.rules b { color: #1B1B1D; font-weight: 600; }
+
+/* motion (same as the tile set) */
+.led-lamp, .led-core, .led-spill { transition: opacity .35s ease-out; }
+.led-lamp { opacity: .78; } .led-core { opacity: .35; } .led-spill { opacity: .3; }
+.tile:is(:hover, .on, .play) .led-lamp { opacity: 1; animation: led-lamp .8s linear both; }
+.tile:is(:hover, .on, .play) .led-core { opacity: 1; animation: led-core .8s linear both; }
+.tile:is(:hover, .on, .play) .led-spill { opacity: .85; animation: led-spill .8s linear both; }
+@keyframes led-lamp  { 0% { opacity: .78 } 10% { opacity: 1 } 22% { opacity: .5 } 34% { opacity: 1 } 46% { opacity: .62 } 60%, 100% { opacity: 1 } }
+@keyframes led-core  { 0% { opacity: .35 } 10% { opacity: 1 } 22% { opacity: .15 } 34% { opacity: 1 } 46% { opacity: .3 } 60%, 100% { opacity: 1 } }
+@keyframes led-spill { 0% { opacity: .3 } 10% { opacity: 1 } 22% { opacity: .2 } 34% { opacity: 1 } 46% { opacity: .35 } 60%, 100% { opacity: .85 } }
+.cap { transition: transform .7s var(--spring-part); transform: translate(var(--x), var(--y)); }
+.c1 { --x: 128px; --y: 166px; } .c2 { --x: 200px; --y: 258px; } .c3 { --x: 272px; --y: 136px; }
+.faders:is(:hover, .on) .c1 { --y: 244px; } .faders:is(:hover, .on) .c2 { --y: 176px; transition-delay: 50ms; } .faders:is(:hover, .on) .c3 { --y: 226px; transition-delay: 100ms; }
+.keys:is(:hover, .play) .key .face { animation: press .62s var(--spring-part) both; }
+.keys:is(:hover, .play) .key.k .face { animation-delay: .11s; }
+@keyframes press { 0% { transform: translate(0, 0) } 14% { transform: translate(0, 6px) } 52% { transform: translate(0, 6px) } 100% { transform: translate(0, 0) } }
+.plug .body-lift { transform-box: fill-box; transform-origin: 50% 50%; }
+.patch:is(:hover, .play) .plug .body-lift { animation: reseat .9s both; }
+.patch:is(:hover, .play) .plug .lift-shadow { animation: reseat-shadow .9s both; }
+@keyframes reseat { 0% { transform: none; animation-timing-function: cubic-bezier(.3,0,.2,1); } 32% { transform: translate(-5px, -8px) scale(1.07); animation-timing-function: cubic-bezier(.5,0,.3,1.4); } 62%, 100% { transform: none; } }
+@keyframes reseat-shadow { 0%, 62%, 100% { opacity: 0 } 32% { opacity: 1 } }
+@media (prefers-reduced-motion: reduce) { .tile * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>A colour plane for tiles</h1>
+  <p class="lede">Every tile is placed on the plane by what it means, and its colours are read off its position. <b>Angle</b> picks the hue, so each quadrant covers a whole range of hues. <b>Distance</b> from the centre decides how far that hue floods the body: near the centre the body is neutral and only the accent carries colour; out at the rim the whole tile is tinted. Drag a tile's dot to watch it recolour.</p>
+
+  <div class="layout">
+    <div class="card">
+      <div class="plane" id="plane">
+        <canvas id="field" width="560" height="560"></canvas>
+        <i class="axis x"></i><i class="axis y"></i>
+        <span class="pole t">Doing ↑</span><span class="pole b">↓ Keeping</span>
+        <span class="pole l">← Inside</span><span class="pole r">Outside →</span>
+        <span class="quad q2">Making<small>your hands on your work<br>corals · tangerine · marigold</small></span>
+        <span class="quad q1">Reaching<small>your work goes out<br>teal · ice · cobalt · lilac</small></span>
+        <span class="quad q3">Holding<small>what you keep, close<br>butter · pistachio · mint</small></span>
+        <span class="quad q4">Belonging<small>you, among others<br>sea-glass · sky · fog</small></span>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="eng" style="margin-bottom:10px">Built tiles, coloured by position</div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="eng">Future tiles, predicted by position</div>
+        <div class="future" id="future"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rules">
+    <p><b>Angle picks the hue.</b> Going round the plane runs through the whole wheel once, with no jumps: sky, periwinkle, lilac, rose, coral, tangerine, marigold, butter, pistachio, mint, sea-glass and back to sky. Tiles that mean similar things get neighbouring colours.</p>
+    <p><b>Doing is vivid; keeping is quiet.</b> Toward the top, tiles glow like tinted resin. Toward the bottom they turn pale and chalky, like pastel stone: quieter but lighter, never muddy.</p>
+    <p><b>Distance decides the flood.</b> Near the centre the body is grey plastic and only the accent carries the hue, like the fader reference. At the rim the body takes the hue and the accent is the same hue, turned up, like the peach reference.</p>
+    <p><b>The accent is the rim.</b> A tile's accent part and its lamp always take the hue at full strength, wherever the tile sits. White parts stay bone. So every tile has exactly one colour idea, and no two neighbours share it.</p>
+  </div>
+</main>
+
+<!-- Shared materials (one light, one clay). Colours come from each tile's own gradients. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="panel" x="-15%" y="-15%" width="130%" height="140%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="h0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="3" result="tex"/>
+    <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".025" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+    <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+    <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="9" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+    <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+    <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".5"/></feComponentTransfer>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="16" result="sb"/><feOffset in="sb" dx="6" dy="18" result="so"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".24"/><feComposite in2="so" operator="in" result="shadow"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="cb"/><feOffset in="cb" dx="1" dy="4" result="co"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".14"/><feComposite in2="co" operator="in" result="contact"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+  </filter>
+  <filter id="capf" x="-60%" y="-60%" width="240%" height="260%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="5" result="tex"/>
+    <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+    <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+    <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="21" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+    <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+    <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="sb"/><feOffset in="sb" dx="9" dy="13" result="so"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".26"/><feComposite in2="so" operator="in" result="shadow"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".32"/><feComposite in2="co" operator="in" result="contact"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+  </filter>
+  <filter id="clay" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="tex"/>
+    <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+    <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+    <feComposite in="lit" in2="SourceAlpha" operator="in"/>
+  </filter>
+  <filter id="tube" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="7" diffuseConstant="1.1" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+    <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.04" result="lit"/>
+    <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="sb"/><feOffset in="sb" dx="7" dy="10" result="so"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".28"/><feComposite in2="so" operator="in" result="shadow"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+    <feFlood flood-color="#2B2723" flood-opacity=".3"/><feComposite in2="co" operator="in" result="contact"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/></feMerge>
+  </filter>
+  <filter id="softShadow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>
+  <filter id="holeShade" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/><feOffset in="b" dx="3" dy="6" result="o"/>
+    <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+    <feFlood flood-color="#000" flood-opacity=".55"/><feComposite in2="rim" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+  </filter>
+  <filter id="ledHole" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="b"/><feOffset in="b" dx="2" dy="3.5" result="o"/>
+    <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+    <feFlood flood-color="#1A1206" flood-opacity=".6"/><feComposite in2="rim" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+  </filter>
+  <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544F"/><stop offset="1" stop-color="#7C7873"/></linearGradient>
+  <linearGradient id="whiteFace" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#F8F7F5"/><stop offset="1" stop-color="#E9E8E5"/></linearGradient>
+  <linearGradient id="nut" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEEDEA"/><stop offset=".5" stop-color="#BDBBB6"/><stop offset="1" stop-color="#D8D6D2"/></linearGradient>
+  <radialGradient id="ledCore" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<script>
+/* ── Colour: OKLCH → sRGB, gamut-mapped by reducing chroma ─────────── */
+function oklchToRgb(L, C, h) {
+  for (let c = C; c >= 0; c -= 0.004) {
+    const a = c * Math.cos(h * Math.PI / 180), b = c * Math.sin(h * Math.PI / 180);
+    const l = (L + .3963377774 * a + .2158037573 * b) ** 3, m = (L - .1055613458 * a - .0638541728 * b) ** 3, s = (L - .0894841775 * a - 1.291485548 * b) ** 3;
+    const lin = [4.0767416621 * l - 3.3077115913 * m + .2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - .3413193965 * s, -.0041960863 * l - .7034186147 * m + 1.707614701 * s];
+    if (lin.every(v => v >= -1e-4 && v <= 1.0001)) return lin.map(v => { v = Math.min(1, Math.max(0, v)); return Math.round(255 * (v <= .0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - .055)); });
+  }
+  return [0, 0, 0];
+}
+const hex = ([r, g, b]) => '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+const lch = (L, C, h) => hex(oklchToRgb(L, C, ((h % 360) + 360) % 360));
+
+/* ── The plane → colours ────────────────────────────────────────────
+   Angle θ (0 = Outside, 90 = Doing, 180 = Inside, 270 = Keeping) picks
+   the hue from anchors every 45°, running once round the wheel. */
+const HUE = [222, 262, 345, 400, 445, 478, 512, 546, 582];   // θ = 0,45,…,360 → hue (mod 360)
+function hueAt(theta) { const i = Math.min(7, Math.floor(theta / 45)), t = (theta - i * 45) / 45; return HUE[i] + (HUE[i + 1] - HUE[i]) * t; }
+function params(x, y) {
+  const r = Math.min(1, Math.hypot(x, y));
+  const theta = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  const h = hueAt(theta);
+  const doing = (y / Math.max(r, 1e-6) * Math.min(1, r * 2.5) + 1) / 2;   // 0 keeping … 1 doing (neutral near centre)
+  const flood = r ** 1.25;                                             // how far the hue floods the body
+  const bodyC = flood * (0.05 + 0.07 * doing);                          // keeping is chalky, doing is resin
+  const bodyL = 0.855 - 0.065 * doing * flood + 0.025 * (1 - doing) * flood; // keeping is paler, never muddier
+  return { r, theta, h, doing, bodyC, bodyL };
+}
+function palette(x, y) {
+  const { r, theta, h, doing, bodyC, bodyL } = params(x, y);
+  const accC = 0.13 + 0.05 * doing, accL = 0.76 + 0.01 * doing;
+  return {
+    h, r, theta,
+    bodyTop: lch(bodyL + 0.025, bodyC * 0.85, h - 6), bodyBot: lch(bodyL - 0.035, bodyC * 1.1, h + 6),
+    accTop: lch(accL + 0.04, accC * 0.9, h - 8), accBot: lch(accL - 0.03, accC, h + 4), accSkirt: lch(accL - 0.12, accC * 0.95, h + 6),
+    lamp: lch(0.8, 0.16, h), lampDeep: lch(0.6, 0.17, h + 4), lampOff: lch(0.36, 0.05, h),
+  };
+}
+
+/* ── The field: the body colour at every point of the plane ── */
+const cv = document.getElementById('field'), ctx = cv.getContext('2d');
+(function paint() {
+  const W = cv.width, img = ctx.createImageData(W, W);
+  for (let j = 0; j < W; j++) for (let i = 0; i < W; i++) {
+    const x = (i / (W - 1)) * 2 - 1, y = 1 - (j / (W - 1)) * 2;
+    const { h, bodyC, bodyL } = params(x, y), k = (j * W + i) * 4;
+    const [R, G, B] = oklchToRgb(bodyL, bodyC, ((h % 360) + 360) % 360);
+    img.data[k] = R; img.data[k + 1] = G; img.data[k + 2] = B; img.data[k + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+})();
+function hexToRgb(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+
+/* ── Tiles (drawings from the tile set; colours by id) ── */
+const BODY = 'M116,36 H284 A76,76 0 0 1 360,112 V280 A76,76 0 0 1 284,356 H116 A76,76 0 0 1 40,280 V112 A76,76 0 0 1 116,36 Z';
+const LED = { x: 313, y: 78 };
+const ledCut = `M${LED.x - 11},${LED.y} A11,11 0 1 0 ${LED.x + 11},${LED.y} A11,11 0 1 0 ${LED.x - 11},${LED.y} Z`;
+const defsFor = (u) => `<defs>
+  <linearGradient id="b-${u}" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" data-c="bodyTop"/><stop offset="1" data-c="bodyBot"/></linearGradient>
+  <linearGradient id="a-${u}" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" data-c="accTop"/><stop offset="1" data-c="accBot"/></linearGradient>
+  <radialGradient id="l-${u}" cx=".45" cy=".45" r=".6"><stop offset="0" data-c="lamp"/><stop offset="1" data-c="lampDeep"/></radialGradient>
+  <radialGradient id="lo-${u}" cx=".45" cy=".4" r=".65"><stop offset="0" data-c="lampOff"/><stop offset="1" stop-color="#1E1A16"/></radialGradient>
+  <radialGradient id="s-${u}" cx=".5" cy=".5" r=".5"><stop offset=".3" data-c="lamp" stop-opacity=".9"/><stop offset=".6" data-c="lamp" stop-opacity=".3"/><stop offset="1" data-c="lamp" stop-opacity="0"/></radialGradient>
+</defs>`;
+const lamp = (u) => `<g filter="url(#ledHole)"><circle cx="${LED.x}" cy="${LED.y}" r="11" fill="url(#lo-${u})"/><circle class="led-lamp" cx="${LED.x}" cy="${LED.y}" r="11" fill="url(#l-${u})"/><circle class="led-core" cx="${LED.x + 1}" cy="${LED.y + 2}" r="6" fill="url(#ledCore)"/></g>`;
+const spill = (u) => `<ellipse class="led-spill" cx="${LED.x + 1}" cy="${LED.y + 3}" rx="30" ry="28" fill="url(#s-${u})" style="mix-blend-mode: screen"/>`;
+const panel = (u, cuts = '') => `<path filter="url(#panel)" fill="url(#b-${u})" fill-rule="evenodd" d="${BODY} ${cuts} ${ledCut}"/>`;
+const slot = (x, y0, y1, w = 18) => `M${x - w / 2},${y0 + w / 2} A${w / 2},${w / 2} 0 0 1 ${x + w / 2},${y0 + w / 2} V${y1 - w / 2} A${w / 2},${w / 2} 0 0 1 ${x - w / 2},${y1 - w / 2} Z`;
+const engrave = (d) => `<g stroke-linecap="round" fill="none"><path d="${d}" stroke="rgba(40,35,30,.24)" stroke-width="2"/><path d="${d}" stroke="rgba(255,255,255,.5)" stroke-width="1" transform="translate(0 1.6)"/></g>`;
+const ribs = (acc) => `<path d="M-17,-10h34M-17,-2h34M-17,6h34" stroke="${acc ? 'rgba(0,0,0,.18)' : 'rgba(70,62,52,.2)'}" stroke-width="2.4" stroke-linecap="round"/><path d="M-17,-8.2h34M-17,-.2h34M-17,7.8h34" stroke="${acc ? 'rgba(255,255,255,.4)' : 'rgba(255,255,255,.8)'}" stroke-width="1.1" stroke-linecap="round"/>`;
+
+const DRAW = {
+  faders: (u) => {
+    const cap = (cls, acc) => `<g class="cap ${cls}" filter="url(#capf)"><rect x="-30" y="-20" width="60" height="46" rx="13" ${acc ? 'data-f="accSkirt"' : 'fill="#CFCDC9"'}/><rect x="-30" y="-24" width="60" height="44" rx="13" fill="url(#${acc ? 'a-' + u : 'whiteFace'})"/>${ribs(acc)}</g>`;
+    return `<g filter="url(#holeShade)">${[128, 200, 272].map(x => `<rect x="${x - 9}" y="104" width="18" height="212" rx="9" fill="url(#floor)"/>`).join('')}</g>
+      ${lamp(u)}${panel(u, [128, 200, 272].map(x => slot(x, 104, 316)).join(' '))}${spill(u)}
+      ${engrave('M100,120h8M100,150h8M100,180h8M100,210h8M100,240h8M100,270h8M100,300h8M172,120h8M172,210h8M172,300h8M244,120h8M244,210h8M244,300h8')}
+      ${cap('c1')}${cap('c2', true)}${cap('c3')}`;
+  },
+  keys: (u) => {
+    const key = (cx, cy, g, acc, cls) => `<g class="key ${cls}" transform="translate(${cx} ${cy})">
+      <g filter="url(#capf)"><rect x="-56" y="-54" width="112" height="112" rx="24" ${acc ? 'data-f="accSkirt"' : 'fill="#CBC8C3"'}/></g>
+      <g class="face"><g filter="url(#clay)"><rect x="-45" y="-52" width="90" height="90" rx="19" fill="url(#${acc ? 'a-' + u : 'whiteFace'})"/>
+        <text x="0" y="1.2" text-anchor="middle" dominant-baseline="central" font-family="-apple-system, system-ui" font-weight="500" font-size="${g === 'K' ? 40 : 44}" fill="rgba(255,255,255,${acc ? .45 : .9})" transform="translate(0 -5)">${g}</text>
+        <text x="0" y="0" text-anchor="middle" dominant-baseline="central" font-family="-apple-system, system-ui" font-weight="500" font-size="${g === 'K' ? 40 : 44}" fill="rgba(${acc ? '0,0,0,.28' : '60,55,50,.5'})" transform="translate(0 -6)">${g}</text></g></g></g>`;
+    return `<g filter="url(#holeShade)"><rect x="66" y="136" width="268" height="164" rx="38" data-f="bodyBot" style="filter: brightness(.82)"/></g>
+      ${lamp(u)}${panel(u, 'M104,136 H296 A38,38 0 0 1 334,174 V262 A38,38 0 0 1 296,300 H104 A38,38 0 0 1 66,262 V174 A38,38 0 0 1 104,136 Z')}${spill(u)}
+      ${key(140, 220, '⌘', false, 'cmd')}${key(260, 220, 'K', true, 'k')}`;
+  },
+  patch: (u) => {
+    const JA = { x: 128, y: 150 }, JB = { x: 272, y: 150 };
+    const nut = (c) => `<g filter="url(#capf)"><path fill-rule="evenodd" fill="url(#nut)" d="M${c.x - 34},${c.y} a34,34 0 1 0 68,0 a34,34 0 1 0 -68,0 Z M${c.x - 15},${c.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z"/></g>`;
+    const plug = (c, acc) => `<g filter="url(#capf)"><circle cx="${c.x}" cy="${c.y + 4}" r="27" ${acc ? 'data-f="accSkirt"' : 'fill="#CBC8C3"'}/><circle cx="${c.x}" cy="${c.y}" r="25" fill="url(#${acc ? 'a-' + u : 'whiteFace'})"/>
+      ${[0, 60, 120, 180, 240, 300].map(a => `<path d="M${c.x},${c.y - 22} v5" transform="rotate(${a} ${c.x} ${c.y})" stroke="${acc ? 'rgba(0,0,0,.2)' : 'rgba(70,62,52,.22)'}" stroke-width="2.4" stroke-linecap="round"/>`).join('')}</g>`;
+    return `<g filter="url(#holeShade)"><circle cx="${JA.x}" cy="${JA.y}" r="15" fill="url(#floor)"/><circle cx="${JB.x}" cy="${JB.y}" r="15" fill="url(#floor)"/></g>
+      ${lamp(u)}${panel(u, `M${JA.x - 15},${JA.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z M${JB.x - 15},${JB.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z`)}${spill(u)}
+      ${nut(JA)}${nut(JB)}
+      <path filter="url(#tube)" d="M${JA.x},${JA.y + 20} C${JA.x - 6},${JA.y + 150} ${JB.x + 6},${JB.y + 150} ${JB.x},${JB.y + 20}" fill="none" stroke="#ECEAE6" stroke-width="20" stroke-linecap="round"/>
+      ${plug(JA, false)}
+      <g class="plug"><circle class="lift-shadow" cx="${JB.x + 10}" cy="${JB.y + 14}" r="28" fill="rgba(43,39,35,.35)" filter="url(#softShadow)" opacity="0"/><g class="body-lift">${plug(JB, true)}</g></g>`;
+  },
+};
+
+/* Where each tile sits, by meaning. */
+const BUILT = [
+  { id: 'faders', name: 'Settings', why: 'Your machine, gently active. Close to the centre: grey plastic, one tangerine cap.', x: -0.34, y: 0.2 },
+  { id: 'keys', name: 'Shortcuts', why: 'Your hands, acting. Far into Making: coral resin.', x: -0.56, y: 0.74 },
+  { id: 'patch', name: 'Sync', why: 'Your work reaching out. Into Reaching: ice and cobalt.', x: 0.8, y: 0.42 },
+];
+const FUTURE = [
+  { name: 'Capture', x: 0.12, y: 0.9 }, { name: 'Share', x: 0.92, y: -0.02 }, { name: 'Account', x: 0.5, y: -0.72 },
+  { name: 'Storage', x: -0.72, y: -0.5 }, { name: 'Memory', x: -0.12, y: -0.92 }, { name: 'Draw', x: -0.9, y: 0.36 },
+  { name: 'Search', x: 0.46, y: 0.7 }, { name: 'Trash', x: -0.5, y: -0.86 },
+];
+
+const plane = document.getElementById('plane');
+const place = (el, x, y) => { el.style.left = `${(x + 1) / 2 * 100}%`; el.style.top = `${(1 - y) / 2 * 100}%`; };
+const tilesHost = document.getElementById('tiles'), futureHost = document.getElementById('future');
+let uid = 0;
+
+function colorize(svg, p) {
+  svg.querySelectorAll('[data-c]').forEach(s => s.setAttribute('stop-color', p[s.dataset.c]));
+  svg.querySelectorAll('[data-f]').forEach(s => s.setAttribute('fill', p[s.dataset.f]));
+}
+function chips(p) { return `<span class="chip"><i style="background:${p.bodyTop}"></i><i style="background:${p.accBot}"></i><i style="background:${p.lamp}"></i></span>`; }
+
+for (const t of BUILT) {
+  const u = `t${uid++}`;
+  const cell = document.createElement('div'); cell.className = 'tilecell';
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 400 400'); svg.setAttribute('class', `tile ${t.id}`); svg.setAttribute('width', 170); svg.setAttribute('height', 170);
+  svg.innerHTML = defsFor(u) + DRAW[t.id](u);
+  svg.addEventListener('click', () => { if (t.id === 'faders') return svg.classList.toggle('on'); svg.classList.remove('play'); void svg.getBoundingClientRect(); svg.classList.add('play'); setTimeout(() => svg.classList.remove('play'), 1000); });
+  const meta = document.createElement('div'); meta.className = 'meta';
+  const label = document.createElement('span'); label.className = 'eng'; label.textContent = t.name;
+  meta.append(label);
+  const why = document.createElement('div'); why.style.cssText = 'color:#6A6A6E;font-size:11.5px;text-align:center;max-width:180px;line-height:1.4';
+  why.textContent = t.why;
+  cell.append(svg, meta, why); tilesHost.append(cell);
+
+  const dot = document.createElement('div'); dot.className = 'dot'; dot.innerHTML = `<b>${t.name}</b>`; plane.append(dot);
+  const update = () => {
+    const p = palette(t.x, t.y);
+    colorize(svg, p); place(dot, t.x, t.y);
+    dot.style.background = p.bodyTop; dot.style.setProperty('--accent', p.accBot);
+    meta.querySelector('.chip')?.remove(); meta.insertAdjacentHTML('beforeend', chips(p));
+  };
+  update();
+  dot.addEventListener('pointerdown', (e) => {
+    dot.setPointerCapture(e.pointerId);
+    const move = (ev) => {
+      const r = plane.getBoundingClientRect();
+      t.x = Math.max(-1, Math.min(1, ((ev.clientX - r.left) / r.width) * 2 - 1));
+      t.y = Math.max(-1, Math.min(1, 1 - ((ev.clientY - r.top) / r.height) * 2));
+      update();
+    };
+    dot.addEventListener('pointermove', move);
+    dot.addEventListener('pointerup', () => dot.removeEventListener('pointermove', move), { once: true });
+  });
+}
+for (const f of FUTURE) {
+  const p = palette(f.x, f.y);
+  const dot = document.createElement('div'); dot.className = 'dot ghost'; dot.innerHTML = `<b>${f.name}</b>`;
+  dot.style.background = p.bodyTop; dot.style.setProperty('--accent', p.accBot); place(dot, f.x, f.y); plane.append(dot);
+  futureHost.insertAdjacentHTML('beforeend', `<div><span class="sw" style="background:linear-gradient(160deg, ${p.bodyTop}, ${p.bodyBot})"><i style="background:radial-gradient(circle at 40% 35%, ${p.accTop}, ${p.accBot})"></i></span><span class="eng">${f.name}</span></div>`);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hardware tiles</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root { --spring-part: linear(0, .0757, .2492, .4565, .6551, .8209, .9441, 1.0249, 1.0694, 1.0869, 1.0785, 1.0626, 1.0444, 1.0275, 1.0136, 1.0035, .997, .9936, .9925, .9934, .9948, .9964, .9978, 1); }
+* { box-sizing: border-box; margin: 0; }
+body { font: 13px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; color: #1B1B1D; background: #F4F4F2; padding: 40px 16px 64px; }
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+h2 { font: 600 10px/1 "SF Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: rgba(40,38,32,.5); margin: 28px 0 10px; }
+.lede { color: #5C5C60; max-width: 680px; margin: 6px 0 8px; }
+.row { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 8px; border-radius: 24px; padding: 20px; background: #F7F7F5; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.06); }
+.row p { color: #5C5C60; max-width: 300px; margin-left: 12px; align-self: center; }
+.dark { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; border-radius: 24px; padding: 28px 20px; background: #0E0E0F; margin-top: 12px; }
+svg.tile { display: block; cursor: pointer; overflow: visible; -webkit-tap-highlight-color: transparent; }
+
+/* ── The lamp (every tile has one): dim at rest; flickers with the act, settles bright ── */
+.led-lamp, .led-core, .led-spill { transition: opacity .35s ease-out; }
+.led-lamp { opacity: .78; } .led-core { opacity: .35; } .led-spill { opacity: .3; }
+.tile:is(:hover, .on, .play) .led-lamp { opacity: 1; animation: led-lamp .8s linear both; }
+.tile:is(:hover, .on, .play) .led-core { opacity: 1; animation: led-core .8s linear both; }
+.tile:is(:hover, .on, .play) .led-spill { opacity: .85; animation: led-spill .8s linear both; }
+@keyframes led-lamp  { 0% { opacity: .78 } 10% { opacity: 1 } 22% { opacity: .5 } 34% { opacity: 1 } 46% { opacity: .62 } 60%, 100% { opacity: 1 } }
+@keyframes led-core  { 0% { opacity: .35 } 10% { opacity: 1 } 22% { opacity: .15 } 34% { opacity: 1 } 46% { opacity: .3 } 60%, 100% { opacity: 1 } }
+@keyframes led-spill { 0% { opacity: .3 } 10% { opacity: 1 } 22% { opacity: .2 } 34% { opacity: 1 } 46% { opacity: .35 } 60%, 100% { opacity: .85 } }
+
+/* ── Settings · faders: a held state (the new mix stays while hovered) ── */
+.cap { transition: transform .7s var(--spring-part); transform: translate(var(--x), var(--y)); }
+.c1 { --x: 128px; --y: 166px; } .c2 { --x: 200px; --y: 258px; } .c3 { --x: 272px; --y: 136px; }
+.faders:is(:hover, .on) .c1 { --y: 244px; }
+.faders:is(:hover, .on) .c2 { --y: 176px; transition-delay: 50ms; }
+.faders:is(:hover, .on) .c3 { --y: 226px; transition-delay: 100ms; }
+
+/* ── Shortcuts · keys: a momentary chord, ⌘ then K ── */
+.key .face { transform: translate(0, 0); }
+.keys:is(:hover, .play) .key .face { animation: press .62s var(--spring-part) both; }
+.keys:is(:hover, .play) .key.k .face { animation-delay: .11s; }
+@keyframes press { 0% { transform: translate(0, 0) } 14% { transform: translate(0, 6px) } 52% { transform: translate(0, 6px) } 100% { transform: translate(0, 0) } }
+
+/* ── Sync · patch: the plug lifts out and seats again ── */
+.plug .body-lift { transform-box: fill-box; transform-origin: 50% 50%; }
+.patch:is(:hover, .play) .plug .body-lift { animation: reseat .9s both; }
+.patch:is(:hover, .play) .plug .lift-shadow { animation: reseat-shadow .9s both; }
+@keyframes reseat {
+  0% { transform: translate(0, 0) scale(1); animation-timing-function: cubic-bezier(.3,0,.2,1); }
+  32% { transform: translate(-5px, -8px) scale(1.07); animation-timing-function: cubic-bezier(.5,0,.3,1.4); }
+  62%, 100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes reseat-shadow { 0%, 62%, 100% { opacity: 0 } 32% { opacity: 1 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile *, .tile *::before { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Hardware tiles</h1>
+  <p class="lede">One object per tile, lit by one light from the upper left. Parts have thickness and cast shadows down and to the right. Cuts have a shadowed top and a lit lower lip. The finish is matte clay with fine grain. Every tile has one orange lamp, which flickers when the tile acts. Hover or tap a tile to play it.</p>
+  <div id="set"></div>
+  <section class="dark" id="dark"></section>
+</main>
+
+<!-- Shared materials: one light, one clay, one lamp. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="panel" x="-15%" y="-15%" width="130%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="h0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="3" result="tex"/>
+      <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".025" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".5"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="16" result="sb"/><feOffset in="sb" dx="6" dy="18" result="so"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".24"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="cb"/><feOffset in="cb" dx="1" dy="4" result="co"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".14"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+    </filter>
+    <!-- a part standing on the panel: tight bevel, cast shadow, contact line -->
+    <filter id="capf" x="-60%" y="-60%" width="240%" height="260%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="5" result="tex"/>
+      <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="21" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="sb"/><feOffset in="sb" dx="9" dy="13" result="so"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".26"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".32"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+    </filter>
+    <!-- the same clay with no cast shadow (for a part whose shadow moves on its own) -->
+    <filter id="clay" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="tex"/>
+      <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="31" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+      <feMerge><feMergeNode in="obj"/><feMergeNode in="fleck"/></feMerge>
+    </filter>
+    <!-- a cable: a tube lying on the panel -->
+    <filter id="tube" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="7" diffuseConstant="1.1" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.04" result="lit"/>
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="sb"/><feOffset in="sb" dx="7" dy="10" result="so"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".28"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+      <feFlood flood-color="#2B2723" flood-opacity=".3"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/></feMerge>
+    </filter>
+    <filter id="softShadow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>
+    <!-- a cut: its top wall hides the light -->
+    <filter id="holeShade" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/><feOffset in="b" dx="3" dy="6" result="o"/>
+      <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+      <feFlood flood-color="#000" flood-opacity=".55"/><feComposite in2="rim" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+    </filter>
+    <filter id="ledHole" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="b"/><feOffset in="b" dx="2" dy="3.5" result="o"/>
+      <feComposite in="SourceAlpha" in2="o" operator="out" result="rim"/>
+      <feFlood flood-color="#3A1405" flood-opacity=".6"/><feComposite in2="rim" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+    </filter>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544F"/><stop offset="1" stop-color="#7C7873"/></linearGradient>
+    <linearGradient id="tray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3AEA7"/><stop offset="1" stop-color="#C7C2BB"/></linearGradient>
+    <radialGradient id="ledOff" cx=".45" cy=".4" r=".65"><stop offset="0" stop-color="#8C4A2E"/><stop offset="1" stop-color="#5A2A18"/></radialGradient>
+    <radialGradient id="ledg" cx=".45" cy=".45" r=".6"><stop offset="0" stop-color="#FFB27C"/><stop offset=".45" stop-color="#FA6A2E"/><stop offset="1" stop-color="#C9401A"/></radialGradient>
+    <radialGradient id="ledCore" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF1E2"/><stop offset=".5" stop-color="#FFD0A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFB27C" stop-opacity="0"/></radialGradient>
+    <radialGradient id="ledSpill" cx=".5" cy=".5" r=".5"><stop offset=".3" stop-color="#FF9A5C" stop-opacity=".9"/><stop offset=".6" stop-color="#FF9A5C" stop-opacity=".3"/><stop offset="1" stop-color="#FF8A4A" stop-opacity="0"/></radialGradient>
+    <linearGradient id="greyPanel" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#D2D1CE"/><stop offset="1" stop-color="#C3C2BF"/></linearGradient>
+    <linearGradient id="bonePanel" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#E8E5E0"/><stop offset="1" stop-color="#D9D5CF"/></linearGradient>
+    <linearGradient id="stonePanel" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#C4BFBA"/><stop offset="1" stop-color="#ADA8A3"/></linearGradient>
+    <linearGradient id="whiteFace" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#F8F7F5"/><stop offset="1" stop-color="#E9E8E5"/></linearGradient>
+    <linearGradient id="orangeFace" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#F6A060"/><stop offset="1" stop-color="#EC8340"/></linearGradient>
+    <linearGradient id="nut" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEEDEA"/><stop offset=".5" stop-color="#BDBBB6"/><stop offset="1" stop-color="#D8D6D2"/></linearGradient>
+    <clipPath id="bodyClip"><path d="M116,36 H284 A76,76 0 0 1 360,112 V280 A76,76 0 0 1 284,356 H116 A76,76 0 0 1 40,280 V112 A76,76 0 0 1 116,36 Z"/></clipPath>
+  </defs>
+</svg>
+
+<script>
+const BODY = 'M116,36 H284 A76,76 0 0 1 360,112 V280 A76,76 0 0 1 284,356 H116 A76,76 0 0 1 40,280 V112 A76,76 0 0 1 116,36 Z';
+const LED = { x: 313, y: 78 };
+const ledCut = `M${LED.x - 11},${LED.y} A11,11 0 1 0 ${LED.x + 11},${LED.y} A11,11 0 1 0 ${LED.x - 11},${LED.y} Z`;
+const ledLamp = `<g filter="url(#ledHole)">
+    <circle cx="${LED.x}" cy="${LED.y}" r="11" fill="url(#ledOff)"/>
+    <circle class="led-lamp" cx="${LED.x}" cy="${LED.y}" r="11" fill="url(#ledg)"/>
+    <circle class="led-core" cx="${LED.x + 1}" cy="${LED.y + 2}" r="6" fill="url(#ledCore)"/></g>`;
+const ledSpill = `<ellipse class="led-spill" cx="${LED.x + 1}" cy="${LED.y + 3}" rx="30" ry="28" fill="url(#ledSpill)" style="mix-blend-mode: screen"/>`;
+const panel = (fill, cuts = '') => `<path filter="url(#panel)" fill="url(#${fill})" fill-rule="evenodd" d="${BODY} ${cuts} ${ledCut}"/>`;
+const slot = (x, y0, y1, w = 18) => `M${x - w / 2},${y0 + w / 2} A${w / 2},${w / 2} 0 0 1 ${x + w / 2},${y0 + w / 2} V${y1 - w / 2} A${w / 2},${w / 2} 0 0 1 ${x - w / 2},${y1 - w / 2} Z`;
+const engrave = (d) => `<g stroke-linecap="round" fill="none"><path d="${d}" stroke="rgba(60,55,50,.26)" stroke-width="2"/><path d="${d}" stroke="rgba(255,255,255,.55)" stroke-width="1" transform="translate(0 1.6)"/></g>`;
+
+/* ── 1. Settings · a fader bank ── */
+const faderCap = (cls, orange) => `<g class="cap ${cls}" filter="url(#capf)">
+    <rect x="-30" y="-20" width="60" height="46" rx="13" fill="${orange ? '#CF6E32' : '#CFCDC9'}"/>
+    <rect x="-30" y="-24" width="60" height="44" rx="13" fill="url(#${orange ? 'orangeFace' : 'whiteFace'})"/>
+    <path d="M-17,-10h34M-17,-2h34M-17,6h34" stroke="${orange ? 'rgba(120,40,5,.26)' : 'rgba(70,62,52,.2)'}" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M-17,-8.2h34M-17,-.2h34M-17,7.8h34" stroke="${orange ? 'rgba(255,220,190,.55)' : 'rgba(255,255,255,.8)'}" stroke-width="1.1" stroke-linecap="round"/></g>`;
+const faders = () => `
+  <g filter="url(#holeShade)">${[128, 200, 272].map(x => `<rect x="${x - 9}" y="104" width="18" height="212" rx="9" fill="url(#floor)"/>`).join('')}</g>
+  ${ledLamp}
+  ${panel('greyPanel', [128, 200, 272].map(x => slot(x, 104, 316)).join(' '))}
+  ${ledSpill}
+  ${engrave('M100,120h8M100,150h8M100,180h8M100,210h8M100,240h8M100,270h8M100,300h8M172,120h8M172,210h8M172,300h8M244,120h8M244,210h8M244,300h8')}
+  ${faderCap('c1')}${faderCap('c2', true)}${faderCap('c3')}`;
+
+/* ── 2. Shortcuts · two keycaps in a tray ── */
+const key = (cx, cy, glyph, orange, cls) => `<g class="key ${cls}" transform="translate(${cx} ${cy})">
+    <g filter="url(#capf)"><rect x="-56" y="-54" width="112" height="112" rx="24" fill="${orange ? '#C96A30' : '#CBC8C3'}"/></g>
+    <g class="face"><g filter="url(#clay)">
+      <rect x="-45" y="-52" width="90" height="90" rx="19" fill="url(#${orange ? 'orangeFace' : 'whiteFace'})"/>
+      <text x="0" y="1.2" text-anchor="middle" dominant-baseline="central" font-family="-apple-system, 'SF Pro Display', system-ui" font-weight="500" font-size="${glyph === 'K' ? 40 : 44}" fill="${orange ? 'rgba(255,225,200,.6)' : 'rgba(255,255,255,.9)'}" transform="translate(0 -5)">${glyph}</text>
+      <text x="0" y="0" text-anchor="middle" dominant-baseline="central" font-family="-apple-system, 'SF Pro Display', system-ui" font-weight="500" font-size="${glyph === 'K' ? 40 : 44}" fill="${orange ? 'rgba(110,35,5,.42)' : 'rgba(60,55,50,.5)'}" transform="translate(0 -6)">${glyph}</text>
+    </g></g></g>`;
+const keys = () => `
+  <g filter="url(#holeShade)"><rect x="66" y="136" width="268" height="164" rx="38" fill="url(#tray)"/></g>
+  ${ledLamp}
+  ${panel('bonePanel', `M104,136 H296 A38,38 0 0 1 334,174 V262 A38,38 0 0 1 296,300 H104 A38,38 0 0 1 66,262 V174 A38,38 0 0 1 104,136 Z`)}
+  ${ledSpill}
+    ${key(140, 220, '⌘', false, 'cmd')}${key(260, 220, 'K', true, 'k')}`;
+
+/* ── 3. Sync · two jacks, joined by one patch cable ── */
+const JA = { x: 128, y: 150 }, JB = { x: 272, y: 150 };
+const nut = (c) => `<g filter="url(#capf)"><path fill-rule="evenodd" fill="url(#nut)" d="M${c.x - 34},${c.y} a34,34 0 1 0 68,0 a34,34 0 1 0 -68,0 Z M${c.x - 15},${c.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z"/></g>`;
+const plug = (c, orange) => `<g filter="url(#capf)">
+      <circle cx="${c.x}" cy="${c.y + 4}" r="27" fill="${orange ? '#C96A30' : '#CBC8C3'}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="25" fill="url(#${orange ? 'orangeFace' : 'whiteFace'})"/>
+      <circle cx="${c.x}" cy="${c.y}" r="11" fill="${orange ? '#F2914F' : '#F1F0ED'}"/>
+      ${[0, 60, 120, 180, 240, 300].map(a => `<path d="M${c.x},${c.y - 22} v5" transform="rotate(${a} ${c.x} ${c.y})" stroke="${orange ? 'rgba(120,40,5,.28)' : 'rgba(70,62,52,.22)'}" stroke-width="2.4" stroke-linecap="round"/>`).join('')}
+    </g>`;
+const patch = () => `
+  <g filter="url(#holeShade)"><circle cx="${JA.x}" cy="${JA.y}" r="15" fill="url(#floor)"/><circle cx="${JB.x}" cy="${JB.y}" r="15" fill="url(#floor)"/></g>
+  ${ledLamp}
+  ${panel('stonePanel', `M${JA.x - 15},${JA.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z M${JB.x - 15},${JB.y} a15,15 0 1 0 30,0 a15,15 0 1 0 -30,0 Z`)}
+  ${ledSpill}
+  ${nut(JA)}${nut(JB)}
+  <path filter="url(#tube)" d="M${JA.x},${JA.y + 20} C${JA.x - 6},${JA.y + 150} ${JB.x + 6},${JB.y + 150} ${JB.x},${JB.y + 20}" fill="none" stroke="#ECEAE6" stroke-width="20" stroke-linecap="round"/>
+  ${plug(JA, false)}
+  <g class="plug">
+    <circle class="lift-shadow" cx="${JB.x + 10}" cy="${JB.y + 14}" r="28" fill="rgba(43,39,35,.35)" filter="url(#softShadow)" opacity="0"/>
+    <g class="body-lift">${plug(JB, true)}</g>
+  </g>`;
+
+const TILES = [
+  ['faders', 'Settings · fader bank', 'Grey plastic. Three faders, one orange. Hover and the faders move to a new mix and stay there; the lamp flickers.', faders],
+  ['keys', 'Shortcuts · ⌘ K', 'Bone plastic with a sunk tray. Two keycaps, each a thick skirt under a face. Hover and they press as a chord, ⌘ then K. Each face drops into its skirt and springs back.', keys],
+  ['patch', 'Sync · patch cable', 'Stone. Two knurled jacks joined by one white patch cable that droops between them. One plug is white and one is orange. Hover and the orange plug lifts out, its shadow opening underneath, then seats again as the lamp flickers.', patch],
+];
+
+const make = (id, draw, size) => {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 400 400'); s.setAttribute('class', `tile ${id}`);
+  s.setAttribute('width', size * 1.25); s.setAttribute('height', size * 1.25);
+  s.setAttribute('role', 'img'); s.setAttribute('aria-label', id);
+  s.innerHTML = draw();
+  s.addEventListener('click', () => {
+    if (id === 'faders') { s.classList.toggle('on'); return; }
+    s.classList.remove('play'); void s.getBoundingClientRect(); s.classList.add('play');
+    setTimeout(() => s.classList.remove('play'), 1000);
+  });
+  return s;
+};
+const set = document.getElementById('set'), dark = document.getElementById('dark');
+for (const [id, name, note, draw] of TILES) {
+  const h = document.createElement('h2'); h.textContent = name;
+  const row = document.createElement('div'); row.className = 'row';
+  for (const size of [240, 120, 64, 32]) row.append(make(id, draw, size));
+  const p = document.createElement('p'); p.textContent = note; row.append(p);
+  set.append(h, row);
+  dark.append(make(id, draw, 120));
+}
+</script>
+</body>
+</html>

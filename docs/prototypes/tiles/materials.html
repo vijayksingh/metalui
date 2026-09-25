@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tile materials</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root { --mono: "SF Mono", ui-monospace, Menlo, monospace; }
+* { box-sizing: border-box; margin: 0; }
+body { font: 13px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; color: #1B1B1D; background: #F4F4F2; padding: 40px 16px 64px; }
+main { max-width: 1100px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+h2 { font: 600 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(40,38,32,.5); margin: 26px 0 10px; }
+.lede { color: #5C5C60; max-width: 760px; margin: 6px 0 18px; }
+.card { border-radius: 24px; padding: 16px 18px; background: #F7F7F5; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.06); }
+
+/* sound settings: a real panel of controls */
+.config { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.group { display: flex; align-items: center; gap: 8px; }
+.group > span { font: 600 9.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(40,38,32,.5); }
+.btn { font: 500 12.5px/1 -apple-system, system-ui; height: 28px; padding: 0 12px; border-radius: 99px; border: 0; cursor: pointer; color: #1B1B1D;
+  background: linear-gradient(#FCFBF9, #F1F0EC); box-shadow: inset 0 1px 0 #fff, 0 0 0 .5px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08); display: inline-flex; align-items: center; gap: 7px; }
+.btn:active { translate: 0 1px; }
+.btn:focus-visible { outline: 2px solid #3FB97A; outline-offset: 2px; }
+.btn .lamp { width: 7px; height: 7px; border-radius: 50%; background: #8B8B8E; box-shadow: 0 0 0 .5px rgba(0,0,0,.25); }
+.btn[aria-pressed="true"] .lamp { background: radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673 100%); box-shadow: 0 0 0 .5px rgba(0,0,0,.25), 0 0 4px rgba(80,220,150,.6); }
+.seg { display: inline-flex; padding: 3px; border-radius: 99px; background: linear-gradient(#E6E5E1, #EDECE8); box-shadow: inset 1px 2px 5px -1px rgba(60,55,40,.13), inset 0 0 0 .5px rgba(24,22,16,.1); }
+.seg button { font: 500 12px/1 -apple-system, system-ui; height: 24px; padding: 0 11px; border: 0; border-radius: 99px; background: none; color: #5C5C60; cursor: pointer; }
+.seg button[aria-checked="true"] { background: linear-gradient(#FCFBF9, #F4F3F0); color: #1B1B1D; box-shadow: 0 0 0 .5px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.1); }
+.seg button:focus-visible { outline: 2px solid #3FB97A; outline-offset: 1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips .btn { height: 24px; padding: 0 10px; font-size: 11.5px; }
+
+/* specimens */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.spec { border-radius: 22px; padding: 14px 14px 12px; background: #F2F2F0; display: grid; gap: 8px; }
+.spec svg { width: 100%; height: auto; display: block; cursor: pointer; overflow: visible; -webkit-tap-highlight-color: transparent; }
+.spec .name { display: flex; justify-content: space-between; align-items: baseline; }
+.spec .name b { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.spec .name span { font: 600 9.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: rgba(40,38,32,.5); }
+.spec p { color: #5C5C60; font-size: 12px; line-height: 1.45; }
+.spec dl { display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; font: 500 10.5px/1.5 var(--mono); color: #4A4A4E; background: #ECECEA; border-radius: 10px; padding: 7px 10px; }
+.spec dt { color: #8A8A8E; }
+.cap { transition: transform 50ms linear; }
+.cap.down { transform: translate(0, 2px); }
+.hit { animation: hit .22s ease-out; transform-box: fill-box; transform-origin: 50% 50%; }
+@keyframes hit { 30% { transform: scale(.985); } }
+
+/* beeper */
+.beeps { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.beep { border-radius: 18px; padding: 12px 14px; background: #F2F2F0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center; cursor: pointer; border: 0; text-align: left; font: inherit; color: inherit; }
+.beep:focus-visible { outline: 2px solid #3FB97A; outline-offset: 2px; }
+.beep .grille { width: 34px; height: 34px; border-radius: 50%; grid-row: span 2; position: relative;
+  background: radial-gradient(circle, #3A3A3D 0 1.6px, transparent 2px) 0 0 / 7px 7px, linear-gradient(#DCDBD8, #C9C8C5);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.15), 0 1px 0 #fff; }
+.beep .led { position: absolute; right: -3px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D 100%); box-shadow: 0 0 0 .5px rgba(0,0,0,.25); }
+.beep b { font-weight: 600; } .beep span { color: #6A6A6E; font-size: 12px; }
+.led.green { background: radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673 100%); box-shadow: 0 0 0 .5px rgba(0,0,0,.25), 0 0 4px rgba(80,220,150,.6); }
+.led.red { background: radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A 100%); box-shadow: 0 0 0 .5px rgba(0,0,0,.25), 0 0 4px rgba(255,90,70,.6); }
+.led.amber { background: radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18 100%); box-shadow: 0 0 0 .5px rgba(0,0,0,.25), 0 0 4px rgba(245,190,80,.6); }
+.note { color: #6A6A6E; font-size: 12px; margin-top: 10px; }
+@media (prefers-reduced-motion: reduce) { .hit { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Materials: how each one looks and sounds</h1>
+  <p class="lede">The first foundation of the tile model. Seven materials, closed. Each is one recipe for the look (lightness range, gloss, grain, flecks, translucency, bevel) and one for the sound (the modes it rings at when struck, its attack, its contact noise). The body colours below are sample placements from the model. Tap a body to strike it, and tap the orange cap to press it into the body.</p>
+
+  <div class="card">
+    <div class="config">
+      <div class="group"><button class="btn" id="cfg-sound" aria-pressed="false"><i class="lamp"></i><span>Sound off</span></button></div>
+      <div class="group"><span>Voice</span><div class="seg" role="radiogroup" aria-label="Voice" id="cfg-voice">
+        <button role="radio" data-v="impacts" aria-checked="true">Impacts</button><button role="radio" data-v="melodic" aria-checked="false">Old melodic</button></div></div>
+      <div class="group"><span>Plays</span><div class="seg" role="radiogroup" aria-label="What makes sound" id="cfg-plays">
+        <button role="radio" data-v="acts" aria-checked="true">Acts and states</button><button role="radio" data-v="states" aria-checked="false">States only</button></div></div>
+      <div class="group"><span>Materials</span><div class="chips" id="cfg-mats"></div></div>
+    </div>
+    <p class="note">Sound settings, as the library would expose them: off by default; a voice (A/B only in this lab); what makes sound; and which materials may sound. Your choices are remembered in this browser.</p>
+  </div>
+
+  <h2>The seven materials</h2>
+  <div class="grid" id="grid"></div>
+
+  <h2>The beeper: the only source of tones</h2>
+  <div class="beeps" id="beeps"></div>
+  <p class="note">A beeper is a real Part: a small grille over a piezo, on tiles that report a state. Only state changes play it, never acts or hover. Its timbre is a piezo's: a sine with a 3.2 kHz resonance and a little square. Major and rising means good news; low, minor and rough means failure.</p>
+</main>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs">
+  <filter id="capf" x="-60%" y="-60%" width="240%" height="260%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="h0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="5" result="tex"/>
+    <feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3=".02" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.12" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+    <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit"/>
+    <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="sb"/><feOffset in="sb" dx="9" dy="13" result="so"/>
+    <feFlood flood-color="#1E1A16" flood-opacity=".3"/><feComposite in2="so" operator="in" result="shadow"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="cb"/><feOffset in="cb" dx="1.5" dy="2.5" result="co"/>
+    <feFlood flood-color="#1E1A16" flood-opacity=".32"/><feComposite in2="co" operator="in" result="contact"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/></feMerge>
+  </filter>
+</defs></svg>
+
+<script>
+/* ── Colour ── */
+function oklchToRgb(L, C, h) {
+  for (let c = C; c >= 0; c -= 0.004) {
+    const a = c * Math.cos(h * Math.PI / 180), b = c * Math.sin(h * Math.PI / 180);
+    const l = (L + .3963377774 * a + .2158037573 * b) ** 3, m = (L - .1055613458 * a - .0638541728 * b) ** 3, s = (L - .0894841775 * a - 1.291485548 * b) ** 3;
+    const lin = [4.0767416621 * l - 3.3077115913 * m + .2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - .3413193965 * s, -.0041960863 * l - .7034186147 * m + 1.707614701 * s];
+    if (lin.every(v => v >= -1e-4 && v <= 1.0001)) return lin.map(v => { v = Math.min(1, Math.max(0, v)); return Math.round(255 * (v <= .0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - .055)); });
+  }
+  return [0, 0, 0];
+}
+const lch = (L, C, h) => '#' + oklchToRgb(Math.max(0, Math.min(1, L)), C, ((h % 360) + 360) % 360).map(v => v.toString(16).padStart(2, '0')).join('');
+
+/* ── The materials: visual recipe + acoustic recipe (Fable §3.1) ──
+   sample: a placement from the worked set, so each body shows a real colour. */
+const MATERIALS = [
+  { id: 'clay', name: 'Clay', kind: 'soft-touch plastic', gloss: [0, 0], grain: [1.1, .025], flecks: .5, transl: 0, bevel: 6,
+    f0x: .9, tone: .8, loud: .6, modes: [[1, 1, 70], [1.58, .35, 40], [2.2, .15, 25]], attack: 3,
+    noise: [{ type: 'bandpass', f: 1500, q: 1.2, ms: 18, gain: .9 }, { type: 'lowpass', f: 700, ms: 25, gain: .4 }], maxMs: 150,
+    sample: { L: .78, C: .03, H: 80, W: .3, reach: 'self', as: 'Settings' }, note: 'The house plastic. Matte, warm, with flecks. A soft, short, damp knock.' },
+  { id: 'ceramic', name: 'Ceramic', kind: 'glazed', gloss: [40, .35], grain: [.6, .008], flecks: 0, transl: .05, bevel: 5,
+    f0x: 1.3, tone: 1, modes: [[1, 1, 320], [2.4, .5, 200], [4.6, .2, 120]], attack: 1.5,
+    noise: [{ type: 'bandpass', f: 4500, q: 3, ms: 20, gain: .9 }], maxMs: 450,
+    sample: { L: .88, C: .10, H: 330, W: .1, reach: 'self', as: 'Draw' }, note: 'A glaze: smooth, a soft sheen, pale and bright. It tinks like a cup.' },
+  { id: 'resin', name: 'Resin', kind: 'translucent, backlit', gloss: [24, .25], grain: [.9, .012], flecks: .3, transl: .6, bevel: 7,
+    f0x: 1.1, tone: .9, loud: .8, modes: [[1, 1, 150], [2.61, .35, 90], [4.9, .12, 50]], attack: 1.5,
+    noise: [{ type: 'bandpass', f: 3000, q: 1.5, ms: 12, gain: .8 }], maxMs: 220,
+    sample: { L: .80, C: .16, H: 55, W: .2, reach: 'world', as: 'Capture' }, note: 'Light passes through it; a lamp behind turns the core hot. Sounds like tapping a thick acrylic block: a hard, short, slightly hollow tock.' },
+  { id: 'stone', name: 'Stone', kind: 'speckled mineral', gloss: [6, .08], grain: [1.6, .04], flecks: 1.2, transl: 0, bevel: 8,
+    f0x: .8, tone: .8, loud: .55, noisyModes: true, modes: [[1, 1, 35], [1.73, .6, 25], [2.91, .35, 18], [4.14, .2, 12]], attack: 1,
+    noise: [{ type: 'lowpass', f: 900, ms: 30, gain: 1 }, { type: 'highpass', f: 3000, ms: 8, gain: .2 }],
+    grit: { n: 5, spreadMs: 22, f: 2200, level: .22 }, maxMs: 120,
+    sample: { L: .62, C: .04, H: 195, W: .4, reach: 'world', as: 'Sync' }, note: 'Dense and cool, heavily flecked. A dead, gritty knock that stops almost at once.' },
+  { id: 'glass', name: 'Glass', kind: 'smoked', gloss: [80, .6], grain: [0, 0], flecks: 0, transl: .8, bevel: 3,
+    f0x: 2.1, tone: 1, modes: [[1, 1, 260], [2.32, .4, 150], [4.25, .2, 80]], attack: .6,
+    noise: [{ type: 'bandpass', f: 8500, q: 5, ms: 7, gain: .8 }], maxMs: 320,
+    sample: { L: .30, C: .04, H: 260, W: .9, reach: 'others', as: 'Account' }, note: 'Dark smoked glass with a sharp glare. A short, high, pure tink.' },
+  { id: 'metal', name: 'Metal', kind: 'anodised, brushed', gloss: [60, .5], grain: [2.4, .02], flecks: 0, transl: 0, bevel: 4, brushed: true,
+    f0x: .7, tone: 1, modes: [[1, 1, 1100], [1.006, .8, 1100], [2.76, .7, 800], [2.781, .5, 800], [5.4, .45, 600], [8.93, .25, 400], [13.34, .12, 250]], attack: .5,
+    noise: [{ type: 'bandpass', f: 3500, q: 1.2, ms: 10, gain: 1.2 }], maxMs: 1200,
+    sample: { L: .58, C: .06, H: 230, W: .6, reach: 'others', as: 'Share' }, note: 'Brushed in one direction, dyed through. A lower clang that hangs on and beats.' },
+  { id: 'rubber', name: 'Rubber', kind: 'dense matte', gloss: [0, 0], grain: [1.3, .03], flecks: 0, transl: 0, bevel: 9,
+    f0x: .95, tone: .7, loud: .7, thump: false, modes: [[1, 1, 45, .93, 18], [2.3, .3, 22]], attack: 1.5,
+    noise: [{ type: 'bandpass', f: 1200, q: .9, ms: 12, gain: 1 }, { type: 'lowpass', f: 600, ms: 16, gain: .35 }],
+    bounce: { ms: 70, level: .25 }, maxMs: 120,
+    sample: { L: .28, C: .02, H: 25, W: .9, reach: 'self', as: 'Trash' }, note: 'Near black, soft edges, no shine. A short, dull pock with a little give, and a small second bounce. No boom.' },
+];
+const ACCENT = (H) => (Math.abs(((H - 45 + 540) % 360) - 180) < 40 ? { L: .75, C: .13, H: 235 } : { L: .72, C: .19, H: 45 });
+
+/* ── One filter per material, generated from its recipe ── */
+const defs = document.getElementById('defs');
+for (const m of MATERIALS) {
+  const [gExp, gStr] = m.gloss, [gf, ga] = m.grain, dark = m.sample.L < .5;
+  const freq = m.brushed ? `0.02 ${gf}` : `${gf}`;
+  const spec = gStr > 0 ? `<feSpecularLighting in="h" surfaceScale="5" specularConstant="${gStr}" specularExponent="${Math.min(128, gExp)}" lighting-color="#fff" result="sp"><feDistantLight azimuth="225" elevation="52"/></feSpecularLighting>
+      <feComposite in="sp" in2="SourceAlpha" operator="in" result="spIn"/>
+      <feComposite in="lit0" in2="spIn" operator="arithmetic" k2="1" k3="1" result="lit"/>` : `<feComposite in="lit0" in2="lit0" operator="arithmetic" k2="1" result="lit"/>`;
+  const fleck = m.flecks > 0 ? `<feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="1" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 22 -15.6" result="fl"/>
+      <feComposite in="fl" in2="SourceAlpha" operator="in" result="fl2"/>
+      <feComponentTransfer in="fl2" result="fleck"><feFuncA type="linear" slope="${Math.min(.75, m.flecks * .45)}"/></feComponentTransfer>` : '';
+  defs.insertAdjacentHTML('beforeend', `<filter id="m-${m.id}" x="-15%" y="-15%" width="130%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="${m.bevel}" result="h0"/>
+      ${ga > 0 ? `<feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="2" seed="3" result="tex"/><feComposite in="h0" in2="tex" operator="arithmetic" k2="1" k3="${ga}" result="h"/>` : `<feComposite in="h0" in2="h0" operator="arithmetic" k2="1" result="h"/>`}
+      <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="${dark ? 1.25 : 1.12}" lighting-color="#fff" result="light"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1.01" result="lit0"/>
+      ${spec}
+      <feComposite in="lit" in2="SourceAlpha" operator="in" result="obj"/>
+      ${fleck}
+      <feGaussianBlur in="SourceAlpha" stdDeviation="16" result="sb"/><feOffset in="sb" dx="6" dy="${14 + 8 * m.sample.W}" result="so"/>
+      <feFlood flood-color="#1E1A16" flood-opacity="${.2 + .16 * m.sample.W}"/><feComposite in2="so" operator="in" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="cb"/><feOffset in="cb" dx="1" dy="4" result="co"/>
+      <feFlood flood-color="#1E1A16" flood-opacity=".16"/><feComposite in2="co" operator="in" result="contact"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="contact"/><feMergeNode in="obj"/>${fleck ? '<feMergeNode in="fleck"/>' : ''}</feMerge>
+    </filter>`);
+}
+
+/* ── Specimens ── */
+const BODY = 'M116,36 H284 A76,76 0 0 1 360,112 V280 A76,76 0 0 1 284,356 H116 A76,76 0 0 1 40,280 V112 A76,76 0 0 1 116,36 Z';
+const grid = document.getElementById('grid');
+function specimen(m) {
+  const { L, C, H } = m.sample, a = ACCENT(H), id = m.id;
+  // The body is one pigment shaded by the one light; resin adds what its backlight sends through it.
+  const fill = m.id === 'resin'
+    ? `<radialGradient id="f-${id}" cx=".52" cy=".6" r=".62"><stop offset="0" stop-color="${lch(.93, .15, H + 38)}"/><stop offset=".45" stop-color="${lch(L, C, H + 8)}"/><stop offset="1" stop-color="${lch(L - .08, C * 1.05, H - 6)}"/></radialGradient>`
+    : `<linearGradient id="f-${id}" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="${lch(L + .03, C * .9, H - 6)}"/><stop offset="1" stop-color="${lch(L - .035, C * 1.08, H + 6)}"/></linearGradient>`;
+  const glare = m.id === 'glass' ? `<path d="M40,112 A76,76 0 0 1 116,36 H300 L128,356 H116 A76,76 0 0 1 40,280 Z" fill="url(#gl-${id})" pointer-events="none"/>
+      <linearGradient id="gl-${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity=".03"/><stop offset=".46" stop-color="#fff" stop-opacity="0"/></linearGradient>` : '';
+  const acc = `<linearGradient id="a-${id}" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="${lch(a.L + .04, a.C * .9, a.H - 6)}"/><stop offset="1" stop-color="${lch(a.L - .03, a.C, a.H + 4)}"/></linearGradient>`;
+  return `<svg viewBox="0 0 400 400" role="img" aria-label="${m.name} body with an accent cap">
+    <defs>${fill}${acc}</defs>
+    <g class="body"><path filter="url(#m-${id})" fill="url(#f-${id})" d="${BODY}"/>${glare}</g>
+    <g class="cap" filter="url(#capf)">
+      <circle cx="286" cy="292" r="36" fill="${lch(a.L - .12, a.C * .95, a.H + 6)}"/>
+      <circle cx="286" cy="288" r="34" fill="url(#a-${id})"/>
+      <rect x="280" y="260" width="12" height="56" rx="6" fill="url(#a-${id})" style="filter: brightness(1.04)"/>
+    </g></svg>`;
+}
+for (const m of MATERIALS) {
+  const el = document.createElement('div'); el.className = 'spec';
+  el.innerHTML = `${specimen(m)}
+    <div class="name"><b>${m.name}</b><span>${m.kind}</span></div>
+    <p>${m.note}</p>
+    <dl><dt>sample</dt><dd>${m.sample.as} · L ${m.sample.L} C ${m.sample.C} h ${m.sample.H}</dd>
+      <dt>finish</dt><dd>gloss ${m.gloss[1] || '—'} · grain ${m.grain[1] || '—'} · flecks ${m.flecks || '—'}${m.transl ? ' · light through ' + m.transl : ''}</dd>
+      <dt>sound</dt><dd>${m.modes.length} modes · ${Math.max(...m.modes.map(x => x[2]))} ms · loud ${m.loud ?? 1}${m.grit ? ' · grit' : ''}${m.bounce ? ' · bounce' : ''}</dd></dl>`;
+  const svg = el.querySelector('svg'), body = svg.querySelector('.body'), cap = svg.querySelector('.cap');
+  body.addEventListener('pointerdown', () => { strikeBody(m); body.classList.remove('hit'); void body.getBoundingClientRect(); body.classList.add('hit'); });
+  cap.addEventListener('pointerdown', (e) => { e.stopPropagation(); cap.classList.add('down'); pressCap(m); });
+  const up = () => cap.classList.remove('down'); cap.addEventListener('pointerup', up); cap.addEventListener('pointerleave', up);
+  grid.append(el);
+}
+
+/* ── Sound settings (configurable, remembered) ── */
+const store = { get() { try { return JSON.parse(localStorage.getItem('mu-sound') || 'null'); } catch { return null; } }, set(v) { try { localStorage.setItem('mu-sound', JSON.stringify(v)); } catch {} } };
+const cfg = Object.assign({ on: false, voice: 'impacts', plays: 'acts', mats: Object.fromEntries(MATERIALS.map(m => [m.id, true])) }, store.get() || {}, { on: false });
+const soundBtn = document.getElementById('cfg-sound');
+function syncUI() {
+  soundBtn.setAttribute('aria-pressed', cfg.on); soundBtn.querySelector('span').textContent = cfg.on ? 'Sound on' : 'Sound off';
+  for (const [gid, key] of [['cfg-voice', 'voice'], ['cfg-plays', 'plays']]) document.querySelectorAll(`#${gid} button`).forEach(b => b.setAttribute('aria-checked', b.dataset.v === cfg[key]));
+  document.querySelectorAll('#cfg-mats .btn').forEach(b => b.setAttribute('aria-pressed', cfg.mats[b.dataset.m]));
+  store.set(cfg);
+}
+const chipsHost = document.getElementById('cfg-mats');
+for (const m of MATERIALS) { const b = document.createElement('button'); b.className = 'btn'; b.dataset.m = m.id; b.innerHTML = `<i class="lamp"></i>${m.name}`; b.addEventListener('click', () => { cfg.mats[m.id] = !cfg.mats[m.id]; syncUI(); }); chipsHost.append(b); }
+soundBtn.addEventListener('click', () => { if (!AC) initAudio(); cfg.on = !cfg.on; if (cfg.on) AC.resume(); syncUI(); });
+for (const [gid, key] of [['cfg-voice', 'voice'], ['cfg-plays', 'plays']]) document.querySelectorAll(`#${gid} button`).forEach(b => b.addEventListener('click', () => { cfg[key] = b.dataset.v; syncUI(); }));
+syncUI();
+
+/* ── Audio: modal impacts (Fable §5.1), the old melodic voice (for A/B), the beeper ── */
+let AC = null, master, reverbIn;
+function initAudio() {
+  AC = new (window.AudioContext || window.webkitAudioContext)();
+  master = AC.createGain(); master.gain.value = 1;
+  const lim = AC.createDynamicsCompressor(); lim.threshold.value = -20; lim.ratio.value = 12; lim.attack.value = .002; lim.release.value = .1;
+  master.connect(lim); lim.connect(AC.destination);
+  const rev = AC.createConvolver(), len = AC.sampleRate * 1.6, buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = buf.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len) ** 3.2; }
+  rev.buffer = buf; reverbIn = AC.createGain(); reverbIn.connect(rev); rev.connect(master);
+}
+const REACH = { self: { send: .05, pan: 0 }, others: { send: .22, pan: .15 }, world: { send: .4, pan: .25 } };
+function route(node, reach) {
+  const r = REACH[reach], p = AC.createStereoPanner(); p.pan.value = r.pan; node.connect(p); p.connect(master);
+  const s = AC.createGain(); s.gain.value = r.send; p.connect(s); s.connect(reverbIn);
+}
+const vary = (x, pct) => x * (1 + (Math.random() * 2 - 1) * pct);          // no two real strikes are identical
+const DB = (d) => 10 ** (d / 20);
+function noiseBurst(t, layer, peak, reach) {
+  const dur = vary(layer.ms, .1) / 1000, len = Math.ceil(AC.sampleRate * (dur + .01)), b = AC.createBuffer(1, len, AC.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = AC.createBufferSource(), flt = AC.createBiquadFilter(), g = AC.createGain();
+  src.buffer = b; flt.type = layer.type; flt.frequency.value = vary(layer.f, .06); if (layer.q) flt.Q.value = layer.q;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak * (layer.gain ?? 1), t + .0008); g.gain.exponentialRampToValueAtTime(1e-4, t + dur);
+  src.connect(flt); flt.connect(g); route(g, reach); src.start(t); src.stop(t + dur + .02);
+}
+/* One strike of a material: its modes (tone), its contact noise, and, where the
+   material has them, grit (stone) and a second bounce (rubber). All data. */
+function impact(m, f0, level, reach, at = 0, echo = false, size = 320) {
+  const t = AC.currentTime + 0.005 + at, peak = DB(-24) * level * 2.2 * (m.loud ?? 1), cap = m.maxMs / 1000;
+  const damp = Math.sqrt(size / 320);                     // small parts stop ringing sooner
+  f0 = vary(f0 * m.f0x, .03);
+  m.modes.forEach(([ratio, gain, t60, glideTo, glideMs]) => {
+    const f = f0 * ratio; if (f > 16000) return;
+    const T = Math.min(cap, vary(t60, .1) / 1000 * damp);
+    if (m.noisyModes) {                                    // a resonance you can hear as colour, never as a note
+      noiseBurst(t, { type: 'bandpass', f, q: 2.2, ms: T * 1000, gain: gain * m.tone * 1.6 }, peak, reach); return;
+    }
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.frequency.setValueAtTime(f, t);
+    if (glideTo) o.frequency.exponentialRampToValueAtTime(f * glideTo, t + glideMs / 1000);   // elastic: the pitch drops as it gives
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak * gain * m.tone, t + m.attack / 1000);
+    g.gain.exponentialRampToValueAtTime(1e-4, t + m.attack / 1000 + T);
+    o.connect(g); route(g, reach); o.start(t); o.stop(t + T + .05);
+  });
+  m.noise.forEach(layer => noiseBurst(t, layer, peak * .9, reach));
+  if (m.grit) for (let i = 0; i < m.grit.n; i++)
+    noiseBurst(t + Math.random() * m.grit.spreadMs / 1000, { type: 'bandpass', f: vary(m.grit.f, .3), q: 3, ms: 3, gain: m.grit.level * (.5 + Math.random()) }, peak, reach);
+  if (m.bounce && !echo) impact(m, f0 / m.f0x * 1.04, level * m.bounce.level, reach, at + m.bounce.ms / 1000, true, size);
+}
+/* f0 from the part's size and the tile's weight: bigger and heavier ring lower. */
+const f0For = (longest, W) => 2400 * Math.sqrt(16 / longest) * (1 - .35 * W);
+function thump(W, at = 0) {
+  const t = AC.currentTime + .005 + at, o = AC.createOscillator(), g = AC.createGain();
+  o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(60, t + .09);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(DB(-24) * 2 * .8 * W, t + .003); g.gain.exponentialRampToValueAtTime(1e-4, t + .1);
+  o.connect(g); route(g, 'self'); o.start(t); o.stop(t + .12);
+}
+/* The old voice, kept only for the A/B: a note from the hue, rising. */
+function melodic(H, W, reach) {
+  const P = [0, 2, 4, 7, 9], idx = Math.round(H / 36) % 10, base = W < .34 ? 72 : W < .67 ? 60 : 48, note = (i) => base + P[i % 5] + 12 * Math.floor(i / 5);
+  [[note(idx), 0, 1], [note(idx + 2), .09, .7]].forEach(([midi, at, lv]) => {
+    const t = AC.currentTime + at, f = 440 * 2 ** ((midi - 69) / 12), o = AC.createOscillator(), p = AC.createOscillator(), g = AC.createGain(), pg = AC.createGain(), dec = .3 + .3 * W;
+    o.type = W < .5 ? 'sine' : 'triangle'; o.frequency.value = f; p.frequency.value = f * (W < .5 ? 4 : 2.76);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.12 * lv, t + .004); g.gain.exponentialRampToValueAtTime(1e-4, t + dec);
+    pg.gain.setValueAtTime(0, t); pg.gain.linearRampToValueAtTime(.04 * lv, t + .002); pg.gain.exponentialRampToValueAtTime(1e-4, t + dec * .3);
+    o.connect(g); p.connect(pg); route(g, reach); route(pg, reach); o.start(t); p.start(t); o.stop(t + dec + .05); p.stop(t + dec + .05);
+  });
+}
+const may = (m, isState) => cfg.on && AC && (isState || cfg.plays === 'acts') && (!m || cfg.mats[m.id]);
+function strikeBody(m) {
+  if (!may(m)) return;
+  if (cfg.voice === 'melodic') return melodic(m.sample.H, m.sample.W, m.sample.reach);
+  impact(m, f0For(320, m.sample.W), 1, m.sample.reach);
+  if (m.sample.W > .5 && m.thump !== false) thump(m.sample.W);   // weight thumps only through hard materials
+}
+function pressCap(m) {
+  if (!may(m)) return;
+  if (cfg.voice === 'melodic') return melodic(m.sample.H, m.sample.W, m.sample.reach);
+  const clay = MATERIALS[0];
+  impact(clay, f0For(72, m.sample.W), .8, m.sample.reach, 0, false, 72);             // the cap (pigmented plastic) bottoms out
+  impact(m, f0For(320, m.sample.W), .3, m.sample.reach, .004);        // and the body answers
+}
+
+/* ── The beeper: a piezo. Tones only here, only for state changes. ── */
+function beep(midi, at, len = .09, level = 1) {
+  const t = AC.currentTime + .005 + at, f = 440 * 2 ** ((midi - 69) / 12);
+  const o = AC.createOscillator(), sq = AC.createOscillator(), sg = AC.createGain(), pk = AC.createBiquadFilter(), g = AC.createGain();
+  o.frequency.value = f; sq.type = 'square'; sq.frequency.value = f; sg.gain.value = .02;
+  pk.type = 'peaking'; pk.frequency.value = 3200; pk.Q.value = 6; pk.gain.value = 9;
+  const peak = DB(-28) * 2.4 * level;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + .002); g.gain.setValueAtTime(peak, t + len - .02); g.gain.linearRampToValueAtTime(0, t + len);
+  o.connect(g); sq.connect(sg); sg.connect(g); g.connect(pk); route(pk, 'self'); o.start(t); sq.start(t); o.stop(t + len + .02); sq.stop(t + len + .02);
+}
+const EARCONS = [
+  { id: 'success', name: 'Synced', sub: 'two beeps up, root to fifth', led: 'green', play: () => { beep(79, 0); beep(86, .12); } },
+  { id: 'failure', name: 'Sync failed', sub: 'one low beep, then a rough dyad', led: 'red', blink: true, play: () => { beep(67, 0, .09, 1.2); beep(67, .15, .12, .8); beep(68, .15, .12, .8); } },
+  { id: 'warning', name: 'Waiting', sub: 'one mid beep, repeated once', led: 'amber', play: () => { beep(76, 0); beep(76, .3); } },
+  { id: 'first', name: 'First run', sub: 'three notes rising as the backlight comes on', led: 'green', play: () => { beep(72, 0); beep(76, .06); beep(79, .12, .16); } },
+];
+const beeps = document.getElementById('beeps');
+for (const e of EARCONS) {
+  const b = document.createElement('button'); b.className = 'beep';
+  b.innerHTML = `<span class="grille"><i class="led"></i></span><b>${e.name}</b><span>${e.sub}</span>`;
+  b.addEventListener('click', () => {
+    const led = b.querySelector('.led'); led.className = 'led ' + e.led;
+    if (e.blink) { let n = 0; const iv = setInterval(() => { led.classList.toggle(e.led); if (++n >= 4) { clearInterval(iv); led.classList.add(e.led); } }, 90); }
+    setTimeout(() => led.className = 'led', 1600);
+    if (may(null, true)) e.play();
+  });
+  beeps.append(b);
+}
+</script>
+</body>
+</html>
