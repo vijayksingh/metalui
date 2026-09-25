@@ -567,11 +567,20 @@
       "component": "KeeperIcon",
       "label": "Keeper",
       "category": "Status",
-      "hover": "blinks",
-      "press": "ring tips, eyes look up",
-      "pressMs": 440,
+      "hover": "The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod.",
+      "press": "plays the same act",
+      "pressMs": 1150,
+      "motion": {
+        "caption": "The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod.",
+        "durationMs": 1150,
+        "stages": [
+          "Notice",
+          "Nod",
+          "Settle"
+        ]
+      },
       "tuned16": true,
-      "construction": "The buddy as a glyph: solid body r6.8 with eye capsules knocked out (2.4×4.2), accretion ring rx9.8 ry2.5 tilted −12°; the front arc knocks a 1.1u gap into the body, the back arc hides behind it."
+      "construction": "The buddy as a glyph: solid body r6.8 with eye capsules knocked out (2.4×4.2), accretion ring rx9.8 ry2.5 tilted −12°; the front arc knocks a 1.1u gap into the body, the back arc hides behind it. Everything rides the body part; the eye and front-arc knockouts move on their own parts. Motion (study): the eyes glance up and the body perks up under three notice rays, then nods 0.9 down with a slow blink while the ring, lagging, tips 10° forward and swings back to rest."
     },
     {
       "name": "plus",

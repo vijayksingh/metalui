@@ -75,7 +75,7 @@ export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");
 export const CaptureIcon = createIcon("capture", "CaptureIcon");
 /** Paste. Hover: The clip levers open, the content drops onto the board, and the clip clamps it down.. Press: plays the same act. */
 export const PasteIcon = createIcon("paste", "PasteIcon");
-/** Keeper. Hover: blinks. Press: ring tips, eyes look up. */
+/** Keeper. Hover: The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod.. Press: plays the same act. */
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
 /** New. Hover: the plus grows out from the centre of the tile. Press: the tile presses in and the plus pops out, made. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
