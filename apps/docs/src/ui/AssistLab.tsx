@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switcher, inkColor } from '@unlocalhosted/metalui';
-import { Assist, TOOL_ASSIST, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
+import { TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
 
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK LAB (the Brush cursor page)
  *
- *   draw        your stroke goes through the assist as you draw; the ink only ever grows
- *   release     the ink walks on to where you lifted, one 8 ms step per frame
+ *   draw        the ink's tip is under the pen; the ink just behind it levels as you go
+ *   release     the stroke ends exactly where you lifted (its last point is pinned)
  *   view        Assisted · Raw · Both (the raw path as a faint trace under the ink)
  *   shaky hand  replays a wave and a v, written with an 8 Hz tremor and a skid on landing,
  *               in real time, through the same assist
@@ -20,7 +20,7 @@ const LOOK: Record<AssistTool, { size: number; thinning: number; taper: number; 
   marker: { size: 10, thinning: 0.05, taper: 0, opacity: 0.45 },
 };
 
-interface Stroke { id: number; tool: AssistTool; raw: InkSample[]; ink: InkSample[] }
+interface Stroke { id: number; tool: AssistTool; raw: InkSample[] }
 
 // A shaky hand writing a wave (like "mmm") and a v, with a skid as the pen lands.
 function shakyStrokes(x0: number, y0: number): InkSample[][] {
@@ -50,15 +50,22 @@ export function AssistLab() {
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
   const [strokes, setStrokes] = React.useState<Stroke[]>([]);
   const d = useDialKit('Assisted ink', {
-    steady: { string: [TOOL_ASSIST.pen.string, 0, 8, 0.1], sure: [TOOL_ASSIST.pen.sure, 100, 2000, 50], minCutoff: [TOOL_ASSIST.pen.minCutoff, 0.3, 10, 0.1], beta: [TOOL_ASSIST.pen.beta, 0, 0.1, 0.002] },
-    corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1], cornerBoost: [TOOL_ASSIST.pen.cornerBoost, 1, 12, 0.5] },
+    settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1] },
+    corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1] },
     landing: { dehook: [TOOL_ASSIST.pen.dehook, 0, 16, 1] },
-    width: { pressureCutoff: [TOOL_ASSIST.pen.pressureCutoff, 0.5, 12, 0.5] },
   });
-  const params = () => ({ ...TOOL_ASSIST[tool], ...d.steady, ...d.corners, ...d.landing, ...d.width });
+  // The tool's preset, until a dial is moved away from the pen's default.
+  const params = (t: AssistTool) => {
+    const base = TOOL_ASSIST[t], pen = TOOL_ASSIST.pen;
+    return {
+      settleMs: d.settle.settleMs !== pen.settleMs ? d.settle.settleMs : base.settleMs,
+      corner: d.corners.corner !== pen.corner ? d.corners.corner : base.corner,
+      dehook: d.landing.dehook !== pen.dehook ? d.landing.dehook : base.dehook,
+    };
+  };
 
   const box = React.useRef<HTMLDivElement>(null);
-  const live = React.useRef<{ s: Stroke; a: Assist; last?: { x: number; y: number; t: number } } | null>(null);
+  const live = React.useRef<{ s: Stroke; last?: { x: number; y: number; t: number } } | null>(null);
   const bump = (s: Stroke) => setStrokes((all) => all.map((k) => (k.id === s.id ? { ...s } : k)));
 
   const pos = (e: React.PointerEvent) => { const r = box.current!.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
@@ -74,15 +81,12 @@ export function AssistLab() {
     try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* synthetic */ }
     e.preventDefault();
     const p = pos(e), t = e.timeStamp;
-    const s: Stroke = { id: Date.now(), tool, raw: [], ink: [] };
-    live.current = { s, a: new Assist(params()), last: { ...p, t } };
+    const s: Stroke = { id: Date.now(), tool, raw: [] };
+    live.current = { s, last: { ...p, t } };
     feed(live.current, { ...p, t, pressure: 0.5 });
     setStrokes((all) => [...all, s]);
   };
-  const feed = (L: NonNullable<typeof live.current>, sample: InkSample) => {
-    L.s.raw.push(sample);
-    L.s.ink.push(...L.a.push(sample));
-  };
+  const feed = (L: { s: Stroke }, sample: InkSample) => { L.s.raw.push(sample); };
   const move = (e: React.PointerEvent) => {
     const L = live.current; if (!L) return;
     const events = (e.nativeEvent as PointerEvent).getCoalescedEvents?.() ?? [e.nativeEvent];
@@ -93,25 +97,15 @@ export function AssistLab() {
     }
     bump(L.s);
   };
-  // Letting go: the ink walks on to the lift point, one step per frame, so it grows into place.
-  const letGo = (L: NonNullable<typeof live.current>) => {
-    const rest = L.a.drain();
-    const walk = () => {
-      const next = rest.shift(); if (!next) return;
-      L.s.ink.push(next); bump(L.s);
-      requestAnimationFrame(walk);
-    };
-    requestAnimationFrame(walk);
-  };
-  const up = () => { const L = live.current; live.current = null; if (L) letGo(L); };
+  const up = () => { const L = live.current; live.current = null; if (L) bump(L.s); };
 
   // The shaky hand, replayed in real time through the same assist.
   const shaky = () => {
     const r = box.current!.getBoundingClientRect();
     const run = (strokesLeft: InkSample[][]) => {
       const pts = strokesLeft.shift(); if (!pts) return;
-      const s: Stroke = { id: Date.now() + Math.random(), tool, raw: [], ink: [] };
-      const L = { s, a: new Assist(params()) };
+      const s: Stroke = { id: Date.now() + Math.random(), tool, raw: [] };
+      const L = { s };
       setStrokes((all) => [...all, s]);
       const start = performance.now(), base = pts[0].t;
       let i = 0;
@@ -120,7 +114,7 @@ export function AssistLab() {
         while (i < pts.length && pts[i].t - base <= now) feed(L, { ...pts[i], t: pts[i].t - base }), i++;
         bump(s);
         if (i < pts.length) requestAnimationFrame(tick);
-        else { letGo(L); setTimeout(() => run(strokesLeft), 180); }
+        else setTimeout(() => run(strokesLeft), 180);
       };
       requestAnimationFrame(tick);
     };
@@ -144,7 +138,7 @@ export function AssistLab() {
                 {view !== 'assisted' && s.raw.length > 1 && (
                   <polyline points={s.raw.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--ink3)" strokeOpacity={view === 'both' ? 0.5 : 1} strokeWidth={view === 'both' ? 1 : look.size * 0.8} strokeLinecap="round" strokeLinejoin="round" />
                 )}
-                {view !== 'raw' && <path d={outlinePath(s.ink, look.size, look.thinning, look.taper)} fill={inkColor('ink')} fillOpacity={look.opacity} />}
+                {view !== 'raw' && <path d={outlinePath(assistStroke(s.raw, params(s.tool)), look.size, look.thinning, look.taper)} fill={inkColor('ink')} fillOpacity={look.opacity} />}
               </g>
             );
           })}

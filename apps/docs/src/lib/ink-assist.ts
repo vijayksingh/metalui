@@ -1,164 +1,68 @@
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK: a hand on the elbow, not a hand that draws
  *
- * The prototype of the stroke assist an app's ink engine can run on every platform. It helps
- * while the stroke is being made and never moves ink after it is drawn: every output sample is
- * appended, nothing is redrawn, so there is no snap.
+ * The prototype of the stroke assist an app's ink engine can run on every platform. The tip of the
+ * ink is always exactly under the pen (no lag), and the ink just behind it levels out, like wet ink
+ * behind a nib. Nothing snaps: a point only levels while it is within a few samples of the pen,
+ * and never moves again after that.
  *
- *   landing   a pen skids as it lands: if the stroke reverses within its first `dehook` px, the
- *             skid is dropped and the stroke starts where the hand really set off
- *   steady    a pulled string: the ink moves only when the pen pulls a short string taut, so any
- *             wobble smaller than the string never reaches it. The string is long when the pen
- *             moves slowly (`string` px, a tremor's reach) and shrinks to nothing by `sure` px/s,
- *             so a quick, sure stroke is not held back. A light One Euro filter smooths on top.
- *   corners   a sharp turn (over `corner` degrees across a few px) opens the cutoff by
- *             `cornerBoost` for a moment, so the point of a v or a k stays a point
- *   width     pressure has its own low-pass (`pressureCutoff`), so the width does not wobble
- *   letting go  the ink trails the pen slightly; on release the string goes slack and the ink walks
- *             on toward the lift point in 8 ms steps until it is there, so the stroke ends where
- *             the hand stopped, growing into place over a few frames
+ *   landing   a pen flicks as it lands: if the first ~3 px run against the stroke, the flick is
+ *             dropped and the stroke starts at the turning point
+ *   settling  each point becomes a Gaussian average of its neighbours in time, both behind and
+ *             ahead (sigma `settleMs`), so shake is removed without lag. The newest points level as
+ *             the pen moves on; the first and last points are pinned, so the stroke starts where it
+ *             landed and ends exactly where it was lifted
+ *   corners   a turn past `corner` degrees, judged over ~8 px on a lightly levelled copy and only
+ *             where the pen slowed into it (a hand slows into a real corner; a tremor does not),
+ *             splits the stroke, so settling never rounds the point of a v or a k
+ *   width     pressure settles the same way, so the width does not wobble
+ *
+ * Measured against an 8 Hz tremor and 60 Hz mouse input (the lab on the Brush cursor page):
+ * pen settling at 36 ms takes wobble from 2.68 to about 1 (clean writing is 0.59) and mouse
+ * jitter from 6.8 to 1.3, keeps a v's apex within 0.4 px, and moves ink older than ~12 samples by
+ * at most 0.3 px. Filters that only see the past (a pulled string, a damped spring, One Euro)
+ * reached 1.4–1.5 at best and lagged a quick stroke by 7–14 px.
  * ───────────────────────────────────────────────────────── */
 
 export interface InkSample { x: number; y: number; t: number; pressure: number }
 
 export interface AssistParams {
-  /** Px. The string's length when the pen moves slowly: wobble smaller than this never reaches the ink. */
-  string: number;
-  /** Px/s. From this speed on the string is gone: a sure stroke is not held back. */
-  sure: number;
-  /** Hz. The cutoff at rest: lower steadies more (a shaky hand), higher follows more. */
-  minCutoff: number;
-  /** How fast the cutoff opens with speed: higher gets out of the way sooner. */
-  beta: number;
-  /** Hz. The cutoff for the speed estimate itself. */
-  dCutoff: number;
-  /** Degrees. A turn this sharp counts as a corner. */
+  /** Ms. How far in time each point looks for its neighbours: more levels shake further. */
+  settleMs: number;
+  /** Degrees. A turn this sharp, slowed into, is a corner settling will not cross. */
   corner: number;
-  /** How much the cutoff opens at a corner. */
-  cornerBoost: number;
-  /** Px. A reversal within this much travel from the landing is a skid. */
+  /** Px. A landing flick is looked for within this much travel. */
   dehook: number;
-  /** Hz. The cutoff for pressure. */
-  pressureCutoff: number;
 }
 
 export type AssistTool = 'pen' | 'pencil' | 'marker';
 
-/** Per tool, measured in the lab: for the pen, a 2.6 px string gone by 900 px/s with a 3 Hz filter
- * removes about 55% of an 8 Hz tremor's wobble and lags a quick stroke by about 7 px; longer
- * strings add kinks and lag without steadying more. A pen is helped most in writing, a pencil least (it is the sketching tool), a marker
- * sits between and never needs corners (its tip is broad). */
+/** Per tool: a pen is helped most in writing; a pencil least, since it is the sketching tool and
+ * its texture is the point; a marker's tip is broad, so it levels more and has no corners. */
 export const TOOL_ASSIST: Record<AssistTool, AssistParams> = {
-  pen: { string: 2.6, sure: 900, minCutoff: 3, beta: 0.02, dCutoff: 1, corner: 62, cornerBoost: 6, dehook: 8, pressureCutoff: 3 },
-  pencil: { string: 1.2, sure: 700, minCutoff: 4, beta: 0.03, dCutoff: 1, corner: 62, cornerBoost: 4, dehook: 4, pressureCutoff: 5 },
-  marker: { string: 3, sure: 900, minCutoff: 3, beta: 0.02, dCutoff: 1, corner: 180, cornerBoost: 1, dehook: 8, pressureCutoff: 2 },
+  pen: { settleMs: 36, corner: 62, dehook: 8 },
+  pencil: { settleMs: 20, corner: 62, dehook: 4 },
+  marker: { settleMs: 40, corner: 180, dehook: 8 },
 };
 
-const TAU = Math.PI * 2;
-const alphaOf = (cutoff: number, dt: number) => 1 / (1 + 1 / (TAU * cutoff * dt));
-
-/** One stroke's assist: push raw samples as they arrive, read the assisted ones back. */
-export class Assist {
-  private p: AssistParams;
-  private landing: InkSample[] = [];
-  private landed = false;
-  private last: InkSample | null = null;
-  private lastT = 0;
-  private fx = 0; private fy = 0; private dx = 0; private dy = 0; private fp = 0.5;
-  private sx = 0; private sy = 0; // the string's end: where the ink is pulled to
-  private dirs: [number, number][] = [];
-  private boost = 0;
-
-  constructor(params: AssistParams) { this.p = params; }
-
-  /** A raw sample in; the assisted samples it releases out (none while landing is being judged). */
-  push(s: InkSample): InkSample[] {
-    if (!this.landed) {
-      this.landing.push(s);
-      if (travel(this.landing) < this.p.dehook * 2) return [];
-      this.landed = true;
-      const start = dehook(this.landing, this.p.dehook);
-      this.fx = this.sx = start[0].x; this.fy = this.sy = start[0].y; this.fp = start[0].pressure;
-      this.last = start[0];
-      this.lastT = start[0].t;
-      const out = [{ ...start[0] }];
-      for (const q of start.slice(1)) out.push(this.step(q));
-      return out;
-    }
-    return [this.step(s)];
-  }
-
-  /** On release: the ink walks on to the lift point in 8 ms steps until it is there. */
-  drain(): InkSample[] {
-    if (!this.landed) return this.landing.map((s) => ({ ...s }));
-    const end = this.last!;
-    const out: InkSample[] = [];
-    for (let i = 0; i < 30 && Math.hypot(end.x - this.fx, end.y - this.fy) > 0.25; i++) {
-      out.push(this.step({ ...end, t: end.t + 8 * (i + 1) }, true));
-    }
-    out.push({ x: end.x, y: end.y, t: end.t + 8 * (out.length + 1), pressure: this.fp });
-    return out;
-  }
-
-  private step(s: InkSample, draining = false): InkSample {
-    const prev = this.last!;
-    const dt = Math.min(0.1, Math.max(0.001, (s.t - this.lastT) / 1000));
-    this.lastT = s.t;
-    // Speed estimate, itself low-passed (still while draining: the pen has stopped).
-    const vx = draining ? 0 : (s.x - prev.x) / dt, vy = draining ? 0 : (s.y - prev.y) / dt;
-    const ad = alphaOf(this.p.dCutoff, dt);
-    this.dx += ad * (vx - this.dx); this.dy += ad * (vy - this.dy);
-    // A corner opens the cutoff for a moment (it decays over the next few samples).
-    if (!draining && this.isCorner(s)) this.boost = 1;
-    const cornerGain = 1 + (this.p.cornerBoost - 1) * this.boost;
-    // The string: long when slow, gone when sure, slack when letting go (or at a corner).
-    const speed = Math.hypot(this.dx, this.dy);
-    const reach = draining ? 0 : this.p.string * Math.max(0, 1 - speed / this.p.sure) * (1 - this.boost);
-    const gx = s.x - this.sx, gy = s.y - this.sy, gl = Math.hypot(gx, gy);
-    if (gl > reach) { this.sx = s.x - (gx / gl) * reach; this.sy = s.y - (gy / gl) * reach; }
-    const cutoff = (this.p.minCutoff + this.p.beta * speed) * cornerGain;
-    const a = alphaOf(cutoff, dt);
-    this.fx += a * (this.sx - this.fx); this.fy += a * (this.sy - this.fy);
-    this.fp += alphaOf(this.p.pressureCutoff, dt) * (s.pressure - this.fp);
-    this.boost *= 0.6;
-    if (!draining) this.last = s;
-    return { x: this.fx, y: this.fy, t: s.t, pressure: this.fp };
-  }
-
-  // A corner: the raw direction over the last few px turns by more than `corner` degrees.
-  private isCorner(s: InkSample) {
-    const prev = this.last!;
-    const len = Math.hypot(s.x - prev.x, s.y - prev.y);
-    if (len < 0.5) return false;
-    this.dirs.push([(s.x - prev.x) / len, (s.y - prev.y) / len]);
-    if (this.dirs.length > 6) this.dirs.shift();
-    if (this.dirs.length < 6) return false;
-    const [a, b] = [avg(this.dirs.slice(0, 3)), avg(this.dirs.slice(3))];
-    const cos = a[0] * b[0] + a[1] * b[1];
-    return cos < Math.cos((this.p.corner * Math.PI) / 180);
-  }
+/** The assisted stroke for the raw samples so far. Call it again as samples arrive: it is cheap
+ * for a stroke's length, and only the newest points change. */
+export function assistStroke(raw: InkSample[], p: AssistParams): InkSample[] {
+  return settle(dehook(raw, p.dehook), p);
 }
 
-function avg(v: [number, number][]): [number, number] {
-  const x = v.reduce((s, d) => s + d[0], 0), y = v.reduce((s, d) => s + d[1], 0), l = Math.hypot(x, y) || 1;
-  return [x / l, y / l];
-}
-
-function travel(pts: InkSample[]) {
-  let d = 0;
-  for (let i = 1; i < pts.length; i++) d += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
-  return d;
-}
-
-// A skid: as a pen lands it flicks a little against the way the stroke then goes. Compare the
-// direction of the first ~3 px with the direction after it; if they oppose (over ~107°), the stroke
-// starts at the turning point (the point furthest back along the later direction), within `limit` px.
+// A flick: as a pen lands it moves a little against the way the stroke then goes. Compare the
+// direction of the first ~3 px with the direction of the next ~12 px; if they oppose (over ~107°),
+// the stroke starts at the turning point (the point furthest back along the later direction).
 function dehook(pts: InkSample[], limit: number): InkSample[] {
+  if (pts.length < 4 || limit <= 0) return pts;
   let d = 0, k = 0;
   for (let i = 1; i < pts.length; i++) { d += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y); if (d >= 3) { k = i; break; } }
   if (!k || k >= pts.length - 1) return pts;
-  const ax = pts[k].x - pts[0].x, ay = pts[k].y - pts[0].y, last = pts[pts.length - 1];
-  const bx = last.x - pts[k].x, by = last.y - pts[k].y, bl = Math.hypot(bx, by), al = Math.hypot(ax, ay);
+  let e = k; d = 0;
+  while (e < pts.length - 1 && d < 12) { d += Math.hypot(pts[e + 1].x - pts[e].x, pts[e + 1].y - pts[e].y); e++; }
+  const ax = pts[k].x - pts[0].x, ay = pts[k].y - pts[0].y;
+  const bx = pts[e].x - pts[k].x, by = pts[e].y - pts[k].y, bl = Math.hypot(bx, by), al = Math.hypot(ax, ay);
   if (bl < 1 || al < 1 || (ax * bx + ay * by) / (al * bl) > -0.3) return pts;
   let back = Infinity, at = 0; d = 0;
   for (let i = 0; i < pts.length; i++) {
@@ -168,6 +72,53 @@ function dehook(pts: InkSample[], limit: number): InkSample[] {
     if (along < back) { back = along; at = i; }
   }
   return pts.slice(at);
+}
+
+function settle(raw: InkSample[], { settleMs, corner }: AssistParams): InkSample[] {
+  if (raw.length < 3 || settleMs <= 0) return raw.map((p) => ({ ...p }));
+  // Corners, judged on a lightly levelled copy so a tremor's wiggle is not a corner.
+  const soft = raw.map((p) => {
+    let x = 0, y = 0, w = 0;
+    for (const q of raw) { const dt = q.t - p.t; if (Math.abs(dt) > settleMs) continue; const k = Math.exp(-(dt * dt) / (2 * (settleMs / 2) ** 2)); x += k * q.x; y += k * q.y; w += k; }
+    return { x: x / w, y: y / w, t: p.t };
+  });
+  const cosLimit = Math.cos((corner * Math.PI) / 180);
+  const dirAt = (i: number, step: number) => {
+    let j = i, d = 0;
+    while (j + step >= 0 && j + step < soft.length && d < 8) { d += Math.hypot(soft[j + step].x - soft[j].x, soft[j + step].y - soft[j].y); j += step; }
+    const dx = soft[j].x - soft[i].x, dy = soft[j].y - soft[i].y, l = Math.hypot(dx, dy);
+    return l > 3 ? { u: [dx / l, dy / l], speed: d / Math.max(1, Math.abs(soft[j].t - soft[i].t)) } : null;
+  };
+  const cuts: number[] = [];
+  for (let i = 2; i < raw.length - 2; i++) {
+    const a = dirAt(i, -1), b = dirAt(i, 1);
+    if (!a || !b || (cuts.length && i - cuts[cuts.length - 1] <= 3)) continue;
+    const turned = -(a.u[0] * b.u[0] + a.u[1] * b.u[1]) < cosLimit;
+    const here = Math.hypot(soft[i + 1].x - soft[i - 1].x, soft[i + 1].y - soft[i - 1].y) / Math.max(1, soft[i + 1].t - soft[i - 1].t);
+    if (turned && here < 0.75 * Math.max(a.speed, b.speed)) cuts.push(i);
+  }
+  // Settle each piece between corners; its ends are pinned.
+  const out: InkSample[] = [];
+  const sig2 = 2 * settleMs * settleMs;
+  let from = 0;
+  for (const to of [...cuts, raw.length - 1]) {
+    for (let i = from; i <= to; i++) {
+      if (out.length && i === from) continue; // a corner point is shared by two pieces
+      if (i === from || i === to) { out.push({ ...raw[i] }); continue; }
+      let wx = 0, wy = 0, wp = 0, ws = 0;
+      for (let j = from; j <= to; j++) {
+        const dt = raw[j].t - raw[i].t;
+        if (Math.abs(dt) > settleMs * 3) continue;
+        const w = Math.exp(-(dt * dt) / sig2);
+        wx += w * raw[j].x; wy += w * raw[j].y; wp += w * raw[j].pressure; ws += w;
+      }
+      // Near a pinned end the window is one-sided; blend toward the raw point so ends do not pull in.
+      const k = Math.min(1, Math.min(raw[i].t - raw[from].t, raw[to].t - raw[i].t) / (settleMs * 2));
+      out.push({ x: raw[i].x + (wx / ws - raw[i].x) * k, y: raw[i].y + (wy / ws - raw[i].y) * k, t: raw[i].t, pressure: raw[i].pressure + (wp / ws - raw[i].pressure) * k });
+    }
+    from = to;
+  }
+  return out;
 }
 
 /* The ink's outline: a filled shape around the centre line whose radius follows pressure, with a

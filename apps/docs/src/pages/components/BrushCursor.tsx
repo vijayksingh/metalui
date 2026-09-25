@@ -15,7 +15,7 @@ export default function BrushCursorPage() {
       more={[{
         id: 'assisted-ink',
         title: 'Assisted ink',
-        lede: 'The pen helps while you write, like a hand on the elbow: slow, shaky movement is steadied, quick sure movement is left alone, corners stay sharp, a skid on landing is dropped, and when you lift, the ink finishes where your hand stopped. Nothing is redrawn after it appears. Try Shaky hand, then write yourself with Both on; the grey trace is what your hand did.',
+        lede: 'The pen helps while you write, like a hand on the elbow. The ink stays right under your pen, and the ink just behind it levels out, like wet ink behind a nib: shake is smoothed away, corners stay sharp, a skid on landing is dropped, and the stroke ends exactly where you lift. Nothing moves once it is a few millimetres behind the pen. Try Shaky hand, then write yourself with Both on; the grey trace is what your hand did.',
         node: <Bench><AssistLab /></Bench>,
       }]}
       sources={[
