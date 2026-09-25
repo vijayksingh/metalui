@@ -2153,6 +2153,7 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 
 - A Base UI slider labelled "Scrub through time": ← → step an hour, Shift a day, Home and End jump to the start and now; its value text reads the moment ("TUE 23 SEP · 14:10", or "Now").
 - NOW is a real button.
+- Whole 330 × 50 box starts a scrub; readout text passes pointer hits through to slider, while NOW keeps its own hit target.
 
 ## Tokens
 

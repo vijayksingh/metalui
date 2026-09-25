@@ -3,6 +3,30 @@ import { COLORWAYS, capture, open } from './helpers';
 
 // Memory scrubber and past banner: drag or step back in time, the banner names the moment, NOW and ⎋ return.
 for (const colorway of COLORWAYS) {
+  test(`the whole scrubber box takes pointer input in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/memory-scrubber', colorway);
+    const scrubber = page.locator('.mu-scrubber').first();
+    const slider = scrubber.getByRole('slider', { name: 'Scrub through time' });
+    const box = await scrubber.boundingBox();
+    expect(box).not.toBeNull();
+    for (const y of [7, 12, 25, 39]) {
+      await page.mouse.click(box!.x + 90, box!.y + y);
+      await expect(slider).not.toHaveAttribute('aria-valuetext', 'Now');
+      await page.reload();
+      await expect(slider).toHaveAttribute('aria-valuetext', 'Now');
+    }
+    await page.mouse.move(box!.x + box!.width - 4, box!.y + 11);
+    await page.mouse.down();
+    await page.mouse.move(box!.x + 200, box!.y + 11, { steps: 4 });
+    await page.mouse.up();
+    await expect(slider).not.toHaveAttribute('aria-valuetext', 'Now');
+    await scrubber.getByRole('button', { name: 'NOW' }).click();
+    await expect(slider).toHaveAttribute('aria-valuetext', 'Now');
+    await slider.focus();
+    await page.keyboard.press('Shift+ArrowLeft');
+    await expect(slider).not.toHaveAttribute('aria-valuetext', 'Now');
+  });
+
   test(`step back in time and return in ${colorway}`, async ({ page }) => {
     await open(page, '/components/memory-scrubber', colorway);
     const knob = page.getByRole('slider', { name: 'Scrub through time' });

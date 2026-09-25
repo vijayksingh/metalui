@@ -83,6 +83,7 @@ public struct MetalTimeScrubber: View {
                         .offset(y: MetalScrubberMetrics.glyphDrop)
                     MetalLabel("MEMORY · \(readout)", style: .engraved)
                 }
+                .allowsHitTesting(false)
                 if selection != nil {
                     Button {
                         withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = nil }

@@ -62,6 +62,9 @@ public struct MetalSlider: View {
             let knob = recipe.points("knob.size")
             let x = width * fraction
             ZStack(alignment: .topLeading) {
+                // The visible well is thin; the entire control remains a drag
+                // surface, including space above/below the track and knob.
+                Color.clear.frame(width: width, height: geometry.size.height)
                 Color.clear
                     .metalObjectRecipe(MetalRecipes.well, part: "self", state: "track", in: Capsule())
                     .frame(width: width, height: track)
@@ -96,6 +99,7 @@ public struct MetalSlider: View {
                     .position(x: x, y: centre)
                     .accessibilityHidden(true)
             }
+            .frame(width: width, height: geometry.size.height)
             .contentShape(Rectangle())
             .gesture(DragGesture(minimumDistance: .zero)
                 .onChanged { gesture in
