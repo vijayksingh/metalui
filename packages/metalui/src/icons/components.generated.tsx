@@ -23,7 +23,7 @@ export const LineIcon = createIcon("line", "LineIcon");
 export const ArrowIcon = createIcon("arrow", "ArrowIcon");
 /** Rectangle. Hover: A handle grabs the far corner and drags the box in toward its pinned corner, then out past its size; let go, it springs back.. Press: plays the same act. */
 export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
-/** Ellipse. Hover: it is pulled toward a circle, narrowing as it grows. Press: a pen point traces it again, all the way round. */
+/** Ellipse. Hover: A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began.. Press: plays the same act. */
 export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
 /** Eraser. Hover: it leans onto a scribble, ready. Press: it rubs back and forth, the scribble goes and crumbs fall. */
 export const EraserIcon = createIcon("eraser", "EraserIcon");

@@ -164,11 +164,20 @@
       "component": "EllipseIcon",
       "label": "Ellipse",
       "category": "Tools",
-      "hover": "it is pulled toward a circle, narrowing as it grows",
-      "press": "a pen point traces it again, all the way round",
-      "pressMs": 700,
+      "hover": "A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began.",
+      "press": "plays the same act",
+      "pressMs": 1100,
+      "motion": {
+        "caption": "A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began.",
+        "durationMs": 1100,
+        "stages": [
+          "Pen down",
+          "Trace",
+          "Close"
+        ]
+      },
       "tuned16": false,
-      "construction": "An 8.6 × 6.9 ellipse, open, as wide as the Image frame. Hover stretches it toward a circle and narrows it a little, so it keeps its mass. Press: a pen point appears on the right and travels clockwise round the ellipse, while the old outline dims and a new one is drawn right behind it."
+      "construction": "An 8.6 × 6.9 ellipse, open, as wide as the Image frame, with a second copy on top that draws. Motion (study): a pen point comes down on the rightmost point and travels clockwise once round (16 steps, eased in and out), the new stroke drawn behind it by arc length while the old outline dims to a .22 guide; at the join a ring opens, the outline comes back up and the pen lifts away."
     },
     {
       "name": "eraser",
