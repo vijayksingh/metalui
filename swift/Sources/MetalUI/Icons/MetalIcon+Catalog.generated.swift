@@ -167,7 +167,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .link: return nil
         case .draw: return 0.16
         case .pen: return 0.16
-        case .marker: return 0.181
+        case .marker: return 0.16
         case .line: return nil
         case .arrow: return nil
         case .rectangle: return nil
