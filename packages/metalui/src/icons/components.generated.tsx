@@ -73,7 +73,7 @@ export const OfflineIcon = createIcon("offline", "OfflineIcon");
 export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");
 /** Capture. Hover: The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.. Press: plays the same act. */
 export const CaptureIcon = createIcon("capture", "CaptureIcon");
-/** Paste. Hover: clip lifts. Press: contents land on the board. */
+/** Paste. Hover: The clip levers open, the content drops onto the board, and the clip clamps it down.. Press: plays the same act. */
 export const PasteIcon = createIcon("paste", "PasteIcon");
 /** Keeper. Hover: blinks. Press: ring tips, eyes look up. */
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");

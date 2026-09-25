@@ -547,11 +547,20 @@
       "component": "PasteIcon",
       "label": "Paste",
       "category": "Status",
-      "hover": "clip lifts",
-      "press": "contents land on the board",
-      "pressMs": 400,
+      "hover": "The clip levers open, the content drops onto the board, and the clip clamps it down.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The clip levers open, the content drops onto the board, and the clip clamps it down.",
+        "durationMs": 900,
+        "stages": [
+          "Open",
+          "Drop",
+          "Clamp"
+        ]
+      },
       "tuned16": false,
-      "construction": "Portrait clipboard r2.4, clip r1.3, two content lines."
+      "construction": "Portrait clipboard r2.4 tinted .1, clip 6.8 × 3.6 r1.3, two content lines (6.8 and 4.2). Motion (study): the clip levers open 10° about its left end, the old lines lift away, the content falls onto the board line by line and bounces, and the clip clamps down squashed with a two-tick clack."
     },
     {
       "name": "keeper",
