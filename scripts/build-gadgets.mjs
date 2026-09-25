@@ -117,6 +117,8 @@ public enum MetalGadgetTokens {
     public static let beeperFallMs: Double = ${num(G.beeper['fall-ms'])}
     public static let beeperSampleMs: Double = ${num(G.beeper['sample-ms'])}
     public static let beeperAspect: Double = ${num(G.parts.beeper.size[1] / G.parts.beeper.size[0])}
+    /// Each Part's footprint on the canvas, units: [width, height].
+    public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
     public static let jackKnurlAlpha: Double = ${num(G.jack['knurl-alpha'])}
     public static let jackGlow: Double = ${num(G.jack.glow)}

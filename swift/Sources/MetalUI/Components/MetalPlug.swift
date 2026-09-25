@@ -4,18 +4,21 @@ import SwiftUI
 /// cable stub, and its own shadow. The SwiftUI twin of `Plug` (parts/plug.ts), from tokens gadgets.plug.
 public struct MetalPlug: View {
     public enum Stub: String, Sendable { case up, left, right, none }
+    /// Which layers to draw: a mechanism moves the plug and its shadow separately.
+    public enum Layer: Sendable { case both, body, shadow }
     let color: MetalOklch
     let stub: Stub
     let size: Double
     let accent: Bool
+    let layer: Layer
     @Environment(\.metalColorway) private var colorway
     @Environment(\.displayScale) private var displayScale
 
-    public init(accent: Bool = false, color: MetalOklch? = nil, stub: Stub = .none, size: Double = 96) {
+    public init(accent: Bool = false, color: MetalOklch? = nil, stub: Stub = .none, size: Double = 96, layer: Layer = .both) {
         let warm = MetalGadgetFeelTokens.accentWarm
         self.accent = accent
         self.color = color ?? (accent ? MetalOklch(L: warm.L, C: warm.C, H: warm.H) : MetalOklch(L: MetalGadgetTokens.plugFaceClay, C: MetalGadgetTokens.plugFaceChroma, H: MetalSoundMaterial.clay.finish.sampleHue))
-        self.stub = stub; self.size = size
+        self.stub = stub; self.size = size; self.layer = layer
     }
 
     private var direction: CGVector {
@@ -30,9 +33,12 @@ public struct MetalPlug: View {
                                              width: MetalGadgetTokens.plugAlone * MetalGadgetTokens.plugFace, height: MetalGadgetTokens.plugAlone * MetalGadgetTokens.plugFace), transform: nil)
         ZStack(alignment: .topLeading) {
             // Its shadow, a layer of its own.
-            Circle().fill(MetalGadgetLighting.shadow.opacity(sh.alpha))
-                .frame(width: D, height: D).blur(radius: R * sh.blur)
-                .position(x: c.x + R * sh.dx, y: c.y + R * sh.dy)
+            if layer != .body {
+                Circle().fill(MetalGadgetLighting.shadow.opacity(sh.alpha))
+                    .frame(width: D, height: D).blur(radius: R * sh.blur)
+                    .position(x: c.x + R * sh.dx, y: c.y + R * sh.dy)
+            }
+            if layer != .shadow {
             if stub != .none {
                 Path { p in
                     p.move(to: CGPoint(x: c.x + direction.dx * R * MetalGadgetTokens.plugStubFrom, y: c.y + direction.dy * R * MetalGadgetTokens.plugStubFrom))
@@ -61,6 +67,7 @@ public struct MetalPlug: View {
             Circle().fill(MetalPigment.color(lightness: color.L - MetalGadgetTokens.plugBossDrop, chroma: color.C, hue: color.H))
                 .frame(width: D * MetalGadgetTokens.plugBoss, height: D * MetalGadgetTokens.plugBoss)
                 .position(c)
+            }
         }
         .frame(width: size, height: size, alignment: .topLeading)
         .accessibilityElement()

@@ -49,4 +49,17 @@ final class MetalMechanismParity: XCTestCase {
             }
         }
     }
+
+    func testGadgetSpecsReadLikeTheWeb() throws {
+        for name in ["patch-bay", "counter-drum", "needle-gauge"] {
+            let spec = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("\(name).gadget.json")))
+            XCTAssertEqual(spec.name, name)
+        }
+        let bay = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("patch-bay.gadget.json")))
+        XCTAssertEqual(bay.description("failed"), "Sync: failed, check your connection")
+        XCTAssertEqual(bay.description("done"), "Sync: done")
+        XCTAssertEqual(bay.state("nonsense"), bay.state(nil))
+        // A plug springing home lands when the part spring first reaches home, as the web sees it (~212 ms).
+        XCTAssertEqual(MetalGadget.firstHome(MetalSprings.part), 0.217, accuracy: 0.005)
+    }
 }

@@ -140,12 +140,46 @@ public final class MetalMechanismPlayer {
         if reduced { held = next } else { withAnimation(.interpolatingSpring(mass: 1, stiffness: spring.stiffness, damping: spring.damping)) { held = next } }
     }
 
+    /// Springs one part to a pose given outright (a gadget state's form), or rest with nil; its shadow
+    /// moves with it, as a plug lying aside has its shadow under it. `immediate` snaps.
+    public func holdPose(_ part: String, _ pose: MetalMechanismPose?, immediate: Bool = false) {
+        for item in pending { item.cancel() }
+        pending = []
+        actStart = nil
+        var next = held
+        next[part] = pose
+        let spring = mechanism.spring.spring
+        if reduced || immediate { held = next } else { withAnimation(.interpolatingSpring(mass: 1, stiffness: spring.stiffness, damping: spring.damping)) { held = next } }
+    }
+
+    /// Plays only the act's landing (its cues from the last strike on), now: for a part that came home
+    /// another way, like a plug springing back into its socket from lying aside.
+    public func land(sound: MetalSound? = nil, weight: Double = 0, reach: MetalSoundReach = .own,
+                     strike: (String) -> (material: MetalSoundMaterial, size: Double)? = { _ in nil },
+                     lamp: ((MetalLampGesture) -> Void)? = nil, beep: (() -> Void)? = nil) {
+        let from = mechanism.cues.filter { $0.kind == .strike }.compactMap(\.at).max() ?? 0
+        for cue in mechanism.cues {
+            guard let at0 = cue.at, at0 >= from, cue.kind != .detent, cue.kind != .friction else { continue }
+            let at = at0 - from
+            if cue.kind == .strike, let slot = cue.slot, let part = strike(slot) {
+                sound?.strike(part.material, size: part.size, weight: weight, reach: reach, level: cue.level, delay: at / 1000, pitch: cue.pitch)
+            }
+            let item = DispatchWorkItem {
+                if cue.kind == .lamp, let g = cue.gesture { lamp?(g) }
+                if cue.kind == .beep { beep?() }
+            }
+            pending.append(item)
+            DispatchQueue.main.asyncAfter(deadline: .now() + at / 1000, execute: item)
+        }
+    }
+
     /// Where a part is now: the act's track while it plays, else its held pose.
     public func pose(_ part: String, at date: Date = Date()) -> (pose: MetalMechanismPose, opacity: Double?) {
         if let start = actStart {
             let t = date.timeIntervalSince(start) * 1000
             if t < mechanism.duration { return mechanism.sample(part, at: t) }
         }
-        return (held[part.components(separatedBy: ".")[0]] ?? .rest, part.contains(".") ? 1 : nil)
+        let base = part.components(separatedBy: ".")[0], h = held[base] ?? .rest
+        return (part.contains(".") ? MetalMechanismPose(x: h.x, y: h.y) : h, part.contains(".") ? 1 : nil)
     }
 }

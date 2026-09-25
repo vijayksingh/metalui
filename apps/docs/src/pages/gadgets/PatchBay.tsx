@@ -7,6 +7,8 @@ import drawSource from '../../../../../packages/metalui/src/gadgets/draw.ts?raw'
 import gadgetSource from '../../../../../packages/metalui/src/gadgets/Gadget.tsx?raw';
 import agentGuide from '../../../../../packages/metalui/src/gadgets/patch-bay/patch-bay.agent.md?raw';
 import { Bench, Code, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { SwiftCapture } from '../../ui/SwiftCapture';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Gadgets/MetalGadget.swift?raw';
 
 const SPEC = patchBay as unknown as GadgetSpec;
 const STATES = Object.keys(SPEC.states);
@@ -97,7 +99,7 @@ export default function PatchBayPage() {
           </div>
         </Bench>
       </Section>
-      <Section title="Every state" lede="The same spec in each of its five states, drawn still.">
+      <Section title="Every state" lede="The same spec in each of its five states, drawn still: on the web, and by MetalGadget in SwiftUI from the same JSON.">
         <Bench caption="rest · connected · syncing · done · failed">
           <div className="flex flex-wrap items-end gap-20" data-testid="bay-states">
             {STATES.map((s) => (
@@ -108,6 +110,7 @@ export default function PatchBayPage() {
             ))}
           </div>
         </Bench>
+        <SwiftCapture name="gadget-patch-bay" maxWidth={720} />
       </Section>
       <Section title="Detail by size" lede="Big, it has lit materials, grain and shaded cuts. Small, the filters drop away until, below 48 px, it draws with none.">
         <Bench caption="160 · 96 · 64 · 32 px">
@@ -142,6 +145,7 @@ export default function PatchBayPage() {
         <SourceTabs tabs={[
           { id: 'gadget', label: 'Gadget', code: gadgetSource },
           { id: 'draw', label: 'Renderer', code: drawSource },
+          { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
         ]} />
       </Section>

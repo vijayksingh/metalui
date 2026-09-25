@@ -35,9 +35,17 @@ struct MetalCableShape: Shape {
     var c1: CGPoint
     var c2: CGPoint
 
-    var animatableData: AnimatablePair<AnimatablePair<CGFloat, CGFloat>, AnimatablePair<CGFloat, CGFloat>> {
-        get { AnimatablePair(AnimatablePair(c1.x, c1.y), AnimatablePair(c2.x, c2.y)) }
-        set { c1 = CGPoint(x: newValue.first.first, y: newValue.first.second); c2 = CGPoint(x: newValue.second.first, y: newValue.second.second) }
+    /// Held by plugs that spring, the ends animate with them; held by a hand, they go at once.
+    var followEnds = false
+
+    var animatableData: AnimatablePair<AnimatablePair<AnimatablePair<CGFloat, CGFloat>, AnimatablePair<CGFloat, CGFloat>>, AnimatablePair<AnimatablePair<CGFloat, CGFloat>, AnimatablePair<CGFloat, CGFloat>>> {
+        get { AnimatablePair(AnimatablePair(AnimatablePair(c1.x, c1.y), AnimatablePair(c2.x, c2.y)), AnimatablePair(AnimatablePair(from.x, from.y), AnimatablePair(to.x, to.y))) }
+        set {
+            c1 = CGPoint(x: newValue.first.first.first, y: newValue.first.first.second); c2 = CGPoint(x: newValue.first.second.first, y: newValue.first.second.second)
+            if followEnds {
+                from = CGPoint(x: newValue.second.first.first, y: newValue.second.first.second); to = CGPoint(x: newValue.second.second.first, y: newValue.second.second.second)
+            }
+        }
     }
 
     func path(in rect: CGRect) -> Path {
@@ -56,11 +64,12 @@ public struct MetalCable: View {
     let length: Double?
     let color: MetalOklch
     let size: Double
+    let followEnds: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    public init(from: CGPoint, to: CGPoint, sag: Double? = nil, length: Double? = nil, color: MetalOklch? = nil, size: Double = 160) {
+    public init(from: CGPoint, to: CGPoint, sag: Double? = nil, length: Double? = nil, color: MetalOklch? = nil, size: Double = 160, followEnds: Bool = false) {
         let rubber = MetalGadgetTokens.cableRubber
-        self.from = from; self.to = to; self.sag = sag; self.length = length; self.size = size
+        self.from = from; self.to = to; self.sag = sag; self.length = length; self.size = size; self.followEnds = followEnds
         self.color = color ?? MetalOklch(L: rubber.L, C: rubber.C, H: MetalSoundMaterial.rubber.finish.sampleHue)
     }
 
@@ -68,7 +77,7 @@ public struct MetalCable: View {
         let unit = size / MetalGadgetTokens.canvas, w = MetalGadgetTokens.cableWidth * unit
         let droop = MetalCableGeometry.sag(from: from, to: to, sag: sag, length: length)
         let (c1, c2) = MetalCableGeometry.controls(from: from, to: to, sag: droop)
-        let shape = MetalCableShape(from: from, to: to, c1: c1, c2: c2)
+        let shape = MetalCableShape(from: from, to: to, c1: c1, c2: c2, followEnds: followEnds)
         let sh = MetalGadgetTokens.cableShadow, un = MetalGadgetTokens.cableShade, hi = MetalGadgetTokens.cableSheen
         let round = { (width: Double) in StrokeStyle(lineWidth: width, lineCap: .round) }
         ZStack {
@@ -81,7 +90,7 @@ public struct MetalCable: View {
                 .offset(x: w * hi.dx, y: w * hi.dy)
         }
         .frame(width: size, height: size)
-        .animation(reduceMotion ? nil : MetalGadgetTokens.cableSpring.animation, value: [c1.x, c1.y, c2.x, c2.y])
+        .animation(reduceMotion || followEnds ? nil : MetalGadgetTokens.cableSpring.animation, value: [c1.x, c1.y, c2.x, c2.y])
         .accessibilityElement()
         .accessibilityLabel("cable")
     }
