@@ -75,6 +75,10 @@ function loadBank(): LetterBank { try { return JSON.parse(localStorage.getItem(B
 function keepBank(b: LetterBank) { try { localStorage.setItem(BANK, JSON.stringify(b)); } catch { /* storage unavailable */ } }
 const TEACH_TIMES = 2;
 
+/** After-the-fact changes (the word settle and letter repair) are off: the ink stays as written,
+ * with only the live assist. True brings back the Settled switch, the settle and the letters row. */
+const SETTLE = false;
+
 /** Word finding (INK_ENGINE.md §4.8): a pause, or a gap past the word, or a new line. */
 const PAUSE = 600, WORD_GAP = 1.2, LINE_GAP = 1.5;
 
@@ -129,7 +133,7 @@ export function AssistLab() {
   const [tool, setTool] = React.useState<AssistTool>('pen');
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
   const [asWritten, setAsWritten] = React.useState<'settled' | 'written'>('settled');
-  const [note, setNote] = React.useState('Write a word, then pause or move on: it settles, and this line says what happened.');
+  const [note, setNote] = React.useState(SETTLE ? 'Write a word, then pause or move on: it settles, and this line says what happened.' : '');
   // Your writing survives a reload (the dev server reloads the page when the code changes): finished
   // strokes are kept in this browser and restored; Clear removes them. A per-viewer convenience only.
   const [strokes, setStrokes] = React.useState<Stroke[]>(() => restore());
@@ -219,6 +223,7 @@ export function AssistLab() {
     const strokesOfWord = word.current; word.current = [];
     if (!strokesOfWord.length) return;
     lastWord.current = strokesOfWord;
+    if (!SETTLE) return;
     const result = settleWord(strokesOfWord.map((w) => w.ink!));
     setNote(`Last word: ${lastWordNote}.`);
     if (!result) return;
@@ -302,7 +307,7 @@ export function AssistLab() {
       <div className="flex flex-wrap items-center justify-center gap-12">
         <Switcher size="compact" aria-label="Tool" value={tool} onValueChange={setTool} options={[{ value: 'pen', label: 'Pen' }, { value: 'pencil', label: 'Pencil' }, { value: 'marker', label: 'Marker' }]} />
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
-        <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />
+        {SETTLE && <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />}
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
         <Button size="compact" onClick={() => { setStrokes([]); keep([]); lastWord.current = []; }}>Clear</Button>
         <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
@@ -324,13 +329,13 @@ export function AssistLab() {
         </svg>
         {!strokes.length && <span className="eng ink-hint">write here, slowly and quickly</span>}
       </div>
-      <form className="flex flex-wrap items-center justify-center gap-12" onSubmit={(e) => { e.preventDefault(); repair(says); }}>
+      {SETTLE && <form className="flex flex-wrap items-center justify-center gap-12" onSubmit={(e) => { e.preventDefault(); repair(says); }}>
         <Field className="w-[240px]"><Field.Input aria-label="What the last word says" placeholder="The last word says…" value={says} onChange={(e) => setSays(e.target.value)} /></Field>
         <Button size="compact" type="submit">Repair letters</Button>
         <Button size="compact" type="button" disabled={!bankSize} onClick={() => { setBank({}); setTeachBoth(null); setNote('Letters forgotten.'); }}>Forget letters</Button>
-      </form>
-      <p className="type-doc-prose max-w-[64ch] text-center text-ink2" aria-live="polite">{note}</p>
-      {teach && <LetterPad key={teach.says + teach.letters.join('')} letters={teach.letters} xh={teach.xh} times={TEACH_TIMES} onLetter={learnLetter} />}
+      </form>}
+      {note && <p className="type-doc-prose max-w-[64ch] text-center text-ink2" aria-live="polite">{note}</p>}
+      {SETTLE && teach && <LetterPad key={teach.says + teach.letters.join('')} letters={teach.letters} xh={teach.xh} times={TEACH_TIMES} onLetter={learnLetter} />}
     </div>
   );
 }
