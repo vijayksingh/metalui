@@ -1,0 +1,21 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "keycap-chord", "title": "Shortcuts",
+  "job": "command", "reach": "own", "feel": { "v": 0.8, "a": 0.8, "w": 0.1 }, "container": "slab", "material": "ceramic",
+  "parts": [
+    { "id": "body", "part": "slab", "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "tray", "part": "slab", "at": [200, 218], "size": [268, 164], "role": "cut", "params": { "cut": "tray", "depth": 14 } },
+    { "id": "lamp", "part": "led",  "at": [313, 78],  "role": "lamp" },
+    { "id": "cmd",  "part": "key",  "at": [140, 222], "role": "actor", "material": "ceramic", "params": { "glyph": "⌘" } },
+    { "id": "k",    "part": "key",  "at": [260, 222], "role": "actor", "material": "accent", "params": { "glyph": "K" } }
+  ],
+  "mechanism": { "name": "press", "bind": { "keys": ["cmd", "k"], "lamp": "lamp" } },
+  "ports": { "in": { "press": { "kind": "pulse" } } },
+  "states": {
+    "rest":  { "lamp": ["off", "steady"] },
+    "ready": { "lamp": ["live", "steady"] },
+    "chord": { "lamp": ["live", "steady"], "enter": "act" }
+  },
+  "initial": "ready",
+  "describe": "{title}: {state}"
+}

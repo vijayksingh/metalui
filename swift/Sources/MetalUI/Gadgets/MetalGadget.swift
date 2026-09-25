@@ -73,6 +73,9 @@ public struct MetalGadget: View {
                                 material: p.material == "clay" ? .clay : .metal, earcon: earcon, trigger: beeps, size: s)
                         .position(x: p.at[0] * unit, y: p.at[1] * unit)
                 }
+                ForEach(spec.parts.filter { $0.part == "key" }, id: \.id) { p in
+                    key(p, r: r, at: timeline.date)
+                }
                 ForEach(spec.parts.filter { $0.part == "cable" }, id: \.id) { p in
                     if let a = part(p.params?["from"]?.text), let b = part(p.params?["to"]?.text) {
                         MetalCable(from: end(a, bind: bind, at: timeline.date), to: end(b, bind: bind, at: timeline.date),
@@ -128,6 +131,11 @@ public struct MetalGadget: View {
             let w = footprint(p).0
             if p.part == "jack" { return MetalSlabCut(.hole, at: (p.at[0], p.at[1]), size: (w * MetalGadgetTokens.jackHole, w * MetalGadgetTokens.jackHole)) }
             if p.part == "led" { return MetalSlabCut(.hole, at: (p.at[0], p.at[1]), size: (w + MetalGadgetTokens.holeLip * 2, w + MetalGadgetTokens.holeLip * 2)) }
+            // A slab placed with the cut role is a cut into the body: a tray, a well, a slot, a hole.
+            if p.part == "slab", p.role == "cut" {
+                let kind = MetalSlabCut.Kind(rawValue: p.params?["cut"]?.text ?? "tray") ?? .tray
+                return MetalSlabCut(kind, at: (p.at[0], p.at[1]), size: footprint(p), depth: p.params?["depth"]?.number)
+            }
             return nil
         } + slots
     }
@@ -145,6 +153,19 @@ public struct MetalGadget: View {
 
     private var driveMaterial: MetalSoundMaterial {
         spec.parts.first { $0.part == "cap" }?.material == "ceramic" ? .ceramic : .clay
+    }
+
+    /// A key, its face moved by the press mechanism when its slot binds it.
+    @ViewBuilder private func key(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let s = footprint(p).0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.keyAlone
+        let accent = p.material == "accent", ceramic = p.material == "ceramic"
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }
+        let pose = slot.flatMap { b in b.value.firstIndex(of: p.id).map { player?.pose(b.key, actor: $0, at: date).pose } } ?? nil
+        MetalKey(glyph: p.params?["glyph"]?.text, accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil,
+                 size: s, facePose: pose ?? .rest)
+            .frame(width: s, height: s)
+            .position(x: p.at[0] * unit, y: p.at[1] * unit)
+            .accessibilityHidden(true)
     }
 
     /// A cap, at its place along its slot when a drive holds it.
@@ -201,6 +222,17 @@ public struct MetalGadget: View {
             return (m, footprint(p).0)
         }
     }
+    /// The most actors any slot binds: a chord's keys.
+    private var manyActors: Int { spec.mechanism.bind.values.map(\.count).max() ?? 1 }
+
+    /// The i-th part a slot binds, as it sounds when struck: its own material (an accent part sounds
+    /// as its Part's first material) at its own size.
+    private func strikeActor(_ slot: String, _ i: Int) -> (material: MetalSoundMaterial, size: Double)? {
+        guard let ids = spec.mechanism.bind[slot], i < ids.count, let p = part(ids[i]) else { return nil }
+        let m = p.material.flatMap(MetalSoundMaterial.init(rawValue:)) ?? .clay
+        return (m, footprint(p).0)
+    }
+
     private func beep(_ e: MetalEarcon?) {
         guard let e else { return }
         _ = sound?.beep(e, rendered: size)
@@ -228,7 +260,7 @@ public struct MetalGadget: View {
                 return
             }
             if far { player.land(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) }) }
-            else { player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) }) }
+            else { player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 }, beep: { beep(news) }, actors: manyActors, strikeActor: strikeActor) }
         } else if let news { beep(news) }
     }
 
@@ -244,6 +276,7 @@ public struct MetalGadget: View {
     private func play(bind: [String: String]) {
         guard let player else { return }
         player.reduced = reduceMotion
-        player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 })
+        player.act(sound: sound, weight: spec.feel.w, reach: reach, strike: strikeSlot(bind), lamp: { lampGesture = $0 },
+                   actors: manyActors, strikeActor: strikeActor)
     }
 }

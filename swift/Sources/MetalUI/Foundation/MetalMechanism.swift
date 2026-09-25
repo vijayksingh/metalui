@@ -128,15 +128,18 @@ public final class MetalMechanismPlayer {
     public func act(sound: MetalSound? = nil, weight: Double = 0, reach: MetalSoundReach = .own,
                     strike: (String) -> (material: MetalSoundMaterial, size: Double)? = { _ in nil },
                     lamp: ((MetalLampGesture) -> Void)? = nil, beep: (() -> Void)? = nil,
-                    onCue: ((MetalMechanism.Cue, Double) -> Void)? = nil, actors: Int = 1) -> Bool {
+                    onCue: ((MetalMechanism.Cue, Double) -> Void)? = nil, actors: Int = 1,
+                    strikeActor: ((String, Int) -> (material: MetalSoundMaterial, size: Double)?)? = nil) -> Bool {
         guard mechanism.momentary, !playing else { return false }
         for item in pending { item.cancel() }
         pending = []
         self.actors = max(1, actors)
         for (at, cue, skipped) in schedule() where !skipped {
             // A strike on a slot of many actors strikes each of them, a stagger apart.
-            if cue.kind == .strike, let slot = cue.slot, let part = strike(slot) {
+            // Each struck actor sounds in its own material when the caller says which that is.
+            if cue.kind == .strike, let slot = cue.slot {
                 for i in 0..<self.actors {
+                    guard let part = strikeActor?(slot, i) ?? strike(slot) else { continue }
                     let when = dropsTravel ? at : at + Double(i) * mechanism.stagger
                     sound?.strike(part.material, size: part.size, weight: weight, reach: reach, level: cue.level, delay: when / 1000, pitch: cue.pitch)
                 }

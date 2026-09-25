@@ -1,0 +1,12 @@
+{
+  "name": "keycap-chord",
+  "title": "Keycap chord",
+  "status": "alpha",
+  "description": "A gadget for shortcuts: two keys, ⌘ and K, standing in a tray sunk into a ceramic slab, the one you would press in orange, and a lamp. Its act is a chord: the keys drop one after another and spring back, with two ceramic tinks and higher clicks on the way up. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/keycap-chord.gadget.json",
+  "uses": ["slab", "key", "led"],
+  "page": "/gadgets/keycap-chord"
+}

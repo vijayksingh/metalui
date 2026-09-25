@@ -15,6 +15,7 @@ import { drawCable } from './parts/cable';
 import { drawBeeper } from './parts/beeper';
 import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
+import { drawKey } from './parts/key';
 import { MECHANISMS } from './mechanisms.generated';
 
 export interface DrawOptions { state?: string; tier?: Tier; host?: Host; id?: string; lamp?: [string, string] }
@@ -92,6 +93,12 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     if (p.part === 'jack') cuts.push({ kind: 'hole', at: p.at, size: [w * GADGETS.jack.hole, w * GADGETS.jack.hole] });
     if (p.part === 'led') cuts.push({ kind: 'hole', at: p.at, size: [w + GADGETS.hole.lip * 2, w + GADGETS.hole.lip * 2] });
   }
+  // A slab placed with the cut role is a cut into the body: a tray, a well, a slot, a hole.
+  for (const p of spec.parts) {
+    if (p.part !== 'slab' || p.role !== 'cut') continue;
+    const kind = (p.params?.cut as Cut['kind'] | undefined) ?? 'tray';
+    cuts.push({ kind, at: p.at, size: sizeOf(p), depth: p.params?.depth === undefined ? undefined : Number(p.params.depth) });
+  }
   // A driven actor runs in a slot cut as long as its travel.
   const held = heldOf(spec), driven = held ? boundTo(spec, held.slot) : [];
   if (held) for (const id of driven) {
@@ -138,6 +145,13 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       // A driven cap is drawn at its starting place, so the first paint (and the server's) shows it there.
       const k = driven.indexOf(p.id), y = k >= 0 && held ? (held.from.y ?? 0) + ((held.to.y ?? 0) - (held.from.y ?? 0)) * start[k] : 0;
       plugs += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}><g data-drive="${k}" transform="translate(0 ${+y.toFixed(3)})">${d.shadow}${d.body}</g></g>`;
+    } else if (p.part === 'key') {
+      const r = byId[p.id], ceramic = p.material === 'ceramic';
+      const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
+      const d = drawKey(pid, { at: p.at, size: size[0], glyph: p.params?.glyph === undefined ? undefined : String(p.params.glyph), color: face, material: ceramic ? 'ceramic' : 'clay' }, { tier, host });
+      defs += d.defs;
+      // The face is what a press moves; the skirt stays.
+      trims += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.shadow}${d.body.replace('<g data-part="key.face">', '<g data-part="key.face" data-moves>')}</g>`;
     } else if (p.part === 'plug') {
       const r = byId[p.id], face = r.accent && r.color ? r.color : clayFace();
       const d = drawPlug(pid, { at: p.at, size: size[0], color: face, stub: (p.params?.stub as 'up' | 'left' | 'right' | 'none' | undefined) ?? 'none' }, { tier, host });
@@ -146,7 +160,7 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const pose = poses[p.id], [cx, cy] = p.at;
       const t = pose ? ` transform="translate(${cx + (pose.x ?? 0)} ${cy + (pose.y ?? 0)}) rotate(${pose.r ?? 0}) translate(${-cx} ${-cy})"` : '';
       const ts = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
-      plugs += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.shadow.replace('<g data-part="plug.shadow"', `<g data-part="plug.shadow"${ts}`)}${d.body.replace('<g data-part="plug"', `<g data-part="plug"${t}`)}</g>`;
+      plugs += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.shadow.replace('<g data-part="plug.shadow"', `<g data-part="plug.shadow" data-moves-shadow${ts}`)}${d.body.replace('<g data-part="plug"', `<g data-part="plug" data-moves${t}`)}</g>`;
     }
   }
 

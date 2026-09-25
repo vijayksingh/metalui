@@ -266,6 +266,19 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetKeycapChord() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/keycap-chord.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(["rest", "ready", "chord"], id: \.self) { s in MetalGadget(spec: spec, state: s, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-keycap-chord-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

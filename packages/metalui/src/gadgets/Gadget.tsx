@@ -88,11 +88,31 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     const held = formPoses(valid, first.current)[plugId];
     const start: Pt = [home[0] + (held?.x ?? 0), home[1] + (held?.y ?? 0)];
     let swing: CableSwing | null = cableEl && cablePart ? createCableSwing(cableEl, cableSpec(start), { reduced: reducedMotion() }) : null;
-    const partMaterial = plug ? (plug.material === 'accent' ? 'clay' : plug.material ?? 'clay') : 'clay';
-    const p = createPlayer(valid.mechanism.name as MechanismName, { plug: el(plugId, '[data-part="plug"]'), 'plug.shadow': el(plugId, '[data-part="plug.shadow"]') }, {
-      origins: { plug: home },
+    // Every bound slot's moving elements (and their shadows), in bind order, about their own centres:
+    // a plug about itself, a key about its face.
+    const moving: Record<string, Element[]> = {}, origins: Record<string, [number, number][]> = {}, bound: Record<string, string[]> = {};
+    for (const [slot, ids] of Object.entries(valid.mechanism.bind)) {
+      const list = Array.isArray(ids) ? ids : [ids], els = list.map((id) => svg.querySelector(`[data-id="${id}"] [data-moves]`));
+      if (!els.every(Boolean)) continue;
+      moving[slot] = els as Element[]; bound[slot] = list;
+      origins[slot] = list.map((id) => {
+        const q = valid.parts.find((x) => x.id === id)!, S = (q.size ?? GADGETS.parts[q.part].size)[0] as number;
+        return q.part === 'key' ? [q.at[0], q.at[1] - S * GADGETS.key.faceLift] : [q.at[0], q.at[1]];
+      });
+      const shadows = list.map((id) => svg.querySelector(`[data-id="${id}"] [data-moves-shadow]`));
+      if (shadows.every(Boolean)) moving[`${slot}.shadow`] = shadows as Element[];
+    }
+    // A strike sounds in the struck part's own material, at its own size.
+    const struck = (slot: string, i: number) => {
+      const q = valid.parts.find((x) => x.id === bound[slot]?.[i]);
+      const def = q ? (GADGETS.parts[q.part] as unknown as { size: readonly number[]; materials: readonly string[] }) : null;
+      const material = (!q || q.material === 'accent' || !q.material ? def?.materials.find((m) => m !== 'accent') ?? 'clay' : q.material) as 'clay';
+      return { material, size: (q?.size ?? def?.size ?? [GADGETS.parts.plug.size[0]])[0] as number };
+    };
+    const p = createPlayer(valid.mechanism.name as MechanismName, moving, {
+      origins,
       reduced: reducedMotion(),
-      onStrike: (cue, delay) => sound?.strike(partMaterial as 'clay', { size: plug?.size?.[0] ?? GADGETS.parts.plug.size[0], weight: valid.feel.w, reach: valid.reach ?? 'world', level: cue.level, pitch: cue.pitch, delay }),
+      onStrike: (cue, delay, i) => { const w = struck(cue.slot, i); sound?.strike(w.material, { size: w.size, weight: valid.feel.w, reach: valid.reach ?? 'world', level: cue.level, pitch: cue.pitch, delay }); },
       onLamp: (gesture) => setLampCue((c) => ({ gesture, beat: (c?.beat ?? 0) + 1 })),
       onBeep: () => {
         const earcon = beepFor.current as 'done' | null;

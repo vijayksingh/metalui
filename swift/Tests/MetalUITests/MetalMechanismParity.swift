@@ -51,7 +51,7 @@ final class MetalMechanismParity: XCTestCase {
     }
 
     func testGadgetSpecsReadLikeTheWeb() throws {
-        for name in ["patch-bay", "counter-drum", "needle-gauge"] {
+        for name in ["patch-bay", "counter-drum", "needle-gauge", "fader-bank", "keycap-chord"] {
             let spec = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("\(name).gadget.json")))
             XCTAssertEqual(spec.name, name)
         }

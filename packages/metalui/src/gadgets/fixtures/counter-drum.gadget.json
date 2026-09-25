@@ -1,7 +1,7 @@
 {
   "$schema": "metalui/gadget@1",
   "name": "counter-drum", "title": "Streak",
-  "job": "keep", "feel": { "v": 0.8, "a": 0.3, "w": 0.3 }, "container": "slab", "station": 140,
+  "job": "keep", "feel": { "v": 0.8, "a": 0.3, "w": 0.3 }, "container": "slab", "station": 140, "material": "clay",
   "parts": [
     { "id": "body",   "part": "slab", "at": [200, 196], "size": [320, 320], "role": "body" },
     { "id": "lamp",   "part": "led",  "at": [313, 78],  "role": "lamp" },
