@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switch, Switcher } from '@unlocalhosted/metalui';
-import { MECHANISM_TIMELINES, bodyFill, createPlayer, materialFilter, pigment, resolveFeel, sampleTrack, type CueEvent, type Player, type Pose } from '@unlocalhosted/metalui/gadgets';
+import { GADGETS, MECHANISM_TIMELINES, bodyFill, createDrive, createPlayer, drawCap, drawSlab, tierFor, type Drive, type DriveEvent, materialFilter, pigment, resolveFeel, sampleTrack, type CueEvent, type Player, type Pose } from '@unlocalhosted/metalui/gadgets';
 import { createSound } from '@unlocalhosted/metalui/sound';
 import { useColorway } from '../../app/colorway';
 import { Bench, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
@@ -80,6 +80,71 @@ function Timeline({ at }: { at: number }) {
   );
 }
 
+const SLIDE = MECHANISM_TIMELINES.slide;
+const SLOTS_X = [128, 200, 272], SLOT_Y = 210;
+const MIXES: { label: string; values: number[] }[] = [
+  { label: 'Mix A', values: [0.25, 0.75, 0.5] },
+  { label: 'Mix B', values: [0.8, 0.3, 0.6] },
+  { label: 'All up', values: [1, 1, 1] },
+  { label: 'All down', values: [0, 0, 0] },
+];
+
+/** A fader stand-in: three caps in three slots of a clay slab, moved by the slide drive. */
+function Faders({ sound, reduced }: { sound: ReturnType<typeof createSound>; reduced: boolean }) {
+  const { colorway } = useColorway();
+  const host = colorway === 'graphite' ? 'graphite' : 'bone';
+  const uid = React.useId().replace(/:/g, '');
+  const tier = tierFor(260);
+  const travel = Math.abs(SLIDE.held!.to.y! - SLIDE.held!.from.y!);
+  const r = resolveFeel({ job: 'tune', feel: { v: 0.6, a: 0.5, w: 0.3 } });
+  const [pw, ph] = GADGETS.parts.cap.size;
+  const art = React.useMemo(() => {
+    const slab = drawSlab(`fs-${uid}`, { at: [200, 196], size: [320, 320], material: 'clay', color: r.body, cuts: SLOTS_X.map((x) => ({ kind: 'slot' as const, at: [x, SLOT_Y] as [number, number], size: [18, travel + 20] as [number, number] })) }, { tier, host });
+    const caps = SLOTS_X.map((x, i) => drawCap(`fc-${uid}-${i}`, { at: [x, SLOT_Y], size: [pw, ph], color: i === 1 ? r.accent : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: (GADGETS.materials.clay as unknown as { sample: number }).sample } }, { tier, host }));
+    return { slab, caps };
+  }, [uid, tier, host, r.body.L, r.body.C, r.body.H, r.accent.L, travel, pw, ph]); // eslint-disable-line react-hooks/exhaustive-deps
+  const root = React.useRef<SVGGElement>(null);
+  const drive = React.useRef<Drive | null>(null);
+  const [values, setValues] = React.useState([0.5, 0.5, 0.5]);
+  const [log, setLog] = React.useState<DriveEvent[]>([]);
+  const [speed, setSpeed] = React.useState(0);
+  React.useEffect(() => {
+    const caps = [...(root.current?.querySelectorAll('[data-cap]') ?? [])];
+    const d = createDrive('slide', caps, [0.5, 0.5, 0.5], {
+      sound, material: 'clay', partSize: pw, reduced,
+      onEvent: (e) => setLog((l) => [...l.slice(-11), e]),
+      onFrame: (v) => setValues(v),
+      onScrape: (sp) => setSpeed(sp),
+    });
+    drive.current = d;
+    return () => d.destroy();
+  }, [art, sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(() => { drive.current?.setOptions({ reduced }); }, [reduced]);
+  const since = React.useRef(0);
+  const go = (v: number[]) => { setLog([]); since.current = drive.current?.time ?? 0; drive.current?.set(v); };
+  return (
+    <div className="grid w-full items-center gap-24 md:grid-cols-[260px_1fr]" data-testid="slide-bench" data-values={values.map((v) => v.toFixed(2)).join(',')} data-speed={speed.toFixed(2)}>
+      <svg viewBox="0 0 400 400" width={260} height={260} role="img" aria-label="Three faders in a clay slab" className="overflow-visible">
+        <defs dangerouslySetInnerHTML={{ __html: art.slab.defs + art.caps.map((c) => c.defs).join('') }} />
+        <g dangerouslySetInnerHTML={{ __html: art.slab.floors + art.slab.body + art.slab.lips }} />
+        <g ref={root}>
+          {art.caps.map((c, i) => <g key={i} data-cap={i} dangerouslySetInnerHTML={{ __html: c.shadow + c.body }} />)}
+        </g>
+      </svg>
+      <div className="flex min-w-0 flex-col gap-12">
+        <div className="flex flex-wrap gap-8">
+          {MIXES.map((m) => <Button key={m.label} onClick={() => go(m.values)}>{m.label}</Button>)}
+        </div>
+        <ol className="m-0 flex min-h-[120px] list-none flex-col gap-2 p-0 type-readout text-ink3" data-testid="slide-log" aria-live="off">
+          {log.map((e, i) => (
+            <li key={i} data-kind={e.kind}>{Math.round(e.at - since.current)} ms · cap {e.actor + 1} · {e.kind === 'stop' ? `knocks the ${e.end ? 'top' : 'bottom'} at ${e.level.toFixed(2)}` : 'ticks a detent'}</li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
 export default function Mechanisms() {
   const { colorway } = useColorway();
   const host = colorway === 'graphite' ? 'graphite' : 'bone';
@@ -149,6 +214,11 @@ export default function Mechanisms() {
               </ol>
             </div>
           </div>
+        </Bench>
+      </Section>
+      <Section title="Slide" lede="A held mechanism: a value moves the caps, not a clock. Each cap springs to its new place along its slot, the next one 40 ms after, keeping its speed if the mix changes again on the way. You hear them scrape as they travel, tick past each eighth of the slot, and knock if they reach an end, which is a wall they bounce back from a little. With reduced motion they go straight to their places, each with one tick.">
+        <Bench caption={`slide · held · ${SLIDE.held!.detents} detents · stagger ${SLIDE.held!.stagger} ms · walls return ${SLIDE.held!.wall} · ${SLIDE.held!.step} steps a second on both platforms`}>
+          <Faders sound={sound} reduced={reduced} />
         </Bench>
       </Section>
       <Section title="The cue list">

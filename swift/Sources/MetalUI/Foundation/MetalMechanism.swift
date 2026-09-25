@@ -21,11 +21,22 @@ public struct MetalMechanism: Sendable {
         public let part: String, frames: [Frame]
         public init(part: String, frames: [Frame]) { self.part = part; self.frames = frames }
     }
-    public enum CueKind: String, Sendable { case strike, lamp, beep, friction, detent }
+    public enum CueKind: String, Sendable { case strike, lamp, beep, friction, detent, stop }
     public struct Cue: Sendable {
         public let at: Double?, until: Double?, kind: CueKind, slot: String?, level: Double, pitch: Double, gesture: MetalLampGesture?
         public init(at: Double?, until: Double?, kind: CueKind, slot: String?, level: Double, pitch: Double, gesture: MetalLampGesture?) {
             self.at = at; self.until = until; self.kind = kind; self.slot = slot; self.level = level; self.pitch = pitch; self.gesture = gesture
+        }
+    }
+    /// A held mechanism's drive: a value from 0 to 1 per actor, carried on the spring between two
+    /// poses; the ends of the travel are walls. The same numbers the web drive runs (drive.ts).
+    public struct Held: Sendable {
+        public let slot: String, from: MetalMechanismPose, to: MetalMechanismPose
+        public let detents: Int, stagger: Double, wall: Double, impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double
+        public init(slot: String, from: MetalMechanismPose, to: MetalMechanismPose, detents: Int, stagger: Double, wall: Double,
+                    impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double) {
+            self.slot = slot; self.from = from; self.to = to; self.detents = detents; self.stagger = stagger; self.wall = wall
+            self.impactFull = impactFull; self.scrapeFull = scrapeFull; self.tickMin = tickMin; self.tickGap = tickGap; self.step = step
         }
     }
     public struct HeldPose: Sendable {
@@ -43,10 +54,11 @@ public struct MetalMechanism: Sendable {
     public let states: [String: HeldPose]
     /// What survives reduced motion: "lamp", "sound", "press".
     public let reduced: [String]
+    public let held: Held?
 
-    public init(name: String, momentary: Bool, duration: Double, spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String]) {
+    public init(name: String, momentary: Bool, duration: Double, spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String], held: Held? = nil) {
         self.name = name; self.momentary = momentary; self.duration = duration; self.spring = spring
-        self.tracks = tracks; self.cues = cues; self.states = states; self.reduced = reduced
+        self.tracks = tracks; self.cues = cues; self.states = states; self.reduced = reduced; self.held = held
     }
 
     /// A cubic-bezier easing at x (the web player's Newton solve).

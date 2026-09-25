@@ -11,8 +11,21 @@ extension MetalMechanism {
         ],
         cues: [.init(at: 120.0, until: nil, kind: .strike, slot: "plug", level: 0.2, pitch: 0.8, gesture: nil), .init(at: 517.0, until: nil, kind: .strike, slot: "plug", level: 0.85, pitch: 1.0, gesture: nil), .init(at: 517.0, until: nil, kind: .lamp, slot: nil, level: 1.0, pitch: 1.0, gesture: .flicker), .init(at: 537.0, until: nil, kind: .beep, slot: nil, level: 1.0, pitch: 1.0, gesture: nil)],
         states: ["half": .init(hold: "plug", pose: .init(x: 0.0, y: -7.0, r: 0.0, sx: 1.0, sy: 1.0)), "out": .init(hold: "plug", pose: .init(x: -22.0, y: -46.0, r: -14.0, sx: 1.0, sy: 1.0))],
-        reduced: ["lamp", "sound"]
+        reduced: ["lamp", "sound"],
+        held: nil
     )
 
-    public static let all: [MetalMechanism] = [seat]
+    /// Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end.
+    public static let slide = MetalMechanism(
+        name: "slide", momentary: false, duration: 0.0, spring: .part,
+        tracks: [
+
+        ],
+        cues: [.init(at: nil, until: nil, kind: .friction, slot: "caps", level: 0.5, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .detent, slot: "caps", level: 0.25, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "caps", level: 0.8, pitch: 1.0, gesture: nil)],
+        states: [:],
+        reduced: ["lamp", "sound"],
+        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 2.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0)
+    )
+
+    public static let all: [MetalMechanism] = [seat, slide]
 }

@@ -154,6 +154,9 @@ public enum MetalGadgetTokens {
     public static let capCeramic: (L: Double, C: Double) = (0.93, 0.008)
     public static let capAlone: Double = 200.0
     public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.16, 0.1, 0.22, 0.36)
+    public static let detentSize: Double = 0.33
+    public static let detentPitch: Double = 1.6
+    public static let stopPitch: (bottom: Double, top: Double) = (0.94, 1.08)
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = ["slab": (320.0, 320.0), "bezel": (320.0, 320.0), "glass-face": (276.0, 276.0), "backlight": (200.0, 200.0), "led": (22.0, 22.0), "keycap": (112.0, 112.0), "cap": (60.0, 44.0), "jack": (68.0, 68.0), "plug": (54.0, 54.0), "cable": (0.0, 0.0), "cell": (44.0, 44.0), "drum": (52.0, 88.0), "needle": (96.0, 8.0), "lid": (240.0, 160.0), "pull": (96.0, 14.0), "lens": (184.0, 184.0), "nib": (70.0, 20.0), "beeper": (44.0, 24.0), "label": (80.0, 16.0), "glyph": (24.0, 24.0)]
     public static let jackKnurlWidth: Double = 0.07

@@ -249,5 +249,63 @@ export const MECHANISMS = {
       "sound"
     ],
     "held": null
+  },
+  "slide": {
+    "name": "slide",
+    "mode": "held",
+    "duration": 0,
+    "caption": "Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end.",
+    "stages": [
+      "Push",
+      "Travel",
+      "Settle"
+    ],
+    "spring": "part",
+    "slots": {
+      "caps": "actor",
+      "slot": "cut",
+      "lamp": "lamp"
+    },
+    "tracks": [],
+    "cues": [
+      {
+        "kind": "friction",
+        "slot": "caps",
+        "level": 0.5
+      },
+      {
+        "kind": "detent",
+        "slot": "caps",
+        "level": 0.25
+      },
+      {
+        "kind": "stop",
+        "slot": "caps",
+        "level": 0.8
+      }
+    ],
+    "states": {},
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": {
+      "drive": "number",
+      "slot": "caps",
+      "from": {
+        "y": 92
+      },
+      "to": {
+        "y": -92
+      },
+      "detents": 8,
+      "stagger": 40,
+      "wall": 0.25,
+      "impactFull": 2.5,
+      "scrapeFull": 3,
+      "tickMin": 0.15,
+      "tickGap": 40,
+      "step": 240
+    }
   }
 } as const;

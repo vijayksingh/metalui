@@ -66,6 +66,25 @@ emit('packages/metalui/src/gadgets/fixtures/placements.resolved.json', JSON.stri
 const { beeperEnvelope } = await import(pathToFileURL(`${dir}/parts/beeper.ts`).href);
 const { SOUND } = await import(pathToFileURL(root('packages/metalui/src/sound/recipes.generated.ts')).href);
 emit('packages/metalui/src/gadgets/fixtures/beeper-envelopes.json', JSON.stringify(Object.fromEntries(Object.keys(SOUND.beeper.earcons).filter((k) => !k.startsWith('$')).map((e) => [e, beeperEnvelope(e).map((x) => [x.at, x.v])]))) + '\n');
+
+// The held drive through scripted scenes, from the web model: SwiftUI's twin must land on the same.
+const { DriveModel } = await import(pathToFileURL(`${dir}/drive.ts`).href);
+const scenes = {
+  'new-mix': { start: [0.5, 0.5, 0.5], steps: [[0, [0.2, 0.9, 1]]] },
+  'changed-mid-flight': { start: [0, 0, 0], steps: [[0, [1, 1, 1]], [150, [0.3, 0.3, 0.3]]] },
+};
+const drives = {};
+for (const [name, scene] of Object.entries(scenes)) {
+  const m = new DriveModel('slide', scene.start), samples = [], events = [];
+  let next = 0;
+  for (let t = 0; t <= 1200; t += 20) {
+    while (next < scene.steps.length && scene.steps[next][0] <= t) { m.advance(scene.steps[next][0]); m.retarget(scene.steps[next][1]); next++; }
+    for (const e of m.advance(t)) events.push([e.kind, e.actor, +e.at.toFixed(6), +e.level.toFixed(6), e.kind === 'stop' ? e.end : null]);
+    samples.push([t, ...m.x.map((x) => +x.toFixed(9))]);
+  }
+  drives[name] = { ...scene, samples, events };
+}
+emit('packages/metalui/src/gadgets/fixtures/drive-samples.json', JSON.stringify(drives) + '\n');
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 

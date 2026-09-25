@@ -15,7 +15,8 @@ export type Cue =
   | { at: number; kind: 'lamp'; gesture: string }
   | { at: number; kind: 'beep' }
   | { at: number; until: number; kind: 'friction'; slot: string; level: number }
-  | { kind: 'detent'; slot: string; level: number };
+  | { kind: 'detent'; slot: string; level: number }
+  | { kind: 'stop'; slot: string; level: number };
 interface Mechanism {
   name: string; mode: 'momentary' | 'held'; duration: number; spring: string; caption: string;
   tracks: readonly Track[]; cues: readonly Cue[]; states: Record<string, { hold: string; pose: Partial<Pose> }>; reduced: readonly string[];
@@ -144,7 +145,7 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       const keep = new Set(m.reduced);
       const timers: number[] = [];
       for (const cue of m.cues) {
-        if (cue.kind === 'detent') continue;
+        if (cue.kind === 'detent' || cue.kind === 'stop') continue;      // held cues follow a drive, not a clock
         const at = reduced ? 0 : cue.at;
         if (cue.kind === 'friction') { o.onCue?.({ at: cue.at, cue, skipped: reduced ? 'reduced' : undefined }); continue; }
         if (reduced && !keep.has(cue.kind === 'strike' || cue.kind === 'beep' ? 'sound' : 'lamp')) { o.onCue?.({ at: cue.at, cue, skipped: 'reduced' }); continue; }
@@ -192,7 +193,7 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       const strikes = m.cues.filter((c) => c.kind === 'strike') as Extract<Cue, { kind: 'strike' }>[];
       const from = strikes.length ? Math.max(...strikes.map((c) => c.at)) : 0;
       for (const cue of m.cues) {
-        if (cue.kind === 'detent' || cue.kind === 'friction' || cue.at < from) continue;
+        if (cue.kind === 'detent' || cue.kind === 'stop' || cue.kind === 'friction' || cue.at < from) continue;
         const at = cue.at - from;
         if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000);
         window.setTimeout(() => {

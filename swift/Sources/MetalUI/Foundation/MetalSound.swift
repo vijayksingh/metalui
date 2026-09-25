@@ -140,9 +140,9 @@ public final class MetalSound: @unchecked Sendable {
 
     /// Starts a part sliding along another. Drive it with `set(_:)` (speed 0 to 1) as it moves and
     /// `stop()` when it stops. Silent (but safe to drive) when sound is off or only states play.
-    public func scrape(_ material: MetalSoundMaterial, reach: MetalSoundReach = .own, rendered: Double = 160) -> MetalScrape {
+    public func scrape(_ material: MetalSoundMaterial, reach: MetalSoundReach = .own, rendered: Double = 160, level: Double = 1) -> MetalScrape {
         guard isOn, plays == .acts, materials.contains(material), engine != nil else { return MetalScrape(id: nil, synth: nil) }
-        let r = material.scrape, full = db(MetalSoundTokens.scrapeLevelDb) * r.gain * sizeGain(rendered)
+        let r = material.scrape, full = db(MetalSoundTokens.scrapeLevelDb) * r.gain * sizeGain(rendered) * level
         return MetalScrape(id: synth.startScrape(ScrapeControl(recipe: r, full: full, reach: reach)), synth: synth)
     }
 

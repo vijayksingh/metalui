@@ -135,6 +135,9 @@ public enum MetalGadgetTokens {
     public static let capCeramic: (L: Double, C: Double) = (${G.cap.ceramic.map(num).join(', ')})
     public static let capAlone: Double = ${num(G.cap.alone)}
     public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cap.shadow.map(num).join(', ')})
+    public static let detentSize: Double = ${num(G.drive['detent-size'])}
+    public static let detentPitch: Double = ${num(G.drive['detent-pitch'])}
+    public static let stopPitch: (bottom: Double, top: Double) = (${G.drive['stop-pitch'].map(num).join(', ')})
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
@@ -221,7 +224,8 @@ ${m.tracks.map((t) => `            .init(part: ${JSON.stringify(t.part)}, frames
         ],
         cues: [${m.cues.map(swiftCue).join(', ')}],
         states: [${Object.entries(m.states).map(([k, v]) => `${JSON.stringify(k)}: .init(hold: ${JSON.stringify(v.hold)}, pose: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...v.pose })})`).join(', ') || ':'}],
-        reduced: [${m.reduced.map((r) => JSON.stringify(r)).join(', ')}]
+        reduced: [${m.reduced.map((r) => JSON.stringify(r)).join(', ')}],
+        held: ${m.held ? `.init(slot: ${JSON.stringify(m.held.slot)}, from: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.from })}, to: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.to })}, detents: ${m.held.detents ?? 0}, stagger: ${num(m.held.stagger ?? 0)}, wall: ${num(m.held.wall)}, impactFull: ${num(m.held.impactFull)}, scrapeFull: ${num(m.held.scrapeFull)}, tickMin: ${num(m.held.tickMin)}, tickGap: ${num(m.held.tickGap)}, step: ${num(m.held.step)})` : 'nil'}
     )`).join('\n\n')}
 
     public static let all: [MetalMechanism] = [${MECHS.map((m) => m.name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())).join(', ')}]

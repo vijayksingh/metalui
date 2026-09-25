@@ -63,7 +63,7 @@ export interface Sound {
   /** Strikes a part of a material. Returns whether it played. */
   strike(material: SoundMaterial, options?: StrikeOptions): boolean;
   /** Starts a part sliding along another. Drive it with `set(speed)` (0 to 1) as it moves; `stop()` lets it die away. */
-  scrape(material: SoundMaterial, options?: { reach?: Reach; rendered?: number }): Scrape;
+  scrape(material: SoundMaterial, options?: { reach?: Reach; rendered?: number; level?: number }): Scrape;
   /** Plays a change of state on the beeper. Returns whether it played. */
   beep(earcon: Earcon, options?: { key?: string; rendered?: number }): boolean;
   /** The fundamental a part would ring at. */
@@ -211,7 +211,7 @@ export function createSound(initial: Partial<SoundSettings> = {}): Sound {
       emit({ kind: 'scrape', material, skipped: skip });
       if (skip) return { set() {}, stop() {}, playing: false };
       const c = ctx!, R = SOUND.scrape, m = R.materials[material], reach = o.reach ?? 'own';
-      const full = dB(R.levelDb) * m.gain * sizeGain(o.rendered ?? 160);
+      const full = dB(R.levelDb) * m.gain * sizeGain(o.rendered ?? 160) * (o.level ?? 1);
       // A second of noise, looped, through the material's contact band; the gain is the speed.
       const n = c.sampleRate, buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
       for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;

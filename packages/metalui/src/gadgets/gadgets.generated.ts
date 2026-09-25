@@ -454,6 +454,14 @@ export const GADGETS = {
       0.5
     ]
   },
+  "drive": {
+    "detentSize": 0.33,
+    "detentPitch": 1.6,
+    "stopPitch": [
+      0.94,
+      1.08
+    ]
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,

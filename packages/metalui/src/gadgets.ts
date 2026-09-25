@@ -18,3 +18,4 @@ export { drawCap, pressCap, type CapSpec, type CapShape } from './gadgets/parts/
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
 export { drawGadget, renderGadgetSvg, describeGadget, formPoses, stateOf, type GadgetDraw, type DrawOptions } from './gadgets/draw';
 export { Gadget, type GadgetProps } from './gadgets/Gadget';
+export { createDrive, DriveModel, type Drive, type DriveEvent, type DriveName, type DriveOptions } from './gadgets/drive';

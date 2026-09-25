@@ -13,6 +13,10 @@ export { T, spring, end, ease, pose, light, actor };
 export const strike = (at, slot, { level = 1, pitch = 1 } = {}) => ({ at, kind: 'strike', slot, level, pitch });
 /** A part sliding across [at, until]: its material's contact noise, low, repeated. */
 export const friction = (at, until, slot, level) => ({ at, until, kind: 'friction', slot, level });
+/** A held part sliding: its material scrapes as fast as it moves, so it has no time. */
+export const scrape = (slot, level) => ({ kind: 'friction', slot, level });
+/** A held part hitting the end of its travel: a knock as hard as it hit, so it has no time. */
+export const stop = (slot, level) => ({ kind: 'stop', slot, level });
 /** A detent passed: fires per detent crossed by a held mechanism, so it has no time. */
 export const detent = (slot, level) => ({ kind: 'detent', slot, level });
 /** The state's own earcon on the beeper, at `at`. Never a fixed tone. */
@@ -64,6 +68,15 @@ export function validateMechanism(m) {
       if (oa !== ob) bad.push(`${w}: opacity starts ${oa} and ends ${ob}; an act returns exactly`);
     }
   } else if (!m.held) bad.push(at('a held mechanism names its drive'));
+  else {
+    const h = m.held;
+    if (!slots.includes(h.slot)) bad.push(at(`held drives "${h.slot}", not a slot`));
+    if (!h.from || !h.to) bad.push(at('held needs from and to poses (value 0 and value 1)'));
+    if (m.tracks?.length) bad.push(at('a held mechanism has no tracks; its poses come from the drive'));
+    for (const k of ['wall', 'impactFull', 'scrapeFull', 'tickMin', 'tickGap', 'step']) if (!(h[k] >= 0)) bad.push(at(`held.${k} is required`));
+    for (const c of m.cues ?? []) if (c.at !== undefined) bad.push(at(`held cue ${c.kind} has a time; held cues follow the motion`));
+  }
+  for (const c of m.cues ?? []) if (c.kind === 'stop' && m.mode !== 'held') bad.push(at('only a held mechanism has a stop'));
   let beeps = 0;
   for (const c of m.cues ?? []) {
     if (c.kind === 'beep') beeps++;

@@ -62,4 +62,34 @@ final class MetalMechanismParity: XCTestCase {
         // A plug springing home lands when the part spring first reaches home, as the web sees it (~212 ms).
         XCTAssertEqual(MetalGadget.firstHome(MetalSprings.part), 0.217, accuracy: 0.005)
     }
+
+    func testTheDriveMovesLikeTheWeb() throws {
+        let scenes = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("drive-samples.json"))) as! [String: [String: Any]]
+        XCTAssertEqual(scenes.count, 2)
+        for (name, scene) in scenes {
+            let start = scene["start"] as! [Double], steps = scene["steps"] as! [[Any]]
+            var model = try XCTUnwrap(MetalDriveModel(.slide, start: start))
+            var next = 0, events: [MetalDriveModel.Event] = []
+            for row in scene["samples"] as! [[Double]] {
+                let t = row[0]
+                while next < steps.count, (steps[next][0] as! Double) <= t {
+                    _ = model.advance(to: steps[next][0] as! Double); model.retarget(steps[next][1] as! [Double]); next += 1
+                }
+                events += model.advance(to: t)
+                for (i, x) in model.x.enumerated() { XCTAssertEqual(x, row[i + 1], accuracy: 1e-7, "\(name): cap \(i) at \(t) ms") }
+            }
+            let web = (scene["events"] as! [[Any]]).map { e -> MetalDriveModel.Event in
+                let actor = e[1] as! Int, at = e[2] as! Double, level = e[3] as! Double
+                return (e[0] as! String) == "stop" ? .stop(actor: actor, at: at, level: level, end: e[4] as! Int) : .detent(actor: actor, at: at, level: level)
+            }
+            XCTAssertEqual(events.count, web.count, "\(name): the same ticks and knocks")
+            for (a, b) in zip(events, web) {
+                switch (a, b) {
+                case let (.detent(i, t, l), .detent(j, u, m)): XCTAssertEqual(i, j); XCTAssertEqual(t, u, accuracy: 1e-5); XCTAssertEqual(l, m, accuracy: 1e-5)
+                case let (.stop(i, t, l, e), .stop(j, u, m, f)): XCTAssertEqual(i, j); XCTAssertEqual(e, f); XCTAssertEqual(t, u, accuracy: 1e-5); XCTAssertEqual(l, m, accuracy: 1e-5)
+                default: XCTFail("\(name): \(a) where the web has \(b)")
+                }
+            }
+        }
+    }
 }
