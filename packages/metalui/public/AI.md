@@ -1907,7 +1907,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 40 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 47 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -1930,6 +1930,13 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ImageIcon` | `image` | Tools | sun rises behind the ridge | frame breathes, sun flares |
 | `LinkIcon` | `link` | Tools | links pull apart, bar thins | snap together |
 | `DrawIcon` | `draw` | Tools | tip slides and draws a stroke | taps the paper |
+| `PenIcon` | `pen` | Tools | the nib glides and lays a wave of ink | the nib presses: the line swells and a drop of ink blooms |
+| `MarkerIcon` | `marker` | Tools | it sweeps right and lays a see-through band | it lifts back, then sweeps a fresh band |
+| `LineIcon` | `line` | Tools | plucked like a string: it bows, swings back and settles straight | it pulls back into its start and is drawn out again |
+| `ArrowIcon` | `arrow` | Tools | it bends into a connector and the head swings round to follow | it draws back and shoots, the shaft stretching behind the head |
+| `RectangleIcon` | `rectangle` | Tools | a rough hand-drawn box snaps into a clean one | the box is dragged out again from its corner |
+| `EllipseIcon` | `ellipse` | Tools | it is pulled toward a circle, narrowing as it grows | a pen point traces it again, all the way round |
+| `EraserIcon` | `eraser` | Tools | it leans onto a scribble, ready | it rubs back and forth, the scribble goes and crumbs fall |
 | `LayoutIcon` | `layout` | Tools | tiles swap sides | tiles settle together |
 | `TidyIcon` | `tidy` | Tools | loose tiles snap to the guide | guide pulses, tiles click home |
 | `SearchIcon` | `search` | Tools | lens sweeps, glint crosses glass | lens focuses |

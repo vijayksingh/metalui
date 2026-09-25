@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -43,6 +43,43 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
   "draw": [
     ["M6.86 12.46L12.95 6.38C13.96 5.36 15.61 5.36 16.62 6.38C17.64 7.39 17.64 9.04 16.62 10.05L10.54 16.14L6.48 17.73C6.13 17.89 5.72 17.82 5.45 17.55C5.18 17.28 5.11 16.87 5.27 16.52Z", 1.7, 0.16, 0, 1],
     ["M11.25 8.07L14.93 11.75", 1.7, 0, 0, 1],
+  ],
+  "pen": [
+    ["M5.2 17.8C6 16.9 6.9 16.9 7.6 17.8C8.3 18.7 9.2 18.7 10 17.8", 1.7, 0, 0, 1],
+    ["M10 17.8", 3.4, 0, 0, 1],
+    ["M14.36 4.11L18.89 8.64L15.21 12.32L14.22 15.29L5.17 17.83L7.71 8.78L10.68 7.79Z", 1.7, 0.16, 0, 1],
+    ["M5.17 17.83L8.7 14.3", 1.7, 0, 0, 1],
+    ["M10.12 12.88", 1.5, 0, 0, 1],
+  ],
+  "marker": [
+    ["M4.9 15.2L6.7 15.2C7.42 15.2 8 15.78 8 16.5L8 17.3C8 18.02 7.42 18.6 6.7 18.6L4.9 18.6C4.18 18.6 3.6 18.02 3.6 17.3L3.6 16.5C3.6 15.78 4.18 15.2 4.9 15.2Z", 0, 0.26, 0, 1],
+    ["M13.79 5.53C14.34 4.98 15.23 4.98 15.77 5.53L17.47 7.23C18.02 7.77 18.02 8.66 17.47 9.21L11.25 15.43L7.57 11.75Z", 1.7, 0.16, 0, 1],
+    ["M8.14 12.32L10.68 14.86L9.2 16.35L4.46 15.99Z", 1.7, 0, 0, 1],
+  ],
+  "line": [
+    ["M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4", 1.7, 0, 0, 1],
+    ["M5.4 18.6", 2.6, 0, 0, 1],
+    ["M18.6 5.4", 2.6, 0, 0, 1],
+  ],
+  "arrow": [
+    ["M5.4 18.6C9.6 14.4 13.8 10.2 18 6", 1.7, 0, 0, 1],
+    ["M10.8 5.4L18.6 5.4L18.6 13.2", 1.7, 0, 0, 1],
+  ],
+  "rectangle": [
+    ["M6.6 5L17.4 5C19.17 5 20.6 6.43 20.6 8.2L20.6 15.8C20.6 17.57 19.17 19 17.4 19L6.6 19C4.83 19 3.4 17.57 3.4 15.8L3.4 8.2C3.4 6.43 4.83 5 6.6 5Z", 1.7, 0, 0, 1],
+    ["M20.6 19", 3.4, 0, 0, 1],
+  ],
+  "ellipse": [
+    ["M20.6 12C20.6 15.81 16.75 18.9 12 18.9C7.25 18.9 3.4 15.81 3.4 12C3.4 8.19 7.25 5.1 12 5.1C16.75 5.1 20.6 8.19 20.6 12Z", 1.7, 0, 0, 1],
+    ["M20.6 12C20.6 15.81 16.75 18.9 12 18.9C7.25 18.9 3.4 15.81 3.4 12C3.4 8.19 7.25 5.1 12 5.1C16.75 5.1 20.6 8.19 20.6 12Z", 1.7, 0, 0, 1],
+    ["M20.6 12", 2.51, 0, 0, 1],
+  ],
+  "eraser": [
+    ["M3.6 20.6C4.5 19.9 5.5 19.9 6.4 20.6C7.3 21.3 8.3 21.3 9.2 20.6", 1.7, 0, 0, 1],
+    ["M7 19.6", 1.2, 0, 0, 1],
+    ["M8 20.2", 1, 0, 0, 1],
+    ["M12.8 5.67C13.59 4.89 14.85 4.89 15.63 5.67L17.33 7.37C18.11 8.15 18.11 9.41 17.33 10.2L8.84 18.68C8.06 19.46 6.8 19.46 6.02 18.68L4.32 16.98C3.54 16.2 3.54 14.94 4.32 14.16Z", 1.7, 0.16, 0, 1],
+    ["M7.57 10.9L12.1 15.43", 1.7, 0, 0, 1],
   ],
   "layout": [
     ["M6 3.6L8.2 3.6C9.53 3.6 10.6 4.67 10.6 6L10.6 18C10.6 19.33 9.53 20.4 8.2 20.4L6 20.4C4.67 20.4 3.6 19.33 3.6 18L3.6 6C3.6 4.67 4.67 3.6 6 3.6Z", 1.7, 0.16, 0, 1],
