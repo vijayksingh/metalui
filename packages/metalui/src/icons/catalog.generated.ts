@@ -987,24 +987,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1300,"caption":"An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.","stages":["Take up","An hour","Set back"],"tracks":[{"part":"minute","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.09231,"transform":"translate(0px,0px) rotate(-10deg) scale(1,1)","easing":"cubic-bezier(.45,0,.2,1)"},{"offset":0.53846,"transform":"translate(0px,0px) rotate(364deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(358.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64615,"transform":"translate(0px,0px) rotate(360deg) scale(1,1)","easing":"linear"},{"offset":0.69231,"transform":"translate(0px,0px) rotate(360deg) scale(1,1)","easing":"cubic-bezier(.5,0,.25,1)"},{"offset":0.90769,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"hour","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.09231,"transform":"translate(0px,0px) rotate(-0.8333deg) scale(1,1)","easing":"cubic-bezier(.45,0,.2,1)"},{"offset":0.53846,"transform":"translate(0px,0px) rotate(30.3333deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(29.875deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64615,"transform":"translate(0px,0px) rotate(30deg) scale(1,1)","easing":"linear"},{"offset":0.69231,"transform":"translate(0px,0px) rotate(30deg) scale(1,1)","easing":"cubic-bezier(.5,0,.25,1)"},{"offset":0.90769,"transform":"translate(0px,0px) rotate(-0.5deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"tick","keyframes":[{"offset":0,"transform":"scale(.3)","opacity":0},{"offset":0.49231,"transform":"scale(.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.53846,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69231,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * ME · Tools
+   * ME · Tools · one act, 1000ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the trend redraws to its last point
-   * PRESS one-shot (from the current pose)
-   *          the last point pulses
-   *     0ms   .lp plays me-p (300ms)
+   * Run back → Climb → Today
+   *          Today's point runs back along your days and climbs to today again, drawing the trend behind it.
+   *  trend      0 → 40 → 140 → 200 → 280 → 360 → 470 → 550 → 720 → 1000ms
+   *  last       0 → 40 → 140 → 200 → 280 → 360 → 470 → 550 → 720 → 780 → 860 → 1000ms
+   *  today      0 → 710 → 770 → 980 → 1000ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "me": {
     label: "Me",
     category: "Tools",
-    hover: "the trend redraws to its last point",
-    press: "the last point pulses",
-    pressMs: 300,
+    hover: "Today's point runs back along your days and climbs to today again, drawing the trend behind it.",
+    press: "plays the same act",
+    pressMs: 1000,
     defs: "",
-    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3.5\"/><path class=\"tr\" pathLength=\"1\" d=\"M7.2 15.2l2.8-3.2 2.6 2 3.4-4.2\"/><circle class=\"lp s\" cx=\"16\" cy=\"9.8\" r=\"1.2\"/>",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3.5\"/><path data-part=\"trend\" pathLength=\"1\" d=\"M7.2 15.2l2.8-3.2 2.6 2 3.4-4.2\"/><circle class=\"s\" data-part=\"last\" cx=\"16\" cy=\"9.8\" r=\"1.2\"/><circle class=\"ac\" data-part=\"today\" opacity=\"0\" cx=\"16\" cy=\"9.8\" r=\"2.3\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1000,"caption":"Today's point runs back along your days and climbs to today again, drawing the trend behind it.","stages":["Run back","Climb","Today"],"tracks":[{"part":"trend","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"linear"},{"offset":0.04,"strokeDashoffset":0,"easing":"linear"},{"offset":0.14,"strokeDashoffset":0.4177,"easing":"linear"},{"offset":0.2,"strokeDashoffset":0.6713,"easing":"linear"},{"offset":0.28,"strokeDashoffset":1,"easing":"linear"},{"offset":0.36,"strokeDashoffset":1,"easing":"linear"},{"offset":0.47,"strokeDashoffset":0.6713,"easing":"linear"},{"offset":0.55,"strokeDashoffset":0.4177,"easing":"linear"},{"offset":0.72,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"last","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.04,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.14,"transform":"translate(-3.4px,4.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.2,"transform":"translate(-6px,2.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.28,"transform":"translate(-8.8px,5.4px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.36,"transform":"translate(-8.8px,5.4px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.47,"transform":"translate(-6px,2.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.55,"transform":"translate(-3.4px,4.2px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.72,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.78,"transform":"translate(0.44px,-0.54px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.86,"transform":"translate(-0.06px,0.07px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"today","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.71,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77,"transform":"scale(.9)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.98,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * SEED SAMPLE · Actions

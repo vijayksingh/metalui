@@ -91,7 +91,7 @@ export const CalendarIcon = createIcon("calendar", "CalendarIcon");
 export const DocumentIcon = createIcon("document", "DocumentIcon");
 /** Time. Hover: An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.. Press: plays the same act. */
 export const ClockIcon = createIcon("clock", "ClockIcon");
-/** Me. Hover: the trend redraws to its last point. Press: the last point pulses. */
+/** Me. Hover: Today's point runs back along your days and climbs to today again, drawing the trend behind it.. Press: plays the same act. */
 export const MeIcon = createIcon("me", "MeIcon");
 /** Seed sample. Hover: the sprout grows. Press: the seed settles. */
 export const SeedIcon = createIcon("seed", "SeedIcon");

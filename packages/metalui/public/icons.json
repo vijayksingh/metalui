@@ -610,11 +610,20 @@
       "component": "MeIcon",
       "label": "Me",
       "category": "Tools",
-      "hover": "the trend redraws to its last point",
-      "press": "the last point pulses",
-      "pressMs": 300,
+      "hover": "Today's point runs back along your days and climbs to today again, drawing the trend behind it.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "Today's point runs back along your days and climbs to today again, drawing the trend behind it.",
+        "durationMs": 1000,
+        "stages": [
+          "Run back",
+          "Climb",
+          "Today"
+        ]
+      },
       "tuned16": false,
-      "construction": "Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead."
+      "construction": "Screen 16 × 16 r3.5, tinted .08; trend of three segments ending in a 2.4 bead. Motion (study): the bead runs back down the trend to its first day, erasing it, then climbs again drawing it (the bead is always the drawn tip), is flung .7 past today along the last rise and pulled back; a ring opens at today."
     },
     {
       "name": "seed",
