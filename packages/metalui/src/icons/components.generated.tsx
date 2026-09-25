@@ -63,7 +63,7 @@ export const RedoIcon = createIcon("redo", "RedoIcon");
 export const MoreIcon = createIcon("more", "MoreIcon");
 /** Close. Hover: turns a quarter and softens. Press: pinches closed. */
 export const CloseIcon = createIcon("close", "CloseIcon");
-/** Check. Hover: tick lifts. Press: tick redraws. */
+/** Check. Hover: it nods yes about its vertex. Press: the tick is drawn again and lands with weight. */
 export const CheckIcon = createIcon("check", "CheckIcon");
 /** Synced. Hover: satellite advances along its orbit. Press: orbit completes a full turn. */
 export const SyncedIcon = createIcon("synced", "SyncedIcon");

@@ -348,11 +348,11 @@
       "component": "CheckIcon",
       "label": "Check",
       "category": "Actions",
-      "hover": "tick lifts",
-      "press": "tick redraws",
-      "pressMs": 300,
+      "hover": "it nods yes about its vertex",
+      "press": "the tick is drawn again and lands with weight",
+      "pressMs": 420,
       "tuned16": false,
-      "construction": "Tick 4.1 / 9.1 legs; draw with trim(0→1), 220ms after a 40ms delay (matches checkbox spec)."
+      "construction": "Tick 4.1 / 9.1 legs about the vertex (9.5, 16.7). Hover is a single nod, yes: it dips 7° about the vertex, rises 3° past rest and settles (a one-shot, agreeing is an act). Press draws it again from the short leg and it lands heavier (2.1) where the stroke finishes, then eases back. The nod is on a wrapper so a press while hovered still draws."
     },
     {
       "name": "synced",

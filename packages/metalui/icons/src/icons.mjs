@@ -303,13 +303,14 @@ export const ICONS = [
        @P .x{animation:cl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:rotate(90deg) scale(.68)}}`,
   shape: 'X on the circle keyline, arms 13.6u.' },
 
-{ name: 'check', cat: 'Actions', label: 'Check', hover: 'tick lifts', press: 'tick redraws',
-  body: `<path class="tk" pathLength="1" d="M5.4 12.6l4.1 4.1 9.1-9.4"/>`,
-  base: `& .tk{stroke-dasharray:1 2;transform-origin:9.5px 16.7px}`,
-  mo: `@H .tk{transform:translateY(-.5px) rotate(-4deg)}
-       @P .tk{animation:ck-p .3s cubic-bezier(.3,.1,.2,1) both}
-       @keyframes ck-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
-  shape: 'Tick 4.1 / 9.1 legs; draw with trim(0→1), 220ms after a 40ms delay (matches checkbox spec).' },
+{ name: 'check', cat: 'Actions', label: 'Check', hover: 'it nods yes about its vertex', press: 'the tick is drawn again and lands with weight',
+  body: `<g class="nd"><path class="tk" pathLength="1" d="M5.4 12.6l4.1 4.1 9.1-9.4"/></g>`,
+  base: `& .tk{stroke-dasharray:1 2} & .nd{transform-origin:9.5px 16.7px}`,
+  mo: `@H .nd{animation:ck-nod .52s cubic-bezier(.3,0,.3,1)}
+       @P .tk{animation:ck-p .42s cubic-bezier(.3,.1,.2,1) both}
+       @keyframes ck-nod{27%{transform:rotate(7deg)}62%{transform:rotate(-3deg)}}
+       @keyframes ck-p{0%{stroke-dashoffset:1}71%{stroke-dashoffset:0;stroke-width:2.1}100%{stroke-dashoffset:0}}`,
+  shape: 'Tick 4.1 / 9.1 legs about the vertex (9.5, 16.7). Hover is a single nod, yes: it dips 7° about the vertex, rises 3° past rest and settles (a one-shot, agreeing is an act). Press draws it again from the short leg and it lands heavier (2.1) where the stroke finishes, then eases back. The nod is on a wrapper so a press while hovered still draws.' },
 
 /* ============================== STATUS ============================== */
 { name: 'synced', cat: 'Status', label: 'Synced', hover: 'satellite advances along its orbit', press: 'orbit completes a full turn',

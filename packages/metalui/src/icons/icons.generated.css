@@ -101,8 +101,8 @@
 .mu-icon.mu-ic-close .x{transform-origin:12px 12px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-close,.mu-ic-close:is(:hover,[data-hover])):not([data-static]) .x{transform:rotate(90deg) scale(.9)} .mu-icon.mu-ic-close[data-press] .x{animation:cl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:rotate(90deg) scale(.68)}}}
 /* check */
-.mu-icon.mu-ic-check .tk{stroke-dasharray:1 2;transform-origin:9.5px 16.7px}
-@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-check,.mu-ic-check:is(:hover,[data-hover])):not([data-static]) .tk{transform:translateY(-.5px) rotate(-4deg)} .mu-icon.mu-ic-check[data-press] .tk{animation:ck-p .3s cubic-bezier(.3,.1,.2,1) both} @keyframes ck-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}
+.mu-icon.mu-ic-check .tk{stroke-dasharray:1 2} .mu-icon.mu-ic-check .nd{transform-origin:9.5px 16.7px}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-check,.mu-ic-check:is(:hover,[data-hover])):not([data-static]) .nd{animation:ck-nod .52s cubic-bezier(.3,0,.3,1)} .mu-icon.mu-ic-check[data-press] .tk{animation:ck-p .42s cubic-bezier(.3,.1,.2,1) both} @keyframes ck-nod{27%{transform:rotate(7deg)}62%{transform:rotate(-3deg)}} @keyframes ck-p{0%{stroke-dashoffset:1}71%{stroke-dashoffset:0;stroke-width:2.1}100%{stroke-dashoffset:0}}}
 /* synced */
 .mu-icon.mu-ic-synced .or,.mu-icon.mu-ic-synced .core{transform-origin:12px 12px} .mu-icon.mu-ic-synced .ring{stroke-dasharray:85 15}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-synced,.mu-ic-synced:is(:hover,[data-hover])):not([data-static]) .or{transform:rotate(120deg)} :is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-synced,.mu-ic-synced:is(:hover,[data-hover])):not([data-static]) .core{transform:scale(1.12)} .mu-icon.mu-ic-synced[data-press] .or{animation:syn-p .46s cubic-bezier(.4,0,.2,1)} @keyframes syn-p{to{transform:rotate(480deg)}}}

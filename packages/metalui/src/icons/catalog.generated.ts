@@ -677,20 +677,20 @@ export const ICON_CATALOG = {
    * CHECK · Actions
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          tick lifts
+   *          it nods yes about its vertex
    * PRESS one-shot (from the current pose)
-   *          tick redraws
-   *     0ms   .tk plays ck-p (300ms)
+   *          the tick is drawn again and lands with weight
+   *     0ms   .tk plays ck-p (420ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "check": {
     label: "Check",
     category: "Actions",
-    hover: "tick lifts",
-    press: "tick redraws",
-    pressMs: 300,
+    hover: "it nods yes about its vertex",
+    press: "the tick is drawn again and lands with weight",
+    pressMs: 420,
     defs: "",
-    body: "<path class=\"tk\" pathLength=\"1\" d=\"M5.4 12.6l4.1 4.1 9.1-9.4\"/>",
+    body: "<g class=\"nd\"><path class=\"tk\" pathLength=\"1\" d=\"M5.4 12.6l4.1 4.1 9.1-9.4\"/></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

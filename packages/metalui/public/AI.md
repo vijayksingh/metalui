@@ -1955,7 +1955,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `RedoIcon` | `redo` | Actions | head reaches forward | arrow arcs forward and returns |
 | `MoreIcon` | `more` | Actions | dots swell in sequence | dots gather and part |
 | `CloseIcon` | `close` | Actions | turns a quarter and softens | pinches closed |
-| `CheckIcon` | `check` | Actions | tick lifts | tick redraws |
+| `CheckIcon` | `check` | Actions | it nods yes about its vertex | the tick is drawn again and lands with weight |
 | `SyncedIcon` | `synced` | Status | satellite advances along its orbit | orbit completes a full turn |
 | `OfflineIcon` | `offline` | Status | satellite drifts further out | tries to return, drifts away |
 | `SyncErrorIcon` | `sync-error` | Status | mark nudges | orbit shivers once |
