@@ -9,6 +9,9 @@ import { Label } from '../label/label';
  * A thing on the canvas that holds blocks and takes little space. It is the closed state of a
  * container; unfolded, the same container is a region washed in the folder's colour.
  *
+ *   shape     the back (frosted, translucent: the canvas shows softly through) and the flap
+ *             taper slightly toward the bottom, like a pocket; their shadows are separate
+ *             blurred layers, since the tapered outline is a clip
  *   rest      the back panel with its tab; up to three of its blocks peek up as cards (-10,
  *             leaning 10°, 2°, -5°); the frosted flap tipped back 15° with the name, what it
  *             is and the count
@@ -50,7 +53,9 @@ export interface FolderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
 }
 
 const ROOT = 'mu-folder folder';
+const SHADE = 'folder-shade';
 const BACK = 'mu-folder-back folder-back';
+const FLAP_SHADE = 'folder-flap-shade';
 const CARD = ['folder-card folder-card-1', 'folder-card folder-card-2', 'folder-card folder-card-3'];
 const THUMB = 'folder-thumb';
 const LINE = 'folder-line';
@@ -58,6 +63,36 @@ const FLAP = 'mu-folder-flap folder-flap';
 const LAND = 'folder-land reduced-motion:animate-none';
 const LABEL = 'folder-label';
 const COUNT = 'mu-folder-count folder-count';
+
+/* The outline, built once from the folder recipe's numbers (220 wide; back 150 tall + a 16 tab,
+ * tapering 10 per side; flap 106 tall, tapering 12; radius 26). One path drives the clip of the
+ * frosted body, its hairline edge and top light, and its shadow, so they always agree. */
+const W = 220, R = 26;
+const f2 = (n: number) => +n.toFixed(2);
+function pocket(h: number, d: number, top = 0) {
+  const k = R / h, y0 = top, y1 = top + h;
+  return `M${R} ${y0}H${W - R}Q${W} ${y0} ${f2(W - d * k)} ${y0 + R}L${f2(W - d + d * k)} ${y1 - R}Q${W - d} ${y1} ${W - d - R} ${y1}`
+    + `H${d + R}Q${d} ${y1} ${f2(d - d * k)} ${y1 - R}L${f2(d * k)} ${y0 + R}Q0 ${y0} ${R} ${y0}Z`;
+}
+function withTab(h: number, d: number, rise: number, tab: number) {
+  const k = R / h, y0 = rise, y1 = rise + h, tr = 18;
+  return `M0 ${tr}Q0 0 ${tr} 0H${tab - 14}C${tab - 4} 0 ${tab} ${y0} ${tab + 12} ${y0}`
+    + `H${W - R}Q${W} ${y0} ${f2(W - d * k)} ${y0 + R}L${f2(W - d + d * k)} ${y1 - R}Q${W - d} ${y1} ${W - d - R} ${y1}`
+    + `H${d + R}Q${d} ${y1} ${f2(d - d * k)} ${y1 - R}L0 ${y0 + R}Z`;
+}
+const BACK_D = withTab(150, 10, 16, 92);
+const FLAP_D = pocket(106, 12);
+const clip = (d: string): React.CSSProperties => ({ clipPath: `path('${d}')`, WebkitClipPath: `path('${d}')` });
+const EDGE = 'folder-edge';
+
+function Edge({ d, h }: { d: string; h: number }) {
+  return (
+    <svg aria-hidden className={EDGE} viewBox={`0 0 ${W} ${h}`} preserveAspectRatio="none">
+      <path d={d} className="folder-edge-light" style={clip(d)} />
+      <path d={d} className="folder-edge-line" />
+    </svg>
+  );
+}
 
 const bg = (thumb?: string) => (!thumb ? undefined : /^(url\(|[a-z-]+-gradient\(|#|rgb|hsl)/.test(thumb) ? thumb : `url("${thumb}")`);
 
@@ -82,7 +117,9 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
       onKeyDown={(e) => { onKeyDown?.(e); if (e.key === 'Enter') { e.preventDefault(); onUnfold?.(); } }}
       {...props}
     >
-      <div aria-hidden className={BACK} />
+      <div aria-hidden className={SHADE}><div className="folder-shade-body" style={clip(BACK_D)} /></div>
+      <div aria-hidden className={BACK} style={clip(BACK_D)} />
+      <div aria-hidden className="folder-frame"><Edge d={BACK_D} h={166} /></div>
       {cards.map((c, i) => (
         <div key={i} aria-hidden className={CARD[slot(i)]}>
           <div className={THUMB} style={{ background: bg(c.thumb) }} />
@@ -91,7 +128,9 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
           <i className={LINE} style={{ width: '60%' }} />
         </div>
       ))}
-      <div key={landed} aria-hidden className={landed ? `${FLAP} ${LAND}` : FLAP}>
+      <div aria-hidden className={FLAP_SHADE}><div className="folder-shade-body" style={clip(FLAP_D)} /></div>
+      <div key={landed} aria-hidden className={landed ? `${FLAP} ${LAND}` : FLAP} style={clip(FLAP_D)}>
+        <Edge d={FLAP_D} h={106} />
         <div className={LABEL}>
           <Label variant="title" as="b">{name}</Label>
           <Label variant="engraved">{`Folder · ${count} ${count === 1 ? 'block' : 'blocks'}`}</Label>

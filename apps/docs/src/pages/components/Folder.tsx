@@ -63,11 +63,13 @@ function Play() {
           material="raise-sm"
           radius="plate"
           onPointerDown={(e) => {
-            try { (e.target as HTMLElement).setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
+            // No text selection or native drag: the card itself moves.
+            e.preventDefault();
+            try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
             const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
             grab.current = { dx: e.clientX - r.left, dy: e.clientY - r.top };
           }}
-          style={{ position: 'absolute', left: at.x, top: at.y, width: 120, height: 64, display: 'grid', placeItems: 'center', cursor: 'grab', touchAction: 'none', zIndex: 10, transition: card ? 'none' : 'left .5s var(--mu-spring-object), top .5s var(--mu-spring-object)' }}
+          style={{ position: 'absolute', left: at.x, top: at.y, width: 120, height: 64, display: 'grid', placeItems: 'center', cursor: 'grab', touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', zIndex: 10, transition: card ? 'none' : 'left .5s var(--mu-spring-object), top .5s var(--mu-spring-object)' }}
         >
           <span className="eng">drag me in</span>
         </Surface>

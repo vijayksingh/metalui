@@ -1645,6 +1645,7 @@
   --mu-r-folder-back-tab-width: 92px;
   --mu-r-folder-back-tab-height: 40px;
   --mu-r-folder-back-tab-rise: 16px;
+  --mu-r-folder-back-taper: 10px;
   --mu-r-folder-card-width: 114px;
   --mu-r-folder-card-height: 148px;
   --mu-r-folder-card-radius: 16px;
@@ -1661,6 +1662,7 @@
   --mu-r-folder-flap-rest: -15deg;
   --mu-r-folder-flap-hover: -45deg;
   --mu-r-folder-flap-open: -55deg;
+  --mu-r-folder-flap-taper: 12px;
   --mu-r-folder-count-size: 24px;
   --mu-r-folder-count-pad: 7px;
   --mu-r-folder-name-gap: 4px;
@@ -1682,6 +1684,9 @@
   --mu-r-folder-pose-c3-hover-r: -9deg;
   --mu-r-folder-pose-c3-open-y: -106px;
   --mu-r-folder-pose-c3-open-r: -14deg;
+  --mu-r-folder-shape-translucency: 84%;
+  --mu-r-folder-shape-backdrop: blur(12px) saturate(1.35);
+  --mu-r-folder-shape-shadow-blur: blur(14px);
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -2068,6 +2073,9 @@
   --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.55), inset 2px 3px 4px -2px rgba(255,255,255,.9), 0 -1px 2px rgba(0,0,0,.02), 0 8px 18px -8px rgba(24,22,16,.10);
   --mu-r-folder-count-background: rgba(255,255,255,.7);
   --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.9), inset 1px 2px 2px -1px #fff, 0 0 0 .5px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.06);
+  --mu-r-folder-shape-edge: rgba(24,22,16,.10);
+  --mu-r-folder-shape-light: rgba(255,255,255,.95);
+  --mu-r-folder-shade-ink: rgba(24,22,16,.16);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2432,6 +2440,9 @@
   --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
   --mu-r-folder-count-background: rgba(255,255,255,.1);
   --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.14);
+  --mu-r-folder-shape-edge: rgba(0,0,0,.55);
+  --mu-r-folder-shape-light: rgba(255,255,255,.14);
+  --mu-r-folder-shade-ink: rgba(0,0,0,.55);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2797,5 +2808,8 @@
     --mu-r-folder-flap-shadow: inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4);
     --mu-r-folder-count-background: rgba(255,255,255,.1);
     --mu-r-folder-count-shadow: inset 0 0 4px 1px rgba(255,255,255,.06), inset 1px 2px 2px -1px rgba(255,255,255,.14);
+    --mu-r-folder-shape-edge: rgba(0,0,0,.55);
+    --mu-r-folder-shape-light: rgba(255,255,255,.14);
+    --mu-r-folder-shade-ink: rgba(0,0,0,.55);
   }
 }

@@ -2036,6 +2036,7 @@ public enum MetalRecipes {
             "back.tab-rise": .number(16.0),
             "back.shadow": .perColorway(bone: "inset 0 0 6px 2px rgba(255,255,255,.55), inset 0 10px 18px -10px rgba(90,80,60,.10), 0 1px 2px rgba(24,22,16,.05), 0 10px 22px -8px rgba(24,22,16,.08), 0 30px 56px -18px rgba(24,22,16,.14), 0 56px 100px -40px rgba(24,22,16,.12)", graphite: "inset 0 0 6px 2px rgba(255,255,255,.2), 0 0 0 .5px rgba(0,0,0,.6), 0 30px 56px -18px rgba(0,0,0,.6), 0 56px 100px -40px rgba(0,0,0,.5)"),
             "back.tab-shadow": .perColorway(bone: "inset 0 0 6px 2px rgba(255,255,255,.55)", graphite: "inset 0 0 6px 2px rgba(255,255,255,.2)"),
+            "back.taper": .number(10.0),
             "hue.neutral-top": .perColorway(bone: "#E4E3DE", graphite: "#19191B"),
             "hue.neutral-bottom": .perColorway(bone: "#DAD9D4", graphite: "#111112"),
             "hue.red-top": .perColorway(bone: "#F1D8CF", graphite: "#2F1E1B"),
@@ -2080,6 +2081,7 @@ public enum MetalRecipes {
             "flap.blur": .perColorway(bone: "blur(6px) saturate(1.2)", graphite: "blur(8px) saturate(1.2)"),
             "flap.border": .perColorway(bone: "rgba(151,151,151,.28)", graphite: "rgba(151,151,151,.22)"),
             "flap.shadow": .perColorway(bone: "inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.55), inset 2px 3px 4px -2px rgba(255,255,255,.9), 0 -1px 2px rgba(0,0,0,.02), 0 8px 18px -8px rgba(24,22,16,.10)", graphite: "inset 0 1px 2.65px rgba(0,0,0,.08), inset 0 0 6px 2px rgba(255,255,255,.12), inset 2px 3px 4px -2px rgba(255,255,255,.14), 0 8px 18px -8px rgba(0,0,0,.4)"),
+            "flap.taper": .number(12.0),
             "count.size": .number(24.0),
             "count.pad": .number(7.0),
             "count.background": .perColorway(bone: "rgba(255,255,255,.7)", graphite: "rgba(255,255,255,.1)"),
@@ -2103,6 +2105,12 @@ public enum MetalRecipes {
             "pose.c3-hover-r": .text("-9deg"),
             "pose.c3-open-y": .text("-106px"),
             "pose.c3-open-r": .text("-14deg"),
+            "shape.translucency": .text("84%"),
+            "shape.backdrop": .text("blur(12px) saturate(1.35)"),
+            "shape.shadow-blur": .text("blur(14px)"),
+            "shape.edge": .perColorway(bone: "rgba(24,22,16,.10)", graphite: "rgba(0,0,0,.55)"),
+            "shape.light": .perColorway(bone: "rgba(255,255,255,.95)", graphite: "rgba(255,255,255,.14)"),
+            "shade.ink": .perColorway(bone: "rgba(24,22,16,.16)", graphite: "rgba(0,0,0,.55)"),
         ]
     )
 }
