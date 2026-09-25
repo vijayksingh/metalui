@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { animate } from 'motion';
 import { Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionFrame, SnapGuides, Surface, Swatch, Switch, Well } from '@unlocalhosted/metalui';
 
 /* ─────────────────────────────────────────────────────────
@@ -6,7 +7,9 @@ import { Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionF
  *
  *   pick      each thing is the real part, live; the picked one gets the selection frame,
  *             and the light starts at the first question
- *   ask       every 420 ms the light moves down one question on the settle spring;
+ *   ask       every 420 ms the light hops down one question: 250 ms ease-out along an arc that
+ *             bows out min(.8, 14 / distance) of the way (about 7 px), counter-clockwise going
+ *             down, clockwise going back up, like a bead jumping from stop to stop;
  *             the question it leaves is marked "no" in ink3
  *   answer    at the first yes it stops: the question and its layer light up in ink,
  *             "yes" with a live LED, and the reason appears under the rail
@@ -94,6 +97,7 @@ const SPECIMENS: Record<string, () => React.ReactNode> = {
 };
 
 const STEP = 420;
+const LIGHT = 8;
 
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -119,14 +123,37 @@ export function LayerSorter() {
     return () => window.clearTimeout(timer);
   }, [pick]);
 
-  // The light sits on the middle of the current row; rows wrap on narrow screens, so they are measured.
+  // The light hops to the middle of the current row along a small arc; rows wrap on narrow
+  // screens, so they are measured. First paint and resizes place it without motion.
   const rows = React.useRef<(HTMLLIElement | null)[]>([]);
-  const [y, setY] = React.useState(0);
+  const light = React.useRef<HTMLSpanElement>(null);
+  const lastY = React.useRef<number | null>(null);
+  const hop = React.useRef<{ stop: () => void } | null>(null);
+  const put = (x: number, y: number) => { if (light.current) light.current.style.transform = `translate(${x}px, ${y}px)`; };
+  const yOf = (i: number) => { const r = rows.current[i]; return r ? r.offsetTop + r.offsetHeight / 2 - LIGHT / 2 : 0; };
   React.useLayoutEffect(() => {
-    const place = () => { const r = rows.current[step]; if (r) setY(r.offsetTop + r.offsetHeight / 2); };
-    place();
-    window.addEventListener('resize', place);
-    return () => window.removeEventListener('resize', place);
+    const snap = () => { hop.current?.stop(); const y = yOf(step); put(0, y); lastY.current = y; };
+    snap();
+    window.addEventListener('resize', snap);
+    return () => window.removeEventListener('resize', snap);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  React.useEffect(() => {
+    const to = yOf(step), from = lastY.current ?? to, d = to - from;
+    lastY.current = to;
+    if (d === 0) return;
+    hop.current?.stop();
+    if (reduced()) { put(0, to); return; }
+    // A quadratic arc: the middle point pushed sideways by strength × distance, to the left
+    // going down (counter-clockwise) and to the right going up (clockwise).
+    const bow = -Math.sign(d) * Math.min(0.8, 14 / Math.abs(d)) * Math.abs(d);
+    hop.current = animate(0, 1, {
+      duration: 0.25,
+      ease: 'easeOut',
+      onUpdate: (t) => put(2 * (1 - t) * t * bow, from + d * t),
+      onComplete: () => put(0, to),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   const thing = pick === null ? null : THINGS[pick];
@@ -156,9 +183,10 @@ export function LayerSorter() {
         <ol className="relative flex flex-col">
           <span aria-hidden className="absolute bottom-20 left-11 top-20 w-1 bg-[var(--mu-rule)]" />
           <span
+            ref={light}
             aria-hidden
-            className="absolute left-8 top-0 grid size-8 place-items-center transition-transform ease-settle duration-settle motion-reduce:transition-none"
-            style={{ transform: `translateY(${y - 4}px)`, opacity: pick === null ? 0 : 1 }}
+            className="absolute left-8 top-0 grid size-8 place-items-center transition-opacity duration-settle"
+            style={{ opacity: pick === null ? 0 : 1 }}
           >
             <Led kind={done ? 'live' : 'waiting'} />
           </span>
