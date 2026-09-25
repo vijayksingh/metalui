@@ -31,6 +31,7 @@
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
 - [Jack](https://metalui.dev/r/jack.md): A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
+- [Key](https://metalui.dev/r/key.md): A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
 - [Lasso](https://metalui.dev/r/lasso.md): The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.
 - [LED](https://metalui.dev/r/led.md): A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Five gestures say how it behaves over time: steady, flicker, breathe, blink2, rise. Never alone; it sits beside words.

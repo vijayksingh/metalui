@@ -2,9 +2,21 @@
 // The same tracks and cues the web player runs (mechanisms.generated.ts).
 
 extension MetalMechanism {
+    /// The keys drop into their skirts one after another and spring back: a chord.
+    public static let press = MetalMechanism(
+        name: "press", momentary: true, duration: 424.0, stagger: 60.0, spring: .release,
+        tracks: [
+            .init(part: "keys", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.55, 0.0, 0.85, 0.45)), .init(at: 70.0, pose: .init(x: 0.0, y: 6.0, r: 0.0, sx: 1.02, sy: 0.96), opacity: nil, ease: (0.4, 0.0, 0.2, 1.0)), .init(at: 110.0, pose: .init(x: 0.0, y: 6.0, r: 0.0, sx: 1.02, sy: 0.96), opacity: nil, ease: (0.16, 0.75, 0.3, 0.95)), .init(at: 424.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0))])
+        ],
+        cues: [.init(at: 70.0, until: nil, kind: .strike, slot: "keys", level: 1.0, pitch: 1.0, gesture: nil), .init(at: 378.0, until: nil, kind: .strike, slot: "keys", level: 0.35, pitch: 1.3, gesture: nil), .init(at: 70.0, until: nil, kind: .lamp, slot: nil, level: 1.0, pitch: 1.0, gesture: .flicker)],
+        states: [:],
+        reduced: ["lamp", "sound", "press"],
+        held: nil
+    )
+
     /// The plug lifts, its shadow opens, and it seats again with a click.
     public static let seat = MetalMechanism(
-        name: "seat", momentary: true, duration: 910.0, spring: .part,
+        name: "seat", momentary: true, duration: 910.0, stagger: 0.0, spring: .part,
         tracks: [
             .init(part: "plug", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.55, 0.0, 0.85, 0.45)), .init(at: 140.0, pose: .init(x: 0.0, y: -14.0, r: 0.0, sx: 1.04, sy: 1.04), opacity: nil, ease: (0.4, 0.0, 0.2, 1.0)), .init(at: 300.0, pose: .init(x: 0.0, y: -14.0, r: 0.0, sx: 1.04, sy: 1.04), opacity: nil, ease: (0.16, 0.75, 0.3, 0.95)), .init(at: 605.0, pose: .init(x: 0.0, y: 1.2189, r: 0.0, sx: 0.9965, sy: 0.9965), opacity: nil, ease: (0.37, 0.0, 0.63, 1.0)), .init(at: 910.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0))]),
             .init(part: "plug.shadow", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: 1.0, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 140.0, pose: .init(x: 6.0, y: 10.0, r: 0.0, sx: 1.25, sy: 1.25), opacity: 0.55, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 300.0, pose: .init(x: 6.0, y: 10.0, r: 0.0, sx: 1.25, sy: 1.25), opacity: 0.55, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 517.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: 1.0, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 910.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: 1.0, ease: (0.0, 0.0, 1.0, 1.0))])
@@ -17,7 +29,7 @@ extension MetalMechanism {
 
     /// Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end.
     public static let slide = MetalMechanism(
-        name: "slide", momentary: false, duration: 0.0, spring: .part,
+        name: "slide", momentary: false, duration: 0.0, stagger: 0.0, spring: .part,
         tracks: [
 
         ],
@@ -27,5 +39,5 @@ extension MetalMechanism {
         held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0)
     )
 
-    public static let all: [MetalMechanism] = [seat, slide]
+    public static let all: [MetalMechanism] = [press, seat, slide]
 }

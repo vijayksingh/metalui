@@ -18,7 +18,7 @@ export type Cue =
   | { kind: 'detent'; slot: string; level: number }
   | { kind: 'stop'; slot: string; level: number };
 interface Mechanism {
-  name: string; mode: 'momentary' | 'held'; duration: number; spring: string; caption: string;
+  name: string; mode: 'momentary' | 'held'; duration: number; stagger?: number; spring: string; caption: string;
   tracks: readonly Track[]; cues: readonly Cue[]; states: Record<string, { hold: string; pose: Partial<Pose> }>; reduced: readonly string[];
 }
 
@@ -52,13 +52,13 @@ export function sampleTrack(frames: readonly Frame[], at: number): { pose: Pose;
 
 export interface CueEvent { at: number; cue: Cue; skipped?: 'reduced' | 'cancelled' }
 export interface PlayerOptions {
-  /** Canvas-unit centre each part turns and scales about. */
-  origins?: Record<string, [number, number]>;
+  /** Canvas-unit centre each part turns and scales about; one per actor when a slot binds many. */
+  origins?: Record<string, [number, number] | [number, number][]>;
   reduced?: boolean;
   /** Slow motion for the docs: 0.25 plays at a quarter speed. Sound keeps its own time. */
   speed?: number;
-  /** A strike cue, handed over at the start of the act with its delay in seconds. */
-  onStrike?: (cue: Extract<Cue, { kind: 'strike' }>, delay: number) => void;
+  /** A strike cue, handed over at the start of the act with its delay in seconds (and which actor struck). */
+  onStrike?: (cue: Extract<Cue, { kind: 'strike' }>, delay: number, actor: number) => void;
   onLamp?: (gesture: string) => void;
   onBeep?: () => void;
   /** Every cue as it happens, with `skipped` when reduced motion or a state change dropped it. */
@@ -72,12 +72,12 @@ export interface Player {
   act(): boolean;
   /** Springs to a state's held pose (or rest with null), from wherever the part is now. */
   hold(state: string | null): void;
-  /** Springs one part to a pose given outright (a gadget state's form), or snaps with `immediate`. Its
-   *  shadow moves with it: a plug held out lies on the panel, so its shadow lies under it. */
   /** Plays only the act's landing (its cues from the last strike on), now: for a part that came home
    *  another way, like a plug springing back into its socket from lying aside. */
   land(): void;
-    holdPose(part: string, pose: Partial<Pose> | null, o?: { immediate?: boolean }): void;
+  /** Springs one part to a pose given outright (a gadget state's form), or snaps with `immediate`. Its
+   *  shadow moves with it: a plug held out lies on the panel, so its shadow lies under it. */
+  holdPose(part: string, pose: Partial<Pose> | null, o?: { immediate?: boolean }): void;
   readonly playing: boolean;
   pose(part: string): Pose;
   setOptions(o: Partial<PlayerOptions>): void;
@@ -86,27 +86,40 @@ export interface Player {
 
 const SCALE_SLACK = 20; // a scale step reads like 20 units of travel when deciding a spring is still
 
-export function createPlayer(name: MechanismName, parts: Record<string, Element | null | undefined>, options: PlayerOptions = {}): Player {
+export function createPlayer(name: MechanismName, parts: Record<string, Element | Element[] | null | undefined>, options: PlayerOptions = {}): Player {
   const m = MECHANISMS[name] as unknown as Mechanism;
+  // A slot may bind many actors (a chord's keys): each plays the same track, `stagger` ms after the last.
+  const actors = (part: string): Element[] => { const el = parts[part]; return !el ? [] : Array.isArray(el) ? el : [el]; };
+  const count = Math.max(1, ...m.tracks.map((t) => actors(t.part).length));
+  const total = m.duration + (count - 1) * (m.stagger ?? 0);
   let o: PlayerOptions = { speed: 1, ...options };
   const poses: Record<string, Pose> = {}, velocity: Record<string, Pose> = {}, target: Record<string, Pose> = {};
   for (const t of m.tracks) { poses[t.part] = { ...REST }; velocity[t.part] = { x: 0, y: 0, r: 0, sx: 0, sy: 0 }; target[t.part] = { ...REST }; }
   let raf = 0, act: { t0: number; timers: number[] } | null = null, springing = false;
 
-  const apply = (part: string, p: Pose, opacity?: number | null) => {
-    const el = parts[part]; if (!el) return;
-    const [cx, cy] = o.origins?.[part.split('.')[0]] ?? [0, 0];
-    el.setAttribute('transform', `translate(${cx + p.x} ${cy + p.y}) rotate(${p.r}) scale(${p.sx} ${p.sy}) translate(${-cx} ${-cy})`);
-    if (opacity !== undefined && opacity !== null) (el as HTMLElement).style.opacity = String(opacity);
+  const apply = (part: string, p: Pose, opacity?: number | null, only?: number) => {
+    actors(part).forEach((el, i) => {
+      if (only !== undefined && i !== only) return;
+      const o0 = o.origins?.[part.split('.')[0]], [cx, cy] = (Array.isArray(o0?.[0]) ? (o0 as [number, number][])[i] : (o0 as [number, number] | undefined)) ?? [0, 0];
+      el.setAttribute('transform', `translate(${cx + p.x} ${cy + p.y}) rotate(${p.r}) scale(${p.sx} ${p.sy}) translate(${-cx} ${-cy})`);
+      if (opacity !== undefined && opacity !== null) (el as HTMLElement).style.opacity = String(opacity);
+    });
   };
   const frame = () => {
     raf = 0;
     const now = performance.now();
     if (act) {
       const t = (now - act.t0) * (o.speed ?? 1);
-      for (const tr of m.tracks) { const s = sampleTrack(tr.frames, Math.min(t, m.duration)); poses[tr.part] = s.pose; apply(tr.part, s.pose, s.opacity); }
-      o.onFrame?.(Math.min(t, m.duration), { ...poses });
-      if (t >= m.duration) act = null; else { raf = requestAnimationFrame(frame); return; }
+      for (const tr of m.tracks) {
+        const n = Math.max(1, actors(tr.part).length);
+        for (let i = 0; i < n; i++) {
+          const s = sampleTrack(tr.frames, Math.min(Math.max(0, t - i * (m.stagger ?? 0)), m.duration));
+          if (i === 0) poses[tr.part] = s.pose;
+          apply(tr.part, s.pose, s.opacity, i);
+        }
+      }
+      o.onFrame?.(Math.min(t, total), { ...poses });
+      if (t >= total) act = null; else { raf = requestAnimationFrame(frame); return; }
     }
     if (springing) stepSprings();
   };
@@ -141,21 +154,26 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
     setOptions(next) { o = { ...o, ...next }; },
     act() {
       if (act || m.mode !== 'momentary') return false;
-      const reduced = !!o.reduced, speed = o.speed ?? 1;
       const keep = new Set(m.reduced);
+      // Reduced motion drops the travel, unless the mechanism keeps it (a key still dips its few units).
+      const reduced = !!o.reduced && !keep.has('press'), speed = o.speed ?? 1;
       const timers: number[] = [];
       for (const cue of m.cues) {
         if (cue.kind === 'detent' || cue.kind === 'stop') continue;      // held cues follow a drive, not a clock
-        const at = reduced ? 0 : cue.at;
         if (cue.kind === 'friction') { o.onCue?.({ at: cue.at, cue, skipped: reduced ? 'reduced' : undefined }); continue; }
         if (reduced && !keep.has(cue.kind === 'strike' || cue.kind === 'beep' ? 'sound' : 'lamp')) { o.onCue?.({ at: cue.at, cue, skipped: 'reduced' }); continue; }
-        // Strikes go to the audio clock now, so they land sample-accurately; the rest wait on timers.
-        if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000 / (reduced ? 1 : 1));
-        timers.push(window.setTimeout(() => {
-          if (cue.kind === 'lamp') o.onLamp?.(cue.gesture);
-          if (cue.kind === 'beep') o.onBeep?.();
-          o.onCue?.({ at, cue });
-        }, at / (reduced ? 1 : speed)));
+        // A strike on a slot of many actors strikes each of them, a stagger apart; a lamp or beep plays once.
+        const n = cue.kind === 'strike' ? count : 1;
+        for (let i = 0; i < n; i++) {
+          const at = reduced ? 0 : cue.at + i * (m.stagger ?? 0);
+          // Strikes go to the audio clock now, so they land sample-accurately; the rest wait on timers.
+          if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000, i);
+          timers.push(window.setTimeout(() => {
+            if (cue.kind === 'lamp') o.onLamp?.(cue.gesture);
+            if (cue.kind === 'beep') o.onBeep?.();
+            o.onCue?.({ at, cue });
+          }, at / (reduced ? 1 : speed)));
+        }
       }
       if (reduced) {                                   // no travel: the act is its sound and its lamp
         act = { t0: performance.now(), timers };
@@ -195,7 +213,7 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       for (const cue of m.cues) {
         if (cue.kind === 'detent' || cue.kind === 'stop' || cue.kind === 'friction' || cue.at < from) continue;
         const at = cue.at - from;
-        if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000);
+        if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000, 0);
         window.setTimeout(() => {
           if (cue.kind === 'lamp') o.onLamp?.(cue.gesture);
           if (cue.kind === 'beep') o.onBeep?.();

@@ -139,6 +139,16 @@ public enum MetalGadgetTokens {
     public static let detentSize: Double = ${num(G.drive['detent-size'])}
     public static let detentPitch: Double = ${num(G.drive['detent-pitch'])}
     public static let stopPitch: (bottom: Double, top: Double) = (${G.drive['stop-pitch'].map(num).join(', ')})
+    public static let keyRadius: Double = ${num(G.key.radius)}
+    public static let keySkirtDrop: Double = ${num(G.key['skirt-drop'])}
+    public static let keyFace: (share: Double, radius: Double) = (${G.key.face.map(num).join(', ')})
+    public static let keyFaceLift: Double = ${num(G.key['face-lift'])}
+    public static let keyGlyph: Double = ${num(G.key.glyph)}
+    public static let keyGlyphEdge: Double = ${num(G.key['glyph-edge'])}
+    public static let keyGlyphAlpha: (ink: Double, edge: Double) = (${G.key['glyph-alpha'].map(num).join(', ')})
+    public static let keyShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.key.shadow.map(num).join(', ')})
+    public static let keyAlone: Double = ${num(G.key.alone)}
+    public static let keyPress: (dy: Double, sx: Double, sy: Double) = (${G.key.press.map(num).join(', ')})
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
@@ -219,7 +229,7 @@ emit('swift/Sources/MetalUI/Tokens/MetalMechanisms.generated.swift', `// Generat
 extension MetalMechanism {
 ${MECHS.map((m) => `    /// ${m.caption}
     public static let ${m.name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())} = MetalMechanism(
-        name: ${JSON.stringify(m.name)}, momentary: ${m.mode === 'momentary'}, duration: ${num(m.duration)}, spring: .${m.spring},
+        name: ${JSON.stringify(m.name)}, momentary: ${m.mode === 'momentary'}, duration: ${num(m.duration)}, stagger: ${num(m.stagger ?? 0)}, spring: .${m.spring},
         tracks: [
 ${m.tracks.map((t) => `            .init(part: ${JSON.stringify(t.part)}, frames: [${t.frames.map((f) => `.init(at: ${num(f.at)}, pose: ${swiftPose(f.pose)}, opacity: ${f.opacity === null ? 'nil' : num(f.opacity)}, ease: (${f.ease.map(num).join(', ')}))`).join(', ')}])`).join(',\n')}
         ],

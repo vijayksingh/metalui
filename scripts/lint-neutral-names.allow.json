@@ -110,5 +110,12 @@
     "match": "keeper",
     "lineIncludes": "[path]",
     "reason": "The keeper mascot glyph is waiting on the owner's decision to remove it; drop this entry with the glyph."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalKey.swift",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "weight: .medium",
+    "reason": "Font.Weight.medium (500) is framework syntax, the key glyph's weight."
   }
 ]

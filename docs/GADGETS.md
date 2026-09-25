@@ -31,7 +31,7 @@ Each gadget we invent by hand adds the Parts and the mechanism it was missing. A
 | Glass face *(exists)* | A dark or tinted face behind glass | glass | scope, gauge |
 | Backlight | A lamp behind a translucent part; its glow is the lamp seen through the tint | lamp | cell grid, scope |
 | LED *(exists)* | The status lamp every gadget carries, top right | lamp | all |
-| Keycap *(exists)* | A face on a skirt | clay, ceramic | keycap chord |
+| Key | A big key: a face on its skirt, engraved with a glyph (the Keycap as a gadget draws it) | clay, ceramic | keycap chord |
 | Cap | A fader or knob cap with grip ribs | clay, ceramic, accent | fader bank, rocker |
 | Jack | A knurled nut around a hole | metal | patch bay, rigs |
 | Plug | A knurled plug that seats in a jack | clay + accent | patch bay, rigs |

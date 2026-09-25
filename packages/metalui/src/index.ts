@@ -26,6 +26,7 @@ export { Plug, type PlugProps } from './components/plug/plug';
 export { Cable, type CableProps } from './components/cable/cable';
 export { Beeper, type BeeperProps } from './components/beeper/beeper';
 export { Cap, type CapProps } from './components/cap/cap';
+export { Key, type KeyProps } from './components/key/key';
 export { StatusBadge, type StatusBadgeProps } from './components/status/status';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';

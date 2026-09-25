@@ -63,6 +63,11 @@
           "target": "components/gadgets/parts/jack.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/key.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/key.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/led.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/led.ts"
@@ -510,6 +515,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
+    },
+    {
+      "name": "key",
+      "type": "registry:ui",
+      "title": "Key",
+      "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/key/key.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/key/key.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/key.md. SwiftUI: MetalKey in the MetalUI Swift package."
     },
     {
       "name": "label",

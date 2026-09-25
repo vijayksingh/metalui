@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'components/cable', lazy: lazy(() => import('./pages/components/Cable')) },
       { path: 'components/beeper', lazy: lazy(() => import('./pages/components/Beeper')) },
       { path: 'components/cap', lazy: lazy(() => import('./pages/components/Cap')) },
+      { path: 'components/key', lazy: lazy(() => import('./pages/components/Key')) },
       { path: 'gadgets/patch-bay', lazy: lazy(() => import('./pages/gadgets/PatchBay')) },
       { path: 'gadgets/fader-bank', lazy: lazy(() => import('./pages/gadgets/FaderBank')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },

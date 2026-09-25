@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "key",
+  "type": "registry:ui",
+  "title": "Key",
+  "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/key/key.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/key/key.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawKey, pressKey, type KeySpec } from '../../gadgets/parts/key';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Key (a Part): a big key standing on its skirt, the Keycap as a gadget draws it. A lit face on a\n * darker skirt with a glyph engraved into it, and its own shadow. `pressed` drops the face into the\n * skirt on the release spring (at once with reduced motion). The key you would press wears the\n * accent. Not the inline Keycap (Kbd), which is a readout and never pressed. */\n\nexport interface KeyProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  glyph?: string;\n  /** Wear the accent: the key you would press. Otherwise pale clay, or white ceramic. */\n  accent?: boolean;\n  material?: KeySpec['material'];\n  color?: KeySpec['color'];\n  pressed?: boolean;\n  size?: number;\n  host?: Host;\n}\n\nexport function Key({ glyph, accent = false, material = 'clay', color, pressed = false, size = 96, host: forced, ...props }: KeyProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const hue = (GADGETS.materials.clay as unknown as { sample: number }).sample;\n  const face = color ?? (accent ? { L: wL, C: wC, H: wH } : material === 'ceramic' ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: hue } : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: hue });\n  const d = React.useMemo(() => drawKey(`key-${uid}`, { at: [200, 200], size: GADGETS.key.alone, glyph, color: face, material }, { tier, host }),\n    [uid, glyph, face.L, face.C, face.H, material, tier, host]); // eslint-disable-line react-hooks/exhaustive-deps\n  React.useEffect(() => {\n    if (ref.current) pressKey(ref.current, pressed, { reduced: matchMedia('(prefers-reduced-motion: reduce)').matches });\n  }, [pressed, d]);\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`key${glyph ? ` ${glyph}` : ''}${accent ? ' (accent)' : ''}`}\n      data-tier={tier} data-host={host} data-pressed={pressed || undefined} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/key.md. SwiftUI: MetalKey in the MetalUI Swift package."
+}

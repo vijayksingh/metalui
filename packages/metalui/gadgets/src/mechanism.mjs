@@ -54,6 +54,7 @@ export function validateMechanism(m) {
   if (m.mode === 'momentary') {
     if (!(m.duration > 0)) bad.push(at('duration must be positive'));
     if (m.held) bad.push(at('a momentary mechanism has no held drive'));
+    if (m.stagger !== undefined && !(m.stagger >= 0)) bad.push(at('stagger is ms between actors, 0 or more'));
     for (const t of m.tracks ?? []) {
       const w = `${m.name}/${t.part}`, f = t.frames, base = t.part.split('.')[0];
       if (!slots.includes(base)) bad.push(`${w}: "${base}" is not a slot`);
@@ -114,7 +115,7 @@ export function compileMechanism(m) {
   };
   let lastPose = null;
   return {
-    name: m.name, mode: m.mode, duration: m.duration ?? 0, caption: m.caption, stages: m.stages,
+    name: m.name, mode: m.mode, duration: m.duration ?? 0, caption: m.caption, stages: m.stages, stagger: m.stagger ?? 0,
     spring: m.spring ?? 'part',
     slots: m.slots,
     tracks: (m.tracks ?? []).map((t) => ({

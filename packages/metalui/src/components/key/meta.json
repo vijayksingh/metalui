@@ -1,0 +1,21 @@
+{
+  "name": "key",
+  "title": "Key",
+  "status": "alpha",
+  "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Key",
+    "files": [
+      "key.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalKey",
+    "file": "swift/Sources/MetalUI/Components/MetalKey.swift"
+  },
+  "agent": "key.agent.md",
+  "layer": "part",
+  "page": "/components/key",
+  "recipe": "gadgets"
+}

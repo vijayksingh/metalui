@@ -2,6 +2,127 @@
 // How gadgets move when they act: tracks (poses as numbers, easings as cubic-bezier points), cues,
 // held poses and what survives reduced motion. MetalMechanisms.generated.swift carries the same.
 export const MECHANISMS = {
+  "press": {
+    "name": "press",
+    "mode": "momentary",
+    "duration": 424,
+    "caption": "The keys drop into their skirts one after another and spring back: a chord.",
+    "stages": [
+      "Down",
+      "Hold",
+      "Up"
+    ],
+    "stagger": 60,
+    "spring": "release",
+    "slots": {
+      "keys": "actor",
+      "lamp": "lamp"
+    },
+    "tracks": [
+      {
+        "part": "keys",
+        "origin": "centre",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.55,
+              0,
+              0.85,
+              0.45
+            ]
+          },
+          {
+            "at": 70,
+            "pose": {
+              "x": 0,
+              "y": 6,
+              "r": 0,
+              "sx": 1.02,
+              "sy": 0.96
+            },
+            "opacity": null,
+            "ease": [
+              0.4,
+              0,
+              0.2,
+              1
+            ]
+          },
+          {
+            "at": 110,
+            "pose": {
+              "x": 0,
+              "y": 6,
+              "r": 0,
+              "sx": 1.02,
+              "sy": 0.96
+            },
+            "opacity": null,
+            "ease": [
+              0.16,
+              0.75,
+              0.3,
+              0.95
+            ]
+          },
+          {
+            "at": 424,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "at": 70,
+        "kind": "strike",
+        "slot": "keys",
+        "level": 1,
+        "pitch": 1
+      },
+      {
+        "at": 378,
+        "kind": "strike",
+        "slot": "keys",
+        "level": 0.35,
+        "pitch": 1.3
+      },
+      {
+        "at": 70,
+        "kind": "lamp",
+        "gesture": "flicker"
+      }
+    ],
+    "states": {},
+    "reduced": [
+      "lamp",
+      "sound",
+      "press"
+    ],
+    "held": null
+  },
   "seat": {
     "name": "seat",
     "mode": "momentary",
@@ -12,6 +133,7 @@ export const MECHANISMS = {
       "Hang",
       "Seat"
     ],
+    "stagger": 0,
     "spring": "part",
     "slots": {
       "plug": "actor",
@@ -260,6 +382,7 @@ export const MECHANISMS = {
       "Travel",
       "Settle"
     ],
+    "stagger": 0,
     "spring": "part",
     "slots": {
       "caps": "actor",

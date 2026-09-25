@@ -253,6 +253,19 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testKey() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalKey(glyph: "⌘", size: 128); MetalKey(glyph: "K", accent: true, size: 128)
+                MetalKey(glyph: "⇧", material: .ceramic, size: 128); MetalKey(glyph: "↩", size: 128)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("key-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

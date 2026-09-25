@@ -48,6 +48,8 @@ public struct MetalMechanism: Sendable {
     public let momentary: Bool
     /// Milliseconds.
     public let duration: Double
+    /// ms between one actor and the next when a slot binds many (a chord's keys).
+    public let stagger: Double
     public let spring: MetalSpringClass
     public let tracks: [Track]
     public let cues: [Cue]
@@ -56,8 +58,8 @@ public struct MetalMechanism: Sendable {
     public let reduced: [String]
     public let held: Held?
 
-    public init(name: String, momentary: Bool, duration: Double, spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String], held: Held? = nil) {
-        self.name = name; self.momentary = momentary; self.duration = duration; self.spring = spring
+    public init(name: String, momentary: Bool, duration: Double, stagger: Double = 0, spring: MetalSpringClass, tracks: [Track], cues: [Cue], states: [String: HeldPose], reduced: [String], held: Held? = nil) {
+        self.name = name; self.momentary = momentary; self.duration = duration; self.stagger = stagger; self.spring = spring
         self.tracks = tracks; self.cues = cues; self.states = states; self.reduced = reduced; self.held = held
     }
 
@@ -102,7 +104,12 @@ public final class MetalMechanismPlayer {
 
     public init(_ mechanism: MetalMechanism) { self.mechanism = mechanism }
 
-    public var playing: Bool { actStart.map { Date().timeIntervalSince($0) * 1000 < mechanism.duration } ?? false }
+    /// How many actors the current act moves (a chord's keys), each `stagger` ms after the last.
+    public private(set) var actors = 1
+    private var total: Double { mechanism.duration + Double(actors - 1) * mechanism.stagger }
+    public var playing: Bool { actStart.map { Date().timeIntervalSince($0) * 1000 < total } ?? false }
+    /// Reduced motion drops the travel, unless the mechanism keeps it (a key still dips its few units).
+    private var dropsTravel: Bool { reduced && !mechanism.reduced.contains("press") }
 
     /// The cue times this act schedules, in ms: reduced motion collapses kept cues to the start.
     public func schedule() -> [(at: Double, cue: MetalMechanism.Cue, skipped: Bool)] {
@@ -111,7 +118,7 @@ public final class MetalMechanismPlayer {
             guard let at = cue.at, cue.kind != .detent else { return nil }
             if cue.kind == .friction { return (at, cue, reduced) }
             let kept = keep.contains(cue.kind == .lamp ? "lamp" : "sound")
-            if reduced { return kept ? (0, cue, false) : (at, cue, true) }
+            if dropsTravel { return kept ? (0, cue, false) : (at, cue, true) }
             return (at, cue, false)
         }
     }
@@ -121,13 +128,18 @@ public final class MetalMechanismPlayer {
     public func act(sound: MetalSound? = nil, weight: Double = 0, reach: MetalSoundReach = .own,
                     strike: (String) -> (material: MetalSoundMaterial, size: Double)? = { _ in nil },
                     lamp: ((MetalLampGesture) -> Void)? = nil, beep: (() -> Void)? = nil,
-                    onCue: ((MetalMechanism.Cue, Double) -> Void)? = nil) -> Bool {
+                    onCue: ((MetalMechanism.Cue, Double) -> Void)? = nil, actors: Int = 1) -> Bool {
         guard mechanism.momentary, !playing else { return false }
         for item in pending { item.cancel() }
         pending = []
+        self.actors = max(1, actors)
         for (at, cue, skipped) in schedule() where !skipped {
+            // A strike on a slot of many actors strikes each of them, a stagger apart.
             if cue.kind == .strike, let slot = cue.slot, let part = strike(slot) {
-                sound?.strike(part.material, size: part.size, weight: weight, reach: reach, level: cue.level, delay: at / 1000, pitch: cue.pitch)
+                for i in 0..<self.actors {
+                    let when = dropsTravel ? at : at + Double(i) * mechanism.stagger
+                    sound?.strike(part.material, size: part.size, weight: weight, reach: reach, level: cue.level, delay: when / 1000, pitch: cue.pitch)
+                }
             }
             let item = DispatchWorkItem {
                 if cue.kind == .lamp, let g = cue.gesture { lamp?(g) }
@@ -137,7 +149,7 @@ public final class MetalMechanismPlayer {
             pending.append(item)
             DispatchQueue.main.asyncAfter(deadline: .now() + at / 1000, execute: item)
         }
-        actStart = reduced ? nil : Date()
+        actStart = dropsTravel ? nil : Date()
         return true
     }
 
@@ -186,10 +198,10 @@ public final class MetalMechanismPlayer {
     }
 
     /// Where a part is now: the act's track while it plays, else its held pose.
-    public func pose(_ part: String, at date: Date = Date()) -> (pose: MetalMechanismPose, opacity: Double?) {
+    public func pose(_ part: String, actor: Int = 0, at date: Date = Date()) -> (pose: MetalMechanismPose, opacity: Double?) {
         if let start = actStart {
             let t = date.timeIntervalSince(start) * 1000
-            if t < mechanism.duration { return mechanism.sample(part, at: t) }
+            if t < total { return mechanism.sample(part, at: min(mechanism.duration, max(0, t - Double(actor) * mechanism.stagger))) }
         }
         let base = part.components(separatedBy: ".")[0], h = held[base] ?? .rest
         return (part.contains(".") ? MetalMechanismPose(x: h.x, y: h.y) : h, part.contains(".") ? 1 : nil)

@@ -458,6 +458,33 @@ export const GADGETS = {
       20
     ]
   },
+  "key": {
+    "radius": 0.21,
+    "skirtDrop": 0.11,
+    "face": [
+      0.8,
+      0.21
+    ],
+    "faceLift": 0.062,
+    "glyph": 0.46,
+    "glyphEdge": 1.2,
+    "glyphAlpha": [
+      0.5,
+      0.85
+    ],
+    "shadow": [
+      0.1,
+      0.06,
+      0.12,
+      0.34
+    ],
+    "alone": 220,
+    "press": [
+      6,
+      1.02,
+      0.96
+    ]
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,
@@ -852,7 +879,7 @@ export const GADGETS = {
       ],
       "params": {}
     },
-    "keycap": {
+    "key": {
       "size": [
         112,
         112
@@ -1204,7 +1231,7 @@ export const GADGETS = {
       "slots": {
         "keys": {
           "parts": [
-            "keycap",
+            "key",
             "cap"
           ],
           "many": true

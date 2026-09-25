@@ -15,6 +15,7 @@ export { drawPlug, type PlugSpec } from './gadgets/parts/plug';
 export { cableControls, cablePath, cableSag, createCableSwing, drawCable, type CableSpec, type CableSwing } from './gadgets/parts/cable';
 export { beeperEnvelope, drawBeeper, playBeeper, type BeeperSpec } from './gadgets/parts/beeper';
 export { drawCap, pressCap, type CapSpec, type CapShape } from './gadgets/parts/cap';
+export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
 export { drawGadget, driveTargets, driveDefault, renderGadgetSvg, describeGadget, formPoses, stateOf, type GadgetDraw, type DrawOptions } from './gadgets/draw';
 export { Gadget, type GadgetProps } from './gadgets/Gadget';

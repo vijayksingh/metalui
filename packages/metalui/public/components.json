@@ -393,6 +393,23 @@
       "agent": "https://metalui.dev/r/kbd.md"
     },
     {
+      "name": "key",
+      "title": "Key",
+      "status": "alpha",
+      "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Key",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalKey"
+      },
+      "registry": "https://metalui.dev/r/key.json",
+      "agent": "https://metalui.dev/r/key.md"
+    },
+    {
       "name": "label",
       "title": "Label",
       "status": "alpha",
