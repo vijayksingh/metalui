@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Button, Folder, LinkCard, Region, Select, SelectionFrame, Switcher } from '@unlocalhosted/metalui';
 import { PageHeader, Rules, Section, Bench } from '../ui/doc';
+import { LayerSorter } from '../ui/LayerSorter';
 import { LAYERS, membersOf, partLabel } from '../app/parts';
 import './layers.css';
 
@@ -158,6 +159,11 @@ export default function Layers() {
       </Section>
       <Section title="The six layers" lede="What each layer is, the test that puts something in it, and what is in it today.">
         <Ladder />
+      </Section>
+      <Section title="How to decide" lede="Ask the six questions in order and stop at the first yes. The order matters: a keycap looks like something you press, but the second question catches it first.">
+        <Bench>
+          <LayerSorter />
+        </Bench>
       </Section>
       <Section title="One thing, all the way down" lede="Follow the folder from where it lives to what it is made of.">
         <ol className="flex flex-col">
