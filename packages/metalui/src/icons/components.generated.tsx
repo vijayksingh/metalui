@@ -33,7 +33,7 @@ export const LayoutIcon = createIcon("layout", "LayoutIcon");
 export const TidyIcon = createIcon("tidy", "TidyIcon");
 /** Search. Hover: The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.. Press: plays the same act. */
 export const SearchIcon = createIcon("search", "SearchIcon");
-/** Zoom In. Hover: the plus is magnified: it grows more than the lens. Press: the lens swells one step in. */
+/** Zoom In. Hover: The lens is pushed in along its handle and the plus under it is magnified.. Press: plays the same act. */
 export const ZoomInIcon = createIcon("zoom-in", "ZoomInIcon");
 /** Zoom Out. Hover: minus narrows, lens recedes. Press: lens shrinks. */
 export const ZoomOutIcon = createIcon("zoom-out", "ZoomOutIcon");

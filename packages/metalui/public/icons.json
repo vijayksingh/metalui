@@ -219,11 +219,20 @@
       "component": "ZoomInIcon",
       "label": "Zoom In",
       "category": "Tools",
-      "hover": "the plus is magnified: it grows more than the lens",
-      "press": "the lens swells one step in",
-      "pressMs": 340,
+      "hover": "The lens is pushed in along its handle and the plus under it is magnified.",
+      "press": "plays the same act",
+      "pressMs": 1140,
+      "motion": {
+        "caption": "The lens is pushed in along its handle and the plus under it is magnified.",
+        "durationMs": 1140,
+        "stages": [
+          "Draw back",
+          "Push in",
+          "Magnify"
+        ]
+      },
       "tuned16": false,
-      "construction": "Search lens + plus (4.8u arms), the plus always upright: turned, it passes through ×, \"clear\". Hover is magnification: the lens swells a little (1.04) and the plus inside it grows more (to 5.96, by path), so what is seen is bigger than the glass. Press swells the lens one step in."
+      "construction": "Search lens + plus (4.8u arms), the plus always upright: turned, it passes through ×, \"clear\". Motion (study): the tool draws back .6 down its handle axis, is pushed in 1.2 up it and stopped with a small rebound; the plus, a beat behind, is magnified to 1.3 (part spring); four diagonal marks are thrown outward between the arms; released, all slide home."
     },
     {
       "name": "zoom-out",

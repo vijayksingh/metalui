@@ -263,5 +263,64 @@ extension MetalIconAct {
             MetalIconActInk(d: "M7.6 9.1C7.935 8.3996 8.4996 7.835 9.2 7.5", parts: [0, 2], stroke: 0.8, fill: .none, opacity: 1.0),
             ]
         ),
+        .zoomIn: MetalIconAct(
+            duration: 1.14,
+            caption: "The lens is pushed in along its handle and the plus under it is magnified.",
+            parts: [
+            MetalIconActPart(
+                name: "tool", origin: CGPoint(x: 19.8, y: 19.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1404, x: 0.6, y: 0.6, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.307, x: -1.45, y: -1.45, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5746, x: -1.2, y: -1.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6316, x: -1.2, y: -1.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8421, x: 0.2, y: 0.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "sign", origin: CGPoint(x: 10.6, y: 10.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1404, x: 0.0, y: 0.0, r: 0.0, sx: 0.94, sy: 0.94, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.307, x: 0.0, y: 0.0, r: 0.0, sx: 1.05, sy: 1.05, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3421, x: 0.0, y: 0.0, r: 0.0, sx: 1.36, sy: 1.36, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6096, x: 0.0, y: 0.0, r: 0.0, sx: 1.2948, sy: 1.2948, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6667, x: 0.0, y: 0.0, r: 0.0, sx: 1.3, sy: 1.3, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8947, x: 0.0, y: 0.0, r: 0.0, sx: 0.97, sy: 0.97, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "throw", origin: CGPoint(x: 10.6, y: 10.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.3421, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4035, x: 0.0, y: 0.0, r: 0.0, sx: 1.15, sy: 1.15, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.614, x: 0.0, y: 0.0, r: 0.0, sx: 1.2, sy: 1.2, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.3421, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4035, 0.85, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.614, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M16.9 10.6C16.9 14.0794 14.0794 16.9 10.6 16.9C7.1206 16.9 4.3 14.0794 4.3 10.6C4.3 7.1206 7.1206 4.3 10.6 4.3C14.0794 4.3 16.9 7.1206 16.9 10.6Z", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M15.2 15.2L19.8 19.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8.2 10.6L13 10.6M10.6 8.2L10.6 13", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M13.15 8.05L13.65 7.55M13.15 13.15L13.65 13.65M8.05 13.15L7.55 13.65M8.05 8.05L7.55 7.55", parts: [0, 2], stroke: 0.7471, fill: .none, opacity: 1.0),
+            ]
+        ),
     ]
 }

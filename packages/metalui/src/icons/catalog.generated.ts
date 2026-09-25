@@ -373,24 +373,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1120,"caption":"The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.","stages":["Draw back","Sweep","Find"],"tracks":[{"part":"tool","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16071,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33929,"transform":"translate(0px,0px) rotate(-10.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.42857,"transform":"translate(0px,0px) rotate(-6.3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.51786,"transform":"translate(0px,0px) rotate(-7.3deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.67857,"transform":"translate(0px,0px) rotate(-7deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.85714,"transform":"translate(0px,0px) rotate(0.9deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"focus","keyframes":[{"offset":0,"transform":"scale(2.1)","opacity":0},{"offset":0.35714,"transform":"scale(2.1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48214,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.625,"transform":"scale(.8)","opacity":0},{"offset":1,"transform":"scale(2.1)","opacity":0}]},{"part":"glint","keyframes":[{"offset":0,"transform":"rotate(-40deg)","opacity":0},{"offset":0.44643,"transform":"rotate(-40deg)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55357,"transform":"rotate(5deg)","opacity":0.75,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75,"transform":"rotate(50deg)","opacity":0},{"offset":1,"transform":"rotate(-40deg)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * ZOOM IN · Tools
+   * ZOOM IN · Tools · one act, 1140ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the plus is magnified: it grows more than the lens
-   * PRESS one-shot (from the current pose)
-   *          the lens swells one step in
-   *     0ms   .sg plays zi-p (340ms)
+   * Draw back → Push in → Magnify
+   *          The lens is pushed in along its handle and the plus under it is magnified.
+   *  tool       0 → 160 → 350 → 655 → 720 → 960 → 1140ms
+   *  sign       0 → 160 → 350 → 390 → 695 → 760 → 1020 → 1140ms
+   *  throw      0 → 390 → 460 → 700 → 1140ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "zoom-in": {
     label: "Zoom In",
     category: "Tools",
-    hover: "the plus is magnified: it grows more than the lens",
-    press: "the lens swells one step in",
-    pressMs: 340,
+    hover: "The lens is pushed in along its handle and the plus under it is magnified.",
+    press: "plays the same act",
+    pressMs: 1140,
     defs: "",
-    body: "<g class=\"sg\"><circle class=\"lens\" cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path class=\"hdl\" d=\"M15.2 15.2 19.8 19.8\"/><path class=\"pm\" d=\"M8.2 10.6h4.8M10.6 8.2v4.8\"/></g>",
+    body: "<g data-part=\"tool\"><circle cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path d=\"M15.2 15.2 19.8 19.8\"/><g data-part=\"sign\"><path d=\"M8.2 10.6h4.8M10.6 8.2v4.8\"/></g><path class=\"ac\" data-part=\"throw\" opacity=\"0\" d=\"M13.15 8.05l.5-.5M13.15 13.15l.5.5M8.05 13.15l-.5.5M8.05 8.05l-.5-.5\" style=\"stroke-width:calc(var(--sw) * .75)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":1140,"caption":"The lens is pushed in along its handle and the plus under it is magnified.","stages":["Draw back","Push in","Magnify"],"tracks":[{"part":"tool","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14035,"transform":"translate(0.6px,0.6px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.30702,"transform":"translate(-1.45px,-1.45px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.57456,"transform":"translate(-1.2px,-1.2px) rotate(0deg) scale(1,1)"},{"offset":0.63158,"transform":"translate(-1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.84211,"transform":"translate(0.2px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"sign","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14035,"transform":"translate(0px,0px) rotate(0deg) scale(0.94,0.94)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.30702,"transform":"translate(0px,0px) rotate(0deg) scale(1.05,1.05)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34211,"transform":"translate(0px,0px) rotate(0deg) scale(1.36,1.36)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.60965,"transform":"translate(0px,0px) rotate(0deg) scale(1.2948,1.2948)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(0deg) scale(1.3,1.3)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89474,"transform":"translate(0px,0px) rotate(0deg) scale(0.97,0.97)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"throw","keyframes":[{"offset":0,"transform":"scale(1)","opacity":0},{"offset":0.34211,"transform":"scale(1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.40351,"transform":"scale(1.15)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61404,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * ZOOM OUT · Tools
