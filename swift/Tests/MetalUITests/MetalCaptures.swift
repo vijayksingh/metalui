@@ -371,6 +371,22 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetNeedleGauge() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/needle-gauge.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.derivedState("rest", value: 24), "rest")
+        XCTAssertEqual(spec.derivedState("rest", value: 34), "over")
+        XCTAssertEqual(spec.description("rest", value: 24), "Today: 24 of 40 min")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([8.0, 24, 34, 40], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-needle-gauge-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

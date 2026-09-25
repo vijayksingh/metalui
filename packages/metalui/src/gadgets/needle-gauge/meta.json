@@ -1,0 +1,12 @@
+{
+  "name": "needle-gauge",
+  "title": "Needle gauge",
+  "status": "alpha",
+  "description": "A gadget for a level: a needle over a printed scale in peach glass, sunk in a copper metal bezel, with a lamp and a beeper on its frame. A value swings the needle, which overshoots a little and settles; past the threshold the gauge is over and says so. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/needle-gauge.gadget.json",
+  "uses": ["bezel", "glass-face", "needle", "led", "beeper"],
+  "page": "/gadgets/needle-gauge"
+}

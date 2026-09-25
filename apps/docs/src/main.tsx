@@ -50,6 +50,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/keycap-chord', lazy: lazy(() => import('./pages/gadgets/KeycapChord')) },
       { path: 'gadgets/scope', lazy: lazy(() => import('./pages/gadgets/Scope')) },
       { path: 'gadgets/counter-drum', lazy: lazy(() => import('./pages/gadgets/CounterDrum')) },
+      { path: 'gadgets/needle-gauge', lazy: lazy(() => import('./pages/gadgets/NeedleGauge')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },

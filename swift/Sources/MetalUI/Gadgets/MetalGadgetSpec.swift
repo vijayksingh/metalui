@@ -78,7 +78,7 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public let ports: Ports?
 
     /// What flows in and out: a channel's kind and, for a number, its default.
-    public struct Channel: Codable, Sendable, Hashable { public let kind: String; public let `default`: MetalGadgetParam? }
+    public struct Channel: Codable, Sendable, Hashable { public let kind: String; public let `default`: MetalGadgetParam?; public let min: Double?; public let max: Double?; public let unit: String? }
     public struct Ports: Codable, Sendable, Hashable { public let `in`: [String: Channel]?; public let out: [String: Channel]? }
 
     /// The value a held gadget's drive port starts at: the port's default, else the middle.
@@ -87,11 +87,32 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         return port.flatMap { ports?.in?[$0]?.default?.number } ?? 0.5
     }
 
-    /// Where each actor of a held gadget goes for a drive value: its rest place (its `value` param)
-    /// shifted by how far the value sits from the middle, the same rule as draw.ts.
+    /// The drive port's range: [min, max] for a number, else 0...1.
+    public var driveRange: (min: Double, max: Double, unit: String?) {
+        let port = mechanism.drive ?? ports?.in?.keys.sorted().first
+        let ch = port.flatMap { ports?.in?[$0] }
+        return (ch?.min ?? 0, ch?.max ?? 1, ch?.unit)
+    }
+    /// A value as a share of the drive port's range, 0 to 1.
+    public func driveShare(_ value: Double) -> Double { let r = driveRange; return Swift.min(1, Swift.max(0, (value - r.min) / (r.max - r.min == 0 ? 1 : r.max - r.min))) }
+
+    /// The state it shows for a value: a needle past its threshold makes it `over`; back under, `over`
+    /// falls back to its initial state (or rest). The same rule as draw.ts.
+    public func derivedState(_ state: String, value: Double?) -> String {
+        guard let t = parts.first(where: { $0.part == "needle" })?.params?["threshold"]?.number, states["over"] != nil, let value else { return state }
+        if driveShare(value) >= t { return "over" }
+        let initial = self.state(nil)
+        return state == "over" ? (initial == "over" ? "rest" : initial) : state
+    }
+
+    /// Where each actor of a held gadget goes for a drive value: a needle points at the value's share of
+    /// its range; a cap goes to its rest place (its `value` param) shifted by how far the value sits
+    /// from the middle. The same rule as draw.ts.
     public func driveTargets(_ value: Double) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
-        return (mechanism.bind[held.slot] ?? []).map { id in
+        let ids = mechanism.bind[held.slot] ?? []
+        if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "needle" }) { return ids.map { _ in driveShare(value) } }
+        return ids.map { id in
             let rest = parts.first { $0.id == id }?.params?["value"]?.number ?? 0.5
             return min(1, max(0, rest + (value - 0.5)))
         }
@@ -112,6 +133,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         let v = Int((value ?? driveDefault).rounded())
         let text = (describe ?? "{title}: {state}").replacingOccurrences(of: "{title}", with: title).replacingOccurrences(of: "{state}", with: state)
             .replacingOccurrences(of: "{value}", with: String(v))
+            .replacingOccurrences(of: "{max}", with: String(Int(driveRange.max))).replacingOccurrences(of: "{unit}", with: driveRange.unit ?? "")
+            .trimmingCharacters(in: .whitespaces)
         return states[state]?.hint.map { "\(text), \($0)" } ?? text
     }
 }

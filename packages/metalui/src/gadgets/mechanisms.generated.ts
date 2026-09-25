@@ -631,5 +631,51 @@ export const MECHANISMS = {
       "sound"
     ],
     "held": null
+  },
+  "swing": {
+    "name": "swing",
+    "mode": "held",
+    "duration": 0,
+    "caption": "The needle swings to the value, overshoots a little and settles; at the ends of its scale it bounces off the pegs.",
+    "stages": [
+      "Swing",
+      "Overshoot",
+      "Settle"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "part",
+    "slots": {
+      "needle": "actor",
+      "face": "trim",
+      "lamp": "lamp",
+      "beeper": "trim?"
+    },
+    "tracks": [],
+    "cues": [],
+    "states": {},
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": {
+      "drive": "number",
+      "slot": "needle",
+      "from": {
+        "r": -60
+      },
+      "to": {
+        "r": 60
+      },
+      "detents": 0,
+      "stagger": 0,
+      "wall": 0.35,
+      "impactFull": 1,
+      "scrapeFull": 1,
+      "tickMin": 0.15,
+      "tickGap": 40,
+      "step": 240
+    }
   }
 } as const;

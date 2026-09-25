@@ -17,6 +17,7 @@ import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
 import { drawDrum } from './parts/drum';
+import { drawNeedle } from './parts/needle';
 import { digitOf } from './drive';
 import { drawBezel } from './parts/bezel';
 import { drawGlass } from './parts/glass';
@@ -52,7 +53,9 @@ export function stateOf(spec: GadgetSpec, state?: string): string {
 
 export function describeGadget(spec: GadgetSpec, state: string, value?: number): string {
   const v = value ?? driveDefault(spec);
-  const text = (spec.describe ?? '{title}: {state}').replace('{title}', spec.title).replace('{state}', state).replace('{value}', String(Math.round(v)));
+  const r = driveRange(spec);
+  const text = (spec.describe ?? '{title}: {state}').replace('{title}', spec.title).replace('{state}', state).replace('{value}', String(Math.round(v)))
+    .replace('{max}', String(r.max)).replace('{unit}', r.unit ?? '').replace(/\s+$/, '');
   const hint = spec.states[state]?.hint;
   return hint ? `${text}, ${hint}` : text;
 }
@@ -79,9 +82,30 @@ export function driveDefault(spec: GadgetSpec): number {
 /** Where each actor of a held gadget goes for a drive value: its own rest place (its `value`
  *  param), shifted by how far the value sits from the middle. Push the value up and the whole
  *  bank moves up, until caps meet the top of their slots. */
+/** The drive port's range: [min, max] for a number, 0..max for a count, else 0..1. */
+export function driveRange(spec: GadgetSpec): { min: number; max: number; unit?: string } {
+  const port = spec.mechanism.drive ?? Object.keys(spec.ports?.in ?? {})[0];
+  const ch = port ? (spec.ports?.in?.[port] as { kind: string; min?: number; max?: number; unit?: string } | undefined) : undefined;
+  return { min: ch?.min ?? 0, max: ch?.max ?? 1, unit: ch?.unit };
+}
+
+/** A value as a share of the drive port's range, 0 to 1. */
+export const driveShare = (spec: GadgetSpec, value: number) => { const r = driveRange(spec); return Math.min(1, Math.max(0, (value - r.min) / (r.max - r.min || 1))); };
+
+/** The state a gadget shows for a value: a needle past its threshold makes it `over` (the value
+ *  decides, not the host); back under, `over` falls back to rest. Other states are the host's. */
+export function derivedState(spec: GadgetSpec, state: string, value?: number): string {
+  const needle = spec.parts.find((p) => p.part === 'needle'), t = needle?.params?.threshold;
+  if (t === undefined || !spec.states.over || value === undefined) return state;
+  if (driveShare(spec, value) >= Number(t)) return 'over';
+  return state === 'over' ? stateOf(spec, undefined) === 'over' ? 'rest' : stateOf(spec, undefined) : state;
+}
+
 export function driveTargets(spec: GadgetSpec, value: number): number[] {
   const held = heldOf(spec);
   if (!held) return [];
+  // A needle points at the value's share of its range.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'needle')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   return boundTo(spec, held.slot).map((id) => {
     const rest = Number(spec.parts.find((p) => p.id === id)?.params?.value ?? 0.5);
     return Math.min(1, Math.max(0, rest + (value - 0.5)));
@@ -90,7 +114,7 @@ export function driveTargets(spec: GadgetSpec, value: number): number[] {
 
 export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   const tier = o.tier ?? 'full', host = o.host ?? 'bone', id = o.id ?? `g-${spec.name}`;
-  const resolved = resolve(spec), state = stateOf(spec, o.state), rs = resolved.states[state];
+  const resolved = resolve(spec), state = derivedState(spec, stateOf(spec, o.state), o.value ?? driveDefault(spec)), rs = resolved.states[state];
   const byId = Object.fromEntries(resolved.parts.map((p) => [p.id, p]));
   const poses = formPoses(spec, state);
   const bodyPart = spec.parts.find((p) => p.role === 'body');
@@ -123,7 +147,8 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   if (bodyPart && bodyPart.part === 'bezel') {
     const bz = drawBezel(`${id}-body`, { at: bodyPart.at, size: sizeOf(bodyPart), material: resolved.material as GadgetMaterial, color: rs.body, opening: (bodyPart.params?.opening as 'round' | 'square' | undefined) ?? 'round', cuts }, { tier, host });
     const facePart = spec.parts.find((p) => p.part === 'glass-face');
-    const g = drawGlass(`${id}-glass`, { at: bz.opening.at, size: bz.opening.size, shape: bz.opening.shape, color: resolved.face }, { tier });
+    // Radar rings only when the face asks for them (a scope's), never on a gauge's glass.
+    const g = drawGlass(`${id}-glass`, { at: bz.opening.at, size: bz.opening.size, shape: bz.opening.shape, color: resolved.face, rings: facePart?.params?.rings === true }, { tier });
     clip = g.clip;
     body = { defs: bz.defs + g.defs, html: `<g data-id="${facePart?.id ?? 'face'}">${g.glass}</g>` };
     top = { defs: '', html: `${g.surface}${bz.shade}<g data-id="${bodyPart.id}">${bz.frame}</g>` };
@@ -174,6 +199,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       defs += d.defs;
       const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
       lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`;
+    } else if (p.part === 'needle') {
+      // Printed on the glass and turned in it: its scale, the needle (which the swing turns) and its cap.
+      const r = byId[p.id], held = heldOf(spec), k = held ? boundTo(spec, held.slot).indexOf(p.id) : -1;
+      const value = k >= 0 ? driveShare(spec, o.value ?? driveDefault(spec)) : 0.5;
+      const d = drawNeedle(pid, { at: p.at, length: size[0], arc: Number(p.params?.arc ?? 120), ticks: Number(p.params?.ticks ?? 9),
+        threshold: p.params?.threshold === undefined ? undefined : Number(p.params.threshold), value, color: resolved.accent, glass: resolved.face }, { tier });
+      defs += d.defs;
+      lights += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.scale}${d.needle}${d.cap}</g>`;
     } else if (p.part === 'drum') {
       // A drum shows its digit of the count; the roll moves its strip from then on.
       const r = byId[p.id], face = r.accent && r.color ? r.color : p.params?.face === 'clay' ? clayFace() : { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H };
@@ -209,8 +242,9 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   return {
     resolved, state,
     body,
-    parts: { defs, html: (lights ? `<g clip-path="url(#${clip})" data-part="bezel.light">${lights}</g>` : '') + trims + cables + plugs },
-    top,
+    // An inset gadget's trims (a beeper) sit on its frame, so over it; a slab gadget's stand on its body.
+    parts: { defs, html: (lights ? `<g clip-path="url(#${clip})" data-part="bezel.light">${lights}</g>` : '') + (clip ? '' : trims) + cables + plugs },
+    top: clip ? { defs: top.defs, html: top.html + trims } : top,
     lamp: { defs: lamp.defs, html: lamp.body },
     description: describeGadget(spec, state, o.value),
   };

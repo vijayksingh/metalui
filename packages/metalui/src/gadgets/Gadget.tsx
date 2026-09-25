@@ -8,7 +8,8 @@
 import * as React from 'react';
 import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
-import { drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
+import { derivedState, drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
+import { needleAngle } from './parts/needle';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
 import { MECHANISMS as TIMELINES } from './mechanisms.generated';
@@ -46,7 +47,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   const tier = forcedTier ?? tierFor(size);
   const check = React.useMemo(() => validateGadget(spec), [spec]);
   const valid = check.ok ? check.spec : null;
-  const state = valid ? stateOf(valid, wanted) : '';
+  // The value may decide the state (a needle past its threshold is over).
+  const state = valid ? derivedState(valid, stateOf(valid, wanted), value ?? driveDefault(valid)) : '';
   // The lamp an act asks for (a flicker as the plug lands), until the state changes again.
   const [lampCue, setLampCue] = React.useState<{ gesture: string; beat: number } | null>(null);
 
@@ -172,10 +174,18 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       roll.current = r;
       return () => { r.destroy(); roll.current = null; };
     }
-    const actors = [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
+    // A needle turns about its pivot by its own arc; caps slide between the mechanism's poses.
+    const needles = valid.parts.filter((p) => p.part === 'needle');
+    const actors = needles.length
+      ? needles.map((p) => svg.querySelector(`[data-id="${p.id}"] [data-part="needle"]`))
+      : [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
+    const paint = needles.length ? (el: Element, i: number, u: number) => {
+      const p = needles[i];
+      el.setAttribute('transform', `rotate(${+needleAngle(u, Number(p.params?.arc ?? 120)).toFixed(3)} ${p.at[0]} ${p.at[1]})`);
+    } : undefined;
     const firstActor = valid.parts.find((p) => p.part === 'cap');
     const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid)), {
-      sound, material: firstActor?.material === 'ceramic' ? 'ceramic' : 'clay', partSize: GADGETS.parts.cap.size[0], reduced: reducedMotion(),
+      sound, material: firstActor?.material === 'ceramic' ? 'ceramic' : 'clay', partSize: GADGETS.parts.cap.size[0], reduced: reducedMotion(), paint,
     });
     drive.current = d;
     return () => { d.destroy(); drive.current = null; };

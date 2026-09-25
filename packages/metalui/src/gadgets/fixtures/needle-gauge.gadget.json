@@ -4,17 +4,17 @@
   "job": "signal", "feel": { "v": 0.6, "a": 0.5, "w": 0.45 }, "container": "inset", "station": 55, "material": "metal",
   "parts": [
     { "id": "body",  "part": "bezel",      "at": [200, 196], "size": [320, 320], "role": "body", "params": { "width": 22, "face": "glass-face" } },
-    { "id": "face",  "part": "glass-face", "at": [196, 212], "size": [236, 236], "role": "trim" },
+    { "id": "face",  "part": "glass-face", "at": [200, 196], "size": [276, 276], "role": "trim" },
     { "id": "lamp",  "part": "led",        "at": [313, 78],  "role": "lamp" },
     { "id": "needle","part": "needle",     "at": [200, 220], "role": "actor", "params": { "arc": 120, "ticks": 9, "threshold": 0.75 } },
-    { "id": "beeper","part": "beeper",     "at": [200, 343], "role": "trim", "params": { "slots": 3 } }
+    { "id": "beeper","part": "beeper",     "at": [84, 322],  "role": "trim", "params": { "slots": 3 } }
   ],
   "mechanism": { "name": "swing", "bind": { "needle": "needle", "face": "face", "lamp": "lamp", "beeper": "beeper" }, "drive": "value" },
-  "ports": { "in": { "value": { "kind": "number", "min": 0, "max": 40, "unit": "min", "default": 0 } },
+  "ports": { "in": { "value": { "kind": "number", "min": 0, "max": 40, "unit": "min", "default": 24 } },
              "out": { "over": { "kind": "pulse" }, "above": { "kind": "boolean" } } },
   "states": {
     "rest": { "lamp": ["off", "steady"] },
-    "over": { "lamp": ["live", "steady"], "beep": "done" }
+    "over": { "lamp": ["waiting", "steady"], "beep": "waiting" }
   },
   "describe": "{title}: {value} of {max} {unit}"
 }

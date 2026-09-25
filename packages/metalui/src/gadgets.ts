@@ -22,7 +22,7 @@ export { drawNeedle, needleAngle, type NeedleSpec } from './gadgets/parts/needle
 export { drawDrum, stripOffset, DRUM_FONT, type DrumSpec } from './gadgets/parts/drum';
 export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
-export { drawGadget, driveTargets, driveDefault, renderGadgetSvg, describeGadget, formPoses, stateOf, type GadgetDraw, type DrawOptions } from './gadgets/draw';
+export { drawGadget, driveTargets, driveDefault, driveRange, driveShare, derivedState, renderGadgetSvg, describeGadget, formPoses, stateOf, type GadgetDraw, type DrawOptions } from './gadgets/draw';
 export { Gadget, type GadgetProps } from './gadgets/Gadget';
 export { createDrive, DriveModel, createRoll, RollModel, digitOf, type Drive, type DriveEvent, type DriveName, type DriveOptions, type Roll, type RollEvent, type RollOptions } from './gadgets/drive';
 export { SPRINGS, type SpringName } from './motion/springs.generated';

@@ -135,6 +135,9 @@ export interface DriveOptions {
   onScrape?: (speed: number, level: number) => void;
   /** Every frame, each actor's value. */
   onFrame?: (values: number[]) => void;
+  /** Paints an actor at its value, when a straight move between two poses won't do (a needle turns
+   *  about its own pivot by its own arc). */
+  paint?: (el: Element, i: number, value: number) => void;
 }
 
 export interface Drive {
@@ -154,6 +157,7 @@ export function createDrive(name: DriveName, actors: (Element | null | undefined
   let o = options, raf = 0, t0 = 0, moving = false;
   const paint = () => actors.forEach((el, i) => {
     if (!el) return;
+    if (o.paint) { o.paint(el, i, model.x[i]); return; }
     const p = model.pose(i);
     el.setAttribute('transform', `translate(${+p.x.toFixed(3)} ${+p.y.toFixed(3)})`);
   });

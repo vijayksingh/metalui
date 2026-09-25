@@ -31,7 +31,8 @@ public struct MetalGadget: View {
         self.spec = spec; self.wanted = state; self.act = act; self.value = value; self.sound = sound; self.size = size
     }
 
-    private var state: String { spec.state(wanted) }
+    /// The value may decide the state (a needle past its threshold is over).
+    private var state: String { spec.derivedState(spec.state(wanted), value: value ?? spec.driveDefault) }
     private var unit: Double { size / MetalGadgetTokens.canvas }
     private func footprint(_ p: MetalGadgetSpec.Part) -> (Double, Double) {
         if let s = p.size, s.count == 2 { return (s[0], s[1]) }
@@ -70,9 +71,11 @@ public struct MetalGadget: View {
                 }
                 // An inset gadget: its glass in a bezel, with the light in the glass.
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "bezel" }, id: \.id) { p in
-                    MetalBezel(r.material, color: body(r), glass: r.face, opening: p.params?["opening"]?.text == "square" ? .square : .round, size: size) {
+                    MetalBezel(r.material, color: body(r), glass: r.face, opening: p.params?["opening"]?.text == "square" ? .square : .round,
+                               rings: spec.parts.first { $0.part == "glass-face" }?.params?["rings"].map { if case .flag(let on) = $0 { on } else { false } } ?? false, size: size) {
                         ZStack(alignment: .topLeading) {
                             ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in light(q, r: r, at: timeline.date) }
+                            ForEach(spec.parts.filter { $0.part == "needle" }, id: \.id) { q in needle(q, r: r) }
                         }
                     }
                 }
@@ -219,6 +222,14 @@ public struct MetalGadget: View {
                   width: footprint(p).0, size: size)
             .position(x: p.at[0] * unit, y: p.at[1] * unit)
             .accessibilityHidden(true)
+    }
+
+    /// A needle in the glass, pointing where the swing has carried it (or at the value before it runs).
+    @ViewBuilder private func needle(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let i = spec.parts.filter { $0.part == "needle" }.firstIndex { $0.id == p.id } ?? 0
+        let u = drive.map { $0.model.x[min(i, $0.model.x.count - 1)] } ?? spec.driveShare(value ?? spec.driveDefault)
+        MetalNeedle(value: u, arc: p.params?["arc"]?.number ?? 120, ticks: Int(p.params?["ticks"]?.number ?? 9), threshold: p.params?["threshold"]?.number,
+                    length: footprint(p).0, at: CGPoint(x: p.at[0], y: p.at[1]), color: r.accent, glass: r.face, size: size)
     }
 
     /// A key, its face moved by the press mechanism when its slot binds it.

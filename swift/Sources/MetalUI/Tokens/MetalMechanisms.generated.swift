@@ -64,5 +64,17 @@ extension MetalMechanism {
         held: nil
     )
 
-    public static let all: [MetalMechanism] = [press, roll, seat, slide, sweep]
+    /// The needle swings to the value, overshoots a little and settles; at the ends of its scale it bounces off the pegs.
+    public static let swing = MetalMechanism(
+        name: "swing", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .part,
+        tracks: [
+
+        ],
+        cues: [],
+        states: [:],
+        reduced: ["lamp", "sound"],
+        held: .init(slot: "needle", from: .init(x: 0.0, y: 0.0, r: -60.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 60.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.35, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
+    )
+
+    public static let all: [MetalMechanism] = [press, roll, seat, slide, sweep, swing]
 }

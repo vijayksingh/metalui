@@ -4,7 +4,7 @@
   "job": "find", "reach": "world", "feel": { "v": 0.7, "a": 0.8, "w": 0.1 }, "container": "inset", "material": "stone",
   "parts": [
     { "id": "body", "part": "bezel",      "at": [200, 196], "size": [320, 320], "role": "body", "params": { "opening": "round" } },
-    { "id": "face", "part": "glass-face", "at": [200, 196], "size": [276, 276], "role": "trim" },
+    { "id": "face", "part": "glass-face", "at": [200, 196], "size": [276, 276], "role": "trim", "params": { "rings": true } },
     { "id": "beam", "part": "backlight",  "at": [200, 196], "size": [276, 276], "role": "actor", "params": { "shape": "beam", "color": "glass" } },
     { "id": "b1",   "part": "backlight",  "at": [150, 146], "size": [20, 20], "role": "actor", "params": { "shape": "dot", "color": "glass" } },
     { "id": "b2",   "part": "backlight",  "at": [266, 230], "size": [20, 20], "role": "actor", "params": { "shape": "dot", "color": "glass" } },

@@ -967,6 +967,9 @@ export const GADGETS = {
           "enum",
           "round",
           "square"
+        ],
+        "rings": [
+          "boolean"
         ]
       },
       "strike": [
