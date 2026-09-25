@@ -216,25 +216,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1000,"caption":"The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.","stages":["Pick up","Drag out","Snap"],"tracks":[{"part":"stroke","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.09,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.62,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.62,"easing":"cubic-bezier(.35,0,.55,1)"},{"offset":0.54,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.62,"transform":"translate(0px,0px) rotate(0deg) scale(1.09,1.09)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66,"transform":"translate(0px,0px) rotate(0deg) scale(1.07,1.07)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.015,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0}]},{"part":"end","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.09,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(-8.184px,8.184px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33,"transform":"translate(-8.184px,8.184px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.35,0,.55,1)"},{"offset":0.54,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.62,"transform":"translate(1.188px,-1.188px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66,"transform":"translate(0.924px,-0.924px) rotate(0deg) scale(0.8,0.8)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(-0.198px,0.198px) rotate(0deg) scale(1.04,1.04)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"start","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33,"transform":"translate(0px,0px) rotate(0deg) scale(0.72,0.72)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.46,"transform":"translate(0px,0px) rotate(0deg) scale(1.08,1.08)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.58,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"snap","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.64,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.7,"transform":"scale(.85)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.92,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * ARROW · Tools
+   * ARROW · Tools · one act, 800ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          it bends into a connector and the head swings round to follow
-   * PRESS one-shot (from the current pose)
-   *          it draws back and shoots, the shaft stretching behind the head
-   *     0ms   .ar plays ar-fire (500ms)
-   *     0ms   .sh plays ar-stretch (500ms)
+   * Draw back → Thrust → Strike
+   *          The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.
+   *  head       0 → 160 → 300 → 430 → 590 → 800ms
+   *  shaft      0 → 160 → 300 → 430 → 590 → 800ms
+   *  rays       0 → 290 → 350 → 600 → 800ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "arrow": {
     label: "Arrow",
     category: "Tools",
-    hover: "it bends into a connector and the head swings round to follow",
-    press: "it draws back and shoots, the shaft stretching behind the head",
-    pressMs: 500,
+    hover: "The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.",
+    press: "plays the same act",
+    pressMs: 800,
     defs: "",
-    body: "<g class=\"ar\"><path class=\"sh\" d=\"M5.4 18.6C9.6 14.4 13.8 10.2 18 6\"/><path class=\"hd\" d=\"M10.8 5.4h7.8v7.8\"/></g>",
+    body: "<path data-part=\"shaft\" d=\"M5.4 18.6C9.6 14.4 13.8 10.2 18 6\"/><path data-part=\"head\" d=\"M10.8 5.4h7.8v7.8\"/><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M20.9 5.4h1M20.3 3.7l.7-.7M18.6 3.1V2.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":800,"caption":"The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.","stages":["Draw back","Thrust","Strike"],"tracks":[{"part":"head","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"transform":"translate(-2px,2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.375,"transform":"translate(0.3px,-0.3px) rotate(0deg) scale(0.8,0.8)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.5375,"transform":"translate(-0.7px,0.7px) rotate(0deg) scale(1.04,1.04)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.7375,"transform":"translate(0.15px,-0.15px) rotate(0deg) scale(0.99,0.99)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"shaft","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"transform":"translate(0px,0px) rotate(0deg) scale(0.8413,0.8413)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.375,"transform":"translate(0px,0px) rotate(0deg) scale(1.0238,1.0238)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.5375,"transform":"translate(0px,0px) rotate(0deg) scale(0.9444,0.9444)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.7375,"transform":"translate(0px,0px) rotate(0deg) scale(1.0119,1.0119)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.3625,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.4375,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75,"transform":"scale(1.08)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * RECTANGLE · Tools

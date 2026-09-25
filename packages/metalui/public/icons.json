@@ -124,11 +124,20 @@
       "component": "ArrowIcon",
       "label": "Arrow",
       "category": "Tools",
-      "hover": "it bends into a connector and the head swings round to follow",
-      "press": "it draws back and shoots, the shaft stretching behind the head",
-      "pressMs": 500,
+      "hover": "The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.",
+      "press": "plays the same act",
+      "pressMs": 800,
+      "motion": {
+        "caption": "The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.",
+        "durationMs": 800,
+        "stages": [
+          "Draw back",
+          "Thrust",
+          "Strike"
+        ]
+      },
       "tuned16": false,
-      "construction": "A corner-to-corner shaft (a cubic, straight at rest) with an open right-angle head (7.8 legs), the same span as Line. Hover: the shaft bends up and over like a connector routing to a block, and the head swings 45° a beat later to follow the new end. Press draws it back and shoots it."
+      "construction": "A corner-to-corner shaft (5.4,18.6 to 18,6; a cubic, straight) with an open right-angle head (7.8 legs) whose tip is 18.6,5.4, the same span as Line. Motion (study): the head draws back 2 along the line and is thrust into its mark, driving .3 past and compressing .8 into its tip; the shaft is scaled from its fixed tail by the same travel so it stays joined; three short rays open beyond the tip; it rebounds .7 and settles."
     },
     {
       "name": "rectangle",

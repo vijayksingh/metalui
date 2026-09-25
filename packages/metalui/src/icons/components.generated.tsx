@@ -19,7 +19,7 @@ export const PenIcon = createIcon("pen", "PenIcon");
 export const MarkerIcon = createIcon("marker", "MarkerIcon");
 /** Line. Hover: The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.. Press: plays the same act. */
 export const LineIcon = createIcon("line", "LineIcon");
-/** Arrow. Hover: it bends into a connector and the head swings round to follow. Press: it draws back and shoots, the shaft stretching behind the head. */
+/** Arrow. Hover: The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.. Press: plays the same act. */
 export const ArrowIcon = createIcon("arrow", "ArrowIcon");
 /** Rectangle. Hover: a rough hand-drawn box snaps into a clean one. Press: the box is dragged out again from its corner. */
 export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
