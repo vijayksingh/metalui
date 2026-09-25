@@ -1,0 +1,7 @@
+/* Build only MetalUI's utilities. Importing the package must not reset a host app. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./src/components/tokens.css";
+@import "./src/components/theme.css";
+@source "./src";
