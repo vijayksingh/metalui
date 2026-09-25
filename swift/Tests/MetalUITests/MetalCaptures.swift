@@ -207,9 +207,9 @@ final class MetalCaptures: XCTestCase {
     func testHoverEngraving() {
         for colorway in MetalColorway.allCases {
             let view = VStack(alignment: .leading, spacing: 16) {
-                MetalHoverEngraving(kind: "LOG", details: ["07:40", "SLEEP 6 H", "ALSO TIRED"], status: (.live, "JEV ✓"))
-                MetalHoverEngraving(kind: "TASK", details: ["TOMORROW 16:00"], tags: ["poster"], status: (.live, "JEV ✓"))
-                MetalHoverEngraving(kind: "LUNCH? 0.71", status: (.waiting, "ASKING JEV…"))
+                MetalHoverEngraving(kind: "LOG", details: ["07:40", "SLEEP 6 H", "ALSO TIRED"], status: (.live, "RECOGNIZED ✓"))
+                MetalHoverEngraving(kind: "TASK", details: ["TOMORROW 16:00"], tags: ["poster"], status: (.live, "RECOGNIZED ✓"))
+                MetalHoverEngraving(kind: "LUNCH? 0.71", status: (.waiting, "RECOGNIZING…"))
                 MetalHoverEngraving(kind: "NOT SENT", details: ["LOOKS LIKE A SECRET"], status: (.off, "KEPT ON THIS MAC"))
             }
             .padding(28)
@@ -223,7 +223,7 @@ final class MetalCaptures: XCTestCase {
         for colorway in MetalColorway.allCases {
             let view = HStack(spacing: 16) {
                 MetalProvenanceTooltip(source: "Rule", detail: ["Date parser"])
-                MetalProvenanceTooltip(source: "Jev", detail: ["0.82"])
+                MetalProvenanceTooltip(source: "Recognizer", detail: ["0.82"])
                 MetalProvenanceTooltip(source: "You")
             }
             .padding(28)
@@ -239,6 +239,7 @@ final class MetalCaptures: XCTestCase {
                 MetalRegionView(name: "friday", rule: "dates them friday", count: 2).frame(width: 200, height: 140)
                 MetalRegionView(name: "Done", rule: "marks tasks done", dropRule: "drop to mark tasks done", state: .over).frame(width: 200, height: 140)
                 MetalRegionView(name: "#poster", rule: "tags them #poster", state: .dim).frame(width: 200, height: 140)
+                MetalRegionView(name: "Ideas", rule: "from amber folder", hue: .amber).frame(width: 200, height: 140)
                 MetalRegionView(name: "open tasks", rule: "lens · live", lens: true) {
                     VStack(spacing: 2) {
                         MetalRegionRow("Send the poster", meta: "FRI") { MetalDimple(isOn: .constant(false), label: "Send the poster") }
@@ -250,6 +251,52 @@ final class MetalCaptures: XCTestCase {
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("region-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testSelect() {
+        for colorway in MetalColorway.allCases {
+            let options = [
+                MetalSelectOption("red", label: "Red"),
+                MetalSelectOption("green", label: "Green"),
+                MetalSelectOption("blue", label: "Blue", disabled: true),
+            ]
+            let view = HStack(spacing: 20) {
+                MetalSelect("Colour", selection: .constant("green"), options: options)
+                MetalSelect("Colour", selection: .constant(nil), options: options,
+                            placeholder: "Choose colour", size: .compact, invalid: true)
+                MetalSelect("Colour", selection: .constant("red"), options: options).disabled(true)
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("select-\(colorway.rawValue)", view)
+            let list = MetalSelect("Colour", selection: .constant("green"), groups: [
+                MetalSelectGroup("WARM", options: [options[0]]),
+                MetalSelectGroup("COOL", options: Array(options.dropFirst())),
+            ]).specimenList
+                .padding(28)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("select-list-\(colorway.rawValue)", list)
+        }
+    }
+
+    func testTabs() {
+        for colorway in MetalColorway.allCases {
+            let options = [MetalTab("react", title: "React"), MetalTab("swift", title: "SwiftUI")]
+            let view = VStack(alignment: .leading, spacing: 20) {
+                MetalTabs("Examples", selection: .constant("react"), options: options) { value in
+                    Text("\(value) component example").font(.metal(MetalType.ui))
+                }
+                MetalTabs("Examples", selection: .constant("swift"), options: options, size: .compact) { value in
+                    Text("\(value) component example").font(.metal(MetalType.ui))
+                }
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("tabs-\(colorway.rawValue)", view)
         }
     }
 
@@ -269,7 +316,7 @@ final class MetalCaptures: XCTestCase {
     func testLensBar() {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {
-                MetalLensBar(query: "open tasks about the poster", count: 6, source: .jev, mode: .constant(.list), onPin: {}, onClose: {})
+                MetalLensBar(query: "open tasks about the poster", count: 6, source: .local, mode: .constant(.list), onPin: {}, onClose: {})
                 MetalLensBar(query: "lunch this week", source: .asking, mode: .constant(.place), onPin: {}, onClose: {})
             }
             .padding(28)
@@ -348,9 +395,9 @@ final class MetalCaptures: XCTestCase {
             let view = VStack(spacing: 20) {
                 HStack(spacing: 24) { MetalLED(.live); MetalLED(.waiting); MetalLED(.failed); MetalLED(.link); MetalLED(.off) }
                 HStack(spacing: 12) {
-                    MetalStatusBadge("Jev live", led: .live)
-                    MetalStatusBadge("Jev offline · add key to keychain", led: .waiting)
-                    MetalStatusBadge("Jev · no connection", led: .failed)
+                MetalStatusBadge("Recognizer live", led: .live)
+                MetalStatusBadge("Recognizer offline", led: .waiting)
+                MetalStatusBadge("Recognizer · no connection", led: .failed)
                 }
             }
             .padding(28)
@@ -398,13 +445,13 @@ final class MetalCaptures: XCTestCase {
         let items: [MetalCommandPaletteItem] = [
             .init(id: "lens", label: "See “poster”", section: "LENS", icon: .search, hint: .readout("RULES")),
             .init(id: "tag", label: "#poster", section: "LENSES", icon: .tag),
-            .init(id: "f1", label: "the font on the train poster was a condensed grotesk", section: "FRAGMENTS", icon: .document, hint: .readoutKey("8:52", "↩")),
-            .init(id: "f2", label: "poster refs from the studio", section: "FRAGMENTS", icon: .document, hint: .readout("9:10")),
+            .init(id: "f1", label: "the font on the train poster was a condensed grotesk", section: "BLOCKS", icon: .document, hint: .readoutKey("8:52", "↩")),
+            .init(id: "f2", label: "poster refs from the studio", section: "BLOCKS", icon: .document, hint: .readout("9:10")),
             .init(id: "undo", label: "Undo", section: "ACTIONS", icon: .undo, hint: .key("⌘Z")),
             .init(id: "clear", label: "Clear the poster board", section: "ACTIONS", icon: .trash, danger: true),
         ]
         for colorway in MetalColorway.allCases {
-            let view = MetalCommandPalette(query: .constant("poster"), items: items, filter: false, status: "NATURAL LANGUAGE VIA JEV", onRun: { _, _ in }, onClose: {})
+            let view = MetalCommandPalette(query: .constant("poster"), items: items, filter: false, status: "NATURAL LANGUAGE RECOGNITION", onRun: { _, _ in }, onClose: {})
                 .environment(\.metalSnapshot, true)
                 .padding(28)
                 .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
@@ -433,10 +480,10 @@ final class MetalCaptures: XCTestCase {
     func testMenu() {
         for colorway in MetalColorway.allCases {
             let view = HStack(alignment: .top, spacing: 28) {
-                MetalMenuPanel(heading: "Note · task by Jev 0.82", items: [
+                MetalMenuPanel(heading: "Note · task by recognizer 0.82", items: [
                     MetalMenuItem("Not a Task") {},
                     MetalMenuItem("Reset Corrections") {},
-                    MetalMenuItem("Ask Jev Again") {},
+                    MetalMenuItem("Recognize Again") {},
                     .separator,
                     MetalMenuItem("Gather Similar", icon: .search) {},
                 ], onClose: {})

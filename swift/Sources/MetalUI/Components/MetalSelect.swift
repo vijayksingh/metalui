@@ -125,7 +125,8 @@ public struct MetalSelect<Value: Hashable>: View {
         .popover(isPresented: $open, arrowEdge: .bottom) { list }
     }
 
-    private var list: some View {
+    /// The painted list, also used by headless captures without a platform popover.
+    var specimenList: some View {
         let recipe = MetalRecipes.menu
         let shape = RoundedRectangle(cornerRadius: recipe.points("self.radius"), style: .continuous)
         return VStack(alignment: .leading, spacing: .zero) {
@@ -159,6 +160,10 @@ public struct MetalSelect<Value: Hashable>: View {
                     dark: colorway == .graphite)).clipShape(shape)
             }
         }
+    }
+
+    private var list: some View {
+        specimenList
         .opacity(arrived ? .one : .zero)
         .scaleEffect(reduceMotion || arrived ? CGFloat(Double.one) : selectScale)
         .metalAnimation(.settle, value: highlighted)
