@@ -179,11 +179,20 @@
       "component": "TidyIcon",
       "label": "Tidy",
       "category": "Tools",
-      "hover": "loose tiles snap to the guide",
-      "press": "guide pulses, tiles click home",
-      "pressMs": 380,
+      "hover": "The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.",
+      "press": "plays the same act",
+      "pressMs": 1280,
+      "motion": {
+        "caption": "The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.",
+        "durationMs": 1280,
+        "stages": [
+          "Draw back",
+          "Knock square",
+          "Relax"
+        ]
+      },
       "tuned16": true,
-      "construction": "Guide + three pills (h4, r2). Rest pose is deliberately loose (≤5°), hover = aligned. Native: offsets/rotations are animatable per pill."
+      "construction": "Guide + three pills (h4, r2), loose at rest (≤5°, a rest transform on each rect). Motion (study): the pills draw back .7, then are knocked flush and square against the guide in order (squash .86 along their length, part spring), the guide gives .6 under the knock; registration ticks flash between guide and pills; held square, they relax back to loose."
     },
     {
       "name": "search",

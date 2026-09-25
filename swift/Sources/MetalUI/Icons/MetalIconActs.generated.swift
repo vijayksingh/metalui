@@ -118,5 +118,87 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 4.6L12 19.4", parts: [3], stroke: 0.6, fill: .none, opacity: 1.0),
             ]
         ),
+        .tidy: MetalIconAct(
+            duration: 1.28,
+            caption: "The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.",
+            parts: [
+            MetalIconActPart(
+                name: "guide", origin: CGPoint(x: 4.3, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.2578, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2891, x: -0.6, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5273, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "row1", origin: CGPoint(x: 8.8, y: 6.4),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.125, x: 0.7, y: 0.0, r: -2.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2578, x: -1.6, y: 0.0, r: 5.0, sx: 0.86, sy: 1.08, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.4961, x: -1.6, y: 0.0, r: 5.0, sx: 1.0122, sy: 0.993, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6563, x: -1.6, y: 0.0, r: 5.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "row2", origin: CGPoint(x: 10.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1484, x: 0.7, y: 0.0, r: 2.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2813, x: -2.8, y: 0.0, r: -5.0, sx: 0.86, sy: 1.08, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5195, x: -2.8, y: 0.0, r: -5.0, sx: 1.0122, sy: 0.993, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.625, x: -2.8, y: 0.0, r: -5.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "row3", origin: CGPoint(x: 8.1, y: 17.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1719, x: 0.7, y: 0.0, r: -1.2, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3047, x: -0.9, y: 0.0, r: 3.0, sx: 0.86, sy: 1.08, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.543, x: -0.9, y: 0.0, r: 3.0, sx: 1.0122, sy: 0.993, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.6367, x: -0.9, y: 0.0, r: 3.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "ticks", origin: CGPoint(x: 5.85, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 1.0, ease: .linear),
+                    .init(0.2656, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3047, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5, x: 0.0, y: 0.0, r: 0.0, sx: 1.2, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2656, 0.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3047, 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4.3 3.8L4.3 20.2", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M10.6181 4.2333L19.1853 3.4838C20.2857 3.3875 21.2558 4.2015 21.352 5.3018L21.352 5.3018C21.4483 6.4022 20.6343 7.3723 19.534 7.4685L10.9667 8.2181C9.8663 8.3143 8.8963 7.5004 8.8 6.4L8.8 6.4C8.7037 5.2996 9.5177 4.3296 10.6181 4.2333Z", parts: [1], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            MetalIconActInk(d: "M12.1667 10.1819L16.7492 10.5828C17.8496 10.6791 18.6635 11.6492 18.5673 12.7495L18.5673 12.7495C18.471 13.8499 17.5009 14.6639 16.4006 14.5676L11.8181 14.1667C10.7177 14.0704 9.9037 13.1004 10 12L10 12C10.0963 10.8996 11.0663 10.0856 12.1667 10.1819Z", parts: [2], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            MetalIconActInk(d: "M9.9926 15.4981L16.983 15.1317C18.0861 15.0739 19.0271 15.9213 19.0849 17.0243L19.0849 17.0243C19.1427 18.1274 18.2954 19.0684 17.1923 19.1262L10.2019 19.4926C9.0989 19.5504 8.1578 18.7031 8.1 17.6L8.1 17.6C8.0422 16.4969 8.8895 15.5559 9.9926 15.4981Z", parts: [3], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            MetalIconActInk(d: "M5.4 6.4L6.3 6.4M5.4 12L6.3 12M5.4 17.6L6.3 17.6", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
     ]
 }

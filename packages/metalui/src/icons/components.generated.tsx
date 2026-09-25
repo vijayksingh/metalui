@@ -29,7 +29,7 @@ export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
 export const EraserIcon = createIcon("eraser", "EraserIcon");
 /** Layout. Hover: The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.. Press: plays the same act. */
 export const LayoutIcon = createIcon("layout", "LayoutIcon");
-/** Tidy. Hover: loose tiles snap to the guide. Press: guide pulses, tiles click home. */
+/** Tidy. Hover: The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.. Press: plays the same act. */
 export const TidyIcon = createIcon("tidy", "TidyIcon");
 /** Search. Hover: lens sweeps, glint crosses glass. Press: lens focuses. */
 export const SearchIcon = createIcon("search", "SearchIcon");
