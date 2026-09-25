@@ -14,6 +14,7 @@ export default defineConfig({
     alias: [
       { find: /^@unlocalhosted\/metalui\/icons$/, replacement: pkg('src/icons.ts') },
       { find: /^@unlocalhosted\/metalui\/icons\/life$/, replacement: pkg('src/icons-life.ts') },
+      { find: /^@unlocalhosted\/metalui\/sound$/, replacement: pkg('src/sound.ts') },
       { find: /^@unlocalhosted\/metalui\/(tokens|theme)\.css$/, replacement: pkg('src/components/$1.css') },
       { find: /^@unlocalhosted\/metalui$/, replacement: pkg('src/index.ts') },
     ],

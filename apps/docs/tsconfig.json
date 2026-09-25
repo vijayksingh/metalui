@@ -13,7 +13,8 @@
     "paths": {
       "@unlocalhosted/metalui": ["../../packages/metalui/src/index.ts"],
       "@unlocalhosted/metalui/icons": ["../../packages/metalui/src/icons.ts"],
-      "@unlocalhosted/metalui/icons/life": ["../../packages/metalui/src/icons-life.ts"]
+      "@unlocalhosted/metalui/icons/life": ["../../packages/metalui/src/icons-life.ts"],
+      "@unlocalhosted/metalui/sound": ["../../packages/metalui/src/sound.ts"]
     }
   },
   "include": ["src", "vite.config.ts"]
