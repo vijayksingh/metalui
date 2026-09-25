@@ -667,6 +667,35 @@ export const GADGETS = {
       172
     ]
   },
+  "pull": {
+    "posts": [
+      8,
+      12
+    ],
+    "standoff": 6,
+    "crown": 0.12,
+    "foot": 0.14,
+    "sheen": [
+      0.28,
+      0.55
+    ],
+    "shadow": [
+      2.4,
+      2,
+      4,
+      0.34
+    ],
+    "recess": 0.55,
+    "lip": [
+      1.2,
+      0.5
+    ],
+    "panel": [
+      240,
+      44
+    ],
+    "alone": 150
+  },
   "rig": {
     "pitch": 440,
     "padding": 40,

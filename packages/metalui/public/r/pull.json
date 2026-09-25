@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pull",
+  "type": "registry:ui",
+  "title": "Pull",
+  "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/pull/pull.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/pull/pull.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawPull, type PullSpec } from '../../gadgets/parts/pull';\nimport { pigment } from '../../gadgets/color';\nimport { materialFilter, tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\nimport { roundedRect } from '../../gadgets/parts/slab';\n\n/* Pull (a Part): a drawer's handle, seen from above, drawn with the drawer front it sits on. A bar is\n * a metal capsule standing out in front of the front on two posts; a recess is a finger slot cut into\n * it. It has no state of its own: in a gadget the drawer moves it. Geometry is canvas units; `size` is\n * drawn pixels. */\n\nexport interface PullProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children' | 'style'> {\n  style?: PullSpec['style'];\n  /** The drawer front's pigment; pale clay by default. */\n  front?: { L: number; C: number; H: number };\n  size?: number;\n  host?: Host;\n}\n\nexport function Pull({ style = 'bar', front, size = 96, host: forced, ...props }: PullProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const hue = (GADGETS.materials.clay as unknown as { sample: number }).sample;\n  const f = front ?? { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: hue };\n  const [pw, ph] = GADGETS.pull.panel, [w, h] = GADGETS.parts.pull.size, k = GADGETS.pull.alone / w, W = w * k, H = h * k;\n  // The front, and the pull on it: a bar stands out below its front edge, a recess is cut into it.\n  const top = 200 - (ph + reach(style, H)) / 2, edge = top + ph;\n  const at: [number, number] = style === 'recess' ? [200, top + ph / 2] : [200, edge + GADGETS.pull.standoff + H / 2];\n  const d = drawPull(`pull-${uid}`, { at, size: [W, H], style, color: style === 'recess' ? f : undefined }, { tier });\n  const panel = roundedRect([200, top + ph / 2], [pw, ph], ph * GADGETS.lid.radius);\n  const light = tier === 'flat' ? '' : materialFilter(`pull-${uid}-light`, 'clay', { tier: 'lite', host, part: true });\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`pull, ${style}`} data-tier={tier} data-host={host} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs + light }} />\n      <g dangerouslySetInnerHTML={{ __html: `<g${light ? ` filter=\"url(#pull-${uid}-light)\"` : ''}><path data-part=\"pull.front\" d=\"${panel}\" fill=\"${pigment(f.L, f.C, f.H).srgb}\"/></g>` + d.shadow + d.body }} />\n    </svg>\n  );\n}\n\n/** How far a pull reaches below the front's edge: a bar stands out; a recess does not. */\nfunction reach(style: PullSpec['style'], H: number) { return style === 'recess' ? 0 : GADGETS.pull.standoff + H; }\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/pull.md. SwiftUI: MetalPull in the MetalUI Swift package."
+}

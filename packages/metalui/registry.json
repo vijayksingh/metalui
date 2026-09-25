@@ -113,6 +113,11 @@
           "target": "components/gadgets/parts/plug.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/pull.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/pull.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/slab.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/slab.ts"
@@ -886,6 +891,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/provenance-tooltip.md. SwiftUI: MetalProvenanceTooltip, .metalProvenance(_:detail:) in the MetalUI Swift package."
+    },
+    {
+      "name": "pull",
+      "type": "registry:ui",
+      "title": "Pull",
+      "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/pull/pull.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/pull/pull.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/pull.md. SwiftUI: MetalPull in the MetalUI Swift package."
     },
     {
       "name": "region",

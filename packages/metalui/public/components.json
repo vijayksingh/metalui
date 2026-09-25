@@ -699,6 +699,23 @@
       "agent": "https://metalui.dev/r/provenance-tooltip.md"
     },
     {
+      "name": "pull",
+      "title": "Pull",
+      "status": "alpha",
+      "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Pull",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPull"
+      },
+      "registry": "https://metalui.dev/r/pull.json",
+      "agent": "https://metalui.dev/r/pull.md"
+    },
+    {
       "name": "region",
       "title": "Region",
       "status": "alpha",

@@ -47,6 +47,7 @@ const router = createBrowserRouter([
       { path: 'components/needle', lazy: lazy(() => import('./pages/components/Needle')) },
       { path: 'components/cell', lazy: lazy(() => import('./pages/components/Cell')) },
       { path: 'components/lid', lazy: lazy(() => import('./pages/components/Lid')) },
+      { path: 'components/pull', lazy: lazy(() => import('./pages/components/Pull')) },
       { path: 'gadgets/patch-bay', lazy: lazy(() => import('./pages/gadgets/PatchBay')) },
       { path: 'gadgets/fader-bank', lazy: lazy(() => import('./pages/gadgets/FaderBank')) },
       { path: 'gadgets/keycap-chord', lazy: lazy(() => import('./pages/gadgets/KeycapChord')) },

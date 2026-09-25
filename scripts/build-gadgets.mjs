@@ -205,6 +205,16 @@ public enum MetalGadgetTokens {
     public static let lidUnder: (reach: Double, alpha: Double) = (${G.lid.under.map(num).join(', ')})
     public static let lidAngles: (open: Double, ajar: Double) = (${num(G.lid.open)}, ${num(G.lid.ajar)})
     public static let lidAlone: (width: Double, length: Double) = (${G.lid.alone.map(num).join(', ')})
+    public static let pullPosts: (width: Double, inset: Double) = (${G.pull.posts.map(num).join(', ')})
+    public static let pullStandoff: Double = ${num(G.pull.standoff)}
+    public static let pullCrown: Double = ${num(G.pull.crown)}
+    public static let pullFoot: Double = ${num(G.pull.foot)}
+    public static let pullSheen: (at: Double, alpha: Double) = (${G.pull.sheen.map(num).join(', ')})
+    public static let pullShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.pull.shadow.map(num).join(', ')})
+    public static let pullRecess: Double = ${num(G.pull.recess)}
+    public static let pullLip: (width: Double, alpha: Double) = (${G.pull.lip.map(num).join(', ')})
+    public static let pullPanel: (width: Double, height: Double) = (${G.pull.panel.map(num).join(', ')})
+    public static let pullAlone: Double = ${num(G.pull.alone)}
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

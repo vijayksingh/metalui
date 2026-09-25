@@ -1,0 +1,21 @@
+{
+  "name": "pull",
+  "title": "Pull",
+  "status": "alpha",
+  "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
+  "base": "none (SVG)",
+  "react": {
+    "export": "Pull",
+    "files": [
+      "pull.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalPull",
+    "file": "swift/Sources/MetalUI/Components/MetalPull.swift"
+  },
+  "agent": "pull.agent.md",
+  "layer": "part",
+  "page": "/components/pull",
+  "recipe": "gadgets"
+}

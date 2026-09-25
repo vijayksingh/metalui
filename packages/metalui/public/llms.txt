@@ -49,6 +49,7 @@
 - [Perfect preview](https://metalui.dev/r/perfect-preview.md): Hold to perfect: while the pen is held still after a rough stroke, the fitted clean shape draws itself round as a faint green outline over 450 ms; when it closes the host morphs the stroke into the shape.
 - [Plug](https://metalui.dev/r/plug.md): A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.
 - [Provenance tooltip](https://metalui.dev/r/provenance-tooltip.md): One hover away from every cue: a wrapped Tooltip that says where the cue came from (Rule · date parser, Recognizer · 0.82, You), the detail in Tooltip.Dim, with the number whenever the app guessed.
+- [Pull](https://metalui.dev/r/pull.md): A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.
 - [Region](https://metalui.dev/r/region.md): A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.
 - [Row](https://metalui.dev/r/row.md): A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.
 - [Rule](https://metalui.dev/r/rule.md): An engraved groove between groups; graphite on dark chrome.

@@ -224,6 +224,16 @@ public enum MetalGadgetTokens {
     public static let lidUnder: (reach: Double, alpha: Double) = (0.45, 0.7)
     public static let lidAngles: (open: Double, ajar: Double) = (70.0, 18.0)
     public static let lidAlone: (width: Double, length: Double) = (260.0, 172.0)
+    public static let pullPosts: (width: Double, inset: Double) = (8.0, 12.0)
+    public static let pullStandoff: Double = 6.0
+    public static let pullCrown: Double = 0.12
+    public static let pullFoot: Double = 0.14
+    public static let pullSheen: (at: Double, alpha: Double) = (0.28, 0.55)
+    public static let pullShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (2.4, 2.0, 4.0, 0.34)
+    public static let pullRecess: Double = 0.55
+    public static let pullLip: (width: Double, alpha: Double) = (1.2, 0.5)
+    public static let pullPanel: (width: Double, height: Double) = (240.0, 44.0)
+    public static let pullAlone: Double = 150.0
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0
