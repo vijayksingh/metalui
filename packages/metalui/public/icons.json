@@ -138,11 +138,20 @@
       "component": "MarkerIcon",
       "label": "Marker",
       "category": "Tools",
-      "hover": "it sweeps right and lays a see-through band",
-      "press": "it lifts back, then sweeps a fresh band",
-      "pressMs": 620,
+      "hover": "The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.",
+      "press": "plays the same act",
+      "pressMs": 1120,
+      "motion": {
+        "caption": "The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.",
+        "durationMs": 1120,
+        "stages": [
+          "Plant",
+          "Sweep",
+          "Lift"
+        ]
+      },
       "tuned16": false,
-      "construction": "A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. The band (duo .26, sits under the words) is always as long as the tip has travelled: hover and press move them on the same curve. Press lifts the marker back to the start while the old band fades, then it leans into the page and sweeps a fresh one."
+      "construction": "A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. Motion (study): the marker lifts back, plants its chisel flat (squash .94) and sweeps 4.6 right in one straight stroke; the see-through band (an accent, duo .32) is always as long as the chisel has travelled; it flicks up and swings home while the band fades."
     },
     {
       "name": "line",

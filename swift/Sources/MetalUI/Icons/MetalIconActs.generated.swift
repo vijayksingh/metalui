@@ -403,6 +403,54 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.6475 13.4132C10.3546 13.7061 9.8797 13.7061 9.5868 13.4132C9.2939 13.1203 9.2939 12.6454 9.5868 12.3525C9.8797 12.0596 10.3546 12.0596 10.6475 12.3525C10.9404 12.6454 10.9404 13.1203 10.6475 13.4132Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
             ]
         ),
+        .marker: MetalIconAct(
+            duration: 1.12,
+            caption: "The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.",
+            parts: [
+            MetalIconActPart(
+                name: "marker", origin: CGPoint(x: 4.5, y: 16.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1429, x: -1.1, y: -1.3, r: -4.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.25, x: -1.5, y: 0.3, r: 3.0, sx: 1.05, sy: 0.94, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2857, x: -1.48, y: 0.15, r: 4.0, sx: 1.02, sy: 0.97, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5714, x: 3.1, y: 0.1, r: 5.0, sx: 1.02, sy: 0.97, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6607, x: 2.9, y: -1.5, r: -3.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9107, x: -0.25, y: 0.2, r: 1.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "band", origin: CGPoint(x: 2.8, y: 17.7),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.1, sy: 1.0, ease: .linear),
+                    .init(0.2589, x: 0.0, y: 0.0, r: 0.0, sx: 0.1, sy: 1.0, ease: .linear),
+                    .init(0.2857, x: 0.0, y: 0.0, r: 0.0, sx: 0.1, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5714, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7589, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9375, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.1, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2589, 0.0, ease: .linear),
+                    .init(0.2857, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5714, 1.0, ease: .linear),
+                    .init(0.7589, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.9375, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4.1 16.1L6.7 16.1C7.418 16.1 8 16.682 8 17.4L8 18C8 18.718 7.418 19.3 6.7 19.3L4.1 19.3C3.382 19.3 2.8 18.718 2.8 18L2.8 17.4C2.8 16.682 3.382 16.1 4.1 16.1Z", parts: [1], stroke: 0.0, fill: .duotone(0.32), opacity: 1.0),
+            MetalIconActInk(d: "M13.7941 5.5289C14.3408 4.9822 15.2273 4.9822 15.774 5.5289L17.4711 7.226C18.0178 7.7727 18.0178 8.6592 17.4711 9.2059L11.2485 15.4284L7.5716 11.7515Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M8.1373 12.3172L10.6828 14.8627L9.1979 16.3477L4.4603 15.9941Z", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ]
+        ),
         .line: MetalIconAct(
             duration: 1.0,
             caption: "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",

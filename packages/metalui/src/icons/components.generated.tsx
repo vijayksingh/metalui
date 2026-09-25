@@ -15,7 +15,7 @@ export const LinkIcon = createIcon("link", "LinkIcon");
 export const DrawIcon = createIcon("draw", "DrawIcon");
 /** Pen. Hover: The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.. Press: plays the same act. */
 export const PenIcon = createIcon("pen", "PenIcon");
-/** Marker. Hover: it sweeps right and lays a see-through band. Press: it lifts back, then sweeps a fresh band. */
+/** Marker. Hover: The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.. Press: plays the same act. */
 export const MarkerIcon = createIcon("marker", "MarkerIcon");
 /** Line. Hover: The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.. Press: plays the same act. */
 export const LineIcon = createIcon("line", "LineIcon");

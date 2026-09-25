@@ -178,25 +178,25 @@ export const ICON_CATALOG = {
     motion: {"duration":1280,"caption":"The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.","stages":["Set down","Write","Press"],"tracks":[{"part":"nib","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.11719,"transform":"translate(-1.2px,-1px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21094,"transform":"translate(-1.6px,0.15px) rotate(2deg) scale(1,1)","easing":"linear"},{"offset":0.21875,"transform":"translate(-1.6px,0px) rotate(3deg) scale(1,1)","easing":"linear"},{"offset":0.28906,"transform":"translate(-0.5px,-0.68px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.35938,"transform":"translate(0.6px,0px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.42969,"transform":"translate(1.7px,0.68px) rotate(4deg) scale(1,1)","easing":"linear"},{"offset":0.5,"transform":"translate(2.8px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.5625,"transform":"translate(2.8px,0.6px) rotate(6deg) scale(1.06,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.60156,"transform":"translate(2.8px,0.5px) rotate(5.5deg) scale(1.04,0.95)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.67969,"transform":"translate(3px,-1.8px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.73438,"transform":"translate(2.95px,-1.9px) rotate(-3.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.91406,"transform":"translate(-0.25px,0.2px) rotate(1deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"ink","keyframes":[{"offset":0,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2125,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.22031,"transform":"none","opacity":1,"strokeDashoffset":0.99,"easing":"linear"},{"offset":0.5,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.78125,"transform":"none","opacity":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9375,"transform":"none","opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"transform":"none","opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"drop","keyframes":[{"offset":0,"transform":"scale(.2)","opacity":0},{"offset":0.53906,"transform":"scale(.2)","opacity":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.60156,"transform":"scale(1.12)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6875,"transform":"scale(.95)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.78125,"transform":"scale(1)","opacity":0.95,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9375,"transform":"scale(1.05)","opacity":0,"easing":"linear"},{"offset":1,"transform":"scale(.2)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * MARKER · Tools
+   * MARKER · Tools · one act, 1120ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          it sweeps right and lays a see-through band
-   * PRESS one-shot (from the current pose)
-   *          it lifts back, then sweeps a fresh band
-   *     0ms   .mk plays mk-swipe (620ms)
-   *     0ms   .band plays mk-band (620ms)
+   * Plant → Sweep → Lift
+   *          The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.
+   *  marker     0 → 160 → 280 → 320 → 640 → 740 → 1020 → 1120ms
+   *  band       0 → 290 → 320 → 640 → 850 → 1050 → 1120ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "marker": {
     label: "Marker",
     category: "Tools",
-    hover: "it sweeps right and lays a see-through band",
-    press: "it lifts back, then sweeps a fresh band",
-    pressMs: 620,
+    hover: "The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.",
+    press: "plays the same act",
+    pressMs: 1120,
     defs: "",
-    body: "<rect class=\"band d\" style=\"--duo:.26\" x=\"3.6\" y=\"15.2\" width=\"4.4\" height=\"3.4\" rx=\"1.3\"/><g class=\"mk\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z\"/><path d=\"M10.2 13.4h3.6v2.1l-3.6 3.1Z\"/></g></g>",
+    body: "<rect class=\"d ac\" data-part=\"band\" opacity=\"0\" style=\"--duo:.32\" x=\"2.8\" y=\"16.1\" width=\"5.2\" height=\"3.2\" rx=\"1.3\"/><g data-part=\"marker\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z\"/><path d=\"M10.2 13.4h3.6v2.1l-3.6 3.1Z\"/></g></g>",
     sw16: 1.85,
+    motion: {"duration":1120,"caption":"The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.","stages":["Plant","Sweep","Lift"],"tracks":[{"part":"marker","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14286,"transform":"translate(-1.1px,-1.3px) rotate(-4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.25,"transform":"translate(-1.5px,0.3px) rotate(3deg) scale(1.05,0.94)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28571,"transform":"translate(-1.48px,0.15px) rotate(4deg) scale(1.02,0.97)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.57143,"transform":"translate(3.1px,0.1px) rotate(5deg) scale(1.02,0.97)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66071,"transform":"translate(2.9px,-1.5px) rotate(-3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.91071,"transform":"translate(-0.25px,0.2px) rotate(1deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"band","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(0.1,1)","opacity":0},{"offset":0.25893,"transform":"translate(0px,0px) rotate(0deg) scale(0.1,1)","opacity":0,"easing":"linear"},{"offset":0.28571,"transform":"translate(0px,0px) rotate(0deg) scale(0.1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.57143,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.75893,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9375,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(0.1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * LINE · Tools · one act, 1000ms
