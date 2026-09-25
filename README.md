@@ -12,7 +12,7 @@ Icons come too: Soft Hardware monoline + duotone glyphs, each with its own hover
 
 [metalui.dev](https://metalui.dev) · [Agent guide](packages/metalui/public/AI.md) · [Plan](docs/PLAN.md) · MIT
 
-> Status: alpha. The foundations are proposed, and Button and all 31 icons are built. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
+> Status: alpha. APIs and visual recipes may change before 1.0. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
 
 ## React
 
@@ -69,6 +69,8 @@ npm run generate   # tokens, icons, registry, agent docs
 npm run build
 swift build
 ```
+
+To contribute, open an issue or pull request against `main`. Run `npm run build`, `npm run typecheck`, `npm run verify:package`, and `swift build` before submitting. Release steps live in [docs/RELEASING.md](docs/RELEASING.md).
 
 The docs site (`apps/docs`) is the design system reference: foundations (color, type, radius, spacing, sizing, elevation, motion), components and icons. Every page has a DialKit panel for tuning its values live.
 
