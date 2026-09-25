@@ -30,9 +30,44 @@ function usePageSound() {
 
 function describe(e: SoundEvent | null) {
   if (!e) return 'Nothing played yet.';
-  const what = e.kind === 'strike' ? `${NAME[e.material]} · ${Math.round(e.f0)} Hz` : `beep · ${e.earcon}`;
+  const what = e.kind === 'strike' ? `${NAME[e.material]} · ${Math.round(e.f0)} Hz` : e.kind === 'scrape' ? `${NAME[e.material]} · sliding` : `beep · ${e.earcon}`;
   if (e.skipped) return `${what} · silent (${{ off: 'sound is off', plays: 'states only', material: 'material muted', rate: 'rate limit', 'no-audio': 'no audio yet' }[e.skipped]})`;
   return e.kind === 'strike' ? `${what} · peak ${(20 * Math.log10(e.peak)).toFixed(1)} dBFS` : what;
+}
+
+/** A groove to drag a cap along: it scrapes in the chosen material, as loud and bright as it is fast. */
+function SlideTrack({ sound }: { sound: ReturnType<typeof createSound> }) {
+  const [material, setMaterial] = React.useState<SoundMaterial>('clay');
+  const [x, setX] = React.useState(0.2);
+  const track = React.useRef<HTMLDivElement>(null);
+  const live = React.useRef<{ scrape: ReturnType<typeof sound.scrape>; x: number; t: number } | null>(null);
+  const [speed, setSpeed] = React.useState(0);
+  // Full speed is crossing the whole track in about a third of a second.
+  const FULL = 3;
+  const at = (clientX: number) => { const r = track.current!.getBoundingClientRect(); return Math.min(1, Math.max(0, (clientX - r.left) / r.width)); };
+  const move = (nx: number) => {
+    const l = live.current; if (!l) return;
+    const now = performance.now(), dt = Math.max(1, now - l.t) / 1000, v = Math.min(1, Math.abs(nx - l.x) / dt / FULL);
+    l.scrape.set(v); l.x = nx; l.t = now; setX(nx); setSpeed(v);
+  };
+  const start = (nx: number) => { live.current = { scrape: sound.scrape(material, { reach: 'own' }), x: nx, t: performance.now() }; setX(nx); };
+  const end = () => { live.current?.scrape.stop(); live.current = null; setSpeed(0); };
+  // A key nudges it a step: a short push, then it stops.
+  const nudge = (dir: number) => { start(x); window.setTimeout(() => { move(Math.min(1, Math.max(0, x + dir * 0.08))); window.setTimeout(end, 90); }, 16); };
+  return (
+    <div className="flex w-full flex-col gap-12" data-testid="slide-track" data-material={material} data-speed={speed.toFixed(2)}>
+      <Switcher aria-label="Sliding material" value={material} onValueChange={(v) => setMaterial(v as SoundMaterial)} options={SOUND_MATERIALS.map((m) => ({ value: m, label: NAME[m] }))} />
+      <div ref={track} className="relative h-48 w-full max-w-[560px] cursor-grab touch-none rounded-pill recipe-well-field"
+        onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); start(at(e.clientX)); }}
+        onPointerMove={(e) => { if (live.current) move(at(e.clientX)); }}
+        onPointerUp={end} onPointerCancel={end}>
+        <div role="slider" tabIndex={0} aria-label="Slide the cap" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(x * 100)}
+          onKeyDown={(e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); nudge(e.key === 'ArrowRight' ? 1 : -1); } }}
+          className="absolute top-1/2 h-32 w-48 -translate-x-1/2 -translate-y-1/2 rounded-plate recipe-surface-raise focus-visible:focus-ring"
+          style={{ left: `calc(24px + ${x} * (100% - 48px))` }} />
+      </div>
+    </div>
+  );
 }
 
 export default function Sound() {
@@ -157,6 +192,12 @@ export default function Sound() {
               );
             })}
           </div>
+        </Bench>
+      </Section>
+
+      <Section title="Sliding" lede="A part sliding along another scrapes: noise in the material's own contact band, as loud and as bright as it is fast, dying away when it stops. Rough materials add grit, tiny ticks under the part. Drag the cap along the groove, slow and then fast.">
+        <Bench caption={`sound.scrape · ${SOUND.scrape.levelDb} dB at full speed · follows in ${SOUND.scrape.smoothMs} ms · dies in ${SOUND.scrape.releaseMs} ms`}>
+          <SlideTrack sound={sound} />
         </Bench>
       </Section>
 

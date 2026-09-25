@@ -90,6 +90,22 @@ public enum MetalSoundReach: String, CaseIterable, Sendable {
     public var pan: Double { switch self { case .own: return 0.0; case .others: return 0.15; case .world: return 0.25 } }
 }
 
+/// How each material sounds sliding: its contact band, and the grit a rough surface adds.
+public struct MetalScrapeRecipe: Sendable { public let f: Double, q: Double, gain: Double, grit: Double, gritLevel: Double }
+extension MetalSoundMaterial {
+    public var scrape: MetalScrapeRecipe {
+        switch self {
+        case .clay: return .init(f: 1400.0, q: 1.0, gain: 1.0, grit: 24.0, gritLevel: 0.5)
+        case .ceramic: return .init(f: 3600.0, q: 2.2, gain: 0.6, grit: 0.0, gritLevel: 0.0)
+        case .resin: return .init(f: 2400.0, q: 1.4, gain: 0.7, grit: 8.0, gritLevel: 0.3)
+        case .stone: return .init(f: 1000.0, q: 0.8, gain: 1.1, grit: 60.0, gritLevel: 0.7)
+        case .glass: return .init(f: 5200.0, q: 3.5, gain: 0.45, grit: 0.0, gritLevel: 0.0)
+        case .metal: return .init(f: 2900.0, q: 1.8, gain: 0.75, grit: 4.0, gritLevel: 0.25)
+        case .rubber: return .init(f: 650.0, q: 0.7, gain: 0.9, grit: 0.0, gritLevel: 0.0)
+        }
+    }
+}
+
 /// The beeper's messages: a change of state, never an act.
 public enum MetalEarcon: String, CaseIterable, Sendable {
     case done
@@ -148,4 +164,11 @@ public enum MetalSoundTokens {
     public static let beeperBoostDb: Double = 9.0
     public static let beeperSquare: Double = 0.02
     public static let beeperAttackMs: Double = 2.0
+    /// A part sliding: level at full speed, how fast the level follows the speed and dies away, and how much the band rises with speed.
+    public static let scrapeLevelDb: Double = -24.0
+    public static let scrapeSmoothMs: Double = 30.0
+    public static let scrapeReleaseMs: Double = 80.0
+    public static let scrapeSpeedPitch: Double = 0.35
+    public static let scrapeGritMs: Double = 3.0
+    public static let scrapeGritBand: Double = 1.6
 }

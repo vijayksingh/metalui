@@ -59,6 +59,20 @@ public struct MetalEarconNote: Sendable {
     public let level: Double
 }
 
+/// A part sliding along another, live: its level and band follow the speed it is given.
+public final class MetalScrape: @unchecked Sendable {
+    private let id: Int?
+    private weak var synth: Synth?
+    public private(set) var playing: Bool
+
+    fileprivate init(id: Int?, synth: Synth?) { self.id = id; self.synth = synth; playing = id != nil }
+
+    /// How fast the part is moving now, 0 to 1.
+    public func set(_ speed: Double) { if let id, playing { synth?.steerScrape(id, speed: min(1, max(0, speed))) } }
+    /// It has stopped: the sound dies away.
+    public func stop() { if let id, playing { playing = false; synth?.stopScrape(id) } }
+}
+
 // MARK: - The engine
 
 /// Plays Soft Hardware sounds. Off by default: call `enable()` once the person opts in.
@@ -122,6 +136,14 @@ public final class MetalSound: @unchecked Sendable {
         }
         synth.add(voices)
         return true
+    }
+
+    /// Starts a part sliding along another. Drive it with `set(_:)` (speed 0 to 1) as it moves and
+    /// `stop()` when it stops. Silent (but safe to drive) when sound is off or only states play.
+    public func scrape(_ material: MetalSoundMaterial, reach: MetalSoundReach = .own, rendered: Double = 160) -> MetalScrape {
+        guard isOn, plays == .acts, materials.contains(material), engine != nil else { return MetalScrape(id: nil, synth: nil) }
+        let r = material.scrape, full = db(MetalSoundTokens.scrapeLevelDb) * r.gain * sizeGain(rendered)
+        return MetalScrape(id: synth.startScrape(ScrapeControl(recipe: r, full: full, reach: reach)), synth: synth)
     }
 
     /// Plays a change of state on the beeper. Returns whether it played.
@@ -242,6 +264,17 @@ private struct Beep {
     var frequency: Double, peak: Double, length: Double, delay: Double
 }
 
+/// A scrape as the caller steers it (behind the lock): what it is, how fast, whether it has stopped.
+private struct ScrapeControl {
+    let recipe: MetalScrapeRecipe, full: Double, reach: MetalSoundReach
+    var speed = 0.0, stopping = false
+}
+
+/// A scrape's per-sample state, touched only on the audio thread.
+private struct ScrapeVoice {
+    var level = 0.0, filter: Biquad, filterFor: Double, grit = 0, gritFilter: Biquad
+}
+
 private enum Voice {
     case tone(Tone), noise(Noise), beep(Beep)
 }
@@ -274,6 +307,9 @@ private struct Biquad {
         self.b0 = b0 / a0; self.b1 = b1 / a0; self.b2 = b2 / a0; self.a1 = a1 / a0; self.a2 = a2 / a0
     }
 
+    /// Keeps the running state of another filter, so a moving band has no click.
+    mutating func carry(_ other: Biquad) { x1 = other.x1; x2 = other.x2; y1 = other.y1; y2 = other.y2 }
+
     mutating func process(_ x: Double) -> Double {
         let y = b0 * x + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2
         x2 = x1; x1 = x; y2 = y1; y1 = y
@@ -299,6 +335,15 @@ private final class Synth: @unchecked Sendable {
     private var rate = 48_000.0
     private var rng: UInt64 = 0x9E37_79B9_7F4A_7C15
     private var room = Room()
+    private var scrapeControls: [Int: ScrapeControl] = [:]      // behind the lock
+    private var scrapeIndex = 0
+    private var scrapeVoices: [Int: ScrapeVoice] = [:]           // the audio thread's own
+    private var scrapeView: [Int: ScrapeControl] = [:]           // its last look at the controls
+    private var scrapesDone: [Int] = []
+
+    func startScrape(_ c: ScrapeControl) -> Int { lock.withLock { scrapeIndex += 1; scrapeControls[scrapeIndex] = c; return scrapeIndex } }
+    func steerScrape(_ id: Int, speed: Double) { lock.withLock { scrapeControls[id]?.speed = speed } }
+    func stopScrape(_ id: Int) { lock.withLock { scrapeControls[id]?.speed = 0; scrapeControls[id]?.stopping = true } }
 
     func prepare(sampleRate: Double) { rate = sampleRate; room = Room(rate: sampleRate) }
 
@@ -346,6 +391,18 @@ private final class Synth: @unchecked Sendable {
             active.append(contentsOf: incoming.map(activate))
         }
         let limit = db(MetalSoundTokens.limitDb)
+        // The scrapes' controls, when the lock is free (never wait on the audio thread).
+        if let view = lock.withLockIfAvailable({ () -> [Int: ScrapeControl] in
+            for id in scrapesDone { scrapeControls[id] = nil }
+            return scrapeControls
+        }) {
+            scrapesDone.removeAll(keepingCapacity: true)
+            scrapeView = view
+            for (id, c) in view where scrapeVoices[id] == nil {
+                scrapeVoices[id] = ScrapeVoice(filter: Biquad(kind: .bandpass, frequency: c.recipe.f, q: c.recipe.q, rate: rate), filterFor: c.recipe.f,
+                                               gritFilter: Biquad(kind: .bandpass, frequency: c.recipe.f * MetalSoundTokens.scrapeGritBand, q: MetalSoundTokens.gritQ, rate: rate))
+            }
+        }
         for i in 0..<frames {
             var l = 0.0, r = 0.0, wet = 0.0
             for j in active.indices {
@@ -369,11 +426,33 @@ private final class Synth: @unchecked Sendable {
                 l += x * a.left; r += x * a.right; wet += x * a.send
                 a.age += 1
             }
+            // Scrapes: noise through the contact band, the level chasing speed (faster on the way up
+            // than down), the band rising with speed, and grit ticks on a rough surface.
+            let up = 1 - exp(-1 / (MetalSoundTokens.scrapeSmoothMs / 1000 / 3 * rate))
+            let down = 1 - exp(-1 / (MetalSoundTokens.scrapeReleaseMs / 1000 / 3 * rate))
+            for (id, c) in scrapeView {
+                guard var v = scrapeVoices[id] else { continue }
+                v.level += (c.full * c.speed - v.level) * (c.stopping ? down : up)
+                if i % 64 == 0 {
+                    let f = c.recipe.f * (1 + MetalSoundTokens.scrapeSpeedPitch * c.speed)
+                    if abs(f - v.filterFor) > 1 { let keep = v.filter; v.filter = Biquad(kind: .bandpass, frequency: f, q: c.recipe.q, rate: rate); v.filter.carry(keep); v.filterFor = f }
+                }
+                var x = v.filter.process(noise()) * v.level
+                if v.grit == 0, c.recipe.grit > 0, Double(rng % 1_000_000) / 1_000_000 < c.recipe.grit * c.speed / rate { v.grit = Int(MetalSoundTokens.scrapeGritMs / 1000 * rate) }
+                if v.grit > 0 { x += v.gritFilter.process(noise()) * c.recipe.gritLevel * c.full * c.speed; v.grit -= 1 }
+                let (pl, pr, ps) = pan(c.reach)
+                l += x * pl; r += x * pr; wet += x * ps
+                scrapeVoices[id] = v
+            }
             let (rl, rr) = room.process(wet)
             // a soft limit above the ceiling, never a hard clip
             left[i] = Float(soft(l + rl, limit)); right[i] = Float(soft(r + rr, limit))
         }
         active.removeAll { $0.start <= 0 && $0.age >= $0.length }
+        // A stopped scrape that has died away is gone, here and (next time the lock is free) there.
+        for (id, c) in scrapeView where c.stopping && (scrapeVoices[id]?.level ?? 0) < 1e-5 {
+            scrapeVoices[id] = nil; scrapeView[id] = nil; scrapesDone.append(id)
+        }
     }
 
     private func soft(_ x: Double, _ ceiling: Double) -> Double {

@@ -73,3 +73,36 @@ for (const colorway of COLORWAYS) {
     await page.locator('section', { hasText: 'Seven materials, closed' }).first().screenshot({ path: capture(`sound-materials-${colorway}`) });
   });
 }
+
+test('a part dragged along a groove scrapes, faster is louder, and it stops when let go', async ({ page }) => {
+  await open(page, '/foundations/sound', 'bone');
+  const last = page.getByTestId('sound-last'), track = page.getByTestId('slide-track');
+  await track.scrollIntoViewIfNeeded();
+  const drag = async (steps: number) => {
+    await track.scrollIntoViewIfNeeded();
+    const groove = (await track.locator('.touch-none').boundingBox())!;
+    await page.mouse.move(groove.x + 30, groove.y + groove.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(groove.x + groove.width - 30, groove.y + groove.height / 2, { steps });
+  };
+  // Off: it says so, and makes no sound.
+  await drag(4);
+  await expect(last).toHaveText('Clay · sliding · silent (sound is off)');
+  await page.mouse.up();
+  // On: a fast drag is faster than a slow one, and letting go stops it.
+  await page.getByRole('switch', { name: 'Sound' }).click();
+  await track.getByRole('radio', { name: 'Stone' }).click();
+  await drag(3);
+  await expect(last).toHaveText('Stone · sliding');
+  const fast = Number(await track.getAttribute('data-speed'));
+  await page.mouse.up();
+  await expect(track).toHaveAttribute('data-speed', '0.00');
+  await drag(60);
+  const slow = Number(await track.getAttribute('data-speed'));
+  await page.mouse.up();
+  expect(fast).toBeGreaterThan(slow);
+  // A key nudges it: a short scrape.
+  await track.getByRole('slider', { name: 'Slide the cap' }).focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(track.getByRole('slider')).not.toHaveAttribute('aria-valuenow', '90');
+});

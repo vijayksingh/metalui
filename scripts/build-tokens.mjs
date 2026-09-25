@@ -1033,6 +1033,16 @@ ${Object.keys(S.reach).filter((k) => !k.startsWith('$')).map((r) => `    case ${
     public var pan: Double { switch self { ${Object.entries(S.reach).filter(([k]) => !k.startsWith('$')).map(([r, v]) => `case .${r}: return ${num(v.pan)}`).join('; ')} } }
 }
 
+/// How each material sounds sliding: its contact band, and the grit a rough surface adds.
+public struct MetalScrapeRecipe: Sendable { public let f: Double, q: Double, gain: Double, grit: Double, gritLevel: Double }
+extension MetalSoundMaterial {
+    public var scrape: MetalScrapeRecipe {
+        switch self {
+${SOUND_MATERIALS.map((m) => { const r = S.scrape.materials[m]; return `        case .${m}: return .init(f: ${num(r.f)}, q: ${num(r.q)}, gain: ${num(r.gain)}, grit: ${num(r.grit)}, gritLevel: ${num(r['grit-level'])})`; }).join('\n')}
+        }
+    }
+}
+
 /// The beeper's messages: a change of state, never an act.
 public enum MetalEarcon: String, CaseIterable, Sendable {
 ${EARCONS.map((e) => `    case ${e}`).join('\n')}
@@ -1085,6 +1095,13 @@ public enum MetalSoundTokens {
     public static let beeperBoostDb: Double = ${num(S.beeper['boost-db'])}
     public static let beeperSquare: Double = ${num(S.beeper.square)}
     public static let beeperAttackMs: Double = ${num(S.beeper['attack-ms'])}
+    /// A part sliding: level at full speed, how fast the level follows the speed and dies away, and how much the band rises with speed.
+    public static let scrapeLevelDb: Double = ${num(S.scrape['level-db'])}
+    public static let scrapeSmoothMs: Double = ${num(S.scrape['smooth-ms'])}
+    public static let scrapeReleaseMs: Double = ${num(S.scrape['release-ms'])}
+    public static let scrapeSpeedPitch: Double = ${num(S.scrape['speed-pitch'])}
+    public static let scrapeGritMs: Double = ${num(S.scrape['grit-ms'])}
+    public static let scrapeGritBand: Double = ${num(S.scrape['grit-band'])}
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalSound.generated.swift', soundSwift);

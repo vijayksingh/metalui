@@ -471,6 +471,65 @@ export const SOUND = {
         "led": "green"
       }
     }
+  },
+  "scrape": {
+    "levelDb": -24,
+    "smoothMs": 30,
+    "releaseMs": 80,
+    "speedPitch": 0.35,
+    "gritMs": 3,
+    "materials": {
+      "clay": {
+        "f": 1400,
+        "q": 1,
+        "gain": 1,
+        "grit": 24,
+        "gritLevel": 0.5
+      },
+      "ceramic": {
+        "f": 3600,
+        "q": 2.2,
+        "gain": 0.6,
+        "grit": 0,
+        "gritLevel": 0
+      },
+      "resin": {
+        "f": 2400,
+        "q": 1.4,
+        "gain": 0.7,
+        "grit": 8,
+        "gritLevel": 0.3
+      },
+      "stone": {
+        "f": 1000,
+        "q": 0.8,
+        "gain": 1.1,
+        "grit": 60,
+        "gritLevel": 0.7
+      },
+      "glass": {
+        "f": 5200,
+        "q": 3.5,
+        "gain": 0.45,
+        "grit": 0,
+        "gritLevel": 0
+      },
+      "metal": {
+        "f": 2900,
+        "q": 1.8,
+        "gain": 0.75,
+        "grit": 4,
+        "gritLevel": 0.25
+      },
+      "rubber": {
+        "f": 650,
+        "q": 0.7,
+        "gain": 0.9,
+        "grit": 0,
+        "gritLevel": 0
+      }
+    },
+    "gritBand": 1.6
   }
 } as const;
 export type SoundMaterial = 'clay' | 'ceramic' | 'resin' | 'stone' | 'glass' | 'metal' | 'rubber';

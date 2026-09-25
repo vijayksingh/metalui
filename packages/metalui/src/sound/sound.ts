@@ -51,6 +51,7 @@ const recipeOf = (material: SoundMaterial) => SOUND.materials[material] as unkno
 export type SoundSkip = 'off' | 'plays' | 'material' | 'rate' | 'no-audio';
 export type SoundEvent =
   | { kind: 'strike'; material: SoundMaterial; f0: number; peak: number; skipped?: SoundSkip }
+  | { kind: 'scrape'; material: SoundMaterial; skipped?: SoundSkip }
   | { kind: 'beep'; earcon: Earcon; skipped?: SoundSkip };
 
 export interface Sound {
@@ -61,11 +62,22 @@ export interface Sound {
   disable(): void;
   /** Strikes a part of a material. Returns whether it played. */
   strike(material: SoundMaterial, options?: StrikeOptions): boolean;
+  /** Starts a part sliding along another. Drive it with `set(speed)` (0 to 1) as it moves; `stop()` lets it die away. */
+  scrape(material: SoundMaterial, options?: { reach?: Reach; rendered?: number }): Scrape;
   /** Plays a change of state on the beeper. Returns whether it played. */
   beep(earcon: Earcon, options?: { key?: string; rendered?: number }): boolean;
   /** The fundamental a part would ring at. */
   fundamental(material: SoundMaterial, size?: number, weight?: number): number;
   subscribe(listener: (event: SoundEvent) => void): () => void;
+}
+
+/** A sliding contact, live: its level and band follow the speed it is given. */
+export interface Scrape {
+  /** How fast the part is moving now, 0 to 1. */
+  set(speed: number): void;
+  /** It has stopped: the sound dies away in release-ms. */
+  stop(): void;
+  readonly playing: boolean;
 }
 
 const dB = (d: number) => 10 ** (d / 20);
@@ -192,6 +204,44 @@ export function createSound(initial: Partial<SoundSettings> = {}): Sound {
       render(m, f0, peak, t, size, o.reach ?? 'own');
       if (weight > SOUND.thump.above && m.thump !== false) thump(t, dB(P.levelDb.act) * (o.level ?? 1), weight);
       return true;
+    },
+
+    scrape(material, o = {}) {
+      const skip: SoundSkip | undefined = !settings.on ? 'off' : settings.plays !== 'acts' ? 'plays' : !settings.materials[material] ? 'material' : !ctx ? 'no-audio' : undefined;
+      emit({ kind: 'scrape', material, skipped: skip });
+      if (skip) return { set() {}, stop() {}, playing: false };
+      const c = ctx!, R = SOUND.scrape, m = R.materials[material], reach = o.reach ?? 'own';
+      const full = dB(R.levelDb) * m.gain * sizeGain(o.rendered ?? 160);
+      // A second of noise, looped, through the material's contact band; the gain is the speed.
+      const n = c.sampleRate, buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      const src = c.createBufferSource(), band = c.createBiquadFilter(), g = c.createGain();
+      src.buffer = buf; src.loop = true;
+      band.type = 'bandpass'; band.frequency.value = m.f; band.Q.value = m.q;
+      g.gain.value = 0;
+      src.connect(band); band.connect(g); out(g, reach); src.start();
+      let playing = true, last = performance.now();
+      return {
+        get playing() { return playing; },
+        set(speed) {
+          if (!playing) return;
+          const v = Math.max(0, Math.min(1, speed)), t = c.currentTime, now = performance.now(), dt = (now - last) / 1000;
+          last = now;
+          g.gain.setTargetAtTime(full * v, t, R.smoothMs / 1000 / 3);
+          band.frequency.setTargetAtTime(m.f * (1 + R.speedPitch * v), t, R.smoothMs / 1000 / 3);
+          // Grit: a rough surface ticks under the part, more often the faster it goes.
+          const ticks = m.grit * v * Math.min(dt, 0.1);
+          for (let k = 0; k < Math.floor(ticks) + (Math.random() < ticks % 1 ? 1 : 0); k++)
+            noise(t + Math.random() * 0.016, { type: 'bandpass', f: vary(m.f * R.gritBand, SOUND.render.gritSpread), q: SOUND.render.gritQ, ms: R.gritMs, gain: m.gritLevel }, full * v, reach);
+        },
+        stop() {
+          if (!playing) return;
+          playing = false;
+          const t = c.currentTime;
+          g.gain.setTargetAtTime(0, t, R.releaseMs / 1000 / 3);
+          src.stop(t + R.releaseMs / 1000 * 2);
+        },
+      };
     },
 
     beep(earcon, o = {}) {
