@@ -572,25 +572,26 @@ export const ICON_CATALOG = {
     motion: {"duration":826,"caption":"The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.","stages":["Press together","Let go","Settle apart"],"tracks":[{"part":"left","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31477,"transform":"translate(0.8px,2px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.41162,"transform":"translate(0.8px,2.2px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.53269,"transform":"translate(-0.15px,-0.6px) rotate(-1.5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96368,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"right","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.35109,"transform":"translate(-0.8px,2px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44794,"transform":"translate(-0.8px,2.2px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.56901,"transform":"translate(0.15px,-0.6px) rotate(1.5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tray","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31477,"transform":"translate(0px,0px) rotate(0deg) scale(1.01,0.95)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.41162,"transform":"translate(0px,0px) rotate(0deg) scale(1.015,0.94)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.53269,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.90194,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"seam","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.52058,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.56901,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.67797,"transform":"scale(1.05)","opacity":0.8,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9201,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * PIN · Actions
+   * PIN · Actions · one act, 1030ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          pin lifts, its contact shadow fades
-   * PRESS one-shot (from the current pose)
-   *          pushes in
-   *     0ms   .pn plays pin-p (340ms)
-   *     0ms   .sh plays pin-s (340ms)
+   * Lift → Drive in → Settle
+   *          The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.
+   *  pin        0 → 220 → 300 → 390 → 695 → 1030ms
+   *  shadow     0 → 220 → 300 → 390 → 420 → 725 → 1030ms
+   *  shock      0 → 380 → 430 → 640 → 1030ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "pin": {
     label: "Pin",
     category: "Actions",
-    hover: "pin lifts, its contact shadow fades",
-    press: "pushes in",
-    pressMs: 340,
+    hover: "The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.",
+    press: "plays the same act",
+    pressMs: 1030,
     defs: "",
-    body: "<g class=\"pn\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.8h6.4M9.9 3.8v4.9L7.2 12a.7.7 0 0 0 .54 1.14h8.52a.7.7 0 0 0 .54-1.14L14.1 8.7V3.8\"/><path d=\"M12 13.2v6.4\"/></g><path class=\"sh\" d=\"M10.6 20.8h2.8\"/>",
+    body: "<g data-part=\"pin\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.8h6.4M9.9 3.8v4.9L7.2 12a.7.7 0 0 0 .54 1.14h8.52a.7.7 0 0 0 .54-1.14L14.1 8.7V3.8\"/><path d=\"M12 13.2v6.4\"/></g><path data-part=\"shadow\" opacity=\".35\" d=\"M10.6 20.8h2.8\"/><path class=\"ac\" data-part=\"shock\" opacity=\"0\" d=\"M8.9 20.8h-1.3M15.1 20.8h1.3\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1030,"caption":"The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.","stages":["Lift","Drive in","Settle"],"tracks":[{"part":"pin","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21359,"transform":"translate(0px,-1.4px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29126,"transform":"translate(0px,-1.5px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.37864,"transform":"translate(0px,0.9px) rotate(0deg) scale(1.04,0.93)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67476,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"shadow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.35,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21359,"transform":"translate(0px,0px) rotate(0deg) scale(0.6,1)","opacity":0.12,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29126,"transform":"translate(0px,0px) rotate(0deg) scale(0.6,1)","opacity":0.12,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.37864,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1)","opacity":0.7,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.40777,"transform":"translate(0px,0px) rotate(0deg) scale(1.3,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.70388,"transform":"translate(0px,0px) rotate(0deg) scale(0.9739,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.35}]},{"part":"shock","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.36893,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.41748,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62136,"transform":"scale(1.25)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * BOARD · Actions

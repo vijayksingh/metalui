@@ -49,7 +49,7 @@ export const TrashIcon = createIcon("trash", "TrashIcon");
 export const GroupIcon = createIcon("group", "GroupIcon");
 /** Ungroup. Hover: The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.. Press: plays the same act. */
 export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
-/** Pin. Hover: pin lifts, its contact shadow fades. Press: pushes in. */
+/** Pin. Hover: The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.. Press: plays the same act. */
 export const PinIcon = createIcon("pin", "PinIcon");
 /** Board. Hover: ribbon lengthens. Press: drops into place. */
 export const BoardIcon = createIcon("board", "BoardIcon");

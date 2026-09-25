@@ -487,11 +487,20 @@
       "component": "PinIcon",
       "label": "Pin",
       "category": "Actions",
-      "hover": "pin lifts, its contact shadow fades",
-      "press": "pushes in",
-      "pressMs": 340,
+      "hover": "The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.",
+      "press": "plays the same act",
+      "pressMs": 1030,
+      "motion": {
+        "caption": "The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.",
+        "durationMs": 1030,
+        "stages": [
+          "Lift",
+          "Drive in",
+          "Settle"
+        ]
+      },
       "tuned16": false,
-      "construction": "Pushpin: 5.2u cap, collar, flared base, needle. Contact line under the needle."
+      "construction": "Pushpin: 5.2u cap, collar, flared base, needle. Contact line under the needle at .35. Motion (study): the pin is drawn up 1.4 rocking 6° on its tip, then driven down .9 past rest, squashing .93 on its point; the shadow fades as it lifts and spreads as it lands; a shock runs out along the board."
     },
     {
       "name": "board",
