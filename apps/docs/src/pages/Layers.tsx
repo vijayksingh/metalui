@@ -21,7 +21,7 @@ const ABOUT: Record<LayerId, { label: string; what: string; test: string; scene:
     label: 'Parts',
     what: 'The pieces cut from the materials: a well, a plate, a label, a glyph, an LED, a keycap.',
     test: 'Has a look but no job. Never used alone.',
-    scene: "The region's name, rule and count, the folder's count, the link's tag and the LED in the readout.",
+    scene: "The region's name, rule and count, the folder's count, and the link's tag with its LED.",
   },
   component: {
     label: 'Components',
@@ -39,7 +39,7 @@ const ABOUT: Record<LayerId, { label: string; what: string; test: string; scene:
     label: 'Instruments',
     what: 'What your hand uses, and what the canvas draws while you work: the selection frame, the lasso, a cursor.',
     test: 'Shows up only while you act. Gone when you stop.',
-    scene: 'The selection frame around the folder, and its size readout.',
+    scene: 'The selection frame and its size readout. It is here only now, as if you had picked up the folder; an instrument shows up only while you act.',
   },
   place: {
     label: 'Places',
@@ -76,9 +76,11 @@ function Scene() {
           <div className="absolute inset-0 flex items-end justify-center gap-40 pb-24">
             <div data-layer="object" className="layers-mark relative rounded-plate">
               <Folder name="poster refs" count={3} peeks={PEEKS} hue="violet" />
-              <span data-layer="instrument" className="layers-mark pointer-events-none absolute inset-0 rounded-plate">
-                <SelectionFrame state="selected" radius={18} entrance={false} readout size={{ width: 168, height: 150 }} />
-              </span>
+              {lit === 'instrument' && (
+                <span data-layer="instrument" className="pointer-events-none absolute inset-0 rounded-plate">
+                  <SelectionFrame state="selected" radius={18} readout size={{ width: 168, height: 150 }} />
+                </span>
+              )}
             </div>
             <div data-layer="object" className="layers-mark rounded-plate">
               <LinkCard href="https://are.na/moodboard/posters" host="are.na" path="/moodboard/posters" />
@@ -167,7 +169,7 @@ export default function Layers() {
           ))}
         </ol>
         <p className="type-doc-prose max-w-[64ch] pt-16 text-ink2">
-          Two more layers act on it without being part of it: the selection frame (an instrument) shows up while you hold it, and the Unfold button (a component) is how you open it.
+          Two more layers act on it without being part of it: the selection frame (an instrument) shows up only while you hold it, and the Unfold button (a component) is how you open it.
         </p>
       </Section>
       <Section title="Where the lines are">
