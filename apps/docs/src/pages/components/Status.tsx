@@ -1,5 +1,6 @@
 import { Led, StatusBadge } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/status/status.tsx?raw';
+import ledSource from '../../../../../packages/metalui/src/components/led/led.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/status/status.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalStatus.swift?raw';
@@ -36,6 +37,7 @@ export default function StatusPage() {
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
+          { id: 'led', label: 'LED', code: ledSource },
           { id: 'css', label: 'CSS', code: cssSource },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },

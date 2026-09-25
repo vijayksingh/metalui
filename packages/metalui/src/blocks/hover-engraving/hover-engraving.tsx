@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Label } from '../../components/label/label';
 import { Chip } from '../../components/chip/chip';
-import { Led } from '../../components/status/status';
+import { Led } from '../../components/led/led';
 
 /* ─────────────────────────────────────────────────────────
  * HOVER ENGRAVING (the reference design's .meta): a composition

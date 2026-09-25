@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Surface } from '../surface/surface';
-import { Led } from '../status/status';
+import { Led } from '../led/led';
 import { Label } from '../label/label';
 
 /* SIZE READOUT (the reference design's .readout): Surface(graphite-deep, pill) › Led(live) + Label(readout)

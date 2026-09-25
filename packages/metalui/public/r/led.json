@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "led",
+  "type": "registry:ui",
+  "title": "LED",
+  "description": "A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Never alone; it sits beside words.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/led/led.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/led/led.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\n\n/* LED (the reference design's .led-*): a tiny lamp lit from the top left that says one state by colour.\n * A part: it never stands alone, it sits beside words (a status badge, a readout, an engraving).\n * Styled with the theme's utilities (the status recipe). */\n\nexport type LedKind = 'live' | 'waiting' | 'failed' | 'link' | 'off';\n\nexport interface LedProps extends React.HTMLAttributes<HTMLSpanElement> {\n  kind: LedKind;\n  /** 5 (default) or 4 (small). */\n  size?: 'default' | 'small';\n}\n\nconst LED = 'mu-led inline-block flex-none rounded-round';\nconst LED_SIZES = {\n  default: 'size-status-led-size',\n  small: 'size-status-led-size-small',\n};\nconst LED_KINDS: Record<LedKind, string> = {\n  live: 'recipe-status-led-live',\n  waiting: 'recipe-status-led recipe-status-led-waiting',\n  failed: 'recipe-status-led recipe-status-led-failed',\n  link: 'recipe-status-led recipe-status-led-link',\n  off: 'recipe-status-led-off',\n};\n\n/** A tiny lamp, lit from the top left. Decorative: pair it with words. */\nexport function Led({ kind, size = 'default', className, ...props }: LedProps) {\n  const own = `${LED} ${LED_SIZES[size]} ${LED_KINDS[kind]}`;\n  return <span aria-hidden data-kind={kind} data-size={size} className={className ? `${own} ${className}` : own} {...props} />;\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
+}

@@ -5,7 +5,7 @@ import { Toolbar } from '@base-ui/react/toolbar';
 import { Surface } from '../../components/surface/surface';
 import { Glyph } from '../../components/glyph/glyph';
 import { Label } from '../../components/label/label';
-import { Led } from '../../components/status/status';
+import { Led } from '../../components/led/led';
 import { Switcher, type SwitcherOption } from '../../components/switcher/switcher';
 import { IconButton } from '../../components/icon-button/icon-button';
 

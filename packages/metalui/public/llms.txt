@@ -29,6 +29,7 @@
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
 - [Lasso](https://metalui.dev/r/lasso.md): The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.
+- [LED](https://metalui.dev/r/led.md): A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Never alone; it sits beside words.
 - [Line handles](https://metalui.dev/r/line-handles.md): The presence of a drawn line or arrow: a green halo and end dots on hover, two end handles when selected; the connector's selection language.
 - [Link card](https://metalui.dev/r/link-card.md): A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.
 - [Mark](https://metalui.dev/r/mark.md): Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.
@@ -46,7 +47,7 @@
 - [Slider](https://metalui.dev/r/slider.md): A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.
 - [Snap guides](https://metalui.dev/r/snap-guides.md): The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.
 - [Sparkline](https://metalui.dev/r/sparkline.md): A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.
-- [LED and status badge](https://metalui.dev/r/status.md): A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.
+- [Status badge](https://metalui.dev/r/status.md): The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.
 - [Surface](https://metalui.dev/r/surface.md): A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.
 - [Switch](https://metalui.dev/r/switch.md): A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.

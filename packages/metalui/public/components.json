@@ -359,6 +359,23 @@
       "agent": "https://metalui.dev/r/lasso.md"
     },
     {
+      "name": "led",
+      "title": "LED",
+      "status": "alpha",
+      "description": "A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Never alone; it sits beside words.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Led",
+        "base": "none (decorative)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLED"
+      },
+      "registry": "https://metalui.dev/r/led.json",
+      "agent": "https://metalui.dev/r/led.md"
+    },
+    {
       "name": "line-handles",
       "title": "Line handles",
       "status": "alpha",
@@ -649,17 +666,17 @@
     },
     {
       "name": "status",
-      "title": "LED and status badge",
+      "title": "Status badge",
       "status": "alpha",
-      "description": "A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.",
+      "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
       "react": {
         "package": "@unlocalhosted/metalui",
-        "export": "Led, StatusBadge",
+        "export": "StatusBadge",
         "base": "@base-ui/react/tooltip (the badge's hint)"
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalLED, MetalStatusBadge"
+        "symbol": "MetalStatusBadge"
       },
       "registry": "https://metalui.dev/r/status.json",
       "agent": "https://metalui.dev/r/status.md"

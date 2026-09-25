@@ -1,20 +1,21 @@
 {
   "name": "status",
-  "title": "LED and status badge",
+  "title": "Status badge",
   "status": "alpha",
-  "description": "A 4–5 pt LED lit from the top left (green live, amber waiting, red failed, blue link, off), and the 24 tall status badge: an LED and the state in the label role, not pressable, with the fixing command as a tooltip.",
+  "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
   "base": "@base-ui/react/tooltip (the badge's hint)",
   "react": {
-    "export": "Led, StatusBadge",
+    "export": "StatusBadge",
     "files": [
       "status.tsx"
     ]
   },
   "swift": {
-    "symbol": "MetalLED, MetalStatusBadge",
+    "symbol": "MetalStatusBadge",
     "file": "swift/Sources/MetalUI/Components/MetalStatus.swift"
   },
   "agent": "status.agent.md",
   "layer": "component",
-  "page": "/components/status"
+  "page": "/components/status",
+  "nav": "Status badge"
 }
