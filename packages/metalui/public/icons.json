@@ -183,11 +183,11 @@
       "component": "ZoomInIcon",
       "label": "Zoom In",
       "category": "Tools",
-      "hover": "plus turns a quarter",
-      "press": "lens swells",
+      "hover": "the plus is magnified: it grows more than the lens",
+      "press": "the lens swells one step in",
       "pressMs": 340,
       "tuned16": false,
-      "construction": "Search lens + plus (4.8u arms)."
+      "construction": "Search lens + plus (4.8u arms), the plus always upright: turned, it passes through ×, \"clear\". Hover is magnification: the lens swells a little (1.04) and the plus inside it grows more (to 5.96, by path), so what is seen is bigger than the glass. Press swells the lens one step in."
     },
     {
       "name": "zoom-out",

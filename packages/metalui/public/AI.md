@@ -1940,7 +1940,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `LayoutIcon` | `layout` | Tools | tiles swap sides | tiles settle together |
 | `TidyIcon` | `tidy` | Tools | loose tiles snap to the guide | guide pulses, tiles click home |
 | `SearchIcon` | `search` | Tools | lens sweeps, glint crosses glass | lens focuses |
-| `ZoomInIcon` | `zoom-in` | Tools | plus turns a quarter | lens swells |
+| `ZoomInIcon` | `zoom-in` | Tools | the plus is magnified: it grows more than the lens | the lens swells one step in |
 | `ZoomOutIcon` | `zoom-out` | Tools | minus narrows, lens recedes | lens shrinks |
 | `FitIcon` | `fit` | Tools | content grows to the frame | corners clamp |
 | `DuplicateIcon` | `duplicate` | Actions | copy slides off the original | copy stamps back and out |

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="mu-icon mu-ic-zoom-in" width="24" height="24" viewBox="0 0 24 24">
-<!-- MetalUI icon: Zoom In. Hover: plus turns a quarter. Press (:active or data-state="press"): lens swells. Reduced motion: static. -->
+<!-- MetalUI icon: Zoom In. Hover: the plus is magnified: it grows more than the lens. Press (:active or data-state="press"): the lens swells one step in. Reduced motion: static. -->
 <style>
 .mu-icon{--sw:1.7;--k-spring:linear(0,0.0117,0.0435,0.0909,0.1499,0.217,0.2892,0.3637,0.4386,0.512,0.5826,0.6494,0.7114,0.7683,0.8196,0.8654,0.9056,0.9403,0.9698,0.9944,1.0145,1.0305,1.0428,1.0518,1.0579,1.0616,1.0632,1.063,1.0615,1.0588,1.0554,1.0513,1.0468,1.0422,1.0374,1.0327,1.0282,1.0238,1.0198,1.0161,1.0127,1.0096,1.007,1.0046,1);--k-soft:linear(0,0.0063,0.0235,0.0493,0.0818,0.1194,0.1605,0.2042,0.2492,0.2949,0.3406,0.3856,0.4297,0.4723,0.5133,0.5525,0.5898,0.625,0.6581,0.6892,0.7181,0.745,0.77,0.793,0.8142,0.8337,0.8515,0.8678,0.8826,0.896,0.9082,0.9192,0.9291,0.938,0.9459,0.953,0.9594,0.965,0.97,0.9745,0.9784,0.9818,0.9848,0.9874,1);--k-dur:.46s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
 .mu-icon *{transform-box:view-box}
@@ -9,7 +9,7 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-icon *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .2s ease var(--dl,0s),d var(--k-dur) var(--k-spring) var(--dl,0s),stroke-dashoffset var(--k-dur) var(--k-spring) var(--dl,0s),fill-opacity .2s ease}
 }
-svg.mu-icon .sg,svg.mu-icon .pm{transform-origin:10.6px 10.6px}
-@media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,[data-state~="hover"]) .pm{transform:rotate(90deg)} svg.mu-icon:is(:hover,[data-state~="hover"]) .sg{transform:scale(1.04)} svg.mu-icon:is(:active,[data-state~="press"]) .sg{animation:zi-p .34s cubic-bezier(.3,0,.2,1)} @keyframes zi-p{40%{transform:scale(1.14)}}}</style>
+svg.mu-icon .sg{transform-origin:10.6px 10.6px}
+@media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,[data-state~="hover"]) .pm{d:path("M7.62 10.6h5.96M10.6 7.62v5.96")} svg.mu-icon:is(:hover,[data-state~="hover"]) .sg{transform:scale(1.04)} svg.mu-icon:is(:active,[data-state~="press"]) .sg{animation:zi-p .34s cubic-bezier(.3,0,.2,1)} @keyframes zi-p{40%{transform:scale(1.14)}}}</style>
 <g class="sg"><circle class="lens" cx="10.6" cy="10.6" r="6.3"/><path class="hdl" d="M15.2 15.2 19.8 19.8"/><path class="pm" d="M8.2 10.6h4.8M10.6 8.2v4.8"/></g>
 </svg>

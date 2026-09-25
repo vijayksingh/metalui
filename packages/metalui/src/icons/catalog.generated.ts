@@ -363,17 +363,17 @@ export const ICON_CATALOG = {
    * ZOOM IN · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          plus turns a quarter
+   *          the plus is magnified: it grows more than the lens
    * PRESS one-shot (from the current pose)
-   *          lens swells
+   *          the lens swells one step in
    *     0ms   .sg plays zi-p (340ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "zoom-in": {
     label: "Zoom In",
     category: "Tools",
-    hover: "plus turns a quarter",
-    press: "lens swells",
+    hover: "the plus is magnified: it grows more than the lens",
+    press: "the lens swells one step in",
     pressMs: 340,
     defs: "",
     body: "<g class=\"sg\"><circle class=\"lens\" cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path class=\"hdl\" d=\"M15.2 15.2 19.8 19.8\"/><path class=\"pm\" d=\"M8.2 10.6h4.8M10.6 8.2v4.8\"/></g>",

@@ -181,12 +181,12 @@ export const ICONS = [
        @keyframes srch-p{40%{transform:scale(1.1)}}`,
   shape: 'Circle keyline lens r6.3; handle 45°. Glint = 50° arc r3.4 inside.' },
 
-{ name: 'zoom-in', cat: 'Tools', label: 'Zoom In', hover: 'plus turns a quarter', press: 'lens swells',
+{ name: 'zoom-in', cat: 'Tools', label: 'Zoom In', hover: 'the plus is magnified: it grows more than the lens', press: 'the lens swells one step in',
   body: `<g class="sg">${LENS}<path class="pm" d="M8.2 10.6h4.8M10.6 8.2v4.8"/></g>`,
-  base: `& .sg,& .pm{transform-origin:10.6px 10.6px}`,
-  mo: `@H .pm{transform:rotate(90deg)} @H .sg{transform:scale(1.04)}
+  base: `& .sg{transform-origin:10.6px 10.6px}`,
+  mo: `@H .pm{d:path("M7.62 10.6h5.96M10.6 7.62v5.96")} @H .sg{transform:scale(1.04)}
        @P .sg{animation:zi-p .34s cubic-bezier(.3,0,.2,1)} @keyframes zi-p{40%{transform:scale(1.14)}}`,
-  shape: 'Search lens + plus (4.8u arms).' },
+  shape: 'Search lens + plus (4.8u arms), the plus always upright: turned, it passes through ×, "clear". Hover is magnification: the lens swells a little (1.04) and the plus inside it grows more (to 5.96, by path), so what is seen is bigger than the glass. Press swells the lens one step in.' },
 
 { name: 'zoom-out', cat: 'Tools', label: 'Zoom Out', hover: 'minus narrows, lens recedes', press: 'lens shrinks',
   body: `<g class="sg">${LENS}<path class="pm" d="M8.2 10.6h4.8"/></g>`,
