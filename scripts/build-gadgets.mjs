@@ -158,6 +158,18 @@ public enum MetalGadgetTokens {
     public static let glassCross: Double = ${num(G.glass.cross)}
     public static let glassRim: (width: Double, alpha: Double) = (${G.glass.rim.map(num).join(', ')})
     public static let glassGlare: (cx: Double, cy: Double, width: Double, height: Double, alpha: Double) = (${G.glass.glare.map(num).join(', ')})
+    public static let backlightGlow: Double = ${num(G.backlight.glow)}
+    public static let backlightSpread: Double = ${num(G.backlight.spread)}
+    public static let backlightSlices: Int = ${G.backlight.slices}
+    public static let backlightLead: (width: Double, alpha: Double) = (${G.backlight.lead.map(num).join(', ')})
+    public static let backlightDot: Double = ${num(G.backlight.dot)}
+    public static let backlightCore: Double = ${num(G.backlight.core)}
+    public static let backlightGlassLift: Double = ${num(G.backlight['glass-lift'])}
+    public static let backlightAlpha: Double = ${num(G.backlight.alpha)}
+    public static let backlightSliceAlpha: Double = ${num(G.backlight['slice-alpha'])}
+    public static let backlightGlassChroma: Double = ${num(G.backlight['glass-chroma'])}
+    /// A gadget lamp's lens [centre, edge] per signal, sRGB components.
+    public static let lampColors: [String: ((Double, Double, Double), (Double, Double, Double))] = [${Object.entries(G.lamp).filter(([k]) => !k.startsWith('$')).map(([k, [a, b]]) => { const c = (h) => `(${[1, 3, 5].map((i) => num(parseInt(h.slice(i, i + 2), 16) / 255)).join(', ')})`; return `${JSON.stringify(k)}: (${c(a)}, ${c(b)})`; }).join(', ')}]
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}

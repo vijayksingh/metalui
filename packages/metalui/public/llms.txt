@@ -8,6 +8,7 @@
 
 ## Components
 
+- [Backlight](https://metalui.dev/r/backlight.md): Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.
 - [Beeper](https://metalui.dev/r/beeper.md): A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.
 - [Bezel](https://metalui.dev/r/bezel.md): An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.
 - [Block silhouette](https://metalui.dev/r/block-silhouette.md): A block seen from far away: below the far-zoom threshold the canvas draws one flat, cheap shape per block that still says its kind (text bars, a dark code card, a link's tinted glass, a colour, a light file plate, a region's tray and name).

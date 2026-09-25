@@ -294,6 +294,25 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testBacklight() {
+        let search = MetalGadgetModel.resolve(MetalGadgetPlacement(job: .find, feel: MetalGadgetFeel(v: 0.7, a: 0.8, w: 0.1)))
+        let blips = [CGPoint(x: 148, y: 150), CGPoint(x: 262, y: 228), CGPoint(x: 182, y: 272)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalBezel(.stone, color: search.body, glass: search.face, size: 180) { MetalBacklight(.glow, color: .signal("live"), size: 180) }
+                MetalBezel(.stone, color: search.body, glass: search.face, size: 180) { MetalBacklight(.beam, color: .glass(search.face), heading: 40, size: 180) }
+                MetalBezel(.stone, color: search.body, glass: search.face, size: 180) {
+                    ForEach(0..<blips.count, id: \.self) { i in MetalBacklight(.dot, color: .glass(search.face), at: blips[i], size: 180) }
+                }
+                MetalBezel(.metal, size: 180) { MetalBacklight(.glow, color: .accent, size: 180) }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("backlight-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

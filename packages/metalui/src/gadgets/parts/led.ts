@@ -4,10 +4,8 @@
 import { GADGETS } from '../gadgets.generated';
 
 export type LampSignal = 'off' | 'live' | 'link' | 'waiting' | 'failed';
-/** [centre, edge] of each signal's lens. */
-export const LAMP_COLORS: Record<LampSignal, [string, string]> = {
-  off: ['#8B8B8E', '#4A4A4D'], live: ['#D9FFE9', '#2FB673'], link: ['#D8E6FF', '#2457F2'], waiting: ['#FFF1CF', '#C98A18'], failed: ['#FFD9D2', '#D5392A'],
-};
+/** [centre, edge] of each signal's lens (tokens gadgets.lamp). */
+export const LAMP_COLORS = GADGETS.lamp as unknown as Record<LampSignal, [string, string]>;
 
 export interface LampSpec { at: [number, number]; size?: number; signal: LampSignal; gesture?: string }
 

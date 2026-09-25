@@ -516,6 +516,43 @@ export const GADGETS = {
       0.4
     ]
   },
+  "backlight": {
+    "glow": 0.5,
+    "spread": 70,
+    "slices": 14,
+    "lead": [
+      2.4,
+      0.95
+    ],
+    "dot": 0.07,
+    "core": 0.35,
+    "glassLift": 0.14,
+    "alpha": 0.85,
+    "sliceAlpha": 0.75,
+    "glassChroma": 1.4
+  },
+  "lamp": {
+    "off": [
+      "#8B8B8E",
+      "#4A4A4D"
+    ],
+    "live": [
+      "#D9FFE9",
+      "#2FB673"
+    ],
+    "link": [
+      "#D8E6FF",
+      "#2457F2"
+    ],
+    "waiting": [
+      "#FFF1CF",
+      "#C98A18"
+    ],
+    "failed": [
+      "#FFD9D2",
+      "#D5392A"
+    ]
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,
@@ -901,7 +938,14 @@ export const GADGETS = {
         "color": [
           "enum",
           "signal",
-          "accent"
+          "accent",
+          "glass"
+        ],
+        "shape": [
+          "enum",
+          "glow",
+          "beam",
+          "dot"
         ]
       }
     },

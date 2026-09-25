@@ -43,6 +43,11 @@
           "target": "components/gadgets/host.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/backlight.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/backlight.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/beeper.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/beeper.ts"
@@ -93,6 +98,25 @@
           "target": "components/gadgets/parts/slab.ts"
         }
       ]
+    },
+    {
+      "name": "backlight",
+      "type": "registry:ui",
+      "title": "Backlight",
+      "description": "Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/backlight/backlight.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/backlight/backlight.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/backlight.md. SwiftUI: MetalBacklight in the MetalUI Swift package."
     },
     {
       "name": "beeper",

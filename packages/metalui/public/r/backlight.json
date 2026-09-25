@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "backlight",
+  "type": "registry:ui",
+  "title": "Backlight",
+  "description": "Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/backlight/backlight.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/backlight/backlight.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { drawBacklight, type BacklightSpec } from '../../gadgets/parts/backlight';\n\n/* Backlight (a Part): light behind a translucent part, in its own colour fading to nothing at its edge.\n * A glow, a radar beam with a bright leading edge, or a blip. It is SVG content, not a picture on its\n * own: place it inside a Bezel (its children), on the 400-unit canvas. */\n\nexport interface BacklightProps extends Omit<BacklightSpec, 'at' | 'size'> {\n  at?: [number, number];\n  /** The part it lights: its diameter, units (default a bezel's glass). */\n  size?: number;\n}\n\nexport function Backlight({ at = [200, 196], size = 276, ...spec }: BacklightProps) {\n  const uid = React.useId().replace(/:/g, '');\n  const d = drawBacklight(`backlight-${uid}`, { at, size, ...spec });\n  return <g><defs dangerouslySetInnerHTML={{ __html: d.defs }} /><g dangerouslySetInnerHTML={{ __html: d.body }} /></g>;\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/backlight.md. SwiftUI: MetalBacklight in the MetalUI Swift package."
+}

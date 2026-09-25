@@ -1,0 +1,21 @@
+{
+  "name": "backlight",
+  "title": "Backlight",
+  "status": "alpha",
+  "description": "Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.",
+  "base": "none (SVG content)",
+  "react": {
+    "export": "Backlight",
+    "files": [
+      "backlight.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBacklight",
+    "file": "swift/Sources/MetalUI/Components/MetalBacklight.swift"
+  },
+  "agent": "backlight.agent.md",
+  "layer": "part",
+  "page": "/components/backlight",
+  "recipe": "gadgets"
+}

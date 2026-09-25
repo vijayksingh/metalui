@@ -177,6 +177,18 @@ public enum MetalGadgetTokens {
     public static let glassCross: Double = 0.14
     public static let glassRim: (width: Double, alpha: Double) = (0.07, 0.28)
     public static let glassGlare: (cx: Double, cy: Double, width: Double, height: Double, alpha: Double) = (0.36, 0.3, 0.68, 0.4, 0.4)
+    public static let backlightGlow: Double = 0.5
+    public static let backlightSpread: Double = 70.0
+    public static let backlightSlices: Int = 14
+    public static let backlightLead: (width: Double, alpha: Double) = (2.4, 0.95)
+    public static let backlightDot: Double = 0.07
+    public static let backlightCore: Double = 0.35
+    public static let backlightGlassLift: Double = 0.14
+    public static let backlightAlpha: Double = 0.85
+    public static let backlightSliceAlpha: Double = 0.75
+    public static let backlightGlassChroma: Double = 1.4
+    /// A gadget lamp's lens [centre, edge] per signal, sRGB components.
+    public static let lampColors: [String: ((Double, Double, Double), (Double, Double, Double))] = ["off": ((0.5451, 0.5451, 0.5569), (0.2902, 0.2902, 0.302)), "live": ((0.851, 1.0, 0.9137), (0.1843, 0.7137, 0.451)), "link": ((0.8471, 0.902, 1.0), (0.1412, 0.3412, 0.949)), "waiting": ((1.0, 0.9451, 0.8118), (0.7882, 0.5412, 0.0941)), "failed": ((1.0, 0.851, 0.8235), (0.8353, 0.2235, 0.1647))]
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = ["slab": (320.0, 320.0), "bezel": (320.0, 320.0), "glass-face": (276.0, 276.0), "backlight": (200.0, 200.0), "led": (22.0, 22.0), "key": (112.0, 112.0), "cap": (60.0, 44.0), "jack": (68.0, 68.0), "plug": (54.0, 54.0), "cable": (0.0, 0.0), "cell": (44.0, 44.0), "drum": (52.0, 88.0), "needle": (96.0, 8.0), "lid": (240.0, 160.0), "pull": (96.0, 14.0), "lens": (184.0, 184.0), "nib": (70.0, 20.0), "beeper": (44.0, 24.0), "label": (80.0, 16.0), "glyph": (24.0, 24.0)]
     public static let jackKnurlWidth: Double = 0.07
