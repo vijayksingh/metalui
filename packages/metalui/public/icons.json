@@ -73,77 +73,77 @@
       "component": "PenIcon",
       "label": "Pen",
       "category": "Tools",
-      "hover": "the nib glides and lays a stroke",
-      "press": "the nib flexes under pressure",
-      "pressMs": 340,
+      "hover": "the nib glides and lays a wave of ink",
+      "press": "the nib presses: the line swells and a drop of ink blooms",
+      "pressMs": 560,
       "tuned16": false,
-      "construction": "A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Rest shows the nib alone; hover glides it on the pencil curve and the ink follows."
+      "construction": "A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Hover glides the nib along a small wave and the ink follows its tip on the same spring. Press is pressure: the nib squashes toward the page, the line swells to 2.7, and a drop of ink blooms at the tip and soaks in."
     },
     {
       "name": "marker",
       "component": "MarkerIcon",
       "label": "Marker",
       "category": "Tools",
-      "hover": "slides on and the band grows under it",
-      "press": "the chisel tip presses",
-      "pressMs": 320,
+      "hover": "it sweeps right and lays a see-through band",
+      "press": "it lifts back, then sweeps a fresh band",
+      "pressMs": 620,
       "tuned16": false,
-      "construction": "A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. Rest shows the marker alone; hover slides it right and a see-through band (duo .26) grows behind the tip, a mark that sits under the words."
+      "construction": "A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. The band (duo .26, sits under the words) is always as long as the tip has travelled: hover and press move them on the same curve. Press lifts the marker back to the start while the old band fades, then it leans into the page and sweeps a fresh one."
     },
     {
       "name": "line",
       "component": "LineIcon",
       "label": "Line",
       "category": "Tools",
-      "hover": "the ends pull outward",
-      "press": "the line is drawn again from its start",
-      "pressMs": 440,
+      "hover": "the ends pull outward, one after the other",
+      "press": "it pulls back into its start and is drawn out again",
+      "pressMs": 690,
       "tuned16": false,
-      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does; press redraws it from the start, the far dot riding the tip."
+      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does, the far one a beat later. Press pulls the line back into its start (the far dot riding in), then drags it out again: the near dot pulses as it is anchored, the far dot rides the growing tip and lands with a small overshoot."
     },
     {
       "name": "arrow",
       "component": "ArrowIcon",
       "label": "Arrow",
       "category": "Tools",
-      "hover": "reaches forward",
-      "press": "the head thrusts",
-      "pressMs": 340,
+      "hover": "the head leads forward and the shaft follows",
+      "press": "it draws back and shoots, the shaft stretching behind the head",
+      "pressMs": 540,
       "tuned16": false,
-      "construction": "A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover lengthens the shaft and carries the head; press thrusts the head."
+      "construction": "A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover: the head moves first and the shaft catches up. Press: an arrow is aimed at something, so it draws back, shoots forward with the shaft stretching, and settles."
     },
     {
       "name": "rectangle",
       "component": "RectangleIcon",
       "label": "Rectangle",
       "category": "Tools",
-      "hover": "a corner handle appears and pulls it",
-      "press": "the shape settles",
-      "pressMs": 340,
+      "hover": "a corner handle pops in and pulls the box",
+      "press": "the box is dragged out again from its corner",
+      "pressMs": 660,
       "tuned16": false,
-      "construction": "A 17.2 × 14 rounded box (r3.2, open like the Image frame), the same frame as Image. Rest is the box alone; hover grows a drag handle on its bottom-right corner and the box follows it from the pinned top-left."
+      "construction": "A 17.2 × 14 rounded box (r3.2), open like the Image frame, pinned at its top-left. Hover pops a drag handle onto the bottom-right corner and the box follows it a beat later. Press is the act of drawing one: the handle pulls the corner back in, then drags the box out past its size and lets it settle; the handle stays on the corner the whole way."
     },
     {
       "name": "ellipse",
       "component": "EllipseIcon",
       "label": "Ellipse",
       "category": "Tools",
-      "hover": "it is pulled taller",
-      "press": "it is drawn again, round",
-      "pressMs": 500,
+      "hover": "it is pulled toward a circle, narrowing as it grows",
+      "press": "a pen point traces it again, all the way round",
+      "pressMs": 700,
       "tuned16": false,
-      "construction": "An 8.6 × 6.9 ellipse (open, no tint), as wide as the Image frame. Hover stretches it toward a circle, as a drag does; press traces it again from the top."
+      "construction": "An 8.6 × 6.9 ellipse, open, as wide as the Image frame. Hover stretches it toward a circle and narrows it a little, so it keeps its mass. Press: a pen point appears on the right and travels clockwise round the ellipse, while the old outline dims and a new one is drawn right behind it."
     },
     {
       "name": "eraser",
       "component": "EraserIcon",
       "label": "Eraser",
       "category": "Tools",
-      "hover": "rubs, and crumbs fall",
-      "press": "presses into the paper",
-      "pressMs": 300,
+      "hover": "it leans onto a scribble, ready",
+      "press": "it rubs back and forth, the scribble goes and crumbs fall",
+      "pressMs": 720,
       "tuned16": false,
-      "construction": "An eraser on the Draw pencil frame, a little wider (6.4) with round ends, one band line between the sleeve and the rubber. Rest shows the eraser alone; hover rubs it and two crumbs fall under it."
+      "construction": "An eraser on the Draw pencil frame, a little wider (6.4) with round ends and one band line between sleeve and rubber. Hover leans it onto a light scribble that draws in under it: something to erase. Press rubs it left, right, left; the scribble is taken away from its start as it passes, two crumbs flick out and fall, then the scribble comes back so the pose is ready again."
     },
     {
       "name": "layout",

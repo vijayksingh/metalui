@@ -144,59 +144,63 @@ export const ICON_CATALOG = {
    * PEN · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the nib glides and lays a stroke
+   *          the nib glides and lays a wave of ink
    * PRESS one-shot (from the current pose)
-   *          the nib flexes under pressure
-   *     0ms   .nib plays pn-p (340ms)
+   *          the nib presses: the line swells and a drop of ink blooms
+   *     0ms   .nib plays pn-dip (500ms)
+   *     0ms   .ln plays pn-swell (500ms)
+   *     0ms   .blot plays pn-blot (560ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "pen": {
     label: "Pen",
     category: "Tools",
-    hover: "the nib glides and lays a stroke",
-    press: "the nib flexes under pressure",
-    pressMs: 340,
+    hover: "the nib glides and lays a wave of ink",
+    press: "the nib presses: the line swells and a drop of ink blooms",
+    pressMs: 560,
     defs: "",
-    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.2 17.8c1.05.7 2 .7 3 0\"/><g class=\"nib\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z\"/><path d=\"M12 19.4v-5\"/><circle class=\"s\" cx=\"12\" cy=\"12.4\" r=\".75\" style=\"stroke:none\"/></g></g>",
+    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.2 17.8c.8-.9 1.7-.9 2.4 0s1.6.9 2.4 0\"/><circle class=\"blot s\" cx=\"10\" cy=\"17.8\" r=\"1.7\" style=\"stroke:none\"/><g class=\"nib\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z\"/><path d=\"M12 19.4v-5\"/><circle class=\"s\" cx=\"12\" cy=\"12.4\" r=\".75\" style=\"stroke:none\"/></g></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
    * MARKER · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          slides on and the band grows under it
+   *          it sweeps right and lays a see-through band
    * PRESS one-shot (from the current pose)
-   *          the chisel tip presses
-   *     0ms   .mk plays mk-p (320ms)
+   *          it lifts back, then sweeps a fresh band
+   *     0ms   .mk plays mk-swipe (620ms)
+   *     0ms   .band plays mk-band (620ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "marker": {
     label: "Marker",
     category: "Tools",
-    hover: "slides on and the band grows under it",
-    press: "the chisel tip presses",
-    pressMs: 320,
+    hover: "it sweeps right and lays a see-through band",
+    press: "it lifts back, then sweeps a fresh band",
+    pressMs: 620,
     defs: "",
-    body: "<rect class=\"band d\" style=\"--duo:.26\" x=\"3.6\" y=\"15.2\" width=\"5.4\" height=\"3.4\" rx=\"1.3\"/><g class=\"mk\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z\"/><path d=\"M10.2 13.4h3.6v2.1l-3.6 3.1Z\"/></g></g>",
+    body: "<rect class=\"band d\" style=\"--duo:.26\" x=\"3.6\" y=\"15.2\" width=\"4.4\" height=\"3.4\" rx=\"1.3\"/><g class=\"mk\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z\"/><path d=\"M10.2 13.4h3.6v2.1l-3.6 3.1Z\"/></g></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
    * LINE · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the ends pull outward
+   *          the ends pull outward, one after the other
    * PRESS one-shot (from the current pose)
-   *          the line is drawn again from its start
-   *     0ms   .ln plays ln-p (440ms)
-   *     0ms   .b plays ln-b (440ms)
+   *          it pulls back into its start and is drawn out again
+   *     0ms   .ln plays ln-draw (640ms)
+   *    50ms   .b plays ln-ride (640ms)
+   *     0ms   .a plays ln-anchor (640ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "line": {
     label: "Line",
     category: "Tools",
-    hover: "the ends pull outward",
-    press: "the line is drawn again from its start",
-    pressMs: 440,
+    hover: "the ends pull outward, one after the other",
+    press: "it pulls back into its start and is drawn out again",
+    pressMs: 690,
     defs: "",
     body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.4 18.6 18.6 5.4\"/><circle class=\"a s\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"b s\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/>",
     sw16: 1.85,
@@ -205,19 +209,19 @@ export const ICON_CATALOG = {
    * ARROW · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          reaches forward
+   *          the head leads forward and the shaft follows
    * PRESS one-shot (from the current pose)
-   *          the head thrusts
-   *     0ms   .hd plays ar-p (340ms)
-   *     0ms   .sh plays ar-s (340ms)
+   *          it draws back and shoots, the shaft stretching behind the head
+   *     0ms   .ar plays ar-fire (500ms)
+   *    40ms   .sh plays ar-stretch (500ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "arrow": {
     label: "Arrow",
     category: "Tools",
-    hover: "reaches forward",
-    press: "the head thrusts",
-    pressMs: 340,
+    hover: "the head leads forward and the shaft follows",
+    press: "it draws back and shoots, the shaft stretching behind the head",
+    pressMs: 540,
     defs: "",
     body: "<g class=\"ar\"><path class=\"sh\" d=\"M5.4 18.6 18 6\"/><path class=\"hd\" d=\"M10.8 5.4h7.8v7.8\"/></g>",
     sw16: 1.85,
@@ -226,18 +230,19 @@ export const ICON_CATALOG = {
    * RECTANGLE · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          a corner handle appears and pulls it
+   *          a corner handle pops in and pulls the box
    * PRESS one-shot (from the current pose)
-   *          the shape settles
-   *     0ms   .rc plays rc-p (340ms)
+   *          the box is dragged out again from its corner
+   *    60ms   .rc plays rc-drag (600ms)
+   *     0ms   .hn plays rc-hand (600ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "rectangle": {
     label: "Rectangle",
     category: "Tools",
-    hover: "a corner handle appears and pulls it",
-    press: "the shape settles",
-    pressMs: 340,
+    hover: "a corner handle pops in and pulls the box",
+    press: "the box is dragged out again from its corner",
+    pressMs: 660,
     defs: "",
     body: "<rect class=\"rc\" x=\"3.4\" y=\"5\" width=\"17.2\" height=\"14\" rx=\"3.2\"/><circle class=\"hn s\" cx=\"20.6\" cy=\"19\" r=\"1.7\"/>",
     sw16: 1.85,
@@ -246,40 +251,46 @@ export const ICON_CATALOG = {
    * ELLIPSE · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          it is pulled taller
+   *          it is pulled toward a circle, narrowing as it grows
    * PRESS one-shot (from the current pose)
-   *          it is drawn again, round
-   *     0ms   .el plays el-p (500ms)
+   *          a pen point traces it again, all the way round
+   *     0ms   .el plays el-dim (700ms)
+   *     0ms   .tr plays el-trace (700ms)
+   *     0ms   .orb plays el-orb (700ms)
+   *     0ms   .pd plays el-pt (700ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "ellipse": {
     label: "Ellipse",
     category: "Tools",
-    hover: "it is pulled taller",
-    press: "it is drawn again, round",
-    pressMs: 500,
+    hover: "it is pulled toward a circle, narrowing as it grows",
+    press: "a pen point traces it again, all the way round",
+    pressMs: 700,
     defs: "",
-    body: "<ellipse class=\"el\" pathLength=\"1\" cx=\"12\" cy=\"12\" rx=\"8.6\" ry=\"6.9\"/>",
+    body: "<g class=\"eg\"><ellipse class=\"el\" cx=\"12\" cy=\"12\" rx=\"8.6\" ry=\"6.9\"/><ellipse class=\"tr\" pathLength=\"1\" cx=\"12\" cy=\"12\" rx=\"8.6\" ry=\"6.9\"/><g transform=\"translate(12 12) scale(1 .8023) translate(-12 -12)\"><g class=\"orb\"><circle class=\"pd s\" cx=\"20.6\" cy=\"12\" r=\"1.4\" style=\"stroke:none\"/></g></g></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
    * ERASER · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          rubs, and crumbs fall
+   *          it leans onto a scribble, ready
    * PRESS one-shot (from the current pose)
-   *          presses into the paper
-   *     0ms   .er plays er-p (300ms)
+   *          it rubs back and forth, the scribble goes and crumbs fall
+   *     0ms   .er plays er-rub (720ms)
+   *     0ms   .sc plays er-gone (720ms)
+   *     0ms   .c1 plays er-c1 (720ms)
+   *     0ms   .c2 plays er-c2 (720ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "eraser": {
     label: "Eraser",
     category: "Tools",
-    hover: "rubs, and crumbs fall",
-    press: "presses into the paper",
-    pressMs: 300,
+    hover: "it leans onto a scribble, ready",
+    press: "it rubs back and forth, the scribble goes and crumbs fall",
+    pressMs: 720,
     defs: "",
-    body: "<path class=\"cr\" d=\"M4.4 20h1.2M7.4 20.6h1.2\"/><g class=\"er\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z\"/><path d=\"M8.8 12.8h6.4\"/></g></g>",
+    body: "<path class=\"sc\" pathLength=\"1\" d=\"M3.6 20.6c.9-.7 1.9-.7 2.8 0s1.9.7 2.8 0\"/><circle class=\"c1 s\" cx=\"7\" cy=\"19.6\" r=\".6\" style=\"stroke:none\"/><circle class=\"c2 s\" cx=\"8\" cy=\"20.2\" r=\".5\" style=\"stroke:none\"/><g class=\"er\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z\"/><path d=\"M8.8 12.8h6.4\"/></g></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

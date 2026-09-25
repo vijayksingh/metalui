@@ -88,65 +88,75 @@ export const ICONS = [
   shape: 'Pencil built upright (body w4.6, eraser band at y8) then rotated 45°. Stroke is revealed by trim in sync with the pencil travelling on the same curve.' },
 
 /* ---- drawing tools (DRAWING.md DR-01). The pencil is `draw` above. Each motion is the tool's own act. */
-{ name: 'pen', cat: 'Tools', label: 'Pen', hover: 'the nib glides and lays a stroke', press: 'the nib flexes under pressure',
-  body: `<path class="ln" pathLength="1" d="M5.2 17.8c1.05.7 2 .7 3 0"/><g class="nib"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z"/><path d="M12 19.4v-5"/><circle class="s" cx="12" cy="12.4" r=".75" style="stroke:none"/></g></g>`,
-  base: `& .ln{stroke-dasharray:1 2;stroke-dashoffset:1} & .nib{transform-origin:5.2px 17.8px}`,
-  mo: `& .nib{offset-path:path("M0 0c1.05.7 2 .7 3 0");offset-distance:0%;offset-rotate:0deg;offset-anchor:0 0;transition:offset-distance .46s var(--k-spring),transform .3s var(--k-soft)}
+{ name: 'pen', cat: 'Tools', label: 'Pen', hover: 'the nib glides and lays a wave of ink', press: 'the nib presses: the line swells and a drop of ink blooms',
+  body: `<path class="ln" pathLength="1" d="M5.2 17.8c.8-.9 1.7-.9 2.4 0s1.6.9 2.4 0"/><circle class="blot s" cx="10" cy="17.8" r="1.7" style="stroke:none"/><g class="nib"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z"/><path d="M12 19.4v-5"/><circle class="s" cx="12" cy="12.4" r=".75" style="stroke:none"/></g></g>`,
+  base: `& .ln{stroke-dasharray:1 2;stroke-dashoffset:1} & .nib{transform-origin:5.2px 17.8px} & .blot{transform-origin:10px 17.8px;opacity:0}`,
+  mo: `& .nib{offset-path:path("M0 0c.8-.9 1.7-.9 2.4 0s1.6.9 2.4 0");offset-distance:0%;offset-rotate:0deg;offset-anchor:0 0;transition:offset-distance .52s var(--k-spring),transform .3s var(--k-soft)}
+       & .ln{--k-dur:.52s}
        @H .nib{offset-distance:100%} @H .ln{stroke-dashoffset:0}
-       @P .nib{animation:pn-p .34s cubic-bezier(.3,0,.2,1)}
-       @keyframes pn-p{40%{transform:translate(.3px,.5px) scale(1.06,.94)}}`,
-  shape: 'A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Rest shows the nib alone; hover glides it on the pencil curve and the ink follows.' },
+       @P .nib{animation:pn-dip .5s cubic-bezier(.3,0,.2,1)} @P .ln{animation:pn-swell .5s cubic-bezier(.3,0,.2,1)} @P .blot{animation:pn-blot .56s cubic-bezier(.2,.7,.3,1)}
+       @keyframes pn-dip{30%{transform:translate(.35px,.55px) scale(1.05,.92)}62%{transform:translate(-.1px,-.15px) scale(.99,1.02)}}
+       @keyframes pn-swell{30%{stroke-width:2.7}}
+       @keyframes pn-blot{0%{opacity:0;transform:scale(.2)}30%{opacity:1;transform:scale(1.15)}55%{opacity:.9;transform:scale(.95)}100%{opacity:0;transform:scale(1)}}`,
+  shape: 'A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Hover glides the nib along a small wave and the ink follows its tip on the same spring. Press is pressure: the nib squashes toward the page, the line swells to 2.7, and a drop of ink blooms at the tip and soaks in.' },
 
-{ name: 'marker', cat: 'Tools', label: 'Marker', hover: 'slides on and the band grows under it', press: 'the chisel tip presses',
-  body: `<rect class="band d" style="--duo:.26" x="3.6" y="15.2" width="5.4" height="3.4" rx="1.3"/><g class="mk"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z"/><path d="M10.2 13.4h3.6v2.1l-3.6 3.1Z"/></g></g>`,
-  base: `& .band{transform-origin:3.6px 16.9px;transform:scaleX(0)} & .mk{transform-origin:5px 16px}`,
-  mo: `& .band{transition:transform .46s var(--k-spring)} & .mk{transition:transform .46s var(--k-spring)}
-       @H .band{transform:scaleX(1)} @H .mk{transform:translateX(3.4px)}
-       @P .mk{animation:mk-p .32s cubic-bezier(.3,0,.2,1)}
-       @keyframes mk-p{40%{transform:translate(.4px,.6px) rotate(-3deg)}}`,
-  shape: 'A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. Rest shows the marker alone; hover slides it right and a see-through band (duo .26) grows behind the tip, a mark that sits under the words.' },
+{ name: 'marker', cat: 'Tools', label: 'Marker', hover: 'it sweeps right and lays a see-through band', press: 'it lifts back, then sweeps a fresh band',
+  body: `<rect class="band d" style="--duo:.26" x="3.6" y="15.2" width="4.4" height="3.4" rx="1.3"/><g class="mk"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z"/><path d="M10.2 13.4h3.6v2.1l-3.6 3.1Z"/></g></g>`,
+  base: `& .band{transform-origin:3.6px 16.9px;transform:scaleX(0)} & .mk{transform-origin:4.5px 16px}`,
+  mo: `@H .band{transform:scaleX(1)} @H .mk{transform:translateX(3.4px)}
+       @P .mk{animation:mk-swipe .62s cubic-bezier(.3,.6,.25,1)} @P .band{animation:mk-band .62s cubic-bezier(.3,.6,.25,1)}
+       @keyframes mk-swipe{26%{transform:translate(-.2px,-.9px) rotate(4deg)}38%{transform:translate(.3px,0) rotate(-6deg)}84%{transform:translate(3.7px,0) rotate(-1deg)}}
+       @keyframes mk-band{18%{transform:scaleX(1);opacity:0}30%{transform:scaleX(0);opacity:0}31%{transform:scaleX(0);opacity:1}38%{transform:scaleX(.26)}84%{transform:scaleX(1.07)}}`,
+  shape: 'A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. The band (duo .26, sits under the words) is always as long as the tip has travelled: hover and press move them on the same curve. Press lifts the marker back to the start while the old band fades, then it leans into the page and sweeps a fresh one.' },
 
-{ name: 'line', cat: 'Tools', label: 'Line', hover: 'the ends pull outward', press: 'the line is drawn again from its start',
+{ name: 'line', cat: 'Tools', label: 'Line', hover: 'the ends pull outward, one after the other', press: 'it pulls back into its start and is drawn out again',
   body: `<path class="ln" pathLength="1" d="M5.4 18.6 18.6 5.4"/><circle class="a s" cx="5.4" cy="18.6" r="1.3"/><circle class="b s" cx="18.6" cy="5.4" r="1.3"/>`,
-  base: `& .ln{stroke-dasharray:1 1;stroke-dashoffset:0;transform-origin:12px 12px}`,
+  base: `& .ln{stroke-dasharray:1 1;stroke-dashoffset:0;transform-origin:12px 12px} & .a{transform-origin:5.4px 18.6px} & .b{transform-origin:18.6px 5.4px;--dl:.05s}`,
   mo: `@H .a{transform:translate(-1px,1px)} @H .b{transform:translate(1px,-1px)} @H .ln{transform:scale(1.1)}
-       @P .ln{animation:ln-p .44s cubic-bezier(.2,.7,.3,1)} @P .b{animation:ln-b .44s cubic-bezier(.2,.7,.3,1)}
-       @keyframes ln-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}
-       @keyframes ln-b{0%{transform:translate(-13.2px,13.2px) scale(.6)}100%{transform:translate(1px,-1px)}}`,
-  shape: 'One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does; press redraws it from the start, the far dot riding the tip.' },
+       @P .ln{animation:ln-draw .64s cubic-bezier(.4,0,.2,1)} @P .b{animation:ln-ride .64s cubic-bezier(.4,0,.2,1)} @P .a{animation:ln-anchor .64s cubic-bezier(.2,.7,.3,1)}
+       @keyframes ln-draw{34%{stroke-dashoffset:1}86%{stroke-dashoffset:0}}
+       @keyframes ln-ride{34%{transform:translate(-13.9px,13.9px) scale(.7)}86%{transform:translate(1.4px,-1.4px) scale(1.18)}}
+       @keyframes ln-anchor{34%{transform:translate(-1px,1px) scale(1)}46%{transform:translate(-1px,1px) scale(1.4)}}`,
+  shape: 'One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does, the far one a beat later. Press pulls the line back into its start (the far dot riding in), then drags it out again: the near dot pulses as it is anchored, the far dot rides the growing tip and lands with a small overshoot.' },
 
-{ name: 'arrow', cat: 'Tools', label: 'Arrow', hover: 'reaches forward', press: 'the head thrusts',
+{ name: 'arrow', cat: 'Tools', label: 'Arrow', hover: 'the head leads forward and the shaft follows', press: 'it draws back and shoots, the shaft stretching behind the head',
   body: `<g class="ar"><path class="sh" d="M5.4 18.6 18 6"/><path class="hd" d="M10.8 5.4h7.8v7.8"/></g>`,
-  base: `& .sh{transform-origin:5.4px 18.6px} & .hd{transform-origin:18.6px 5.4px}`,
-  mo: `@H .sh{transform:scale(1.06)} @H .hd{transform:translate(.8px,-.8px)}
-       @P .hd{animation:ar-p .34s cubic-bezier(.3,0,.2,1)} @P .sh{animation:ar-s .34s cubic-bezier(.3,0,.2,1)}
-       @keyframes ar-p{40%{transform:translate(1.6px,-1.6px)}}
-       @keyframes ar-s{40%{transform:scale(1.12)}}`,
-  shape: 'A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover lengthens the shaft and carries the head; press thrusts the head.' },
+  base: `& .sh{transform-origin:5.4px 18.6px;--dl:.04s} & .hd{transform-origin:18.6px 5.4px}`,
+  mo: `@H .sh{transform:scale(1.07)} @H .hd{transform:translate(.9px,-.9px)}
+       @P .ar{animation:ar-fire .5s cubic-bezier(.3,0,.2,1)} @P .sh{animation:ar-stretch .5s cubic-bezier(.3,0,.2,1)}
+       @keyframes ar-fire{28%{transform:translate(-1.3px,1.3px)}56%{transform:translate(1.5px,-1.5px)}78%{transform:translate(-.25px,.25px)}}
+       @keyframes ar-stretch{28%{transform:scale(.9)}56%{transform:scale(1.18)}78%{transform:scale(1.03)}}`,
+  shape: 'A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover: the head moves first and the shaft catches up. Press: an arrow is aimed at something, so it draws back, shoots forward with the shaft stretching, and settles.' },
 
-{ name: 'rectangle', cat: 'Tools', label: 'Rectangle', hover: 'a corner handle appears and pulls it', press: 'the shape settles',
+{ name: 'rectangle', cat: 'Tools', label: 'Rectangle', hover: 'a corner handle pops in and pulls the box', press: 'the box is dragged out again from its corner',
   body: `<rect class="rc" x="3.4" y="5" width="17.2" height="14" rx="3.2"/><circle class="hn s" cx="20.6" cy="19" r="1.7"/>`,
-  base: `& .rc{transform-origin:3.4px 5px} & .hn{transform-origin:20.6px 19px;transform:scale(0)}`,
-  mo: `& .hn{transition:transform .4s var(--k-spring)}
-       @H .hn{transform:translate(.5px,.7px) scale(1)} @H .rc{transform:scale(1.03,1.05)}
-       @P .rc{animation:rc-p .34s cubic-bezier(.3,0,.2,1)} @keyframes rc-p{40%{transform:scale(.97,.95)}}`,
-  shape: 'A 17.2 × 14 rounded box (r3.2, open like the Image frame), the same frame as Image. Rest is the box alone; hover grows a drag handle on its bottom-right corner and the box follows it from the pinned top-left.' },
+  base: `& .rc{transform-origin:3.4px 5px;--dl:.06s} & .hn{transform-origin:20.6px 19px;transform:translate(0,0) scale(0)}`,
+  mo: `@H .hn{transform:translate(.5px,.7px) scale(1)} @H .rc{transform:scale(1.03,1.05)}
+       @P .rc{animation:rc-drag .6s cubic-bezier(.45,0,.2,1)} @P .hn{animation:rc-hand .6s cubic-bezier(.45,0,.2,1)}
+       @keyframes rc-drag{28%{transform:scale(.24,.24)}74%{transform:scale(1.07,1.09)}}
+       @keyframes rc-hand{28%{transform:translate(-13.1px,-10.6px) scale(1)}74%{transform:translate(1.2px,1.3px) scale(1.12)}}`,
+  shape: 'A 17.2 × 14 rounded box (r3.2), open like the Image frame, pinned at its top-left. Hover pops a drag handle onto the bottom-right corner and the box follows it a beat later. Press is the act of drawing one: the handle pulls the corner back in, then drags the box out past its size and lets it settle; the handle stays on the corner the whole way.' },
 
-{ name: 'ellipse', cat: 'Tools', label: 'Ellipse', hover: 'it is pulled taller', press: 'it is drawn again, round',
-  body: `<ellipse class="el" pathLength="1" cx="12" cy="12" rx="8.6" ry="6.9"/>`,
-  base: `& .el{transform-origin:12px 12px;stroke-dasharray:1 1;stroke-dashoffset:0}`,
-  mo: `@H .el{transform:scaleY(1.14)}
-       @P .el{animation:el-p .5s cubic-bezier(.2,.7,.3,1)} @keyframes el-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
-  shape: 'An 8.6 × 6.9 ellipse (open, no tint), as wide as the Image frame. Hover stretches it toward a circle, as a drag does; press traces it again from the top.' },
+{ name: 'ellipse', cat: 'Tools', label: 'Ellipse', hover: 'it is pulled toward a circle, narrowing as it grows', press: 'a pen point traces it again, all the way round',
+  body: `<g class="eg"><ellipse class="el" cx="12" cy="12" rx="8.6" ry="6.9"/><ellipse class="tr" pathLength="1" cx="12" cy="12" rx="8.6" ry="6.9"/><g transform="translate(12 12) scale(1 .8023) translate(-12 -12)"><g class="orb"><circle class="pd s" cx="20.6" cy="12" r="1.4" style="stroke:none"/></g></g></g>`,
+  base: `& .eg{transform-origin:12px 12px} & .tr{stroke-dasharray:1 1;stroke-dashoffset:1;opacity:0} & .orb{transform-origin:12px 12px} & .pd{opacity:0}`,
+  mo: `@H .eg{transform:scale(.97,1.12)}
+       @P .el{animation:el-dim .7s linear} @P .tr{animation:el-trace .7s cubic-bezier(.45,0,.3,1)} @P .orb{animation:el-orb .7s cubic-bezier(.45,0,.3,1)} @P .pd{animation:el-pt .7s linear}
+       @keyframes el-dim{12%{opacity:.18}84%{opacity:.18}92%{opacity:1}} @keyframes el-trace{0%{stroke-dashoffset:1;opacity:1}88%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:1}}
+       @keyframes el-orb{0%{transform:rotate(0)}88%{transform:rotate(360deg)}100%{transform:rotate(360deg)}}
+       @keyframes el-pt{0%{opacity:0}8%{opacity:1}84%{opacity:1}96%{opacity:0}}`,
+  shape: 'An 8.6 × 6.9 ellipse, open, as wide as the Image frame. Hover stretches it toward a circle and narrows it a little, so it keeps its mass. Press: a pen point appears on the right and travels clockwise round the ellipse, while the old outline dims and a new one is drawn right behind it.' },
 
-{ name: 'eraser', cat: 'Tools', label: 'Eraser', hover: 'rubs, and crumbs fall', press: 'presses into the paper',
-  body: `<path class="cr" d="M4.4 20h1.2M7.4 20.6h1.2"/><g class="er"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z"/><path d="M8.8 12.8h6.4"/></g></g>`,
-  base: `& .er{transform-origin:5.2px 17.8px} & .cr{opacity:0;transition:opacity .3s ease}`,
-  mo: `@H .er{animation:er-h .6s ease-in-out infinite alternate} @H .cr{opacity:1;transition-delay:.2s}
-       @P .er{animation:er-p .3s cubic-bezier(.3,0,.2,1)}
-       @keyframes er-h{from{transform:translateX(-.8px)}to{transform:translateX(.8px)}}
-       @keyframes er-p{40%{transform:translate(.4px,.7px) scale(.96)}}`,
-  shape: 'An eraser on the Draw pencil frame, a little wider (6.4) with round ends, one band line between the sleeve and the rubber. Rest shows the eraser alone; hover rubs it and two crumbs fall under it.' },
+{ name: 'eraser', cat: 'Tools', label: 'Eraser', hover: 'it leans onto a scribble, ready', press: 'it rubs back and forth, the scribble goes and crumbs fall',
+  body: `<path class="sc" pathLength="1" d="M3.6 20.6c.9-.7 1.9-.7 2.8 0s1.9.7 2.8 0"/><circle class="c1 s" cx="7" cy="19.6" r=".6" style="stroke:none"/><circle class="c2 s" cx="8" cy="20.2" r=".5" style="stroke:none"/><g class="er"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z"/><path d="M8.8 12.8h6.4"/></g></g>`,
+  base: `& .er{transform-origin:6.2px 18.8px} & .sc{stroke-dasharray:1 2;stroke-dashoffset:1;stroke-width:1.3} & .c1,& .c2{opacity:0}`,
+  mo: `@H .er{transform:rotate(-7deg) translate(.3px,-.4px)} @H .sc{stroke-dashoffset:0}
+       @P .er{animation:er-rub .72s cubic-bezier(.4,0,.3,1)} @P .sc{animation:er-gone .72s linear} @P .c1{animation:er-c1 .72s cubic-bezier(.3,0,.6,1)} @P .c2{animation:er-c2 .72s cubic-bezier(.3,0,.6,1)}
+       @keyframes er-rub{18%{transform:rotate(-9deg) translate(-2.6px,.3px)}40%{transform:rotate(-4deg) translate(1.8px,.1px)}60%{transform:rotate(-9deg) translate(-1px,.3px)}78%{transform:rotate(-6deg) translate(.7px,-.2px)}}
+       @keyframes er-gone{0%{stroke-dashoffset:0;opacity:1}18%{stroke-dashoffset:-.3;opacity:1}40%{stroke-dashoffset:-.7;opacity:.8}60%{stroke-dashoffset:-1;opacity:0}76%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:0;opacity:1}}
+       @keyframes er-c1{0%,30%{opacity:0;transform:translate(0,0)}40%{opacity:1;transform:translate(-.8px,-.9px)}75%{opacity:.8;transform:translate(-2.2px,.9px)}90%{opacity:0;transform:translate(-2.6px,2px)}}
+       @keyframes er-c2{0%,44%{opacity:0;transform:translate(0,0)}54%{opacity:1;transform:translate(.7px,-.8px)}85%{opacity:.7;transform:translate(1.6px,.9px)}96%{opacity:0;transform:translate(1.9px,1.8px)}}`,
+  shape: 'An eraser on the Draw pencil frame, a little wider (6.4) with round ends and one band line between sleeve and rubber. Hover leans it onto a light scribble that draws in under it: something to erase. Press rubs it left, right, left; the scribble is taken away from its start as it passes, two crumbs flick out and fall, then the scribble comes back so the pose is ready again.' },
 
 { name: 'layout', cat: 'Tools', label: 'Layout', hover: 'tiles swap sides', press: 'tiles settle together',
   body: `<rect class="lt f" style="--duo:.16" x="3.6" y="3.6" width="7" height="16.8" rx="2.4"/><rect class="l1" x="13.4" y="3.6" width="7" height="7" rx="2.4"/><rect class="l2" x="13.4" y="13.4" width="7" height="7" rx="2.4"/>`,

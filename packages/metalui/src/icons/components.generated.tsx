@@ -13,19 +13,19 @@ export const ImageIcon = createIcon("image", "ImageIcon");
 export const LinkIcon = createIcon("link", "LinkIcon");
 /** Draw. Hover: tip slides and draws a stroke. Press: taps the paper. */
 export const DrawIcon = createIcon("draw", "DrawIcon");
-/** Pen. Hover: the nib glides and lays a stroke. Press: the nib flexes under pressure. */
+/** Pen. Hover: the nib glides and lays a wave of ink. Press: the nib presses: the line swells and a drop of ink blooms. */
 export const PenIcon = createIcon("pen", "PenIcon");
-/** Marker. Hover: slides on and the band grows under it. Press: the chisel tip presses. */
+/** Marker. Hover: it sweeps right and lays a see-through band. Press: it lifts back, then sweeps a fresh band. */
 export const MarkerIcon = createIcon("marker", "MarkerIcon");
-/** Line. Hover: the ends pull outward. Press: the line is drawn again from its start. */
+/** Line. Hover: the ends pull outward, one after the other. Press: it pulls back into its start and is drawn out again. */
 export const LineIcon = createIcon("line", "LineIcon");
-/** Arrow. Hover: reaches forward. Press: the head thrusts. */
+/** Arrow. Hover: the head leads forward and the shaft follows. Press: it draws back and shoots, the shaft stretching behind the head. */
 export const ArrowIcon = createIcon("arrow", "ArrowIcon");
-/** Rectangle. Hover: a corner handle appears and pulls it. Press: the shape settles. */
+/** Rectangle. Hover: a corner handle pops in and pulls the box. Press: the box is dragged out again from its corner. */
 export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
-/** Ellipse. Hover: it is pulled taller. Press: it is drawn again, round. */
+/** Ellipse. Hover: it is pulled toward a circle, narrowing as it grows. Press: a pen point traces it again, all the way round. */
 export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
-/** Eraser. Hover: rubs, and crumbs fall. Press: presses into the paper. */
+/** Eraser. Hover: it leans onto a scribble, ready. Press: it rubs back and forth, the scribble goes and crumbs fall. */
 export const EraserIcon = createIcon("eraser", "EraserIcon");
 /** Layout. Hover: tiles swap sides. Press: tiles settle together. */
 export const LayoutIcon = createIcon("layout", "LayoutIcon");
