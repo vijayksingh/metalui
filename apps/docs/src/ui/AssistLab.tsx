@@ -45,6 +45,25 @@ function settleSpring(): { ease: (t: number) => number; ms: number } {
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const CHUNK = 32;
+const KEEP = 'metalui-assist-lab-strokes';
+
+function keep(all: Stroke[]) {
+  try {
+    const done = all.filter((st) => !st.live).map((st) => ({ tool: st.tool, raw: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) }));
+    localStorage.setItem(KEEP, JSON.stringify(done));
+  } catch { /* storage unavailable: nothing kept */ }
+}
+
+function restore(): Stroke[] {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEEP) ?? '[]') as { tool: AssistTool; raw: number[][] }[];
+    return saved.map((o, k) => {
+      const raw = o.raw.map(([x, y, t, pressure]) => ({ x, y, t, pressure }));
+      const look = LOOK[o.tool], ink = assistStroke(raw, TOOL_ASSIST[o.tool]);
+      return { id: k + 1, tool: o.tool, raw, chunks: [], chunked: 0, ink, done: outlinePath(ink, look.size, look.thinning, look.taper) };
+    });
+  } catch { return []; }
+}
 /** Word finding (INK_ENGINE.md §4.8): a pause, or a gap past the word, or a new line. */
 const PAUSE = 600, WORD_GAP = 1.2, LINE_GAP = 1.5;
 
@@ -100,7 +119,9 @@ export function AssistLab() {
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
   const [asWritten, setAsWritten] = React.useState<'settled' | 'written'>('settled');
   const [note, setNote] = React.useState('Write a word, then pause or move on: it settles, and this line says what happened.');
-  const [strokes, setStrokes] = React.useState<Stroke[]>([]);
+  // Your writing survives a reload (the dev server reloads the page when the code changes): finished
+  // strokes are kept in this browser and restored; Clear removes them. A per-viewer convenience only.
+  const [strokes, setStrokes] = React.useState<Stroke[]>(() => restore());
   const d = useDialKit('Assisted ink', {
     settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
     corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1] },
@@ -165,6 +186,7 @@ export function AssistLab() {
     st.done = outlinePath(st.ink, look.size, look.thinning, look.taper);
     st.live = undefined; st.chunks = [];
     bump(st);
+    setStrokes((all) => { keep(all); return all; });
     if (st.tool === 'marker') return; // a marker is a highlighter: no words
     word.current.push(st);
     window.clearTimeout(pause.current);
@@ -228,7 +250,7 @@ export function AssistLab() {
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
         <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
-        <Button size="compact" onClick={() => setStrokes([])}>Clear</Button>
+        <Button size="compact" onClick={() => { setStrokes([]); keep([]); }}>Clear</Button>
         <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
       </div>
       <div ref={box} className="snap-canvas" style={{ height: 300, touchAction: 'none', cursor: 'crosshair' }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
