@@ -83,7 +83,7 @@ export const PlusIcon = createIcon("plus", "PlusIcon");
 export const RegionIcon = createIcon("region", "RegionIcon");
 /** Task. Hover: the tick nods yes inside its box. Press: the box presses in and comes back up ticked. */
 export const TaskIcon = createIcon("task", "TaskIcon");
-/** Tag. Hover: the tag swings on its eyelet. Press: the tag stamps. */
+/** Tag. Hover: The cord tugs the tag by its eyelet, and it swings there and comes to hang still.. Press: plays the same act. */
 export const TagIcon = createIcon("tag", "TagIcon");
 /** Calendar. Hover: the rings lift. Press: the page turns in. */
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");

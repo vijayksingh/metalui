@@ -530,11 +530,20 @@
       "component": "TagIcon",
       "label": "Tag",
       "category": "Tools",
-      "hover": "the tag swings on its eyelet",
-      "press": "the tag stamps",
-      "pressMs": 340,
+      "hover": "The cord tugs the tag by its eyelet, and it swings there and comes to hang still.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The cord tugs the tag by its eyelet, and it swings there and comes to hang still.",
+        "durationMs": 900,
+        "stages": [
+          "Tug",
+          "Swing",
+          "Hang"
+        ]
+      },
       "tuned16": false,
-      "construction": "Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line."
+      "construction": "Tag 15.4 × 14 with a rounded point, tinted .12; eyelet bead 2.6 on the centre line. Motion (study): the cord tugs the tag 1.2 left by its eyelet, then it whips to 14° about the eyelet and swings out (−6°, +2.5°, −0.8°); a ring opens at the eyelet when the cord goes taut."
     },
     {
       "name": "calendar",

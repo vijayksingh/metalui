@@ -901,24 +901,25 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * TAG · Tools
+   * TAG · Tools · one act, 900ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the tag swings on its eyelet
-   * PRESS one-shot (from the current pose)
-   *          the tag stamps
-   *     0ms   .tg plays tg-p (340ms)
+   * Tug → Swing → Hang
+   *          The cord tugs the tag by its eyelet, and it swings there and comes to hang still.
+   *  tag        0 → 140 → 300 → 460 → 600 → 730 → 900ms
+   *  taut       0 → 250 → 310 → 560 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "tag": {
     label: "Tag",
     category: "Tools",
-    hover: "the tag swings on its eyelet",
-    press: "the tag stamps",
-    pressMs: 340,
+    hover: "The cord tugs the tag by its eyelet, and it swings there and comes to hang still.",
+    press: "plays the same act",
+    pressMs: 900,
     defs: "",
-    body: "<g class=\"tg\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.2 5h7.6a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2h-7.6a2.2 2.2 0 0 1-1.7-.8L4.6 13.4a2.2 2.2 0 0 1 0-2.8l3.9-4.8a2.2 2.2 0 0 1 1.7-.8Z\"/><circle class=\"s\" cx=\"9.4\" cy=\"12\" r=\"1.3\"/></g>",
+    body: "<g data-part=\"tag\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.2 5h7.6a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2h-7.6a2.2 2.2 0 0 1-1.7-.8L4.6 13.4a2.2 2.2 0 0 1 0-2.8l3.9-4.8a2.2 2.2 0 0 1 1.7-.8Z\"/><circle class=\"s\" cx=\"9.4\" cy=\"12\" r=\"1.3\"/></g><circle class=\"ac\" data-part=\"taut\" opacity=\"0\" cx=\"9.4\" cy=\"12\" r=\"2.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":900,"caption":"The cord tugs the tag by its eyelet, and it swings there and comes to hang still.","stages":["Tug","Swing","Hang"],"tracks":[{"part":"tag","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.15556,"transform":"translate(-1.2px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33333,"transform":"translate(0px,0px) rotate(14deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.51111,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(2.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.81111,"transform":"translate(0px,0px) rotate(-0.8deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"taut","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.27778,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.34444,"transform":"scale(.8)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62222,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * CALENDAR · Tools
