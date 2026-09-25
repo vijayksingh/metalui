@@ -17,13 +17,13 @@ export const slide = mechanism('slide', {
     detents: 8,                        // ticks at every eighth of the travel
     stagger: 40,                       // ms between one cap starting and the next
     wall: 0.25,                        // a cap hitting an end comes back a quarter as fast
-    impactFull: 2.5,                   // travel per second that hits an end at full knock
+    impactFull: 1.5,                   // travel per second that hits an end at full knock
     scrapeFull: 3,                     // travel per second that scrapes at full speed
     tickMin: 0.15,                     // slower than this, crossing a detent is a wobble, not a tick
     tickGap: 40,                       // ms: at most one tick per cap this often
     step: 240,                         // integration steps per second, the same on both platforms
   },
-  cues: [scrape('caps', 0.5), detent('caps', 0.25), stop('caps', 0.8)],   // scrape: of sound.scrape's own level
+  cues: [scrape('caps', 1), detent('caps', 0.45), stop('caps', 0.8)],   // scrape: of sound.scrape's own level
   states: {},
   reduced: ['lamp', 'sound'],
 });

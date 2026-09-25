@@ -21,10 +21,10 @@ extension MetalMechanism {
         tracks: [
 
         ],
-        cues: [.init(at: nil, until: nil, kind: .friction, slot: "caps", level: 0.5, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .detent, slot: "caps", level: 0.25, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "caps", level: 0.8, pitch: 1.0, gesture: nil)],
+        cues: [.init(at: nil, until: nil, kind: .friction, slot: "caps", level: 1.0, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .detent, slot: "caps", level: 0.45, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "caps", level: 0.8, pitch: 1.0, gesture: nil)],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 2.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0)
+        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0)
     )
 
     public static let all: [MetalMechanism] = [seat, slide]

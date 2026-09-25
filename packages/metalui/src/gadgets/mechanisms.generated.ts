@@ -271,12 +271,12 @@ export const MECHANISMS = {
       {
         "kind": "friction",
         "slot": "caps",
-        "level": 0.5
+        "level": 1
       },
       {
         "kind": "detent",
         "slot": "caps",
-        "level": 0.25
+        "level": 0.45
       },
       {
         "kind": "stop",
@@ -301,7 +301,7 @@ export const MECHANISMS = {
       "detents": 8,
       "stagger": 40,
       "wall": 0.25,
-      "impactFull": 2.5,
+      "impactFull": 1.5,
       "scrapeFull": 3,
       "tickMin": 0.15,
       "tickGap": 40,

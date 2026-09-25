@@ -90,7 +90,7 @@ const MIXES: { label: string; values: number[] }[] = [
 ];
 
 /** A fader stand-in: three caps in three slots of a clay slab, moved by the slide drive. */
-function Faders({ sound, reduced }: { sound: ReturnType<typeof createSound>; reduced: boolean }) {
+function Faders({ sound, reduced, soundSwitch }: { sound: ReturnType<typeof createSound>; reduced: boolean; soundSwitch: React.ReactNode }) {
   const { colorway } = useColorway();
   const host = colorway === 'graphite' ? 'graphite' : 'bone';
   const uid = React.useId().replace(/:/g, '');
@@ -132,8 +132,9 @@ function Faders({ sound, reduced }: { sound: ReturnType<typeof createSound>; red
         </g>
       </svg>
       <div className="flex min-w-0 flex-col gap-12">
-        <div className="flex flex-wrap gap-8">
+        <div className="flex flex-wrap items-center gap-8">
           {MIXES.map((m) => <Button key={m.label} onClick={() => go(m.values)}>{m.label}</Button>)}
+          {soundSwitch}
         </div>
         <ol className="m-0 flex min-h-[120px] list-none flex-col gap-2 p-0 type-readout text-ink3" data-testid="slide-log" aria-live="off">
           {log.map((e, i) => (
@@ -218,7 +219,11 @@ export default function Mechanisms() {
       </Section>
       <Section title="Slide" lede="A held mechanism: a value moves the caps, not a clock. Each cap springs to its new place along its slot, the next one 40 ms after, keeping its speed if the mix changes again on the way. You hear them scrape as they travel, tick past each eighth of the slot, and knock if they reach an end, which is a wall they bounce back from a little. With reduced motion they go straight to their places, each with one tick.">
         <Bench caption={`slide · held · ${SLIDE.held!.detents} detents · stagger ${SLIDE.held!.stagger} ms · walls return ${SLIDE.held!.wall} · ${SLIDE.held!.step} steps a second on both platforms`}>
-          <Faders sound={sound} reduced={reduced} />
+          <Faders sound={sound} reduced={reduced} soundSwitch={
+            <label className="ml-8 flex items-center gap-12 type-ui text-ink">
+              <Switch aria-label="Sound for the faders" checked={soundOn} onCheckedChange={async (n) => { if (n) await sound.enable(); else sound.disable(); setSoundOn(n); }} />Sound
+            </label>
+          } />
         </Bench>
       </Section>
       <Section title="The cue list">
