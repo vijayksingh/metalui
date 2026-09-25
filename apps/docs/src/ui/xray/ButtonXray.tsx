@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Button, Switcher, type ButtonCap } from '@unlocalhosted/metalui';
+import { Button, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Dial, Glyph, SpringPlot, Switch, alphaK, scalePx, useRecipeLayers, useStateLayers, type SpotDef } from './kit';
+import { Callouts, Glyph, alphaK, scalePx, useRecipeLayers, useStateLayers, type SpotDef } from './kit';
+import { ButtonSpecimenCard } from './ButtonSpecimens';
+import { HintLayer } from '../edit';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · BUTTON
@@ -36,7 +38,7 @@ const SPOTS: SpotDef<Spot>[] = [
   { id: 'layers', title: 'Layers', word: 'What it is made of' },
 ];
 
-const LAYERS = [
+export const LAYERS = [
   { name: 'Fill', kind: 'fill', why: 'The main colour. It is a little lighter at the top, where the light hits. Turn it off and the button has no body.' },
   { name: 'Inner glow', kind: 'inset', why: 'A soft light just inside the edge. It makes the button look like soft plastic instead of flat paint.' },
   { name: 'Top light', kind: 'inset', why: 'A thin bright line on the top edge. It makes the top look rounded, so the button looks like a real object.' },
@@ -71,10 +73,13 @@ function derive(m: ButtonXrayModel, recipe: ReturnType<typeof useRecipeLayers>, 
   const cssShadow = [...insets, ...(rim ? [rim] : []), ...(m.on[4] && shadows[3] ? [shadows[3]] : []), ...(m.on[5] && shadows[4] ? [shadows[4]] : [])].join(', ') || 'none';
   return { pad, radius, fill, insets, rim, lipX, lipY, cssShadow, W: textW + pad * 2 };
 }
-export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'none', disabled = false, travel = 1, model, setModel, onReset, startOpen = false }: {
+export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'none', disabled = false, travel: travelFrom = 1, model, setModel, onReset, startOpen = false }: {
   label?: string; cap?: ButtonCap; icon?: IconName | 'none'; disabled?: boolean; travel?: number;
   model?: ButtonXrayModel; setModel?: (patch: Partial<ButtonXrayModel>) => void; onReset?: () => void; startOpen?: boolean;
 }) {
+  // press depth: the page's value to start from; pressing the specimen and pulling sets it here
+  const [travel, setTravel] = React.useState(travelFrom);
+  React.useEffect(() => setTravel(travelFrom), [travelFrom]);
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('shape');
   const [localModel, setLocalModel] = React.useState<ButtonXrayModel>(BUTTON_XRAY_INITIAL);
@@ -102,6 +107,7 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
   const current = SPOTS.find((x) => x.id === spot)!;
 
   return (
+    <HintLayer>
     <div className="xr button-xray" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
       <span ref={measure} aria-hidden className="xr-measure" style={{ fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em` }}>{label}</span>
       {onReset && <div className="button-xray-toolbar" role="group" aria-label="Button view">
@@ -197,7 +203,7 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
         {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, pressed, textW]} />}
         <div className="xr-hint eng">{xray ? onReset ? 'Pick a part to inspect. Tune below or beside the model.' : 'Pick an icon to learn about that part' : onReset ? 'Press and hold. Switch to X-ray to inspect the same button.' : 'Click the button to see inside it'}</div>
         {!onReset && xray && <div className="xr-actions">
-          <button type="button" className="status" onClick={() => setLocalModel(BUTTON_XRAY_INITIAL)}><span className="led off" />Reset</button>
+          <button type="button" className="status" onClick={() => { setLocalModel(BUTTON_XRAY_INITIAL); setTravel(travelFrom); }}><span className="led off" />Reset</button>
           <button type="button" className="status" onClick={() => setXray(false)}><span className="led" />Solid</button>
         </div>}
       </div>
@@ -205,98 +211,12 @@ export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'non
       {xray && (
         <div className="xr-card raised" key={spot}>
           <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
-          {spot === 'shape' && <ShapeCard m={m} set={set} />}
-          {spot === 'light' && <LightCard m={m} set={set} />}
-          {spot === 'type' && <TypeCard m={m} set={set} />}
-          {spot === 'shadow' && <ShadowCard m={m} set={set} shadows={recipe.shadows} />}
-          {spot === 'press' && <PressCard travel={travel} onPressChange={setPressed} />}
-          {spot === 'layers' && <LayersCard m={m} set={set} focus={focusLayer} setFocus={setFocusLayer} />}
+          {/* the card holds the real button to handle (a specimen); the model on the bench reads the same values */}
+          <ButtonSpecimenCard spot={spot} m={m} set={set} cap={cap} label={label} icon={icon} travel={travel} setTravel={setTravel} setPressed={setPressed} setFocusLayer={setFocusLayer} />
         </div>
       )}
     </div>
-  );
-}
-
-function ShapeCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
-  return (
-    <>
-      <p>The ends are half circles, so the corner radius is half the height. The side space is half the height minus one, so the text never touches the curve. Change the numbers and see what happens.</p>
-      <div className="xr-dials">
-        <Dial label="Height" value={m.h} min={20} max={48} step={2} fmt={(v) => `${v} pt`} onChange={(h) => set({ h })} />
-        <Switch label="Space = half the height minus one" on={m.padAuto} onChange={(padAuto) => set({ padAuto })} />
-        {!m.padAuto && <Dial label="Padding" value={m.pad} min={2} max={32} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />}
-        <Dial label="Corners" value={m.corners} min={0} max={1} step={0.05} fmt={(v) => (v === 1 ? 'pill' : `${Math.round(v * 100)}%`)} onChange={(corners) => set({ corners })} />
-      </div>
-    </>
-  );
-}
-
-function LightCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
-  return (
-    <>
-      <p>There is one light for everything. The side facing it is lighter, and its edge gets a bright line. Move the light and the button changes with it.</p>
-      <div className="xr-dials">
-        <Dial label="Direction" value={m.lightDeg} min={-90} max={90} step={5} fmt={(v) => (v === 0 ? 'top' : v < 0 ? `${-v}° left` : `${v}° right`)} onChange={(lightDeg) => set({ lightDeg })} />
-        <Dial label="Strength" value={m.lightK} min={0} max={1.5} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(lightK) => set({ lightK })} />
-      </div>
-    </>
-  );
-}
-
-function TypeCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
-  return (
-    <>
-      <p>The text sets how wide the button is. Try the size, weight and letter spacing. Centring the box makes the text look too low, so we centre the letters instead.</p>
-      <div className="xr-dials">
-        <Dial label="Size" value={m.size} min={10} max={16} step={0.5} fmt={(v) => `${v} pt`} onChange={(size) => set({ size })} />
-        <div className="xr-dial"><span className="xr-dial-head"><span>Weight</span></span><Switcher size="compact" aria-label="Weight" value={String(m.weight)} onValueChange={(v) => set({ weight: Number(v) })} options={[{ value: '400', label: '400' }, { value: '500', label: '500' }, { value: '600', label: '600' }]} /></div>
-        <Dial label="Letter-spacing" value={m.track} min={-0.03} max={0.06} step={0.005} fmt={(v) => `${v.toFixed(3)} em`} onChange={(track) => set({ track })} />
-        <div className="xr-dial"><span className="xr-dial-head"><span>Centred on</span></span><Switcher size="compact" aria-label="Centred on" value={m.optical ? 'letters' : 'box'} onValueChange={(v) => set({ optical: v === 'letters' })} options={[{ value: 'letters', label: 'The letters' }, { value: 'box', label: 'The box' }]} /></div>
-      </div>
-    </>
-  );
-}
-
-function ShadowCard({ m, set, shadows }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; shadows: string[] }) {
-  return (
-    <>
-      <p>There are two shadows. The small dark one is where the button touches the page. The big soft one shows how high it is. Raise the button and watch them change.</p>
-      <div className="xr-dials">
-        <Dial label="Height above the page" value={m.lift} min={0} max={3} step={0.1} fmt={(v) => v.toFixed(1)} onChange={(lift) => set({ lift })} />
-      </div>
-      <div className="xr-proof" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 4 }}>
-        {shadows.slice(-2).map((v, i) => <span key={v} className="readout-t ink2">{i ? 'drop' : 'contact'} · {v}</span>)}
-      </div>
-    </>
-  );
-}
-
-function PressCard({ travel, onPressChange }: { travel: number; onPressChange: (pressed: boolean) => void }) {
-  return (
-    <>
-      <p>When you hold it, the button moves down {travel} pt in {String(P.press)} and its shadow shrinks. When you let go, a spring brings it back (stiffness {SPRING.stiffness}, damping {SPRING.damping}). Press it and watch.</p>
-      <div className="xr-proof">
-        <span onPointerDown={() => onPressChange(true)} onPointerUp={() => onPressChange(false)} onPointerCancel={() => onPressChange(false)} onPointerLeave={() => onPressChange(false)} onKeyDown={(event) => { if (event.key === ' ' || event.key === 'Enter') onPressChange(true); }} onKeyUp={() => onPressChange(false)}><Button tabIndex={0}>Press me</Button></span>
-        <SpringPlot k={SPRING.stiffness} c={SPRING.damping} />
-      </div>
-    </>
-  );
-}
-
-function LayersCard({ m, set, focus, setFocus }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; focus: number | null; setFocus: (i: number | null) => void }) {
-  const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
-  return (
-    <>
-      <p>The button is six layers stacked on top of each other. Turn one off to see what it adds.</p>
-      <ol className="xr-layers">
-        {LAYERS.map((l, i) => (
-          <li key={l.name} className={[focus === i ? 'is-focus' : '', m.on[i] ? '' : 'is-off'].join(' ')} onPointerEnter={() => setFocus(i)} onPointerLeave={() => setFocus(null)}>
-            <Switch label={l.name} on={m.on[i]} onChange={(v) => toggle(i, v)} />
-            <p>{l.why}</p>
-          </li>
-        ))}
-      </ol>
-    </>
+    </HintLayer>
   );
 }
 

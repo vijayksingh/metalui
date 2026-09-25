@@ -20,7 +20,7 @@ for (const colorway of COLORWAYS) {
     await workbench.getByRole('button', { name: 'X-ray', exact: true }).click();
     await expect(workbench.locator('.button-xray')).toHaveAttribute('data-xray', 'true');
     await expect(workbench.locator('.xr-label')).toHaveText('Create');
-    await expect(workbench.locator('.xr-card')).toContainText('34 pt');
+    await expect(workbench.locator('.xr-card .ed-readout').filter({ hasText: 'size' })).toContainText('34pt');
     await workbench.getByText('Precise values and presets').click();
     await expect(workbench.locator('.dialkit-root')).toBeVisible();
     await workbench.getByRole('button', { name: 'Reset', exact: true }).click();
@@ -51,5 +51,5 @@ test('button object handles tune geometry and light by dragging', async ({ page 
   await page.mouse.up();
   await expect(workbench.locator('.bw-meter').filter({ hasText: 'Direction' })).toContainText('45°');
   await workbench.getByRole('button', { name: 'X-ray', exact: true }).click();
-  await expect(workbench.locator('.xr-card')).toContainText('40 pt');
+  await expect(workbench.locator('.xr-card .ed-readout').filter({ hasText: 'size' })).toContainText('40pt');
 });

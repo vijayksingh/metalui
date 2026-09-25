@@ -679,7 +679,9 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 /* x-ray callouts: two columns beside the model, leader lines to anchors on the object */
 .xr-bench { place-items: center; }
 .xr-anchor { position: absolute; left: 0; top: 0; width: 2px; height: 2px; }
-.xr-leaders { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: visible; max-width: none; }
+/* leaders run under the model, like wires: they end where they meet it, never on its face */
+.xr-leaders { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: visible; max-width: none; }
+.xr-bench > .xr-scene { z-index: 1; }
 /* Leader lines are the canvas's guide lines (presence tokens) and the anchors its connector
  * ends: at rest a faint dotted trace with a hollow end; near (hover or focus on its callout)
  * the dots firm up; on (the part you are reading) the dots stretch into the guide's green

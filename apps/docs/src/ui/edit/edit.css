@@ -1,0 +1,148 @@
+/* THE EDITING LAYER (ui/edit): handles drawn in the canvas's guide and connector tokens,
+ * a hint tag in the tooltip's look, readouts in a small well. */
+.ed-readouts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+/* readouts: a small sunk well, an engraved label, the value, and an LED for "on a token" */
+.ed-readout { display: inline-flex; align-items: center; gap: 9px; height: 30px; padding: 0 11px 0 13px; border: 0; border-radius: 999px;
+  background: linear-gradient(180deg, var(--well-top), var(--well-bot)); box-shadow: var(--well);
+  transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-readout b { font: 500 9px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.ed-val { font: 500 12.5px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; color: var(--ink); }
+.ed-val small { margin-left: 1.5px; font-size: 9.5px; color: var(--ink3); }
+.ed-readout.is-link { cursor: pointer; outline: none; }
+.ed-readout.is-link:hover, .ed-readout.is-link:focus-visible { box-shadow: var(--well), 0 0 0 1.5px color-mix(in srgb, var(--mu-presence-guide) 55%, transparent); }
+
+/* 1 box model: the overlay shows on hover, focus or while a handle is held */
+.ed-box { position: relative; display: inline-flex; }
+.ed-overlay { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity var(--spring-part-d) var(--spring-part); }
+/* the overlay lets the component be itself (clickable, pressable); only its handles catch the pointer */
+.ed-overlay :is(.ed-edge, .ed-corner) { pointer-events: auto; }
+.ed-box:hover .ed-overlay, .ed-box:focus-within .ed-overlay, .ed-box[data-live] .ed-overlay, .ed-box[data-peek] .ed-overlay { opacity: 1; }
+.ed-content { position: absolute; top: 3px; bottom: 3px; pointer-events: none; border: .5px dashed color-mix(in srgb, var(--mu-presence-guide) 90%, transparent); border-radius: 2px; }
+.ed-edge { position: absolute; outline: none; }
+.ed-edge.is-x { top: 0; bottom: 0; width: 6px; cursor: ew-resize; }
+.ed-edge.is-y { left: 0; right: 0; height: 6px; cursor: ns-resize; }
+/* the outline is the handles: hairlines inside the real edge; top and right are heavier */
+.ed-outline { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.ed-seg { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .6;
+  transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-seg[data-weight="heavy"] { stroke-width: .9; opacity: .85; }
+.ed-seg[data-on] { stroke-width: 1.3; opacity: 1; }
+/* the corner handle: an arc along the corner's own curve; working it shows the whole radius */
+.ed-corner { position: absolute; left: 0; top: 0; cursor: nwse-resize; outline: none; }
+.ed-corner-art { position: absolute; left: 0; top: 0; overflow: visible; }
+.ed-corner-arc { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .6;
+  transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-corner-circle { fill: none; stroke: var(--mu-presence-guide); stroke-width: .4; stroke-dasharray: .01 1.6; stroke-linecap: round; opacity: 0;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-corner-arc[data-on] { stroke-width: 1.3; opacity: 1; }
+.ed-corner:hover .ed-corner-circle, .ed-corner:focus-visible .ed-corner-circle, .ed-box[data-live="corners"] .ed-corner-circle { opacity: .8; }
+[data-mu-colorway="graphite"] :is(.ed-corner-arc, .ed-corner-circle, .ed-seg, .ed-grip-arc) { stroke: var(--green-deep); }
+
+
+/* 3 press depth: a small depth gauge beside the button */
+.ed-press { display: flex; align-items: center; gap: 10px; }
+.ed-gauge { position: relative; width: 10px; height: 26px; outline: none; }
+.ed-gauge i { position: absolute; left: 0; width: 5px; height: .5px; background: var(--ink3); opacity: .6; }
+.ed-gauge i[data-token] { width: 8px; background: var(--green-deep); opacity: 1; }
+.ed-gauge b { position: absolute; left: 0; width: 10px; height: 1px; margin-top: -.25px; background: var(--mu-presence-guide); border-radius: 1px; transition: top var(--spring-release-d) var(--spring-release); }
+.ed-gauge[data-held] b { transition: none; }
+
+
+/* the hint tag: the tooltip's own look, beside the pointer or a focused handle */
+.ed-tag { position: fixed; z-index: 120; display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 8px; white-space: nowrap; pointer-events: none;
+  translate: -50% -100%; transition: left .12s ease-out;
+  animation: ed-tag-in var(--spring-part-d) var(--spring-part) both; }
+.ed-tag-ico { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: rgba(255,255,255,.08); color: var(--mu-presence-guide-dark); }
+.ed-tag b { font-weight: 600; }
+.ed-tag-val { font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+.ed-tag-val em { font-style: normal; color: var(--mu-presence-guide-dark); }
+.ed-tag-how { opacity: .62; }
+.ed-tag-key { display: inline-flex; align-items: center; gap: 6px; padding-left: 8px; border-left: 1px solid rgba(255,255,255,.12); opacity: .72;
+  transition: opacity var(--spring-part-d) var(--spring-part), color var(--spring-part-d) var(--spring-part); }
+.ed-tag-key[data-held] { opacity: 1; color: var(--mu-presence-guide-dark); }
+.ed-tag-key kbd { transition: translate var(--spring-release-d) var(--spring-release), box-shadow var(--spring-release-d) var(--spring-release); }
+.ed-tag-key[data-held] kbd { translate: 0 1px; box-shadow: 0 0 0 1.5px var(--mu-presence-guide-dark); }
+@keyframes ed-tag-in { from { opacity: 0; transform: translateY(4px) scale(.97); } }
+/* a stepping edge shows its steps: two short marks instead of one line */
+
+
+/* a readout points at one handle: only that one shows, everything else on the overlay steps back */
+.ed-content { transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-seg[data-away] { opacity: 0; }
+.ed-content { opacity: 0; }
+.ed-box[data-live="pad"] .ed-content, .ed-box:is([data-shown="left"], [data-shown="right"]) .ed-content { opacity: 1; }
+.ed-box:not([data-shown~="corner"]) .ed-corner-art { opacity: 0; }
+.ed-corner-art { transition: opacity var(--spring-part-d) var(--spring-part); }
+
+.ed-box[data-live="size"] .ed-seg[data-on] { stroke-width: calc(1.3px + var(--lean, 0) * 1.4px); }
+
+
+/* 5 inside the x-ray: the card's specimen sits in a shallow well, like a part on the bench */
+.ed-specimen { display: grid; place-items: center; margin: 14px 0 12px; padding: 30px 8px 22px; border-radius: 18px;
+  background: linear-gradient(180deg, var(--well-top), var(--well-bot)); box-shadow: var(--well); overflow: visible; }
+.xr-card .ed-readouts { justify-content: flex-start; }
+.xr-card .ed-press { gap: 8px; }
+
+/* type on the specimen: the words are the handle; only their box shows, and the two centres on request */
+.ed-typebox { position: relative; display: inline-flex; outline: 0 dashed transparent; }
+.ed-type-label { display: inline-block; cursor: move; outline: none; border-radius: 1px;
+  box-shadow: 0 0 0 .5px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-typebox[data-show="label"] .ed-type-label { box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 80%, transparent); }
+.ed-typebox[data-live] .ed-type-label { box-shadow: 0 0 0 .9px var(--mu-presence-guide); }
+.ed-centres { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-typebox[data-show="centre"] .ed-centres { opacity: 1; }
+.ed-centres i { position: absolute; left: 6px; right: 6px; top: 50%; height: 0; border-top: .5px dashed var(--ink3); }
+.ed-centres i.is-letters { border-top: .6px solid var(--mu-presence-guide); transition: top var(--spring-part-d) var(--spring-part); }
+
+/* light on the specimen: a sun on a faint orbit, with a ray to the button while you work it */
+.ed-lightbox { position: relative; display: grid; place-items: center; }
+.ed-lightbox > * { grid-area: 1 / 1; }
+.ed-orbit { overflow: visible; pointer-events: none; opacity: .45; transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-orbit path { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-dasharray: .01 2.2; stroke-linecap: round; }
+.ed-orbit path.is-near { opacity: .5; }
+.ed-specimen.is-light { padding-top: 92px; padding-bottom: 16px; }
+.ed-lightbox[data-lit] .ed-orbit { opacity: 1; }
+.ed-sun { width: 7px; height: 7px; border-radius: 50%; cursor: grab; outline: none; z-index: 1;
+  background: radial-gradient(circle at 40% 35%, #fff6d8, #ffd66b 60%, #f2b739); box-shadow: 0 0 0 .5px rgba(0,0,0,.2), 0 0 6px rgba(255,200,80,.7); }
+.ed-sun:hover, .ed-sun:focus-visible, .ed-lightbox[data-lit] .ed-sun { box-shadow: 0 0 0 .75px var(--mu-presence-guide), 0 0 8px rgba(255,200,80,.9); }
+/* shadow on the specimen: the button itself is the handle; lifting it spreads its shadow */
+.ed-lift { display: inline-flex; cursor: ns-resize; outline: none; border-radius: 999px; transition: translate var(--spring-release-d) var(--spring-release); }
+.ed-lift[data-live] { transition: none; }
+.ed-lift:focus-visible { box-shadow: 0 0 0 1px var(--mu-presence-guide); }
+
+/* scrubbable readouts: drag up or down; the value rolls with the direction it moved */
+.ed-readout[data-scrub] { cursor: ns-resize; touch-action: none; user-select: none; }
+.ed-readout[data-scrubbing] { box-shadow: var(--well), 0 0 0 1.5px var(--mu-presence-guide); }
+.ed-roll { display: inline-grid; overflow: hidden; vertical-align: bottom; line-height: 1.15; }
+.ed-roll > span { grid-area: 1 / 1; }
+.ed-roll > .is-in { animation: ed-roll-in var(--spring-release-d) var(--spring-release) both; }
+.ed-roll > .is-out { animation: ed-roll-out var(--spring-release-d) var(--spring-release) both; }
+.ed-roll[data-dir="up"] { --from: 70%; --to: -70%; }
+.ed-roll[data-dir="down"] { --from: -70%; --to: 70%; }
+@keyframes ed-roll-in { from { translate: 0 var(--from); opacity: 0; } }
+@keyframes ed-roll-out { to { translate: 0 var(--to); opacity: 0; } }
+html.rm .ed-roll > span { animation: none; }
+html.rm .ed-roll > .is-out { display: none; }
+@media (prefers-reduced-motion: reduce) { .ed-roll > span { animation: none; } .ed-roll > .is-out { display: none; } }
+
+/* a narrow card (a phone, or the x-ray's own column): a tighter well and smaller readouts */
+.xr-card:has(.ed-specimen) { container-type: inline-size; }
+@container (max-width: 380px) {
+  .ed-specimen { margin: 12px 0 10px; padding: 20px 6px 16px; border-radius: 14px; }
+  .ed-specimen.is-light { padding-top: 70px; }
+  .ed-readouts { gap: 6px; }
+  .ed-readout { height: 26px; gap: 7px; padding: 0 9px 0 10px; }
+  .ed-readout b { font-size: 8px; letter-spacing: .12em; }
+  .ed-val { font-size: 11px; }
+  .ed-val small { font-size: 8.5px; }
+}
+
+/* layers: a row per layer with a switch; the whole row toggles, and an off layer's name dims */
+.ed-layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(max(150px, 30%), 1fr)); gap: 2px 8px; }
+.ed-layer { cursor: pointer; justify-content: space-between; }
+.ed-layer .mu-row-text { transition: color var(--spring-part-d) var(--spring-part); }
+.ed-layer[data-off] .mu-row-text { color: var(--ink3); }
+
+/* reduced motion: handles, readouts and the specimen change at once */
+html.rm :is(.ed-box, .ed-specimen, .ed-readouts) *, html.rm :is(.ed-box, .ed-specimen) *::after { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { :is(.ed-box, .ed-specimen, .ed-readouts) *, :is(.ed-box, .ed-specimen) *::after { transition: none !important; } }
