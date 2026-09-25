@@ -47,6 +47,79 @@ extension MetalIconAct {
             MetalIconActInk(d: "M9.3 4.9C9.3 6.6673 7.8673 8.1 6.1 8.1C4.3327 8.1 2.9 6.6673 2.9 4.9C2.9 3.1327 4.3327 1.7 6.1 1.7C7.8673 1.7 9.3 3.1327 9.3 4.9Z", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .text: MetalIconAct(
+            duration: 1.1,
+            caption: "The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.",
+            parts: [
+            MetalIconActPart(
+                name: "slug", origin: CGPoint(x: 12.0, y: 18.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1727, x: 0.0, y: -2.0, r: 0.0, sx: 1.0, sy: 1.04, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2182, x: 0.0, y: -2.2, r: 0.0, sx: 1.0, sy: 1.03, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2909, x: 0.0, y: 0.0, r: 0.0, sx: 1.1, sy: 0.86, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3455, x: 0.0, y: 0.0, r: 0.0, sx: 1.1, sy: 0.86, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6691, x: 0.0, y: 0.0, r: 0.0, sx: 0.9901, sy: 1.0138, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.9936, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "dent", origin: CGPoint(x: 12.0, y: 18.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.8, sy: 1.0, ease: .linear),
+                    .init(0.2891, x: 0.0, y: 0.0, r: 0.0, sx: 0.8, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3136, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5455, x: 0.0, y: 0.0, r: 0.0, sx: 1.4, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.8, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2891, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3136, 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.5455, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "caret", origin: CGPoint(x: 19.4, y: 19.1),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.3, ease: .linear),
+                    .init(0.3818, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.3, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4727, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.5909, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6091, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7364, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.7545, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.9, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.9182, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.3, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.3818, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4727, 1.0, ease: .linear),
+                    .init(0.5909, 1.0, ease: .linear),
+                    .init(0.6091, 0.0, ease: .linear),
+                    .init(0.7364, 0.0, ease: .linear),
+                    .init(0.7545, 1.0, ease: .linear),
+                    .init(0.9, 1.0, ease: .linear),
+                    .init(0.9182, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M6.2 7.3L6.2 6.4C6.2 5.7373 6.7373 5.2 7.4 5.2L16.6 5.2C17.2627 5.2 17.8 5.7373 17.8 6.4L17.8 7.3", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 5.2L12 18.8M9.6 18.8L14.4 18.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M19.4 12.9L19.4 19.1", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M7.9 20L6.8 20.6M16.1 20L17.2 20.6", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .line: MetalIconAct(
             duration: 1.0,
             caption: "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",

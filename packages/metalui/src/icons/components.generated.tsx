@@ -3,7 +3,7 @@ import { createIcon } from './Icon';
 
 /** Select. Hover: The pointer draws back, clicks its tip down, and a ring opens where it lands.. Press: plays the same act. */
 export const SelectIcon = createIcon("select", "SelectIcon");
-/** Text. Hover: glyph steps aside, caret appears and blinks. Press: glyph stamps down. */
+/** Text. Hover: The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.. Press: plays the same act. */
 export const TextIcon = createIcon("text", "TextIcon");
 /** Note. Hover: corner curls up. Press: lines write themselves in. */
 export const NoteIcon = createIcon("note", "NoteIcon");

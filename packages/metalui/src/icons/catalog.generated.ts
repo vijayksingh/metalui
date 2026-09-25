@@ -46,24 +46,26 @@ export const ICON_CATALOG = {
     motion: {"duration":900,"caption":"The pointer draws back, clicks its tip down, and a ring opens where it lands.","stages":["Draw back","Click","Release"],"tracks":[{"part":"cursor","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16667,"transform":"translate(1.5px,1.5px) rotate(5deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33333,"transform":"translate(-.9px,-.9px) rotate(-8deg) scale(.86,.86)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(-.7px,-.7px) rotate(-7deg) scale(.9,.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62222,"transform":"translate(.45px,.45px) rotate(2deg) scale(1.03,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(-.12px,-.12px) rotate(-.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.3)","opacity":0},{"offset":0.32222,"transform":"scale(.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.37778,"transform":"scale(.75)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.71111,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * TEXT · Tools
+   * TEXT · Tools · one act, 1100ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          glyph steps aside, caret appears and blinks
-   * PRESS one-shot (from the current pose)
-   *          glyph stamps down
-   *     0ms   .tg plays txt-p (300ms)
+   * Lift → Strike → Caret
+   *          The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.
+   *  slug       0 → 190 → 240 → 320 → 380 → 736 → 1093 → 1100ms
+   *  dent       0 → 318 → 345 → 600 → 1100ms
+   *  caret      0 → 420 → 520 → 650 → 670 → 810 → 830 → 990 → 1010 → 1100ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "text": {
     label: "Text",
     category: "Tools",
-    hover: "glyph steps aside, caret appears and blinks",
-    press: "glyph stamps down",
-    pressMs: 300,
+    hover: "The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.",
+    press: "plays the same act",
+    pressMs: 1100,
     defs: "",
-    body: "<g class=\"tg\"><path d=\"M6.2 7.3V6.4a1.2 1.2 0 0 1 1.2-1.2h9.2a1.2 1.2 0 0 1 1.2 1.2v.9\"/><path d=\"M12 5.2v13.6M9.6 18.8h4.8\"/></g><path class=\"car\" d=\"M19.4 12.9v6.2\"/>",
+    body: "<g data-part=\"slug\"><path d=\"M6.2 7.3V6.4a1.2 1.2 0 0 1 1.2-1.2h9.2a1.2 1.2 0 0 1 1.2 1.2v.9\"/><path d=\"M12 5.2v13.6M9.6 18.8h4.8\"/></g><path class=\"ac\" data-part=\"caret\" opacity=\"0\" d=\"M19.4 12.9v6.2\"/><path class=\"ac\" data-part=\"dent\" opacity=\"0\" d=\"M7.9 20 6.8 20.6M16.1 20l1.1.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1100,"caption":"The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.","stages":["Lift","Strike","Caret"],"tracks":[{"part":"slug","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17273,"transform":"translate(0px,-2px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21818,"transform":"translate(0px,-2.2px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.29091,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.86)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34545,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.86)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66909,"transform":"translate(0px,0px) rotate(0deg) scale(0.9901,1.0138)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.99364,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"dent","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0},{"offset":0.28909,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31364,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54545,"transform":"translate(0px,0px) rotate(0deg) scale(1.4,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1)","opacity":0}]},{"part":"caret","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0},{"offset":0.38182,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.47273,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.59091,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.60909,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.73636,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.75455,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.9,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.91818,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * NOTE · Tools

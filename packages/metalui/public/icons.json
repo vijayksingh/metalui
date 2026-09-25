@@ -27,11 +27,20 @@
       "component": "TextIcon",
       "label": "Text",
       "category": "Tools",
-      "hover": "glyph steps aside, caret appears and blinks",
-      "press": "glyph stamps down",
-      "pressMs": 300,
+      "hover": "The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.",
+      "press": "plays the same act",
+      "pressMs": 1100,
+      "motion": {
+        "caption": "The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.",
+        "durationMs": 1100,
+        "stages": [
+          "Lift",
+          "Strike",
+          "Caret"
+        ]
+      },
       "tuned16": false,
-      "construction": "T with soft 1.2u corner drops; caret is a separate 6.2u line."
+      "construction": "T with soft 1.2u corner drops; the caret is a separate 6.2u line, an accent. Motion (study): the slug lifts 2, is struck onto its foot (squash .86 × 1.1 pinned at the foot) with two impression marks flanking the foot, springs back on the object spring; the caret grows up beside it and blinks once."
     },
     {
       "name": "note",
