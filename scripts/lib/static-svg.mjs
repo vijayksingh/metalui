@@ -12,8 +12,9 @@ const BAKE = {
   offline: { ring: 'stroke-dasharray="76 24"' },
   pin: { sh: 'opacity=".35"' },
 };
-export function staticSvg(ic, sw = SW, body = ic.body) {
-  const drop = DROP[ic.name] || [], bake = BAKE[ic.name] || {};
+// live: the same bake for an icon's act (the SwiftUI player): accents, data-part and pathLength stay.
+export function staticSvg(ic, sw = SW, body = ic.body, { live = false } = {}) {
+  const drop = live ? [] : DROP[ic.name] || [], bake = BAKE[ic.name] || {};
   const id = `mu-${ic.name}`;
   let s = (ic.defs && !body.includes('<defs>') ? `<defs>${ic.defs}</defs>` : '') + body;
   s = s.replace(/&-/g, id + '-');
@@ -21,14 +22,15 @@ export function staticSvg(ic, sw = SW, body = ic.body) {
     const cm = attrs.match(/\sclass="([^"]*)"/);
     const classes = cm ? cm[1].split(/\s+/) : [];
     // Accents (class "ac") are hidden at rest and only exist during an act.
-    if (classes.some((c) => drop.includes(c) || c === 'ac')) return sc ? '' : m;
-    let a = attrs.replace(/\sclass="[^"]*"/, '').replace(/\sdata-part="[^"]*"/, '');
+    if (classes.some((c) => drop.includes(c) || (c === 'ac' && !live))) return sc ? '' : m;
+    let a = attrs.replace(/\sclass="[^"]*"/, '');
+    if (!live) a = a.replace(/\sdata-part="[^"]*"/, '');
     const st = a.match(/\sstyle="([^"]*)"/);
     let duo = 0.14, swMul = null;
     if (st) {
       const dm = st[1].match(/--duo:([\d.]+)/); if (dm) duo = +dm[1];
       const sm = st[1].match(/calc\(var\(--sw\) \* ([\d.]+)\)/); if (sm) swMul = +sm[1];
-      const rest = st[1].replace(/--duo:[\d.]+;?/, '').replace(/stroke-width:calc\([^)]*\)\)?;?/, '').replace(/opacity:[\d.]+;?/, (o) => { a += ` opacity="${o.split(':')[1].replace(';', '')}"`; return ''; }).trim();
+      const rest = st[1].replace(/--duo:[\d.]+;?/, '').replace(/stroke-width:calc\(var\(--sw\) \* [\d.]+\);?/, '').replace(/opacity:[\d.]+;?/, (o) => { a += ` opacity="${o.split(':')[1].replace(';', '')}"`; return ''; }).trim();
       a = a.replace(/\sstyle="[^"]*"/, rest ? ` style="${rest}"` : '');
     }
     if (swMul) a += ` stroke-width="${+(sw * swMul).toFixed(2)}"`;
@@ -38,6 +40,6 @@ export function staticSvg(ic, sw = SW, body = ic.body) {
     for (const c of classes) if (bake[c]) a += ' ' + bake[c];
     return `<${tag}${a}${sc}>`;
   });
-  s = s.replace(/\spathLength="1"/g, '');
+  if (!live) s = s.replace(/\spathLength="1"/g, '');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${s}</svg>\n`;
 }
