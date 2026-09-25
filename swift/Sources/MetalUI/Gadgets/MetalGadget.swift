@@ -9,9 +9,11 @@ public struct MetalGadget: View {
     let spec: MetalGadgetSpec
     let wanted: String?
     let act: Int
+    let value: Double?
     let sound: MetalSound?
     let size: Double
     @State private var player: MetalMechanismPlayer?
+    @State private var drive: MetalDrive?
     @State private var shown: String?
     @State private var lampGesture: MetalLampGesture?
     @State private var beeps = 0
@@ -19,8 +21,9 @@ public struct MetalGadget: View {
     @State private var landing = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    public init(spec: MetalGadgetSpec, state: String? = nil, act: Int = 0, sound: MetalSound? = nil, size: Double = 160) {
-        self.spec = spec; self.wanted = state; self.act = act; self.sound = sound; self.size = size
+    /// `value` drives a held gadget (its drive port, 0 to 1 for a number): its parts move to follow it.
+    public init(spec: MetalGadgetSpec, state: String? = nil, act: Int = 0, value: Double? = nil, sound: MetalSound? = nil, size: Double = 160) {
+        self.spec = spec; self.wanted = state; self.act = act; self.value = value; self.sound = sound; self.size = size
     }
 
     private var state: String { spec.state(wanted) }
@@ -55,7 +58,7 @@ public struct MetalGadget: View {
 
     public var body: some View {
         let r = resolved, bind = spec.mechanism.first
-        TimelineView(.animation(paused: !(player?.playing ?? false))) { timeline in
+        TimelineView(.animation(paused: !(player?.playing ?? false) && !(drive?.moving ?? false))) { timeline in
             ZStack(alignment: .topLeading) {
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { _ in
                     MetalSlab(r.material, color: body(r), cuts: cuts, size: size)
@@ -76,6 +79,9 @@ public struct MetalGadget: View {
                                    sag: p.params?["sag"]?.number, length: p.params?["length"]?.number, size: size, followEnds: true)
                     }
                 }
+                ForEach(spec.parts.filter { $0.part == "cap" }, id: \.id) { p in
+                    cap(p, r: r, at: timeline.date)
+                }
                 ForEach(spec.parts.filter { $0.part == "plug" }, id: \.id) { p in
                     plug(p, r: r, bound: bind["plug"] == p.id, at: timeline.date)
                 }
@@ -86,13 +92,20 @@ public struct MetalGadget: View {
                 }
             }
             .frame(width: size, height: size, alignment: .topLeading)
+            .onChange(of: timeline.date) { _, now in drive?.tick(now) }
         }
         .accessibilityElement()
         .accessibilityLabel(spec.title)
         .accessibilityValue(spec.description(state))
         .onAppear {
             let m = MetalMechanism.all.first { $0.name == spec.mechanism.name }
-            if let m, player == nil {
+            if let m, m.held != nil, drive == nil {
+                let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault), sound: sound,
+                                   material: driveMaterial, partSize: MetalGadgetTokens.partSizes["cap"]?.0 ?? 60)
+                d?.reduced = reduceMotion
+                drive = d
+            }
+            if let m, m.momentary, player == nil {
                 let p = MetalMechanismPlayer(m)
                 p.reduced = reduceMotion
                 if let held = formPose(bind["plug"], in: state) { p.holdPose("plug", held, immediate: true) }
@@ -102,6 +115,11 @@ public struct MetalGadget: View {
         }
         .onChange(of: state) { _, next in enter(next, bind: bind) }
         .onChange(of: act) { play(bind: bind) }
+        .onChange(of: value) { _, next in
+            guard let next, let drive else { return }
+            drive.reduced = reduceMotion
+            drive.set(spec.driveTargets(next))
+        }
     }
 
     /// Each cut the body needs: a socket under every jack, a hole for every lamp.
@@ -111,7 +129,40 @@ public struct MetalGadget: View {
             if p.part == "jack" { return MetalSlabCut(.hole, at: (p.at[0], p.at[1]), size: (w * MetalGadgetTokens.jackHole, w * MetalGadgetTokens.jackHole)) }
             if p.part == "led" { return MetalSlabCut(.hole, at: (p.at[0], p.at[1]), size: (w + MetalGadgetTokens.holeLip * 2, w + MetalGadgetTokens.holeLip * 2)) }
             return nil
+        } + slots
+    }
+
+    /// A driven actor runs in a slot cut as long as its travel.
+    private var slots: [MetalSlabCut] {
+        guard let held = MetalMechanism.all.first(where: { $0.name == spec.mechanism.name })?.held else { return [] }
+        let slot = MetalGadgetTokens.capSlot
+        return (spec.mechanism.bind[held.slot] ?? []).compactMap { id in
+            part(id).map { p in
+                MetalSlabCut(.slot, at: (p.at[0], p.at[1] + (held.from.y + held.to.y) / 2), size: (slot.width, abs(held.to.y - held.from.y) + slot.pad))
+            }
         }
+    }
+
+    private var driveMaterial: MetalSoundMaterial {
+        spec.parts.first { $0.part == "cap" }?.material == "ceramic" ? .ceramic : .clay
+    }
+
+    /// A cap, at its place along its slot when a drive holds it.
+    @ViewBuilder private func cap(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let wide = footprint(p)
+        // MetalCap draws its face `capAlone` units wide on its own canvas; this frame makes it the Part's width here.
+        let s = wide.0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.capAlone
+        let accent = p.material == "accent", ceramic = p.material == "ceramic"
+        let held = MetalMechanism.all.first(where: { $0.name == spec.mechanism.name })?.held
+        let index = held.flatMap { spec.mechanism.bind[$0.slot]?.firstIndex(of: p.id) }
+        // Before the drive exists (the first frame, a capture) a cap sits at its start place, as the web draws it.
+        let start = spec.driveTargets(value ?? spec.driveDefault)
+        let y = index.flatMap { i in drive?.pose(i).y ?? held.map { $0.from.y + ($0.to.y - $0.from.y) * start[i] } } ?? 0
+        MetalCap(shape: p.params?["shape"]?.text == "knob" ? .knob : .fader, ribs: Int(p.params?["ribs"]?.number ?? Double(MetalGadgetTokens.capRibs)),
+                 accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil, size: s)
+            .frame(width: s, height: s)
+            .position(x: p.at[0] * unit, y: (p.at[1] + y) * unit)
+            .accessibilityHidden(true)
     }
 
     /// Where a cord's end is: at its plug, which carries it wherever the mechanism moves the plug.

@@ -14,6 +14,8 @@ import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
 import { drawBeeper } from './parts/beeper';
 import { drawLamp, type LampSignal } from './parts/led';
+import { drawCap } from './parts/cap';
+import { MECHANISMS } from './mechanisms.generated';
 
 export interface DrawOptions { state?: string; tier?: Tier; host?: Host; id?: string; lamp?: [string, string] }
 export interface GadgetDraw {
@@ -53,6 +55,29 @@ export function formPoses(spec: GadgetSpec, state: string): Record<string, { x?:
   return out;
 }
 
+type HeldDef = { slot: string; from: { y?: number }; to: { y?: number } };
+const heldOf = (spec: GadgetSpec) => (MECHANISMS as unknown as Record<string, { held: HeldDef | null }>)[spec.mechanism.name]?.held ?? null;
+const boundTo = (spec: GadgetSpec, slot: string): string[] => { const b = spec.mechanism.bind[slot]; return b === undefined ? [] : Array.isArray(b) ? b : [b]; };
+
+/** The value a held gadget's drive port starts at: the port's default, else the middle. */
+export function driveDefault(spec: GadgetSpec): number {
+  const port = spec.mechanism.drive ?? Object.keys(spec.ports?.in ?? {})[0];
+  const ch = port ? spec.ports?.in?.[port] : undefined;
+  return ch && 'default' in ch && typeof ch.default === 'number' ? ch.default : 0.5;
+}
+
+/** Where each actor of a held gadget goes for a drive value: its own rest place (its `value`
+ *  param), shifted by how far the value sits from the middle. Push the value up and the whole
+ *  bank moves up, until caps meet the top of their slots. */
+export function driveTargets(spec: GadgetSpec, value: number): number[] {
+  const held = heldOf(spec);
+  if (!held) return [];
+  return boundTo(spec, held.slot).map((id) => {
+    const rest = Number(spec.parts.find((p) => p.id === id)?.params?.value ?? 0.5);
+    return Math.min(1, Math.max(0, rest + (value - 0.5)));
+  });
+}
+
 export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   const tier = o.tier ?? 'full', host = o.host ?? 'bone', id = o.id ?? `g-${spec.name}`;
   const resolved = resolve(spec), state = stateOf(spec, o.state), rs = resolved.states[state];
@@ -67,6 +92,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     if (p.part === 'jack') cuts.push({ kind: 'hole', at: p.at, size: [w * GADGETS.jack.hole, w * GADGETS.jack.hole] });
     if (p.part === 'led') cuts.push({ kind: 'hole', at: p.at, size: [w + GADGETS.hole.lip * 2, w + GADGETS.hole.lip * 2] });
   }
+  // A driven actor runs in a slot cut as long as its travel.
+  const held = heldOf(spec), driven = held ? boundTo(spec, held.slot) : [];
+  if (held) for (const id of driven) {
+    const p = spec.parts.find((q) => q.id === id); if (!p) continue;
+    const y0 = held.from.y ?? 0, y1 = held.to.y ?? 0, [sw, pad] = GADGETS.cap.slot;
+    cuts.push({ kind: 'slot', at: [p.at[0], p.at[1] + (y0 + y1) / 2], size: [sw, Math.abs(y1 - y0) + pad] });
+  }
+  const start = held ? driveTargets(spec, driveDefault(spec)) : [];
   let body = { defs: '', html: '' };
   if (bodyPart && bodyPart.part === 'slab') {
     const s = drawSlab(`${id}-body`, { at: bodyPart.at, size: sizeOf(bodyPart), material: resolved.material as GadgetMaterial, color: rs.body, cuts }, { tier, host });
@@ -97,6 +130,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const c = drawCable(pid, { from, to, sag: p.params?.sag === undefined ? undefined : Number(p.params.sag), length: p.params?.length === undefined ? undefined : Number(p.params.length) }, { tier });
       defs += c.defs;
       cables += `<g data-id="${p.id}" data-from="${p.params?.from}" data-to="${p.params?.to}">${c.shadow}${c.body}</g>`;
+    } else if (p.part === 'cap') {
+      const r = byId[p.id], ceramic = p.material === 'ceramic';
+      const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
+      const d = drawCap(pid, { at: p.at, size, color: face, material: ceramic ? 'ceramic' : 'clay', ribs: p.params?.ribs === undefined ? undefined : Number(p.params.ribs), shape: (p.params?.shape as 'fader' | 'knob' | undefined) ?? 'fader' }, { tier, host });
+      defs += d.defs;
+      // A driven cap is drawn at its starting place, so the first paint (and the server's) shows it there.
+      const k = driven.indexOf(p.id), y = k >= 0 && held ? (held.from.y ?? 0) + ((held.to.y ?? 0) - (held.from.y ?? 0)) * start[k] : 0;
+      plugs += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}><g data-drive="${k}" transform="translate(0 ${+y.toFixed(3)})">${d.shadow}${d.body}</g></g>`;
     } else if (p.part === 'plug') {
       const r = byId[p.id], face = r.accent && r.color ? r.color : clayFace();
       const d = drawPlug(pid, { at: p.at, size: size[0], color: face, stub: (p.params?.stub as 'up' | 'left' | 'right' | 'none' | undefined) ?? 'none' }, { tier, host });

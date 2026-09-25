@@ -1,0 +1,12 @@
+{
+  "name": "fader-bank",
+  "title": "Fader bank",
+  "status": "alpha",
+  "description": "A gadget for settings: three fader caps in slots cut into a pale warm-grey clay slab, the one you would touch in orange, and a lamp. One value moves the whole bank; the caps scrape, tick past detents and knock at the ends. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/fader-bank.gadget.json",
+  "uses": ["slab", "cap", "led"],
+  "page": "/gadgets/fader-bank"
+}

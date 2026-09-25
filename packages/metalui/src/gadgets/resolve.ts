@@ -144,7 +144,8 @@ export function checkSet(members: SetMember[]): SetProblem[] {
   for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length; j++) {
     const a = members[i], b = members[j], ra = a.resolved, rb = b.resolved, pair = [a.name, b.name];
     const gap = Math.abs(((ra.station - rb.station + 540) % 360) - 180);
-    if (gap < S.hueGap) out.push({ code: 'set.hue', members: pair, message: `${a.name} (${ra.station}°) and ${b.name} (${rb.station}°) sit ${gap}° apart; gadgets side by side need ${S.hueGap}°.`, fix: `Give one of them another station of its job, or move it to another rig.` });
+    const colourful = ra.body.C >= S.hueMinC && rb.body.C >= S.hueMinC;      // a grey's hue is not seen
+    if (colourful && gap < S.hueGap) out.push({ code: 'set.hue', members: pair, message: `${a.name} (${ra.station}°) and ${b.name} (${rb.station}°) sit ${gap}° apart; gadgets side by side need ${S.hueGap}°.`, fix: `Give one of them another station of its job, or move it to another rig.` });
     if (ra.material === rb.material && ra.band === rb.band) out.push({ code: 'set.band', members: pair, message: `${a.name} and ${b.name} are both ${ra.material} in the same lightness band.`, fix: `Change one's weight (w) to move it to another band, or pin another material.` });
     const d = deltaE(lchVec(ra.body), lchVec(rb.body));
     if (d < S.deltaE) out.push({ code: 'set.deltaE', members: pair, message: `${a.name} and ${b.name} differ by ΔE ${d.toFixed(3)}; they need ${S.deltaE}.`, fix: `Move one's feel further apart (valence shifts hue, weight shifts lightness).` });

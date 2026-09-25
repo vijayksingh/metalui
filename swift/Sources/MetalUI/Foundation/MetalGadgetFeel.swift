@@ -100,7 +100,8 @@ public enum MetalGadgetModel {
         for i in members.indices { for j in members.indices where j > i {
             let (a, b) = (members[i], members[j]), (ra, rb) = (a.resolved, b.resolved), pair = [a.name, b.name]
             let gap = abs((ra.station - rb.station + 540).truncatingRemainder(dividingBy: 360) - 180)
-            if gap < t.setHueGap { out.append(.init(code: "set.hue", members: pair, message: "\(a.name) and \(b.name) sit \(Int(gap))° apart.")) }
+            let colourful = ra.body.C >= t.setHueMinChroma && rb.body.C >= t.setHueMinChroma      // a grey's hue is not seen
+            if colourful, gap < t.setHueGap { out.append(.init(code: "set.hue", members: pair, message: "\(a.name) and \(b.name) sit \(Int(gap))° apart.")) }
             if ra.material == rb.material, ra.band == rb.band { out.append(.init(code: "set.band", members: pair, message: "\(a.name) and \(b.name) share a material and lightness band.")) }
             if MetalColorMath.deltaE(ra.body, rb.body) < t.setDeltaE { out.append(.init(code: "set.deltaE", members: pair, message: "\(a.name) and \(b.name) are too close in colour.")) }
             let cvd = [MetalColorMath.Deficiency.deuteranopia, .protanopia].map { MetalColorMath.deltaE(MetalColorMath.simulate(ra.body, $0), MetalColorMath.simulate(rb.body, $0)) }.min() ?? 1

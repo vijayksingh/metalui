@@ -59,6 +59,12 @@ final class MetalMechanismParity: XCTestCase {
         XCTAssertEqual(bay.description("failed"), "Sync: failed, check your connection")
         XCTAssertEqual(bay.description("done"), "Sync: done")
         XCTAssertEqual(bay.state("nonsense"), bay.state(nil))
+        // A held gadget's places for a mix, by the same rule as draw.ts.
+        let bank = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("fader-bank.gadget.json")))
+        XCTAssertEqual(bank.driveDefault, 0.5)
+        XCTAssertEqual(bank.driveTargets(0.5), [0.3, 0.72, 0.5])
+        let up = bank.driveTargets(1)
+        XCTAssertEqual(up[0], 0.8, accuracy: 1e-12); XCTAssertEqual(up[1], 1); XCTAssertEqual(up[2], 1)
         // A plug springing home lands when the part spring first reaches home, as the web sees it (~212 ms).
         XCTAssertEqual(MetalGadget.firstHome(MetalSprings.part), 0.217, accuracy: 0.005)
     }

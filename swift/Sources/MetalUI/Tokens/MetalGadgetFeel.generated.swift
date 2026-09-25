@@ -44,6 +44,7 @@ public enum MetalGadgetFeelTokens {
     public static let accentFlipMinChroma: Double = 0.04
     public static let accentMinChroma: Double = 0.13
     public static let setHueGap: Double = 30.0
+    public static let setHueMinChroma: Double = 0.04
     public static let setBands: (Double, Double) = (0.78, 0.5)
     public static let setDeltaE: Double = 0.08
     public static let setCvdDeltaE: Double = 0.06

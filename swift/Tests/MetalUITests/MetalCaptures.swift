@@ -235,6 +235,24 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetFaderBank() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/fader-bank.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) {
+                MetalGadget(spec: spec, state: "rest", size: 128)
+                MetalGadget(spec: spec, state: "on", size: 128)
+                MetalGadget(spec: spec, state: "changed", size: 128)
+                MetalGadget(spec: spec, state: "on", value: 1, size: 128)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("gadget-fader-bank-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -8,8 +8,9 @@
 import * as React from 'react';
 import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
-import { drawGadget, formPoses, stateOf } from './draw';
+import { drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
 import { createPlayer, type MechanismName, type Player } from './player';
+import { createDrive, type Drive, type DriveName } from './drive';
 import { MECHANISMS as TIMELINES } from './mechanisms.generated';
 import { createCableSwing, type CableSwing } from './parts/cable';
 import { playBeeper } from './parts/beeper';
@@ -24,6 +25,8 @@ export interface GadgetProps extends Omit<React.SVGProps<SVGSVGElement>, 'onChan
   state?: string;
   /** Change it to play the mechanism's act. */
   act?: number;
+  /** A held gadget's drive value (its drive port, 0 to 1 for a number): parts move to follow it. */
+  value?: number;
   /** A sound engine from createSound(); without one the gadget is silent. */
   sound?: Sound | null;
   size?: number;
@@ -36,7 +39,7 @@ export interface GadgetProps extends Omit<React.SVGProps<SVGSVGElement>, 'onChan
 const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 type Pt = [number, number];
 
-export function Gadget({ spec, state: wanted, act = 0, sound = null, size = 160, tier: forcedTier, host: forcedHost, onProblems, ...props }: GadgetProps) {
+export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size = 160, tier: forcedTier, host: forcedHost, onProblems, ...props }: GadgetProps) {
   const ref = React.useRef<SVGSVGElement>(null);
   const { host } = useHost(ref, forcedHost);
   const uid = React.useId().replace(/:/g, '');
@@ -68,7 +71,7 @@ export function Gadget({ spec, state: wanted, act = 0, sound = null, size = 160,
   React.useEffect(() => {
     const svg = ref.current;
     // Only a mechanism with a built timeline can play; a spec naming another draws still.
-    if (!valid || !svg || !(valid.mechanism.name in TIMELINES)) return;
+    if (!valid || !svg || (TIMELINES as unknown as Record<string, { mode: string }>)[valid.mechanism.name]?.mode !== 'momentary') return;
     const bind = valid.mechanism.bind as Record<string, string>;
     const at = (id: string) => valid.parts.find((p) => p.id === id)?.at ?? [0, 0];
     const el = (id: string | undefined, sel: string) => (id ? svg.querySelector(`[data-id="${id}"] ${sel}`) : null);
@@ -111,22 +114,43 @@ export function Gadget({ spec, state: wanted, act = 0, sound = null, size = 160,
     return () => { p.destroy(); swing?.destroy(); swing = null; player.current = null; };
   }, [parts]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // A held mechanism: its drive moves the bound parts to follow the value, with its own sound.
+  const drive = React.useRef<Drive | null>(null);
+  React.useEffect(() => {
+    const svg = ref.current;
+    const held = valid ? (TIMELINES as unknown as Record<string, { held: object | null }>)[valid.mechanism.name]?.held : null;
+    if (!valid || !svg || !held) return;
+    const actors = [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
+    const firstActor = valid.parts.find((p) => p.part === 'cap');
+    const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid)), {
+      sound, material: firstActor?.material === 'ceramic' ? 'ceramic' : 'clay', partSize: GADGETS.parts.cap.size[0], reduced: reducedMotion(),
+    });
+    drive.current = d;
+    return () => { d.destroy(); drive.current = null; };
+  }, [parts]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(() => {
+    if (!valid || value === undefined || !drive.current) return;
+    drive.current.setOptions({ reduced: reducedMotion(), sound });
+    drive.current.set(driveTargets(valid, value));
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // A state change: parts spring to the state's poses, the lamp relights, and the state's news plays
   // (through the act when the state enters with one, else straight on the beeper).
   const shown = React.useRef(first.current);
   React.useEffect(() => {
-    if (!valid || !player.current || state === shown.current) return;
+    if (!valid || state === shown.current) return;
     shown.current = state;
     setLampCue(null);
-    const st = valid.states[state], bind = valid.mechanism.bind as Record<string, string>;
-    player.current.setOptions({ reduced: reducedMotion() });
-    player.current.holdPose('plug', formPoses(valid, state)[bind.plug] ?? null);
+    const st = valid.states[state], bind = valid.mechanism.bind as Record<string, string>, p = player.current;
     beepFor.current = st.beep ?? null;
-    const away = player.current.pose('plug'), far = Math.hypot(away.x, away.y) > 2;
     landing.current = false;
-    if (st.enter === 'act' && far && !reducedMotion()) landing.current = true;       // it flies home, then lands
-    else if (st.enter === 'act' && far) player.current.land();
-    else if (st.enter === 'act') player.current.act();
+    // A momentary mechanism's parts spring to the state's poses and may act; a held one stays where its value put it.
+    const away = p?.pose('plug'), far = !!away && Math.hypot(away.x, away.y) > 2;
+    p?.setOptions({ reduced: reducedMotion() });
+    p?.holdPose('plug', formPoses(valid, state)[bind.plug] ?? null);
+    if (p && st.enter === 'act' && far && !reducedMotion()) landing.current = true;       // it flies home, then lands
+    else if (p && st.enter === 'act' && far) p.land();
+    else if (p && st.enter === 'act') p.act();
     else if (st.beep) {
       sound?.beep(st.beep);
       const b = ref.current?.querySelector(`[data-id="${bind.beeper}"]`);

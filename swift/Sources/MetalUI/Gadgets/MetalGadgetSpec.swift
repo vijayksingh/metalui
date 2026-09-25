@@ -14,12 +14,14 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     }
     public struct Mechanism: Codable, Sendable, Hashable {
         public let name: String
+        /// A held mechanism's drive port.
+        public let drive: String?
         /// Slot → the Parts it moves: one part, or several (a counter's drums).
         public let bind: [String: [String]]
         /// Each slot's first Part.
         public var first: [String: String] { bind.compactMapValues(\.first) }
 
-        enum CodingKeys: String, CodingKey { case name, bind }
+        enum CodingKeys: String, CodingKey { case name, bind, drive }
         private struct OneOrMany: Codable, Hashable {
             let ids: [String]
             init(from decoder: Decoder) throws {
@@ -31,11 +33,13 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         public init(from decoder: Decoder) throws {
             let c = try decoder.container(keyedBy: CodingKeys.self)
             name = try c.decode(String.self, forKey: .name)
+            drive = try c.decodeIfPresent(String.self, forKey: .drive)
             bind = try c.decode([String: OneOrMany].self, forKey: .bind).mapValues(\.ids)
         }
         public func encode(to encoder: Encoder) throws {
             var c = encoder.container(keyedBy: CodingKeys.self)
             try c.encode(name, forKey: .name)
+            try c.encodeIfPresent(drive, forKey: .drive)
             try c.encode(bind, forKey: .bind)
         }
     }
@@ -64,6 +68,27 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public let states: [String: State]
     public let initial: String?
     public let describe: String?
+    public let ports: Ports?
+
+    /// What flows in and out: a channel's kind and, for a number, its default.
+    public struct Channel: Codable, Sendable, Hashable { public let kind: String; public let `default`: MetalGadgetParam? }
+    public struct Ports: Codable, Sendable, Hashable { public let `in`: [String: Channel]?; public let out: [String: Channel]? }
+
+    /// The value a held gadget's drive port starts at: the port's default, else the middle.
+    public var driveDefault: Double {
+        let port = mechanism.drive ?? ports?.in?.keys.sorted().first
+        return port.flatMap { ports?.in?[$0]?.default?.number } ?? 0.5
+    }
+
+    /// Where each actor of a held gadget goes for a drive value: its rest place (its `value` param)
+    /// shifted by how far the value sits from the middle, the same rule as draw.ts.
+    public func driveTargets(_ value: Double) -> [Double] {
+        guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
+        return (mechanism.bind[held.slot] ?? []).map { id in
+            let rest = parts.first { $0.id == id }?.params?["value"]?.number ?? 0.5
+            return min(1, max(0, rest + (value - 0.5)))
+        }
+    }
 
     /// Decodes a spec from its JSON.
     public static func decode(_ data: Data) throws -> MetalGadgetSpec { try JSONDecoder().decode(MetalGadgetSpec.self, from: data) }

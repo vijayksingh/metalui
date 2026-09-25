@@ -154,6 +154,7 @@ public enum MetalGadgetTokens {
     public static let capCeramic: (L: Double, C: Double) = (0.93, 0.008)
     public static let capAlone: Double = 200.0
     public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.16, 0.1, 0.22, 0.36)
+    public static let capSlot: (width: Double, pad: Double) = (18.0, 20.0)
     public static let detentSize: Double = 0.33
     public static let detentPitch: Double = 1.6
     public static let stopPitch: (bottom: Double, top: Double) = (0.94, 1.08)

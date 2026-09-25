@@ -135,6 +135,7 @@ public enum MetalGadgetTokens {
     public static let capCeramic: (L: Double, C: Double) = (${G.cap.ceramic.map(num).join(', ')})
     public static let capAlone: Double = ${num(G.cap.alone)}
     public static let capShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cap.shadow.map(num).join(', ')})
+    public static let capSlot: (width: Double, pad: Double) = (${G.cap.slot.map(num).join(', ')})
     public static let detentSize: Double = ${num(G.drive['detent-size'])}
     public static let detentPitch: Double = ${num(G.drive['detent-pitch'])}
     public static let stopPitch: (bottom: Double, top: Double) = (${G.drive['stop-pitch'].map(num).join(', ')})
@@ -269,6 +270,7 @@ ${rules}
     public static let accentFlipMinChroma: Double = ${num(G.accent['flip-min-C'])}
     public static let accentMinChroma: Double = ${num(G.accent['min-C'])}
     public static let setHueGap: Double = ${num(G.set['hue-gap'])}
+    public static let setHueMinChroma: Double = ${num(G.set['hue-min-C'])}
     public static let setBands: (Double, Double) = (${G.set.bands.map(num).join(', ')})
     public static let setDeltaE: Double = ${num(G.set['delta-e'])}
     public static let setCvdDeltaE: Double = ${num(G.set['cvd-delta-e'])}

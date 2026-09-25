@@ -452,6 +452,10 @@ export const GADGETS = {
     "edgeInk": [
       0.1,
       0.5
+    ],
+    "slot": [
+      18,
+      20
     ]
   },
   "drive": {
@@ -733,7 +737,8 @@ export const GADGETS = {
     "deltaE": 0.08,
     "cvdDeltaE": 0.06,
     "slabRun": 3,
-    "panelLGap": 0.06
+    "panelLGap": 0.06,
+    "hueMinC": 0.04
   },
   "parts": {
     "slab": {
@@ -887,6 +892,11 @@ export const GADGETS = {
           "enum",
           "fader",
           "knob"
+        ],
+        "value": [
+          "number",
+          0,
+          1
         ]
       },
       "strike": [
