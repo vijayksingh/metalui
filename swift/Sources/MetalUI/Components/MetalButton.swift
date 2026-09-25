@@ -3,7 +3,7 @@ import SwiftUI
 // A pill cap from the generated button recipe; it sinks while held and springs back.
 
 /// Which cap a button wears. `standard` is soft-touch in the colorway,
-/// `primary` is the dark cap, `destructive` the one red cap.
+/// `primary` wears the contrasting finish, `destructive` the one red cap.
 public enum MetalButtonCap: Sendable {
     case standard
     case primary
@@ -85,7 +85,7 @@ private struct MetalButtonBody: View {
     private func foreground(_ tokens: MetalColorwayTokens) -> Color {
         switch cap {
         case .standard: return (size == .compact && !hovering ? tokens.ink2 : tokens.ink).color
-        case .primary: return (MetalRecipes.button.color("primary.ink") ?? MetalCaps.primary.ink).color
+        case .primary: return (MetalRecipes.button.color("primary.ink", colorway: MetalRecipeColorway(colorway)) ?? MetalCaps.primary.ink).color
         case .destructive: return (MetalRecipes.button.color("destructive.ink") ?? MetalCaps.destructive.ink).color
         }
     }
