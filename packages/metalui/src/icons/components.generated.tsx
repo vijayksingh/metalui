@@ -77,7 +77,7 @@ export const CaptureIcon = createIcon("capture", "CaptureIcon");
 export const PasteIcon = createIcon("paste", "PasteIcon");
 /** Keeper. Hover: The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod.. Press: plays the same act. */
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
-/** New. Hover: the plus grows out from the centre of the tile. Press: the tile presses in and the plus pops out, made. */
+/** New. Hover: The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.. Press: plays the same act. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
 /** Region. Hover: The frame is set down on the canvas, and its name writes into the head behind a caret.. Press: plays the same act. */
 export const RegionIcon = createIcon("region", "RegionIcon");

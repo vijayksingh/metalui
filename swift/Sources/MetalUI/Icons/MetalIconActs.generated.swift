@@ -2309,6 +2309,73 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.9 3.6L8.2 2.7M12 3.1L12 2.1M15.1 3.6L15.8 2.7", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .plus: MetalIconAct(
+            duration: 0.875,
+            caption: "The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.",
+            parts: [
+            MetalIconActPart(
+                name: "upright", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1943, x: 0.0, y: -2.0, r: 0.0, sx: 1.0, sy: 1.04, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2857, x: 0.0, y: 0.6, r: 0.0, sx: 1.0, sy: 0.86, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6343, x: 0.0, y: -0.0522, r: 0.0, sx: 1.0, sy: 1.0122, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.9829, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "bar", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.28, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.3029, x: 0.0, y: 0.6, r: 0.0, sx: 1.07, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6514, x: 0.0, y: -0.0522, r: 0.0, sx: 0.9939, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "tile", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.2914, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3314, x: 0.0, y: 0.0, r: 0.0, sx: 1.02, sy: 0.96, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.7383, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "beads", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.95, sy: 1.0, ease: .linear),
+                    .init(0.3257, x: 0.0, y: 0.0, r: 0.0, sx: 0.95, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3657, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6171, x: 0.0, y: 0.0, r: 0.0, sx: 1.15, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.95, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.3257, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.3657, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6171, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M8 4.5L16 4.5C17.933 4.5 19.5 6.067 19.5 8L19.5 16C19.5 17.933 17.933 19.5 16 19.5L8 19.5C6.067 19.5 4.5 17.933 4.5 16L4.5 8C4.5 6.067 6.067 4.5 8 4.5Z", parts: [2], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M8.8 12L15.2 12", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 8.8L12 15.2", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M7 12L7.01 12M17 12L17.01 12", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .region: MetalIconAct(
             duration: 1.04,
             caption: "The frame is set down on the canvas, and its name writes into the head behind a caret.",

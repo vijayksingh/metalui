@@ -695,11 +695,20 @@
       "component": "PlusIcon",
       "label": "New",
       "category": "Actions",
-      "hover": "the plus grows out from the centre of the tile",
-      "press": "the tile presses in and the plus pops out, made",
-      "pressMs": 360,
+      "hover": "The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.",
+      "press": "plays the same act",
+      "pressMs": 875,
+      "motion": {
+        "caption": "The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.",
+        "durationMs": 875,
+        "stages": [
+          "Lift",
+          "Insert",
+          "Propagate"
+        ]
+      },
       "tuned16": false,
-      "construction": "Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre, always upright: at 45° a plus is the close glyph, so it never turns. Hover grows the arms out from the centre to 7.8 (the path, so the stroke keeps its weight), the new thing about to be made. Press squeezes the tile (.92) and the plus with it (5.8), then as the tile comes back the plus pops to 8.6 and settles: made."
+      "construction": "Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre, always upright: at 45° a plus is the close glyph, so it never turns. Motion (study): the upright lifts 2 along its axis and is driven down into the crossbar, squashing .86; the bar is pushed .6 and widens 1.07 under it, the tile takes the blow a beat later on the object spring, and two beads run out off the bar's ends."
     },
     {
       "name": "region",
