@@ -140,8 +140,8 @@
 .mu-icon.mu-ic-document .dl{stroke-dasharray:1 2} .mu-icon.mu-ic-document .d2{transform-origin:8.6px 15.8px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-document,.mu-ic-document:is(:hover,[data-hover])):not([data-static]) .d2{transform:scaleX(1.7)} .mu-icon.mu-ic-document[data-press] .dl{animation:dc-p .36s cubic-bezier(.3,.1,.2,1) both} .mu-icon.mu-ic-document[data-press] .d2{animation-delay:.06s} @keyframes dc-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}
 /* clock */
-.mu-icon.mu-ic-clock .hd{transform-origin:12px 12px}
-@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-clock,.mu-ic-clock:is(:hover,[data-hover])):not([data-static]) .hd{transform:rotate(60deg)} .mu-icon.mu-ic-clock[data-press] .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}}
+.mu-icon.mu-ic-clock .mh,.mu-icon.mu-ic-clock .hh{transform-origin:12px 12px;--k-dur:.9s;--k-spring:cubic-bezier(.45,0,.2,1)}
+@media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-clock,.mu-ic-clock:is(:hover,[data-hover])):not([data-static]) .mh{transform:rotate(360deg)} :is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-clock,.mu-ic-clock:is(:hover,[data-hover])):not([data-static]) .hh{transform:rotate(30deg)} .mu-icon.mu-ic-clock[data-press] .mh{animation:ck2-p .36s cubic-bezier(.2,.7,.3,1)} @keyframes ck2-p{20%{rotate:9deg}45%{rotate:5deg}70%{rotate:6deg}}}
 /* me */
 .mu-icon.mu-ic-me .tr{stroke-dasharray:1 2} .mu-icon.mu-ic-me .lp{transform-origin:16px 9.8px}
 @media (prefers-reduced-motion:no-preference){:is(.mu-icon-trigger:is(:hover,[data-hover]) .mu-ic-me,.mu-ic-me:is(:hover,[data-hover])):not([data-static]) .tr{animation:me-h .5s cubic-bezier(.3,.1,.2,1) both} @keyframes me-h{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}} .mu-icon.mu-ic-me[data-press] .lp{animation:me-p .3s cubic-bezier(.3,0,.2,1)} @keyframes me-p{40%{transform:scale(1.5)}}}

@@ -944,20 +944,20 @@ export const ICON_CATALOG = {
    * TIME · Status
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the minute hand sweeps on
+   *          an hour passes: the minute hand sweeps round as the hour hand moves one on
    * PRESS one-shot (from the current pose)
-   *          the face ticks
-   *     0ms   .hd plays ck2-p (340ms)
+   *          the minute hand ticks forward a minute
+   *     0ms   .mh plays ck2-p (360ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "clock": {
     label: "Time",
     category: "Status",
-    hover: "the minute hand sweeps on",
-    press: "the face ticks",
-    pressMs: 340,
+    hover: "an hour passes: the minute hand sweeps round as the hour hand moves one on",
+    press: "the minute hand ticks forward a minute",
+    pressMs: 360,
     defs: "",
-    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path class=\"hd\" d=\"M12 7.4V12l3.2 2\"/>",
+    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path class=\"mh\" d=\"M12 12V7.4\"/><path class=\"hh\" d=\"M12 12l3.2 2\"/>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

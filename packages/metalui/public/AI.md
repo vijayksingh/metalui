@@ -372,6 +372,73 @@ A modal layer. React: `Dialog` with parts `Dialog.Root` (open, onOpenChange) and
 
 ---
 
+# Draw picks
+
+The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: not yet.
+
+## Use it for
+
+- Choosing the ink (ink, red, blue, green, amber) and width (fine, medium, bold) of the pen, pencil, marker, line, arrow, rectangle and ellipse.
+
+## Don't use it for
+
+- A free colour picker. The set is fixed on purpose.
+- Anything outside a `Toolbar`: the picks are toolbar buttons.
+
+## Anatomy
+
+A 28 round cap. Ink: a 14 bead in its colour with a gloss. Width: a dot of 3, 6 or 10 in the current ink. Picks sit 2 apart.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| hover | bead or dot at 1.14 | part spring |
+| press | .88 | 80 ms |
+| chosen | sunk well (the latched tool's) | at once |
+| focus | 1.5 ring, no offset | – |
+| disabled | 40 % (eraser latched) | – |
+
+## API
+
+| React | Notes |
+|---|---|
+| `InkPicks value onValueChange disabled` | `Ink`: `'ink' \| 'red' \| 'blue' \| 'green' \| 'amber'` |
+| `WidthPicks value onValueChange ink disabled` | `InkWidth`: `'fine' \| 'medium' \| 'bold'` |
+| `inkColor(ink)` | the CSS colour to draw with |
+
+---
+
+# Draw tools
+
+The drawing group of the toolbar. A composition block. React: `DrawTools` from `@unlocalhosted/metalui`. SwiftUI: not yet.
+
+## Use it for
+
+- Picking a drawing tool, its ink and its width on the canvas.
+
+## Don't use it for
+
+- Select, text or region tools: those are the main toolbar.
+
+## Anatomy
+
+`Toolbar` › `ToolButton` × 8 › `ToolbarSeparator` › `InkPicks` › `ToolbarSeparator` › `WidthPicks`.
+
+Keys: P pen, N pencil, M marker, L line, A arrow, R rectangle, O ellipse, E eraser. V or ⎋ goes back to select (the host handles it).
+
+## States
+
+- One tool latched with its LED, or none.
+- Eraser latched: inks and widths at 40 %.
+- The host remembers the last ink and width per tool.
+
+## API
+
+`DrawTools tool onToolChange ink onInkChange width onWidthChange variant`
+
+---
+
 # Field and search field
 
 React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trail`; `SearchField`. SwiftUI: `MetalField { icon: … input: … trail: … }`, `MetalSearchField`.
@@ -1968,6 +2035,6 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `TagIcon` | `tag` | Tools | the tag swings on its eyelet | the tag stamps |
 | `CalendarIcon` | `calendar` | Tools | the rings lift | the page turns in |
 | `DocumentIcon` | `document` | Tools | the second line writes on | the lines redraw |
-| `ClockIcon` | `clock` | Status | the minute hand sweeps on | the face ticks |
+| `ClockIcon` | `clock` | Status | an hour passes: the minute hand sweeps round as the hour hand moves one on | the minute hand ticks forward a minute |
 | `MeIcon` | `me` | Tools | the trend redraws to its last point | the last point pulses |
 | `SeedIcon` | `seed` | Actions | the sprout grows | the seed settles |

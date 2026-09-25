@@ -417,12 +417,12 @@ export const ICONS = [
   shape: 'Page 13.4 × 17 with a 5-unit fold, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines.' },
 
 // A clock: the face and its hands. Body: the face ring. Mark: the hands, one wire.
-{ name: 'clock', cat: 'Status', label: 'Time', hover: 'the minute hand sweeps on', press: 'the face ticks',
-  body: `<path class="f" style="--duo:.08" d="M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z"/><path class="hd" d="M12 7.4V12l3.2 2"/>`,
-  base: `& .hd{transform-origin:12px 12px}`,
-  mo: `@H .hd{transform:rotate(60deg)}
-       @P .hd{animation:ck2-p .34s cubic-bezier(.3,0,.2,1)} @keyframes ck2-p{40%{transform:rotate(18deg)}}`,
-  shape: 'Face r8.5, tinted .08; hands 4.6 and 3.8 about the centre.' },
+{ name: 'clock', cat: 'Status', label: 'Time', hover: 'an hour passes: the minute hand sweeps round as the hour hand moves one on', press: 'the minute hand ticks forward a minute',
+  body: `<path class="f" style="--duo:.08" d="M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z"/><path class="mh" d="M12 12V7.4"/><path class="hh" d="M12 12l3.2 2"/>`,
+  base: `& .mh,& .hh{transform-origin:12px 12px;--k-dur:.9s;--k-spring:cubic-bezier(.45,0,.2,1)}`,
+  mo: `@H .mh{transform:rotate(360deg)} @H .hh{transform:rotate(30deg)}
+       @P .mh{animation:ck2-p .36s cubic-bezier(.2,.7,.3,1)} @keyframes ck2-p{20%{rotate:9deg}45%{rotate:5deg}70%{rotate:6deg}}`,
+  shape: 'Face r8.5, tinted .08; two hands about the centre, minute 4.6 (up) and hour 3.8, so the face always shows a time a clock can show. Hover is an hour passing: the minute hand sweeps a full turn while the hour hand moves one hour on (30°), over .9 s on an ease-in-out (a spring would overshoot a full turn by 20°), and winds back on leave. Press is one tick of a mechanical hand: the minute hand steps on, recoils and settles (on `rotate`, so it adds to the hover pose).' },
 
 // Me: the trend over your own days. Body: the screen. Marks: the trace and its last point.
 { name: 'me', cat: 'Tools', label: 'Me', hover: 'the trend redraws to its last point', press: 'the last point pulses',

@@ -491,11 +491,11 @@
       "component": "ClockIcon",
       "label": "Time",
       "category": "Status",
-      "hover": "the minute hand sweeps on",
-      "press": "the face ticks",
-      "pressMs": 340,
+      "hover": "an hour passes: the minute hand sweeps round as the hour hand moves one on",
+      "press": "the minute hand ticks forward a minute",
+      "pressMs": 360,
       "tuned16": false,
-      "construction": "Face r8.5, tinted .08; hands 4.6 and 3.8 about the centre."
+      "construction": "Face r8.5, tinted .08; two hands about the centre, minute 4.6 (up) and hour 3.8, so the face always shows a time a clock can show. Hover is an hour passing: the minute hand sweeps a full turn while the hour hand moves one hour on (30°), over .9 s on an ease-in-out (a spring would overshoot a full turn by 20°), and winds back on leave. Press is one tick of a mechanical hand: the minute hand steps on, recoils and settles (on `rotate`, so it adds to the hover pose)."
     },
     {
       "name": "me",
