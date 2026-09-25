@@ -71,7 +71,7 @@ export const SyncedIcon = createIcon("synced", "SyncedIcon");
 export const OfflineIcon = createIcon("offline", "OfflineIcon");
 /** Sync Error. Hover: The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.. Press: plays the same act. */
 export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");
-/** Capture. Hover: viewfinder focuses in. Press: shutter blinks. */
+/** Capture. Hover: The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.. Press: plays the same act. */
 export const CaptureIcon = createIcon("capture", "CaptureIcon");
 /** Paste. Hover: clip lifts. Press: contents land on the board. */
 export const PasteIcon = createIcon("paste", "PasteIcon");

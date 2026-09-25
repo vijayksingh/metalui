@@ -527,11 +527,20 @@
       "component": "CaptureIcon",
       "label": "Capture",
       "category": "Status",
-      "hover": "viewfinder focuses in",
-      "press": "shutter blinks",
-      "pressMs": 340,
+      "hover": "The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.",
+      "press": "plays the same act",
+      "pressMs": 950,
+      "motion": {
+        "caption": "The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.",
+        "durationMs": 950,
+        "stages": [
+          "Focus",
+          "Shutter",
+          "Let go"
+        ]
+      },
       "tuned16": false,
-      "construction": "Four r3.2 corners (softer than Fit) + aperture circle r3.6."
+      "construction": "Four r3.2 corners (softer than Fit) around an aperture circle r3.6 tinted .16. Motion (study): the corners close in 1.5 along their diagonals, hunt out to 0.8 and lock at 1.1; a solid shutter disc snaps shut over the aperture and reopens; the corners let go past rest and settle."
     },
     {
       "name": "paste",

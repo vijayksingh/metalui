@@ -1207,6 +1207,100 @@ extension MetalIconAct {
             MetalIconActInk(d: "M16.85 3.95L17.39 2.88M17.78 5.15L18.95 4.88M17.47 6.63L18.43 7.36", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .capture: MetalIconAct(
+            duration: 0.95,
+            caption: "The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.",
+            parts: [
+            MetalIconActPart(
+                name: "nw", origin: CGPoint(x: 5.6, y: 5.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2, x: 1.5, y: 1.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3053, x: 0.8, y: 0.8, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4, x: 1.1, y: 1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6316, x: 1.1, y: 1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7579, x: -0.35, y: -0.35, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8737, x: 0.1, y: 0.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "ne", origin: CGPoint(x: 18.4, y: 5.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2, x: -1.5, y: 1.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3053, x: -0.8, y: 0.8, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4, x: -1.1, y: 1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6316, x: -1.1, y: 1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7579, x: 0.35, y: -0.35, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8737, x: -0.1, y: 0.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "se", origin: CGPoint(x: 18.4, y: 18.4),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2, x: -1.5, y: -1.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3053, x: -0.8, y: -0.8, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4, x: -1.1, y: -1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6316, x: -1.1, y: -1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7579, x: 0.35, y: 0.35, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8737, x: -0.1, y: -0.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "sw", origin: CGPoint(x: 5.6, y: 18.4),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2, x: 1.5, y: -1.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3053, x: 0.8, y: -0.8, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4, x: 1.1, y: -1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.6316, x: 1.1, y: -1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7579, x: -0.35, y: 0.35, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8737, x: 0.1, y: -0.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "shutter", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 0.3, ease: .linear),
+                    .init(0.4526, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 0.3, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5053, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.5895, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.6737, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.3, sy: 0.3, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.4526, 0.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5053, 1.0, ease: .linear),
+                    .init(0.5895, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.6737, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M3.8 8.4L3.8 7C3.8 5.2327 5.2327 3.8 7 3.8L8.4 3.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M15.6 3.8L17 3.8C18.7673 3.8 20.2 5.2327 20.2 7L20.2 8.4", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M20.2 15.6L20.2 17C20.2 18.7673 18.7673 20.2 17 20.2L15.6 20.2", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8.4 20.2L7 20.2C5.2327 20.2 3.8 18.7673 3.8 17L3.8 15.6", parts: [3], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M15.6 12C15.6 13.9882 13.9882 15.6 12 15.6C10.0118 15.6 8.4 13.9882 8.4 12C8.4 10.0118 10.0118 8.4 12 8.4C13.9882 8.4 15.6 10.0118 15.6 12Z", parts: [], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M15.6 12C15.6 13.9882 13.9882 15.6 12 15.6C10.0118 15.6 8.4 13.9882 8.4 12C8.4 10.0118 10.0118 8.4 12 8.4C13.9882 8.4 15.6 10.0118 15.6 12Z", parts: [4], stroke: 0.0, fill: .solid, opacity: 1.0),
+            ]
+        ),
         .region: MetalIconAct(
             duration: 1.04,
             caption: "The frame is set down on the canvas, and its name writes into the head behind a caret.",
