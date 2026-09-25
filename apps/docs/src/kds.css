@@ -301,6 +301,8 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 45%, transparent), transparent 60%),
     radial-gradient(100% 80% at 80% 110%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 60%), var(--page);
   box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--ink) 10%, transparent); }
+/* A host's placeholder content: faint bars that say "something is here" without being read. */
+.host .host-line { display: block; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
 [data-mu-colorway="graphite"] .stage.on-canvas, .cw-graphite .stage.on-canvas { background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 4%, transparent), transparent 60%), var(--page); box-shadow: inset 0 0 0 .5px color-mix(in srgb, white 8%, transparent); }
 .stage.col { flex-direction: column; }
 .stage.left { justify-content: flex-start; }

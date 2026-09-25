@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
-import { Button, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
+import { Button, Surface, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
 import { highlight, langOf, type Lang } from '../lib/highlight';
@@ -121,6 +121,26 @@ function StageCaption({ caption, cost }: { caption?: React.ReactNode; cost?: Rea
       {caption && (long ? <span className="t-body ink2" style={{ display: 'block', maxWidth: 620, margin: '0 auto' }}>{caption}</span> : <span className="eng">{caption}</span>)}
       {cost && <span className="t-meta ink3" style={{ display: 'block', marginTop: 6 }}><b style={{ fontWeight: 500 }}>Cost:</b> {cost}</span>}
     </div>
+  );
+}
+
+/**
+ * A quiet stand-in for what a control sits on: a card, a strip. A control never floats alone and never
+ * lives in a place, so its demo puts it on a host: the lightest raised plate (raise-lite) with faint
+ * lines for the content it stands for, and the control where it would really be (a card's corner).
+ * Give it children to show real content instead of lines.
+ */
+export function Host({ action, lines = 2, children, width = 300, className = '' }: { action?: React.ReactNode; lines?: number; children?: React.ReactNode; width?: number; className?: string }) {
+  return (
+    <Surface material="raise-lite" radius="card" className={`host flex max-w-full flex-col gap-12 px-18 py-16 ${className}`} style={{ width: children ? undefined : width }}>
+      {(action || !children) && (
+        <div className="flex min-h-32 items-center justify-between gap-12">
+          <span aria-hidden className="host-line" style={{ width: '42%' }} />
+          {action}
+        </div>
+      )}
+      {children ?? Array.from({ length: lines }, (_, i) => <span key={i} aria-hidden className="host-line" style={{ width: i === lines - 1 ? '64%' : '100%' }} />)}
+    </Surface>
   );
 }
 

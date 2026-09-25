@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { ContextMenu, Cue, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { ContextMenu, Cue, IconButton, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/menu/menu.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMenu.swift?raw';
-import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
+import { Bench, Host, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { MenuXray } from '../../ui/xray/MenuXray';
 
@@ -49,18 +49,22 @@ export default function MenuPage() {
       <PageHeader title="Menu and correction popover" lede="A frosted plate of rows, denser than the palette. From a trigger it opens 6 below; from a right-click it opens at the pointer, and that is the correction popover: right-click a cue to say what it is not. Pointer and keyboard share one highlighted row. Built on Base UI Menu and Context Menu." />
       <Section title="Correction popover" lede="Right-click a cue (or focus it and press ⇧F10). The heading is where the cue came from; choose a correction and the cue lets go, with Undo in a toast.">
         <Bench caption="right-click a cue" on="table">
-          <Corrections />
+          <Host>
+            <Corrections />
+          </Host>
         </Bench>
       </Section>
       <Section title="From a trigger" lede="Click, or focus and press ↓ / ↩. Arrows and type-ahead move the highlight; hover moves the same highlight.">
         <Bench caption={`last chosen · ${ran}`} on="table" className="min-h-[240px] items-start">
-          <Menu heading={d.heading ? 'Block · note' : undefined} trigger={<button type="button" aria-label="More" className="material-button grid size-32 cursor-pointer place-items-center rounded-full text-ink2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--mu-focus)]"><MoreIcon size={16} /></button>}>
-            <MenuItem icon={<DuplicateIcon size={14} />} shortcut="⌘D" onSelect={() => setRan('Duplicate')}>Duplicate</MenuItem>
-            <MenuItem icon={<PinIcon size={14} />} shortcut="⇧P" onSelect={() => setRan('Pin')}>Pin</MenuItem>
-            <MenuItem icon={<ShareIcon size={14} />} disabled>Share</MenuItem>
-            <MenuSeparator />
-            <MenuItem icon={<TrashIcon size={14} />} shortcut="⌫" danger onSelect={() => setRan('Delete')}>Delete</MenuItem>
-          </Menu>
+          <Host action={
+            <Menu heading={d.heading ? 'Block · note' : undefined} trigger={<IconButton variant="ghost" label="More" icon={<MoreIcon size={16} />} />}>
+              <MenuItem icon={<DuplicateIcon size={14} />} shortcut="⌘D" onSelect={() => setRan('Duplicate')}>Duplicate</MenuItem>
+              <MenuItem icon={<PinIcon size={14} />} shortcut="⇧P" onSelect={() => setRan('Pin')}>Pin</MenuItem>
+              <MenuItem icon={<ShareIcon size={14} />} disabled>Share</MenuItem>
+              <MenuSeparator />
+              <MenuItem icon={<TrashIcon size={14} />} shortcut="⌫" danger onSelect={() => setRan('Delete')}>Delete</MenuItem>
+            </Menu>
+          } />
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
       </Section>
