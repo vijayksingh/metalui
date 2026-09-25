@@ -1,0 +1,116 @@
+/* Button experiment: preview, X-ray and DialKit share one physical workbench. */
+.button-workbench { border-radius: 30px; padding: 14px; margin: 0 0 24px; background: color-mix(in srgb, var(--ink) 2.5%, var(--page)); box-shadow: inset 0 0 0 1px var(--rule); }
+.button-xray { gap: 14px; margin: 0; }
+.button-xray-toolbar { display: flex; align-items: center; gap: 8px; flex: 1 0 100%; padding: 4px 4px 0; }
+.button-xray-toolbar-fill { flex: 1; }
+.button-xray-toolbar .status { cursor: pointer; }
+.button-xray-toolbar .status[aria-pressed="true"] { color: var(--green-deep); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--green-deep) 45%, transparent); }
+.button-xray > .xr-bench { min-height: 420px; flex-basis: 100%; border-radius: 22px; }
+.button-xray > .xr-card { flex: 1 1 100%; max-height: none; border-radius: 20px; }
+.button-xray:not([data-xray]) > .xr-bench { min-height: 380px; }
+.button-xray .xr-solid .mu-button { cursor: pointer; }
+.button-xray .xr-hint { padding: 0 12px; white-space: normal; line-height: 1.4; }
+.button-workbench-controls { margin-top: 14px; padding: 18px; border-radius: 22px; background: var(--page); box-shadow: inset 0 0 0 1px var(--rule); }
+.button-workbench-controls-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.button-workbench-controls-head .eng { color: var(--ink); }
+.button-workbench-controls-head p { margin: 5px 0 0; font: 400 12px/18px var(--sans); color: var(--ink2); }
+.button-workbench-controls-head .status { cursor: pointer; }
+.button-workbench-controls .dialkit-root, .button-workbench-controls .dialkit-panel, .button-workbench-controls .dialkit-panel-wrapper, .button-workbench-controls .dialkit-panel-inner { width: 100%; box-sizing: border-box; }
+.button-workbench-controls .dialkit-root { --dial-text-root: var(--ink); --dial-text-section: var(--ink); --dial-text-label: var(--ink2); --dial-text-focus: var(--ink); --dial-text-primary: var(--ink); --dial-text-secondary: var(--ink2); --dial-text-tertiary: var(--ink3); --dial-border: var(--rule); --dial-border-hover: var(--green-deep); --dial-surface: color-mix(in srgb, var(--ink) 3%, transparent); --dial-surface-hover: color-mix(in srgb, var(--ink) 6%, transparent); --dial-surface-active: color-mix(in srgb, var(--green-deep) 14%, transparent); --dial-glass-bg: transparent; --dial-dropdown-bg: var(--page); --dial-radius: 10px; --dial-row-height: 38px; font-family: var(--sans); }
+.button-workbench-controls .dialkit-panel-inner { padding: 0; border: 0; background: none; backdrop-filter: none; box-shadow: none; transform: none; }
+.button-workbench-controls .dialkit-panel-header { padding: 0 2px 12px; margin-bottom: 0; border: 0; }
+.button-workbench-controls .dialkit-folder-title-root { font: 500 11px/16px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink3); }
+.button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 0; }
+.button-workbench-controls .dialkit-folder:not(.dialkit-folder-root) { min-width: 0; padding: 10px; margin: 0; border: 0; border-radius: 16px; background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.button-workbench-controls .dialkit-folder:not(.dialkit-folder-root) > .dialkit-folder-header { height: 30px; }
+.button-workbench-controls .dialkit-folder:not(.dialkit-folder-root) .dialkit-folder-title { font: 600 12px/16px var(--sans); color: var(--ink); }
+.button-workbench-controls .dialkit-folder:not(.dialkit-folder-root) .dialkit-folder-inner { gap: 5px; padding-bottom: 0; }
+.button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner > .dialkit-folder:last-child { grid-column: 1 / -1; }
+.button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner > .dialkit-folder:last-child > .dialkit-folder-content > .dialkit-folder-inner { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.button-workbench-controls .dialkit-slider, .button-workbench-controls .dialkit-text-control, .button-workbench-controls .dialkit-select-trigger, .button-workbench-controls .dialkit-labeled-control { background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.button-workbench-controls .dialkit-slider-fill { background: color-mix(in srgb, var(--green-deep) 15%, transparent); }
+.button-workbench-controls .dialkit-slider-active .dialkit-slider-fill { background: color-mix(in srgb, var(--green-deep) 26%, transparent); }
+.button-workbench-controls .dialkit-slider-label, .button-workbench-controls .dialkit-text-label, .button-workbench-controls .dialkit-select-label, .button-workbench-controls .dialkit-labeled-control-label { font: 500 11.5px/16px var(--sans); color: var(--ink2); }
+.button-workbench-controls .dialkit-slider-value, .button-workbench-controls .dialkit-select-value, .button-workbench-controls .dialkit-text-input { font: 500 11.5px/16px var(--mono); color: var(--ink); }
+.button-workbench-controls .dialkit-segmented-pill { background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.button-workbench-controls .dialkit-segmented-button { font: 500 11px/16px var(--sans); }
+.button-workbench-controls .dialkit-toolbar-add, .button-workbench-controls .dialkit-preset-trigger { background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.button-workbench-controls .dialkit-slider:focus-visible, .button-workbench-controls button:focus-visible, .button-workbench-controls input:focus-visible { outline: 2px solid var(--mu-focus); outline-offset: 2px; }
+html.rm .button-workbench-controls .dialkit-root *, html.rm .button-workbench-controls .dialkit-root *::before, html.rm .button-workbench-controls .dialkit-root *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+@media (min-width: 1100px) { .button-xray[data-xray] > .xr-bench { flex: 1 1 56%; } .button-xray[data-xray] > .xr-card { flex: 1 1 32%; } }
+@media (max-width: 850px) { .button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); } .button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner > .dialkit-folder:last-child > .dialkit-folder-content > .dialkit-folder-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .button-workbench { padding: 8px; border-radius: 22px; } .button-workbench-controls { padding: 12px; } .button-xray > .xr-bench { min-height: 340px; padding-left: 12px; padding-right: 12px; } .button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner, .button-workbench-controls .dialkit-folder-root > .dialkit-folder-content > .dialkit-folder-inner > .dialkit-folder:last-child > .dialkit-folder-content > .dialkit-folder-inner { grid-template-columns: minmax(0, 1fr); } }
+
+/* Default controls are instruments built from the same materials as the specimen.
+   DialKit owns values/presets; its precise panel sits behind an explicit disclosure. */
+.bw-smart { display: flex; flex-direction: column; gap: 12px; }
+.bw-smart { --bw-cap-bg: var(--mu-r-button-self-background); --bw-cap-sh: var(--mu-r-button-self-shadow); --bw-cap-ink: var(--ink); }
+.bw-smart[data-cap="primary"] { --bw-cap-bg: var(--mu-r-button-primary-background); --bw-cap-sh: var(--mu-r-button-primary-shadow); --bw-cap-ink: var(--mu-r-button-primary-ink); }
+.bw-smart[data-cap="destructive"] { --bw-cap-bg: var(--mu-r-button-destructive-background); --bw-cap-sh: var(--mu-r-button-destructive-shadow); --bw-cap-ink: var(--mu-r-button-destructive-ink); }
+.bw-content-row { display: grid; grid-template-columns: minmax(150px,1.4fr) minmax(210px,2fr) minmax(120px,1fr) auto; align-items: end; gap: 10px; }
+.bw-field, .bw-cap-select { min-width: 0; padding: 0; border: 0; margin: 0; }
+.bw-field > span, .bw-cap-select legend { display: block; margin: 0 0 6px; font: 500 10px/14px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
+.bw-field input, .bw-field select { width: 100%; height: 38px; padding: 0 12px; border: 0; border-radius: 11px; background: linear-gradient(var(--well-top),var(--well-bot)); box-shadow: var(--well); color: var(--ink); font: 500 12px/16px var(--sans); }
+.bw-field select { cursor: pointer; }
+.bw-cap-select { display: flex; gap: 5px; flex-wrap: wrap; }
+.bw-cap-select legend { float: left; width: 100%; }
+.bw-cap-select label { position: relative; flex: 1; min-width: 68px; cursor: pointer; }
+.bw-cap-select input { position: absolute; opacity: 0; }
+.bw-cap-select span { display: grid; place-items: center; height: 38px; border-radius: 11px; background: var(--btn-bg); box-shadow: var(--btn-sh); font: 500 11px/14px var(--sans); text-transform: capitalize; color: var(--ink2); }
+.bw-cap-select input:checked + span { color: var(--green-deep); box-shadow: var(--well), inset 0 0 0 1px color-mix(in srgb,var(--green-deep) 35%,transparent); }
+.bw-cap-select label:has(input:focus-visible), .bw-layer:has(input:focus-visible) { outline: 2px solid var(--mu-focus); outline-offset: 2px; border-radius: 11px; }
+.bw-disabled { display: flex; align-items: center; gap: 7px; height: 38px; font: 500 11px/14px var(--sans); color: var(--ink2); cursor: pointer; }
+.bw-disabled input, .bw-small-switch input, .bw-layer input { accent-color: var(--green-deep); }
+.bw-instruments { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.bw-instrument { min-width: 0; padding: 16px; border-radius: 18px; background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.bw-instrument header .eng { color: var(--ink); }
+.bw-instrument header p { margin: 5px 0 0; min-height: 34px; font: 400 12px/17px var(--sans); color: var(--ink2); }
+.bw-shape-diagram, .bw-light-diagram, .bw-elevation-diagram { position: relative; display: grid; place-items: center; height: 185px; margin: 12px 0; border-radius: 14px; overflow: hidden; background: linear-gradient(var(--well-top),var(--well-bot)); box-shadow: var(--well); }
+.bw-shape-diagram { background-image: linear-gradient(color-mix(in srgb,var(--green-deep) 10%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--green-deep) 10%,transparent) 1px,transparent 1px),linear-gradient(var(--well-top),var(--well-bot)); background-size: 16px 16px,16px 16px,auto; }
+.bw-shape-outline { position: absolute; border: 1px dashed color-mix(in srgb,var(--green-deep) 55%,transparent); border-radius: 999px; }
+.bw-shape-object { position: relative; display: flex; align-items: center; justify-content: center; max-width: 95%; background: var(--bw-cap-bg); box-shadow: var(--bw-cap-sh); color: var(--bw-cap-ink); }
+.bw-shape-padding { height: 100%; flex: none; background: color-mix(in srgb,var(--green-deep) 13%,transparent); }
+.bw-shape-padding:first-child { border-radius: 999px 0 0 999px; }
+.bw-shape-padding:nth-child(3) { border-radius: 0 999px 999px 0; }
+.bw-shape-face { flex: 1; min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 500 13px/18px var(--sans); }
+.bw-handle { position: absolute; z-index: 2; display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; background: var(--btn-bg); box-shadow: var(--btn-sh),0 0 0 2px var(--green-deep); cursor: grab; touch-action: none; }
+.bw-handle:active { cursor: grabbing; }
+.bw-handle-core { width: 7px; height: 7px; border-radius: 50%; background: var(--green-deep); }
+.bw-height-handle { top: -15px; left: calc(50% - 14px); }
+.bw-padding-handle { top: calc(50% - 14px); right: -15px; }
+.bw-radius-handle { top: -15px; right: 12px; }
+.bw-readouts { display: flex; flex-wrap: wrap; gap: 5px; }
+.bw-meter { display: flex; justify-content: space-between; gap: 8px; flex: 1; min-width: 78px; padding: 7px 8px; border-radius: 9px; background: color-mix(in srgb,var(--ink) 4%,transparent); font: 500 10px/14px var(--sans); color: var(--ink2); }
+.bw-meter strong { font: 500 10px/14px var(--mono); color: var(--ink); }
+.bw-small-switch { display: flex; align-items: center; gap: 8px; margin-top: 10px; font: 500 11px/15px var(--sans); color: var(--ink2); cursor: pointer; }
+.bw-light-diagram { cursor: crosshair; touch-action: none; }
+.bw-light-orbit { position: absolute; width: 136px; height: 136px; border: 1px dashed color-mix(in srgb,var(--green-deep) 60%,transparent); border-radius: 50%; }
+.bw-light-object { display: grid; place-items: center; width: 118px; height: 42px; border-radius: 999px; background: var(--bw-cap-bg); box-shadow: var(--bw-cap-sh); font: 500 12px/16px var(--sans); color: var(--bw-cap-ink); }
+.bw-sun { position: absolute; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; background: #d8973c; box-shadow: 0 0 0 5px rgba(216,151,60,.12), 0 0 22px rgba(216,151,60,.5); font: 20px/1 var(--sans); pointer-events: none; }
+.bw-type-sample { display: grid; place-items: center; height: 90px; margin: 12px 0; border-radius: 14px; background: linear-gradient(var(--well-top),var(--well-bot)); box-shadow: var(--well); color: var(--ink); white-space: nowrap; overflow: hidden; }
+.bw-adjust-row { display: flex; align-items: center; gap: 5px; margin-top: 5px; font: 500 11px/16px var(--sans); color: var(--ink2); }
+.bw-adjust-row > span { flex: 1; }
+.bw-adjust-row strong { min-width: 54px; text-align: center; font: 500 10px/16px var(--mono); color: var(--ink); }
+.bw-adjust-row button, .bw-travel-choices button { min-width: 28px; height: 28px; padding: 0 6px; border: 0; border-radius: 9px; background: var(--btn-bg); box-shadow: var(--btn-sh); color: var(--ink2); cursor: pointer; }
+.bw-adjust-row button[aria-pressed="true"], .bw-travel-choices button[aria-pressed="true"] { color: var(--green-deep); box-shadow: var(--well); }
+.bw-elevation-diagram { perspective: 500px; }
+.bw-elevation-floor { position: absolute; top: 53%; width: 180px; height: 72px; border-radius: 14px; transform: rotateX(58deg); background-image: linear-gradient(color-mix(in srgb,var(--green-deep) 18%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--green-deep) 18%,transparent) 1px,transparent 1px); background-size: 16px 16px; }
+.bw-elevation-object { position: relative; display: grid; place-items: center; width: 118px; height: 42px; border-radius: 999px; background: var(--bw-cap-bg); color: var(--bw-cap-ink); font: 500 12px/16px var(--sans); }
+.bw-elevation-handle { top: -13px; right: -13px; }
+.bw-travel-choices { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.bw-travel-choices::before { content: 'Press travel'; align-self: center; flex: 1; font: 500 11px/16px var(--sans); color: var(--ink2); }
+.bw-travel-choices button { font: 500 11px/16px var(--mono); }
+.bw-layers { grid-column: 1 / -1; }
+.bw-layer-stack { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+.bw-layer { display: flex; flex-direction: column; align-items: center; gap: 9px; min-width: 0; padding: 14px 4px; border-radius: 12px; background: linear-gradient(var(--well-top),var(--well-bot)); box-shadow: var(--well); font: 500 10px/14px var(--sans); color: var(--ink2); cursor: pointer; }
+.bw-layer input { position: absolute; opacity: 0; }
+.bw-layer-slab { display: block; width: 52px; height: 24px; border-radius: 999px; transform: rotate(-16deg) skew(10deg); background: var(--btn-bg); box-shadow: var(--btn-sh); transition: opacity .2s, transform .2s; }
+.bw-layer:has(input:not(:checked)) .bw-layer-slab { opacity: .24; transform: rotate(-16deg) skew(10deg) translateY(4px); }
+.bw-layer:has(input:checked) { color: var(--green-deep); }
+.bw-advanced { margin-top: 12px; border-top: 1px solid var(--rule); }
+.bw-advanced summary { padding: 12px 4px 2px; cursor: pointer; font: 500 11px/16px var(--mono); letter-spacing: .04em; color: var(--ink2); }
+.bw-advanced .dialkit-root { padding-top: 12px; }
+.bw-smart :is(button,input,select,[role="slider"]):focus-visible { outline: 2px solid var(--mu-focus); outline-offset: 3px; }
+html.rm .bw-smart *, html.rm .bw-smart *::before, html.rm .bw-smart *::after { animation: none !important; transition: none !important; }
+@media (max-width: 850px) { .bw-content-row { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 600px) { .bw-instruments, .bw-content-row { grid-template-columns: minmax(0,1fr); } .bw-cap-select { flex-wrap: nowrap; } .bw-layer-stack { grid-template-columns: repeat(3,minmax(0,1fr)); } }

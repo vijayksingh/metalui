@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useDialKit } from 'dialkit';
+import { DialRoot, useDialKitController } from 'dialkit';
 import { Button, Kbd, Slider, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
@@ -8,9 +8,11 @@ import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalBu
 import { C, CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, Tag, TokenTable } from '../../ui/doc';
 import { Beat, Compare, LayerTrail, SlowSwitch, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
-import { ButtonXray } from '../../ui/xray/ButtonXray';
+import { ButtonXray, BUTTON_XRAY_INITIAL, type ButtonXrayModel } from '../../ui/xray/ButtonXray';
+import { ButtonSmartControls } from './ButtonSmartControls';
 import { useColorway } from '../../app/colorway';
 import { tokens } from '../../lib/tokens';
+import './button-workbench.css';
 
 /* ─────────────────────────────────────────────────────────
  * BUTTON: the component template (DOCS_ARCHITECTURE §3.1, §7)
@@ -62,9 +64,6 @@ export default function ButtonPage() {
         />
       </PageHeader>
       <Hero />
-      <Section id="x-ray" title="X-ray" lede="See what the button is made of. Click an icon to learn about one part and change it.">
-        <ButtonXray />
-      </Section>
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">
           <CapIsAnObject />
@@ -115,32 +114,74 @@ export default function ButtonPage() {
 /* ───────────────────────── hero ───────────────────────── */
 
 function Hero() {
-  const d = useDialKit('Button', {
+  const { colorway } = useColorway();
+  const dial = useDialKitController('Button workbench', {
     content: {
       label: 'New Canvas',
       cap: { type: 'select', options: CAPS, default: 'primary' },
       icon: { type: 'select', options: ['none', 'share', 'duplicate', 'send-away', 'check'], default: 'none' },
       disabled: false,
     },
-    geometry: { height: [32, 20, 44, 4] },
+    shape: {
+      height: [BUTTON_XRAY_INITIAL.h, 20, 48, 2],
+      automaticPadding: BUTTON_XRAY_INITIAL.padAuto,
+      padding: [BUTTON_XRAY_INITIAL.pad, 2, 32, 1],
+      corners: [BUTTON_XRAY_INITIAL.corners, 0, 1, 0.05],
+    },
+    light: { direction: [0, -90, 90, 5], strength: [1, 0, 1.5, 0.05] },
+    type: {
+      size: [12.5, 10, 16, 0.5],
+      weight: { type: 'select', options: ['400', '500', '600'], default: '500' },
+      tracking: [-0.005, -0.03, 0.06, 0.005],
+      opticalCenter: true,
+    },
+    shadow: { lift: [1, 0, 3, 0.1] },
     press: { travel: [1, 0, 3, 0.5] },
+    layers: { fill: true, innerGlow: true, topLight: true, rim: true, contact: true, drop: true },
   });
-  const h = d.geometry.height;
-  const iconSize = h <= 24 ? 12 : h <= 32 ? 14 : h <= 40 ? 16 : 20;
-  const pad = h / 2 - 1;
-  const vars = { '--mu-r-button-self-height': `${h}px`, '--mu-r-button-self-pad': `${pad}px`, '--mu-r-button-self-travel': `${d.press.travel}px` } as React.CSSProperties;
+  const d = dial.values;
+  const model: ButtonXrayModel = {
+    h: d.shape.height, padAuto: d.shape.automaticPadding, pad: d.shape.padding, corners: d.shape.corners,
+    lightDeg: d.light.direction, lightK: d.light.strength,
+    size: d.type.size, weight: Number(d.type.weight), track: d.type.tracking, optical: d.type.opticalCenter,
+    lift: d.shadow.lift,
+    on: [d.layers.fill, d.layers.innerGlow, d.layers.topLight, d.layers.rim, d.layers.contact, d.layers.drop],
+  };
+  const setModel = (patch: Partial<ButtonXrayModel>) => {
+    const paths: Record<string, string> = {
+      h: 'shape.height', padAuto: 'shape.automaticPadding', pad: 'shape.padding', corners: 'shape.corners',
+      lightDeg: 'light.direction', lightK: 'light.strength', size: 'type.size', weight: 'type.weight',
+      track: 'type.tracking', optical: 'type.opticalCenter', lift: 'shadow.lift',
+    };
+    for (const [key, value] of Object.entries(patch)) {
+      if (key === 'on') {
+        ['fill', 'innerGlow', 'topLight', 'rim', 'contact', 'drop'].forEach((name, index) => dial.setValue(`layers.${name}`, (value as boolean[])[index]));
+      } else {
+        dial.setValue(paths[key], key === 'weight' ? String(value) : value as string | number | boolean);
+      }
+    }
+  };
+  const setContent = (key: 'label' | 'cap' | 'icon' | 'disabled', value: string | boolean) => dial.setValue(`content.${key}`, value);
   return (
     <section id="hero" className="flex scroll-mt-80 flex-col gap-24">
-      <Stage
-        caption={<>Press it and hold. Height {h}, padding {pad} (half the height minus one, so the ends stay round), travel {d.press.travel} pt. Tune it in the panel at the bottom right.</>}
-      >
-        <div style={vars} className="flex items-center gap-12">
-          <Button cap={d.content.cap as ButtonCap} disabled={d.content.disabled}>
-            {d.content.icon !== 'none' && <Icon name={d.content.icon as IconName} size={iconSize} />}
-            {d.content.label}
-          </Button>
+      <div id="x-ray" className="button-workbench" data-md="skip">
+        <ButtonXray
+          label={d.content.label} cap={d.content.cap as ButtonCap} icon={d.content.icon as IconName | 'none'}
+          disabled={d.content.disabled} travel={d.press.travel} model={model} setModel={setModel} onReset={dial.resetValues}
+        />
+        <div className="button-workbench-controls">
+          <div className="button-workbench-controls-head">
+            <div><span className="eng">Customize</span><p>Drag the object and its parts. Changes follow into X-ray.</p></div>
+            <button type="button" className="status" onClick={dial.resetValues}>Reset</button>
+          </div>
+          <ButtonSmartControls
+            model={model} setModel={setModel}
+            content={{ label: d.content.label, cap: d.content.cap as ButtonCap, icon: d.content.icon as IconName | 'none', disabled: d.content.disabled }}
+            setContent={setContent} travel={d.press.travel} setTravel={(value) => dial.setValue('press.travel', value)}
+          />
+          <details className="bw-advanced"><summary>Precise values and presets</summary><DialRoot mode="inline" theme={colorway === 'graphite' ? 'dark' : 'light'} productionEnabled /></details>
         </div>
-      </Stage>
+      </div>
       <CodeScreen tabs={USAGE} />
     </section>
   );

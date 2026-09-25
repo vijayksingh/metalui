@@ -149,7 +149,7 @@ export function Shell() {
         <Toc />
       </div>
 
-      <DialRoot position="bottom-right" defaultOpen={false} theme={colorway === 'graphite' ? 'dark' : 'light'} productionEnabled />
+      {pathname !== '/components/button' && <DialRoot position="bottom-right" defaultOpen={false} theme={colorway === 'graphite' ? 'dark' : 'light'} productionEnabled />}
       <ScrollRestoration />
     </>
   );

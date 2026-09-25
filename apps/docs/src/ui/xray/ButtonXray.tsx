@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Button, Segmented } from '@unlocalhosted/metalui';
+import { Button, Segmented, type ButtonCap } from '@unlocalhosted/metalui';
+import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Dial, Glyph, SpringPlot, Switch, alphaK, scalePx, useRecipeLayers, type SpotDef } from './kit';
+import { Callouts, Dial, Glyph, SpringPlot, Switch, alphaK, scalePx, useRecipeLayers, useStateLayers, type SpotDef } from './kit';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · BUTTON
@@ -44,13 +45,13 @@ const LAYERS = [
   { name: 'Drop', kind: 'outer', why: 'A bigger, softer shadow. It shows how high the button is. A bigger, blurrier shadow looks higher.' },
 ] as const;
 
-interface Model {
+export interface ButtonXrayModel {
   h: number; padAuto: boolean; pad: number; corners: number;
   lightDeg: number; lightK: number;
   size: number; weight: number; track: number; optical: boolean;
   lift: number; on: boolean[];
 }
-const INITIAL: Model = {
+export const BUTTON_XRAY_INITIAL: ButtonXrayModel = {
   h: Number(P.height), padAuto: true, pad: Number(P.pad), corners: 1,
   lightDeg: 0, lightK: 1,
   size: 12.5, weight: 500, track: -0.005, optical: true,
@@ -58,7 +59,7 @@ const INITIAL: Model = {
 };
 
 /** Everything a view of the cap needs, derived from the model. */
-function derive(m: Model, recipe: ReturnType<typeof useRecipeLayers>, textW: number) {
+function derive(m: ButtonXrayModel, recipe: ReturnType<typeof useRecipeLayers>, textW: number) {
   const pad = m.padAuto ? m.h / 2 - 1 : m.pad;
   const radius = (m.h / 2) * m.corners;
   const shadows = recipe.shadows;
@@ -70,38 +71,63 @@ function derive(m: Model, recipe: ReturnType<typeof useRecipeLayers>, textW: num
   const cssShadow = [...insets, ...(rim ? [rim] : []), ...(m.on[4] && shadows[3] ? [shadows[3]] : []), ...(m.on[5] && shadows[4] ? [shadows[4]] : [])].join(', ') || 'none';
   return { pad, radius, fill, insets, rim, lipX, lipY, cssShadow, W: textW + pad * 2 };
 }
-type D = ReturnType<typeof derive>;
-
-export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?: string; startOpen?: boolean }) {
+export function ButtonXray({ label = 'New Canvas', cap = 'standard', icon = 'none', disabled = false, travel = 1, model, setModel, onReset, startOpen = false }: {
+  label?: string; cap?: ButtonCap; icon?: IconName | 'none'; disabled?: boolean; travel?: number;
+  model?: ButtonXrayModel; setModel?: (patch: Partial<ButtonXrayModel>) => void; onReset?: () => void; startOpen?: boolean;
+}) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('shape');
-  const [m, setM] = React.useState<Model>(INITIAL);
+  const [localModel, setLocalModel] = React.useState<ButtonXrayModel>(BUTTON_XRAY_INITIAL);
+  const m = model ?? localModel;
   const [pressed, setPressed] = React.useState(false);
   const [focusLayer, setFocusLayer] = React.useState<number | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const recipe = useRecipeLayers('button');
+  const set = (patch: Partial<ButtonXrayModel>) => setModel ? setModel(patch) : setLocalModel((old) => ({ ...old, ...patch }));
+  const recipe = useRecipeLayers('button', cap === 'standard' ? 'self' : cap);
+  const pressedRecipe = useStateLayers('button', 'pressed', cap === 'standard' ? 'self' : cap);
   const measure = React.useRef<HTMLSpanElement>(null);
   const bench = React.useRef<HTMLDivElement>(null);
   const [textW, setTextW] = React.useState(76);
   React.useLayoutEffect(() => { if (measure.current) setTextW(measure.current.offsetWidth); }, [label, m.size, m.weight, m.track]);
   const d = derive(m, recipe, textW);
   const W = d.W * S, HH = m.h * S, R = d.radius * S;
-  const hover = 18 + m.lift * 14 - (pressed ? 12 : 0);
+  const hover = 18 + m.lift * 14 - (pressed ? 12 * travel : 0);
   const exploded = spot === 'layers';
-  const wallTone = recipe.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
-  const press = () => { setPressed(true); window.setTimeout(() => setPressed(false), 140); };
+  const wallTone = cap === 'primary' ? '#1c1c1f' : cap === 'destructive' ? '#a6352c' : recipe.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
 
   const faceShadow = [...d.insets, ...(d.rim ? [d.rim] : [])].map((v) => scalePx(v, S)).join(', ') || 'none';
   const labelStyle: React.CSSProperties = { fontSize: m.size * S, fontWeight: m.weight, letterSpacing: `${m.track}em`, transform: m.optical ? 'translateY(-2px)' : 'translateY(3px)' };
   const current = SPOTS.find((x) => x.id === spot)!;
 
   return (
-    <div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+    <div className="xr button-xray" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
       <span ref={measure} aria-hidden className="xr-measure" style={{ fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em` }}>{label}</span>
+      {onReset && <div className="button-xray-toolbar" role="group" aria-label="Button view">
+        <button type="button" className="status" aria-pressed={!xray} onClick={() => setXray(false)}>Preview</button>
+        <button type="button" className="status" aria-pressed={xray} onClick={() => setXray(true)}>X-ray</button>
+      </div>}
       <div className="xr-bench" ref={bench}>
         {!xray && (
-          <div className="xr-solid" style={{ zoom: S }}>
-            <Button cap="standard" onClick={() => setXray(true)} aria-label={`${label}: open the x-ray`}>{label}</Button>
+          <div className="xr-solid" style={{ zoom: S, transform: `translateY(${(1 - m.lift) * 4}px)`, filter: m.lift > 1 ? `drop-shadow(0 ${(m.lift - 1) * 2}px ${(m.lift - 1) * 3}px rgba(0,0,0,.18))` : undefined }}>
+            <Button
+              cap={cap} disabled={disabled}
+              onClick={onReset ? undefined : () => setXray(true)}
+              aria-label={onReset ? label || 'Button preview' : `${label}: open the x-ray`}
+              onPointerDown={() => setPressed(true)} onPointerUp={() => setPressed(false)} onPointerCancel={() => setPressed(false)} onPointerLeave={() => setPressed(false)}
+              onKeyDown={(event) => { if (event.key === ' ' || event.key === 'Enter') setPressed(true); }}
+              onKeyUp={() => setPressed(false)}
+              style={{
+                ['--mu-r-button-self-height' as string]: `${m.h}px`,
+                ['--mu-r-button-self-pad' as string]: `${d.pad}px`,
+                ['--mu-r-button-self-travel' as string]: `${travel}px`,
+                borderRadius: d.radius, fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em`,
+                background: pressed && pressedRecipe.fill !== 'transparent' ? pressedRecipe.fill : d.fill,
+                boxShadow: pressed && pressedRecipe.shadows.length ? pressedRecipe.shadows.join(', ') : d.cssShadow,
+                color: cap === 'standard' ? undefined : '#fff',
+              }}
+            >
+              {icon !== 'none' && <Icon name={icon} size={m.h <= 24 ? 12 : m.h <= 32 ? 14 : m.h <= 40 ? 16 : 20} />}
+              <span style={{ transform: m.optical ? 'translateY(-.5px)' : 'translateY(1px)' }}>{label}</span>
+            </Button>
           </div>
         )}
 
@@ -124,7 +150,7 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
                     ))
                   : (
                     <div className="xr-face" style={{ width: W, height: HH, borderRadius: R, transform: `translateZ(${WALL * 1.6}px)`, background: d.fill, boxShadow: faceShadow }}>
-                      <span className="xr-label" style={labelStyle}>{label}</span>
+                      <span className="xr-label" style={{ ...labelStyle, color: cap === 'standard' ? undefined : '#fff' }}>{label}</span>
                       {spot === 'shape' && (
                         <svg className="xr-dims" viewBox={`-40 -40 ${W + 80} ${HH + 80}`} style={{ width: W + 80, height: HH + 80, left: -40, top: -40 }} aria-hidden>
                           <path d={`M-18 0V${HH}M-24 0H-12M-24 ${HH}H-12`} />
@@ -166,31 +192,29 @@ export function ButtonXray({ label = 'New Canvas', startOpen = false }: { label?
         )}
 
         {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, pressed, textW]} />}
-        <div className="xr-hint eng">{xray ? 'Pick an icon to learn about that part' : 'Click the button to see inside it'}</div>
-        {xray && (
-          <div className="xr-actions">
-            <button type="button" className="status" onClick={() => setM(INITIAL)}><span className="led off" />Reset</button>
-            <button type="button" className="status" onClick={() => setXray(false)}><span className="led" />Solid</button>
-          </div>
-        )}
+        <div className="xr-hint eng">{xray ? onReset ? 'Pick a part to inspect. Tune below or beside the model.' : 'Pick an icon to learn about that part' : onReset ? 'Press and hold. Switch to X-ray to inspect the same button.' : 'Click the button to see inside it'}</div>
+        {!onReset && xray && <div className="xr-actions">
+          <button type="button" className="status" onClick={() => setLocalModel(BUTTON_XRAY_INITIAL)}><span className="led off" />Reset</button>
+          <button type="button" className="status" onClick={() => setXray(false)}><span className="led" />Solid</button>
+        </div>}
       </div>
 
       {xray && (
         <div className="xr-card raised" key={spot}>
           <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
-          {spot === 'shape' && <ShapeCard m={m} set={set} d={d} />}
-          {spot === 'light' && <LightCard m={m} set={set} d={d} />}
+          {spot === 'shape' && <ShapeCard m={m} set={set} />}
+          {spot === 'light' && <LightCard m={m} set={set} />}
           {spot === 'type' && <TypeCard m={m} set={set} />}
           {spot === 'shadow' && <ShadowCard m={m} set={set} shadows={recipe.shadows} />}
-          {spot === 'press' && <PressCard onPress={press} />}
-          {spot === 'layers' && <LayersCard m={m} set={set} focus={focusLayer} setFocus={setFocusLayer} d={d} />}
+          {spot === 'press' && <PressCard travel={travel} onPressChange={setPressed} />}
+          {spot === 'layers' && <LayersCard m={m} set={set} focus={focusLayer} setFocus={setFocusLayer} />}
         </div>
       )}
     </div>
   );
 }
 
-function ShapeCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; d: D }) {
+function ShapeCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
   return (
     <>
       <p>The ends are half circles, so the corner radius is half the height. The side space is half the height minus one, so the text never touches the curve. Change the numbers and see what happens.</p>
@@ -200,14 +224,11 @@ function ShapeCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; 
         {!m.padAuto && <Dial label="Padding" value={m.pad} min={2} max={32} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />}
         <Dial label="Corners" value={m.corners} min={0} max={1} step={0.05} fmt={(v) => (v === 1 ? 'pill' : `${Math.round(v * 100)}%`)} onChange={(corners) => set({ corners })} />
       </div>
-      <div className="xr-proof" style={{ justifyContent: 'center' }}>
-        <span style={{ ['--mu-button-h' as string]: `${m.h}px`, ['--mu-button-px' as string]: `${d.pad}px` }}><Button tabIndex={-1} style={{ borderRadius: d.radius }}>New Canvas</Button></span>
-      </div>
     </>
   );
 }
 
-function LightCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; d: D }) {
+function LightCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
   return (
     <>
       <p>There is one light for everything. The side facing it is lighter, and its edge gets a bright line. Move the light and the button changes with it.</p>
@@ -215,14 +236,11 @@ function LightCard({ m, set, d }: { m: Model; set: (p: Partial<Model>) => void; 
         <Dial label="Direction" value={m.lightDeg} min={-90} max={90} step={5} fmt={(v) => (v === 0 ? 'top' : v < 0 ? `${-v}° left` : `${v}° right`)} onChange={(lightDeg) => set({ lightDeg })} />
         <Dial label="Strength" value={m.lightK} min={0} max={1.5} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(lightK) => set({ lightK })} />
       </div>
-      <div className="xr-proof" style={{ justifyContent: 'center' }}>
-        <Button tabIndex={-1} style={{ background: d.fill, boxShadow: d.cssShadow }}>New Canvas</Button>
-      </div>
     </>
   );
 }
 
-function TypeCard({ m, set }: { m: Model; set: (p: Partial<Model>) => void }) {
+function TypeCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void }) {
   return (
     <>
       <p>The text sets how wide the button is. Try the size, weight and letter spacing. Centring the box makes the text look too low, so we centre the letters instead.</p>
@@ -232,14 +250,11 @@ function TypeCard({ m, set }: { m: Model; set: (p: Partial<Model>) => void }) {
         <Dial label="Letter-spacing" value={m.track} min={-0.03} max={0.06} step={0.005} fmt={(v) => `${v.toFixed(3)} em`} onChange={(track) => set({ track })} />
         <div className="xr-dial"><span className="xr-dial-head"><span>Centred on</span></span><Segmented size="compact" aria-label="Centred on" value={m.optical ? 'letters' : 'box'} onValueChange={(v) => set({ optical: v === 'letters' })} options={[{ value: 'letters', label: 'The letters' }, { value: 'box', label: 'The box' }]} /></div>
       </div>
-      <div className="xr-proof" style={{ justifyContent: 'center' }}>
-        <Button tabIndex={-1} style={{ fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em` }}>New Canvas</Button>
-      </div>
     </>
   );
 }
 
-function ShadowCard({ m, set, shadows }: { m: Model; set: (p: Partial<Model>) => void; shadows: string[] }) {
+function ShadowCard({ m, set, shadows }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; shadows: string[] }) {
   return (
     <>
       <p>There are two shadows. The small dark one is where the button touches the page. The big soft one shows how high it is. Raise the button and watch them change.</p>
@@ -253,26 +268,23 @@ function ShadowCard({ m, set, shadows }: { m: Model; set: (p: Partial<Model>) =>
   );
 }
 
-function PressCard({ onPress }: { onPress: () => void }) {
+function PressCard({ travel, onPressChange }: { travel: number; onPressChange: (pressed: boolean) => void }) {
   return (
     <>
-      <p>When you hold it, the button moves down {String(P.travel)} pt in {String(P.press)} and its shadow shrinks. When you let go, a spring brings it back (stiffness {SPRING.stiffness}, damping {SPRING.damping}). Press it and watch.</p>
+      <p>When you hold it, the button moves down {travel} pt in {String(P.press)} and its shadow shrinks. When you let go, a spring brings it back (stiffness {SPRING.stiffness}, damping {SPRING.damping}). Press it and watch.</p>
       <div className="xr-proof">
-        <span onPointerDown={onPress}><Button tabIndex={0}>Press me</Button></span>
+        <span onPointerDown={() => onPressChange(true)} onPointerUp={() => onPressChange(false)} onPointerCancel={() => onPressChange(false)} onPointerLeave={() => onPressChange(false)} onKeyDown={(event) => { if (event.key === ' ' || event.key === 'Enter') onPressChange(true); }} onKeyUp={() => onPressChange(false)}><Button tabIndex={0}>Press me</Button></span>
         <SpringPlot k={SPRING.stiffness} c={SPRING.damping} />
       </div>
     </>
   );
 }
 
-function LayersCard({ m, set, focus, setFocus, d }: { m: Model; set: (p: Partial<Model>) => void; focus: number | null; setFocus: (i: number | null) => void; d: D }) {
+function LayersCard({ m, set, focus, setFocus }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; focus: number | null; setFocus: (i: number | null) => void }) {
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
   return (
     <>
       <p>The button is six layers stacked on top of each other. Turn one off to see what it adds.</p>
-      <div className="xr-proof" style={{ justifyContent: 'center' }}>
-        <Button tabIndex={-1} style={{ background: d.fill, boxShadow: d.cssShadow }}>New Canvas</Button>
-      </div>
       <ol className="xr-layers">
         {LAYERS.map((l, i) => (
           <li key={l.name} className={[focus === i ? 'is-focus' : '', m.on[i] ? '' : 'is-off'].join(' ')} onPointerEnter={() => setFocus(i)} onPointerLeave={() => setFocus(null)}>
