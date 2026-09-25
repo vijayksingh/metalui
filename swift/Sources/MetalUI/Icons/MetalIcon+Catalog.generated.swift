@@ -9,6 +9,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case image = "image"
     case link = "link"
     case draw = "draw"
+    case pen = "pen"
+    case marker = "marker"
+    case line = "line"
+    case arrow = "arrow"
+    case rectangle = "rectangle"
+    case ellipse = "ellipse"
+    case eraser = "eraser"
     case layout = "layout"
     case tidy = "tidy"
     case search = "search"
@@ -54,6 +61,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return "Image"
         case .link: return "Link"
         case .draw: return "Draw"
+        case .pen: return "Pen"
+        case .marker: return "Marker"
+        case .line: return "Line"
+        case .arrow: return "Arrow"
+        case .rectangle: return "Rectangle"
+        case .ellipse: return "Ellipse"
+        case .eraser: return "Eraser"
         case .layout: return "Layout"
         case .tidy: return "Tidy"
         case .search: return "Search"
@@ -99,6 +113,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return .tools
         case .link: return .tools
         case .draw: return .tools
+        case .pen: return .tools
+        case .marker: return .tools
+        case .line: return .tools
+        case .arrow: return .tools
+        case .rectangle: return .tools
+        case .ellipse: return .tools
+        case .eraser: return .tools
         case .layout: return .tools
         case .tidy: return .tools
         case .search: return .tools
@@ -145,6 +166,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return 0.14
         case .link: return nil
         case .draw: return 0.16
+        case .pen: return 0.16
+        case .marker: return 0.181
+        case .line: return nil
+        case .arrow: return nil
+        case .rectangle: return nil
+        case .ellipse: return nil
+        case .eraser: return 0.16
         case .layout: return 0.16
         case .tidy: return 0.14
         case .search: return nil
@@ -191,6 +219,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return nil
         case .link: return nil
         case .draw: return nil
+        case .pen: return nil
+        case .marker: return nil
+        case .line: return nil
+        case .arrow: return nil
+        case .rectangle: return nil
+        case .ellipse: return nil
+        case .eraser: return nil
         case .layout: return nil
         case .tidy: return nil
         case .search: return nil
@@ -237,6 +272,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return false
         case .link: return false
         case .draw: return false
+        case .pen: return false
+        case .marker: return false
+        case .line: return false
+        case .arrow: return false
+        case .rectangle: return false
+        case .ellipse: return false
+        case .eraser: return false
         case .layout: return false
         case .tidy: return true
         case .search: return false
@@ -283,6 +325,13 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .image: return 1.85
         case .link: return 1.85
         case .draw: return 1.85
+        case .pen: return 1.85
+        case .marker: return 1.85
+        case .line: return 1.85
+        case .arrow: return 1.85
+        case .rectangle: return 1.85
+        case .ellipse: return 1.85
+        case .eraser: return 1.85
         case .layout: return 1.85
         case .tidy: return 1.85
         case .search: return 1.85
