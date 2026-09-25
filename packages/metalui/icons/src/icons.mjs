@@ -296,12 +296,12 @@ export const ICONS = [
        @keyframes mo-1{40%{transform:translateX(2.4px) scale(1.1)}} @keyframes mo-3{40%{transform:translateX(-2.4px) scale(1.1)}}`,
   shape: 'Three r1.55 dots on 6.4u pitch.' },
 
-{ name: 'close', cat: 'Actions', label: 'Close', hover: 'turns a quarter and softens', press: 'pinches closed',
+{ name: 'close', cat: 'Actions', label: 'Close', hover: 'its arms draw in toward the crossing, ready', press: 'it folds into its centre and springs back out',
   body: `<path class="x" d="M7.2 7.2l9.6 9.6M16.8 7.2l-9.6 9.6"/>`,
   base: `& .x{transform-origin:12px 12px}`,
-  mo: `@H .x{transform:rotate(90deg) scale(.9)}
-       @P .x{animation:cl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes cl-p{40%{transform:rotate(90deg) scale(.68)}}`,
-  shape: 'X on the circle keyline, arms 13.6u.' },
+  mo: `@H .x{transform:scale(.86)}
+       @P .x{animation:cls-p .36s cubic-bezier(.3,0,.2,1)} @keyframes cls-p{36%{transform:scale(.42)}72%{transform:scale(.92)}}`,
+  shape: 'X on the circle keyline, arms 13.6u, always at 45°: a turn is no motion for an ×, it reads as loading. Hover draws both arms in toward the crossing (.86), a surface poised to fold up. Press folds it into its centre (.42) and springs it back out past the hover pose; the thing it closes goes the same way.' },
 
 { name: 'check', cat: 'Actions', label: 'Check', hover: 'it nods yes about its vertex', press: 'the tick is drawn again and lands with weight',
   body: `<g class="nd"><path class="tk" pathLength="1" d="M5.4 12.6l4.1 4.1 9.1-9.4"/></g>`,

@@ -337,11 +337,11 @@
       "component": "CloseIcon",
       "label": "Close",
       "category": "Actions",
-      "hover": "turns a quarter and softens",
-      "press": "pinches closed",
-      "pressMs": 300,
+      "hover": "its arms draw in toward the crossing, ready",
+      "press": "it folds into its centre and springs back out",
+      "pressMs": 360,
       "tuned16": false,
-      "construction": "X on the circle keyline, arms 13.6u."
+      "construction": "X on the circle keyline, arms 13.6u, always at 45°: a turn is no motion for an ×, it reads as loading. Hover draws both arms in toward the crossing (.86), a surface poised to fold up. Press folds it into its centre (.42) and springs it back out past the hover pose; the thing it closes goes the same way."
     },
     {
       "name": "check",

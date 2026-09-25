@@ -657,18 +657,18 @@ export const ICON_CATALOG = {
    * CLOSE · Actions
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          turns a quarter and softens
+   *          its arms draw in toward the crossing, ready
    * PRESS one-shot (from the current pose)
-   *          pinches closed
-   *     0ms   .x plays cl-p (300ms)
+   *          it folds into its centre and springs back out
+   *     0ms   .x plays cls-p (360ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "close": {
     label: "Close",
     category: "Actions",
-    hover: "turns a quarter and softens",
-    press: "pinches closed",
-    pressMs: 300,
+    hover: "its arms draw in toward the crossing, ready",
+    press: "it folds into its centre and springs back out",
+    pressMs: 360,
     defs: "",
     body: "<path class=\"x\" d=\"M7.2 7.2l9.6 9.6M16.8 7.2l-9.6 9.6\"/>",
     sw16: 1.85,

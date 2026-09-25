@@ -61,7 +61,7 @@ export const UndoIcon = createIcon("undo", "UndoIcon");
 export const RedoIcon = createIcon("redo", "RedoIcon");
 /** More. Hover: dots swell in sequence. Press: dots gather and part. */
 export const MoreIcon = createIcon("more", "MoreIcon");
-/** Close. Hover: turns a quarter and softens. Press: pinches closed. */
+/** Close. Hover: its arms draw in toward the crossing, ready. Press: it folds into its centre and springs back out. */
 export const CloseIcon = createIcon("close", "CloseIcon");
 /** Check. Hover: it nods yes about its vertex. Press: the tick is drawn again and lands with weight. */
 export const CheckIcon = createIcon("check", "CheckIcon");
