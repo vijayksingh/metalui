@@ -521,4 +521,21 @@ final class MetalCaptures: XCTestCase {
             capture("button-\(colorway.rawValue)", view)
         }
     }
+
+    func testDialog() {
+        for colorway in MetalColorway.allCases {
+            let view = MetalDialogPopup("Create canvas", popup: {
+                Text("Give the canvas a name before placing your work.")
+                    .font(.metal(MetalType.content))
+                    .foregroundStyle(colorway.tokens.ink2.color)
+            }, actions: {
+                MetalButton("Cancel") {}
+                MetalButton("Create", cap: .primary) {}
+            })
+            .padding(MetalRecipes.dialog.points("self.pad"))
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("dialog-\(colorway.rawValue)", view)
+        }
+    }
 }
