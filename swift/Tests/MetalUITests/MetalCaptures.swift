@@ -424,6 +424,23 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetDrawer() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/drawer.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.4, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "full"])
+        XCTAssertEqual(spec.derivedState("open", value: 1), "open")
+        XCTAssertEqual(spec.description("full", value: 1), "Storage: 100% full, too full to close")
+        let looks: [(Double, String?)] = [(0.4, nil), (0.4, "open"), (1, nil)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(0..<looks.count, id: \.self) { i in MetalGadget(spec: spec, state: looks[i].1, value: looks[i].0, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-drawer-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

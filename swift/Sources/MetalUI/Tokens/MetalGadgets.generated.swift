@@ -234,6 +234,14 @@ public enum MetalGadgetTokens {
     public static let pullLip: (width: Double, alpha: Double) = (1.2, 0.5)
     public static let pullPanel: (width: Double, height: Double) = (240.0, 44.0)
     public static let pullAlone: Double = 150.0
+    public static let trayWall: Double = 8.0
+    public static let trayFront: Double = 14.0
+    public static let trayFloorDrop: Double = 0.16
+    public static let trayCards: Int = 10
+    public static let trayCard: (gap: Double, thickness: Double, inset: Double) = (11.0, 4.0, 14.0)
+    public static let trayTab: (width: Double, height: Double) = (30.0, 5.0)
+    public static let trayEdgeShadow: (depth: Double, alpha: Double) = (16.0, 0.35)
+    public static let trayFull: Double = 0.9
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0

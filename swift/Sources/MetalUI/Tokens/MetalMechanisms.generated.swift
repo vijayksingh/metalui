@@ -63,6 +63,19 @@ extension MetalMechanism {
         held: nil
     )
 
+    /// The drawer is pulled out toward you on its runners, stops against them, is held a moment, and springs home.
+    public static let slideOut = MetalMechanism(
+        name: "slide-out", momentary: true, duration: 1489.0, stagger: 0.0, loops: false, phased: [], spring: .object,
+        tracks: [
+            .init(part: "tray", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.55, 0.0, 0.85, 0.45)), .init(at: 180.0, pose: .init(x: 0.0, y: 60.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 420.0, pose: .init(x: 0.0, y: 60.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 776.0, pose: .init(x: 0.0, y: -5.9209, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.37, 0.0, 0.63, 1.0)), .init(at: 1133.0, pose: .init(x: 0.0, y: 0.5843, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.37, 0.0, 0.63, 1.0)), .init(at: 1489.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0))]),
+            .init(part: "pull", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.55, 0.0, 0.85, 0.45)), .init(at: 180.0, pose: .init(x: 0.0, y: 60.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 420.0, pose: .init(x: 0.0, y: 60.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0)), .init(at: 776.0, pose: .init(x: 0.0, y: -5.9209, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.37, 0.0, 0.63, 1.0)), .init(at: 1133.0, pose: .init(x: 0.0, y: 0.5843, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.37, 0.0, 0.63, 1.0)), .init(at: 1489.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0))])
+        ],
+        cues: [.init(at: 0.0, until: 180.0, kind: .friction, slot: "tray", level: 0.15, pitch: 1.0, gesture: nil), .init(at: 180.0, until: nil, kind: .strike, slot: "tray", level: 0.6, pitch: 1.0, gesture: nil), .init(at: 670.0, until: nil, kind: .strike, slot: "tray", level: 0.5, pitch: 1.0, gesture: nil)],
+        states: ["open": .init(hold: "tray", pose: .init(x: 0.0, y: 60.0, r: 0.0, sx: 1.0, sy: 1.0)), "full": .init(hold: "tray", pose: .init(x: 0.0, y: 22.0, r: 0.0, sx: 1.0, sy: 1.0))],
+        reduced: ["lamp", "sound"],
+        held: nil
+    )
+
     /// Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end.
     public static let slide = MetalMechanism(
         name: "slide", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .part,
@@ -100,5 +113,5 @@ extension MetalMechanism {
         held: .init(slot: "needle", from: .init(x: 0.0, y: 0.0, r: -60.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 60.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.35, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 0.0)
     )
 
-    public static let all: [MetalMechanism] = [flip, glow, press, roll, seat, slide, sweep, swing]
+    public static let all: [MetalMechanism] = [flip, glow, press, roll, seat, slideOut, slide, sweep, swing]
 }

@@ -534,6 +534,286 @@ export const MECHANISMS = {
     ],
     "held": null
   },
+  "slide-out": {
+    "name": "slide-out",
+    "mode": "momentary",
+    "duration": 1489,
+    "caption": "The drawer is pulled out toward you on its runners, stops against them, is held a moment, and springs home.",
+    "stages": [
+      "Pull",
+      "Hold",
+      "Home"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "object",
+    "slots": {
+      "tray": "actor",
+      "pull": "actor",
+      "lamp": "lamp"
+    },
+    "tracks": [
+      {
+        "part": "tray",
+        "origin": "centre",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.55,
+              0,
+              0.85,
+              0.45
+            ]
+          },
+          {
+            "at": 180,
+            "pose": {
+              "x": 0,
+              "y": 60,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 420,
+            "pose": {
+              "x": 0,
+              "y": 60,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 776,
+            "pose": {
+              "x": 0,
+              "y": -5.9209,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.37,
+              0,
+              0.63,
+              1
+            ]
+          },
+          {
+            "at": 1133,
+            "pose": {
+              "x": 0,
+              "y": 0.5843,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.37,
+              0,
+              0.63,
+              1
+            ]
+          },
+          {
+            "at": 1489,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "part": "pull",
+        "origin": "centre",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.55,
+              0,
+              0.85,
+              0.45
+            ]
+          },
+          {
+            "at": 180,
+            "pose": {
+              "x": 0,
+              "y": 60,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 420,
+            "pose": {
+              "x": 0,
+              "y": 60,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "at": 776,
+            "pose": {
+              "x": 0,
+              "y": -5.9209,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.37,
+              0,
+              0.63,
+              1
+            ]
+          },
+          {
+            "at": 1133,
+            "pose": {
+              "x": 0,
+              "y": 0.5843,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.37,
+              0,
+              0.63,
+              1
+            ]
+          },
+          {
+            "at": 1489,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "at": 0,
+        "until": 180,
+        "kind": "friction",
+        "slot": "tray",
+        "level": 0.15
+      },
+      {
+        "at": 180,
+        "kind": "strike",
+        "slot": "tray",
+        "level": 0.6,
+        "pitch": 1
+      },
+      {
+        "at": 670,
+        "kind": "strike",
+        "slot": "tray",
+        "level": 0.5,
+        "pitch": 1
+      }
+    ],
+    "states": {
+      "open": {
+        "hold": "tray",
+        "pose": {
+          "y": 60
+        }
+      },
+      "full": {
+        "hold": "tray",
+        "pose": {
+          "y": 22
+        }
+      }
+    },
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": null
+  },
   "slide": {
     "name": "slide",
     "mode": "held",

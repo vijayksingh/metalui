@@ -215,6 +215,14 @@ public enum MetalGadgetTokens {
     public static let pullLip: (width: Double, alpha: Double) = (${G.pull.lip.map(num).join(', ')})
     public static let pullPanel: (width: Double, height: Double) = (${G.pull.panel.map(num).join(', ')})
     public static let pullAlone: Double = ${num(G.pull.alone)}
+    public static let trayWall: Double = ${num(G.tray.wall)}
+    public static let trayFront: Double = ${num(G.tray.front)}
+    public static let trayFloorDrop: Double = ${num(G.tray['floor-drop'])}
+    public static let trayCards: Int = ${G.tray.cards}
+    public static let trayCard: (gap: Double, thickness: Double, inset: Double) = (${G.tray.card.map(num).join(', ')})
+    public static let trayTab: (width: Double, height: Double) = (${G.tray.tab.map(num).join(', ')})
+    public static let trayEdgeShadow: (depth: Double, alpha: Double) = (${G.tray['edge-shadow'].map(num).join(', ')})
+    public static let trayFull: Double = ${num(G.tray.full)}
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

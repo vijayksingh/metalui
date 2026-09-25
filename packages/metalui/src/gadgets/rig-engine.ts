@@ -5,7 +5,7 @@
 // what each cable carries and where it arrives, hop by hop, through the cable's map.
 import { GADGETS } from './gadgets.generated';
 import type { CableMap, GadgetSpec, RigSpec, Value } from './spec';
-import { driveDefault, driveShare, stateOf } from './draw';
+import { derivedState, driveDefault, driveShare, stateOf } from './draw';
 import { cableControls, cablePath, cableSag } from './parts/cable';
 
 type Pt = [number, number];
@@ -76,6 +76,9 @@ export function deriveOutputs(spec: GadgetSpec, inputs: Record<string, Value | u
     if ('rolled' in outs && max !== undefined && now < was && was >= max) out.rolled = { pulse: true };
   }
   for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'pulse' && spec.states[name] && state === name && lastState !== name) out[name] = { pulse: true };
+  // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
+  const shown = derivedState(spec, state, now);
+  for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'boolean' && spec.states[name] && !(name in out)) out[name] = shown === name;
   return out;
 }
 

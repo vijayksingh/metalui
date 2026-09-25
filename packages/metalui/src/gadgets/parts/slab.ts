@@ -78,3 +78,49 @@ export function drawSlab(id: string, s: SlabSpec, o: { tier?: Tier; host?: Host;
   }).join('');
   return { defs, floors: floors ? (walls ? `<g filter="url(#${id}-hole)">${floors}</g>` : `<g>${floors}</g>`) : '', body, lips };
 }
+
+// ---------- A drawer's tray: a Slab placed as the actor of a slide-out ----------
+
+export interface TraySpec {
+  /** The tray's inside: its centre and [width, depth]; its front stands below it. */
+  at: [number, number];
+  size: [number, number];
+  /** The body's pigment and material: a tray is cut from the same. */
+  color: { L: number; C: number; H: number };
+  material: GadgetMaterial;
+  /** How full, 0 to 1: that share of its cards stand in it. */
+  fill?: number;
+}
+
+/** How many of a tray's cards stand at a fill. */
+export const cardsFor = (fill: number) => Math.round(Math.min(1, Math.max(0, fill)) * GADGETS.tray.cards);
+
+export interface TrayDraw { defs: string; body: string }
+
+export function drawTray(id: string, s: TraySpec, o: { tier?: Tier; host?: Host } = {}): TrayDraw {
+  const tier = o.tier ?? 'full', host = o.host ?? 'bone', T = GADGETS.tray, [cx, cy] = s.at, [w, d] = s.size, { L, C: c, H } = s.color;
+  const rim = roundedRect([cx, cy], [w + 2 * T.wall, d + 2 * T.wall], T.wall * 1.5), floor = roundedRect([cx, cy], [w, d], T.wall / 2);
+  const frontY = cy + d / 2 + T.wall, front = roundedRect([cx, frontY + T.front / 2], [w + 2 * T.wall, T.front], T.front / 3);
+  let defs = tier === 'flat' ? '' : materialFilter(`${id}-light`, s.material, { tier: 'lite', host, part: true });
+  const light = tier === 'flat' ? '' : ` filter="url(#${id}-light)"`;
+  // Cards packed from the front, each a white edge with a tab on alternate sides; those past the fill are away.
+  const [gap, thick, inset] = T.card, [tw, th] = T.tab, paper = pigment(GADGETS.cap.ceramic[0], GADGETS.cap.ceramic[1], H), n = cardsFor(s.fill ?? 0);
+  let cards = '';
+  for (let k = 0; k < T.cards; k++) {
+    const y = cy + d / 2 - inset / 2 - k * gap, tx = k % 2 ? cx + w / 2 - inset - tw : cx - w / 2 + inset + tw;
+    cards += `<g data-part="tray.card" data-card="${k}" opacity="${k < n ? 1 : 0}"><path d="${roundedRect([tx, y - thick / 2 - th / 2], [tw, th], th / 2)}"/><path d="${roundedRect([cx, y], [w - 2 * inset, thick], thick / 2)}"/></g>`;
+  }
+  const body = `<g data-part="tray" data-fill="${n}">`
+    + `<g${light}><path d="${rim}" fill="${pigment(L, c, H).srgb}"/></g>`
+    + `<path d="${floor}" fill="${pigment(L - T.floorDrop, c, H).srgb}"/>`
+    + `<g fill="${paper.srgb}" stroke="rgba(30,26,22,.18)" stroke-width=".8">${cards}</g>`
+    + `<g${light}><path data-part="tray.front" d="${front}" fill="${pigment(L, c, H).srgb}"/></g></g>`;
+  return { defs, body };
+}
+
+/** Stands `fill`'s share of a drawn tray's cards (anything under `root`), without redrawing it. */
+export function fillTray(root: Element, fill: number) {
+  const n = cardsFor(fill);
+  root.querySelector('[data-part="tray"]')?.setAttribute('data-fill', String(n));
+  root.querySelectorAll('[data-part="tray.card"]').forEach((el) => el.setAttribute('opacity', Number(el.getAttribute('data-card')) < n ? '1' : '0'));
+}

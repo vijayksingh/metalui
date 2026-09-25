@@ -144,6 +144,9 @@ public struct MetalRigEngine: Sendable {
             if outs["rolled"] != nil, let max = g.ports?.in?[drive]?.max, v < was, was >= max { out["rolled"] = .pulse }
         }
         for (name, ch) in outs where ch.kind == "pulse" && g.states[name] != nil && state == name && last != name { out[name] = .pulse }
+        // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
+        let shown = g.derivedState(state, value: v)
+        for (name, ch) in outs where ch.kind == "boolean" && g.states[name] != nil && out[name] == nil { out[name] = .bool(shown == name) }
         return out
     }
 

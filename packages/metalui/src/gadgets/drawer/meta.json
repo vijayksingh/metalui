@@ -1,0 +1,12 @@
+{
+  "name": "drawer",
+  "title": "Drawer",
+  "status": "alpha",
+  "description": "A gadget for what is kept: a pale steel filing drawer under a steel top, with a metal pull and a lamp. Its index cards stand to how full it is; filing one slides it out on its runners and home again, and full, it will not close. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/drawer.gadget.json",
+  "uses": ["slab", "pull", "led"],
+  "page": "/gadgets/drawer"
+}

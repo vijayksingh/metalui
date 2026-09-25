@@ -128,7 +128,12 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
       }
       const total = totalOf();
       o.onFrame?.(Math.min(t, total), { ...poses });
-      if (t >= total) { act = null; o.onEnd?.(); } else { raf = requestAnimationFrame(frame); return; }
+      if (t >= total) {
+        act = null;
+        // A part held away from rest (a full drawer, stuck out) springs back to where it is held.
+        if (Object.keys(target).some((k) => (Object.keys(REST) as (keyof Pose)[]).some((c) => target[k][c] !== poses[k]?.[c]))) { springing = true; raf = requestAnimationFrame(frame); }
+        o.onEnd?.();
+      } else { raf = requestAnimationFrame(frame); return; }
     }
     if (springing) stepSprings();
   };

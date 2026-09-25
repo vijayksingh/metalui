@@ -696,6 +696,26 @@ export const GADGETS = {
     ],
     "alone": 150
   },
+  "tray": {
+    "wall": 8,
+    "front": 14,
+    "floorDrop": 0.16,
+    "cards": 10,
+    "card": [
+      11,
+      4,
+      14
+    ],
+    "tab": [
+      30,
+      5
+    ],
+    "edgeShadow": [
+      16,
+      0.35
+    ],
+    "full": 0.9
+  },
   "rig": {
     "pitch": 440,
     "padding": 40,

@@ -106,6 +106,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         if let port = mechanism.drive, ports?.in?[port]?.kind == "boolean", states[port] != nil, let value, states[state]?.enter != "act" {
             return value >= 0.5 ? port : state == port ? "rest" : state
         }
+        // A drawer too full to close is full; opened by the host it is open. Emptied, back to rest.
+        if parts.contains(where: { $0.part == "slab" && $0.role == "actor" }), states["full"] != nil, let value {
+            if driveShare(value) >= MetalGadgetTokens.trayFull { return state == "open" ? "open" : "full" }
+            return state == "full" ? "rest" : state
+        }
         // Cells that fill: none lit is rest, some filling, all full. A first run is the host's.
         if parts.contains(where: { $0.part == "cell" }), states["filling"] != nil, states["full"] != nil, let value, state != "first-run" {
             let u = driveShare(value)

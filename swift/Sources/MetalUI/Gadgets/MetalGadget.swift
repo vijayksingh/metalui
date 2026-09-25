@@ -66,8 +66,9 @@ public struct MetalGadget: View {
         let r = resolved, bind = spec.mechanism.first
         TimelineView(.animation(paused: !(player?.playing ?? false) && !(drive?.moving ?? false) && !(roll?.moving ?? false))) { timeline in
             ZStack(alignment: .topLeading) {
-                ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { _ in
-                    MetalSlab(r.material, color: body(r), cuts: cuts, size: size)
+                ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { p in
+                    let f = footprint(p)
+                    MetalSlab(r.material, color: body(r), cuts: cuts, rect: CGRect(x: p.at[0] - f.0 / 2, y: p.at[1] - f.1 / 2, width: f.0, height: f.1), size: size)
                     // Light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
                     ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in trayLight(q, r: r) }
                     ForEach(spec.parts.filter { $0.part == "cell" }, id: \.id) { q in cells(q, r: r) }
@@ -104,6 +105,12 @@ public struct MetalGadget: View {
                         MetalCable(from: end(a, bind: bind, at: timeline.date), to: end(b, bind: bind, at: timeline.date),
                                    sag: p.params?["sag"]?.number, length: p.params?["length"]?.number, size: size, followEnds: true)
                     }
+                }
+                ForEach(spec.parts.filter { $0.part == "slab" && $0.role == "actor" }, id: \.id) { p in
+                    tray(p, r: r, at: timeline.date)
+                }
+                ForEach(spec.parts.filter { $0.part == "pull" }, id: \.id) { p in
+                    pull(p, r: r, at: timeline.date)
                 }
                 ForEach(spec.parts.filter { $0.part == "cap" }, id: \.id) { p in
                     cap(p, r: r, at: timeline.date)
@@ -144,6 +151,8 @@ public struct MetalGadget: View {
                 let p = MetalMechanismPlayer(m)
                 p.reduced = reduceMotion
                 if let held = formPose(bind["plug"], in: state) { p.holdPose("plug", held, immediate: true) }
+                // Other slots a state poses (a drawer held open) start where the first state holds them.
+                for (slot, id) in bind where slot != "plug" { if let pose = formPose(id, in: state) { p.holdPose(slot, pose, immediate: true) } }
                 player = p
             }
             shown = state
@@ -198,6 +207,33 @@ public struct MetalGadget: View {
         MetalBacklight(.glow, color: .glass(r.face), at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(lv.empty + (lv.full - lv.empty) * min(1, max(0, litShare)))
             .mask { if let cut { Path(cut.path).applying(CGAffineTransform(scaleX: unit, y: unit)).fill(.black) } else { Rectangle() } }
+    }
+
+    /// A drawer's tray, run under the body's front edge: only what is out past the edge shows, and the
+    /// edge shadows it. It goes where the slide-out carries it (or its state holds it).
+    @ViewBuilder private func tray(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }?.key
+        let y = slot.map { player?.pose($0, at: date).pose.y ?? 0 } ?? 0
+        let bodyPart = spec.parts.first { $0.role == "body" }
+        let edge = bodyPart.map { $0.at[1] + footprint($0).1 / 2 } ?? MetalGadgetTokens.canvas
+        let f = footprint(p), wall = MetalGadgetTokens.trayWall, es = MetalGadgetTokens.trayEdgeShadow
+        ZStack(alignment: .topLeading) {
+            MetalTray(at: CGPoint(x: p.at[0], y: p.at[1]), dims: f, color: body(r), material: r.material, fill: spec.driveShare(value ?? spec.driveDefault), size: size)
+                .offset(y: y * unit)
+            Rectangle().fill(LinearGradient(colors: [.black.opacity(es.alpha), .clear], startPoint: .top, endPoint: .bottom))
+                .frame(width: (f.0 + 2 * wall) * unit, height: es.depth * unit).position(x: p.at[0] * unit, y: (edge + es.depth / 2) * unit)
+        }
+        .frame(width: size, height: size, alignment: .topLeading)
+        .mask(alignment: .topLeading) { Rectangle().frame(width: size, height: size * 2).offset(y: (edge - 1) * unit) }
+    }
+
+    /// A pull on a drawer front: it goes where the tray goes.
+    @ViewBuilder private func pull(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }?.key
+        let y = slot.map { player?.pose($0, at: date).pose.y ?? 0 } ?? 0, f = footprint(p)
+        MetalPullShape(style: p.params?["style"]?.text == "recess" ? .recess : .bar, at: CGPoint(x: p.at[0], y: p.at[1]), width: f.0, height: f.1, unit: unit)
+            .frame(width: size, height: size, alignment: .topLeading)
+            .offset(y: y * unit)
     }
 
     /// A lid on its mouth, turned where the flip has carried it (or where the state holds it before it runs).
@@ -383,6 +419,8 @@ public struct MetalGadget: View {
         // A sweep stopped mid-turn leaves its beam where it is.
         if player.playing { for (slot, ids) in spec.mechanism.bind where slot == "beam" { for id in ids { frozen[id] = player.pose(slot).pose.r } } }
         player.holdPose("plug", formPose(bind["plug"], in: next))
+        // A slot some state poses goes to the next state's pose, or back to rest.
+        for (slot, id) in bind where slot != "plug" && spec.states.values.contains(where: { $0.form?[id]?.pose != nil }) { player.holdPose(slot, formPose(id, in: next)) }
         let st = spec.states[next], news = st?.beep.flatMap(MetalEarcon.init(rawValue:))
         landing += 1
         if st?.enter == "act" {

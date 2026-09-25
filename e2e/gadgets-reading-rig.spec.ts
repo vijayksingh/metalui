@@ -28,9 +28,18 @@ test('crossing the line sends a bead down the cord, and the streak rolls a day w
   await open(page, '/gadgets/reading-rig', 'bone');
   const point = page.getByTestId('rig-point'), rig = page.getByTestId('rig');
   await point.focus();
+  // In the frame the bead is on its way, the streak has not changed yet: read both at once.
+  const onItsWay = page.evaluate(() => new Promise<string>((done) => {
+    const look = () => {
+      const rig = document.querySelector('[data-testid="rig"]')!;
+      if (!rig.querySelector('[data-bead]')) { requestAnimationFrame(look); return; }
+      done(['d2', 'd1', 'd0'].map((id) => rig.querySelector(`[data-inst="streak"] [data-id="${id}"] [data-moves]`)!.getAttribute('transform')).join('|'));
+    };
+    look();
+  }));
+  const before = await rig.evaluate((r) => ['d2', 'd1', 'd0'].map((id) => r.querySelector(`[data-inst="streak"] [data-id="${id}"] [data-moves]`)!.getAttribute('transform')).join('|'));
   await page.keyboard.press('PageUp');                                   // 24 → 34: past 30
-  await expect(rig.locator('[data-bead]')).toHaveCount(1);                // on its way
-  expect(await streak(page)).toEqual([0, 1, 2]);                          // not there yet
+  expect(await onItsWay).toBe(before);                                    // on its way, not there yet
   await expect(rig.locator('[data-bead]')).toHaveCount(0);                // arrived
   await expect.poll(() => streak(page)).toEqual([0, 1, 3]);
   await expect(page.getByTestId('rig-log')).toHaveText('today.over → streak.count: 13');
@@ -49,5 +58,5 @@ test('with reduced motion the value arrives at once, without a bead', async ({ p
   await page.getByTestId('rig-point').focus();
   await page.keyboard.press('PageUp');
   await expect(page.getByTestId('rig').locator('[data-bead]')).toHaveCount(0);
-  expect(await streak(page)).toEqual([0, 1, 3]);
+  await expect.poll(() => streak(page), { timeout: 1000 }).toEqual([0, 1, 3]);
 });

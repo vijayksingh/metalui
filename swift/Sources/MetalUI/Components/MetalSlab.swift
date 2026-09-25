@@ -37,12 +37,16 @@ public struct MetalSlab<Content: View>: View {
     let color: MetalOklch
     let cuts: [MetalSlabCut]
     let size: Double
+    /// The body's rectangle on the 400-unit canvas (default the standard body).
+    let rect: CGRect
     let content: Content
     @Environment(\.displayScale) private var displayScale
     @Environment(\.metalColorway) private var colorway
     @Environment(\.colorSchemeContrast) private var contrast
 
-    public init(_ material: MetalSoundMaterial, color: MetalOklch? = nil, cuts: [MetalSlabCut] = [], size: Double = 160, @ViewBuilder content: () -> Content = { EmptyView() }) {
+    public init(_ material: MetalSoundMaterial, color: MetalOklch? = nil, cuts: [MetalSlabCut] = [], rect: CGRect? = nil, size: Double = 160, @ViewBuilder content: () -> Content = { EmptyView() }) {
+        let b = MetalGadgetTokens.bodyRect
+        self.rect = rect ?? CGRect(x: b.x, y: b.y, width: b.width, height: b.height)
         let f = material.finish
         self.material = material
         self.color = color ?? MetalOklch(L: min(f.lightness.1, max(f.lightness.0, 0.72)), C: min(f.chromaCap, 0.06), H: f.sampleHue)
@@ -50,9 +54,10 @@ public struct MetalSlab<Content: View>: View {
     }
 
     private var slabPath: CGPath {
-        let r = MetalGadgetTokens.bodyRect
+        // Corners scale with the body's shorter side, as the web's slabPath.
+        let radius = MetalGadgetTokens.bodyRadius * min(rect.width, rect.height) / MetalGadgetTokens.bodyRect.width
         let path = CGMutablePath()
-        path.addRoundedRect(in: CGRect(x: r.x, y: r.y, width: r.width, height: r.height), cornerWidth: MetalGadgetTokens.bodyRadius, cornerHeight: MetalGadgetTokens.bodyRadius)
+        path.addRoundedRect(in: rect, cornerWidth: radius, cornerHeight: radius)
         for cut in cuts { path.addPath(cut.path) }
         return path
     }
@@ -89,7 +94,7 @@ public struct MetalSlab<Content: View>: View {
                             .clipShape(shape)
                     )
             }
-            if let image = MetalGadgetLighting.surface(slabPath, key: "slab:\(cuts.hashValue)", material: material, lightness: color.L, chroma: color.C, hue: color.H,
+            if let image = MetalGadgetLighting.surface(slabPath, key: "slab:\(cuts.hashValue):\(rect.debugDescription)", material: material, lightness: color.L, chroma: color.C, hue: color.H,
                                                        size: size, scale: max(1, displayScale), colorway: colorway, contrast: contrast == .increased) {
                 Image(decorative: image, scale: max(1, displayScale))
             }

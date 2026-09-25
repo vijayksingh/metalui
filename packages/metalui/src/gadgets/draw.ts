@@ -8,7 +8,8 @@ import { GADGETS, type GadgetMaterial } from './gadgets.generated';
 import type { GadgetSpec, PartPlacement } from './spec';
 import { resolve, type ResolvedGadget, type Oklch } from './resolve';
 import { tierFor, type Host, type Tier } from './light';
-import { cutPath, drawSlab, type Cut } from './parts/slab';
+import { cutPath, drawSlab, drawTray, type Cut } from './parts/slab';
+import { drawPull } from './parts/pull';
 import { drawJack } from './parts/jack';
 import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
@@ -98,6 +99,11 @@ export const driveShare = (spec: GadgetSpec, value: number) => { const r = drive
 /** The state a gadget shows for a value: a needle past its threshold makes it `over` (the value
  *  decides, not the host); back under, `over` falls back to rest. Other states are the host's. */
 export function derivedState(spec: GadgetSpec, state: string, value?: number): string {
+  // A drawer too full to close is full; opened by the host it is open. Emptied, back to rest.
+  if (spec.parts.some((p) => p.part === 'slab' && p.role === 'actor') && spec.states.full && value !== undefined) {
+    if (driveShare(spec, value) >= GADGETS.tray.full) return state === 'open' ? 'open' : 'full';
+    return state === 'full' ? 'rest' : state;
+  }
   // Cells that fill: none lit is rest, some filling, all full. A first run is the host's.
   if (spec.parts.some((p) => p.part === 'cell') && spec.states.filling && spec.states.full && value !== undefined && state !== 'first-run') {
     const u = driveShare(spec, value);
@@ -229,6 +235,22 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const cut = cuts.find((c) => c.at[0] === p.at[0] && c.at[1] === p.at[1]);
       if (cut) defs += `<clipPath id="${pid}-clip"><path d="${cutPath(cut)}"/></clipPath>`;
       trims += `<g data-id="${p.id}"${cut ? ` clip-path="url(#${pid}-clip)"` : ''}><g data-part="backlight.level" style="opacity: ${+backlightLevel(lit).toFixed(3)}">${d.body}</g></g>`;
+    } else if (p.part === 'slab' && p.role === 'actor' && bodyPart) {
+      // A drawer's tray, run under the body's front edge: only what is out past the edge shows, and the
+      // edge shadows it. Its cards stand to the value's share; it is drawn where the state holds it.
+      const edge = bodyPart.at[1] + sizeOf(bodyPart)[1] / 2, [dd, da] = GADGETS.tray.edgeShadow, pose = poses[p.id];
+      const d = drawTray(pid, { at: p.at, size: size as [number, number], color: rs.body, material: resolved.material as GadgetMaterial, fill: driveShare(spec, o.value ?? driveDefault(spec)) }, { tier, host });
+      defs += d.defs + `<clipPath id="${pid}-out"><rect x="0" y="${edge - 1}" width="400" height="${400 - edge + 100}"/></clipPath>`
+        + `<linearGradient id="${pid}-edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="${da}"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`;
+      const t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
+      trims += `<g clip-path="url(#${pid}-out)"><g data-id="${p.id}"><g data-moves${t}>${d.body}</g></g>`
+        + `<rect data-part="tray.edge" x="${p.at[0] - size[0] / 2 - GADGETS.tray.wall}" y="${edge}" width="${size[0] + 2 * GADGETS.tray.wall}" height="${dd}" fill="url(#${pid}-edge)"/></g>`;
+    } else if (p.part === 'pull') {
+      // A pull on a drawer front: it goes where the tray goes.
+      const d = drawPull(pid, { at: p.at, size: size as [number, number], style: (p.params?.style as 'bar' | 'recess' | undefined) ?? 'bar', color: p.params?.style === 'recess' ? rs.body : undefined }, { tier });
+      defs += d.defs;
+      const pose = poses[p.id], t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
+      plugs += `<g data-id="${p.id}"><g data-moves${t}>${d.shadow}${d.body}</g></g>`;
     } else if (p.part === 'lid') {
       // The lid on its mouth, turned to where the state holds it (the flip swings it from then on).
       const k = driven.indexOf(p.id), full = held ? -((held.to as { r?: number }).r ?? 0) : 0;

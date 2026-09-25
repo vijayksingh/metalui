@@ -8,10 +8,11 @@
 import * as React from 'react';
 import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
-import { backlightLevel, derivedState, drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
+import { backlightLevel, derivedState, drawGadget, driveDefault, driveShare, driveTargets, formPoses, stateOf } from './draw';
 import { needleAngle } from './parts/needle';
 import { lightCells } from './parts/cell';
 import { poseLid } from './parts/lid';
+import { fillTray } from './parts/slab';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
 import { MECHANISMS as TIMELINES } from './mechanisms.generated';
@@ -154,6 +155,11 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       },
     });
     if (held) p.holdPose('plug', held, { immediate: true });
+    // Other slots a state poses (a drawer held open) start where the first state holds them.
+    for (const [pid, pose] of Object.entries(formPoses(valid, first.current))) {
+      const slot = Object.entries(valid.mechanism.bind).find(([, v]) => v === pid)?.[0];
+      if (slot && slot !== 'plug') p.holdPose(slot, pose, { immediate: true });
+    }
     player.current = p;
     // A looping act is an ongoing activity: shown in the state that starts it, it runs from the start.
     if (mech.loop && valid.states[shown.current]?.enter === 'act' && !reducedMotion()) p.act();
@@ -212,6 +218,11 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     roll.current.setOptions({ reduced: reducedMotion(), sound });
     roll.current.set(value);
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A drawer's cards stand to the value's share.
+  React.useEffect(() => {
+    if (!valid || value === undefined || !ref.current) return;
+    if (valid.parts.some((p) => p.part === 'slab' && p.role === 'actor')) fillTray(ref.current, driveShare(valid, value));
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!valid || value === undefined || !drive.current) return;
     drive.current.setOptions({ reduced: reducedMotion(), sound: valid.parts.some((p) => p.part === 'cell') ? null : sound });
@@ -242,9 +253,11 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     p?.stop();                                                       // a running act stops where it is
     p?.holdPose('plug', formPoses(valid, state)[bind.plug] ?? null);
     // Other parts a state poses (by their slot), and the light a state sets: blips dark unless it lights them.
-    for (const [pid, pose] of Object.entries(formPoses(valid, state))) {
-      const slot = Object.entries(valid.mechanism.bind).find(([, v]) => v === pid)?.[0];
-      if (slot && slot !== 'plug') p?.holdPose(slot, pose);
+    // A slot some state poses goes back to rest in a state that does not.
+    const posed = new Set(Object.keys(valid.states).flatMap((s) => Object.keys(formPoses(valid, s))));
+    for (const [slot, pid] of Object.entries(valid.mechanism.bind)) {
+      if (slot === 'plug' || typeof pid !== 'string' || !posed.has(pid)) continue;
+      p?.holdPose(slot, formPoses(valid, state)[pid] ?? null);
     }
     ref.current?.querySelectorAll<SVGGElement>('[data-layer="parts"] [data-id][data-moves]').forEach((el) => {
       const id = el.getAttribute('data-id')!, f = st.form?.[id], dot = !!el.querySelector('[data-shape="dot"]');
