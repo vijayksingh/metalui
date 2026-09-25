@@ -93,7 +93,7 @@ export default function RegionPage() {
       />
 
       <Section title="Drop a block" lede="Drag the block over a region: it lights and its rule says what the drop will do. Drop it and it lands inside on the object spring. Double-click a name to rename it. Dials: dim (an in-place lens with no match inside) and past (the region did not exist yet).">
-        <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} className="min-h-[400px] items-start justify-start">
+        <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} className="wide min-h-[400px] items-start justify-start">
           <Board dim={d.dim} past={d.past} />
         </Bench>
       </Section>

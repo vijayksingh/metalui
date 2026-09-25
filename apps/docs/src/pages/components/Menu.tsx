@@ -48,14 +48,14 @@ export default function MenuPage() {
     <ToastProvider>
       <PageHeader title="Menu and correction popover" lede="A frosted plate of rows, denser than the palette. From a trigger it opens 6 below; from a right-click it opens at the pointer, and that is the correction popover: right-click a cue to say what it is not. Pointer and keyboard share one highlighted row. Built on Base UI Menu and Context Menu." />
       <Section title="Correction popover" lede="Right-click a cue (or focus it and press ⇧F10). The heading is where the cue came from; choose a correction and the cue lets go, with Undo in a toast.">
-        <Bench caption="right-click a cue" on="table">
+        <Bench caption="right-click a cue">
           <Host>
             <Corrections />
           </Host>
         </Bench>
       </Section>
       <Section title="From a trigger" lede="Click, or focus and press ↓ / ↩. Arrows and type-ahead move the highlight; hover moves the same highlight.">
-        <Bench caption={`last chosen · ${ran}`} on="table" className="min-h-[240px] items-start">
+        <Bench caption={`last chosen · ${ran}`} className="min-h-[300px] items-start">
           <Host action={
             <Menu heading={d.heading ? 'Block · note' : undefined} trigger={<IconButton variant="ghost" label="More" icon={<MoreIcon size={16} />} />}>
               <MenuItem icon={<DuplicateIcon size={14} />} shortcut="⌘D" onSelect={() => setRan('Duplicate')}>Duplicate</MenuItem>

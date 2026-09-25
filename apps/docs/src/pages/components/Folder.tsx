@@ -169,7 +169,7 @@ export default function FolderPage() {
     <ComponentPage
       title="Folder"
       lede="A folder on the canvas holds blocks and takes little space. Unfold it to work with what is inside."
-      play={{ lede: 'Drag a photo, a link or a note onto the folder: it opens as you come over it, the thing goes into the pocket, and the flap swings shut. Try the colours.', node: <Play /> }}
+      play={{ lede: 'Drag a photo, a link or a note onto the folder: it opens as you come over it, the thing goes into the pocket, and the flap swings shut. Try the colours.', node: <Play />, wide: true }}
       more={[{ id: 'unfold', title: 'Unfold', lede: 'Double-click the folder: it opens into a region in its own colour and its blocks lay themselves out. Fold it back from the region\'s head.', node: <FolderUnfold /> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

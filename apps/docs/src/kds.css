@@ -288,10 +288,13 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
 .ph-block p:last-child { margin: 0; }
 
 /* ============================================================ STAGE: specimens sit on the table like the sheet's cells */
-.stage { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 32px; min-height: 236px; padding: 44px 24px 56px; margin: 0 0 24px; border-radius: 30px;
+/* A region hugs its demo (never the full column, which reads as a section): as wide as its contents,
+   centred, at least 420 so one small control does not sit in a sliver. */
+.stage { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 32px; min-height: 236px; padding: 44px 40px 56px; margin: 0 auto 24px; width: fit-content; min-width: min(100%, 420px); max-width: 100%; box-sizing: border-box; border-radius: 30px;
   background: linear-gradient(color-mix(in srgb, var(--ink) 1.8%, transparent), color-mix(in srgb, var(--ink) .8%, transparent));
   box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.07), inset 0 0 0 .5px rgba(0,0,0,.035), inset 0 -2px 4px -2px var(--rule-lip); }
 [data-mu-colorway="graphite"] .stage, .cw-graphite .stage { box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4), inset 0 -2px 4px -2px rgba(255,255,255,.04); background: rgba(255,255,255,.012); }
+.stage.wide { width: auto; margin-inline: 0; } /* a scene, not a specimen: things move across it */
 .stage.bare { background: none; box-shadow: none; padding-left: 0; padding-right: 0; }
 /* What a specimen sits on follows its layer (docs/COMPOSITION.md). A part or component sits on the table:
    no well, the space hugs it. An object, instrument or place sits on a piece of canvas: the page's own
