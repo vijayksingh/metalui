@@ -9,7 +9,7 @@ export const TextIcon = createIcon("text", "TextIcon");
 export const NoteIcon = createIcon("note", "NoteIcon");
 /** Image. Hover: The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.. Press: plays the same act. */
 export const ImageIcon = createIcon("image", "ImageIcon");
-/** Link. Hover: links pull apart, bar thins. Press: snap together. */
+/** Link. Hover: The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.. Press: plays the same act. */
 export const LinkIcon = createIcon("link", "LinkIcon");
 /** Draw. Hover: The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.. Press: plays the same act. */
 export const DrawIcon = createIcon("draw", "DrawIcon");

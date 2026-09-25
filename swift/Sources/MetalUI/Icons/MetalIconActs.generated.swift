@@ -259,6 +259,63 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.4 17L8.4 12C8.6439 11.7557 8.9748 11.6185 9.32 11.6185C9.6652 11.6185 9.9961 11.7557 10.24 12L14.3 16L16.3 14.1C16.803 13.6174 17.597 13.6174 18.1 14.1L20.7 16.6", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
             ]
         ),
+        .link: MetalIconAct(
+            duration: 1.01,
+            caption: "The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.",
+            parts: [
+            MetalIconActPart(
+                name: "la", origin: CGPoint(x: 15.2, y: 8.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2277, x: 1.0607, y: -1.0607, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3069, x: 1.1667, y: -1.1667, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.396, x: -0.3889, y: 0.3889, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.698, x: 0.0339, y: -0.0339, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "lb", origin: CGPoint(x: 8.8, y: 15.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2277, x: -1.0607, y: 1.0607, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3069, x: -1.1667, y: 1.1667, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.396, x: 0.3889, y: -0.3889, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.698, x: -0.0339, y: 0.0339, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "spark", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .linear),
+                    .init(0.3911, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4356, x: 0.0, y: 0.0, r: 0.0, sx: 0.9, sy: 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6535, x: 0.0, y: 0.0, r: 0.0, sx: 1.7, sy: 1.7, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.4, sy: 0.4, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.3911, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4356, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6535, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M11.2 7.6L12.6 6.2C14.0723 5.0246 16.1926 5.1431 17.5248 6.4752C18.8569 7.8074 18.9754 9.9277 17.8 11.4L16.4 12.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M10.6 13.4L14.2 9.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12.8 16.4L11.4 17.8C9.9277 18.9754 7.8074 18.8569 6.4752 17.5248C5.1431 16.1926 5.0246 14.0723 6.2 12.6L7.6 11.2", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M9.8 14.2L13.4 10.6", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M13.7 13.7L14.6 14.6M10.3 10.3L9.4 9.4", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .draw: MetalIconAct(
             duration: 1.18,
             caption: "The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.",

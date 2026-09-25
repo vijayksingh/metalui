@@ -113,26 +113,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1100,"caption":"The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.","stages":["Dip","Rise","Set"],"tracks":[{"part":"sun","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16364,"transform":"translate(0.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.4,"transform":"translate(-0.7px,-3.8px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50909,"transform":"translate(-0.62px,-3.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69091,"transform":"translate(-0.6px,-3.45px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.41818,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48182,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.70909,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * LINK · Tools
+   * LINK · Tools · one act, 1010ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          links pull apart, bar thins
-   * PRESS one-shot (from the current pose)
-   *          snap together
-   *     0ms   .la plays lk-a (340ms)
-   *     0ms   .lb plays lk-b (340ms)
-   *     0ms   .lbar plays lk-c (340ms)
+   * Tension → Snap home → Settle
+   *          The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.
+   *  la         0 → 230 → 310 → 400 → 705 → 1010ms
+   *  lb         0 → 230 → 310 → 400 → 705 → 1010ms
+   *  spark      0 → 395 → 440 → 660 → 1010ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "link": {
     label: "Link",
     category: "Tools",
-    hover: "links pull apart, bar thins",
-    press: "snap together",
-    pressMs: 340,
+    hover: "The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.",
+    press: "plays the same act",
+    pressMs: 1010,
     defs: "",
-    body: "<path class=\"la\" d=\"M11.2 7.6l1.4-1.4a3.7 3.7 0 0 1 5.2 5.2l-1.4 1.4\"/><path class=\"lb\" d=\"M12.8 16.4l-1.4 1.4a3.7 3.7 0 0 1-5.2-5.2l1.4-1.4\"/><path class=\"lbar\" d=\"M9.8 14.2 14.2 9.8\"/>",
+    body: "<g data-part=\"la\"><path d=\"M11.2 7.6l1.4-1.4a3.7 3.7 0 0 1 5.2 5.2l-1.4 1.4\"/><path d=\"M10.6 13.4 14.2 9.8\"/></g><g data-part=\"lb\"><path d=\"M12.8 16.4l-1.4 1.4a3.7 3.7 0 0 1-5.2-5.2l1.4-1.4\"/><path d=\"M9.8 14.2 13.4 10.6\"/></g><path class=\"ac\" data-part=\"spark\" opacity=\"0\" d=\"M13.7 13.7l.9.9M10.3 10.3l-.9-.9\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1010,"caption":"The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.","stages":["Tension","Snap home","Settle"],"tracks":[{"part":"la","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22772,"transform":"translate(1.0607px,-1.0607px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.30693,"transform":"translate(1.1667px,-1.1667px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.39604,"transform":"translate(-0.3889px,0.3889px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69802,"transform":"translate(0.0339px,-0.0339px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"lb","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22772,"transform":"translate(-1.0607px,1.0607px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.30693,"transform":"translate(-1.1667px,1.1667px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.39604,"transform":"translate(0.3889px,-0.3889px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69802,"transform":"translate(-0.0339px,0.0339px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"spark","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.39109,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.43564,"transform":"scale(.9)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65347,"transform":"scale(1.7)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * DRAW · Tools · one act, 1180ms

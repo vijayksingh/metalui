@@ -87,11 +87,20 @@
       "component": "LinkIcon",
       "label": "Link",
       "category": "Tools",
-      "hover": "links pull apart, bar thins",
-      "press": "snap together",
-      "pressMs": 340,
+      "hover": "The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.",
+      "press": "plays the same act",
+      "pressMs": 1010,
+      "motion": {
+        "caption": "The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.",
+        "durationMs": 1010,
+        "stages": [
+          "Tension",
+          "Snap home",
+          "Settle"
+        ]
+      },
       "tuned16": false,
-      "construction": "Two open capsule halves on the 45° axis, radius 3.7, plus a bridging bar. Separation is one animatable scalar."
+      "construction": "Two open capsule halves on the 45° axis, radius 3.7; the bridging bar is two overlapping halves (each 5.1u), one gripped by each link, so the bar telescopes. Motion (study): the links pull 1.65u apart along the axis, snap back .55u past rest, and a sideways spark marks the join."
     },
     {
       "name": "draw",
