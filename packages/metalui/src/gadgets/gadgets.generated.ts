@@ -612,7 +612,8 @@ export const GADGETS = {
       "reach": "own",
       "containers": [
         "slab"
-      ]
+      ],
+      "bodyCMax": 0.025
     },
     "command": {
       "stations": [
@@ -720,7 +721,8 @@ export const GADGETS = {
       235
     ],
     "flipWithinDeg": 40,
-    "minC": 0.13
+    "minC": 0.13,
+    "flipMinC": 0.04
   },
   "set": {
     "hueGap": 30,

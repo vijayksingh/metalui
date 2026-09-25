@@ -257,7 +257,7 @@ export default function Gadgets() {
             ['L', 'weight, valence', `${GADGETS.feel.L.base} ${GADGETS.feel.L.W} × w + ${GADGETS.feel.L.V} × (v − ½), within the material`],
             ['C', 'arousal, valence', `${GADGETS.feel.C.base} + ${GADGETS.feel.C.A} × a × (${GADGETS.feel.C.VMix[0]} + ${GADGETS.feel.C.VMix[1]} × v), capped by the material`],
             ['H', 'job station', `station + ${GADGETS.feel.H.V} × (v − ½) ${GADGETS.feel.H.W} × w`],
-            ['accent', 'body hue', `house orange; sky when the body sits within ${GADGETS.accent.flipWithinDeg}° of orange`],
+            ['accent', 'body hue', `house orange; sky when the body sits within ${GADGETS.accent.flipWithinDeg}° of orange with chroma ${GADGETS.accent.flipMinC} or more`],
             ['beeper', 'weight, valence', 'register from weight (high when light), major when pleased, minor when tense'],
           ]}
         />

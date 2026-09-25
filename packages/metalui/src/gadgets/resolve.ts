@@ -66,9 +66,9 @@ export function bodyColor(job: Job, feel: Feel, material: GadgetMaterial, statio
   return { L, C, H };
 }
 
-/** The accent: house orange, or sky when the body's hue sits near orange. */
-export function accentFor(bodyHue: number): Oklch {
-  const A = GADGETS.accent, near = Math.abs(((bodyHue - A.warm[2] + 540) % 360) - 180) <= A.flipWithinDeg;
+/** The accent: house orange, or sky when the body sits near orange and is colourful enough to clash. */
+export function accentFor(bodyHue: number, bodyC = Infinity): Oklch {
+  const A = GADGETS.accent, near = bodyC >= A.flipMinC && Math.abs(((bodyHue - A.warm[2] + 540) % 360) - 180) <= A.flipWithinDeg;
   const [L, C, H] = near ? A.cool : A.warm;
   return { L, C: Math.max(C, A.minC), H };
 }
@@ -78,7 +78,7 @@ export function resolveFeel(p: Placement): ResolvedFeel {
   const { material, by } = materialFor(p);
   const station = p.station ?? job.stations[0];
   const b = bodyColor(p.job, p.feel, material, station);
-  const a = accentFor(b.H);
+  const a = accentFor(b.H, b.C);
   const [t0, t1] = F.register.thresholds, midi = F.register.baseMidi;
   const [bLight, bMid] = GADGETS.set.bands;
   return {

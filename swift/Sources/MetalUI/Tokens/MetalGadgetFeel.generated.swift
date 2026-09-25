@@ -19,7 +19,7 @@ public enum MetalGadgetJob: String, CaseIterable, Sendable {
     public var reach: MetalSoundReach { switch self { case .tune: return .own; case .command: return .own; case .link: return .world; case .keep: return .own; case .identify: return .others; case .destroy: return .own; case .take: return .world; case .find: return .world; case .make: return .own; case .signal: return .own } }
     public var containers: [String] { switch self { case .tune: return ["slab"]; case .command: return ["slab"]; case .link: return ["slab", "free"]; case .keep: return ["slab", "inset"]; case .identify: return ["inset"]; case .destroy: return ["slab"]; case .take: return ["inset"]; case .find: return ["inset"]; case .make: return ["slab", "free"]; case .signal: return ["slab", "inset", "free"] } }
     public var pin: MetalSoundMaterial? { switch self { case .tune: return nil; case .command: return .ceramic; case .link: return nil; case .keep: return nil; case .identify: return .glass; case .destroy: return nil; case .take: return nil; case .find: return .stone; case .make: return nil; case .signal: return nil } }
-    public var bodyChromaMax: Double? { switch self { case .tune: return nil; case .command: return nil; case .link: return nil; case .keep: return nil; case .identify: return nil; case .destroy: return 0.02; case .take: return nil; case .find: return nil; case .make: return nil; case .signal: return nil } }
+    public var bodyChromaMax: Double? { switch self { case .tune: return 0.025; case .command: return nil; case .link: return nil; case .keep: return nil; case .identify: return nil; case .destroy: return 0.02; case .take: return nil; case .find: return nil; case .make: return nil; case .signal: return nil } }
 }
 
 public enum MetalGadgetFeelTokens {
@@ -41,6 +41,7 @@ public enum MetalGadgetFeelTokens {
     public static let accentWarm: (L: Double, C: Double, H: Double) = (0.72, 0.19, 45.0)
     public static let accentCool: (L: Double, C: Double, H: Double) = (0.75, 0.13, 235.0)
     public static let accentFlipWithin: Double = 40.0
+    public static let accentFlipMinChroma: Double = 0.04
     public static let accentMinChroma: Double = 0.13
     public static let setHueGap: Double = 30.0
     public static let setBands: (Double, Double) = (0.78, 0.5)

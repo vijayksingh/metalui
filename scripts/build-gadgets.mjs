@@ -266,6 +266,7 @@ ${rules}
     public static let accentWarm: (L: Double, C: Double, H: Double) = (${G.accent.warm.map(num).join(', ')})
     public static let accentCool: (L: Double, C: Double, H: Double) = (${G.accent.cool.map(num).join(', ')})
     public static let accentFlipWithin: Double = ${num(G.accent['flip-within-deg'])}
+    public static let accentFlipMinChroma: Double = ${num(G.accent['flip-min-C'])}
     public static let accentMinChroma: Double = ${num(G.accent['min-C'])}
     public static let setHueGap: Double = ${num(G.set['hue-gap'])}
     public static let setBands: (Double, Double) = (${G.set.bands.map(num).join(', ')})
