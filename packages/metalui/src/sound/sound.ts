@@ -33,6 +33,8 @@ export interface StrikeOptions {
   rendered?: number;
   /** A stable name for the playing thing, for the rate limit and the session decay. */
   key?: string;
+  /** Multiplies the fundamental: below 1 a part sounds lower (a soft pull), above 1 higher (a cap hitting its top stop). */
+  pitch?: number;
   /** Tuning, for the docs workbench: scales the recipe without editing tokens. */
   tune?: { f0x?: number; tone?: number; loud?: number; decay?: number };
 }
@@ -180,7 +182,7 @@ export function createSound(initial: Partial<SoundSettings> = {}): Sound {
         ...base, f0x: tune.f0x ?? base.f0x, tone: tune.tone ?? base.tone, loud: tune.loud ?? base.loud,
         modes: tune.decay ? base.modes.map(([r, g, d, ...rest]) => [r, g, d * tune.decay!, ...rest]) : base.modes,
       };
-      const size = o.size ?? SOUND.pitch.body, weight = o.weight ?? 0, f0 = vary(pitch(m.f0x, size, weight), P.vary.f0);
+      const size = o.size ?? SOUND.pitch.body, weight = o.weight ?? 0, f0 = vary(pitch(m.f0x, size, weight) * (o.pitch ?? 1), P.vary.f0);
       const skip: SoundSkip | undefined = !settings.on ? 'off' : settings.plays !== 'acts' ? 'plays' : !settings.materials[material] ? 'material' : !ctx ? 'no-audio' : undefined;
       const gate = skip ? 0 : o.key ? allow(o.key) : 1;
       const peak = dB(P.levelDb.act) * (o.level ?? 1) * m.loud * sizeGain(o.rendered ?? 160) * gate;

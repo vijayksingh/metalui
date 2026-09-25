@@ -6,3 +6,5 @@ export { normalize, JOBS, MATERIALS, PARTS, MECHANISMS, type Job, type Feel, typ
 export { resolve, resolveFeel, materialFor, bodyColor, accentFor, checkSet, type ResolvedFeel, type ResolvedGadget, type Placement, type SetProblem } from './gadgets/resolve';
 export { validate, validateGadget, validateRig, type Problem, type ProblemCode, type Validation } from './gadgets/validate';
 export { simulateCvd } from './gadgets/color';
+export { MECHANISMS as MECHANISM_TIMELINES } from './gadgets/mechanisms.generated';
+export { createPlayer, sampleTrack, bezier, REST, type Player, type PlayerOptions, type CueEvent, type Cue, type Pose, type MechanismName } from './gadgets/player';

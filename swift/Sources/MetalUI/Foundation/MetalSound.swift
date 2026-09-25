@@ -105,13 +105,13 @@ public final class MetalSound: @unchecked Sendable {
     @discardableResult
     public func strike(_ material: MetalSoundMaterial, size: Double = MetalSoundTokens.bodySize, weight: Double = 0,
                        reach: MetalSoundReach = .own, level: Double = 1, delay: Double = 0,
-                       rendered: Double = 160, key: String? = nil) -> Bool {
+                       rendered: Double = 160, key: String? = nil, pitch: Double = 1) -> Bool {
         guard isOn, plays == .acts, materials.contains(material), engine != nil else { return false }
         let gate = key.map(allow) ?? 1
         guard gate > 0 else { return false }
         let recipe = material.recipe
         let peak = db(MetalSoundTokens.actDb) * level * recipe.loud * sizeGain(rendered) * gate
-        let f0 = vary(fundamental(material, size: size, weight: weight), MetalSoundTokens.varyF0)
+        let f0 = vary(fundamental(material, size: size, weight: weight) * pitch, MetalSoundTokens.varyF0)
         var voices: [Voice] = []
         render(recipe, f0: f0, peak: peak, at: delay, size: size, reach: reach, into: &voices, echo: false)
         if weight > MetalSoundTokens.thumpAbove, recipe.thump {
