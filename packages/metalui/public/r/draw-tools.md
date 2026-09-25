@@ -1,6 +1,6 @@
 # Draw tools
 
-The drawing group of the toolbar. A composition block. React: `DrawTools` from `@unlocalhosted/metalui`. SwiftUI: not yet.
+The drawing group of the toolbar. A composition block. React: `DrawTools` from `@unlocalhosted/metalui`. SwiftUI: `MetalDrawTools` with bindings for tool, ink and width.
 
 ## Use it for
 

@@ -55,20 +55,30 @@ extension EnvironmentValues {
 public struct MetalToolButton: View {
     let label: String
     let shortcut: KeyEquivalent?
-    let icon: MetalIconName
+    let iconView: AnyView
     let latched: Bool
     let action: () -> Void
 
     public init(_ label: String, icon: MetalIconName, shortcut: KeyEquivalent? = nil, latched: Bool = false, action: @escaping () -> Void) {
         self.label = label
-        self.icon = icon
+        self.iconView = AnyView(MetalIcon(icon, size: MetalToolbarMetrics.glyph))
+        self.shortcut = shortcut
+        self.latched = latched
+        self.action = action
+    }
+
+    /// A tool with authored icon motion supplied by its caller.
+    public init<IconContent: View>(_ label: String, shortcut: KeyEquivalent? = nil, latched: Bool = false,
+                                   @ViewBuilder icon: () -> IconContent, action: @escaping () -> Void) {
+        self.label = label
+        self.iconView = AnyView(icon())
         self.shortcut = shortcut
         self.latched = latched
         self.action = action
     }
 
     public var body: some View {
-        let button = Button(action: action) { MetalIcon(icon, size: MetalToolbarMetrics.glyph) }
+        let button = Button(action: action) { iconView }
             .buttonStyle(MetalToolButtonStyle(latched: latched))
             .metalTooltip(label, shortcut: shortcut.map { String($0.character).uppercased() })
             .accessibilityLabel(label)

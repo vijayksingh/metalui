@@ -411,7 +411,7 @@ A 28 round cap. Ink: a 14 bead in its colour with a gloss. Width: a dot of 3, 6 
 
 # Draw tools
 
-The drawing group of the toolbar. A composition block. React: `DrawTools` from `@unlocalhosted/metalui`. SwiftUI: not yet.
+The drawing group of the toolbar. A composition block. React: `DrawTools` from `@unlocalhosted/metalui`. SwiftUI: `MetalDrawTools` with bindings for tool, ink and width.
 
 ## Use it for
 
