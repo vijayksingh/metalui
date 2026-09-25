@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalConnector.swift"
   },
   "agent": "connector.agent.md",
-  "layer": "component"
+  "layer": "object",
+  "page": "/components/connector"
 }

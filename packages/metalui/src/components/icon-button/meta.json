@@ -15,5 +15,6 @@
     "symbol": "MetalIconButton",
     "file": "swift/Sources/MetalUI/Components/MetalIconButton.swift"
   },
-  "agent": "icon-button.agent.md"
+  "agent": "icon-button.agent.md",
+  "page": "/components/icon-button"
 }

@@ -15,5 +15,7 @@
     "file": "swift/Sources/MetalUI/Components/MetalToolbar.swift"
   },
   "agent": "toolbar.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/toolbar",
+  "nav": "Toolbar"
 }

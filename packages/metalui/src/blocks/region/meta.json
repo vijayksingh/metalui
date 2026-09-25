@@ -2,7 +2,7 @@
   "name": "region",
   "title": "Region",
   "status": "alpha",
-  "layer": "block",
+  "layer": "place",
   "kind": "composition",
   "uses": [
     "well",
@@ -33,5 +33,6 @@
       "Body",
       "Row"
     ]
-  }
+  },
+  "page": "/components/region"
 }

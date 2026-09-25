@@ -21,5 +21,6 @@
       "Root",
       "Popup"
     ]
-  }
+  },
+  "page": "/components/dialog"
 }

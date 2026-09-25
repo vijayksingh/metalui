@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalSnapGuides.swift"
   },
   "agent": "snap-guides.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/snap-guides"
 }

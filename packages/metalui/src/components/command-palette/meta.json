@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift"
   },
   "agent": "command-palette.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/command-palette"
 }

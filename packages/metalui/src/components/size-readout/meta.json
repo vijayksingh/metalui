@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalSizeReadout.swift"
   },
   "agent": "size-readout.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/size-readout"
 }

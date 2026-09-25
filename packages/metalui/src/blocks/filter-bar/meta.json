@@ -2,7 +2,7 @@
   "name": "filter-bar",
   "title": "Filter bar",
   "status": "alpha",
-  "layer": "block",
+  "layer": "place",
   "kind": "composition",
   "uses": [
     "surface",
@@ -24,5 +24,7 @@
     "symbol": "MetalFilterBar",
     "file": "swift/Sources/MetalUI/Blocks/MetalFilterBar.swift"
   },
-  "agent": "filter-bar.agent.md"
+  "agent": "filter-bar.agent.md",
+  "page": "/components/lens-bar",
+  "nav": "Lens bar"
 }

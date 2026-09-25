@@ -2,7 +2,7 @@
   "name": "settings",
   "title": "Settings",
   "status": "alpha",
-  "layer": "block",
+  "layer": "component",
   "kind": "composition",
   "uses": [
     "surface",
@@ -22,5 +22,6 @@
     "symbol": "MetalSettings",
     "file": "swift/Sources/MetalUI/Blocks/MetalSettings.swift"
   },
-  "agent": "settings.agent.md"
+  "agent": "settings.agent.md",
+  "page": "/components/settings"
 }

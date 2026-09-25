@@ -2,7 +2,7 @@
   "name": "tool-strip",
   "title": "Tool strip",
   "status": "alpha",
-  "layer": "block",
+  "layer": "component",
   "kind": "composition",
   "uses": [
     "surface",
@@ -21,5 +21,6 @@
     "symbol": "MetalToolStrip",
     "file": "swift/Sources/MetalUI/Components/MetalToolStrip.swift"
   },
-  "agent": "tool-strip.agent.md"
+  "agent": "tool-strip.agent.md",
+  "page": "/components/tool-strip"
 }

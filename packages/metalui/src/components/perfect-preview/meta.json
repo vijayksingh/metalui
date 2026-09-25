@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift"
   },
   "agent": "perfect-preview.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/perfect-preview"
 }

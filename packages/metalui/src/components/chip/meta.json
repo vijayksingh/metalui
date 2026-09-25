@@ -2,7 +2,7 @@
   "name": "chip",
   "title": "Chip",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.",
   "base": "none",
   "react": {

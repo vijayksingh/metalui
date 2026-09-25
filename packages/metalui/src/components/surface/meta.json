@@ -2,7 +2,7 @@
   "name": "surface",
   "title": "Surface",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.",
   "base": "none",
   "react": {

@@ -2,7 +2,7 @@
   "name": "provenance-tooltip",
   "title": "Provenance tooltip",
   "status": "alpha",
-  "layer": "block",
+  "layer": "instrument",
   "kind": "composition",
   "uses": [
     "tooltip"
@@ -19,5 +19,6 @@
     "symbol": "MetalProvenanceTooltip, .metalProvenance(_:detail:)",
     "file": "swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift"
   },
-  "agent": "provenance-tooltip.agent.md"
+  "agent": "provenance-tooltip.agent.md",
+  "page": "/components/provenance-tooltip"
 }

@@ -2,7 +2,7 @@
   "name": "sparkline",
   "title": "Sparkline",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.",
   "base": "none",
   "react": {

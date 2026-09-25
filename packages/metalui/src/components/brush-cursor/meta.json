@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalBrushCursor.swift"
   },
   "agent": "brush-cursor.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/brush-cursor"
 }

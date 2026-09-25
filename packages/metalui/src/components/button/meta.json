@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalButton.swift"
   },
   "agent": "button.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/button"
 }

@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalLasso.swift"
   },
   "agent": "lasso.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/lasso"
 }

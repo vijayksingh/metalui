@@ -2,7 +2,7 @@
   "name": "draw-tools",
   "title": "Draw tools",
   "status": "alpha",
-  "layer": "block",
+  "layer": "component",
   "kind": "composition",
   "uses": [
     "toolbar",
@@ -20,5 +20,6 @@
     "symbol": "MetalDrawTools",
     "file": "swift/Sources/MetalUI/Blocks/MetalDrawTools.swift"
   },
-  "agent": "draw-tools.agent.md"
+  "agent": "draw-tools.agent.md",
+  "page": "/components/draw-tools"
 }

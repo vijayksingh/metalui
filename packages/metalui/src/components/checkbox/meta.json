@@ -15,5 +15,6 @@
     "symbol": "MetalCheckbox",
     "file": "swift/Sources/MetalUI/Components/MetalCheckbox.swift"
   },
-  "agent": "checkbox.agent.md"
+  "agent": "checkbox.agent.md",
+  "page": "/components/checkbox"
 }

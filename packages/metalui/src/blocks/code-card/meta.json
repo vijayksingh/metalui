@@ -2,7 +2,7 @@
   "name": "code-card",
   "title": "Code card",
   "status": "alpha",
-  "layer": "block",
+  "layer": "object",
   "kind": "custom",
   "reason": "The numbered, tinted code on its own dark screen is drawn by no component. The bezel, glare and tag are still GlassFace and Chip.",
   "uses": [
@@ -21,5 +21,6 @@
     "symbol": "MetalCodeCard",
     "file": "swift/Sources/MetalUI/Blocks/MetalCodeCard.swift"
   },
-  "agent": "code-card.agent.md"
+  "agent": "code-card.agent.md",
+  "page": "/components/code-card"
 }

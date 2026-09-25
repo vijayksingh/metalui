@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalLineHandles.swift"
   },
   "agent": "line-handles.agent.md",
-  "layer": "component"
+  "layer": "instrument",
+  "page": "/components/line-handles"
 }

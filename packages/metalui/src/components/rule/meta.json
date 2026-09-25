@@ -2,7 +2,7 @@
   "name": "rule",
   "title": "Rule",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "An engraved groove between groups; graphite on dark chrome.",
   "base": "none",
   "react": {

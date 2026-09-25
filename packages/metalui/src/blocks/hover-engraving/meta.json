@@ -2,7 +2,7 @@
   "name": "hover-engraving",
   "title": "Hover engraving",
   "status": "alpha",
-  "layer": "block",
+  "layer": "instrument",
   "kind": "composition",
   "uses": [
     "surface",
@@ -22,5 +22,6 @@
     "symbol": "MetalHoverEngraving",
     "file": "swift/Sources/MetalUI/Components/MetalHoverEngraving.swift"
   },
-  "agent": "hover-engraving.agent.md"
+  "agent": "hover-engraving.agent.md",
+  "page": "/components/hover-engraving"
 }

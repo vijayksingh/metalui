@@ -10,6 +10,33 @@ export interface NavGroup {
   items: NavItem[];
 }
 
+/* The part pages, grouped by layer (docs/COMPOSITION.md) from each part's meta.json: `layer`, `page`
+ * and `nav` (or `title`). Nothing is filed by hand, so the nav can't disagree with the layer check. */
+interface PartMeta { name: string; title?: string; nav?: string; layer: string; page?: string }
+const METAS = Object.values(import.meta.glob<PartMeta>('../../../../packages/metalui/src/*/*/meta.json', { eager: true, import: 'default' }));
+
+/** Doc pages whose part has no meta.json yet; they move into METAS when it lands. */
+const WITHOUT_META: PartMeta[] = [
+  { name: 'swatch', title: 'Swatch', layer: 'part', page: '/components/swatch' },
+  { name: 'cue', title: 'Cue family', layer: 'instrument', page: '/components/cue' },
+];
+
+const LAYERS = [
+  { layer: 'part', label: 'Parts' },
+  { layer: 'component', label: 'Components' },
+  { layer: 'object', label: 'Objects' },
+  { layer: 'instrument', label: 'Instruments' },
+  { layer: 'place', label: 'Places' },
+];
+
+const LAYER_GROUPS: NavGroup[] = LAYERS.map(({ layer, label }) => ({
+  label,
+  items: [...METAS, ...WITHOUT_META]
+    .filter((m) => m.layer === layer && m.page)
+    .map((m) => ({ to: m.page!, label: m.nav ?? m.title ?? m.name }))
+    .sort((x, y) => x.label.localeCompare(y.label)),
+}));
+
 export const NAV: NavGroup[] = [
   {
     label: 'Start',
@@ -30,57 +57,7 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/transitions', label: 'Transitions' },
     ],
   },
-  {
-    label: 'Components',
-    items: [
-      { to: '/components/button', label: 'Button' },
-      { to: '/components/switcher', label: 'Switcher' },
-      { to: '/components/kbd', label: 'Keycap' },
-      { to: '/components/swatch', label: 'Swatch' },
-      { to: '/components/checkbox', label: 'Checkbox' },
-      { to: '/components/slider', label: 'Slider' },
-      { to: '/components/icon-button', label: 'Icon button' },
-      { to: '/components/field', label: 'Field' },
-      { to: '/components/dialog', label: 'Dialog' },
-      { to: '/components/switch', label: 'Switch' },
-      { to: '/components/status', label: 'LED and status badge' },
-      { to: '/components/toast', label: 'Toast' },
-      { to: '/components/toolbar', label: 'Toolbar' },
-      { to: '/components/command-palette', label: 'Command palette' },
-      { to: '/components/tooltip', label: 'Tooltip' },
-      { to: '/components/menu', label: 'Menu' },
-    ],
-  },
-  {
-    label: 'Objects',
-    items: [
-      { to: '/components/selection-frame', label: 'Selection frame' },
-      { to: '/components/snap-guides', label: 'Snap guides' },
-      { to: '/components/lasso', label: 'Lasso' },
-      { to: '/components/block-silhouette', label: 'Block silhouette' },
-      { to: '/components/brush-cursor', label: 'Brush cursor' },
-      { to: '/components/draw-tools', label: 'Draw tools' },
-      { to: '/components/connector', label: 'Connector' },
-      { to: '/components/perfect-preview', label: 'Perfect preview' },
-      { to: '/components/line-handles', label: 'Line handles' },
-      { to: '/components/folder', label: 'Folder' },
-      { to: '/components/select', label: 'Select' },
-      { to: '/components/tabs', label: 'Tabs' },
-      { to: '/components/cue', label: 'Cue family' },
-      { to: '/components/suggestion-chip', label: 'Suggestion chip' },
-      { to: '/components/link-card', label: 'Link card' },
-      { to: '/components/code-card', label: 'Code card' },
-      { to: '/components/settings', label: 'Settings' },
-      { to: '/components/hover-engraving', label: 'Hover engraving' },
-      { to: '/components/provenance-tooltip', label: 'Provenance tooltip' },
-      { to: '/components/region', label: 'Region' },
-      { to: '/components/lens-bar', label: 'Lens bar' },
-      { to: '/components/memory-scrubber', label: 'Memory scrubber' },
-      { to: '/components/past-banner', label: 'Past banner' },
-      { to: '/components/tool-strip', label: 'Tool strip' },
-      { to: '/components/size-readout', label: 'Size readout' },
-    ],
-  },
+  ...LAYER_GROUPS,
   {
     label: 'Assets',
     items: [

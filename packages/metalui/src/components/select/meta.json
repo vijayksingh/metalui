@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalSelect.swift"
   },
   "agent": "select.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/select"
 }

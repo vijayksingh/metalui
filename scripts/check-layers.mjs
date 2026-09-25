@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-// check:layers (docs/COMPOSITION.md §6): the import graph obeys the layers. Components may import
-// foundations and other components, never blocks; blocks may import components and foundations,
-// never other blocks' internals; a block's meta.json `uses` equals the components it imports.
+// check:layers (docs/COMPOSITION.md §4, §6): the import graph obeys the six layers. Every part names
+// its `layer`; a part imports only its own layer and earlier ones (part → component → object →
+// instrument → place). Until the folders move, the folder rules still hold too: components/ never
+// imports blocks/, blocks never import each other, and a block's `uses` equals what it imports.
 // Swift: Components/ never reference a type defined in Blocks/.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { primitives, blocks } from './lib/components.mjs';
+import { primitives, blocks, components } from './lib/components.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const src = join(root, 'packages/metalui/src');
@@ -14,6 +15,22 @@ const errors = [];
 
 const imports = (file) => [...readFileSync(file, 'utf8').matchAll(/(?:import|export)\s[^'"]*?from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g)].map((m) => m[1] ?? m[2]);
 const filesOf = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => /\.(tsx?|css)$/.test(f)).map((f) => join(dir, f)) : []);
+
+const LAYERS = ['part', 'component', 'object', 'instrument', 'place'];
+const all = components();
+const byName = new Map(all.map((m) => [m.name, m]));
+for (const meta of all) {
+  const rank = LAYERS.indexOf(meta.layer);
+  if (rank < 0) { errors.push(`${meta.dir}: meta.json layer must be one of ${LAYERS.join(', ')} (is ${meta.layer})`); continue; }
+  for (const file of filesOf(join(src, meta.dir))) {
+    for (const spec of imports(file)) {
+      const hit = spec.match(/^(?:\.\.\/\.\.\/(?:components|blocks)\/|\.\.\/)([\w-]+)\//);
+      const dep = hit && byName.get(hit[1]);
+      if (!dep || dep.name === meta.name) continue;
+      if (LAYERS.indexOf(dep.layer) > rank) errors.push(`${meta.dir}: a ${meta.layer} imports ${dep.name}, a later layer (${dep.layer})`);
+    }
+  }
+}
 
 const blockNames = new Set(blocks().map((b) => b.name));
 for (const meta of primitives()) {
@@ -26,7 +43,6 @@ for (const meta of primitives()) {
       else if (sib && !existsSync(join(src, 'components', sib[1]))) errors.push(`${meta.dir}: imports a component that does not exist (${spec})`);
     }
   }
-  if (meta.layer !== 'component') errors.push(`${meta.dir}: meta.json layer must be "component"`);
 }
 
 for (const meta of blocks()) {
@@ -39,7 +55,6 @@ for (const meta of blocks()) {
       if (b && b[1] !== meta.name) errors.push(`${meta.dir}: a block imports another block (${spec})`);
     }
   }
-  if (meta.layer !== 'block') errors.push(`${meta.dir}: meta.json layer must be "block"`);
   const declared = new Set(meta.uses ?? []);
   const missing = [...used].filter((u) => !declared.has(u));
   const extra = [...declared].filter((u) => !used.has(u) && !(meta.usesNative ?? []).includes(u));

@@ -15,5 +15,5 @@
     "file": "swift/Sources/MetalUI/Components/MetalMark.swift"
   },
   "agent": "mark.agent.md",
-  "layer": "component"
+  "layer": "part"
 }

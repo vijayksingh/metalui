@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalBlockSilhouette.swift"
   },
   "agent": "block-silhouette.agent.md",
-  "layer": "component"
+  "layer": "object",
+  "page": "/components/block-silhouette"
 }

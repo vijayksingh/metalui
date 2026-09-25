@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalSwitch.swift"
   },
   "agent": "switch.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/switch"
 }

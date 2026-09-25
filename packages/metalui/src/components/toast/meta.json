@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalToast.swift"
   },
   "agent": "toast.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/toast"
 }

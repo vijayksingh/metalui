@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalFolder.swift"
   },
   "agent": "folder.agent.md",
-  "layer": "component"
+  "layer": "object",
+  "page": "/components/folder"
 }

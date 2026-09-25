@@ -2,7 +2,7 @@
   "name": "time-scrubber",
   "title": "Time scrubber",
   "status": "alpha",
-  "layer": "block",
+  "layer": "place",
   "kind": "composition",
   "uses": [
     "slider",
@@ -22,5 +22,7 @@
     "symbol": "MetalTimeScrubber",
     "file": "swift/Sources/MetalUI/Blocks/MetalTimeScrubber.swift"
   },
-  "agent": "time-scrubber.agent.md"
+  "agent": "time-scrubber.agent.md",
+  "page": "/components/memory-scrubber",
+  "nav": "Memory scrubber"
 }

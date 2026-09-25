@@ -10,7 +10,7 @@ values          pieces   controls      things     your hand      where things li
 | Layer | What it is | The test |
 |---|---|---|
 | **Foundations** | Values and rules: colour, type, spacing, radius, elevation, materials, springs, transitions | A value, not a shape |
-| **Parts** | The pieces cut from the materials: a well, a plate, a label, a glyph, an LED, a keycap | Has a look but no job; never used alone |
+| **Parts** | The pieces cut from the materials: a well, a plate, a label, a glyph, a keycap | Has a look but no job; never used alone |
 | **Components** | Controls with one job, the same in any app: a button, a select, tabs, a menu | You operate it to change something else |
 | **Objects** | Things with a body that stand for a person's stuff: a folder, a card, a connector | You could hold it; it stays on the canvas |
 | **Instruments** | What your hand uses and what the canvas draws while you work: the selection frame, the lasso, a cursor | Shows up only while you act; gone when you stop |
@@ -36,8 +36,8 @@ The generators emit CSS custom properties and classes, and Swift `MetalTokens` /
 
 | Layer | Members |
 |---|---|
-| **Parts** | Surface, Well, Glass face, Label, Glyph, Rule, LED and status badge, Keycap, Swatch, Chip, Mark, Row, Sparkline |
-| **Components** | Button, Icon button, Checkbox, Switch, Switcher, Tabs, Select, Slider, Field, Menu, Tooltip, Dialog, Toast, Toolbar, Command palette, Tool strip, Draw tools, Draw picks, Settings |
+| **Parts** | Surface, Well, Glass face, Label, Glyph, Rule, Keycap, Swatch, Chip, Mark, Row, Sparkline |
+| **Components** | LED and status badge (one file for now: the badge's hint is a Tooltip; the LED splits out as a Part when a Part needs it), Button, Icon button, Checkbox, Switch, Switcher, Tabs, Select, Slider, Field, Menu, Tooltip, Dialog, Toast, Toolbar, Command palette, Tool strip, Draw tools, Draw picks, Settings |
 | **Objects** | Folder, Link card, Code card, Connector, Block silhouette (an object seen from far away) |
 | **Instruments** | Selection frame, Snap guides, Lasso, Brush cursor, Line handles, Perfect preview, Size readout, Hover engraving, Provenance tooltip, Suggestion chip, the cue family |
 | **Places** | Region, Lens (the lens bar), the past (Past banner, Time scrubber) |

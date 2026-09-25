@@ -2,7 +2,7 @@
   "name": "link-card",
   "title": "Link card",
   "status": "alpha",
-  "layer": "block",
+  "layer": "object",
   "kind": "custom",
   "reason": "The screen is tinted by the link's host and carries the host and path in their own type; no component draws a tinted glass screen. The bezel, glare, tag and action are still GlassFace and Chip.",
   "uses": [
@@ -21,5 +21,6 @@
     "symbol": "MetalLinkCard",
     "file": "swift/Sources/MetalUI/Blocks/MetalLinkCard.swift"
   },
-  "agent": "link-card.agent.md"
+  "agent": "link-card.agent.md",
+  "page": "/components/link-card"
 }

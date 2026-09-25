@@ -2,7 +2,7 @@
   "name": "glyph",
   "title": "Glyph",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.",
   "base": "none",
   "react": {

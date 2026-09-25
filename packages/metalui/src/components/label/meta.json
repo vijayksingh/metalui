@@ -2,7 +2,7 @@
   "name": "label",
   "title": "Label",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as=\"input\" edits in place.",
   "base": "none",
   "react": {

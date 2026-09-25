@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalKbd.swift"
   },
   "agent": "kbd.agent.md",
-  "layer": "component"
+  "layer": "part",
+  "page": "/components/kbd"
 }

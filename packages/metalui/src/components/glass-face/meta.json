@@ -2,7 +2,7 @@
   "name": "glass-face",
   "title": "Glass face",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.",
   "base": "none",
   "react": {

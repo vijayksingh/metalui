@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalStatus.swift"
   },
   "agent": "status.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/status"
 }

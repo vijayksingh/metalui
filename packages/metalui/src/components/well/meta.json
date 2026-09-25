@@ -2,7 +2,7 @@
   "name": "well",
   "title": "Well",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A sunk field or track: field, track, region (with a drop-target state) and graphite.",
   "base": "none",
   "react": {

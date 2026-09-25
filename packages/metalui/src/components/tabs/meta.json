@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalTabs.swift"
   },
   "agent": "tabs.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/tabs"
 }

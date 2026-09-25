@@ -2,7 +2,7 @@
   "name": "past-banner",
   "title": "Past banner",
   "status": "alpha",
-  "layer": "block",
+  "layer": "place",
   "kind": "composition",
   "uses": [
     "surface",
@@ -22,5 +22,6 @@
     "symbol": "MetalPastBanner",
     "file": "swift/Sources/MetalUI/Components/MetalPastBanner.swift"
   },
-  "agent": "past-banner.agent.md"
+  "agent": "past-banner.agent.md",
+  "page": "/components/past-banner"
 }

@@ -15,5 +15,7 @@
     "file": "swift/Sources/MetalUI/Components/MetalMenu.swift"
   },
   "agent": "menu.agent.md",
-  "layer": "component"
+  "layer": "component",
+  "page": "/components/menu",
+  "nav": "Menu"
 }

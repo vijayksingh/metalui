@@ -2,7 +2,7 @@
   "name": "row",
   "title": "Row",
   "status": "alpha",
-  "layer": "component",
+  "layer": "part",
   "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
   "base": "none",
   "react": {
