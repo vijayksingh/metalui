@@ -89,16 +89,24 @@ public struct MetalRig: View {
     /// A point a share of the way along a cord, by its length (sampled), as the web's getPointAtLength.
     static func point(on c: MetalRigEngine.Cord, share: Double) -> CGPoint {
         let sag = MetalCableGeometry.sag(from: c.a, to: c.b, length: c.length), (c1, c2) = MetalCableGeometry.controls(from: c.a, to: c.b, sag: sag)
-        let at = { (u: Double) -> CGPoint in
-            let v = 1 - u
-            return CGPoint(x: v * v * v * c.a.x + 3 * v * v * u * c1.x + 3 * v * u * u * c2.x + u * u * u * c.b.x,
-                           y: v * v * v * c.a.y + 3 * v * v * u * c1.y + 3 * v * u * u * c2.y + u * u * u * c.b.y)
+        let at = { (fraction: Double) -> CGPoint in
+            let u = CGFloat(fraction), v = 1 - u
+            let start = v * v * v, first = 3 * v * v * u
+            let second = 3 * v * u * u, end = u * u * u
+            let x = start * c.a.x + first * c1.x + second * c2.x + end * c.b.x
+            let y = start * c.a.y + first * c1.y + second * c2.y + end * c.b.y
+            return CGPoint(x: x, y: y)
         }
         let n = 48, pts = (0...n).map { at(Double($0) / Double(n)) }
-        let lens = zip(pts, pts.dropFirst()).map { hypot($1.x - $0.x, $1.y - $0.y) }, total = lens.reduce(0, +)
+        let lens: [Double] = zip(pts, pts.dropFirst()).map { Double(hypot($1.x - $0.x, $1.y - $0.y)) }
+        let total = lens.reduce(0.0, +)
         var goal = share * total
         for (i, l) in lens.enumerated() {
-            if goal <= l { let k = l == 0 ? 0 : goal / l; return CGPoint(x: pts[i].x + (pts[i + 1].x - pts[i].x) * k, y: pts[i].y + (pts[i + 1].y - pts[i].y) * k) }
+            if goal <= l {
+                let k = CGFloat(l == 0 ? 0 : goal / l)
+                return CGPoint(x: pts[i].x + (pts[i + 1].x - pts[i].x) * k,
+                               y: pts[i].y + (pts[i + 1].y - pts[i].y) * k)
+            }
             goal -= l
         }
         return c.b

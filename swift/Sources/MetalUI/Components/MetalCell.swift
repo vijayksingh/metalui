@@ -39,8 +39,12 @@ public struct MetalCell: View {
     /// Where each cell's centre is (reading order), canvas units.
     public static func centres(cols: Int, rows: Int, gap: Double, side S: Double, at c: CGPoint) -> [CGPoint] {
         let w = Double(cols) * S + Double(cols - 1) * gap, h = Double(rows) * S + Double(rows - 1) * gap
+        let firstX = CGFloat(Double(c.x) - w / 2 + S / 2)
+        let firstY = CGFloat(Double(c.y) - h / 2 + S / 2)
+        let step = CGFloat(S + gap)
         return (0..<(cols * rows)).map { i in
-            CGPoint(x: c.x - w / 2 + S / 2 + Double(i % cols) * (S + gap), y: c.y - h / 2 + S / 2 + Double(i / cols) * (S + gap))
+            CGPoint(x: firstX + CGFloat(i % cols) * step,
+                    y: firstY + CGFloat(i / cols) * step)
         }
     }
 

@@ -29,7 +29,7 @@ public struct MetalConnector: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var middle = CGPoint.zero
+    @SwiftUI.State private var middle = CGPoint.zero
 
     public init(from: End, to: End, look: Look = .elastic, flow: Flow = .forward,
                 ink: Color = .primary, width: CGFloat = 2, state: State = .rest,
