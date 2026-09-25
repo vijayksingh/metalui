@@ -22,6 +22,7 @@ public struct MetalPerfectPreview: View {
     public let phase: Phase
     public let tune: Tune?
     public let scale: CGFloat
+    public let holdDuration: TimeInterval
     public let onHeld: () -> Void
 
     @Environment(\.metalColorway) private var colorway
@@ -29,11 +30,13 @@ public struct MetalPerfectPreview: View {
     @State private var trace: CGFloat = 0
 
     public init(outline: Path, phase: Phase, tune: Tune? = nil, scale: CGFloat = 1,
+                holdDuration: TimeInterval = 0.45,
                 onHeld: @escaping () -> Void = {}) {
         self.outline = outline
         self.phase = phase
         self.tune = tune
         self.scale = scale
+        self.holdDuration = holdDuration
         self.onHeld = onHeld
     }
 
@@ -71,9 +74,9 @@ public struct MetalPerfectPreview: View {
             guard phase == .holding else { trace = 0; return }
             trace = reduceMotion ? 1 : 0
             if !reduceMotion {
-                withAnimation(.linear(duration: 0.45)) { trace = 1 }
+                withAnimation(.linear(duration: holdDuration)) { trace = 1 }
             }
-            try? await Task.sleep(for: .milliseconds(450))
+            try? await Task.sleep(for: .seconds(holdDuration))
             if !Task.isCancelled { onHeld() }
         }
     }
