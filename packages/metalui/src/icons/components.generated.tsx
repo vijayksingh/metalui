@@ -67,7 +67,7 @@ export const CloseIcon = createIcon("close", "CloseIcon");
 export const CheckIcon = createIcon("check", "CheckIcon");
 /** Synced. Hover: The satellite winds back, laps the core once and clicks home into its slot.. Press: plays the same act. */
 export const SyncedIcon = createIcon("synced", "SyncedIcon");
-/** Offline. Hover: satellite drifts further out. Press: tries to return, drifts away. */
+/** Offline. Hover: The lost satellite swings back toward its slot, falls a unit short and is thrown back out.. Press: plays the same act. */
 export const OfflineIcon = createIcon("offline", "OfflineIcon");
 /** Sync Error. Hover: the orbit tries to turn, catches and snaps back; the mark jumps. Press: orbit shivers once. */
 export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");

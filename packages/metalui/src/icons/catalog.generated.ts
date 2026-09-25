@@ -745,24 +745,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1100,"caption":"The satellite winds back, laps the core once and clicks home into its slot.","stages":["Wind back","Lap","Click home"],"tracks":[{"part":"sat","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13636,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.13727,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.59909,"transform":"translate(0px,0px) rotate(12deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.6,"transform":"translate(0px,0px) rotate(12deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.7,"transform":"translate(0px,0px) rotate(-3deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(1deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89091,"transform":"translate(0px,0px) rotate(-0.3deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"lap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.13636,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.13727,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.5,0,.45,.9)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(372deg) scale(1,1)","opacity":1,"easing":"linear"},{"offset":0.60091,"transform":"translate(0px,0px) rotate(372deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(-9deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"orbit","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.59545,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.65455,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75455,"transform":"translate(0px,0px) rotate(-2deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.85455,"transform":"translate(0px,0px) rotate(0.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"dock","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.59091,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.63636,"transform":"scale(.8)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89091,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * OFFLINE · Status
+   * OFFLINE · Status · one act, 1100ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          satellite drifts further out
-   * PRESS one-shot (from the current pose)
-   *          tries to return, drifts away
-   *     0ms   .sat plays off-p (460ms)
+   * Reach → Miss → Drift out
+   *          The lost satellite swings back toward its slot, falls a unit short and is thrown back out.
+   *  sat        0 → 160 → 440 → 520 → 680 → 830 → 960 → 1100ms
+   *  core       0 → 200 → 440 → 520 → 580 → 780 → 1100ms
+   *  socket     0 → 250 → 440 → 520 → 720 → 1100ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "offline": {
     label: "Offline",
     category: "Status",
-    hover: "satellite drifts further out",
-    press: "tries to return, drifts away",
-    pressMs: 460,
+    hover: "The lost satellite swings back toward its slot, falls a unit short and is thrown back out.",
+    press: "plays the same act",
+    pressMs: 1100,
     defs: "",
-    body: "<circle class=\"core s\" cx=\"12\" cy=\"12\" r=\"2.1\" style=\"opacity:.55\"/><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" transform=\"rotate(-3 12 12)\"/><circle class=\"sat s\" cx=\"19\" cy=\"5\" r=\"1.6\"/>",
+    body: "<circle class=\"s\" data-part=\"core\" opacity=\".55\" cx=\"12\" cy=\"12\" r=\"2.1\"/><circle cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" stroke-dasharray=\"76 24\" transform=\"rotate(-3 12 12)\"/><circle class=\"ac\" data-part=\"socket\" opacity=\"0\" cx=\"17.37\" cy=\"6.63\" r=\"1.75\" style=\"stroke-width:calc(var(--sw) * .6)\"/><circle class=\"s\" data-part=\"sat\" cx=\"19\" cy=\"5\" r=\"1.6\"/>",
     sw16: 1.85,
+    motion: {"duration":1100,"caption":"The lost satellite swings back toward its slot, falls a unit short and is thrown back out.","stages":["Reach","Miss","Drift out"],"tracks":[{"part":"sat","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14545,"transform":"translate(0.5px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.4,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47273,"transform":"translate(-1.05px,1.05px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.61818,"transform":"translate(1px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75455,"transform":"translate(-0.3px,0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.87273,"transform":"translate(0.1px,-0.1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"core","keyframes":[{"offset":0,"opacity":0.55,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18182,"opacity":0.55,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.4,"opacity":0.95,"easing":"linear"},{"offset":0.47273,"opacity":0.95,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.52727,"opacity":0.2,"easing":"linear"},{"offset":0.70909,"opacity":0.2,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"opacity":0.55}]},{"part":"socket","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.22727,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.4,"transform":"scale(1)","opacity":0.7},{"offset":0.47273,"transform":"scale(1)","opacity":0.7,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65455,"transform":"scale(.7)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * SYNC ERROR · Status

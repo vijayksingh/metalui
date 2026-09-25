@@ -487,11 +487,20 @@
       "component": "OfflineIcon",
       "label": "Offline",
       "category": "Status",
-      "hover": "satellite drifts further out",
-      "press": "tries to return, drifts away",
-      "pressMs": 460,
+      "hover": "The lost satellite swings back toward its slot, falls a unit short and is thrown back out.",
+      "press": "plays the same act",
+      "pressMs": 1100,
+      "motion": {
+        "caption": "The lost satellite swings back toward its slot, falls a unit short and is thrown back out.",
+        "durationMs": 1100,
+        "stages": [
+          "Reach",
+          "Miss",
+          "Drift out"
+        ]
+      },
       "tuned16": false,
-      "construction": "Same orbit, 94° gap; satellite has left the ring (r≈9.6)."
+      "construction": "Same orbit as Synced with a 76/24 dash turned −3° (an 86° gap); the satellite (r1.6) has left the ring (r≈9.9) and the core is dimmed to .55. Motion (study): the satellite swings 2.4 in toward its slot, the core's light rises and the empty socket outlines in the gap; it misses, the core drops to .2 and the satellite is thrown back out past rest before settling."
     },
     {
       "name": "sync-error",

@@ -1084,6 +1084,67 @@ extension MetalIconAct {
             MetalIconActInk(d: "M20.57 6.63C20.57 8.3973 19.1373 9.83 17.37 9.83C15.6027 9.83 14.17 8.3973 14.17 6.63C14.17 4.8627 15.6027 3.43 17.37 3.43C19.1373 3.43 20.57 4.8627 20.57 6.63Z", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .offline: MetalIconAct(
+            duration: 1.1,
+            caption: "The lost satellite swings back toward its slot, falls a unit short and is thrown back out.",
+            parts: [
+            MetalIconActPart(
+                name: "sat", origin: CGPoint(x: 19.0, y: 5.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1455, x: 0.5, y: -0.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.4, x: -1.2, y: 1.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4727, x: -1.05, y: 1.05, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.6182, x: 1.0, y: -1.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7545, x: -0.3, y: 0.3, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.8727, x: 0.1, y: -0.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "core", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [],
+                opacity: [
+                    .init(0.0, 0.55, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1818, 0.55, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4, 0.95, ease: .linear),
+                    .init(0.4727, 0.95, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.5273, 0.2, ease: .linear),
+                    .init(0.7091, 0.2, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(1.0, 0.55, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "socket", origin: CGPoint(x: 17.37, y: 6.63),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .linear),
+                    .init(0.2273, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.4727, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6545, x: 0.0, y: 0.0, r: 0.0, sx: 0.7, sy: 0.7, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2273, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.4, 0.7, ease: .linear),
+                    .init(0.4727, 0.7, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6545, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M14.1 12C14.1 13.1598 13.1598 14.1 12 14.1C10.8402 14.1 9.9 13.1598 9.9 12C9.9 10.8402 10.8402 9.9 12 9.9C13.1598 9.9 14.1 10.8402 14.1 12Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
+            MetalIconActInk(d: "M19.5896 11.6022C19.8093 15.7939 16.5894 19.3699 12.3978 19.5896C8.2061 19.8093 4.6301 16.5894 4.4104 12.3978C4.1907 8.2061 7.4106 4.6301 11.6022 4.4104C15.7939 4.1907 19.3699 7.4106 19.5896 11.6022Z", parts: [], stroke: 1.0, fill: .none, opacity: 1.0, trim: 0.76),
+            MetalIconActInk(d: "M19.12 6.63C19.12 7.5965 18.3365 8.38 17.37 8.38C16.4035 8.38 15.62 7.5965 15.62 6.63C15.62 5.6635 16.4035 4.88 17.37 4.88C18.3365 4.88 19.12 5.6635 19.12 6.63Z", parts: [2], stroke: 0.6, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M20.6 5C20.6 5.8837 19.8837 6.6 19 6.6C18.1163 6.6 17.4 5.8837 17.4 5C17.4 4.1163 18.1163 3.4 19 3.4C19.8837 3.4 20.6 4.1163 20.6 5Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
+            ]
+        ),
         .region: MetalIconAct(
             duration: 1.04,
             caption: "The frame is set down on the canvas, and its name writes into the head behind a caret.",
