@@ -47,7 +47,7 @@ export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 export const TrashIcon = createIcon("trash", "TrashIcon");
 /** Group · Stack. Hover: The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.. Press: plays the same act. */
 export const GroupIcon = createIcon("group", "GroupIcon");
-/** Ungroup. Hover: cards spread wider. Press: cards pop out and separate. */
+/** Ungroup. Hover: The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.. Press: plays the same act. */
 export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
 /** Pin. Hover: pin lifts, its contact shadow fades. Press: pushes in. */
 export const PinIcon = createIcon("pin", "PinIcon");

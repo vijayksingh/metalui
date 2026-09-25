@@ -549,25 +549,27 @@ export const ICON_CATALOG = {
     motion: {"duration":1253,"caption":"The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.","stages":["Gather","Drop in","Land"],"tracks":[{"part":"card1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.12769,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.3352,"transform":"translate(2.3px,-2.6px) rotate(8deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.43097,"transform":"translate(2.3px,0.7px) rotate(8deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71508,"transform":"translate(-0.227px,-0.0691px) rotate(-0.7894deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"card2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.09577,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.30327,"transform":"translate(-2.3px,-2.6px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.43097,"transform":"translate(-2.3px,0.7px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71508,"transform":"translate(0.227px,-0.0691px) rotate(0.4934deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.42298,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.44693,"transform":"translate(0px,0px) rotate(0deg) scale(1.03,0.93)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69034,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.9)","opacity":0},{"offset":0.43496,"transform":"scale(.9)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.47885,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65443,"transform":"scale(1.08)","opacity":0},{"offset":1,"transform":"scale(.9)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * UNGROUP · Actions
+   * UNGROUP · Actions · one act, 826ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          cards spread wider
-   * PRESS one-shot (from the current pose)
-   *          cards pop out and separate
-   *     0ms   .u1 plays ug-1 (400ms)
-   *    50ms   .u2 plays ug-2 (400ms)
+   * Press together → Let go → Settle apart
+   *          The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.
+   *  left       0 → 260 → 340 → 440 → 796 → 826ms
+   *  right      0 → 290 → 370 → 470 → 826ms
+   *  tray       0 → 260 → 340 → 440 → 745 → 826ms
+   *  seam       0 → 430 → 470 → 560 → 760 → 826ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "ungroup": {
     label: "Ungroup",
     category: "Actions",
-    hover: "cards spread wider",
-    press: "cards pop out and separate",
-    pressMs: 450,
+    hover: "The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.",
+    press: "plays the same act",
+    pressMs: 826,
     defs: "",
-    body: "<rect class=\"u1 f\" style=\"--duo:.1\" x=\"3.2\" y=\"3.4\" width=\"8\" height=\"9.4\" rx=\"1.6\"/><rect class=\"u2 f\" style=\"--duo:.1\" x=\"12.8\" y=\"3.4\" width=\"8\" height=\"9.4\" rx=\"1.6\"/><path class=\"ff\" d=\"M3.5 15.2v2.4a2.5 2.5 0 0 0 2.5 2.5h12a2.5 2.5 0 0 0 2.5-2.5v-2.4\"/>",
+    body: "<g data-part=\"left\"><rect class=\"f\" style=\"--duo:.1\" x=\"3.2\" y=\"3.4\" width=\"8\" height=\"9.4\" rx=\"1.6\" transform=\"rotate(-6 7.2 12.8)\"/></g><g data-part=\"right\"><rect class=\"f\" style=\"--duo:.1\" x=\"12.8\" y=\"3.4\" width=\"8\" height=\"9.4\" rx=\"1.6\" transform=\"rotate(6 16.8 12.8)\"/></g><g data-part=\"tray\"><path d=\"M3.5 15.2v2.4a2.5 2.5 0 0 0 2.5 2.5h12a2.5 2.5 0 0 0 2.5-2.5v-2.4\"/></g><path class=\"ac\" data-part=\"seam\" opacity=\"0\" d=\"M12 4.6v7.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":826,"caption":"The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.","stages":["Press together","Let go","Settle apart"],"tracks":[{"part":"left","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31477,"transform":"translate(0.8px,2px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.41162,"transform":"translate(0.8px,2.2px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.53269,"transform":"translate(-0.15px,-0.6px) rotate(-1.5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96368,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"right","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.35109,"transform":"translate(-0.8px,2px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44794,"transform":"translate(-0.8px,2.2px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.56901,"transform":"translate(0.15px,-0.6px) rotate(1.5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tray","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31477,"transform":"translate(0px,0px) rotate(0deg) scale(1.01,0.95)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.41162,"transform":"translate(0px,0px) rotate(0deg) scale(1.015,0.94)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.53269,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.90194,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"seam","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.52058,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.56901,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.67797,"transform":"scale(1.05)","opacity":0.8,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.9201,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * PIN · Actions
