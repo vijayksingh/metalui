@@ -445,6 +445,13 @@ public enum MetalSprings {
     public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
 }
 
+/// Travel values shared with the web motion helpers.
+public enum MetalMotionTokens {
+    public static let hopDuration: Double = 0.25
+    public static let hopLift: Double = 14.0
+    public static let hopArcRatio: Double = 0.8
+}
+
 /// How a spring class resolves under Reduce Motion (foundations.reduced-motion).
 public enum MetalReducedMotion: String, Sendable {
     /// Plays as authored: the motion is feedback, not decoration.

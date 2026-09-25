@@ -660,6 +660,13 @@ public enum MetalSprings {
 ${swiftSprings}
 }
 
+/// Travel values shared with the web motion helpers.
+public enum MetalMotionTokens {
+    public static let hopDuration: Double = ${num(parseFloat(T.motion['hop-duration'].value) / 1000)}
+    public static let hopLift: Double = ${num(parseFloat(T.motion['hop-lift'].value))}
+    public static let hopArcRatio: Double = ${num(parseFloat(T.motion['hop-arc-ratio'].value))}
+}
+
 /// How a spring class resolves under Reduce Motion (foundations.reduced-motion).
 public enum MetalReducedMotion: String, Sendable {
     /// Plays as authored: the motion is feedback, not decoration.

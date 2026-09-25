@@ -31,7 +31,7 @@ export function hopPoint(from: HopPoint, to: HopPoint, t: number, { side = 'up' 
   if (side === 'cw') { nx = -nx; ny = -ny; }
   // up bows toward the top of the screen; a mostly vertical move keeps ccw.
   if (side === 'up' && Math.abs(dx) >= Math.abs(dy) && ny > 0) { nx = -nx; ny = -ny; }
-  const h = Math.min(0.8 * d, lift);
+  const h = Math.min(token('--mu-motion-hop-arc-ratio', 0.8) * d, lift);
   const cx = from.x + dx / 2 + nx * h, cy = from.y + dy / 2 + ny * h;
   const u = 1 - t;
   return { x: u * u * from.x + 2 * u * t * cx + t * t * to.x, y: u * u * from.y + 2 * u * t * cy + t * t * to.y };
