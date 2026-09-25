@@ -13,7 +13,7 @@ public enum MetalRegionState: Sendable {
     case past
 }
 
-/// A drawn rectangle with a name that carries a rule: a sunk well with its head, or a pinned lens plate.
+/// A drawn rectangle with a name that carries a rule: a paper well with its head, or a pinned lens plate.
 public struct MetalRegionView<Rows: View>: View {
     let name: String
     let rule: String?
@@ -21,6 +21,7 @@ public struct MetalRegionView<Rows: View>: View {
     let count: Int?
     let state: MetalRegionState
     let lens: Bool
+    let hue: MetalRegionHue
     let showsHeader: Bool
     @Binding var renaming: Bool
     let onRename: (String) -> Void
@@ -34,7 +35,7 @@ public struct MetalRegionView<Rows: View>: View {
 
     public init(
         name: String, rule: String? = nil, dropRule: String? = nil, count: Int? = nil, state: MetalRegionState = .rest,
-        lens: Bool = false, showsHeader: Bool = true,
+        lens: Bool = false, hue: MetalRegionHue = .neutral, showsHeader: Bool = true,
         renaming: Binding<Bool> = .constant(false), onRename: @escaping (String) -> Void = { _ in },
         @ViewBuilder rows: () -> Rows = { EmptyView() }
     ) {
@@ -44,6 +45,7 @@ public struct MetalRegionView<Rows: View>: View {
         self.count = count
         self.state = state
         self.lens = lens
+        self.hue = hue
         self.showsHeader = showsHeader
         _renaming = renaming
         self.onRename = onRename
@@ -81,13 +83,8 @@ public struct MetalRegionView<Rows: View>: View {
                 if !reduceTransparency { MetalBackdropView(backdrop: MetalBackdrop(blur: MetalRegion.lensBlur, saturation: 1, dark: colorway == .graphite)).clipShape(shape) }
                 Color.clear.metalRecipe(MetalRecipe(fill: reduceTransparency ? .solid(t.frostOpaque) : t.regionLensFill, shadows: t.raiseLite), in: shape)
             }
-        } else if state == .over {
-            Color.clear.metalRecipe(MetalRecipe(
-                fill: MetalGradient(angle: 180, stops: [.init(MetalRegion.overFillTop, 0), .init(MetalRegion.overFillBot, 1)]),
-                shadows: t.regionOverShade + [MetalShadow(inset: true, x: 0, y: 0, blur: 0, spread: 1, color: MetalRegion.overRing)]
-            ), in: shape)
         } else {
-            Color.clear.metalRecipe(MetalRecipe(fill: t.regionFill, shadows: t.regionSh), in: shape)
+            MetalWell(.region, radius: shape.cornerSize.width, over: state == .over, hue: hue) { Color.clear }
         }
     }
 
