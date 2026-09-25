@@ -3,6 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Button, Field, Switcher, inkColor } from '@unlocalhosted/metalui';
 import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
 import { fitFrame, lastWordNote, settleWord } from '../lib/ink-word';
+import { StrokeGuide, TOOL_GUIDE, WordGuide } from '../lib/ink-guide';
 import { lastLettersNote, learnFrom, letterFrame, readWord, repairLetters, sampleOf, type LetterBank } from '../lib/ink-letters';
 import { LetterPad } from './LetterPad';
 
@@ -23,6 +24,9 @@ import { LetterPad } from './LetterPad';
  * Letters: type what the last word says and Repair. A letter the lab has not learned yet is asked
  * for on the letter pad (twice each); then each letter that strays from your usual one is pulled
  * part way back (ink-letters.ts), in the same morph. Letters close to your usual ones teach the bank.
+ * Keeping to the line (ink-guide.ts): while you write, the ink just behind the pen drifts toward the
+ * word's baseline and x-height, so letters keep their size; one guide per word, shared by its
+ * strokes; the finished stroke is the ink as it last showed. The "line" dial turns it off to compare.
  * Copy strokes copies every stroke's raw samples (x, y, time, pressure) as JSON: real handwriting
  * for the engine's fixtures.
  * ───────────────────────────────────────────────────────── */
@@ -54,17 +58,17 @@ const KEEP = 'metalui-assist-lab-strokes';
 
 function keep(all: Stroke[]) {
   try {
-    const done = all.filter((st) => !st.live).map((st) => ({ tool: st.tool, raw: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) }));
+    const done = all.filter((st) => !st.live).map((st) => ({ tool: st.tool, raw: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]), ink: st.ink?.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) }));
     localStorage.setItem(KEEP, JSON.stringify(done));
   } catch { /* storage unavailable: nothing kept */ }
 }
 
 function restore(): Stroke[] {
   try {
-    const saved = JSON.parse(localStorage.getItem(KEEP) ?? '[]') as { tool: AssistTool; raw: number[][] }[];
+    const saved = JSON.parse(localStorage.getItem(KEEP) ?? '[]') as { tool: AssistTool; raw: number[][]; ink?: number[][] }[];
     return saved.map((o, k) => {
       const raw = o.raw.map(([x, y, t, pressure]) => ({ x, y, t, pressure }));
-      const look = LOOK[o.tool], ink = assistStroke(raw, TOOL_ASSIST[o.tool]);
+      const look = LOOK[o.tool], ink = o.ink ? o.ink.map(([x, y, t, pressure]) => ({ x, y, t, pressure })) : assistStroke(raw, TOOL_ASSIST[o.tool]);
       return { id: k + 1, tool: o.tool, raw, chunks: [], chunked: 0, ink, done: outlinePath(ink, look.size, look.thinning, look.taper) };
     });
   } catch { return []; }
@@ -151,6 +155,7 @@ export function AssistLab() {
     settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
     corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1] },
     landing: { dehook: [TOOL_ASSIST.pen.dehook, 0, 16, 1] },
+    line: { keep: true, gain: [TOOL_GUIDE.pen!.gTop, 0, 1, 0.05] },
   });
   // The tool's preset, until a dial is moved away from the pen's default.
   const params = (t: AssistTool) => {
@@ -183,10 +188,20 @@ export function AssistLab() {
     const p = pos(e), t = e.timeStamp;
     window.clearTimeout(pause.current);
     if (startsNewWord(p.x, p.y)) completeWord();
-    const s: Stroke = { id: Date.now(), tool, raw: [], live: new LiveInk(params(tool)), chunks: [], chunked: 0 };
+    const s: Stroke = { id: Date.now(), tool, raw: [], live: new LiveInk(params(tool), strokeGuide(tool)), chunks: [], chunked: 0 };
     live.current = { s, last: { ...p, t } };
     feed(live.current, { ...p, t, pressure: 0.5 });
     setStrokes((all) => [...all, s]);
+  };
+  // One guide per word (its frame survives lifts); the next word starts from this word's x-height.
+  const wordGuide = React.useRef<WordGuide | null>(null);
+  const priorXh = React.useRef<number | undefined>(undefined);
+  const strokeGuide = (t: AssistTool) => {
+    const base = TOOL_GUIDE[t];
+    if (!base || !d.line.keep) return undefined;
+    const k = d.line.gain / (TOOL_GUIDE.pen!.gTop || 1);
+    wordGuide.current ??= new WordGuide({ ...base, gTop: base.gTop * k, gBot: base.gBot * k }, priorXh.current);
+    return new StrokeGuide(wordGuide.current, params(t).settleMs);
   };
   const feed = (L: { s: Stroke }, sample: InkSample) => { L.s.raw.push(sample); L.s.live?.push(sample); };
   const move = (e: React.PointerEvent) => {
@@ -207,7 +222,19 @@ export function AssistLab() {
   const pause = React.useRef<number | undefined>(undefined);
   const finish = (st: Stroke) => {
     const look = LOOK[st.tool];
-    st.ink = assistStroke(st.raw, params(st.tool));
+    // With the guide on, the stroke keeps the ink as it last showed (the pull never jumps on lift).
+    const guided = st.live?.guided;
+    if (st.live && guided) {
+      // The pull keeps arriving for a moment after the lift (the stroke's last point stays put).
+      const L = st.live, lastT = st.raw[st.raw.length - 1].t, span = guided.settleAfterLift, t0 = performance.now();
+      const step = () => {
+        const el = Math.min(span, performance.now() - t0), { frozen, tail } = L.read(lastT + el);
+        st.ink = frozen.concat(tail); st.done = outlinePath(st.ink, look.size, look.thinning, look.taper); bump(st);
+        if (el < span) requestAnimationFrame(step); else setStrokes((all) => { keep(all); return all; });
+      };
+      const { frozen, tail } = L.read(); st.ink = frozen.concat(tail);
+      requestAnimationFrame(step);
+    } else st.ink = assistStroke(st.raw, params(st.tool));
     st.done = outlinePath(st.ink, look.size, look.thinning, look.taper);
     st.live = undefined; st.chunks = [];
     bump(st);
@@ -220,6 +247,8 @@ export function AssistLab() {
   // A finished word settles with full context, in one morph on the settle spring.
   const completeWord = () => {
     window.clearTimeout(pause.current);
+    priorXh.current = wordGuide.current?.xHeight ?? priorXh.current;
+    wordGuide.current = null;
     const strokesOfWord = word.current; word.current = [];
     if (!strokesOfWord.length) return;
     lastWord.current = strokesOfWord;
@@ -309,7 +338,7 @@ export function AssistLab() {
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
         {SETTLE && <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />}
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
-        <Button size="compact" onClick={() => { setStrokes([]); keep([]); lastWord.current = []; }}>Clear</Button>
+        <Button size="compact" onClick={() => { setStrokes([]); keep([]); lastWord.current = []; wordGuide.current = null; }}>Clear</Button>
         <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
       </div>
       <div ref={box} className="snap-canvas" style={{ height: 300, touchAction: 'none', cursor: 'crosshair' }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>

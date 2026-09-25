@@ -24,6 +24,8 @@
  * reached 1.4–1.5 at best and lagged a quick stroke by 7–14 px.
  * ───────────────────────────────────────────────────────── */
 
+import type { StrokeGuide } from './ink-guide';
+
 export interface InkSample { x: number; y: number; t: number; pressure: number }
 
 export interface AssistParams {
@@ -99,7 +101,10 @@ export class LiveInk {
   private dense: InkSample[] = []; // `landed` with its gaps filled; the newest segment stays open until the next sample
   private frozen: InkSample[] = [];
   private start = 0; // index in `landed` of the first point not yet frozen
-  constructor(private p: AssistParams) {}
+  private arc: number[] = []; // arc position of each filled point
+  /** `guide`: the word's pull toward its line (ink-guide.ts), applied to the live tail only. */
+  constructor(private p: AssistParams, private guide?: StrokeGuide) {}
+  get guided(): StrokeGuide | undefined { return this.guide; }
 
   push(s: InkSample) {
     this.raw.push(s);
@@ -110,18 +115,42 @@ export class LiveInk {
     const L = this.landed, closed = this.dense.length ? this.closedTo : 0;
     if (!this.dense.length) this.dense.push(L[0]);
     for (let i = closed; i < L.length - 2; i++) { this.dense.push(...fill(L, i), L[i + 1]); this.closedTo = i + 1; }
+    if (!this.guide) return;
+    const D = this.dense, A = this.arc;
+    for (let i = A.length; i < D.length; i++) A.push(i ? A[i - 1] + Math.hypot(D[i].x - D[i - 1].x, D[i].y - D[i - 1].y) : 0);
+    this.guide.scan(D, A, A[Math.min(this.start, A.length - 1)] ?? 0);
   }
   private closedTo = 0;
 
   /** The assisted stroke so far: the frozen part (never changes) and the live tail. */
-  read(): { frozen: InkSample[]; tail: InkSample[] } {
+  read(at?: number): { frozen: InkSample[]; tail: InkSample[] } {
+    // (With a guide, the finished stroke is the last read, frozen plus tail: the pull stays as it was.)
     if (!this.landed) return { frozen: [], tail: settle(densify(dehook(this.raw, this.p.dehook)), this.p) };
     // The filled points, then the newest (still open) segment as it stands.
     const L = this.landed, pts = L.length > 1 ? this.dense.concat(fill(L, L.length - 2), L[L.length - 1]) : this.dense;
-    const reach = this.p.settleMs * 6, now = pts[pts.length - 1].t;
+    const last = pts[pts.length - 1].t, reach = this.p.settleMs * 6, now = Math.max(last, at ?? last);
     let from = this.start;
     while (from > 0 && pts[this.start].t - pts[from - 1].t < reach) from--;
     const settled = settle(pts.slice(from), this.p);
+    if (this.guide) {
+      // The pull, on the ink not yet frozen: vertical only, and none at the tip.
+      // After the lift (`at` past the last sample) the pull keeps arriving, tapered to nothing over
+      // the last half x-height, so the stroke still ends where the pen lifted.
+      const A = this.arc, D = this.dense.length, G = this.guide;
+      const S: number[] = [];
+      for (let i = this.start, s = A[Math.min(this.start, D - 1)] ?? 0; i < pts.length; i++) {
+        if (i >= D) s += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+        else s = A[i];
+        S.push(s);
+      }
+      const sEnd = S[S.length - 1] ?? 0, fade = 0.5 * G.xHeight;
+      for (let i = this.start; i < pts.length; i++) {
+        const s = S[i - this.start];
+        let dy = G.offset(s, pts[i].t, now);
+        if (now > last) { const d0 = G.offset(s, pts[i].t, last); dy = d0 + Math.min(1, (sEnd - s) / fade) * (dy - d0); }
+        if (dy) settled[i - from] = { ...settled[i - from], y: settled[i - from].y + dy };
+      }
+    }
     let to = this.start;
     while (to < pts.length - 1 && now - pts[to].t > reach) to++;
     if (to > this.start) { this.frozen.push(...settled.slice(this.start - from, to - from)); this.start = to; }
