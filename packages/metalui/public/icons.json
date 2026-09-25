@@ -259,11 +259,20 @@
       "component": "FitIcon",
       "label": "Fit",
       "category": "Tools",
-      "hover": "content grows to the frame",
-      "press": "corners clamp",
-      "pressMs": 300,
+      "hover": "The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut.",
+      "press": "plays the same act",
+      "pressMs": 1160,
+      "motion": {
+        "caption": "The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut.",
+        "durationMs": 1160,
+        "stages": [
+          "Open",
+          "Grow and clamp",
+          "Let go"
+        ]
+      },
       "tuned16": false,
-      "construction": "Four r2.6 corner brackets on the square keyline + 6u rounded square."
+      "construction": "Four r2.6 corner brackets on the square keyline + 6u rounded square. Motion (study): the corners open .5 while the content draws in, then the content grows to 1.42 and the corners clamp in 1.3 along their diagonals and seat at 1.0 (the content gives to 1.35 and recovers); seams flash in the frame's open sides between them; the corners let go on the release spring and the content settles back."
     },
     {
       "name": "duplicate",

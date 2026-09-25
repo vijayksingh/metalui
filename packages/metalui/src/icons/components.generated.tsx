@@ -37,7 +37,7 @@ export const SearchIcon = createIcon("search", "SearchIcon");
 export const ZoomInIcon = createIcon("zoom-in", "ZoomInIcon");
 /** Zoom Out. Hover: The lens is drawn back along its handle; the minus recedes and the old view closes in.. Press: plays the same act. */
 export const ZoomOutIcon = createIcon("zoom-out", "ZoomOutIcon");
-/** Fit. Hover: content grows to the frame. Press: corners clamp. */
+/** Fit. Hover: The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut.. Press: plays the same act. */
 export const FitIcon = createIcon("fit", "FitIcon");
 /** Duplicate. Hover: copy slides off the original. Press: copy stamps back and out. */
 export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
