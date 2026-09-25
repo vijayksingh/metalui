@@ -7,6 +7,7 @@ import { T16 } from '../packages/metalui/icons/src/tuned16.mjs';
 import { emit, finish } from './lib/emit.mjs';
 import { staticSvg, SW } from './lib/static-svg.mjs';
 import { buildLife } from './lib/life-icons.mjs';
+import { validateStudy, studyBaseCss, studyCss, studyKeyframes } from '../packages/metalui/icons/src/motion.mjs';
 
 // ---------- spring easing as CSS linear() (identical to the reference builder) ----------
 function spring(z, T, n = 44) {
@@ -47,7 +48,21 @@ function expand(css, name, target) {
   const P = target === 'svg' ? 'svg.mu-icon:is(:active,[data-state~="press"])' : `.mu-icon.${cls}[data-press]`;
   return css.replace(/@H/g, H).replace(/@P/g, P).replace(/&(?=[\s.{,:])/g, root).replace(/\s+/g, ' ');
 }
+// An icon with a study plays one act on hover or focus. The CSS below is the player without
+// script (standalone SVG); the React player marks the icon data-motion-runtime and runs the same
+// keyframes through Web Animations, so the act finishes even if the pointer leaves.
+function studyTrigger(name, target) {
+  const cls = `mu-ic-${name}`;
+  return target === 'svg'
+    ? 'svg.mu-icon:is(:hover,:focus-visible,[data-state~="play"])'
+    : `:is(.mu-icon-trigger:is(:hover,:focus-visible) .${cls},.${cls}:hover):not([data-static]):not([data-motion-runtime])`;
+}
 function iconCss(ic, target) {
+  if (ic.study) {
+    const root = target === 'svg' ? 'svg.mu-icon' : `.mu-icon.${`mu-ic-${ic.name}`}`;
+    const base = studyBaseCss(ic.study, root) + (ic.base ? expand(ic.base, ic.name, target) : '');
+    return `${base}\n@media (prefers-reduced-motion:no-preference){${studyCss(ic.name, ic.study, studyTrigger(ic.name, target))}}`;
+  }
   const base = ic.base ? expand(ic.base, ic.name, target) : '';
   const mo = ic.mo ? expand(ic.mo, ic.name, target) : '';
   return `${base}\n@media (prefers-reduced-motion:no-preference){${mo}}`;
@@ -77,6 +92,19 @@ function pressTrack(ic) {
 }
 function storyboard(ic, tracks) {
   const pad = (n) => String(n).padStart(4);
+  if (ic.study) {
+    const st = ic.study;
+    const rows = st.tracks.map((t) => ` *  ${t.part.padEnd(10)} ${t.frames.map((f) => f.at).join(' → ')}ms`);
+    return `/* ─────────────────────────────────────────────────────────
+ * ${ic.label.toUpperCase()} · ${ic.cat} · one act, ${st.duration}ms
+ *
+ * ${st.stages.join(' → ')}
+ *          ${st.caption}
+${rows.join('\n')}
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */`;
+  }
   const lines = tracks.map((t) => ` *  ${pad(t.delay)}ms   ${t.part} plays ${t.name} (${t.ms}ms)`);
   return `/* ─────────────────────────────────────────────────────────
  * ${ic.label.toUpperCase()} · ${ic.cat}
@@ -113,9 +141,11 @@ for (const ic of ICONS) {
   }
 }
 
+for (const ic of ICONS) if (ic.study) validateStudy(ic.name, ic.study, ic.body);
+
 const entries = ICONS.map((ic) => {
-  const tracks = pressTrack(ic);
-  const pressMs = tracks.reduce((m, t) => Math.max(m, t.delay + t.ms), 0);
+  const tracks = ic.study ? [] : pressTrack(ic);
+  const pressMs = ic.study ? ic.study.duration : tracks.reduce((m, t) => Math.max(m, t.delay + t.ms), 0);
   return { ic, tracks, pressMs, t16: T16[ic.name] };
 });
 
@@ -133,6 +163,15 @@ export interface IconRecord {
   /** Simplified geometry for 16px and below, when the master clogs. */
   body16?: string;
   sw16: number;
+  /** The icon's act (docs/ICON-MOTION.md): Web Animations keyframes per data-part. */
+  motion?: IconMotion;
+}
+
+export interface IconMotion {
+  duration: number;
+  caption: string;
+  stages: readonly [string, string, string];
+  tracks: readonly { part: string; keyframes: readonly Keyframe[] }[];
 }
 
 export const ICON_CATALOG = {
@@ -145,7 +184,7 @@ ${entries.map(({ ic, tracks, pressMs, t16 }) => `${storyboard(ic, tracks).replac
     pressMs: ${pressMs},
     defs: ${JSON.stringify(ic.defs || '')},
     body: ${JSON.stringify(ic.body)},${t16?.body ? `\n    body16: ${JSON.stringify(t16.body)},` : ''}
-    sw16: ${t16?.sw ?? SW16},
+    sw16: ${t16?.sw ?? SW16},${ic.study ? `\n    motion: ${JSON.stringify({ duration: ic.study.duration, caption: ic.study.caption, stages: ic.study.stages, tracks: studyKeyframes(ic.study) })},` : ''}
   },`).join('\n')}
 } satisfies Record<string, IconRecord>;
 
@@ -178,6 +217,7 @@ emit('packages/metalui/public/icons.json', JSON.stringify({
     hover: ic.hover,
     press: ic.press,
     pressMs,
+    ...(ic.study ? { motion: { caption: ic.study.caption, durationMs: ic.study.duration, stages: ic.study.stages } } : {}),
     tuned16: Boolean(t16?.body),
     construction: ic.shape,
   })),

@@ -7,11 +7,20 @@
       "component": "SelectIcon",
       "label": "Select",
       "category": "Tools",
-      "hover": "tilts onto its tip",
-      "press": "clicks: tip dips, a ring leaves the point",
-      "pressMs": 440,
+      "hover": "the pointer draws back and clicks its tip down",
+      "press": "the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The pointer draws back, clicks its tip down, and a ring opens where it lands.",
+        "durationMs": 900,
+        "stages": [
+          "Draw back",
+          "Click",
+          "Release"
+        ]
+      },
       "tuned16": false,
-      "construction": "Arrow polygon, 4 vertices, round join; the two outer vertices get 0.5u radius arcs."
+      "construction": "Arrow polygon, 4 vertices, round join; the two outer vertices get 0.5u radius arcs. Motion (study): the pointer draws back 1.5 down-right, darts onto its tip and squashes .86 along its length; the click ring opens at the tip after contact and widens as it fades."
     },
     {
       "name": "text",

@@ -1,3 +1,5 @@
+> **Superseded (2026-09-25).** These packets were written for the old hover-pose model. Icon motion now follows `docs/ICON-MOTION.md`: one act per icon, as data. The eight icons here, close and plus above all (axial shrink and grow is not an action), are redone under it.
+
 # Icon motion storyboard: meaning before motion
 
 The product set's motion is the icon's own verb played on its own parts (ICON-GRAMMAR K10). Most icons already do that: the trash lid lifts on its hinge, the layout tiles swap, the eraser rubs out a scribble. This pass is about the ones that don't. Their hover or press is a generic performance, a turn, a swell or a lift, that says nothing about the job, and in two cases says the opposite.

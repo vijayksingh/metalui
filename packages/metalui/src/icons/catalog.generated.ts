@@ -12,29 +12,38 @@ export interface IconRecord {
   /** Simplified geometry for 16px and below, when the master clogs. */
   body16?: string;
   sw16: number;
+  /** The icon's act (docs/ICON-MOTION.md): Web Animations keyframes per data-part. */
+  motion?: IconMotion;
+}
+
+export interface IconMotion {
+  duration: number;
+  caption: string;
+  stages: readonly [string, string, string];
+  tracks: readonly { part: string; keyframes: readonly Keyframe[] }[];
 }
 
 export const ICON_CATALOG = {
   /* ─────────────────────────────────────────────────────────
-   * SELECT · Tools
+   * SELECT · Tools · one act, 900ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          tilts onto its tip
-   * PRESS one-shot (from the current pose)
-   *          clicks: tip dips, a ring leaves the point
-   *     0ms   .cur plays sel-p (340ms)
-   *     0ms   .rip plays sel-r (440ms)
+   * Draw back → Click → Release
+   *          The pointer draws back, clicks its tip down, and a ring opens where it lands.
+   *  cursor     0 → 150 → 300 → 400 → 560 → 720 → 900ms
+   *  click      0 → 290 → 340 → 640 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "select": {
     label: "Select",
     category: "Tools",
-    hover: "tilts onto its tip",
-    press: "clicks: tip dips, a ring leaves the point",
-    pressMs: 440,
+    hover: "the pointer draws back and clicks its tip down",
+    press: "the same act",
+    pressMs: 900,
     defs: "",
-    body: "<g class=\"cur\"><path class=\"f\" d=\"M6.1 4.9 18.3 10.6a.5.5 0 0 1-.04.93L13 13.2l-2.2 5.1a.5.5 0 0 1-.93-.02L6.1 4.9Z\"/></g><circle class=\"rip\" cx=\"6.1\" cy=\"4.9\" r=\"3.2\"/>",
+    body: "<g data-part=\"cursor\"><path class=\"f\" d=\"M6.1 4.9 18.3 10.6a.5.5 0 0 1-.04.93L13 13.2l-2.2 5.1a.5.5 0 0 1-.93-.02L6.1 4.9Z\"/></g><circle class=\"ac\" data-part=\"click\" opacity=\"0\" cx=\"6.1\" cy=\"4.9\" r=\"3.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":900,"caption":"The pointer draws back, clicks its tip down, and a ring opens where it lands.","stages":["Draw back","Click","Release"],"tracks":[{"part":"cursor","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16667,"transform":"translate(1.5px,1.5px) rotate(5deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33333,"transform":"translate(-.9px,-.9px) rotate(-8deg) scale(.86,.86)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(-.7px,-.7px) rotate(-7deg) scale(.9,.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.62222,"transform":"translate(.45px,.45px) rotate(2deg) scale(1.03,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(-.12px,-.12px) rotate(-.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.3)","opacity":0},{"offset":0.32222,"transform":"scale(.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.37778,"transform":"scale(.75)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.71111,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * TEXT · Tools

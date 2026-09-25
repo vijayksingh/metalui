@@ -1,4 +1,4 @@
-// The static bake (identical to the Kamui builder): the icon at rest, with transient parts
+// The static bake (identical to the reference builder): the icon at rest, with transient parts
 // dropped and rest-pose transforms baked in. Shared by the SVG export and the morph geometry.
 export const SW = 1.7;
 
@@ -20,8 +20,9 @@ export function staticSvg(ic, sw = SW, body = ic.body) {
   s = s.replace(/<(\w+)([^>]*?)(\/?)>/g, (m, tag, attrs, sc) => {
     const cm = attrs.match(/\sclass="([^"]*)"/);
     const classes = cm ? cm[1].split(/\s+/) : [];
-    if (classes.some((c) => drop.includes(c))) return sc ? '' : m;
-    let a = attrs.replace(/\sclass="[^"]*"/, '');
+    // Accents (class "ac") are hidden at rest and only exist during an act.
+    if (classes.some((c) => drop.includes(c) || c === 'ac')) return sc ? '' : m;
+    let a = attrs.replace(/\sclass="[^"]*"/, '').replace(/\sdata-part="[^"]*"/, '');
     const st = a.match(/\sstyle="([^"]*)"/);
     let duo = 0.14, swMul = null;
     if (st) {

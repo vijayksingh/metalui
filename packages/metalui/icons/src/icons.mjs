@@ -3,6 +3,10 @@
 // Classes: .f = stroked + duotone fill, .s = solid fill, .d = duotone fill only (no stroke)
 // CSS tokens:  &  -> icon root     @H -> hovered host     @P -> pressed host
 // `base` = rest geometry/state, `mo` = motion (wrapped in reduced-motion guards by the builder)
+// `study` = the icon's act as data (docs/ICON-MOTION.md); it replaces `mo`. Moving parts carry data-part,
+// accents are one element with class "ac" and opacity="0". Icons move to studies one at a time.
+
+import { actor, ease, light, motion, pose, trace } from './motion.mjs';
 
 const C = 12;
 const f = (n) => +n.toFixed(2);
@@ -33,14 +37,42 @@ const LENS = `<circle class="lens" cx="10.6" cy="10.6" r="6.3"/><path class="hdl
 
 export const ICONS = [
 /* ============================== TOOLS ============================== */
-{ name: 'select', cat: 'Tools', label: 'Select', hover: 'tilts onto its tip', press: 'clicks: tip dips, a ring leaves the point',
-  body: `<g class="cur"><path class="f" d="M6.1 4.9 18.3 10.6a.5.5 0 0 1-.04.93L13 13.2l-2.2 5.1a.5.5 0 0 1-.93-.02L6.1 4.9Z"/></g><circle class="rip" cx="6.1" cy="4.9" r="3.2"/>`,
-  base: `& .cur{transform-origin:6.1px 4.9px} & .rip{transform-origin:6.1px 4.9px;opacity:0;stroke-width:1.2}`,
-  mo: `@H .cur{transform:rotate(-7deg) translate(.2px,.2px)}
-       @P .cur{animation:sel-p .34s cubic-bezier(.3,0,.2,1)} @P .rip{animation:sel-r .44s cubic-bezier(.2,.7,.3,1)}
-       @keyframes sel-p{35%{transform:rotate(-7deg) scale(.84)}}
-       @keyframes sel-r{0%{opacity:.8;transform:scale(.2)}100%{opacity:0;transform:scale(1.15)}}`,
-  shape: 'Arrow polygon, 4 vertices, round join; the two outer vertices get 0.5u radius arcs.' },
+/* ── SELECT / the pointer reaches a thing and clicks it ───────
+ * Verb, object   pick this. The pointer is the hand; its tip is where the choice lands.
+ * Invariant      an arrow pointing up-left with its tip leading; it never turns past 9°
+ *                and never leaves its footprint by more than 1.6.
+ * Causal parts   cause: the pointer driving into its tip. Receiver: the point under the tip.
+ *                Payoff: a click ring at the tip, after contact, not before.
+ * Neighbours     not Send (nothing flies away), not Move (no drag), not a highlight bounce.
+ * Forbidden      sparkles, a whole-icon pulse, a spin.
+ *
+ *    0ms  pointer at rest
+ *  150ms  draws back down-right, heel lifting (anticipate)
+ *  300ms  darts up-left onto its tip and squashes along its length (strike)
+ *  330ms  the click ring opens at the tip
+ *  400ms  held on the press
+ *  560ms  springs back past rest; the ring widens and fades
+ *  720ms  a small correction
+ *  900ms  exact rest
+ * ────────────────────────────────────────────────────────── */
+{ name: 'select', cat: 'Tools', label: 'Select', hover: 'the pointer draws back and clicks its tip down', press: 'the same act',
+  body: `<g data-part="cursor"><path class="f" d="M6.1 4.9 18.3 10.6a.5.5 0 0 1-.04.93L13 13.2l-2.2 5.1a.5.5 0 0 1-.93-.02L6.1 4.9Z"/></g><circle class="ac" data-part="click" opacity="0" cx="6.1" cy="4.9" r="3.2" style="stroke-width:calc(var(--sw) * .7)"/>`,
+  study: motion(900, 'The pointer draws back, clicks its tip down, and a ring opens where it lands.', ['Draw back', 'Click', 'Release'], [
+    actor('cursor', '6.1px 4.9px', [
+      pose(0, 'translate(0px,0px) rotate(0deg) scale(1,1)', ease.accelerate),
+      pose(150, 'translate(1.5px,1.5px) rotate(5deg) scale(1,1)', ease.strike),
+      pose(300, 'translate(-.9px,-.9px) rotate(-8deg) scale(.86,.86)', ease.smooth),
+      pose(400, 'translate(-.7px,-.7px) rotate(-7deg) scale(.9,.9)', ease.smooth),
+      pose(560, 'translate(.45px,.45px) rotate(2deg) scale(1.03,1.03)', ease.smooth),
+      pose(720, 'translate(-.12px,-.12px) rotate(-.6deg) scale(1,1)', ease.settle),
+      pose(900, 'translate(0px,0px) rotate(0deg) scale(1,1)'),
+    ]),
+    actor('click', '6.1px 4.9px', [
+      light(0, 0, 'scale(.3)'), light(290, 0, 'scale(.3)', ease.settle),
+      light(340, .9, 'scale(.75)', ease.smooth), light(640, 0, 'scale(1.5)'), light(900, 0, 'scale(.3)'),
+    ]),
+  ]),
+  shape: 'Arrow polygon, 4 vertices, round join; the two outer vertices get 0.5u radius arcs. Motion (study): the pointer draws back 1.5 down-right, darts onto its tip and squashes .86 along its length; the click ring opens at the tip after contact and widens as it fades.' },
 
 { name: 'text', cat: 'Tools', label: 'Text', hover: 'glyph steps aside, caret appears and blinks', press: 'glyph stamps down',
   body: `<g class="tg"><path d="M6.2 7.3V6.4a1.2 1.2 0 0 1 1.2-1.2h9.2a1.2 1.2 0 0 1 1.2 1.2v.9"/><path d="M12 5.2v13.6M9.6 18.8h4.8"/></g><path class="car" d="M19.4 12.9v6.2"/>`,
