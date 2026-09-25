@@ -25,7 +25,7 @@ export const ArrowIcon = createIcon("arrow", "ArrowIcon");
 export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
 /** Ellipse. Hover: A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began.. Press: plays the same act. */
 export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
-/** Eraser. Hover: it leans onto a scribble, ready. Press: it rubs back and forth, the scribble goes and crumbs fall. */
+/** Eraser. Hover: The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away.. Press: plays the same act. */
 export const EraserIcon = createIcon("eraser", "EraserIcon");
 /** Layout. Hover: The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.. Press: plays the same act. */
 export const LayoutIcon = createIcon("layout", "LayoutIcon");

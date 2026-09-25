@@ -464,6 +464,95 @@ extension MetalIconAct {
             MetalIconActInk(d: "M23.2 12C23.2 13.4359 22.0359 14.6 20.6 14.6C19.1641 14.6 18 13.4359 18 12C18 10.5641 19.1641 9.4 20.6 9.4C22.0359 9.4 23.2 10.5641 23.2 12Z", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .eraser: MetalIconAct(
+            duration: 1.0,
+            caption: "The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away.",
+            parts: [
+            MetalIconActPart(
+                name: "eraser", origin: CGPoint(x: 7.2, y: 19.9),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.13, x: 0.3, y: -1.2, r: -5.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.25, x: 0.0, y: 0.5, r: 0.0, sx: 1.0, sy: 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.39, x: -2.4, y: 0.5, r: 7.0, sx: 1.0, sy: 0.93, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.53, x: 2.4, y: 0.4, r: -7.0, sx: 1.0, sy: 0.92, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.66, x: -1.4, y: 0.5, r: 5.0, sx: 1.0, sy: 0.93, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.77, x: 0.5, y: 0.4, r: -2.0, sx: 1.0, sy: 0.95, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.87, x: 0.0, y: -0.6, r: 0.0, sx: 1.0, sy: 1.02, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "scribble", origin: CGPoint(x: 6.4, y: 20.3),
+                poses: [],
+                opacity: [
+                    .init(0.0, 0.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.11, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.26, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.39, 0.85, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.53, 0.6, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.66, 0.0, ease: .linear),
+                    .init(0.7, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: [
+                    .init(0.0, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.11, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.26, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.39, 0.64, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.53, 0.3, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.66, 0.0, ease: .linear),
+                    .init(0.7, 1.0, ease: .linear),
+                    .init(1.0, 1.0, ease: .linear),
+                ]
+            ),
+            MetalIconActPart(
+                name: "crumb1", origin: CGPoint(x: 4.6, y: 19.5),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.36, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.43, x: -1.3, y: -1.1, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.64, x: -2.0, y: 1.5, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.36, 0.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.43, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.64, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "crumb2", origin: CGPoint(x: 9.4, y: 19.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.5, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.57, x: 1.1, y: -1.2, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.79, x: 1.7, y: 1.4, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.5, 0.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.57, 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.79, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M3.6 20.6C4.5 19.9 5.5 19.9 6.4 20.6C7.3 21.3 8.3 21.3 9.2 20.6", parts: [1], stroke: 0.7588, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M5.4 19.5C5.4 19.9418 5.0418 20.3 4.6 20.3C4.1582 20.3 3.8 19.9418 3.8 19.5C3.8 19.0582 4.1582 18.7 4.6 18.7C5.0418 18.7 5.4 19.0582 5.4 19.5Z", parts: [2], stroke: 0.0, fill: .solid, opacity: 1.0),
+            MetalIconActInk(d: "M10.1 19.6C10.1 19.9866 9.7866 20.3 9.4 20.3C9.0134 20.3 8.7 19.9866 8.7 19.6C8.7 19.2134 9.0134 18.9 9.4 18.9C9.7866 18.9 10.1 19.2134 10.1 19.6Z", parts: [3], stroke: 0.0, fill: .solid, opacity: 1.0),
+            MetalIconActInk(d: "M12.8042 5.6704C13.5852 4.8893 14.8515 4.8893 15.6326 5.6704L17.3297 7.3674C18.1107 8.1485 18.1107 9.4148 17.3297 10.1958L8.8444 18.6811C8.0633 19.4622 6.797 19.4622 6.0159 18.6811L4.3189 16.9841C3.5378 16.203 3.5378 14.9367 4.3189 14.1556Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M7.5716 10.9029L12.0971 15.4284", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ]
+        ),
         .layout: MetalIconAct(
             duration: 1.143,
             caption: "The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.",

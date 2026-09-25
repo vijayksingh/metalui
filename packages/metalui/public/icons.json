@@ -184,11 +184,20 @@
       "component": "EraserIcon",
       "label": "Eraser",
       "category": "Tools",
-      "hover": "it leans onto a scribble, ready",
-      "press": "it rubs back and forth, the scribble goes and crumbs fall",
-      "pressMs": 720,
+      "hover": "The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away.",
+        "durationMs": 1000,
+        "stages": [
+          "Press",
+          "Rub",
+          "Lift"
+        ]
+      },
       "tuned16": false,
-      "construction": "An eraser on the Draw pencil frame, a little wider (6.4) with round ends and one band line between sleeve and rubber. Hover leans it onto a light scribble that draws in under it: something to erase. Press rubs it left, right, left; the scribble is taken away from its start as it passes, two crumbs flick out and fall, then the scribble comes back so the pose is ready again."
+      "construction": "An eraser on the Draw pencil frame, a little wider (6.4) with round ends and one band line between sleeve and rubber; its flat rubber end faces down-left, lowest corner at 7.2,19.9. Motion (study): a scribble fades in under it; the eraser lifts, presses down (.9 along the push) and rubs left, right, left about its lowest corner, leaning 7° into each pass; the scribble is taken away a third per pass, two crumbs flick out and fall, and it springs up off the page back to rest."
     },
     {
       "name": "layout",
