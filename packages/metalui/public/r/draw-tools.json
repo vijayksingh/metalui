@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "draw-tools",
+  "type": "registry:ui",
+  "title": "Draw tools",
+  "description": "The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/blocks/draw-tools/draw-tools.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/blocks/draw-tools/draw-tools.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Toolbar, ToolButton, ToolbarSeparator } from '../../components/toolbar/toolbar';\nimport { InkPicks, WidthPicks, type Ink, type InkWidth } from '../../components/draw-picks/draw-picks';\nimport { DrawIcon, PenIcon, MarkerIcon, LineIcon, ArrowIcon, RectangleIcon, EllipseIcon, EraserIcon } from '../../icons/components.generated';\n\n/* ─────────────────────────────────────────────────────────\n * DRAW TOOLS: the drawing group of the toolbar (DRAWING.md DR-01, DR-06)\n *   Toolbar › ToolButton × 8 (one latched, with its LED) | InkPicks × 5 | WidthPicks × 3\n *\n * Keys: P pen, N pencil, M marker, L line, A arrow, R rectangle, O ellipse, E eraser.\n * The eraser has no ink or width, so those picks rest at 40 % while it is latched.\n * The host remembers the last ink and width per tool.\n * ───────────────────────────────────────────────────────── */\n\nexport type DrawTool = 'pen' | 'pencil' | 'marker' | 'line' | 'arrow' | 'rectangle' | 'ellipse' | 'eraser';\n\nexport const DRAW_TOOLS: { value: DrawTool; label: string; shortcut: string; Icon: React.ComponentType<{ size?: number }> }[] = [\n  { value: 'pen', label: 'Pen', shortcut: 'P', Icon: PenIcon },\n  { value: 'pencil', label: 'Pencil', shortcut: 'N', Icon: DrawIcon },\n  { value: 'marker', label: 'Marker', shortcut: 'M', Icon: MarkerIcon },\n  { value: 'line', label: 'Line', shortcut: 'L', Icon: LineIcon },\n  { value: 'arrow', label: 'Arrow', shortcut: 'A', Icon: ArrowIcon },\n  { value: 'rectangle', label: 'Rectangle', shortcut: 'R', Icon: RectangleIcon },\n  { value: 'ellipse', label: 'Ellipse', shortcut: 'O', Icon: EllipseIcon },\n  { value: 'eraser', label: 'Eraser', shortcut: 'E', Icon: EraserIcon },\n];\n\nexport interface DrawToolsProps {\n  /** The latched tool, or null when none is. */\n  tool: DrawTool | null;\n  onToolChange: (tool: DrawTool | null) => void;\n  ink: Ink;\n  onInkChange: (ink: Ink) => void;\n  width: InkWidth;\n  onWidthChange: (width: InkWidth) => void;\n  variant?: 'frost' | 'graphite';\n  className?: string;\n}\n\n/** The drawing tools with their inks and widths, in one strip. */\nexport function DrawTools({ tool, onToolChange, ink, onInkChange, width, onWidthChange, variant = 'frost', className }: DrawToolsProps) {\n  const noInk = tool === 'eraser';\n  return (\n    <Toolbar variant={variant} aria-label=\"Drawing\" className={className}>\n      {DRAW_TOOLS.map(({ value, label, shortcut, Icon }) => (\n        <ToolButton\n          key={value}\n          label={label}\n          shortcut={shortcut}\n          icon={<Icon size={16} />}\n          pressed={tool === value}\n          onPressedChange={(p) => onToolChange(p ? value : null)}\n        />\n      ))}\n      <ToolbarSeparator />\n      <InkPicks value={ink} onValueChange={onInkChange} disabled={noInk} />\n      <ToolbarSeparator />\n      <WidthPicks value={width} onValueChange={onWidthChange} ink={ink} disabled={noInk} />\n    </Toolbar>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
+}

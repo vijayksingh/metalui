@@ -69,7 +69,7 @@ export const CheckIcon = createIcon("check", "CheckIcon");
 export const SyncedIcon = createIcon("synced", "SyncedIcon");
 /** Offline. Hover: satellite drifts further out. Press: tries to return, drifts away. */
 export const OfflineIcon = createIcon("offline", "OfflineIcon");
-/** Sync Error. Hover: mark nudges. Press: orbit shivers once. */
+/** Sync Error. Hover: the orbit tries to turn, catches and snaps back; the mark jumps. Press: orbit shivers once. */
 export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");
 /** Capture. Hover: viewfinder focuses in. Press: shutter blinks. */
 export const CaptureIcon = createIcon("capture", "CaptureIcon");

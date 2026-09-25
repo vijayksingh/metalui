@@ -2025,7 +2025,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `CheckIcon` | `check` | Actions | it nods yes about its vertex | the tick is drawn again and lands with weight |
 | `SyncedIcon` | `synced` | Status | satellite advances along its orbit | orbit completes a full turn |
 | `OfflineIcon` | `offline` | Status | satellite drifts further out | tries to return, drifts away |
-| `SyncErrorIcon` | `sync-error` | Status | mark nudges | orbit shivers once |
+| `SyncErrorIcon` | `sync-error` | Status | the orbit tries to turn, catches and snaps back; the mark jumps | orbit shivers once |
 | `CaptureIcon` | `capture` | Status | viewfinder focuses in | shutter blinks |
 | `PasteIcon` | `paste` | Status | clip lifts | contents land on the board |
 | `KeeperIcon` | `keeper` | Status | blinks | ring tips, eyes look up |

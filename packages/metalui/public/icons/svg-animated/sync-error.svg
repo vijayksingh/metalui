@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="mu-icon mu-ic-sync-error" width="24" height="24" viewBox="0 0 24 24">
-<!-- MetalUI icon: Sync Error. Hover: mark nudges. Press (:active or data-state="press"): orbit shivers once. Reduced motion: static. -->
+<!-- MetalUI icon: Sync Error. Hover: the orbit tries to turn, catches and snaps back; the mark jumps. Press (:active or data-state="press"): orbit shivers once. Reduced motion: static. -->
 <style>
 .mu-icon{--sw:1.7;--k-spring:linear(0,0.0117,0.0435,0.0909,0.1499,0.217,0.2892,0.3637,0.4386,0.512,0.5826,0.6494,0.7114,0.7683,0.8196,0.8654,0.9056,0.9403,0.9698,0.9944,1.0145,1.0305,1.0428,1.0518,1.0579,1.0616,1.0632,1.063,1.0615,1.0588,1.0554,1.0513,1.0468,1.0422,1.0374,1.0327,1.0282,1.0238,1.0198,1.0161,1.0127,1.0096,1.007,1.0046,1);--k-soft:linear(0,0.0063,0.0235,0.0493,0.0818,0.1194,0.1605,0.2042,0.2492,0.2949,0.3406,0.3856,0.4297,0.4723,0.5133,0.5525,0.5898,0.625,0.6581,0.6892,0.7181,0.745,0.77,0.793,0.8142,0.8337,0.8515,0.8678,0.8826,0.896,0.9082,0.9192,0.9291,0.938,0.9459,0.953,0.9594,0.965,0.97,0.9745,0.9784,0.9818,0.9848,0.9874,1);--k-dur:.46s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
 .mu-icon *{transform-box:view-box}
@@ -9,7 +9,7 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-icon *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .2s ease var(--dl,0s),d var(--k-dur) var(--k-spring) var(--dl,0s),stroke-dashoffset var(--k-dur) var(--k-spring) var(--dl,0s),fill-opacity .2s ease}
 }
-svg.mu-icon .or{transform-origin:12px 12px} svg.mu-icon .ring{stroke-dasharray:85 15}
-@media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,[data-state~="hover"]) .ex{transform:translateY(-.4px)} svg.mu-icon:is(:active,[data-state~="press"]) .or{animation:err-p .42s cubic-bezier(.3,0,.2,1)} @keyframes err-p{20%{transform:rotate(-7deg)}45%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}}}</style>
-<g class="or"><circle class="ring" cx="12" cy="12" r="7.6" pathLength="100" transform="rotate(-18 12 12)"/></g><path class="ex" d="M12 8.6v4.2"/><circle class="exd s" cx="12" cy="15.7" r="1.05"/>
+svg.mu-icon .or,svg.mu-icon .jm{transform-origin:12px 12px} svg.mu-icon .ring{stroke-dasharray:85 15}
+@media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,[data-state~="hover"]) .jm{animation:err-jam .56s both} svg.mu-icon:is(:hover,[data-state~="hover"]) .mk{animation:err-mk .56s both} svg.mu-icon:is(:active,[data-state~="press"]) .or{animation:err-p .42s cubic-bezier(.3,0,.2,1)} @keyframes err-p{20%{transform:rotate(-7deg)}45%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}} @keyframes err-jam{0%{transform:none;animation-timing-function:cubic-bezier(.5,0,.9,.6)}46%{transform:rotate(18deg);animation-timing-function:cubic-bezier(.2,.8,.3,1)}60%{transform:rotate(-4deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}100%{transform:none}} @keyframes err-mk{0%,46%{transform:none;animation-timing-function:cubic-bezier(.2,.8,.3,1)}60%{transform:translateY(-.7px)}100%{transform:none}}}</style>
+<g class="jm"><g class="or"><circle class="ring" cx="12" cy="12" r="7.6" pathLength="100" transform="rotate(-18 12 12)"/></g></g><g class="mk"><path class="ex" d="M12 8.6v4.2"/><circle class="exd s" cx="12" cy="15.7" r="1.05"/></g>
 </svg>

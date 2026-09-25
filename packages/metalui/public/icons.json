@@ -381,11 +381,11 @@
       "component": "SyncErrorIcon",
       "label": "Sync Error",
       "category": "Status",
-      "hover": "mark nudges",
+      "hover": "the orbit tries to turn, catches and snaps back; the mark jumps",
       "press": "orbit shivers once",
       "pressMs": 420,
       "tuned16": false,
-      "construction": "Orbit with the same gap as Synced, core replaced by \"!\"."
+      "construction": "Orbit with the same gap as Synced, core replaced by \"!\". Hover is Synced's own motion failing: the orbit starts to turn (18°, easing in, trying), catches and snaps back past rest, and the mark jumps as it catches. A one-shot on its own wrapper, so the press (the orbit shivers once) still plays while hovered."
     },
     {
       "name": "capture",

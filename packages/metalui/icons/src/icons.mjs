@@ -328,12 +328,14 @@ export const ICONS = [
        @P .sat{animation:off-p .46s cubic-bezier(.3,0,.2,1)} @keyframes off-p{35%{transform:translate(-1.5px,1.3px)}}`,
   shape: 'Same orbit, 94° gap; satellite has left the ring (r≈9.6).' },
 
-{ name: 'sync-error', cat: 'Status', label: 'Sync Error', hover: 'mark nudges', press: 'orbit shivers once',
-  body: `<g class="or"><circle class="ring" cx="12" cy="12" r="7.6" pathLength="100" transform="rotate(-18 12 12)"/></g><path class="ex" d="M12 8.6v4.2"/><circle class="exd s" cx="12" cy="15.7" r="1.05"/>`,
-  base: `& .or{transform-origin:12px 12px} & .ring{stroke-dasharray:85 15}`,
-  mo: `@H .ex{transform:translateY(-.4px)}
-       @P .or{animation:err-p .42s cubic-bezier(.3,0,.2,1)} @keyframes err-p{20%{transform:rotate(-7deg)}45%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}}`,
-  shape: 'Orbit with the same gap as Synced, core replaced by "!".' },
+{ name: 'sync-error', cat: 'Status', label: 'Sync Error', hover: 'the orbit tries to turn, catches and snaps back; the mark jumps', press: 'orbit shivers once',
+  body: `<g class="jm"><g class="or"><circle class="ring" cx="12" cy="12" r="7.6" pathLength="100" transform="rotate(-18 12 12)"/></g></g><g class="mk"><path class="ex" d="M12 8.6v4.2"/><circle class="exd s" cx="12" cy="15.7" r="1.05"/></g>`,
+  base: `& .or,& .jm{transform-origin:12px 12px} & .ring{stroke-dasharray:85 15}`,
+  mo: `@H .jm{animation:err-jam .56s both} @H .mk{animation:err-mk .56s both}
+       @P .or{animation:err-p .42s cubic-bezier(.3,0,.2,1)} @keyframes err-p{20%{transform:rotate(-7deg)}45%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}}
+       @keyframes err-jam{0%{transform:none;animation-timing-function:cubic-bezier(.5,0,.9,.6)}46%{transform:rotate(18deg);animation-timing-function:cubic-bezier(.2,.8,.3,1)}60%{transform:rotate(-4deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}100%{transform:none}}
+       @keyframes err-mk{0%,46%{transform:none;animation-timing-function:cubic-bezier(.2,.8,.3,1)}60%{transform:translateY(-.7px)}100%{transform:none}}`,
+  shape: 'Orbit with the same gap as Synced, core replaced by "!". Hover is Synced\'s own motion failing: the orbit starts to turn (18°, easing in, trying), catches and snaps back past rest, and the mark jumps as it catches. A one-shot on its own wrapper, so the press (the orbit shivers once) still plays while hovered.' },
 
 { name: 'capture', cat: 'Status', label: 'Capture', hover: 'viewfinder focuses in', press: 'shutter blinks',
   body: `<path class="c1" d="M3.8 8.4V7A3.2 3.2 0 0 1 7 3.8h1.4"/><path class="c2" d="M15.6 3.8H17A3.2 3.2 0 0 1 20.2 7v1.4"/><path class="c3" d="M20.2 15.6V17a3.2 3.2 0 0 1-3.2 3.2h-1.4"/><path class="c4" d="M8.4 20.2H7A3.2 3.2 0 0 1 3.8 17v-1.4"/><circle class="ap f" style="--duo:.16" cx="12" cy="12" r="3.6"/>`,

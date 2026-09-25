@@ -737,7 +737,7 @@ export const ICON_CATALOG = {
    * SYNC ERROR · Status
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          mark nudges
+   *          the orbit tries to turn, catches and snaps back; the mark jumps
    * PRESS one-shot (from the current pose)
    *          orbit shivers once
    *     0ms   .or plays err-p (420ms)
@@ -746,11 +746,11 @@ export const ICON_CATALOG = {
   "sync-error": {
     label: "Sync Error",
     category: "Status",
-    hover: "mark nudges",
+    hover: "the orbit tries to turn, catches and snaps back; the mark jumps",
     press: "orbit shivers once",
     pressMs: 420,
     defs: "",
-    body: "<g class=\"or\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" transform=\"rotate(-18 12 12)\"/></g><path class=\"ex\" d=\"M12 8.6v4.2\"/><circle class=\"exd s\" cx=\"12\" cy=\"15.7\" r=\"1.05\"/>",
+    body: "<g class=\"jm\"><g class=\"or\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"7.6\" pathLength=\"100\" transform=\"rotate(-18 12 12)\"/></g></g><g class=\"mk\"><path class=\"ex\" d=\"M12 8.6v4.2\"/><circle class=\"exd s\" cx=\"12\" cy=\"15.7\" r=\"1.05\"/></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
