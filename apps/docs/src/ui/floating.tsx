@@ -135,9 +135,52 @@ const ITEMS: Item[] = [
 /** An open x-ray, and the object it was opened from. */
 export interface XrayOpen { kind: XrayKind; from: string }
 
-/* The x-ray flight: the object you click lifts off the table and opens into the sheet,
- * and on close the sheet folds back into it. The sheet borrows the object's
- * view-transition name while the object hides, so one element seems to travel. */
+/* The x-ray flight, in two beats:
+ *   open    1 lift   the object rises toward you and floats to the middle of where the card will be
+ *           2 open   the card grows out of it, and the object fades into the card
+ *   close   the same backwards: the card shrinks into the object, which floats home
+ * The sheet borrows the object's view-transition name while the object hides, so one
+ * element seems to travel. The browser's own morph is a single straight line, so the
+ * travelling box is re-keyed here, through the lift point. */
+const LIFT = 1.22;
+const OPEN_MS = 1500;
+const CLOSE_MS = 1200;
+// the lift eases off the table and into the float; the card eases open and settles slowly
+const LIFT_EASE = 'cubic-bezier(.45, 0, .25, 1)';
+const SETTLE_EASE = 'cubic-bezier(.22, .8, .24, 1)';
+
+function choreograph(name: string, dir: 'open' | 'close') {
+  const html = document.documentElement;
+  const pseudo = (part: string) => `::view-transition-${part}(${name})`;
+  const on = (part: string) => document.getAnimations().filter((a) => (a.effect as KeyframeEffect | null)?.pseudoElement === pseudo(part));
+  const ua = on('group').find((a) => (a.effect as KeyframeEffect).getKeyframes()[0]?.transform);
+  if (!ua) return;
+  // drop the browser's crossfade (keep its plus-lighter blend, which keeps the fade even)
+  for (const a of [...on('old'), ...on('new')]) if ((a.effect as KeyframeEffect).getKeyframes().some((k) => 'opacity' in k)) a.cancel();
+  // the browser's start (the old box) and, with its morph gone, the end (the new box)
+  const start = (ua.effect as KeyframeEffect).getKeyframes()[0] as unknown as { transform: string; width: string; height: string };
+  ua.cancel();
+  const cs = getComputedStyle(html, pseudo('group'));
+  const end = { transform: cs.transform === 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : cs.transform, width: cs.width, height: cs.height };
+  // the object's box and the card's box
+  const [small, big] = dir === 'open' ? [start, end] : [end, start];
+  const card = new DOMMatrix(big.transform);
+  const sw = parseFloat(small.width), sh = parseFloat(small.height);
+  const cx = card.m41 + parseFloat(big.width) / 2, cy = card.m42 + parseFloat(big.height) / 2;
+  // the lift point: the object's own size, over the card's middle, raised a little toward you
+  const lifted = { transform: `translate(${cx - sw / 2}px, ${cy - sh / 2 - 12}px) scale(${LIFT})`, width: small.width, height: small.height };
+  const play = (part: string, frames: Keyframe[], duration: number) => html.animate(frames, { duration, fill: 'both', pseudoElement: pseudo(part) });
+  if (dir === 'open') {
+    play('group', [{ ...start, offset: 0, easing: LIFT_EASE }, { ...lifted, offset: 0.45, easing: SETTLE_EASE }, { ...end, offset: 1 }], OPEN_MS);
+    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.5 }, { opacity: 0, offset: 0.75 }, { opacity: 0 }], OPEN_MS);
+    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.45 }, { opacity: 1, offset: 0.72 }, { opacity: 1 }], OPEN_MS);
+  } else {
+    play('group', [{ ...start, offset: 0, easing: LIFT_EASE }, { ...lifted, offset: 0.42, easing: SETTLE_EASE }, { ...end, offset: 1 }], CLOSE_MS);
+    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.16 }, { opacity: 0, offset: 0.4 }, { opacity: 0 }], CLOSE_MS);
+    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.14 }, { opacity: 1, offset: 0.36 }, { opacity: 1 }], CLOSE_MS);
+  }
+}
+
 export function useXrayFlight() {
   const [open, setOpen] = React.useState<XrayOpen | null>(null);
   const flight = React.useRef(0);
@@ -153,6 +196,7 @@ export function useXrayFlight() {
     document.querySelector(`[data-float="${from}"]`)?.setAttribute('data-flying', '');
     root.dataset.flight = next ? 'open' : 'close';
     const t = document.startViewTransition(() => flushSync(() => setOpen(next)));
+    t.ready.then(() => { if (from) choreograph(`float-${from}`, next ? 'open' : 'close'); }).catch(() => {});
     t.finished.finally(() => {
       if (flight.current !== id) return;
       delete root.dataset.flight;

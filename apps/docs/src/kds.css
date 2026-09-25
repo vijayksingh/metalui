@@ -658,24 +658,13 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
 
-/* The x-ray flight. Open: the object lifts off and travels to the sheet at its own size
- * while the sheet grows out of it, on the object spring, so it lands with a little weight.
- * Close: the sheet folds back into the object on the surface spring, which is short with
- * no overshoot, because the page takes no clicks until a view transition ends. The small
- * end stays sharp (never stretched): its snapshot keeps its own size, centred in the
- * travelling box. */
-html[data-flight="open"]::view-transition-group(.float) { animation-duration: var(--mu-spring-object-d); animation-timing-function: var(--mu-spring-object); }
-html[data-flight="close"]::view-transition-group(.float) { animation-duration: var(--mu-spring-surface-d); animation-timing-function: var(--mu-spring-surface); }
-html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .3s; }
-html[data-flight="close"]::view-transition-group(root) { animation-duration: var(--mu-spring-surface-d); }
+/* The x-ray flight (useXrayFlight keys the travelling box and the fades). Both ends stay
+ * sharp: each snapshot keeps its own size, centred in the travelling box, except the card,
+ * which grows with it. The page behind fades on its own. */
 html[data-flight="open"]::view-transition-old(.float),
 html[data-flight="close"]::view-transition-new(.float) { inset: 0; margin: auto; width: auto; height: auto; }
-html[data-flight="open"]::view-transition-old(.float) { animation: xr-fly-out .26s ease-in .06s both; }
-html[data-flight="open"]::view-transition-new(.float) { animation: xr-fly-in .3s ease-out .04s both; }
-html[data-flight="close"]::view-transition-old(.float) { animation: xr-fly-out .22s ease-in both; }
-html[data-flight="close"]::view-transition-new(.float) { animation: xr-fly-in .26s ease-out .08s both; }
-@keyframes xr-fly-out { to { opacity: 0; } }
-@keyframes xr-fly-in { from { opacity: 0; } }
+html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .6s; animation-delay: .55s; }
+html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .5s; }
 html[data-flight] .drift-item:not([data-flying]) { view-transition-name: none !important; }
 .xr-overlay.is-flown { animation: none; }
 /* x-ray callouts: two columns beside the model, leader lines to anchors on the object */
