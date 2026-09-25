@@ -22,9 +22,11 @@ import { Folder, Region, Segmented, Well, type FolderHue, type FolderPeek } from
  *   0.00s  head      the region's head fades (0.14 s)
  *   0.14s  sheet     the region becomes the sheet: the same surface, the same place
  *   0.14s  fold      the bottom third folds up in front along a line a third from the bottom
- *                    (hinge spring), and on to the folder flap's lean (-15°)
- *   0.20s  cards     each card flies to its place in the folder's fan, front card first,
- *                    50 ms apart (object spring)
+ *                    (hinge spring), and on to the folder flap's lean (-15°); a faint
+ *                    perspective (6000 px) so the flap turns without flaring wider than the back (≤ 2 %)
+ *   0.45s  cards     the cards ride the shrink into the folder's fan: never further along than
+ *                    the sheet, so none ever pokes out below the flap; the front card leads,
+ *                    each one behind it trails by 6 % of the shrink
  *   0.30s  material  the region's sunk surface gives way to the folder's materials: the back
  *                    becomes translucent paper, the flap is frosted glass (0.5 s)
  *   0.45s  shrink    back and flap shrink together onto the folder's own outline: the tab
@@ -112,10 +114,6 @@ export function FolderUnfold() {
       head: { at: 0, duration: 0.14, from: { o: 1 }, to: { o: 0 }, transition: { type: 'easing', duration: 0.14, ease: [0.4, 0, 1, 1] } },
       sheet: { at: 0.14, duration: 0 },
       fold: { at: 0.14, from: { a: 0 }, to: { a: ANGLE_END }, transition: { type: 'spring', stiffness: 120, damping: 14 } },
-      card0: { at: 0.35, from: { p: 0 }, to: { p: 1 }, transition: { type: 'spring', visualDuration: 0.5, bounce: 0.15 } },
-      card1: { at: 0.3, from: { p: 0 }, to: { p: 1 }, transition: { type: 'spring', visualDuration: 0.5, bounce: 0.15 } },
-      card2: { at: 0.25, from: { p: 0 }, to: { p: 1 }, transition: { type: 'spring', visualDuration: 0.5, bounce: 0.15 } },
-      card3: { at: 0.2, from: { p: 0 }, to: { p: 1 }, transition: { type: 'spring', visualDuration: 0.5, bounce: 0.15 } },
       material: { at: 0.3, duration: 0.5, from: { m: 0 }, to: { m: 1 }, transition: { type: 'easing', duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
       // An ease-out that lands exactly at its end: no overshoot, no long tail, so the sheet is
       // exactly the folder's shape at the handoff.
@@ -221,8 +219,10 @@ export function FolderUnfold() {
   const backD = backPath(backX, backY, backW, backH, taper, rise, FOLDER.tab, R.radius);
   const flapD = flapPath(backW, flapH, flapTaper, R.radius);
 
-  // Cards: from the region slot to the folder's fan.
-  const cardP = [tl.card0.current.p, tl.card1.current.p, tl.card2.current.p, tl.card3.current.p] as number[];
+  // Cards ride the shrink: a card is never further along than the sheet, so it can never pass the
+  // flap's edge. The front card leads a little, the back card follows (CARD_LAG of the shrink each).
+  const CARD_LAG = 0.06, n = ITEMS.length;
+  const cardP = ITEMS.map((_, i) => { const lag = (n - 1 - i) * CARD_LAG; return Math.min(1, Math.max(0, (s - lag) / (1 - (n - 1) * CARD_LAG))); });
   const cardStyle = (i: number): React.CSSProperties => {
     const from = slotIn(i), fan = geo?.fans[i];
     if (!fan) return { left: from.x, top: from.y };
@@ -277,7 +277,7 @@ export function FolderUnfold() {
 
         {/* The flap: the bottom third on a hinge at the fold line. Inside, the region's surface
             (the same continuous surface as the back); outside, the folder's frosted glass. */}
-        <div style={{ position: 'absolute', left: backX, top: foldY, width: backW, height: flapH, zIndex: 4, pointerEvents: 'none', opacity: sheetOn ? 1 : 0, perspective: 800 }}>
+        <div style={{ position: 'absolute', left: backX, top: foldY, width: backW, height: flapH, zIndex: 4, pointerEvents: 'none', opacity: sheetOn ? 1 : 0, perspective: 6000 }}>
           <div className="folder" data-hue={hue} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', perspective: 'none', cursor: 'default', transformOrigin: '50% 0', transformStyle: 'preserve-3d', transform: `rotateX(${angle}deg)` }}>
             <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden', borderRadius: `0 0 ${R.radius}px ${R.radius}px`, opacity: 1 - m }}>
               <div style={{ position: 'absolute', left: 0, top: -FOLD * (flapH / STRIP), width: '100%', height: R.h * (flapH / STRIP) }}>
