@@ -206,7 +206,10 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
 .side .grp > .eng { display: block; padding: 0 10px 8px; }
 .side a { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 32px; padding: 0 10px; border-radius: 12px; margin: 2px 0;
   font: 500 12.5px/16px var(--sans); letter-spacing: -.005em; color: var(--ink2); text-decoration: none; transition: color .15s, background .15s; }
-.side a:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.side a { z-index: 1; }
+.side a:hover { color: var(--ink); }
+/* The one hover highlight: it glides link to link (SlidingIndicator, settle spring) instead of each link lighting. */
+.side .side-glide { border-radius: 12px; background: color-mix(in srgb, var(--ink) 4%, transparent); }
 .side a[aria-current="page"] { color: var(--ink); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
 .side a[aria-current="page"]::before { content: ""; position: absolute; left: -2px; top: 11px; bottom: 11px; width: 2.5px; border-radius: 2px; background: var(--green-deep); }
 .side a .readout-t { color: var(--ink3); }

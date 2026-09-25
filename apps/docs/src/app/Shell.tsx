@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
+import { SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 
@@ -91,6 +92,7 @@ export function Shell() {
   const { colorway } = useColorway();
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [hovered, setHovered] = React.useState<string | null>(null);
   React.useEffect(() => setMenuOpen(false), [pathname]);
   React.useEffect(() => { document.body.classList.toggle('nav-open', menuOpen); }, [menuOpen]);
   React.useEffect(() => {
@@ -130,12 +132,14 @@ export function Shell() {
       </header>
 
       <div className="shell">
-        <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined}>
+        <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined} onPointerLeave={() => setHovered(null)}>
+          {/* One hover highlight for the whole nav, gliding link to link like a list's (settle spring). */}
+          <SlidingIndicator activeSelector="[data-hovered]" watch={['data-hovered']} spring="settle" className="side-glide" />
           {NAV.map((group) => (
             <div className="grp" key={group.label}>
               <span className="eng">{group.label}</span>
               {group.items.map((item) => (
-                <NavLink key={item.to} to={item.to} end onClick={() => setMenuOpen(false)}>
+                <NavLink key={item.to} to={item.to} end onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
                   <span>{item.label}</span>
                   {item.meta && <span className="readout-t">{item.meta}</span>}
                 </NavLink>
