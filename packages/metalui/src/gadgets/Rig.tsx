@@ -112,7 +112,7 @@ export function Rig({ spec, catalog = {}, values, sound = null, width = 560, hos
       {layout.modules.map((m) => {
         const drive = m.spec.mechanism.drive ?? Object.keys(m.spec.ports?.in ?? {})[0];
         const v = drive ? shown[m.inst]?.[drive] : undefined;
-        return <Gadget key={m.inst} spec={m.spec} value={typeof v === 'number' ? v : undefined} sound={voices.has(m.inst) ? sound : null}
+        return <Gadget key={m.inst} spec={m.spec} value={typeof v === 'number' ? v : typeof v === 'boolean' ? Number(v) : undefined} sound={voices.has(m.inst) ? sound : null}
           x={m.at[0]} y={m.at[1]} size={400} tier={tier} host={host} data-inst={m.inst} />;
       })}
       <g data-layer="cables">

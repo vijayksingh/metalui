@@ -129,6 +129,8 @@ export interface DriveOptions {
   material?: SoundMaterial;
   /** The actor's longest side on the canvas, for the pitch of its knock. */
   partSize?: number;
+  /** How heavy the gadget is (its feel's w): a heavy knock thumps. */
+  weight?: number;
   /** A detent crossed or an end hit, as it happens. */
   onEvent?: (e: DriveEvent) => void;
   /** The scrape's speed, each frame it moves (0 when it stops). */
@@ -166,7 +168,7 @@ export function createDrive(name: DriveName, actors: (Element | null | undefined
   const play = (e: DriveEvent) => {
     const m = o.material ?? 'clay', size = o.partSize ?? GADGETS.parts.cap.size[0];
     if (e.kind === 'detent') o.sound?.strike(m, { size: size * D.detentSize, level: e.level, pitch: D.detentPitch });
-    else o.sound?.strike(m, { size, level: e.level, pitch: e.end === 1 ? D.stopPitch[1] : D.stopPitch[0] });
+    else o.sound?.strike(m, { size, level: e.level, pitch: e.end === 1 ? D.stopPitch[1] : D.stopPitch[0], weight: o.weight });
   };
   const frame = () => {
     raf = 0;

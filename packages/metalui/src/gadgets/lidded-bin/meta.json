@@ -1,0 +1,12 @@
+{
+  "name": "lidded-bin",
+  "title": "Lidded bin",
+  "status": "alpha",
+  "description": "A gadget for throwing away: a heavy near-black rubber lid over a bin's mouth, on a rubber slab, and a lamp. Armed, the lid rises ajar showing its red underside and the lamp goes red; emptied, it swings open and slams shut with a thud. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/lidded-bin.gadget.json",
+  "uses": ["slab", "lid", "led"],
+  "page": "/gadgets/lidded-bin"
+}

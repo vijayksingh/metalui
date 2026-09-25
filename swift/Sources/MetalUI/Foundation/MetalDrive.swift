@@ -112,10 +112,12 @@ public final class MetalDrive {
     @ObservationIgnored private let sound: MetalSound?
     @ObservationIgnored private let material: MetalSoundMaterial
     @ObservationIgnored private let partSize: Double
+    @ObservationIgnored private let weight: Double
 
-    public init?(_ mechanism: MetalMechanism, start values: [Double], sound: MetalSound? = nil, material: MetalSoundMaterial = .clay, partSize: Double = 60) {
+    /// `weight` is how heavy the gadget is (its feel's w): a heavy knock thumps.
+    public init?(_ mechanism: MetalMechanism, start values: [Double], sound: MetalSound? = nil, material: MetalSoundMaterial = .clay, partSize: Double = 60, weight: Double = 0) {
         guard let model = MetalDriveModel(mechanism, start: values) else { return nil }
-        self.model = model; self.sound = sound; self.material = material; self.partSize = partSize
+        self.model = model; self.sound = sound; self.material = material; self.partSize = partSize; self.weight = weight
     }
 
     public func set(_ values: [Double]) {
@@ -142,7 +144,7 @@ public final class MetalDrive {
     private func play(_ e: MetalDriveModel.Event) {
         switch e {
         case .detent(_, _, let level): sound?.strike(material, size: partSize * MetalGadgetTokens.detentSize, level: level, pitch: MetalGadgetTokens.detentPitch)
-        case .stop(_, _, let level, let end): sound?.strike(material, size: partSize, level: level, pitch: end == 1 ? MetalGadgetTokens.stopPitch.top : MetalGadgetTokens.stopPitch.bottom)
+        case .stop(_, _, let level, let end): sound?.strike(material, size: partSize, weight: weight, level: level, pitch: end == 1 ? MetalGadgetTokens.stopPitch.top : MetalGadgetTokens.stopPitch.bottom)
         }
     }
 }

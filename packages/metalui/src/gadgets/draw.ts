@@ -19,6 +19,7 @@ import { drawKey } from './parts/key';
 import { drawDrum } from './parts/drum';
 import { drawNeedle } from './parts/needle';
 import { drawCells } from './parts/cell';
+import { drawLid } from './parts/lid';
 import { digitOf } from './drive';
 import { drawBezel } from './parts/bezel';
 import { drawGlass } from './parts/glass';
@@ -78,7 +79,7 @@ const boundTo = (spec: GadgetSpec, slot: string): string[] => { const b = spec.m
 export function driveDefault(spec: GadgetSpec): number {
   const port = spec.mechanism.drive ?? Object.keys(spec.ports?.in ?? {})[0];
   const ch = port ? spec.ports?.in?.[port] : undefined;
-  return ch && 'default' in ch && typeof ch.default === 'number' ? ch.default : 0.5;
+  return ch && 'default' in ch && typeof ch.default === 'number' ? ch.default : ch && 'default' in ch && typeof ch.default === 'boolean' ? Number(ch.default) : 0.5;
 }
 
 /** Where each actor of a held gadget goes for a drive value: its own rest place (its `value`
@@ -102,6 +103,12 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
     const u = driveShare(spec, value);
     return u <= 0 ? 'rest' : u >= 1 ? 'full' : 'filling';
   }
+  // A switch that names a state: on, it is that state; off, back to rest. A state entered by an act
+  // (a bin emptied) is the host's and stands.
+  const port = spec.mechanism.drive, ch = port ? spec.ports?.in?.[port] : undefined;
+  if (port && ch?.kind === 'boolean' && spec.states[port] && value !== undefined && spec.states[state]?.enter !== 'act') {
+    return value >= 0.5 ? port : state === port ? 'rest' : state;
+  }
   const needle = spec.parts.find((p) => p.part === 'needle'), t = needle?.params?.threshold;
   if (t === undefined || !spec.states.over || value === undefined) return state;
   if (driveShare(spec, value) >= Number(t)) return 'over';
@@ -111,6 +118,11 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
 export function driveTargets(spec: GadgetSpec, value: number, state?: string): number[] {
   const held = heldOf(spec);
   if (!held) return [];
+  // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'lid')) {
+    const poses = formPoses(spec, state ?? stateOf(spec)), full = (held.to as { r?: number }).r ?? 1;
+    return boundTo(spec, held.slot).map((id) => Math.min(1, Math.max(0, (poses[id]?.r ?? 0) / full)));
+  }
   // Cells light to the value's share; on a first run the grid rises all the way.
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'cell')) return boundTo(spec, held.slot).map(() => (state === 'first-run' ? 1 : driveShare(spec, value)));
   // A needle points at the value's share of its range.
@@ -217,6 +229,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const cut = cuts.find((c) => c.at[0] === p.at[0] && c.at[1] === p.at[1]);
       if (cut) defs += `<clipPath id="${pid}-clip"><path d="${cutPath(cut)}"/></clipPath>`;
       trims += `<g data-id="${p.id}"${cut ? ` clip-path="url(#${pid}-clip)"` : ''}><g data-part="backlight.level" style="opacity: ${+backlightLevel(lit).toFixed(3)}">${d.body}</g></g>`;
+    } else if (p.part === 'lid') {
+      // The lid on its mouth, turned to where the state holds it (the flip swings it from then on).
+      const k = driven.indexOf(p.id), full = held ? -((held.to as { r?: number }).r ?? 0) : 0;
+      const turn = k >= 0 ? driveTargets(spec, o.value ?? driveDefault(spec), state)[k] * full : 0;
+      const d = drawLid(pid, { at: p.at, size: size as [number, number], hinge: (p.params?.hinge as 'back' | 'left' | undefined) ?? 'back', open: turn,
+        armed: p.params?.armed === true, color: rs.body, material: resolved.material === 'clay' ? 'clay' : 'rubber' }, { tier, host });
+      defs += d.defs;
+      trims += `<g data-id="${p.id}">${d.shadow}${d.mouth}${d.body}</g>`;
     } else if (p.part === 'cell') {
       // Resin cells dyed in the gadget's glass colour, lit to the value's share (the glow lights them from then on).
       const d = drawCells(pid, { at: p.at, size: size[0], cols: Number(p.params?.cols ?? 4), rows: Number(p.params?.rows ?? 4), gap: p.params?.gap === undefined ? undefined : Number(p.params.gap),

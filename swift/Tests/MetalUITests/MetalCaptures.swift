@@ -405,6 +405,25 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetLiddedBin() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/lidded-bin.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.driveDefault, 0)
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "armed"])
+        XCTAssertEqual(spec.derivedState("emptied", value: 1), "emptied")
+        XCTAssertEqual(spec.driveTargets(1, state: "armed")[0], 18.0 / 70, accuracy: 1e-9)
+        XCTAssertEqual(spec.description("armed", value: 1), "Trash: armed, ready to empty")
+        let looks: [(Double, String?)] = [(0, nil), (1, nil), (0, "emptied")]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(0..<looks.count, id: \.self) { i in MetalGadget(spec: spec, state: looks[i].1, value: looks[i].0, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-lidded-bin-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

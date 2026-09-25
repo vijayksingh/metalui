@@ -2,6 +2,18 @@
 // The same tracks and cues the web player runs (mechanisms.generated.ts).
 
 extension MetalMechanism {
+    /// The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams.
+    public static let flip = MetalMechanism(
+        name: "flip", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .hinge,
+        tracks: [
+
+        ],
+        cues: [.init(at: nil, until: nil, kind: .friction, slot: "lid", level: 0.08, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "lid", level: 0.9, pitch: 1.0, gesture: nil)],
+        states: ["open": .init(hold: "lid", pose: .init(x: 0.0, y: 0.0, r: -70.0, sx: 1.0, sy: 1.0)), "ajar": .init(hold: "lid", pose: .init(x: 0.0, y: 0.0, r: -18.0, sx: 1.0, sy: 1.0))],
+        reduced: ["lamp", "sound"],
+        held: .init(slot: "lid", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: -70.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.2, impactFull: 2.0, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 900.0)
+    )
+
     /// Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them.
     public static let glow = MetalMechanism(
         name: "glow", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .settle,
@@ -11,7 +23,7 @@ extension MetalMechanism {
         cues: [],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "cells", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
+        held: .init(slot: "cells", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 0.0)
     )
 
     /// The keys drop into their skirts one after another and spring back: a chord.
@@ -35,7 +47,7 @@ extension MetalMechanism {
         cues: [.init(at: nil, until: nil, kind: .detent, slot: "drums", level: 0.35, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .settle, slot: "drums", level: 0.2, pitch: 1.0, gesture: nil)],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "drums", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 60.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.5, tickGap: 30.0, step: 240.0, roll: true, rest: 0.01)
+        held: .init(slot: "drums", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 60.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.5, tickGap: 30.0, step: 240.0, roll: true, rest: 0.01, pulse: 0.0)
     )
 
     /// The plug lifts, its shadow opens, and it seats again with a click.
@@ -60,7 +72,7 @@ extension MetalMechanism {
         cues: [.init(at: nil, until: nil, kind: .friction, slot: "caps", level: 1.0, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .detent, slot: "caps", level: 0.45, pitch: 1.0, gesture: nil), .init(at: nil, until: nil, kind: .stop, slot: "caps", level: 0.8, pitch: 1.0, gesture: nil)],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
+        held: .init(slot: "caps", from: .init(x: 0.0, y: 92.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: -92.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 40.0, wall: 0.25, impactFull: 1.5, scrapeFull: 3.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 0.0)
     )
 
     /// The beam turns once around the glass; each blip lights as the beam crosses it, and fades.
@@ -85,8 +97,8 @@ extension MetalMechanism {
         cues: [],
         states: [:],
         reduced: ["lamp", "sound"],
-        held: .init(slot: "needle", from: .init(x: 0.0, y: 0.0, r: -60.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 60.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.35, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
+        held: .init(slot: "needle", from: .init(x: 0.0, y: 0.0, r: -60.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 60.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.35, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 0.0)
     )
 
-    public static let all: [MetalMechanism] = [glow, press, roll, seat, slide, sweep, swing]
+    public static let all: [MetalMechanism] = [flip, glow, press, roll, seat, slide, sweep, swing]
 }

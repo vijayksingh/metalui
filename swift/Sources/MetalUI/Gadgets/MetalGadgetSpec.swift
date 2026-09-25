@@ -84,7 +84,9 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     /// The value a held gadget's drive port starts at: the port's default, else the middle.
     public var driveDefault: Double {
         let port = mechanism.drive ?? ports?.in?.keys.sorted().first
-        return port.flatMap { ports?.in?[$0]?.default?.number } ?? 0.5
+        let d = port.flatMap { ports?.in?[$0]?.default }
+        if case .flag(let on)? = d { return on ? 1 : 0 }
+        return d?.number ?? 0.5
     }
 
     /// The drive port's range: [min, max] for a number, else 0...1.
@@ -99,6 +101,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     /// The state it shows for a value: a needle past its threshold makes it `over`; back under, `over`
     /// falls back to its initial state (or rest). The same rule as draw.ts.
     public func derivedState(_ state: String, value: Double?) -> String {
+        // A switch that names a state: on, it is that state; off, back to rest. A state entered by an act
+        // (a bin emptied) is the host's and stands.
+        if let port = mechanism.drive, ports?.in?[port]?.kind == "boolean", states[port] != nil, let value, states[state]?.enter != "act" {
+            return value >= 0.5 ? port : state == port ? "rest" : state
+        }
         // Cells that fill: none lit is rest, some filling, all full. A first run is the host's.
         if parts.contains(where: { $0.part == "cell" }), states["filling"] != nil, states["full"] != nil, let value, state != "first-run" {
             let u = driveShare(value)
@@ -116,6 +123,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func driveTargets(_ value: Double, state: String? = nil) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
         let ids = mechanism.bind[held.slot] ?? []
+        // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).
+        if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "lid" }) {
+            let s = state ?? self.state(nil)
+            return ids.map { id in held.to.r == 0 ? 0 : min(1, max(0, (states[s]?.form?[id]?.pose?.r ?? 0) / held.to.r)) }
+        }
         // Cells light to the value's share; on a first run the grid rises all the way.
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "cell" }) { return ids.map { _ in state == "first-run" ? 1 : driveShare(value) } }
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "needle" }) { return ids.map { _ in driveShare(value) } }

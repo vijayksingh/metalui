@@ -2,6 +2,75 @@
 // How gadgets move when they act: tracks (poses as numbers, easings as cubic-bezier points), cues,
 // held poses and what survives reduced motion. MetalMechanisms.generated.swift carries the same.
 export const MECHANISMS = {
+  "flip": {
+    "name": "flip",
+    "mode": "held",
+    "duration": 0,
+    "caption": "The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams.",
+    "stages": [
+      "Lift",
+      "Swing",
+      "Thud"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "hinge",
+    "slots": {
+      "lid": "actor",
+      "lamp": "lamp"
+    },
+    "tracks": [],
+    "cues": [
+      {
+        "kind": "friction",
+        "slot": "lid",
+        "level": 0.08
+      },
+      {
+        "kind": "stop",
+        "slot": "lid",
+        "level": 0.9
+      }
+    ],
+    "states": {
+      "open": {
+        "hold": "lid",
+        "pose": {
+          "r": -70
+        }
+      },
+      "ajar": {
+        "hold": "lid",
+        "pose": {
+          "r": -18
+        }
+      }
+    },
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": {
+      "drive": "state",
+      "slot": "lid",
+      "from": {
+        "r": 0
+      },
+      "to": {
+        "r": -70
+      },
+      "detents": 0,
+      "stagger": 0,
+      "wall": 0.2,
+      "impactFull": 2,
+      "scrapeFull": 3,
+      "tickMin": 0.15,
+      "tickGap": 40,
+      "step": 240,
+      "pulse": 900
+    }
+  },
   "glow": {
     "name": "glow",
     "mode": "held",

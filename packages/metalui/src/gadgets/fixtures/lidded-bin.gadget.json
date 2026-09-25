@@ -1,0 +1,19 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "lidded-bin", "title": "Trash",
+  "job": "destroy", "feel": { "v": 0.3, "a": 0.4, "w": 0.9 }, "container": "slab", "station": 25, "material": "rubber",
+  "parts": [
+    { "id": "body", "part": "slab", "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp", "part": "led",  "at": [313, 78],  "role": "lamp" },
+    { "id": "lid",  "part": "lid",  "at": [200, 216], "size": [240, 200], "role": "actor", "params": { "hinge": "back", "armed": true } }
+  ],
+  "mechanism": { "name": "flip", "bind": { "lid": "lid", "lamp": "lamp" }, "drive": "armed" },
+  "ports": { "in": { "armed": { "kind": "boolean", "default": false }, "empty": { "kind": "pulse" } },
+             "out": { "emptied": { "kind": "pulse" } } },
+  "states": {
+    "rest":    { "lamp": ["off", "steady"] },
+    "armed":   { "lamp": ["failed", "steady"], "form": { "lid": { "pose": { "r": -18 } } }, "hint": "ready to empty" },
+    "emptied": { "lamp": ["live", "blink2"], "enter": "act", "beep": "done" }
+  },
+  "describe": "{title}: {state}"
+}

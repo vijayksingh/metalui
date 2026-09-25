@@ -54,6 +54,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/counter-drum', lazy: lazy(() => import('./pages/gadgets/CounterDrum')) },
       { path: 'gadgets/needle-gauge', lazy: lazy(() => import('./pages/gadgets/NeedleGauge')) },
       { path: 'gadgets/cell-grid', lazy: lazy(() => import('./pages/gadgets/CellGrid')) },
+      { path: 'gadgets/lidded-bin', lazy: lazy(() => import('./pages/gadgets/LiddedBin')) },
       { path: 'gadgets/reading-rig', lazy: lazy(() => import('./pages/gadgets/ReadingRig')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },

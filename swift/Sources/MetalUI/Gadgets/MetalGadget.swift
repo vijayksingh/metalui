@@ -71,6 +71,7 @@ public struct MetalGadget: View {
                     // Light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
                     ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in trayLight(q, r: r) }
                     ForEach(spec.parts.filter { $0.part == "cell" }, id: \.id) { q in cells(q, r: r) }
+                    ForEach(spec.parts.filter { $0.part == "lid" }, id: \.id) { q in lid(q, r: r) }
                 }
                 // An inset gadget: its glass in a bezel, with the light in the glass.
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "bezel" }, id: \.id) { p in
@@ -132,8 +133,10 @@ public struct MetalGadget: View {
             }
             if let m, let held = m.held, !held.roll, drive == nil {
                 // Light is silent: a glow has no knock and no scrape.
+                let lidPart = spec.parts.first { $0.part == "lid" }
                 let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault, state: state), sound: lit ? nil : sound,
-                                   material: driveMaterial, partSize: MetalGadgetTokens.partSizes["cap"]?.0 ?? 60)
+                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : driveMaterial,
+                                   partSize: lidPart.map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w)
                 d?.reduced = reduceMotion
                 drive = d
             }
@@ -195,6 +198,15 @@ public struct MetalGadget: View {
         MetalBacklight(.glow, color: .glass(r.face), at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(lv.empty + (lv.full - lv.empty) * min(1, max(0, litShare)))
             .mask { if let cut { Path(cut.path).applying(CGAffineTransform(scaleX: unit, y: unit)).fill(.black) } else { Rectangle() } }
+    }
+
+    /// A lid on its mouth, turned where the flip has carried it (or where the state holds it before it runs).
+    @ViewBuilder private func lid(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let full = -(MetalMechanism.all.first { $0.name == spec.mechanism.name }?.held?.to.r ?? 0)
+        let u = drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0
+        let armed: Bool = { if case .flag(let on)? = p.params?["armed"] { return on }; return false }()
+        MetalLid(open: u * full, armed: armed, hinge: p.params?["hinge"]?.text == "left" ? .left : .back, material: r.material == .clay ? .clay : .rubber,
+                 color: body(r), dims: footprint(p), center: CGPoint(x: p.at[0], y: p.at[1]), size: size)
     }
 
     /// Resin cells dyed in the gadget's glass colour, lit to the share.
@@ -346,8 +358,16 @@ public struct MetalGadget: View {
     private var reach: MetalSoundReach { spec.reach.flatMap(MetalSoundReach.init(rawValue:)) ?? .world }
 
     private func enter(_ next: String, bind: [String: String]) {
-        // A state may move a held drive (a first run fills the grid).
-        if let drive { drive.reduced = reduceMotion; drive.set(spec.driveTargets(value ?? spec.driveDefault, state: next)) }
+        // A state may move a held drive (a first run fills the grid, a lid goes ajar). One entered by an act
+        // swings it all the way and lets it back at half the pulse (a bin emptied: open, and slam).
+        if let drive {
+            drive.reduced = reduceMotion
+            let back = spec.driveTargets(value ?? spec.driveDefault, state: next), pulse = drive.model.held.pulse
+            if pulse > 0, spec.states[next]?.enter == "act", !reduceMotion {
+                drive.set(back.map { _ in 1 })
+                DispatchQueue.main.asyncAfter(deadline: .now() + pulse / 2000) { if shown == next { drive.set(back) } }
+            } else { drive.set(back) }
+        }
         guard let player, next != shown else {
             // A held gadget has no act: the state's news plays straight on the beeper.
             if player == nil, next != shown {
