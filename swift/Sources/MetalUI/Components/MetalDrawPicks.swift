@@ -85,7 +85,7 @@ private struct MetalDrawPick: View {
             .focused($focused)
             .overlay {
                 if focused {
-                    Circle().stroke(MetalShared.focus.color, lineWidth: MetalRecipes.segmented.points("self.focus-width"))
+                    Circle().stroke(MetalShared.focus.color, lineWidth: MetalRecipes.switcher.points("self.focus-width"))
                         .allowsHitTesting(false)
                 }
             }

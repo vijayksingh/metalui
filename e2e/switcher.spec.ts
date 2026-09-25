@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { COLORWAYS, capture, open } from './helpers';
 
-// Segmented: one of a few views; click or arrows move the choice and the thumb glides under it.
+// Switcher: one of a few views; click or arrows move the choice and the thumb glides under it.
 for (const colorway of COLORWAYS) {
   test(`choose a view by click and by arrows in ${colorway}`, async ({ page }) => {
-    await open(page, '/components/segmented', colorway);
+    await open(page, '/components/switcher', colorway);
     const group = page.getByRole('radiogroup', { name: 'Lens view' });
     const radios = group.getByRole('radio');
     await radios.nth(2).click();
@@ -24,6 +24,6 @@ for (const colorway of COLORWAYS) {
     expect(Math.abs(thumb.x - seg.x)).toBeLessThan(2);
     expect(Math.abs(thumb.w - seg.width)).toBeLessThan(2);
     await expect(page.getByRole('radiogroup', { name: 'Scale' }).getByRole('radio').first()).toBeDisabled();
-    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`segmented-${colorway}`) });
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`switcher-${colorway}`) });
   });
 }

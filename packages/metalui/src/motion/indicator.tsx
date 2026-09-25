@@ -27,7 +27,7 @@ export interface SlidingIndicatorProps {
   /** The indicator's material and shape, e.g. "material-thumb rounded-pill". */
   className?: string;
   /**
-   * "part" when the thumb rides a track with ends (segmented, tabs, switch): it may
+   * "part" when the thumb rides a track with ends (switcher, tabs, switch): it may
    * overshoot against the stop. "settle" for free travel (lists, navigation).
    */
   spring?: 'part' | 'settle';
@@ -36,7 +36,7 @@ export interface SlidingIndicatorProps {
 }
 
 /**
- * A thumb that glides to the active item of its parent group: segmented
+ * A thumb that glides to the active item of its parent group: switcher
  * controls, tabs, navigation. Place it as the first child of a positioned
  * group; it follows ARIA state, so the items stay ordinary buttons or links.
  */

@@ -171,10 +171,10 @@ const RG = T.region;
 const RG_KEYS = Object.keys(RG).filter((k) => !k.startsWith('$'));
 const regionVars = RG_KEYS.map((k) => `  --mu-region-${k}: ${typeof RG[k] === 'number' ? (k === 'dim' ? RG[k] : `${RG[k]}px`) : RG[k]};`).join('\n');
 
-// ---------- segmented (tokens.json segmented) ----------
-const SE = T.segmented;
+// ---------- switcher (tokens.json switcher) ----------
+const SE = T.switcher;
 const SE_KEYS = Object.keys(SE).filter((k) => !k.startsWith('$'));
-const segmentedVars = SE_KEYS.map((k) => `  --mu-segmented-${k}: ${SE[k]}px;`).join('\n');
+const switcherVars = SE_KEYS.map((k) => `  --mu-switcher-${k}: ${SE[k]}px;`).join('\n');
 
 // ---------- lens bar (tokens.json lensbar) ----------
 const LB = T.lensbar;
@@ -268,7 +268,7 @@ ${suggestionVars}
 ${engravingVars}
 ${provenanceVars}
 ${regionVars}
-${segmentedVars}
+${switcherVars}
 ${lensbarVars}
 ${scrubberVars}
 ${pastbannerVars}
@@ -348,7 +348,7 @@ const ED = T.editorial;
 // The layout groups (presence, suggestion, engraving, …) as theme values: a px value is spacing
 // (h-presence-readout-height), a colour is a colour, a duration or an opacity a utility. A name a recipe
 // already gives is left to the recipe.
-const GROUPS = ['presence', 'cue', 'suggestion', 'engraving', 'provenance', 'region', 'lensbar', 'scrubber', 'pastbanner', 'toolstrip', 'settings', 'palette', 'toast', 'toolbar', 'menu', 'kbd', 'status', 'segmented', 'button', 'tooltip'];
+const GROUPS = ['presence', 'cue', 'suggestion', 'engraving', 'provenance', 'region', 'lensbar', 'scrubber', 'pastbanner', 'toolstrip', 'settings', 'palette', 'toast', 'toolbar', 'menu', 'kbd', 'status', 'switcher', 'button', 'tooltip'];
 const recipeNames = new Set([...RECIPES.theme.vars.matchAll(/--([\w-]+):/g)].map((m) => m[1]));
 const groupVars = [];
 const groupUtils = [];
@@ -872,7 +872,7 @@ ${LB_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(LB[k])}`
 }
 
 /// ${SE.$use}
-public enum MetalSegmentedMetrics {
+public enum MetalSwitcherMetrics {
 ${SE_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(SE[k])}`).join('\n')}
 }
 `);

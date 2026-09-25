@@ -24,7 +24,7 @@ export default function LensBarPage() {
     <>
       <PageHeader
         title="Lens bar"
-        lede="While a lens is open, a frosted pill at the top names the question it asks, counts what matches, says where the answer came from, and switches between showing the matches in place and gathering them in a list, table, timeline or gallery. Pin keeps the lens on the canvas as a live region; close ends it. Built on Base UI Toolbar with the Segmented control."
+        lede="While a lens is open, a frosted pill at the top names the question it asks, counts what matches, says where the answer came from, and switches between showing the matches in place and gathering them in a list, table, timeline or gallery. Pin keeps the lens on the canvas as a live region; close ends it. Built on Base UI Toolbar with the Switcher."
       />
       <Section title="Playground" lede="Switch views, pin, close. Dials: the query, the count, the source, and Open again to replay the drop-in on the surface spring.">
         <Bench caption={`${mode} · ${d.source}`} className="min-h-[200px]">

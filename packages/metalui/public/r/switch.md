@@ -8,12 +8,12 @@ A setting that is on or off and takes effect at once. React: `Switch` from `@unl
 
 ## Don't use it for
 
-- A choice that needs Save (use a checkbox in a form), one of several options (use a segmented control), or a task (use the checkbox in the margin).
+- A choice that needs Save (use a checkbox in a form), one of several options (use a switcher), or a task (use the checkbox in the margin).
 
 ## Anatomy
 
 - Track: a sunk pill, 40 × 24 (small 32 × 20), padding 2, the track well; on, a soft green gradient with an inner shadow.
-- Thumb: a raised round cap, 20 (small 16), the segmented thumb's material.
+- Thumb: a raised round cap, 20 (small 16), the switcher thumb's material.
 
 ## States and motion
 

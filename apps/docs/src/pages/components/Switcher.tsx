@@ -1,40 +1,40 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Segmented } from '@unlocalhosted/metalui';
-import reactSource from '../../../../../packages/metalui/src/components/segmented/segmented.tsx?raw';
+import { Switcher } from '@unlocalhosted/metalui';
+import reactSource from '../../../../../packages/metalui/src/components/switcher/switcher.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
-import agentGuide from '../../../../../packages/metalui/src/components/segmented/segmented.agent.md?raw';
-import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSegmented.swift?raw';
+import agentGuide from '../../../../../packages/metalui/src/components/switcher/switcher.agent.md?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSwitcher.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
-import { SegmentedXray } from '../../ui/xray/SegmentedXray';
+import { SwitcherXray } from '../../ui/xray/SwitcherXray';
 
 const VIEWS = ['place', 'list', 'table', 'timeline', 'gallery'].map((v) => ({ value: v, label: v }));
 
-export default function SegmentedPage() {
+export default function SwitcherPage() {
   const [view, setView] = React.useState('place');
-  const d = useDialKit('Segmented', { size: { type: 'select', options: ['regular', 'compact'], default: 'regular' }, count: [5, 2, 5, 1], disabled: false });
+  const d = useDialKit('Switcher', { size: { type: 'select', options: ['regular', 'compact'], default: 'regular' }, count: [5, 2, 5, 1], disabled: false });
   return (
     <>
       <PageHeader
-        title="Segmented control"
+        title="Switcher"
         lede="Pick one of a few options. All options are always visible. The chosen one sits on a raised thumb that slides when you pick another. Built on Base UI RadioGroup."
       />
-      <Section title="Playground" lede="Click or use the arrow keys. Dials: the size (28 regular, 24 compact), how many segments, disabled.">
+      <Section title="Playground" lede="Click or use the arrow keys. Dials: the size (28 regular, 24 compact), how many options, disabled.">
         <Bench caption={`${d.size} · ${view}`}>
-          <Segmented aria-label="Lens view" size={d.size as 'regular'} disabled={d.disabled} value={view} onValueChange={setView} options={VIEWS.slice(0, d.count)} />
+          <Switcher aria-label="Lens view" size={d.size as 'regular'} disabled={d.disabled} value={view} onValueChange={setView} options={VIEWS.slice(0, d.count)} />
         </Bench>
         <Bench tone="page" caption="regular 28 · compact 24 · disabled">
           <div className="flex flex-col items-center gap-24">
-            <Segmented aria-label="Colorway" defaultValue="bone" options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
-            <Segmented aria-label="View" size="compact" defaultValue="list" options={VIEWS} />
-            <Segmented aria-label="Scale" disabled defaultValue="day" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }]} />
+            <Switcher aria-label="Colorway" defaultValue="bone" options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
+            <Switcher aria-label="View" size="compact" defaultValue="list" options={VIEWS} />
+            <Switcher aria-label="Scale" disabled defaultValue="day" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }]} />
           </div>
         </Bench>
-        <SwiftCapture name="segmented" maxWidth={520} />
+        <SwiftCapture name="switcher" maxWidth={520} />
       </Section>
       <Section id="x-ray" title="X-ray" lede="See what the control is made of. Click an icon to learn about one part and change it.">
-        <SegmentedXray />
+        <SwitcherXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[

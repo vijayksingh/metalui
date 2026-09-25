@@ -9,10 +9,10 @@
     "glyph",
     "label",
     "status",
-    "segmented",
+    "switcher",
     "icon-button"
   ],
-  "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+  "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Switcher of views, and IconButton(ghost) pin and close. Formerly LensBar.",
   "base": "@base-ui/react/toolbar",
   "react": {
     "export": "FilterBar, LensBar",

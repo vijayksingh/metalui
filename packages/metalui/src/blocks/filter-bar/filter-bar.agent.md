@@ -13,7 +13,7 @@ Names the question a filter asks and switches how the answer is shown. A composi
 
 ## Anatomy
 
-`Surface material="frost" radius="pill"`, 38 tall, padding 0 6 0 14, gap 8, at the top centre: a `Glyph` (14, ink2); the query in `Label variant="query"`, ellipsised at 340; `N MATCHES` in `Label variant="engraved"`; the note (`ASKING…` after a waiting `Led`, `VIA MODEL`, `LOCAL`); a compact `Segmented`; two `IconButton variant="ghost"`, pin and close.
+`Surface material="frost" radius="pill"`, 38 tall, padding 0 6 0 14, gap 8, at the top centre: a `Glyph` (14, ink2); the query in `Label variant="query"`, ellipsised at 340; `N MATCHES` in `Label variant="engraved"`; the note (`ASKING…` after a waiting `Led`, `VIA MODEL`, `LOCAL`); a compact `Switcher`; two `IconButton variant="ghost"`, pin and close.
 
 ## States and motion
 
@@ -49,4 +49,4 @@ Names the question a filter asks and switches how the answer is shown. A composi
 
 ## Tokens
 
-Layout: `--mu-lensbar-*`. Look: the surface, glyph, label, status, segmented and icon-button recipes. Motion: `--mu-spring-surface`, `--mu-travel-surface`.
+Layout: `--mu-lensbar-*`. Look: the surface, glyph, label, status, switcher and icon-button recipes. Motion: `--mu-spring-surface`, `--mu-travel-surface`.

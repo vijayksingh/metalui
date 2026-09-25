@@ -1,9 +1,9 @@
 import SwiftUI
 
-// Segmented control (KAMUI-04). Mirrors components/segmented from MetalSegmentedMetrics and the colorway.
+// Switcher. Mirrors components/switcher from MetalSwitcherMetrics and the colorway.
 
 /// A pill of pills: one of a few options. The thumb glides to the selection on the part spring.
-public struct MetalSegmented<Value: Hashable>: View {
+public struct MetalSwitcher<Value: Hashable>: View {
     public enum Size: Sendable { case compact, regular }
 
     let label: String
@@ -25,7 +25,7 @@ public struct MetalSegmented<Value: Hashable>: View {
 
     public var body: some View {
         let t = colorway.tokens
-        let h = size == .compact ? MetalSegmentedMetrics.compact : MetalSegmentedMetrics.regular
+        let h = size == .compact ? MetalSwitcherMetrics.compact : MetalSwitcherMetrics.regular
         HStack(spacing: 0) {
             ForEach(options, id: \.value) { option in
                 let on = option.value == selection
@@ -50,10 +50,13 @@ public struct MetalSegmented<Value: Hashable>: View {
                 .accessibilityAddTraits(on ? [.isSelected] : [])
             }
         }
-        .padding(MetalSegmentedMetrics.trackPad)
+        .padding(MetalSwitcherMetrics.trackPad)
         .metalRecipe(MetalRecipe(fill: MetalGradient(angle: 180, stops: [.init(t.wellTop, 0), .init(t.wellBot, 1)]), shadows: t.well), in: Capsule(style: .continuous))
         .opacity(isEnabled ? 1 : 0.4)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(label)
     }
 }
+
+@available(*, deprecated, renamed: "MetalSwitcher")
+public typealias MetalSegmented = MetalSwitcher

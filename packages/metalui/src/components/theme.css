@@ -583,15 +583,15 @@
   --color-slider-tick-color: var(--mu-r-slider-tick-color);
   --spacing-slider-knob-size: var(--mu-r-slider-knob-size);
   --spacing-slider-knob-rise: var(--mu-r-slider-knob-rise);
-  --spacing-segmented-pad: var(--mu-r-segmented-self-pad);
-  --spacing-segmented-gap: var(--mu-r-segmented-self-gap);
-  --spacing-segmented-segment-height: var(--mu-r-segmented-segment-height);
-  --spacing-segmented-segment-height-regular: var(--mu-r-segmented-segment-height-regular);
-  --spacing-segmented-segment-pad-x: var(--mu-r-segmented-segment-pad-x);
-  --tracking-segmented-segment-tracking: var(--mu-r-segmented-segment-tracking);
-  --color-segmented-segment-ink: var(--mu-r-segmented-segment-ink);
-  --color-segmented-segment-ink-on: var(--mu-r-segmented-segment-ink-on);
-  --spacing-segmented-segment-focus-width: var(--mu-r-segmented-segment-focus-width);
+  --spacing-switcher-pad: var(--mu-r-switcher-self-pad);
+  --spacing-switcher-gap: var(--mu-r-switcher-self-gap);
+  --spacing-switcher-option-height: var(--mu-r-switcher-option-height);
+  --spacing-switcher-option-height-regular: var(--mu-r-switcher-option-height-regular);
+  --spacing-switcher-option-pad-x: var(--mu-r-switcher-option-pad-x);
+  --tracking-switcher-option-tracking: var(--mu-r-switcher-option-tracking);
+  --color-switcher-option-ink: var(--mu-r-switcher-option-ink);
+  --color-switcher-option-ink-on: var(--mu-r-switcher-option-ink-on);
+  --spacing-switcher-option-focus-width: var(--mu-r-switcher-option-focus-width);
   --spacing-tooltip-max-width: var(--mu-r-tooltip-self-max-width);
   --spacing-tooltip-pad-y: var(--mu-r-tooltip-self-pad-y);
   --spacing-tooltip-pad-x: var(--mu-r-tooltip-self-pad-x);
@@ -968,10 +968,10 @@
   gap: var(--mu-toolbar-gap); padding: var(--mu-toolbar-pad); border-radius: var(--mu-radius-card);
 }
 @utility toolbar-frost-tool {
-  width: var(--mu-toolbar-tool); height: var(--mu-toolbar-tool); border-radius: var(--mu-round); color: var(--mu-icon); background: var(--mu-btn-bg); box-shadow: var(--mu-btn-sh); transition: transform var(--mu-spring-release-d) var(--mu-spring-release); & > svg { width: var(--mu-toolbar-glyph); height: var(--mu-toolbar-glyph); } &:hover { color: var(--mu-ink); } &:active, &[data-pressed] { transform: translateY(var(--mu-motion-press)); background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); color: var(--mu-ink); } &:active { transition-duration: var(--mu-r-toolbar-tool-press-time); } &[data-pressed]::after { content: ''; position: absolute; top: var(--mu-toolbar-led-inset); right: var(--mu-toolbar-led-inset); width: var(--mu-toolbar-led); height: var(--mu-toolbar-led); border-radius: var(--mu-round); background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+  width: var(--mu-toolbar-tool); height: var(--mu-toolbar-tool); border-radius: var(--mu-round); color: var(--mu-icon); background: var(--mu-btn-bg); box-shadow: var(--mu-btn-sh); transition: transform var(--mu-spring-release-d) var(--mu-spring-release); & > svg { width: var(--mu-toolbar-glyph); height: var(--mu-toolbar-glyph); } &:hover { color: var(--mu-ink); } &:active, &[data-pressed] { transform: translateY(var(--mu-motion-press)); background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); color: var(--mu-ink); } &:active { transition-duration: var(--mu-r-toolbar-tool-press-time); } &[data-pressed]::after { content: ''; position: absolute; top: var(--mu-toolbar-led-inset); right: var(--mu-toolbar-led-inset); width: var(--mu-toolbar-led); height: var(--mu-toolbar-led); border-radius: var(--mu-round); background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; }
 }
 @utility toolbar-graphite-tool {
-  width: var(--mu-r-toolbar-tool-size); height: var(--mu-r-toolbar-tool-size); border-radius: var(--mu-r-toolbar-tool-radius); color: var(--mu-r-toolbar-tool-ink); background: var(--mu-r-toolbar-tool-background); box-shadow: var(--mu-r-toolbar-tool-shadow); transition: transform var(--mu-r-toolbar-tool-press-time) linear, box-shadow var(--mu-r-toolbar-tool-shadow-time) var(--mu-ease-press); & > svg { width: var(--mu-r-toolbar-tool-glyph); height: var(--mu-r-toolbar-tool-glyph); } &:hover { color: var(--mu-r-toolbar-tool-ink); } &:active, &[data-pressed] { transform: translateY(var(--mu-r-toolbar-tool-press)); background: var(--mu-r-toolbar-tool-pressed-background); box-shadow: var(--mu-r-toolbar-tool-pressed-shadow); color: var(--mu-r-toolbar-tool-ink); } &:active { transition-duration: var(--mu-r-toolbar-tool-press-time); } &[data-pressed]::after { content: ''; position: absolute; top: var(--mu-r-toolbar-led-inset); right: var(--mu-r-toolbar-led-inset); width: var(--mu-r-toolbar-led-size); height: var(--mu-r-toolbar-led-size); border-radius: var(--mu-round); background: var(--mu-r-toolbar-led-background); box-shadow: var(--mu-r-toolbar-led-shadow); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+  width: var(--mu-r-toolbar-tool-size); height: var(--mu-r-toolbar-tool-size); border-radius: var(--mu-r-toolbar-tool-radius); color: var(--mu-r-toolbar-tool-ink); background: var(--mu-r-toolbar-tool-background); box-shadow: var(--mu-r-toolbar-tool-shadow); transition: transform var(--mu-r-toolbar-tool-press-time) linear, box-shadow var(--mu-r-toolbar-tool-shadow-time) var(--mu-ease-press); & > svg { width: var(--mu-r-toolbar-tool-glyph); height: var(--mu-r-toolbar-tool-glyph); } &:hover { color: var(--mu-r-toolbar-tool-ink); } &:active, &[data-pressed] { transform: translateY(var(--mu-r-toolbar-tool-press)); background: var(--mu-r-toolbar-tool-pressed-background); box-shadow: var(--mu-r-toolbar-tool-pressed-shadow); color: var(--mu-r-toolbar-tool-ink); } &:active { transition-duration: var(--mu-r-toolbar-tool-press-time); } &[data-pressed]::after { content: ''; position: absolute; top: var(--mu-r-toolbar-led-inset); right: var(--mu-r-toolbar-led-inset); width: var(--mu-r-toolbar-led-size); height: var(--mu-r-toolbar-led-size); border-radius: var(--mu-round); background: var(--mu-r-toolbar-led-background); box-shadow: var(--mu-r-toolbar-led-shadow); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; }
 }
 @utility toolbar-frost-sep {
   width: var(--mu-r-toolbar-sep-width); height: var(--mu-toolbar-sep-height); margin: 0 var(--mu-r-toolbar-sep-margin); background: var(--mu-rule); box-shadow: var(--mu-rule-lip-shadow);
@@ -980,10 +980,10 @@
   width: var(--mu-r-toolbar-sep-width); height: var(--mu-r-toolbar-sep-height); margin: 0 var(--mu-r-toolbar-sep-margin); background: var(--mu-r-toolbar-sep-background); box-shadow: var(--mu-r-toolbar-sep-shadow);
 }
 @utility toolbar-frost-search {
-  gap: var(--mu-r-toolbar-search-gap); height: var(--mu-toolbar-tool); min-width: var(--mu-toolbar-search-min); padding: 0 var(--mu-r-toolbar-search-pad-right) 0 var(--mu-r-toolbar-search-pad-left); border-radius: var(--mu-radius-pill); font: var(--mu-type-ui); letter-spacing: var(--mu-type-ui-tracking); color: var(--mu-ink3); background: linear-gradient(var(--mu-well-top), var(--mu-well-bot)); box-shadow: var(--mu-well); & > svg { width: var(--mu-r-toolbar-search-glyph); height: var(--mu-r-toolbar-search-glyph); } & .mu-kbd { color: var(--mu-ink2); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+  gap: var(--mu-r-toolbar-search-gap); height: var(--mu-toolbar-tool); min-width: var(--mu-toolbar-search-min); padding: 0 var(--mu-r-toolbar-search-pad-right) 0 var(--mu-r-toolbar-search-pad-left); border-radius: var(--mu-radius-pill); font: var(--mu-type-ui); letter-spacing: var(--mu-type-ui-tracking); color: var(--mu-ink3); background: linear-gradient(var(--mu-well-top), var(--mu-well-bot)); box-shadow: var(--mu-well); & > svg { width: var(--mu-r-toolbar-search-glyph); height: var(--mu-r-toolbar-search-glyph); } & .mu-kbd { color: var(--mu-ink2); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; }
 }
 @utility toolbar-graphite-search {
-  gap: var(--mu-r-toolbar-search-gap); height: var(--mu-r-toolbar-search-height); min-width: var(--mu-r-toolbar-search-min-width); padding: 0 var(--mu-r-toolbar-search-pad-right) 0 var(--mu-r-toolbar-search-pad-left); border-radius: var(--mu-r-toolbar-search-radius); font: var(--mu-r-toolbar-search-font); letter-spacing: var(--mu-type-content-tracking); color: var(--mu-r-toolbar-search-ink); background: var(--mu-r-toolbar-search-background); box-shadow: var(--mu-r-toolbar-search-shadow); & > svg { width: var(--mu-r-toolbar-search-glyph); height: var(--mu-r-toolbar-search-glyph); } & .mu-kbd { color: var(--mu-r-toolbar-kbd-ink); background: var(--mu-r-toolbar-kbd-background); box-shadow: var(--mu-r-toolbar-kbd-shadow); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; }
+  gap: var(--mu-r-toolbar-search-gap); height: var(--mu-r-toolbar-search-height); min-width: var(--mu-r-toolbar-search-min-width); padding: 0 var(--mu-r-toolbar-search-pad-right) 0 var(--mu-r-toolbar-search-pad-left); border-radius: var(--mu-r-toolbar-search-radius); font: var(--mu-r-toolbar-search-font); letter-spacing: var(--mu-type-content-tracking); color: var(--mu-r-toolbar-search-ink); background: var(--mu-r-toolbar-search-background); box-shadow: var(--mu-r-toolbar-search-shadow); & > svg { width: var(--mu-r-toolbar-search-glyph); height: var(--mu-r-toolbar-search-glyph); } & .mu-kbd { color: var(--mu-r-toolbar-kbd-ink); background: var(--mu-r-toolbar-kbd-background); box-shadow: var(--mu-r-toolbar-kbd-shadow); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; }
 }
 @utility backdrop-toolbar-blur {
   -webkit-backdrop-filter: var(--mu-r-toolbar-self-blur);
@@ -1598,30 +1598,30 @@
 @utility transition-slider-knob {
   transition: var(--mu-r-slider-knob-transition);
 }
-@utility recipe-segmented {
-  background: var(--mu-r-segmented-self-background);
-  box-shadow: var(--mu-r-segmented-self-shadow);
+@utility recipe-switcher {
+  background: var(--mu-r-switcher-self-background);
+  box-shadow: var(--mu-r-switcher-self-shadow);
 }
-@utility recipe-segmented-thumb {
-  background: var(--mu-r-segmented-thumb-background);
-  box-shadow: var(--mu-r-segmented-thumb-shadow);
+@utility recipe-switcher-thumb {
+  background: var(--mu-r-switcher-thumb-background);
+  box-shadow: var(--mu-r-switcher-thumb-shadow);
 }
-@utility segment-focus {
-  outline: var(--mu-r-segmented-segment-focus-width) solid var(--mu-focus); outline-offset: 0;
+@utility switcher-option-focus {
+  outline: var(--mu-r-switcher-option-focus-width) solid var(--mu-focus); outline-offset: 0;
 }
-@utility type-segmented-segment {
-  font: var(--mu-r-segmented-segment-font);
-  letter-spacing: var(--mu-r-segmented-segment-tracking);
+@utility type-switcher-option {
+  font: var(--mu-r-switcher-option-font);
+  letter-spacing: var(--mu-r-switcher-option-tracking);
 }
-@utility duration-segmented-segment-fade {
-  --tw-duration: var(--mu-r-segmented-segment-fade);
-  transition-duration: var(--mu-r-segmented-segment-fade);
+@utility duration-switcher-option-fade {
+  --tw-duration: var(--mu-r-switcher-option-fade);
+  transition-duration: var(--mu-r-switcher-option-fade);
 }
-@utility opacity-segmented-segment-disabled {
-  opacity: var(--mu-r-segmented-segment-disabled);
+@utility opacity-switcher-option-disabled {
+  opacity: var(--mu-r-switcher-option-disabled);
 }
-@utility transition-segmented-segment {
-  transition: var(--mu-r-segmented-segment-transition);
+@utility transition-switcher-option {
+  transition: var(--mu-r-switcher-option-transition);
 }
 @utility recipe-tooltip {
   background: var(--mu-r-tooltip-self-background);
@@ -1914,7 +1914,7 @@
   opacity: var(--mu-r-brush-pencil-ink);
 }
 @utility draw-pick {
-  position: relative; display: grid; place-items: center; width: var(--mu-r-draw-self-size); height: var(--mu-r-draw-self-size); padding: 0; border: 0; border-radius: var(--mu-round); background: transparent; cursor: pointer; transition: background .12s linear, box-shadow .12s linear; &[data-pressed] { background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); } &:focus-visible { outline: var(--mu-segmented-focus-width) solid var(--mu-focus); outline-offset: 0; } &[data-disabled] { opacity: .4; cursor: default; }
+  position: relative; display: grid; place-items: center; width: var(--mu-r-draw-self-size); height: var(--mu-r-draw-self-size); padding: 0; border: 0; border-radius: var(--mu-round); background: transparent; cursor: pointer; transition: background .12s linear, box-shadow .12s linear; &[data-pressed] { background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; } &[data-disabled] { opacity: .4; cursor: default; }
 }
 @utility draw-bead {
   display: block; width: var(--mu-r-draw-self-bead); height: var(--mu-r-draw-self-bead); border-radius: var(--mu-round); background: var(--mu-self); box-shadow: var(--mu-r-draw-bead-gloss); transition: transform var(--mu-spring-part-d) var(--mu-spring-part);
@@ -2316,10 +2316,10 @@
   --spacing-region-row-dimple: var(--mu-region-row-dimple);
   --spacing-region-name-min: var(--mu-region-name-min);
   --spacing-region-row-meta-top: var(--mu-region-row-meta-top);
-  --spacing-segmented-track-pad: var(--mu-segmented-track-pad);
-  --spacing-segmented-compact: var(--mu-segmented-compact);
-  --spacing-segmented-regular: var(--mu-segmented-regular);
-  --spacing-segmented-focus-width: var(--mu-segmented-focus-width);
+  --spacing-switcher-track-pad: var(--mu-switcher-track-pad);
+  --spacing-switcher-compact: var(--mu-switcher-compact);
+  --spacing-switcher-regular: var(--mu-switcher-regular);
+  --spacing-switcher-focus-width: var(--mu-switcher-focus-width);
   --spacing-lensbar-height: var(--mu-lensbar-height);
   --spacing-lensbar-pad-start: var(--mu-lensbar-pad-start);
   --spacing-lensbar-pad-end: var(--mu-lensbar-pad-end);

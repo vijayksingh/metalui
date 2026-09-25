@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Segmented, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
 import { ToastStill } from './xray/ToastXray';
@@ -81,8 +81,8 @@ const ITEMS: Item[] = [
     id: 'seg', table: ['5%', '51%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
     // a click picks the option and opens the x-ray, like the button
     node: ({ openXray }) => (
-      <div style={{ zoom: 1.3 }} onClick={() => openXray('segmented')}>
-        <Segmented aria-label="View" defaultValue="week" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }]} />
+      <div style={{ zoom: 1.3 }} onClick={() => openXray('switcher')}>
+        <Switcher aria-label="View" defaultValue="week" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }]} />
       </div>
     ),
   },

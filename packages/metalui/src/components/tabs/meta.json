@@ -2,7 +2,7 @@
   "name": "tabs",
   "title": "Tabs",
   "status": "alpha",
-  "description": "Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
+  "description": "Switches which panel is shown: the switcher track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
   "base": "@base-ui/react/tabs",
   "react": {
     "export": "Tabs",

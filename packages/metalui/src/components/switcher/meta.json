@@ -1,0 +1,19 @@
+{
+  "name": "switcher",
+  "title": "Switcher",
+  "status": "alpha",
+  "description": "A pill of pills on Base UI RadioGroup: a well track, options on the height ladder, and a raised thumb that glides to the selection on the part spring.",
+  "base": "@base-ui/react/radio-group",
+  "react": {
+    "export": "Switcher",
+    "files": [
+      "switcher.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSwitcher",
+    "file": "swift/Sources/MetalUI/Components/MetalSwitcher.swift"
+  },
+  "agent": "switcher.agent.md",
+  "layer": "component"
+}

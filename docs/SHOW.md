@@ -22,7 +22,7 @@ Prose between beats stays at 60 words or fewer. If it takes more words to explai
 | **Side by side** | a choice, with the wrong way labelled next to the right way | a flat fill vs the swatch recipe; `box-shadow` vs the raise stack; a proportional readout vs a tabular one |
 | **Toggle** | one property switched on and off in place | the lip (text-shadow) on and off on an engraved label; the recipe layers turned on one at a time |
 | **Scrub** | a continuous value | a width slider showing a label wrapping; the spring class slider showing overshoot; the radius nest calculator (outer = inner + padding) |
-| **Replay** | motion, including how it behaves when interrupted | "Click rapidly": the Segmented thumb retargeting mid-flight vs a keyframe that restarts; hover lift on `settle` vs `object` |
+| **Replay** | motion, including how it behaves when interrupted | "Click rapidly": the Switcher thumb retargeting mid-flight vs a keyframe that restarts; hover lift on `settle` vs `object` |
 | **Slow** | timing you can't see at full speed | a 0.25× toggle on every motion demo, and a frame strip of the spring curve |
 | **Stress** | robustness | long labels, a 0 to 9999 count, 200 % text size, Reduce Motion, Increase Contrast, Graphite |
 | **Anatomy** | how a recipe is built | explode the swatch or card into its layers (fill, sheen, top highlight, rim, glow, contact shadow, coloured shadow) and reassemble it |

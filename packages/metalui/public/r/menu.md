@@ -10,7 +10,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 ## Don't use it for
 
 - Running anything by name: that is the command palette.
-- Choosing a value in a form (a select) or switching views (segmented).
+- Choosing a value in a form (a select) or switching views (switcher).
 - Naming a control (a tooltip).
 
 ## Anatomy

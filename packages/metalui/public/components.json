@@ -209,7 +209,7 @@
       "name": "filter-bar",
       "title": "Filter bar",
       "status": "alpha",
-      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Switcher of views, and IconButton(ghost) pin and close. Formerly LensBar.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "FilterBar, LensBar",
@@ -529,23 +529,6 @@
       "agent": "https://metalui.dev/r/rule.md"
     },
     {
-      "name": "segmented",
-      "title": "Segmented control",
-      "status": "alpha",
-      "description": "A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Segmented",
-        "base": "@base-ui/react/radio-group"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalSegmented"
-      },
-      "registry": "https://metalui.dev/r/segmented.json",
-      "agent": "https://metalui.dev/r/segmented.md"
-    },
-    {
       "name": "select",
       "title": "Select",
       "status": "alpha",
@@ -733,10 +716,27 @@
       "agent": "https://metalui.dev/r/switch.md"
     },
     {
+      "name": "switcher",
+      "title": "Switcher",
+      "status": "alpha",
+      "description": "A pill of pills on Base UI RadioGroup: a well track, options on the height ladder, and a raised thumb that glides to the selection on the part spring.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Switcher",
+        "base": "@base-ui/react/radio-group"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSwitcher"
+      },
+      "registry": "https://metalui.dev/r/switcher.json",
+      "agent": "https://metalui.dev/r/switcher.md"
+    },
+    {
       "name": "tabs",
       "title": "Tabs",
       "status": "alpha",
-      "description": "Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
+      "description": "Switches which panel is shown: the switcher track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Tabs",

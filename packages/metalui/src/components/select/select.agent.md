@@ -8,7 +8,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Don't use it for
 
-- Two to four short options that fit side by side: `Segmented`.
+- Two to four short options that fit side by side: `Switcher`.
 - A long list someone will search: a combobox (to come).
 - An action: `Menu`.
 - On or off: `Switch` or `Checkbox`.

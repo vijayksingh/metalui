@@ -248,7 +248,7 @@
       "name": "filter-bar",
       "type": "registry:ui",
       "title": "Filter bar",
-      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.",
+      "description": "Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Switcher of views, and IconButton(ghost) pin and close. Formerly LensBar.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
@@ -593,26 +593,6 @@
       "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."
     },
     {
-      "name": "segmented",
-      "type": "registry:ui",
-      "title": "Segmented control",
-      "description": "A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.",
-      "dependencies": [
-        "@base-ui/react@^1.8.0"
-      ],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/segmented/segmented.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/segmented/segmented.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/segmented.md. SwiftUI: MetalSegmented in the MetalUI Swift package."
-    },
-    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
@@ -819,10 +799,30 @@
       "docs": "Agent guide: https://metalui.dev/r/switch.md. SwiftUI: MetalSwitch in the MetalUI Swift package."
     },
     {
+      "name": "switcher",
+      "type": "registry:ui",
+      "title": "Switcher",
+      "description": "A pill of pills on Base UI RadioGroup: a well track, options on the height ladder, and a raised thumb that glides to the selection on the part spring.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/switcher/switcher.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/switcher/switcher.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/switcher.md. SwiftUI: MetalSwitcher in the MetalUI Swift package."
+    },
+    {
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
+      "description": "Switches which panel is shown: the switcher track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],

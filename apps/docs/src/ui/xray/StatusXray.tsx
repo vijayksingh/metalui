@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Segmented, StatusBadge, type LedKind } from '@unlocalhosted/metalui';
+import { Switcher, StatusBadge, type LedKind } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, aim, capTop, scalePx, tones, useRecipeLayers, useStateLayers, type LayerDef, type SpotDef } from './kit';
 
@@ -121,7 +121,7 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
       {spot === 'states' && (
         <>
           <p>The lamp's colour tells you the state. Green is on and working. Amber is waiting. Red has failed. Blue is linked. Grey is off. The words next to it always say the same thing, so you never have to rely on colour alone.</p>
-          <div className="xr-dials"><Segmented size="compact" aria-label="State" value={m.kind} onValueChange={(v) => set({ kind: v as LedKind })} options={[{ value: 'live', label: 'Live' }, { value: 'waiting', label: 'Waiting' }, { value: 'failed', label: 'Failed' }, { value: 'link', label: 'Link' }, { value: 'off', label: 'Off' }]} /></div>
+          <div className="xr-dials"><Switcher size="compact" aria-label="State" value={m.kind} onValueChange={(v) => set({ kind: v as LedKind })} options={[{ value: 'live', label: 'Live' }, { value: 'waiting', label: 'Waiting' }, { value: 'failed', label: 'Failed' }, { value: 'link', label: 'Link' }, { value: 'off', label: 'Off' }]} /></div>
         </>
       )}
       {spot === 'light' && (

@@ -10,7 +10,7 @@ import { Kbd } from '../../components/kbd/kbd';
  * SETTINGS (a block): the settings of an app, as sections of rows
  *   Settings.Section  an engraved heading over a raised card (Surface raise-lite, card radius)
  *   Settings.Row      a name and an optional detail on the left, one control on the right
- *                     (a Switch, a Button, a Segmented, a value); rows are split by engraved
+ *                     (a Switch, a Button, a Switcher, a value); rows are split by engraved
  *                     rules inset to the text
  *   Settings.Keys     a shortcut row: what it does, and its keys as keycaps
  * Layout only (the settings group); every paint is its parts'. A row never raises on hover:
@@ -47,7 +47,7 @@ export interface SettingsRowProps {
   name: React.ReactNode;
   /** One short line of what it does or what it is now. */
   detail?: React.ReactNode;
-  /** The one control: a Switch, a Button, a Segmented, or a value. */
+  /** The one control: a Switch, a Button, a Switcher, or a value. */
   children?: React.ReactNode;
   /** An id for the name, so a control can be labelled by it (aria-labelledby). */
   id?: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Segmented, Settings, StatusBadge, Switch } from '@unlocalhosted/metalui';
+import { Button, Switcher, Settings, StatusBadge, Switch } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/settings/settings.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/blocks/settings/settings.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
@@ -21,7 +21,7 @@ function SettingsView() {
         </Settings.Section>
         <Settings.Section title="Look">
           <Settings.Row name="Colorway" detail="Bone is light, Graphite is dark.">
-            <Segmented size="compact" aria-label="Colorway" value={colorway} onValueChange={setColorway} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
+            <Switcher size="compact" aria-label="Colorway" value={colorway} onValueChange={setColorway} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
           </Settings.Row>
         </Settings.Section>
         <Settings.Section title="Storage and backup">
@@ -59,7 +59,7 @@ export default function SettingsPage() {
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
-        { id: 'ST1', title: 'One control per row', body: 'A switch, a segmented control, a button or a value. Never two kinds in one row.', origin: 'Ours' },
+        { id: 'ST1', title: 'One control per row', body: 'A switch, a switcher, a button or a value. Never two kinds in one row.', origin: 'Ours' },
         { id: 'ST2', title: 'Plain names', body: '"Sync this canvas", not "Enable synchronisation".', origin: 'Ours' },
         { id: 'ST3', title: 'The detail is what happens', body: 'One line: what it does, or what it is now.', origin: 'Ours' },
         { id: 'ST4', title: 'Rows do not light up', body: 'Only the control acts, so the row stays still under the pointer.', origin: 'Ours' },

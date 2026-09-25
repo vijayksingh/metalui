@@ -1,6 +1,6 @@
-# Segmented control
+# Switcher
 
-A pill of pills: one of a few options, always visible. React: `Segmented` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSegmented`. Sheet reference: the object sheet.
+A pill of pills: one of a few options, always visible. React: `Switcher` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSwitcher`. Sheet reference: the object sheet.
 
 ## Use it for
 
@@ -8,15 +8,15 @@ A pill of pills: one of a few options, always visible. React: `Segmented` from `
 
 ## Don't use it for
 
-- More than five options, or options that need explaining. Use a select or a menu.
-- Navigation between pages (use tabs or links) or on/off (use a switch).
-- Actions. Each segment is a state, not a command.
+- More than five options, or options that need explaining: `Select`.
+- Options that each own a panel: `Tabs` (same look, tab behaviour). Pages of the app: links. On or off: `Switch`.
+- Actions. Each option is a state, not a command.
 
 ## Anatomy
 
 - **Track**: a pill well (`well-top → well-bot`, `well`), padding 3.
-- **Segments**: 28 tall (regular) or 24 (compact, in a lens bar or strip), padded by the pill rule `h/2 − 1`, the `ui` role in ink2; an optional leading glyph at the control's icon size.
-- **Thumb**: a raised cap (`thumb-hi → thumb-lo`, `raise-sm`) under the selected segment, which reads in ink.
+- **Options**: 28 tall (regular) or 24 (compact, in a lens bar or strip), padded by the pill rule `h/2 − 1`, the `ui` role in ink2; an optional leading glyph at the control's icon size.
+- **Thumb**: a raised cap (`thumb-hi → thumb-lo`, `raise-sm`) under the selected option, which reads in ink.
 
 ## States and motion
 
@@ -40,7 +40,7 @@ First paint and resizes place the thumb without motion. Reduce Motion: the thumb
 | `aria-label` | `label:` | required |
 
 ```tsx
-<Segmented aria-label="View" size="compact" value={mode} onValueChange={setMode}
+<Switcher aria-label="View" size="compact" value={mode} onValueChange={setMode}
   options={[{ value: 'place', label: 'place' }, { value: 'list', label: 'list' }, { value: 'table', label: 'table' }]} />
 ```
 
@@ -48,13 +48,13 @@ First paint and resizes place the thumb without motion. Reduce Motion: the thumb
 
 - Two to five options, short labels, one word each where possible.
 - The selection is the thumb, never a colour.
-- A segment switches a view instantly; if the change is slow, show progress in the view, not in the control.
+- An option switches a value instantly; if the change is slow, show progress in the view, not in the control.
 
 ## Accessibility
 
-- Base UI RadioGroup: one tab stop, arrows move and select, Space selects; each segment is a radio with its label.
+- Base UI RadioGroup: one tab stop, arrows move and select, Space selects; each option is a radio with its label.
 - Give the group an `aria-label` that names what it switches.
 
 ## Tokens
 
-`--mu-segmented-*`, `--mu-well*`, `--mu-thumb-hi`, `--mu-thumb-lo`, `--mu-raise-sm`, `--mu-spring-part`, `--mu-spring-settle`. Swift: `MetalSegmentedMetrics`.
+`--mu-switcher-*`, `--mu-well*`, `--mu-thumb-hi`, `--mu-thumb-lo`, `--mu-raise-sm`, `--mu-spring-part`, `--mu-spring-settle`. Swift: `MetalSwitcherMetrics`.

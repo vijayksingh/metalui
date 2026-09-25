@@ -513,7 +513,7 @@ Names the question a filter asks and switches how the answer is shown. A composi
 
 ## Anatomy
 
-`Surface material="frost" radius="pill"`, 38 tall, padding 0 6 0 14, gap 8, at the top centre: a `Glyph` (14, ink2); the query in `Label variant="query"`, ellipsised at 340; `N MATCHES` in `Label variant="engraved"`; the note (`ASKING…` after a waiting `Led`, `VIA MODEL`, `LOCAL`); a compact `Segmented`; two `IconButton variant="ghost"`, pin and close.
+`Surface material="frost" radius="pill"`, 38 tall, padding 0 6 0 14, gap 8, at the top centre: a `Glyph` (14, ink2); the query in `Label variant="query"`, ellipsised at 340; `N MATCHES` in `Label variant="engraved"`; the note (`ASKING…` after a waiting `Led`, `VIA MODEL`, `LOCAL`); a compact `Switcher`; two `IconButton variant="ghost"`, pin and close.
 
 ## States and motion
 
@@ -549,7 +549,7 @@ Names the question a filter asks and switches how the answer is shown. A composi
 
 ## Tokens
 
-Layout: `--mu-lensbar-*`. Look: the surface, glyph, label, status, segmented and icon-button recipes. Motion: `--mu-spring-surface`, `--mu-travel-surface`.
+Layout: `--mu-lensbar-*`. Look: the surface, glyph, label, status, switcher and icon-button recipes. Motion: `--mu-spring-surface`, `--mu-travel-surface`.
 
 ---
 
@@ -991,7 +991,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 ## Don't use it for
 
 - Running anything by name: that is the command palette.
-- Choosing a value in a form (a select) or switching views (segmented).
+- Choosing a value in a form (a select) or switching views (switcher).
 - Naming a control (a tooltip).
 
 ## Anatomy
@@ -1290,69 +1290,6 @@ An engraved groove between groups. React: `Rule`. SwiftUI: `MetalRule`.
 
 ---
 
-# Segmented control
-
-A pill of pills: one of a few options, always visible. React: `Segmented` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSegmented`. Sheet reference: the object sheet.
-
-## Use it for
-
-- Two to five mutually exclusive views or modes that are switched often: a lens's view (place · list · table · timeline · gallery), a colorway, a scale.
-
-## Don't use it for
-
-- More than five options, or options that need explaining. Use a select or a menu.
-- Navigation between pages (use tabs or links) or on/off (use a switch).
-- Actions. Each segment is a state, not a command.
-
-## Anatomy
-
-- **Track**: a pill well (`well-top → well-bot`, `well`), padding 3.
-- **Segments**: 28 tall (regular) or 24 (compact, in a lens bar or strip), padded by the pill rule `h/2 − 1`, the `ui` role in ink2; an optional leading glyph at the control's icon size.
-- **Thumb**: a raised cap (`thumb-hi → thumb-lo`, `raise-sm`) under the selected segment, which reads in ink.
-
-## States and motion
-
-| State | Look | Motion |
-|---|---|---|
-| rest | ink2 labels, the thumb under the selection | – |
-| hover | the label turns ink | settle |
-| selected | the thumb glides to it | part spring (a track with ends: may overshoot against the stop) |
-| focus | a 1.5 ring with no offset | – |
-| disabled | 40 % | – |
-
-First paint and resizes place the thumb without motion. Reduce Motion: the thumb moves at once; labels still recolour.
-
-## API
-
-| React | SwiftUI | Notes |
-|---|---|---|
-| `options` | `options:` | `{ value, label, icon?, disabled? }` |
-| `value` / `defaultValue` / `onValueChange` | `selection:` (Binding) | |
-| `size` | `size:` | `compact` (24), `regular` (28) |
-| `aria-label` | `label:` | required |
-
-```tsx
-<Segmented aria-label="View" size="compact" value={mode} onValueChange={setMode}
-  options={[{ value: 'place', label: 'place' }, { value: 'list', label: 'list' }, { value: 'table', label: 'table' }]} />
-```
-
-## Rules
-
-- Two to five options, short labels, one word each where possible.
-- The selection is the thumb, never a colour.
-- A segment switches a view instantly; if the change is slow, show progress in the view, not in the control.
-
-## Accessibility
-
-- Base UI RadioGroup: one tab stop, arrows move and select, Space selects; each segment is a radio with its label.
-- Give the group an `aria-label` that names what it switches.
-
-## Tokens
-
-`--mu-segmented-*`, `--mu-well*`, `--mu-thumb-hi`, `--mu-thumb-lo`, `--mu-raise-sm`, `--mu-spring-part`, `--mu-spring-settle`. Swift: `MetalSegmentedMetrics`.
-
----
-
 # Select
 
 One value from a list of named options. React: `Select` from `@unlocalhosted/metalui`. SwiftUI: `MetalSelect` (not yet).
@@ -1363,7 +1300,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Don't use it for
 
-- Two to four short options that fit side by side: `Segmented`.
+- Two to four short options that fit side by side: `Switcher`.
 - A long list someone will search: a combobox (to come).
 - An action: `Menu`.
 - On or off: `Switch` or `Checkbox`.
@@ -1510,7 +1447,7 @@ An app's settings as sections of rows. React: `Settings` with `Settings.Section`
 ## Controls
 
 - On or off, at once: `Switch`, labelled by the row's name (`aria-labelledby` with the row's `id`).
-- One of a few: `Segmented`, compact.
+- One of a few: `Switcher`, compact.
 - An action: `Button` (Download backup, Restore, Upgrade).
 - A value (Storage used): a `Label value-small` or a `SizeReadout`.
 
@@ -1809,12 +1746,12 @@ A setting that is on or off and takes effect at once. React: `Switch` from `@unl
 
 ## Don't use it for
 
-- A choice that needs Save (use a checkbox in a form), one of several options (use a segmented control), or a task (use the checkbox in the margin).
+- A choice that needs Save (use a checkbox in a form), one of several options (use a switcher), or a task (use the checkbox in the margin).
 
 ## Anatomy
 
 - Track: a sunk pill, 40 × 24 (small 32 × 20), padding 2, the track well; on, a soft green gradient with an inner shadow.
-- Thumb: a raised round cap, 20 (small 16), the segmented thumb's material.
+- Thumb: a raised round cap, 20 (small 16), the switcher thumb's material.
 
 ## States and motion
 
@@ -1848,6 +1785,69 @@ Reduce Motion: the thumb moves at once; the colour still fades.
 
 ---
 
+# Switcher
+
+A pill of pills: one of a few options, always visible. React: `Switcher` from `@unlocalhosted/metalui` (Base UI RadioGroup + Radio). SwiftUI: `MetalSwitcher`. Sheet reference: the object sheet.
+
+## Use it for
+
+- Two to five mutually exclusive views or modes that are switched often: a lens's view (place · list · table · timeline · gallery), a colorway, a scale.
+
+## Don't use it for
+
+- More than five options, or options that need explaining: `Select`.
+- Options that each own a panel: `Tabs` (same look, tab behaviour). Pages of the app: links. On or off: `Switch`.
+- Actions. Each option is a state, not a command.
+
+## Anatomy
+
+- **Track**: a pill well (`well-top → well-bot`, `well`), padding 3.
+- **Options**: 28 tall (regular) or 24 (compact, in a lens bar or strip), padded by the pill rule `h/2 − 1`, the `ui` role in ink2; an optional leading glyph at the control's icon size.
+- **Thumb**: a raised cap (`thumb-hi → thumb-lo`, `raise-sm`) under the selected option, which reads in ink.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| rest | ink2 labels, the thumb under the selection | – |
+| hover | the label turns ink | settle |
+| selected | the thumb glides to it | part spring (a track with ends: may overshoot against the stop) |
+| focus | a 1.5 ring with no offset | – |
+| disabled | 40 % | – |
+
+First paint and resizes place the thumb without motion. Reduce Motion: the thumb moves at once; labels still recolour.
+
+## API
+
+| React | SwiftUI | Notes |
+|---|---|---|
+| `options` | `options:` | `{ value, label, icon?, disabled? }` |
+| `value` / `defaultValue` / `onValueChange` | `selection:` (Binding) | |
+| `size` | `size:` | `compact` (24), `regular` (28) |
+| `aria-label` | `label:` | required |
+
+```tsx
+<Switcher aria-label="View" size="compact" value={mode} onValueChange={setMode}
+  options={[{ value: 'place', label: 'place' }, { value: 'list', label: 'list' }, { value: 'table', label: 'table' }]} />
+```
+
+## Rules
+
+- Two to five options, short labels, one word each where possible.
+- The selection is the thumb, never a colour.
+- An option switches a value instantly; if the change is slow, show progress in the view, not in the control.
+
+## Accessibility
+
+- Base UI RadioGroup: one tab stop, arrows move and select, Space selects; each option is a radio with its label.
+- Give the group an `aria-label` that names what it switches.
+
+## Tokens
+
+`--mu-switcher-*`, `--mu-well*`, `--mu-thumb-hi`, `--mu-thumb-lo`, `--mu-raise-sm`, `--mu-spring-part`, `--mu-spring-settle`. Swift: `MetalSwitcherMetrics`.
+
+---
+
 # Tabs
 
 Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unlocalhosted/metalui`. SwiftUI: `MetalTabs` (not yet).
@@ -1858,13 +1858,13 @@ Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unloc
 
 ## Don't use it for
 
-- Picking a value with no panel of its own (pen or marker, a connector look): `Segmented`.
+- Picking a value with no panel of its own (pen or marker, a connector look): `Switcher`.
 - More than five or six options, or long labels: a `Select` or a side list.
 - Moving between pages of the app: navigation links.
 
 ## Anatomy
 
-`Tabs` holds the active tab. `TabList` is the segmented track: a well, tabs in ink2, the active tab a raised thumb in ink. One `TabPanel` per tab, anywhere inside `Tabs` (the list can sit in a head bar, the panel below).
+`Tabs` holds the active tab. `TabList` is the switcher track: a well, tabs in ink2, the active tab a raised thumb in ink. One `TabPanel` per tab, anywhere inside `Tabs` (the list can sit in a head bar, the panel below).
 
 ## States and motion
 
@@ -2186,7 +2186,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 ## Use it for
 
-- The field behind an input, the track of a slider or segmented control, a drawn region on a canvas, a well in a dark strip.
+- The field behind an input, the track of a slider or switcher, a drawn region on a canvas, a well in a dark strip.
 
 ## Props
 

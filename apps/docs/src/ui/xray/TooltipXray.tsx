@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconButton, Segmented, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
+import { IconButton, Switcher, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, type LayerDef, type SpotDef } from './kit';
@@ -157,7 +157,7 @@ export function TooltipXray({ startOpen = false }: { startOpen?: boolean }) {
         <>
           <p>The tooltip sits {INITIAL.gap} pt away from the tool, close enough to belong to it. If there is no room on one side, it flips to the other.</p>
           <div className="xr-dials">
-            <Segmented size="compact" aria-label="Side" value={m.side} onValueChange={(v) => set({ side: v as Model['side'] })} options={[{ value: 'top', label: 'Above' }, { value: 'bottom', label: 'Below' }]} />
+            <Switcher size="compact" aria-label="Side" value={m.side} onValueChange={(v) => set({ side: v as Model['side'] })} options={[{ value: 'top', label: 'Above' }, { value: 'bottom', label: 'Below' }]} />
             <Dial label="Gap" value={m.gap} min={0} max={30} step={1} fmt={(v) => `${v} pt`} onChange={(gap) => set({ gap })} />
           </div>
         </>

@@ -79,7 +79,7 @@ export interface StageProps {
   caption?: React.ReactNode;
   /** One line on what the decision costs; shown under the caption. */
   cost?: React.ReactNode;
-  /** Controls in the stage's bottom edge: a Segmented, a Slider, a compact Button. */
+  /** Controls in the stage's bottom edge: a Switcher, a Slider, a compact Button. */
   bar?: React.ReactNode;
   children: React.ReactNode;
   className?: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Folder, Segmented, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
+import { Folder, Switcher, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/folder/folder.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/folder/folder.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
@@ -153,7 +153,7 @@ function Play() {
           <button type="button" className="eng" onClick={reset} style={{ position: 'absolute', left: 36, bottom: 24, background: 'none', border: 0, cursor: 'pointer' }}>put them back</button>
         )}
       </div>
-      <Segmented
+      <Switcher
         size="compact"
         aria-label="Colour"
         value={hue}

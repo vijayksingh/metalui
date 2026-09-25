@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconButton, Segmented } from '@unlocalhosted/metalui';
+import { IconButton, Switcher } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, LightDials, Proof, Switch, XrayFrame, aim, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
@@ -154,7 +154,7 @@ export function IconButtonXray({ startOpen = false }: { startOpen?: boolean }) {
       {spot === 'surface' && (
         <>
           <p>There are three kinds. A tool is a dark cap for a toolbar. A ghost is a flat round button that only shows a fill when you hover it. A mini is a tiny flat button inside a chip, like the ✓ on a suggestion.</p>
-          <div className="xr-dials"><Segmented size="compact" aria-label="Kind" value={kind} onValueChange={(v) => setKind(v as typeof kind)} options={[{ value: 'tool', label: 'Tool' }, { value: 'ghost', label: 'Ghost' }, { value: 'mini', label: 'Mini' }]} /></div>
+          <div className="xr-dials"><Switcher size="compact" aria-label="Kind" value={kind} onValueChange={(v) => setKind(v as typeof kind)} options={[{ value: 'tool', label: 'Tool' }, { value: 'ghost', label: 'Ghost' }, { value: 'mini', label: 'Mini' }]} /></div>
           <Proof>
             {kind === 'tool' ? real : kind === 'ghost' ? <IconButton variant="ghost" label="More" icon={<Icon name="more" size={14} />} /> : <span className="inline-flex items-center gap-4 rounded-pill px-6 ring-1 ring-rule"><span className="type-ui text-ink2">Track as mood?</span><IconButton variant="mini" accept label="Accept" icon={<>✓</>} /></span>}
           </Proof>

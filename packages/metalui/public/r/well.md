@@ -4,7 +4,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 ## Use it for
 
-- The field behind an input, the track of a slider or segmented control, a drawn region on a canvas, a well in a dark strip.
+- The field behind an input, the track of a slider or switcher, a drawn region on a canvas, a well in a dark strip.
 
 ## Props
 

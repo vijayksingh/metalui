@@ -152,7 +152,7 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
 .rb:active { transform: translateY(1px); background: var(--pressed-bg); box-shadow: var(--pressed-sh); transition-duration: .05s; }
 .rb .ki { width: 12px; height: 12px; }
 
-/* segmented: a pill of pills, text-first padding h/2 − 1, equal segments */
+/* switcher: a pill of pills, text-first padding h/2 − 1, equal segments */
 .seg { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 3px; border-radius: 999px; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
 .seg button { position: relative; z-index: 1; height: 26px; padding: 0 12px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
   font: 500 12.5px/16px var(--sans); letter-spacing: -.005em; color: var(--ink2); transition: color .2s; }
@@ -671,7 +671,7 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 .xr-face.is-layer.is-focus { outline: 2px solid var(--green-deep); outline-offset: 3px; }
 .xr-face.is-layer.is-off { opacity: .18; }
 .xr-card { max-height: calc(100vh - 120px); overflow-y: auto; }
-/* x-ray, segmented: a tray with a rim, a sliding thumb, labels above it */
+/* x-ray, switcher: a tray with a rim, a sliding thumb, labels above it */
 .xr-ring { position: absolute; left: 0; top: 0; box-sizing: border-box; border: 7px solid; border-radius: 999px; pointer-events: none; transition: transform var(--spring-object-d) var(--spring-object); }
 .xr-thumb { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
 .xr-labels { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }

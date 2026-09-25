@@ -20,7 +20,7 @@
 - [Draw picks](https://metalui.dev/r/draw-picks.md): The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.
 - [Draw tools](https://metalui.dev/r/draw-tools.md): The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.
 - [Field](https://metalui.dev/r/field.md): Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.
-- [Filter bar](https://metalui.dev/r/filter-bar.md): Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Segmented of views, and IconButton(ghost) pin and close. Formerly LensBar.
+- [Filter bar](https://metalui.dev/r/filter-bar.md): Names the question a filter asks and switches how the answer is shown: Surface(frost) with a Glyph, the query in Label(query), the count and source engraved, a compact Switcher of views, and IconButton(ghost) pin and close. Formerly LensBar.
 - [Folder](https://metalui.dev/r/folder.md): A folder on the canvas that holds blocks: a back panel with a tab, up to three blocks peeking up as cards, a frosted flap with its name and count; fans on hover, opens wide when a block is dragged over, swings shut when one lands; six paper colours.
 - [Glass face](https://metalui.dev/r/glass-face.md): A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow.
 - [Glyph](https://metalui.dev/r/glyph.md): A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.
@@ -39,7 +39,6 @@
 - [Region](https://metalui.dev/r/region.md): A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.
 - [Row](https://metalui.dev/r/row.md): A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.
 - [Rule](https://metalui.dev/r/rule.md): An engraved groove between groups; graphite on dark chrome.
-- [Segmented control](https://metalui.dev/r/segmented.md): A pill of pills on Base UI RadioGroup: a well track, segments on the height ladder, and a raised thumb that glides to the selection on the part spring.
 - [Select](https://metalui.dev/r/select.md): One value from a list of named options: a raised cap showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.
 - [Selection frame](https://metalui.dev/r/selection-frame.md): The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.
 - [Settings](https://metalui.dev/r/settings.md): An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.
@@ -51,7 +50,8 @@
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.
 - [Surface](https://metalui.dev/r/surface.md): A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.
 - [Switch](https://metalui.dev/r/switch.md): A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.
-- [Tabs](https://metalui.dev/r/tabs.md): Switches which panel is shown: the segmented track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.
+- [Switcher](https://metalui.dev/r/switcher.md): A pill of pills on Base UI RadioGroup: a well track, options on the height ladder, and a raised thumb that glides to the selection on the part spring.
+- [Tabs](https://metalui.dev/r/tabs.md): Switches which panel is shown: the switcher track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.
 - [Time scrubber](https://metalui.dev/r/time-scrubber.md): Time as a dimension of the surface: a Slider (track, moment marks, day ticks, knurled knob) under an engraved readout with NOW as Button(link) while in the past. Formerly MemoryScrubber.
 - [Toast](https://metalui.dev/r/toast.md): The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.
 - [Tool strip](https://metalui.dev/r/tool-strip.md): Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.

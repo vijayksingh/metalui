@@ -39,15 +39,15 @@ export default function TabsPage() {
   return (
     <ComponentPage
       title="Tabs"
-      lede="Switch which panel is shown. The tabs sit on the same track as the Segmented, and the new panel comes in from the side you moved to."
+      lede="Switch which panel is shown. The tabs sit on the same track as the Switcher, and the new panel comes in from the side you moved to."
       play={{ lede: 'Click a tab, or focus one and use ← →. Watch the panel come in from the side the thumb went.', node: <Play /> }}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
-        { id: 'TB1', title: 'Tabs own panels', body: 'Use Tabs when each option shows its own panel. Picking a value with no panel is a Segmented, even though they look the same.', origin: 'WAI-ARIA tabs' },
-        { id: 'TB2', title: 'One look for one of a few', body: 'Tabs and the Segmented share the track and the gliding thumb, so choosing one of a few always feels the same.', origin: 'Ours' },
+        { id: 'TB1', title: 'Tabs own panels', body: 'Use Tabs when each option shows its own panel. Picking a value with no panel is a Switcher, even though they look the same.', origin: 'WAI-ARIA tabs' },
+        { id: 'TB2', title: 'One look for one of a few', body: 'Tabs and the Switcher share the track and the gliding thumb, so choosing one of a few always feels the same.', origin: 'Ours' },
         { id: 'TB3', title: 'The panel follows the thumb', body: 'The new panel drifts in from the side the thumb went, so the eye knows which way it moved. The first panel shows without motion.', origin: 'Ours' },
         { id: 'TB4', title: 'Few and short', body: 'Five or six short tabs at most. More, or long labels, want a Select or a side list.', origin: 'Ours' },
       ]}

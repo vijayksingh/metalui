@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Segmented, type ButtonCap } from '@unlocalhosted/metalui';
+import { Button, Switcher, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { Callouts, Dial, Glyph, SpringPlot, Switch, alphaK, scalePx, useRecipeLayers, useStateLayers, type SpotDef } from './kit';
@@ -246,9 +246,9 @@ function TypeCard({ m, set }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayM
       <p>The text sets how wide the button is. Try the size, weight and letter spacing. Centring the box makes the text look too low, so we centre the letters instead.</p>
       <div className="xr-dials">
         <Dial label="Size" value={m.size} min={10} max={16} step={0.5} fmt={(v) => `${v} pt`} onChange={(size) => set({ size })} />
-        <div className="xr-dial"><span className="xr-dial-head"><span>Weight</span></span><Segmented size="compact" aria-label="Weight" value={String(m.weight)} onValueChange={(v) => set({ weight: Number(v) })} options={[{ value: '400', label: '400' }, { value: '500', label: '500' }, { value: '600', label: '600' }]} /></div>
+        <div className="xr-dial"><span className="xr-dial-head"><span>Weight</span></span><Switcher size="compact" aria-label="Weight" value={String(m.weight)} onValueChange={(v) => set({ weight: Number(v) })} options={[{ value: '400', label: '400' }, { value: '500', label: '500' }, { value: '600', label: '600' }]} /></div>
         <Dial label="Letter-spacing" value={m.track} min={-0.03} max={0.06} step={0.005} fmt={(v) => `${v.toFixed(3)} em`} onChange={(track) => set({ track })} />
-        <div className="xr-dial"><span className="xr-dial-head"><span>Centred on</span></span><Segmented size="compact" aria-label="Centred on" value={m.optical ? 'letters' : 'box'} onValueChange={(v) => set({ optical: v === 'letters' })} options={[{ value: 'letters', label: 'The letters' }, { value: 'box', label: 'The box' }]} /></div>
+        <div className="xr-dial"><span className="xr-dial-head"><span>Centred on</span></span><Switcher size="compact" aria-label="Centred on" value={m.optical ? 'letters' : 'box'} onValueChange={(v) => set({ optical: v === 'letters' })} options={[{ value: 'letters', label: 'The letters' }, { value: 'box', label: 'The box' }]} /></div>
       </div>
     </>
   );

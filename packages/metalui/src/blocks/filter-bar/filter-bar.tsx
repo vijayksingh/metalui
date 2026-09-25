@@ -6,17 +6,17 @@ import { Surface } from '../../components/surface/surface';
 import { Glyph } from '../../components/glyph/glyph';
 import { Label } from '../../components/label/label';
 import { Led } from '../../components/status/status';
-import { Segmented, type SegmentedOption } from '../../components/segmented/segmented';
+import { Switcher, type SwitcherOption } from '../../components/switcher/switcher';
 import { IconButton } from '../../components/icon-button/icon-button';
 
 /* ─────────────────────────────────────────────────────────
  * FILTER BAR (the reference design's #lensBar): a composition on Base UI Toolbar
  *   Surface(frost, pill) › Glyph + Label(query) + Label(engraved) count + Label(engraved) note
- *   + Segmented(compact) views + IconButton(ghost) pin, close
+ *   + Switcher(compact) views + IconButton(ghost) pin, close
  *
  *   open      drops 8 from above, from .98, on the surface spring (a fade under Reduce Motion)
  *   pending   the note carries an amber LED
- *   view      the segmented thumb glides on the part spring
+ *   view      the switcher thumb glides on the part spring
  * A filter never moves anything: it names the question and switches how the answer is shown.
  * ───────────────────────────────────────────────────────── */
 
@@ -27,7 +27,7 @@ const NOTE = 'mu-filterbar-note [&>.mu-led]:mr-lensbar-note-led-gap';
 
 export type FilterView = 'place' | 'list' | 'table' | 'timeline' | 'gallery';
 
-const VIEWS: SegmentedOption<FilterView>[] = [
+const VIEWS: SwitcherOption<FilterView>[] = [
   { value: 'place', label: 'In Place' },
   { value: 'list', label: 'List' },
   { value: 'table', label: 'Table' },
@@ -74,7 +74,7 @@ export function FilterBar({ query, count, note, view = 'place', onViewChange, vi
       )}
       {views.length > 0 && (
         <Toolbar.Group>
-          <Segmented aria-label="View" size="compact" value={view} onValueChange={onViewChange} options={VIEWS.filter((m) => views.includes(m.value))} />
+          <Switcher aria-label="View" size="compact" value={view} onValueChange={onViewChange} options={VIEWS.filter((m) => views.includes(m.value))} />
         </Toolbar.Group>
       )}
       {onPin && glyphs.pin && (

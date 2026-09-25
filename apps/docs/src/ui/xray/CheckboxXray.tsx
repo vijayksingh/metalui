@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox, Segmented } from '@unlocalhosted/metalui';
+import { Checkbox, Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFrame, aim, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
 
@@ -154,7 +154,7 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
         <>
           <p>A checkbox has five looks. At rest it is a small hole. Done, a dark key fills the hole and a tick draws on. Doing, the hole is half green. Suggested, it is only an outline, because the app guessed the task and nobody wrote it.</p>
           <div className="xr-dials">
-            <Segmented size="compact" aria-label="State" value={m.state} onValueChange={(v) => setState(v as State)}
+            <Switcher size="compact" aria-label="State" value={m.state} onValueChange={(v) => setState(v as State)}
               options={[{ value: 'rest', label: 'Rest' }, { value: 'hover', label: 'Hover' }, { value: 'on', label: 'Done' }, { value: 'doing', label: 'Doing' }, { value: 'ghost', label: 'Suggested' }]} />
           </div>
         </>

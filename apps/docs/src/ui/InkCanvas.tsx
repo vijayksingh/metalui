@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrushCursor, DrawTools, Segmented, inkColor, type DrawTool, type Ink, type InkWidth } from '@unlocalhosted/metalui';
+import { BrushCursor, DrawTools, Switcher, inkColor, type DrawTool, type Ink, type InkWidth } from '@unlocalhosted/metalui';
 
 /* The Brush cursor playground: pick a tool in the drawing group and draw. The brush is the
  * stroke's true size on screen (width × zoom) and grows with pressure (a pen's, else the
@@ -87,7 +87,7 @@ export function InkCanvas({ height = 320 }: { height?: number }) {
         {!marks.length && <span className="eng ink-hint">draw here</span>}
       </div>
       {tool && <BrushCursor mode={tool} at={at} size={brush} color={inkColor(ink)} />}
-      <Segmented size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
+      <Switcher size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { KbdXray } from './KbdXray';
 import { LinkCardXray } from './LinkCardXray';
 import { MenuXray } from './MenuXray';
 import { PaletteXray } from './PaletteXray';
-import { SegmentedXray } from './SegmentedXray';
+import { SwitcherXray } from './SwitcherXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
 import { SwatchXray } from './SwatchXray';
@@ -21,7 +21,7 @@ import { TooltipXray } from './TooltipXray';
 /* Every x-ray, by the name the floating table and the overlays use. */
 export const XRAYS = {
   button: { title: 'Button', View: ButtonXray },
-  segmented: { title: 'Segmented control', View: SegmentedXray },
+  switcher: { title: 'Switcher', View: SwitcherXray },
   kbd: { title: 'Keycap', View: KbdXray },
   swatch: { title: 'Swatch', View: SwatchXray },
   checkbox: { title: 'Checkbox', View: CheckboxXray },

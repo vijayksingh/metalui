@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-/* WELL: a sunk field or track. field (inputs), track (segmented controls, sliders), region (a drawn
+/* WELL: a sunk field or track. field (inputs), track (switchers, sliders), region (a drawn
  * region on a canvas; `over` lights it as a drop target) and graphite (a well in a dark strip).
  * Styled with the theme's utilities (the well recipe); the look cross-fades on settle. */
 

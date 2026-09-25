@@ -102,7 +102,7 @@ export default function ButtonPage() {
       </Section>
       <Section id="related" title="Related">
         <ul className="type-doc-prose flex max-w-measure flex-col gap-6 text-ink2">
-          <li><a className="text-ink underline decoration-rule" href="/components/segmented">Segmented</a>: for a latched choice rather than an action.</li>
+          <li><a className="text-ink underline decoration-rule" href="/components/switcher">Switcher</a>: for a latched choice rather than an action.</li>
           <li><a className="text-ink underline decoration-rule" href="/foundations/motion">Motion</a>: the release spring and the other six classes.</li>
           <li><a className="text-ink underline decoration-rule" href="/foundations/materials">Materials</a>: where the cap recipe comes from.</li>
         </ul>

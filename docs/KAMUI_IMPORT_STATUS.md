@@ -53,7 +53,7 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 | 4 | Hover engraving | shipped | `be98d7b` | React `HoverEngraving` (`kind`, `details`, `tags`, `status: { led: 'live'\|'waiting'\|'failed'\|'off', text }`, `placement`, `open`, `immediate`); CSS `--mu-engraving-*`; Swift `MetalHoverEngraving`, `.metalHoverEngraving(_:placement:isPresented:)`, `MetalEngraving`. Derived to confirm: graphite engraving fill and emphasis. |
 | 5 | Provenance tooltip | shipped | `a1909a8` | React `ProvenanceTooltip` (`source`, `detail`, `clearsChip`, `open`; wraps the cue) and `ProvenanceProvider` (Base UI Tooltip); CSS `--mu-provenance-*`; Swift `MetalProvenanceTooltip`, `.metalProvenance(_:detail:clearsChip:)`, `MetalProvenance`. Decision: the readout role (10.5), not label, since provenance informs on its own (DS-06). |
 | 6 | Region | shipped | `78c214b` | React `Region` (`name`, `rule`, `dropRule`, `count`, `over`, `dim`, `past`, `lens`, `renaming`, `onRename`, `onRenameCancel`, `width`, `height`) and `RegionRow` (`checked`, `lead`, `meta`); CSS `--mu-region-*`, `--mu-raise-lite`, `--mu-row-hover`; Swift `MetalRegionView(name:rule:dropRule:count:state:lens:renaming:onRename:rows:)`, `MetalRegionRow`, `MetalRegion`. Derived to confirm: graphite region fill, shade and lens plate. |
-| 7a | Segmented control | shipped | `ab19895` | React `Segmented` (`options`, `value`, `defaultValue`, `onValueChange`, `size: 'compact'\|'regular'`, `aria-label`; Base UI RadioGroup); CSS `--mu-segmented-*`; Swift `MetalSegmented(_:selection:options:size:)`. |
+| 7a | Switcher | shipped | `ab19895` | React `Switcher` (`options`, `value`, `defaultValue`, `onValueChange`, `size: 'compact'\|'regular'`, `aria-label`; Base UI RadioGroup); CSS `--mu-switcher-*`; Swift `MetalSwitcher(_:selection:options:size:)`. |
 | 7b | Lens bar | shipped | `2795903` | React `LensBar` (`query`, `count`, `source: 'asking'\|'jev'\|'local'\|null`, `mode`, `onModeChange`, `modes`, `onPin`, `onClose`, `glyphs: { lens, pin, close }`; Base UI Toolbar); CSS `--mu-lensbar-*`; Swift `MetalLensBar(query:count:source:mode:modes:onPin:onClose:)`, `MetalLensMode`, `MetalLensSource`. |
 | 8 | Memory scrubber | shipped | `a83b74b` | React `MemoryScrubber` (`start`, `end`, `value: number\|null`, `onValueChange`, `marks`, `format`, `glyph`; Base UI Slider); CSS `--mu-scrubber-*`; Swift `MetalMemoryScrubber(range:selection:marks:format:)`, `MetalScrubberMetrics`. |
 | 9 | Past banner | shipped | `b5b0548` | React `PastBanner` (`moment`, `onBack`); CSS `--mu-pastbanner-*`; Swift `MetalPastBanner(moment:onBack:)`, `MetalPastBannerMetrics`. |
@@ -62,7 +62,7 @@ Status words: **shipped** (committed, checks green, verified in the docs site), 
 
 ## 5b. Further objects the client LLDs need
 
-From `kamui/docs/architecture/medium/LLD/WEB_CLIENT.md` §2 (`src/chrome/*`) and `MAC_CLIENT.md` §6 ("`MetalButton`, Toast, Command palette, Segmented, Tooltip, Popover/Menu, Kbd, LED, Toolbar as each ships"). Built after §5, one at a time, in this order.
+From `kamui/docs/architecture/medium/LLD/WEB_CLIENT.md` §2 (`src/chrome/*`) and `MAC_CLIENT.md` §6 ("`MetalButton`, Toast, Command palette, Switcher, Tooltip, Popover/Menu, Kbd, LED, Toolbar as each ships"). Built after §5, one at a time, in this order.
 
 | Order | Object | Kamui brief | Status | Commit | Clients import |
 |---|---|---|---|---|---|

@@ -1160,7 +1160,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A sunk field or track: field (inputs), track (segmented, sliders), region (a drawn region; over lights it green) and graphite (a well in a dark strip). (reference style.css --well; .pal-field, .seg, .sc-track, .region, .region.over, .tb-search)
+    /// A sunk field or track: field (inputs), track (switcher, sliders), region (a drawn region; over lights it green) and graphite (a well in a dark strip). (reference style.css --well; .pal-field, .seg, .sc-track, .region, .region.over, .tb-search)
     public static let well = MetalObjectRecipe(
         name: "well",
         layers: [
@@ -1523,45 +1523,45 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A pill of pills: a track well with a raised thumb that glides to the chosen segment. (reference style.css .seg, .seg button, .seg button.on)
-    public static let segmented = MetalObjectRecipe(
-        name: "segmented",
+    /// A pill of pills: a track well with a raised thumb that glides to the chosen option. (reference style.css .seg, .seg button, .seg button.on)
+    public static let switcher = MetalObjectRecipe(
+        name: "switcher",
         layers: [
-            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(225.0, 224.0, 220.0, 1.0)), 0.0), .init(.color(MetalRGBA(234.0, 233.0, 229.0, 1.0)), 1.0)])), // mu-recipe:segmented:0 linear-gradient(#E1E0DC, #EAE9E5)
-            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(18.0, 18.0, 19.0, 1.0)), 0.0), .init(.color(MetalRGBA(22.0, 22.0, 23.0, 1.0)), 1.0)])), // mu-recipe:segmented:1 linear-gradient(#121213, #161617)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.1)))), // mu-recipe:segmented:2 inset 0 2px 6px -1px rgba(60,55,40,.10)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.03)))), // mu-recipe:segmented:3 inset 0 0 0 .5px rgba(0,0,0,.03)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:segmented:4 inset 0 -2px 4px -2px rgba(255,255,255,.95)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:segmented:5 inset 0 2px 6px -1px rgba(0,0,0,.6)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:segmented:6 inset 0 0 0 .5px rgba(0,0,0,.35)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:segmented:7 inset 0 -2px 4px -2px rgba(255,255,255,.05)
-            .init(part: "thumb", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(244.0, 243.0, 240.0, 1.0)), 1.0)])), // mu-recipe:segmented:8 linear-gradient(#FFFFFF, #F4F3F0)
-            .init(part: "thumb", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(58.0, 58.0, 61.0, 1.0)), 0.0), .init(.color(MetalRGBA(46.0, 46.0, 49.0, 1.0)), 1.0)])), // mu-recipe:segmented:9 linear-gradient(#3A3A3D, #2E2E31)
-            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:segmented:10 inset 0 0 4px 1px rgba(255,255,255,.85)
-            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:segmented:11 inset 1px 2px 2px -1px #FFFFFF
-            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:segmented:12 0 0 0 .5px rgba(24,22,16,.05)
-            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:segmented:13 0 1px 2px rgba(24,22,16,.07)
-            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:segmented:14 0 5px 12px -4px rgba(24,22,16,.09)
-            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:segmented:15 inset 0 0 4px 1px rgba(255,255,255,.06)
-            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:segmented:16 inset 1px 2px 2px -1px rgba(255,255,255,.12)
-            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:segmented:17 0 0 0 .5px rgba(0,0,0,.55)
-            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:segmented:18 0 1px 2px rgba(0,0,0,.3)
-            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:segmented:19 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(225.0, 224.0, 220.0, 1.0)), 0.0), .init(.color(MetalRGBA(234.0, 233.0, 229.0, 1.0)), 1.0)])), // mu-recipe:switcher:0 linear-gradient(#E1E0DC, #EAE9E5)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(18.0, 18.0, 19.0, 1.0)), 0.0), .init(.color(MetalRGBA(22.0, 22.0, 23.0, 1.0)), 1.0)])), // mu-recipe:switcher:1 linear-gradient(#121213, #161617)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.1)))), // mu-recipe:switcher:2 inset 0 2px 6px -1px rgba(60,55,40,.10)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.03)))), // mu-recipe:switcher:3 inset 0 0 0 .5px rgba(0,0,0,.03)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:switcher:4 inset 0 -2px 4px -2px rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:switcher:5 inset 0 2px 6px -1px rgba(0,0,0,.6)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:switcher:6 inset 0 0 0 .5px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: -2.0, blur: 4.0, spread: -2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.05)))), // mu-recipe:switcher:7 inset 0 -2px 4px -2px rgba(255,255,255,.05)
+            .init(part: "thumb", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(244.0, 243.0, 240.0, 1.0)), 1.0)])), // mu-recipe:switcher:8 linear-gradient(#FFFFFF, #F4F3F0)
+            .init(part: "thumb", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(58.0, 58.0, 61.0, 1.0)), 0.0), .init(.color(MetalRGBA(46.0, 46.0, 49.0, 1.0)), 1.0)])), // mu-recipe:switcher:9 linear-gradient(#3A3A3D, #2E2E31)
+            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:switcher:10 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:switcher:11 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:switcher:12 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:switcher:13 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "thumb", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:switcher:14 0 5px 12px -4px rgba(24,22,16,.09)
+            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:switcher:15 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:switcher:16 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:switcher:17 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:switcher:18 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "thumb", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:switcher:19 0 5px 12px -4px rgba(0,0,0,.3)
         ],
         props: [
             "self.pad": .number(3.0),
             "self.gap": .number(6.0),
-            "segment.height": .number(24.0),
-            "segment.height-regular": .number(28.0),
-            "segment.pad-x": .number(10.0),
-            "segment.font": .text("500 11.5px/1 sans"),
-            "segment.tracking": .text("0"),
-            "segment.ink": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
-            "segment.ink-on": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
-            "segment.fade": .text("160ms"),
-            "segment.disabled": .text("0.4"),
-            "segment.focus-width": .number(1.5),
-            "segment.transition": .text("color var(--mu-r-segmented-segment-fade)"),
+            "option.height": .number(24.0),
+            "option.height-regular": .number(28.0),
+            "option.pad-x": .number(10.0),
+            "option.font": .text("500 11.5px/1 sans"),
+            "option.tracking": .text("0"),
+            "option.ink": .perColorway(bone: "#5C5C60", graphite: "#A6A6A9"),
+            "option.ink-on": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "option.fade": .text("160ms"),
+            "option.disabled": .text("0.4"),
+            "option.focus-width": .number(1.5),
+            "option.transition": .text("color var(--mu-r-switcher-option-fade)"),
         ]
     )
 
@@ -2125,7 +2125,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a raised cap like a button, because it is clicked, not typed into: the value and an up-down chevron. Hover lightens the cap a little; press sinks it, and it stays sunk while the list is out. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Segmented instead. (Soft Hardware materials (the button cap, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
+    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a raised cap like a button, because it is clicked, not typed into: the value and an up-down chevron. Hover lightens the cap a little; press sinks it, and it stays sunk while the list is out. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Switcher instead. (Soft Hardware materials (the button cap, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
     public static let select = MetalObjectRecipe(
         name: "select",
         layers: [
@@ -2157,7 +2157,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Switches which panel is shown. The tab list is the segmented track and gliding thumb (one look for 'pick one of a few'); what differs is behaviour: each tab owns a panel, and the new panel comes in from the side the thumb travelled to, a small drift and a fade on the settle spring. The first panel shows without motion. Picking a value with no panel is a Segmented. (Soft Hardware segmented track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern)
+    /// Switches which panel is shown. The tab list is the switcher track and gliding thumb (one look for 'pick one of a few'); what differs is behaviour: each tab owns a panel, and the new panel comes in from the side the thumb travelled to, a small drift and a fade on the settle spring. The first panel shows without motion. Picking a value with no panel is a Switcher. (Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern)
     public static let tabs = MetalObjectRecipe(
         name: "tabs",
         layers: [
@@ -2526,7 +2526,7 @@ public enum MetalPaletteMetrics {
     public static let barOutset: Double = 2.0
 }
 
-/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Segmented and IconButton(ghost).
+/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Switcher and IconButton(ghost).
 public enum MetalToolbarMetrics {
     public static let tool: Double = 36.0
     public static let pad: Double = 6.0
@@ -2706,7 +2706,7 @@ public enum MetalScrubberMetrics {
     public static let knobSweep: [MetalRGBA] = [MetalRGBA(250, 250, 248, 1.0), MetalRGBA(201, 201, 197, 1.0), MetalRGBA(242, 242, 239, 1.0), MetalRGBA(184, 184, 180, 1.0), MetalRGBA(250, 250, 248, 1.0)]
 }
 
-/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Segmented and IconButton(ghost).
+/// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Switcher and IconButton(ghost).
 public enum MetalLensBarMetrics {
     public static let height: Double = 38.0
     public static let padStart: Double = 14.0
@@ -2720,8 +2720,8 @@ public enum MetalLensBarMetrics {
     public static let noteLedGap: Double = 5.0
 }
 
-/// The segmented control (object sheet): a pill of pills. A well track holds segments on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between segments on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
-public enum MetalSegmentedMetrics {
+/// The switcher (object sheet): a pill of pills. A well track holds options on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between options on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.
+public enum MetalSwitcherMetrics {
     public static let trackPad: Double = 3.0
     public static let compact: Double = 24.0
     public static let regular: Double = 28.0

@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Segmented } from '@unlocalhosted/metalui';
+import { Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Callouts, Dial, useFit, Glyph, SpringPlot, Switch, alphaK, scalePx, springEasing, useRecipeLayers, type SpotDef } from './kit';
 
 /* ─────────────────────────────────────────────────────────
- * X-RAY · SEGMENTED CONTROL
+ * X-RAY · SWITCHER
  *
  *   solid       the real control. Try it, then open the x-ray.
  *   x-ray       a tray with a raised rim (the well) on the gridded floor, a raised thumb
  *               inside it, and the labels floating just above the thumb
- *   play        Shape   size · tray padding · segment padding
+ *   play        Shape   size · tray padding · option padding
  *               Well    how deep the tray is
  *               Thumb   how high the thumb sits
  *               Slide   click a label; the thumb slides on a spring you can tune
@@ -17,9 +17,9 @@ import { Callouts, Dial, useFit, Glyph, SpringPlot, Switch, alphaK, scalePx, spr
  *               Layers  the tray's four layers and the thumb's six, each switchable
  * ───────────────────────────────────────────────────────── */
 
-const RECIPE = tokens.recipes.segmented;
+const RECIPE = tokens.recipes.switcher;
 const SELF = RECIPE.props.self as { pad: number };
-const SEG = RECIPE.props.segment as { height: number; 'height-regular': number; 'pad-x': number; fade: string; ink: Record<string, string>; 'ink-on': Record<string, string> };
+const SEG = RECIPE.props.option as { height: number; 'height-regular': number; 'pad-x': number; fade: string; ink: Record<string, string>; 'ink-on': Record<string, string> };
 const PART = tokens.springs.part as { stiffness: number; damping: number };
 const S = 2.4;
 const RIM = 5;
@@ -80,8 +80,8 @@ function aim(v: string, deg: number, k: number) {
 }
 
 function useParts(m: Model) {
-  const well = useRecipeLayers('segmented', 'self');
-  const thumb = useRecipeLayers('segmented', 'thumb');
+  const well = useRecipeLayers('switcher', 'self');
+  const thumb = useRecipeLayers('switcher', 'thumb');
   const grad = (stops: string[]) => `linear-gradient(${180 + m.lightDeg}deg, ${stops.join(', ')})`;
   const wellShadows = well.shadows.map((v, i) => (m.well[i + 1] ? aim(i === 0 ? alphaK(v, m.depth) : v, m.lightDeg, m.lightK) : null));
   const liftK = (v: string, i: number) => (i >= 3 ? alphaK(scalePx(v, 0.4 + m.lift * 0.6), 0.5 + m.lift * 0.5) : v);
@@ -97,7 +97,7 @@ function useParts(m: Model) {
 }
 type Parts = ReturnType<typeof useParts>;
 
-export function SegmentedXray({ startOpen = false }: { startOpen?: boolean }) {
+export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('slide');
   const [m, setM] = React.useState<Model>(INITIAL);
@@ -135,8 +135,8 @@ export function SegmentedXray({ startOpen = false }: { startOpen?: boolean }) {
   const move = m.instant || reduced ? 'none' : `transform ${ease.ms}ms ${ease.css}, width ${ease.ms}ms ${ease.css}`;
 
   const current = SPOTS.find((x) => x.id === spot)!;
-  const segVars = { ['--mu-r-segmented-self-pad' as string]: `${m.pad}px`, ['--mu-r-segmented-segment-pad-x' as string]: `${m.padX}px`, ['--mu-r-segmented-self-shadow' as string]: parts.wellShadow, ['--mu-r-segmented-self-background' as string]: parts.wellFill, ['--mu-r-segmented-thumb-shadow' as string]: parts.thumbShadow, ['--mu-r-segmented-thumb-background' as string]: parts.thumbFill } as React.CSSProperties;
-  const control = (label: string) => <span className="xr-seg-vars" style={segVars}><Segmented aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} /></span>;
+  const segVars = { ['--mu-r-switcher-self-pad' as string]: `${m.pad}px`, ['--mu-r-switcher-option-pad-x' as string]: `${m.padX}px`, ['--mu-r-switcher-self-shadow' as string]: parts.wellShadow, ['--mu-r-switcher-self-background' as string]: parts.wellFill, ['--mu-r-switcher-thumb-shadow' as string]: parts.thumbShadow, ['--mu-r-switcher-thumb-background' as string]: parts.thumbFill } as React.CSSProperties;
+  const control = (label: string) => <span className="xr-seg-vars" style={segVars}><Switcher aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} /></span>;
 
   return (
     <div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
@@ -269,9 +269,9 @@ function Proof({ children }: { children: React.ReactNode }) {
 function ShapeCard({ m, set, control }: CardProps) {
   return (
     <>
-      <p>Each segment is as wide as its word plus some space on both sides. The tray adds a little space all around, so the thumb never touches the tray's edge.</p>
+      <p>Each option is as wide as its word plus some space on both sides. The tray adds a little space all around, so the thumb never touches the tray's edge.</p>
       <div className="xr-dials">
-        <div className="xr-dial"><span className="xr-dial-head"><span>Size</span></span><Segmented size="compact" aria-label="Size" value={m.size} onValueChange={(v) => set({ size: v as Model['size'] })} options={[{ value: 'regular', label: 'Regular 28' }, { value: 'compact', label: 'Compact 24' }]} /></div>
+        <div className="xr-dial"><span className="xr-dial-head"><span>Size</span></span><Switcher size="compact" aria-label="Size" value={m.size} onValueChange={(v) => set({ size: v as Model['size'] })} options={[{ value: 'regular', label: 'Regular 28' }, { value: 'compact', label: 'Compact 24' }]} /></div>
         <Dial label="Space around the thumb" value={m.pad} min={0} max={8} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />
         <Dial label="Space beside each word" value={m.padX} min={4} max={20} step={1} fmt={(v) => `${v} pt`} onChange={(padX) => set({ padX })} />
       </div>

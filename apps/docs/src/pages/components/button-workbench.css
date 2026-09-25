@@ -32,8 +32,8 @@
 .button-workbench-controls .dialkit-slider-active .dialkit-slider-fill { background: color-mix(in srgb, var(--green-deep) 26%, transparent); }
 .button-workbench-controls .dialkit-slider-label, .button-workbench-controls .dialkit-text-label, .button-workbench-controls .dialkit-select-label, .button-workbench-controls .dialkit-labeled-control-label { font: 500 11.5px/16px var(--sans); color: var(--ink2); }
 .button-workbench-controls .dialkit-slider-value, .button-workbench-controls .dialkit-select-value, .button-workbench-controls .dialkit-text-input { font: 500 11.5px/16px var(--mono); color: var(--ink); }
-.button-workbench-controls .dialkit-segmented-pill { background: var(--btn-bg); box-shadow: var(--btn-sh); }
-.button-workbench-controls .dialkit-segmented-button { font: 500 11px/16px var(--sans); }
+.button-workbench-controls .dialkit-switcher-pill { background: var(--btn-bg); box-shadow: var(--btn-sh); }
+.button-workbench-controls .dialkit-switcher-button { font: 500 11px/16px var(--sans); }
 .button-workbench-controls .dialkit-toolbar-add, .button-workbench-controls .dialkit-preset-trigger { background: var(--btn-bg); box-shadow: var(--btn-sh); }
 .button-workbench-controls .dialkit-slider:focus-visible, .button-workbench-controls button:focus-visible, .button-workbench-controls input:focus-visible { outline: 2px solid var(--mu-focus); outline-offset: 2px; }
 html.rm .button-workbench-controls .dialkit-root *, html.rm .button-workbench-controls .dialkit-root *::before, html.rm .button-workbench-controls .dialkit-root *::after { animation-duration: 0s !important; transition-duration: 0s !important; }

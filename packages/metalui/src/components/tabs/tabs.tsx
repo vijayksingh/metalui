@@ -3,15 +3,15 @@
 import * as React from 'react';
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { SlidingIndicator } from '../../motion/indicator';
-import { trackParts } from '../segmented/segmented';
+import { trackParts } from '../switcher/switcher';
 
 /* ─────────────────────────────────────────────────────────
  * TABS on Base UI Tabs: switch which panel is shown
  *
  * Use it when each option owns a panel (React / Agent guide, the pages of Settings).
- * Picking a value with no panel of its own is the Segmented; a long list is a Select.
+ * Picking a value with no panel of its own is the Switcher; a long list is a Select.
  *
- *   list      the segmented track: a well, tabs in ink2, the active one a raised thumb in ink
+ *   list      the switcher track: a well, tabs in ink2, the active one a raised thumb in ink
  *   hover     the label turns ink
  *   switch    the thumb glides to the new tab on the part spring (a track with ends, so it
  *             may overshoot against the stop); the new panel comes in from the side the thumb
@@ -66,13 +66,13 @@ export function Tabs<V extends string = string>({ value, defaultValue, onValueCh
   );
 }
 
-/** The tabs, on the segmented track with its gliding thumb. */
+/** The tabs, on the switcher track with its gliding thumb. */
 export function TabList<V extends string = string>({ items, size = 'regular', className, ...props }: TabListProps<V>) {
   return (
     <BaseTabs.List activateOnFocus aria-label={props["aria-label"]} data-size={size} className={join(trackParts.TRACK, className)}>
       <SlidingIndicator className={trackParts.THUMB} />
       {items.map((t) => (
-        <BaseTabs.Tab key={t.value} value={t.value} disabled={t.disabled} className={trackParts.SEGMENT[size]}>
+        <BaseTabs.Tab key={t.value} value={t.value} disabled={t.disabled} className={trackParts.OPTION[size]}>
           {t.icon}
           {t.label}
         </BaseTabs.Tab>

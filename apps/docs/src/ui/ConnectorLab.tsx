@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Connector, Segmented, Surface, inkColor, type ConnectorFlow, type ConnectorLook } from '@unlocalhosted/metalui';
+import { Connector, Switcher, Surface, inkColor, type ConnectorFlow, type ConnectorLook } from '@unlocalhosted/metalui';
 
 /* The Connector playground: two blocks and a line between them. Drag a block hard and let go,
  * hover the line, click it to select it; pick the look and which way it flows. */
@@ -69,8 +69,8 @@ export function ConnectorLab() {
         />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-16">
-        <Segmented size="compact" aria-label="Look" value={look} onValueChange={(v) => setLook(v as ConnectorLook)} options={[{ value: 'elastic', label: 'Elastic' }, { value: 'current', label: 'Current' }, { value: 'stardust', label: 'Stardust' }]} />
-        <Segmented size="compact" aria-label="Flow" value={flow} onValueChange={(v) => setFlow(v as ConnectorFlow)} options={[{ value: 'forward', label: 'Idea → Plan' }, { value: 'backward', label: 'Plan → Idea' }, { value: 'both', label: 'Both ways' }]} />
+        <Switcher size="compact" aria-label="Look" value={look} onValueChange={(v) => setLook(v as ConnectorLook)} options={[{ value: 'elastic', label: 'Elastic' }, { value: 'current', label: 'Current' }, { value: 'stardust', label: 'Stardust' }]} />
+        <Switcher size="compact" aria-label="Flow" value={flow} onValueChange={(v) => setFlow(v as ConnectorFlow)} options={[{ value: 'forward', label: 'Idea → Plan' }, { value: 'backward', label: 'Plan → Idea' }, { value: 'both', label: 'Both ways' }]} />
       </div>
     </div>
   );

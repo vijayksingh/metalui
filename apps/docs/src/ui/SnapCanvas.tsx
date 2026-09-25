@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Lasso, Segmented, SelectionFrame, SnapGuides, Surface, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
+import { Lasso, Switcher, SelectionFrame, SnapGuides, Surface, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
 import { snapMove, type Box } from './snapdemo';
 
 /* A tiny canvas for the Snap guides page: three notes stay put, one you drag. It snaps to their
@@ -91,7 +91,7 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
       {lasso
         ? <span className="eng">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box'}</span>
         : <span className="eng">haptic taps · {taps} <span className="text-ink3">(on a Mac trackpad in the app; the browser cannot)</span></span>}
-      <Segmented size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
+      <Switcher size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
     </div>
   );
 }

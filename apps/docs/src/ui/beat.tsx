@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Segmented } from '@unlocalhosted/metalui';
+import { Switcher } from '@unlocalhosted/metalui';
 import { Code, Stage, Tag } from './doc';
 import type { Lang } from '../lib/highlight';
 
@@ -69,13 +69,13 @@ export function useSlow(ref: React.RefObject<HTMLElement | null>, slow: boolean)
 }
 
 export function Toggle<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { value: T; label: string }[]; onChange: (v: T) => void }) {
-  return <Segmented size="compact" aria-label={label} value={value} onValueChange={(v) => onChange(v as T)} options={options} />;
+  return <Switcher size="compact" aria-label={label} value={value} onValueChange={(v) => onChange(v as T)} options={options} />;
 }
 
 /** Real time or a quarter speed, in a stage's bar. */
 export function SlowSwitch({ slow, onChange }: { slow: boolean; onChange: (v: boolean) => void }) {
   return (
-    <Segmented
+    <Switcher
       size="compact"
       aria-label="Speed"
       value={slow ? 'slow' : 'real'}

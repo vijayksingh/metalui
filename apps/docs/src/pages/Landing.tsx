@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import { Button, Kbd, Segmented } from '@unlocalhosted/metalui';
+import { Button, Kbd, Switcher } from '@unlocalhosted/metalui';
 import { FloatingTable, type XrayKind } from '../ui/floating';
 import { XrayOverlay } from '../ui/xray';
 import { useColorway, type Colorway } from '../app/colorway';
@@ -27,7 +27,7 @@ export default function Landing() {
     <div className="landing">
       <header className="landing-corners">
         <span className="eng">metalui // soft hardware</span>
-        <Segmented size="compact" aria-label="Colorway" value={colorway} onValueChange={(v) => setColorway(v as Colorway)} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
+        <Switcher size="compact" aria-label="Colorway" value={colorway} onValueChange={(v) => setColorway(v as Colorway)} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
       </header>
 
       <FloatingTable mode="space" onXray={setXray} />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Kbd, Segmented } from '@unlocalhosted/metalui';
+import { Kbd, Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFrame, aim, alphaK, capTop, scalePx, tones, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
 
@@ -186,7 +186,7 @@ export function KbdXray({ startOpen = false }: { startOpen?: boolean }) {
         <>
           <p>A key matches the place it sits. On a light surface it is raised. On a dark toolbar it is a dark key with one bright top edge. Inside a toast's Undo button it is pressed in. The glyph and the size stay the same.</p>
           <div className="xr-dials">
-            <Segmented size="compact" aria-label="Surface" value={m.surface} onValueChange={(v) => set({ surface: v as Surface })} options={[{ value: 'self', label: 'Light' }, { value: 'strip', label: 'Dark strip' }, { value: 'sunk', label: 'Pressed in' }]} />
+            <Switcher size="compact" aria-label="Surface" value={m.surface} onValueChange={(v) => set({ surface: v as Surface })} options={[{ value: 'self', label: 'Light' }, { value: 'strip', label: 'Dark strip' }, { value: 'sunk', label: 'Pressed in' }]} />
           </div>
           <Proof column>{inContext(m.surface)}</Proof>
         </>

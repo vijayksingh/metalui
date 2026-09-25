@@ -2,7 +2,7 @@ import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { DialTimeline, useDialTimeline } from 'dialkit';
 import 'dialkit/styles.css';
-import { Folder, Region, Segmented, Well, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
+import { Folder, Region, Switcher, Well, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
 
 /* ─────────────────────────────────────────────────────────
  * FOLD AND UNFOLD · the region is a sheet that folds into the folder
@@ -313,9 +313,9 @@ export function FolderUnfold() {
         {atEnd && <span className="eng ink-hint">double-click the folder to unfold it</span>}
       </div>
       <div className="flex flex-wrap items-center justify-center gap-16">
-        <Segmented size="compact" aria-label="Colour" value={hue} onValueChange={(v) => setHue(v as FolderHue)}
+        <Switcher size="compact" aria-label="Colour" value={hue} onValueChange={(v) => setHue(v as FolderHue)}
           options={(['neutral', 'red', 'amber', 'green', 'blue', 'violet'] as const).map((h) => ({ value: h, label: h[0].toUpperCase() + h.slice(1) }))} />
-        <Segmented size="compact" aria-label="Speed" value={speed} onValueChange={setSpeed}
+        <Switcher size="compact" aria-label="Speed" value={speed} onValueChange={setSpeed}
           options={[{ value: '1', label: '1×' }, { value: '0.5', label: '½×' }, { value: '0.25', label: '¼×' }]} />
       </div>
       <DialTimeline defaultOpen />

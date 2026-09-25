@@ -106,7 +106,7 @@ export default function Radius() {
             ))}
           </div>
         </Bench>
-        <TokenTable rows={ladder.map((l) => [`rounded-${l.name}`, `${l.r}px`, USES[l.name]]).concat([['rounded-pill', '999px', 'Buttons, segmented, badges, fields, toast']])} />
+        <TokenTable rows={ladder.map((l) => [`rounded-${l.name}`, `${l.r}px`, USES[l.name]]).concat([['rounded-pill', '999px', 'Buttons, switcher, badges, fields, toast']])} />
       </Section>
 
       <Section title="R1 · Nest" lede={`A surface that touches its container's corner is inset by ${d.nest.inset} and loses ${d.ladder.step} of radius. ${d.nest.inset === d.ladder.step ? 'Inset and step match, so the corners stay parallel.' : 'The inset no longer matches the step, so the gap between corners changes around the curve.'}`}>

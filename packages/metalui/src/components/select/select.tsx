@@ -9,7 +9,7 @@ import { SlidingIndicator } from '../../motion/indicator';
  * SELECT on Base UI Select: one value from a list of named options
  *
  * Use it for a value picked from a list: an icon, a folder colour, where to move a block, a
- * preset. Two to four short options that fit side by side are a Segmented; a long list you
+ * preset. Two to four short options that fit side by side are a Switcher; a long list you
  * search is a combobox; an action is a Menu.
  *
  *   trigger   a raised cap like a button (it is clicked, not typed into): the value, and an

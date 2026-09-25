@@ -20,7 +20,7 @@ An app's settings as sections of rows. React: `Settings` with `Settings.Section`
 ## Controls
 
 - On or off, at once: `Switch`, labelled by the row's name (`aria-labelledby` with the row's `id`).
-- One of a few: `Segmented`, compact.
+- One of a few: `Switcher`, compact.
 - An action: `Button` (Download backup, Restore, Upgrade).
 - A value (Storage used): a `Label value-small` or a `SizeReadout`.
 

@@ -30,7 +30,7 @@ A component does one job, and it knows nothing about a product domain. It is sty
 | `Well` | A sunk field or track | recipes |
 | `Button`, `IconButton` | Pressable caps: standard, primary, destructive; regular and compact | recipes, springs |
 | `Toggle`, `Switch` | Latching caps and thumbs | Base UI |
-| `Segmented` | A pill of pills with a sliding thumb | Base UI RadioGroup |
+| `Switcher` | A pill of pills with a sliding thumb | Base UI RadioGroup |
 | `Slider` | A track, a knob and ticks (knurled or plain) | Base UI Slider |
 | `Checkbox` | The dimple checkbox (open, done, doing, ghost) | Base UI Checkbox |
 | `Field`, `SearchField` | Text input in a well, with leading glyph and trailing keycaps | Base UI Input |
@@ -53,7 +53,7 @@ A block is what a person recognises as a thing: a palette, a region, a swatch ca
 |---|---|---|
 | `CommandPalette` | composition | Dialog › Surface(frost-strong) › SearchField + list rows (Label sections, Kbd hints) + footer of Kbd |
 | `Toolbar` (dock) | composition | Surface(glass or graphite) › IconButton × n + Rule + SearchField |
-| `FilterBar` (the lens bar) | composition | Surface(frost-strong) › Icon + Field + Segmented + IconButton × 2 |
+| `FilterBar` (the lens bar) | composition | Surface(frost-strong) › Icon + Field + Switcher + IconButton × 2 |
 | `TimeScrubber` | composition | Label readout + Slider(knurled, ticks) + Button("now") |
 | `PastBanner` | composition | Surface(graphite pill) › Label + Button |
 | `ToolStrip` | composition | Surface(graphite) › IconButton × n with Tooltip |

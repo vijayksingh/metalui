@@ -35,7 +35,7 @@ export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/too
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { TimeScrubber, MemoryScrubber, type TimeScrubberProps, type MemoryScrubberProps } from './blocks/time-scrubber/time-scrubber';
 export { FilterBar, LensBar, type FilterBarProps, type FilterView, type LensBarProps, type LensMode } from './blocks/filter-bar/filter-bar';
-export { Segmented, type SegmentedProps, type SegmentedOption } from './components/segmented/segmented';
+export { Switcher, type SwitcherProps, type SwitcherOption, Segmented, type SegmentedProps, type SegmentedOption } from './components/switcher/switcher';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './blocks/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './blocks/hover-engraving/hover-engraving';

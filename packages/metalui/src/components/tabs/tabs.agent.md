@@ -8,13 +8,13 @@ Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unloc
 
 ## Don't use it for
 
-- Picking a value with no panel of its own (pen or marker, a connector look): `Segmented`.
+- Picking a value with no panel of its own (pen or marker, a connector look): `Switcher`.
 - More than five or six options, or long labels: a `Select` or a side list.
 - Moving between pages of the app: navigation links.
 
 ## Anatomy
 
-`Tabs` holds the active tab. `TabList` is the segmented track: a well, tabs in ink2, the active tab a raised thumb in ink. One `TabPanel` per tab, anywhere inside `Tabs` (the list can sit in a head bar, the panel below).
+`Tabs` holds the active tab. `TabList` is the switcher track: a well, tabs in ink2, the active tab a raised thumb in ink. One `TabPanel` per tab, anywhere inside `Tabs` (the list can sit in a head bar, the panel below).
 
 ## States and motion
 
