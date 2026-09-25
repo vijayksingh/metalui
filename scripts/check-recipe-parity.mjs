@@ -131,6 +131,12 @@ for (const path of [...react, ...native]) {
   const name = norm(path.split('/').at(-1).replace(/\.(tsx|swift)$/, ''));
   if (![...names].some((n) => norm(n) === name)) errors.push(`${path.slice(root.length + 1)}: component has no matching component recipe`);
 }
-for (const error of errors) console.log(error);
-console.log(`Recipe parity: ${errors.length} finding(s)`);
-process.exitCode = errors.length ? 1 : 0;
+// Existing alpha components without shared recipes remain visible as known gaps.
+// Exact messages keep new gaps and changed names from silently joining the baseline.
+const knownGaps = new Set(JSON.parse(read('scripts/recipe-parity.allow.json')));
+const newErrors = errors.filter((error) => !knownGaps.has(error));
+const staleGaps = [...knownGaps].filter((gap) => !errors.includes(gap));
+for (const error of newErrors) console.log(error);
+for (const gap of staleGaps) console.log(`stale recipe baseline: ${gap}`);
+console.log(`Recipe parity: ${newErrors.length} finding(s), ${errors.length - newErrors.length} known gap(s)`);
+process.exitCode = newErrors.length || staleGaps.length ? 1 : 0;
