@@ -29,6 +29,8 @@ study: motion(900, 'The pointer draws back, clicks its tip down, and a ring open
   - `draw` (how much of the stroke is drawn, 0–1; its paths carry `pathLength="1"`);
   - `easing` (the curve leaving the frame).
 - **Helpers:**
+  - `T({ x, y, r, sx, sy })`: a pose in grid units and degrees, always in one order
+  - `spring(at, from, to, kind)`: the frames of a token spring carrying a part from one pose to another
   - `pose(at, transform, easing)`
   - `light(at, opacity, transform)` for accents
   - `trace(at, draw, easing)` for draw-on
@@ -52,6 +54,27 @@ The build (`scripts/build-icons.mjs`) checks every study and fails when:
 - a part doesn't return exactly to where it started;
 - an accent isn't hidden at the start and the end;
 - a property isn't transform, opacity or draw.
+
+## Physical: it is hardware
+
+MetalUI is Soft Hardware: soft-touch plastic, metal, keys and detents. An icon's act has to read as an object with weight doing something, not a drawing being tweened.
+
+- **Mass comes from the tokens.** Every part belongs to a mass class, the same springs the rest of the system uses (`tokens.json` `springs`). Recoils and settles come from `spring(at, from, to, kind)`, which writes that spring's real turning points as keyframes. Don't hand-pick a bounce.
+
+  | Mass class | What in an icon | How it moves |
+  |---|---|---|
+  | `part` | things you touch: a pointer tip, a switch, a key, a pin | quick, one small overshoot against a stop |
+  | `hinge` | lids, flaps, covers, a page corner | swings about its pin, one overshoot, settles |
+  | `object` | things that land: cards, a stack, a dropped block | slower, a landing overshoot |
+  | `release` | a cap coming back up, a part letting go | fast, no visible overshoot |
+  | `settle` | content arriving in place | brisk, no visible overshoot |
+  | `refusal` | a blocked action: a locked shackle, a failed sync | rings many times against a stop and dies out |
+
+- **Contact compresses.** When a part meets something, it squashes along the force and widens across it (`sx`/`sy`), then recovers on its spring. Nothing passes through anything; nothing stops dead without a response.
+- **Real pivots.** A hinge turns about its pin, a lid about its back edge, a pointer about its tip. The pivot is a point on the drawing, not the glyph's centre.
+- **Travel in real units.** A grid unit is the material's press depth (1 unit ≈ 1 px at 24). A press is about 1 unit, a lift about 2, a throw about 4. Anything under half a unit reads as nothing at 16 px.
+- **Heavier parts lag.** A secondary part (a clapper, a lid's handle, a loose card) follows a beat late and overshoots less than the light part driving it.
+- **Nothing floats, spins or loops.** Every move has a cause before it and a stop after it.
 
 ## The rules
 

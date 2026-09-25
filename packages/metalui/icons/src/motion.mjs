@@ -10,6 +10,48 @@
 // transform: CSS transform list (translate/rotate/scale) about `origin`, in grid units.
 // draw:      how much of the part's stroke is drawn, 0–1 (its paths carry pathLength="1").
 
+import tokens from '../../../../tokens/tokens.json' with { type: 'json' };
+
+/* ── Physics ─────────────────────────────────────────────────
+ * MetalUI is hardware, so an icon's parts move like objects: they have a mass class, and
+ * the mass class is the same spring the rest of the system uses (tokens.json springs:
+ * part, object, hinge, surface, settle, release, refusal). spring() writes that spring's
+ * real turning points as keyframes, so a recoil or a settle is the physics of a key, a lid
+ * or a card, not a curve picked by eye. Poses are numbers (T), so they can be sprung.
+ * ────────────────────────────────────────────────────────── */
+export const SPRINGS = Object.fromEntries(Object.entries(tokens.springs).filter(([k]) => !k.startsWith('$')));
+const n4 = (v) => +v.toFixed(4);
+const REST = { x: 0, y: 0, r: 0, sx: 1, sy: 1 };
+/** A pose in grid units and degrees, always written in one canonical order so any two interpolate. */
+export const T = (p = {}) => {
+  const q = { ...REST, ...p };
+  return `translate(${n4(q.x)}px,${n4(q.y)}px) rotate(${n4(q.r)}deg) scale(${n4(q.sx)},${n4(q.sy)})`;
+};
+const SWING = 'cubic-bezier(.37,0,.63,1)'; // between two turning points a spring moves like a sine
+/**
+ * The frames of a spring of `kind` carrying a part from pose `from` (at `at` ms) to pose `to`,
+ * one frame per turning point until the motion is under `still` (grid units or degrees),
+ * then exact rest. The first frame is `from` at `at`: don't author a frame there as well.
+ */
+export function spring(at, from, to = REST, kind = 'part', { still = 0.1 } = {}) {
+  const sp = SPRINGS[kind];
+  if (!sp) throw new Error(`spring: no mass class "${kind}"`);
+  const w = Math.sqrt(sp.stiffness), z = sp.damping / (2 * w), wd = w * Math.sqrt(1 - z * z);
+  const A = { ...REST, ...from }, B = { ...REST, ...to };
+  const travel = Math.max(...Object.keys(REST).map((k) => Math.abs(A[k] - B[k]) * (k === 'sx' || k === 'sy' ? 20 : 1)));
+  const x = (t) => 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + ((z * w) / wd) * Math.sin(wd * t));
+  const frames = [{ at, transform: T(A), easing: SWING }];
+  let i = 1;
+  for (; travel * Math.exp(-z * w * (i * Math.PI) / wd) > still && i < 12; i++) {
+    const t = (i * Math.PI) / wd, k = x(t);
+    frames.push({ at: Math.round(at + t * 1000), transform: T(Object.fromEntries(Object.keys(REST).map((c) => [c, A[c] + (B[c] - A[c]) * k]))), easing: SWING });
+  }
+  frames.push({ at: Math.round(at + ((i * Math.PI) / wd) * 1000), transform: T(B) });
+  return frames;
+}
+/** When a list of frames ends: the study's duration when it is the last track to settle. */
+export const end = (frames) => frames[frames.length - 1].at;
+
 export const ease = {
   settle: 'cubic-bezier(.22,1,.36,1)',       // arrive and come to rest
   smooth: 'cubic-bezier(.4,0,.2,1)',         // between two poses
