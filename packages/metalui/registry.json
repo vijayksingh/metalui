@@ -391,6 +391,24 @@
       "docs": "Agent guide: https://metalui.dev/r/lasso.md. SwiftUI: MetalLasso in the MetalUI Swift package."
     },
     {
+      "name": "line-handles",
+      "type": "registry:ui",
+      "title": "Line handles",
+      "description": "The presence of a drawn line or arrow: a green halo and end dots on hover, two end handles when selected; the connector's selection language.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/line-handles/line-handles.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/line-handles/line-handles.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: MetalLineHandles in the MetalUI Swift package."
+    },
+    {
       "name": "link-card",
       "type": "registry:ui",
       "title": "Link card",

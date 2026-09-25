@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "line-handles",
+  "type": "registry:ui",
+  "title": "Line handles",
+  "description": "The presence of a drawn line or arrow: a green halo and end dots on hover, two end handles when selected; the connector's selection language.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/line-handles/line-handles.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/line-handles/line-handles.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\n\n/* ─────────────────────────────────────────────────────────\n * LINE HANDLES: the presence of a drawn line or arrow (DRAWING.md §6)\n *\n * A box-like shape (rectangle, ellipse, a stroke) uses SelectionFrame's eight handles. A line\n * or arrow is its two ends, so it gets two:\n *   rest      nothing\n *   hover     a soft green halo along the line and a hollow dot at each end (part spring)\n *   selected  the halo stays; each end is a handle: drag it to move that end (the host\n *             snaps it to blocks and guides and redraws the line in the same frame)\n * The same halo and handles as a connector, so the canvas has one selection language.\n * World coordinates inside the transformed world; sizes keep their screen size.\n * ───────────────────────────────────────────────────────── */\n\nexport interface LineHandlesProps {\n  from: { x: number; y: number };\n  to: { x: number; y: number };\n  state: 'rest' | 'hover' | 'selected';\n  /** The canvas scale (1 at 100 %). */\n  scale?: number;\n  /** An end handle was pressed (selected only). */\n  onHandlePointerDown?: (end: 'from' | 'to', event: React.PointerEvent<SVGCircleElement>) => void;\n  className?: string;\n}\n\nconst LAYER = 'mu-line-handles connector-layer';\nconst CHROME = 'connector-chrome';\nconst HALO = 'connector-halo';\nconst DOT = 'connector-end-free';\nconst HANDLE = 'mu-line-handle connector-handle';\n\nfunction cssPx(name: string, fallback: number) {\n  if (typeof window === 'undefined') return fallback;\n  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || fallback;\n}\n\n/** The two ends of a selected line or arrow. */\nexport function LineHandles({ from, to, state, scale = 1, onHandlePointerDown, className }: LineHandlesProps) {\n  const dotR = React.useMemo(() => cssPx('--mu-r-connector-end-size', 4.5), []) / scale;\n  const handleR = React.useMemo(() => cssPx('--mu-r-connector-handle-size', 5), []) / scale;\n  return (\n    <svg aria-hidden width={1} height={1} data-state={state} className={className ? `${LAYER} ${className}` : LAYER} style={{ '--mu-canvas-scale': scale } as React.CSSProperties}>\n      <g className={CHROME}>\n        <path className={HALO} d={`M${from.x} ${from.y}L${to.x} ${to.y}`} />\n        {(['from', 'to'] as const).map((k) => {\n          const e = k === 'from' ? from : to;\n          return state === 'selected'\n            ? <circle key={k} className={HANDLE} cx={e.x} cy={e.y} r={handleR} onPointerDown={(ev) => onHandlePointerDown?.(k, ev)} />\n            : <circle key={k} className={DOT} cx={e.x} cy={e.y} r={dotR} />;\n        })}\n      </g>\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: MetalLineHandles in the MetalUI Swift package."
+}

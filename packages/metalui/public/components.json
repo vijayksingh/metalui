@@ -342,6 +342,23 @@
       "agent": "https://metalui.dev/r/lasso.md"
     },
     {
+      "name": "line-handles",
+      "title": "Line handles",
+      "status": "alpha",
+      "description": "The presence of a drawn line or arrow: a green halo and end dots on hover, two end handles when selected; the connector's selection language.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "LineHandles",
+        "base": "none (world overlay)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLineHandles"
+      },
+      "registry": "https://metalui.dev/r/line-handles.json",
+      "agent": "https://metalui.dev/r/line-handles.md"
+    },
+    {
       "name": "link-card",
       "title": "Link card",
       "status": "alpha",

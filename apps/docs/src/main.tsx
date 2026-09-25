@@ -62,6 +62,7 @@ const router = createBrowserRouter([
       { path: 'components/draw-tools', lazy: lazy(() => import('./pages/components/DrawTools')) },
       { path: 'components/connector', lazy: lazy(() => import('./pages/components/Connector')) },
       { path: 'components/perfect-preview', lazy: lazy(() => import('./pages/components/PerfectPreview')) },
+      { path: 'components/line-handles', lazy: lazy(() => import('./pages/components/LineHandles')) },
       { path: 'icons', lazy: lazy(() => import('./pages/Icons')) },
       { path: 'icons/life', lazy: lazy(() => import('./pages/IconsLife')) },
       { path: '*', Component: NotFound },
