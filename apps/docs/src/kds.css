@@ -293,6 +293,15 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.07), inset 0 0 0 .5px rgba(0,0,0,.035), inset 0 -2px 4px -2px var(--rule-lip); }
 [data-mu-colorway="graphite"] .stage, .cw-graphite .stage { box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4), inset 0 -2px 4px -2px rgba(255,255,255,.04); background: rgba(255,255,255,.012); }
 .stage.bare { background: none; box-shadow: none; padding-left: 0; padding-right: 0; }
+/* What a specimen sits on follows its layer (docs/COMPOSITION.md). A part or component sits on the table:
+   no well, the space hugs it. An object, instrument or place sits on a piece of canvas: the page's own
+   material with the canvas vignette and a hairline edge, never sunk (sunk is the look of a place). */
+.stage.on-table, [data-mu-colorway] .stage.on-table { min-height: 0; padding: 28px 0 32px; border-radius: 0; background: none; box-shadow: none; }
+.stage.on-canvas, [data-mu-colorway] .stage.on-canvas { min-height: 0; padding: 36px 24px 44px;
+  background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 45%, transparent), transparent 60%),
+    radial-gradient(100% 80% at 80% 110%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 60%), var(--page);
+  box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--ink) 10%, transparent); }
+[data-mu-colorway="graphite"] .stage.on-canvas, .cw-graphite .stage.on-canvas { background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 4%, transparent), transparent 60%), var(--page); box-shadow: inset 0 0 0 .5px color-mix(in srgb, white 8%, transparent); }
 .stage.col { flex-direction: column; }
 .stage.left { justify-content: flex-start; }
 .stage > .cap, .cap-under { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; pointer-events: none; }

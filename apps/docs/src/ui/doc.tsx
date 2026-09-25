@@ -86,20 +86,23 @@ export interface StageProps {
   style?: React.CSSProperties;
   /** stage: the light object. dark: the specimen needs a graphite surface (strip caps). */
   tone?: 'stage' | 'dark';
+  /** What the specimen sits on: the table (parts, components), a piece of canvas (objects,
+   * instruments, places) or, until every page moves over, the old well. */
+  on?: 'well' | 'table' | 'canvas';
   /** Let the stage run wider than the measure on large screens (default true). */
   bleed?: boolean;
   stageRef?: React.Ref<HTMLDivElement>;
 }
 
 /** The reference stage: specimens sit on the table; the caption is engraved at its foot. */
-export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', stageRef }: StageProps) {
+export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', on = 'well', stageRef }: StageProps) {
   return (
     <figure style={{ margin: 0 }}>
       <div
         ref={stageRef}
         data-md="skip"
         data-mu-colorway={tone === 'dark' ? 'graphite' : undefined}
-        className={['stage', className].join(' ')}
+        className={['stage', on === 'well' ? '' : `on-${on}`, className].join(' ')}
         style={{ ...(tone === 'dark' ? { background: 'var(--page)' } : null), ...((caption || cost) ? { paddingBottom: 28, rowGap: 24 } : null), ...style }}
       >
         {children}
@@ -122,8 +125,8 @@ function StageCaption({ caption, cost }: { caption?: React.ReactNode; cost?: Rea
 }
 
 /** The older name, kept so every page takes the stage. */
-export function Bench({ caption, children, className, style }: { caption?: string; children: React.ReactNode; className?: string; style?: React.CSSProperties; tone?: 'well' | 'page' }) {
-  return <Stage caption={caption} className={className} style={style}>{children}</Stage>;
+export function Bench({ caption, children, className, style, on }: { caption?: string; children: React.ReactNode; className?: string; style?: React.CSSProperties; tone?: 'well' | 'page'; on?: StageProps['on'] }) {
+  return <Stage caption={caption} className={className} style={style} on={on}>{children}</Stage>;
 }
 
 
