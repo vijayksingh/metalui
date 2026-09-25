@@ -1,0 +1,19 @@
+{
+  "name": "connector",
+  "title": "Connector",
+  "status": "alpha",
+  "description": "The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.",
+  "base": "none (world overlay)",
+  "react": {
+    "export": "Connector",
+    "files": [
+      "connector.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalConnector",
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift"
+  },
+  "agent": "connector.agent.md",
+  "layer": "component"
+}

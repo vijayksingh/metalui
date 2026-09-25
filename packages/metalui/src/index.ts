@@ -24,6 +24,7 @@ export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInf
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { InkPicks, WidthPicks, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
+export { Connector, type ConnectorProps, type ConnectorEnd } from './components/connector/connector';
 export { DrawTools, DRAW_TOOLS, type DrawTool, type DrawToolsProps } from './blocks/draw-tools/draw-tools';
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';

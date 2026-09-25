@@ -15,6 +15,7 @@
 - [Chip](https://metalui.dev/r/chip.md): A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.
 - [Code card](https://metalui.dev/r/code-card.md): Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.
 - [Command palette](https://metalui.dev/r/command-palette.md): ⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.
+- [Connector](https://metalui.dev/r/connector.md): The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.
 - [Dialog](https://metalui.dev/r/dialog.md): A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it.
 - [Draw picks](https://metalui.dev/r/draw-picks.md): The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.
 - [Draw tools](https://metalui.dev/r/draw-tools.md): The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.

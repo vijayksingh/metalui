@@ -121,6 +121,23 @@
       "agent": "https://metalui.dev/r/command-palette.md"
     },
     {
+      "name": "connector",
+      "title": "Connector",
+      "status": "alpha",
+      "description": "The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Connector",
+        "base": "none (world overlay)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalConnector"
+      },
+      "registry": "https://metalui.dev/r/connector.json",
+      "agent": "https://metalui.dev/r/connector.md"
+    },
+    {
       "name": "dialog",
       "title": "Dialog",
       "status": "alpha",

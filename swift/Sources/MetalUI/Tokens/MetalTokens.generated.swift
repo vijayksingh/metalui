@@ -1968,6 +1968,28 @@ public enum MetalRecipes {
             "bead.press": .text("0.88"),
         ]
     )
+
+    /// A connector is ink whose ends sit on two blocks (DRAWING.md DR-07). At rest it is only its ink and its label. Hover: a soft green halo along the path and a dot at each end, solid where the end is attached to a block, hollow where it is free. Selected: the halo stays and the ends become handles to drag and re-attach. The label is a small chip at the middle of the path. Sizes stay the same on screen at every zoom. (DRAWING.md DR-07 and §6; the presence language (guide green, handles))
+    public static let connector = MetalObjectRecipe(
+        name: "connector",
+        layers: [
+
+        ],
+        props: [
+            "halo.width": .number(9.0),
+            "halo.ink": .perColorway(bone: "rgba(63,185,122,.24)", graphite: "rgba(120,214,165,.24)"),
+            "end.size": .number(4.5),
+            "end.ring": .number(1.5),
+            "end.ring-ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
+            "end.free-fill": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
+            "handle.size": .number(5.0),
+            "handle.fill": .text("#FFFFFF"),
+            "handle.line": .number(1.0),
+            "label.pad-x": .number(7.0),
+            "label.pad-y": .number(2.0),
+            "label.radius": .number(7.0),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

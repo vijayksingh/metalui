@@ -1607,6 +1607,16 @@
   --mu-r-draw-width-bold: 10px;
   --mu-r-draw-bead-hover: 1.14;
   --mu-r-draw-bead-press: 0.88;
+  /* connector: DRAWING.md DR-07 and §6; the presence language (guide green, handles) */
+  --mu-r-connector-halo-width: 9px;
+  --mu-r-connector-end-size: 4.5px;
+  --mu-r-connector-end-ring: 1.5px;
+  --mu-r-connector-handle-size: 5px;
+  --mu-r-connector-handle-fill: #FFFFFF;
+  --mu-r-connector-handle-line: 1px;
+  --mu-r-connector-label-pad-x: 7px;
+  --mu-r-connector-label-pad-y: 2px;
+  --mu-r-connector-label-radius: 7px;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1958,6 +1968,9 @@
   --mu-r-brush-eraser-ink: rgba(27,27,29,.45);
   --mu-r-draw-ink-ink: #1B1B1D;
   --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.45), inset 0 -1.5px 2px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.18), 0 1px 2px rgba(0,0,0,.12);
+  --mu-r-connector-halo-ink: rgba(63,185,122,.24);
+  --mu-r-connector-end-ring-ink: #FFFFFF;
+  --mu-r-connector-end-free-fill: #FFFFFF;
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2287,6 +2300,9 @@
   --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
   --mu-r-draw-ink-ink: #F2F2F0;
   --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35);
+  --mu-r-connector-halo-ink: rgba(120,214,165,.24);
+  --mu-r-connector-end-ring-ink: #1B1B1D;
+  --mu-r-connector-end-free-fill: #1B1B1D;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2617,5 +2633,8 @@
     --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
     --mu-r-draw-ink-ink: #F2F2F0;
     --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35);
+    --mu-r-connector-halo-ink: rgba(120,214,165,.24);
+    --mu-r-connector-end-ring-ink: #1B1B1D;
+    --mu-r-connector-end-free-fill: #1B1B1D;
   }
 }

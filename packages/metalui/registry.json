@@ -149,6 +149,24 @@
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
     },
     {
+      "name": "connector",
+      "type": "registry:ui",
+      "title": "Connector",
+      "description": "The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/connector/connector.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/connector/connector.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",

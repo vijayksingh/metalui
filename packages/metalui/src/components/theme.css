@@ -750,6 +750,19 @@
   --spacing-draw-width-fine: var(--mu-r-draw-width-fine);
   --spacing-draw-width-regular: var(--mu-r-draw-width-regular);
   --spacing-draw-width-bold: var(--mu-r-draw-width-bold);
+  --spacing-connector-halo-width: var(--mu-r-connector-halo-width);
+  --color-connector-halo-ink: var(--mu-r-connector-halo-ink);
+  --spacing-connector-end-size: var(--mu-r-connector-end-size);
+  --spacing-connector-end-ring: var(--mu-r-connector-end-ring);
+  --color-connector-end-ring-ink: var(--mu-r-connector-end-ring-ink);
+  --color-connector-end-free-fill: var(--mu-r-connector-end-free-fill);
+  --spacing-connector-handle-size: var(--mu-r-connector-handle-size);
+  --color-connector-handle-fill: var(--mu-r-connector-handle-fill);
+  --spacing-connector-handle-line: var(--mu-r-connector-handle-line);
+  --spacing-connector-label-pad-x: var(--mu-r-connector-label-pad-x);
+  --spacing-connector-label-pad-y: var(--mu-r-connector-label-pad-y);
+  --spacing-connector-label-radius: var(--mu-r-connector-label-radius);
+  --radius-connector-label-radius: var(--mu-r-connector-label-radius);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1805,6 +1818,30 @@
 }
 @utility opacity-draw-bead-press {
   opacity: var(--mu-r-draw-bead-press);
+}
+@utility connector-layer {
+  position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;
+}
+@utility connector-halo {
+  fill: none; stroke: var(--mu-r-connector-halo-ink); stroke-width: calc(var(--mu-r-connector-halo-width) / var(--mu-canvas-scale, 1)); stroke-linecap: round; stroke-linejoin: round;
+}
+@utility connector-end {
+  fill: var(--mu-presence-guide); stroke: var(--mu-r-connector-end-ring-ink); stroke-width: calc(var(--mu-r-connector-end-ring) / var(--mu-canvas-scale, 1)); [data-mu-colorway="graphite"] & { fill: var(--mu-presence-guide-dark); }
+}
+@utility connector-end-free {
+  fill: var(--mu-r-connector-end-free-fill); stroke: var(--mu-presence-guide); stroke-width: calc(var(--mu-r-connector-end-ring) / var(--mu-canvas-scale, 1)); [data-mu-colorway="graphite"] & { stroke: var(--mu-presence-guide-dark); }
+}
+@utility connector-handle {
+  fill: var(--mu-r-connector-handle-fill); stroke: var(--mu-presence-guide); stroke-width: calc(var(--mu-r-connector-handle-line) / var(--mu-canvas-scale, 1)); filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.2)); pointer-events: auto; cursor: grab; [data-mu-colorway="graphite"] & { stroke: var(--mu-presence-guide-dark); }
+}
+@utility connector-chrome {
+  transition: opacity var(--mu-spring-part-d) var(--mu-spring-part); [data-state=rest] > & { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility connector-label {
+  position: absolute; transform: translate(-50%, -50%) scale(calc(1 / var(--mu-canvas-scale, 1))); padding: var(--mu-r-connector-label-pad-y) var(--mu-r-connector-label-pad-x); border-radius: var(--mu-r-connector-label-radius); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); font: var(--mu-type-ui); letter-spacing: var(--mu-type-ui-tracking); color: var(--mu-ink); white-space: nowrap;
+}
+@utility stroke-width-connector-halo-width {
+  stroke-width: var(--mu-r-connector-halo-width);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
