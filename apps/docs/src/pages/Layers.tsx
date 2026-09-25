@@ -153,7 +153,7 @@ export default function Layers() {
         lede="MetalUI is six layers. Each one is built only from the layers before it: values make parts, parts make controls and things, and things live in places."
       />
       <Section title="One scene, six layers" lede="Pick a layer. Everything in the scene that belongs to it is outlined.">
-        <Bench className="min-h-[520px]">
+        <Bench on="canvas" className="min-h-[520px]">
           <Scene />
         </Bench>
       </Section>

@@ -93,13 +93,13 @@ export default function RegionPage() {
       />
 
       <Section title="Drop a block" lede="Drag the block over a region: it lights and its rule says what the drop will do. Drop it and it lands inside on the object spring. Double-click a name to rename it. Dials: dim (an in-place lens with no match inside) and past (the region did not exist yet).">
-        <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} className="wide min-h-[400px] items-start justify-start">
+        <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} on="canvas" className="wide min-h-[400px] items-start justify-start">
           <Board dim={d.dim} past={d.past} />
         </Bench>
       </Section>
 
       <Section title="States and a lens">
-        <Bench tone="page" caption="rest · over · dim · a pinned lens with rows">
+        <Bench tone="page" on="canvas" caption="rest · over · dim · a pinned lens with rows">
           <div className="flex flex-wrap gap-24">
             <Region name="friday" rule="dates them friday" count={2} width={220} height={150} />
             <Region name="Done" rule="marks tasks done" dropRule="drop to mark tasks done" over width={220} height={150} />

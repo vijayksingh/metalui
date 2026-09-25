@@ -16,7 +16,7 @@ export interface ComponentPageProps {
   title: string;
   lede: React.ReactNode;
   /** wide: the playground is a scene things move across (a folder filling up), not one specimen. */
-  play: { lede: string; caption?: string; node: React.ReactNode; wide?: boolean };
+  play: { lede: string; caption?: string; node: React.ReactNode; wide?: boolean; on?: 'well' | 'table' | 'canvas' };
   xray?: React.ReactNode;
   /** More sections between the X-ray and the source. */
   more?: { id: string; title: string; lede?: string; node: React.ReactNode }[];
@@ -32,7 +32,7 @@ export function ComponentPage({ title, lede, play, xray, more, capture, sources,
     <>
       <PageHeader title={title} lede={lede} tags={[{ label: 'React', led: 'green' }, { label: hasSwift ? 'SwiftUI' : 'SwiftUI not yet', led: hasSwift ? 'green' : 'off' }]} />
       <Section title="Playground" lede={play.lede}>
-        <Bench caption={play.caption} className={play.wide ? 'wide' : undefined}>{play.node}</Bench>
+        <Bench caption={play.caption} on={play.on} className={play.wide ? 'wide' : undefined}>{play.node}</Bench>
         {capture && <SwiftCapture name={capture} maxWidth={520} />}
       </Section>
       {xray && (

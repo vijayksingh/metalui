@@ -1281,6 +1281,10 @@
   background: var(--mu-r-well-self-track-background);
   box-shadow: var(--mu-r-well-self-track-shadow);
 }
+@utility recipe-well-graphite {
+  background: var(--mu-r-well-self-graphite-background);
+  box-shadow: var(--mu-r-well-self-graphite-shadow);
+}
 @utility recipe-well-region {
   background: var(--mu-r-well-self-region-background);
   box-shadow: var(--mu-r-well-self-region-shadow);
@@ -1288,10 +1292,6 @@
 @utility recipe-well-region-over {
   background: var(--mu-r-well-self-region-over-background);
   box-shadow: var(--mu-r-well-self-region-over-shadow);
-}
-@utility recipe-well-graphite {
-  background: var(--mu-r-well-self-graphite-background);
-  box-shadow: var(--mu-r-well-self-graphite-shadow);
 }
 @utility transition-well {
   transition: var(--mu-r-well-self-transition);
