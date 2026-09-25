@@ -187,64 +187,64 @@ export const ICON_CATALOG = {
    * LINE · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the ends pull outward, one after the other
+   *          plucked like a string: it bows, swings back and settles straight
    * PRESS one-shot (from the current pose)
    *          it pulls back into its start and is drawn out again
    *     0ms   .ln plays ln-draw (640ms)
-   *    50ms   .b plays ln-ride (640ms)
+   *     0ms   .b plays ln-ride (640ms)
    *     0ms   .a plays ln-anchor (640ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "line": {
     label: "Line",
     category: "Tools",
-    hover: "the ends pull outward, one after the other",
+    hover: "plucked like a string: it bows, swings back and settles straight",
     press: "it pulls back into its start and is drawn out again",
-    pressMs: 690,
+    pressMs: 640,
     defs: "",
-    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.4 18.6 18.6 5.4\"/><circle class=\"a s\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"b s\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/>",
+    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4\"/><circle class=\"a s\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"b s\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
    * ARROW · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the head leads forward and the shaft follows
+   *          it bends into a connector and the head swings round to follow
    * PRESS one-shot (from the current pose)
    *          it draws back and shoots, the shaft stretching behind the head
    *     0ms   .ar plays ar-fire (500ms)
-   *    40ms   .sh plays ar-stretch (500ms)
+   *     0ms   .sh plays ar-stretch (500ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "arrow": {
     label: "Arrow",
     category: "Tools",
-    hover: "the head leads forward and the shaft follows",
+    hover: "it bends into a connector and the head swings round to follow",
     press: "it draws back and shoots, the shaft stretching behind the head",
-    pressMs: 540,
+    pressMs: 500,
     defs: "",
-    body: "<g class=\"ar\"><path class=\"sh\" d=\"M5.4 18.6 18 6\"/><path class=\"hd\" d=\"M10.8 5.4h7.8v7.8\"/></g>",
+    body: "<g class=\"ar\"><path class=\"sh\" d=\"M5.4 18.6C9.6 14.4 13.8 10.2 18 6\"/><path class=\"hd\" d=\"M10.8 5.4h7.8v7.8\"/></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
    * RECTANGLE · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          a corner handle pops in and pulls the box
+   *          a rough hand-drawn box snaps into a clean one
    * PRESS one-shot (from the current pose)
    *          the box is dragged out again from its corner
-   *    60ms   .rc plays rc-drag (600ms)
+   *     0ms   .rc plays rc-drag (600ms)
    *     0ms   .hn plays rc-hand (600ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "rectangle": {
     label: "Rectangle",
     category: "Tools",
-    hover: "a corner handle pops in and pulls the box",
+    hover: "a rough hand-drawn box snaps into a clean one",
     press: "the box is dragged out again from its corner",
-    pressMs: 660,
+    pressMs: 600,
     defs: "",
-    body: "<rect class=\"rc\" x=\"3.4\" y=\"5\" width=\"17.2\" height=\"14\" rx=\"3.2\"/><circle class=\"hn s\" cx=\"20.6\" cy=\"19\" r=\"1.7\"/>",
+    body: "<path class=\"rc\" d=\"M6.6 5L17.4 5A3.2 3.2 0 0 1 20.6 8.2L20.6 15.8A3.2 3.2 0 0 1 17.4 19L6.6 19A3.2 3.2 0 0 1 3.4 15.8L3.4 8.2A3.2 3.2 0 0 1 6.6 5Z\"/><circle class=\"hn s\" cx=\"20.6\" cy=\"19\" r=\"1.7\"/>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

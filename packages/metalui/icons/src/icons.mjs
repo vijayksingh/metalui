@@ -109,34 +109,33 @@ export const ICONS = [
        @keyframes mk-band{18%{transform:scaleX(1);opacity:0}30%{transform:scaleX(0);opacity:0}31%{transform:scaleX(0);opacity:1}38%{transform:scaleX(.26)}84%{transform:scaleX(1.07)}}`,
   shape: 'A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. The band (duo .26, sits under the words) is always as long as the tip has travelled: hover and press move them on the same curve. Press lifts the marker back to the start while the old band fades, then it leans into the page and sweeps a fresh one.' },
 
-{ name: 'line', cat: 'Tools', label: 'Line', hover: 'the ends pull outward, one after the other', press: 'it pulls back into its start and is drawn out again',
-  body: `<path class="ln" pathLength="1" d="M5.4 18.6 18.6 5.4"/><circle class="a s" cx="5.4" cy="18.6" r="1.3"/><circle class="b s" cx="18.6" cy="5.4" r="1.3"/>`,
-  base: `& .ln{stroke-dasharray:1 1;stroke-dashoffset:0;transform-origin:12px 12px} & .a{transform-origin:5.4px 18.6px} & .b{transform-origin:18.6px 5.4px;--dl:.05s}`,
-  mo: `@H .a{transform:translate(-1px,1px)} @H .b{transform:translate(1px,-1px)} @H .ln{transform:scale(1.1)}
+{ name: 'line', cat: 'Tools', label: 'Line', hover: 'plucked like a string: it bows, swings back and settles straight', press: 'it pulls back into its start and is drawn out again',
+  body: `<path class="ln" pathLength="1" d="M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4"/><circle class="a s" cx="5.4" cy="18.6" r="1.3"/><circle class="b s" cx="18.6" cy="5.4" r="1.3"/>`,
+  base: `& .ln{stroke-dasharray:1 1;stroke-dashoffset:0} & .a{transform-origin:5.4px 18.6px} & .b{transform-origin:18.6px 5.4px}`,
+  mo: `@H .ln{animation:ln-pluck .9s ease-in-out}
+       @keyframes ln-pluck{0%{d:path("M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4")}16%{d:path("M5.4 18.6C6.80 11.20 11.20 6.80 18.6 5.4")}38%{d:path("M5.4 18.6C11.80 16.20 16.20 11.80 18.6 5.4")}58%{d:path("M5.4 18.6C8.80 13.20 13.20 8.80 18.6 5.4")}78%{d:path("M5.4 18.6C10.20 14.60 14.60 10.20 18.6 5.4")}100%{d:path("M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4")}}
        @P .ln{animation:ln-draw .64s cubic-bezier(.4,0,.2,1)} @P .b{animation:ln-ride .64s cubic-bezier(.4,0,.2,1)} @P .a{animation:ln-anchor .64s cubic-bezier(.2,.7,.3,1)}
        @keyframes ln-draw{34%{stroke-dashoffset:1}86%{stroke-dashoffset:0}}
-       @keyframes ln-ride{34%{transform:translate(-13.9px,13.9px) scale(.7)}86%{transform:translate(1.4px,-1.4px) scale(1.18)}}
-       @keyframes ln-anchor{34%{transform:translate(-1px,1px) scale(1)}46%{transform:translate(-1px,1px) scale(1.4)}}`,
-  shape: 'One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does, the far one a beat later. Press pulls the line back into its start (the far dot riding in), then drags it out again: the near dot pulses as it is anchored, the far dot rides the growing tip and lands with a small overshoot.' },
-
-{ name: 'arrow', cat: 'Tools', label: 'Arrow', hover: 'the head leads forward and the shaft follows', press: 'it draws back and shoots, the shaft stretching behind the head',
-  body: `<g class="ar"><path class="sh" d="M5.4 18.6 18 6"/><path class="hd" d="M10.8 5.4h7.8v7.8"/></g>`,
-  base: `& .sh{transform-origin:5.4px 18.6px;--dl:.04s} & .hd{transform-origin:18.6px 5.4px}`,
-  mo: `@H .sh{transform:scale(1.07)} @H .hd{transform:translate(.9px,-.9px)}
+       @keyframes ln-ride{34%{transform:translate(-13.2px,13.2px) scale(.7)}86%{transform:translate(.4px,-.4px) scale(1.18)}}
+       @keyframes ln-anchor{34%{transform:scale(1)}46%{transform:scale(1.4)}}`,
+  shape: 'One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end, drawn as a cubic so it can bend. Hover plucks it: pinned at both dots, it bows 3 up-left, swings 2 the other way, then 1 and .4, and rests straight. Press pulls it back into its start and drags it out again, the far dot riding the tip.' },
+{ name: 'arrow', cat: 'Tools', label: 'Arrow', hover: 'it bends into a connector and the head swings round to follow', press: 'it draws back and shoots, the shaft stretching behind the head',
+  body: `<g class="ar"><path class="sh" d="M5.4 18.6C9.6 14.4 13.8 10.2 18 6"/><path class="hd" d="M10.8 5.4h7.8v7.8"/></g>`,
+  base: `& .sh{transform-origin:5.4px 18.6px} & .hd{transform-origin:18.6px 5.4px;--dl:.05s}`,
+  mo: `@H .sh{d:path("M5.4 18.6C5.6 11.2 10.2 5.4 17.8 5.4")} @H .hd{transform:rotate(45deg)}
        @P .ar{animation:ar-fire .5s cubic-bezier(.3,0,.2,1)} @P .sh{animation:ar-stretch .5s cubic-bezier(.3,0,.2,1)}
        @keyframes ar-fire{28%{transform:translate(-1.3px,1.3px)}56%{transform:translate(1.5px,-1.5px)}78%{transform:translate(-.25px,.25px)}}
-       @keyframes ar-stretch{28%{transform:scale(.9)}56%{transform:scale(1.18)}78%{transform:scale(1.03)}}`,
-  shape: 'A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover: the head moves first and the shaft catches up. Press: an arrow is aimed at something, so it draws back, shoots forward with the shaft stretching, and settles.' },
-
-{ name: 'rectangle', cat: 'Tools', label: 'Rectangle', hover: 'a corner handle pops in and pulls the box', press: 'the box is dragged out again from its corner',
-  body: `<rect class="rc" x="3.4" y="5" width="17.2" height="14" rx="3.2"/><circle class="hn s" cx="20.6" cy="19" r="1.7"/>`,
-  base: `& .rc{transform-origin:3.4px 5px;--dl:.06s} & .hn{transform-origin:20.6px 19px;transform:translate(0,0) scale(0)}`,
-  mo: `@H .hn{transform:translate(.5px,.7px) scale(1)} @H .rc{transform:scale(1.03,1.05)}
+       @keyframes ar-stretch{28%{transform:scale(.9)}56%{transform:scale(1.12)}78%{transform:scale(1.02)}}`,
+  shape: 'A corner-to-corner shaft (a cubic, straight at rest) with an open right-angle head (7.8 legs), the same span as Line. Hover: the shaft bends up and over like a connector routing to a block, and the head swings 45° a beat later to follow the new end. Press draws it back and shoots it.' },
+{ name: 'rectangle', cat: 'Tools', label: 'Rectangle', hover: 'a rough hand-drawn box snaps into a clean one', press: 'the box is dragged out again from its corner',
+  body: `<path class="rc" d="M6.6 5L17.4 5A3.2 3.2 0 0 1 20.6 8.2L20.6 15.8A3.2 3.2 0 0 1 17.4 19L6.6 19A3.2 3.2 0 0 1 3.4 15.8L3.4 8.2A3.2 3.2 0 0 1 6.6 5Z"/><circle class="hn s" cx="20.6" cy="19" r="1.7"/>`,
+  base: `& .rc{transform-origin:3.4px 5px} & .hn{transform-origin:20.6px 19px;transform:translate(0,0) scale(0)}`,
+  mo: `@H .rc{animation:rc-perfect .8s}
+       @keyframes rc-perfect{0%{d:path("M6.6 5L17.4 5A3.2 3.2 0 0 1 20.6 8.2L20.6 15.8A3.2 3.2 0 0 1 17.4 19L6.6 19A3.2 3.2 0 0 1 3.4 15.8L3.4 8.2A3.2 3.2 0 0 1 6.6 5Z");animation-timing-function:cubic-bezier(.4,0,.6,1)}28%{d:path("M5.9 6.1L17.9 4.5A3.2 3.2 0 0 1 21.1 7.7L20.2 16.4A3.2 3.2 0 0 1 16.9 19.5L7.3 18.6A3.2 3.2 0 0 1 4 15.3L3 8.9A3.2 3.2 0 0 1 5.9 6.1Z");animation-timing-function:var(--k-spring)}100%{d:path("M6.6 5L17.4 5A3.2 3.2 0 0 1 20.6 8.2L20.6 15.8A3.2 3.2 0 0 1 17.4 19L6.6 19A3.2 3.2 0 0 1 3.4 15.8L3.4 8.2A3.2 3.2 0 0 1 6.6 5Z")}}
        @P .rc{animation:rc-drag .6s cubic-bezier(.45,0,.2,1)} @P .hn{animation:rc-hand .6s cubic-bezier(.45,0,.2,1)}
        @keyframes rc-drag{28%{transform:scale(.24,.24)}74%{transform:scale(1.07,1.09)}}
-       @keyframes rc-hand{28%{transform:translate(-13.1px,-10.6px) scale(1)}74%{transform:translate(1.2px,1.3px) scale(1.12)}}`,
-  shape: 'A 17.2 × 14 rounded box (r3.2), open like the Image frame, pinned at its top-left. Hover pops a drag handle onto the bottom-right corner and the box follows it a beat later. Press is the act of drawing one: the handle pulls the corner back in, then drags the box out past its size and lets it settle; the handle stays on the corner the whole way.' },
-
+       @keyframes rc-hand{28%{transform:translate(-13.1px,-10.6px) scale(1)}74%{transform:translate(1.2px,1.3px) scale(1.12)}100%{transform:translate(0,0) scale(0)}}`,
+  shape: 'A 17.2 × 14 rounded box (r3.2) as a path, open like the Image frame. Hover is hold-to-perfect: the box wobbles into a rough hand-drawn quad (corners off by up to a unit), then springs back to the clean box with a small overshoot. Press drags it out again from its pinned corner, the handle riding the corner.' },
 { name: 'ellipse', cat: 'Tools', label: 'Ellipse', hover: 'it is pulled toward a circle, narrowing as it grows', press: 'a pen point traces it again, all the way round',
   body: `<g class="eg"><ellipse class="el" cx="12" cy="12" rx="8.6" ry="6.9"/><ellipse class="tr" pathLength="1" cx="12" cy="12" rx="8.6" ry="6.9"/><g transform="translate(12 12) scale(1 .8023) translate(-12 -12)"><g class="orb"><circle class="pd s" cx="20.6" cy="12" r="1.4" style="stroke:none"/></g></g></g>`,
   base: `& .eg{transform-origin:12px 12px} & .tr{stroke-dasharray:1 1;stroke-dashoffset:1;opacity:0} & .orb{transform-origin:12px 12px} & .pd{opacity:0}`,

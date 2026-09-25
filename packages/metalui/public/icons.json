@@ -95,33 +95,33 @@
       "component": "LineIcon",
       "label": "Line",
       "category": "Tools",
-      "hover": "the ends pull outward, one after the other",
+      "hover": "plucked like a string: it bows, swings back and settles straight",
       "press": "it pulls back into its start and is drawn out again",
-      "pressMs": 690,
+      "pressMs": 640,
       "tuned16": false,
-      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does, the far one a beat later. Press pulls the line back into its start (the far dot riding in), then drags it out again: the near dot pulses as it is anchored, the far dot rides the growing tip and lands with a small overshoot."
+      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end, drawn as a cubic so it can bend. Hover plucks it: pinned at both dots, it bows 3 up-left, swings 2 the other way, then 1 and .4, and rests straight. Press pulls it back into its start and drags it out again, the far dot riding the tip."
     },
     {
       "name": "arrow",
       "component": "ArrowIcon",
       "label": "Arrow",
       "category": "Tools",
-      "hover": "the head leads forward and the shaft follows",
+      "hover": "it bends into a connector and the head swings round to follow",
       "press": "it draws back and shoots, the shaft stretching behind the head",
-      "pressMs": 540,
+      "pressMs": 500,
       "tuned16": false,
-      "construction": "A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover: the head moves first and the shaft catches up. Press: an arrow is aimed at something, so it draws back, shoots forward with the shaft stretching, and settles."
+      "construction": "A corner-to-corner shaft (a cubic, straight at rest) with an open right-angle head (7.8 legs), the same span as Line. Hover: the shaft bends up and over like a connector routing to a block, and the head swings 45° a beat later to follow the new end. Press draws it back and shoots it."
     },
     {
       "name": "rectangle",
       "component": "RectangleIcon",
       "label": "Rectangle",
       "category": "Tools",
-      "hover": "a corner handle pops in and pulls the box",
+      "hover": "a rough hand-drawn box snaps into a clean one",
       "press": "the box is dragged out again from its corner",
-      "pressMs": 660,
+      "pressMs": 600,
       "tuned16": false,
-      "construction": "A 17.2 × 14 rounded box (r3.2), open like the Image frame, pinned at its top-left. Hover pops a drag handle onto the bottom-right corner and the box follows it a beat later. Press is the act of drawing one: the handle pulls the corner back in, then drags the box out past its size and lets it settle; the handle stays on the corner the whole way."
+      "construction": "A 17.2 × 14 rounded box (r3.2) as a path, open like the Image frame. Hover is hold-to-perfect: the box wobbles into a rough hand-drawn quad (corners off by up to a unit), then springs back to the clean box with a small overshoot. Press drags it out again from its pinned corner, the handle riding the corner."
     },
     {
       "name": "ellipse",

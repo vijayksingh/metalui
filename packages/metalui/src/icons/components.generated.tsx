@@ -17,11 +17,11 @@ export const DrawIcon = createIcon("draw", "DrawIcon");
 export const PenIcon = createIcon("pen", "PenIcon");
 /** Marker. Hover: it sweeps right and lays a see-through band. Press: it lifts back, then sweeps a fresh band. */
 export const MarkerIcon = createIcon("marker", "MarkerIcon");
-/** Line. Hover: the ends pull outward, one after the other. Press: it pulls back into its start and is drawn out again. */
+/** Line. Hover: plucked like a string: it bows, swings back and settles straight. Press: it pulls back into its start and is drawn out again. */
 export const LineIcon = createIcon("line", "LineIcon");
-/** Arrow. Hover: the head leads forward and the shaft follows. Press: it draws back and shoots, the shaft stretching behind the head. */
+/** Arrow. Hover: it bends into a connector and the head swings round to follow. Press: it draws back and shoots, the shaft stretching behind the head. */
 export const ArrowIcon = createIcon("arrow", "ArrowIcon");
-/** Rectangle. Hover: a corner handle pops in and pulls the box. Press: the box is dragged out again from its corner. */
+/** Rectangle. Hover: a rough hand-drawn box snaps into a clean one. Press: the box is dragged out again from its corner. */
 export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
 /** Ellipse. Hover: it is pulled toward a circle, narrowing as it grows. Press: a pen point traces it again, all the way round. */
 export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
