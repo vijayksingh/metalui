@@ -38,6 +38,10 @@
       "types": "./dist/sound.d.ts",
       "import": "./dist/sound.js"
     },
+    "./gadgets": {
+      "types": "./dist/gadgets.d.ts",
+      "import": "./dist/gadgets.js"
+    },
     "./styles.css": "./src/components/tokens.css",
     "./icons.css": "./dist/icons.css",
     "./icons/life.css": "./dist/icons-life.css",

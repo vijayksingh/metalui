@@ -59,6 +59,34 @@ final class MetalCaptures: XCTestCase {
         .metalColorway(colorway)
     }
 
+    /// Foundations › Materials › Gadget materials: seven materials at weights .1, .5 and .9.
+    private func gadgetMaterialSheet(_ colorway: MetalColorway) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(MetalSoundMaterial.allCases, id: \.self) { material in
+                HStack(spacing: 16) {
+                    Text(material.rawValue.capitalized)
+                        .font(.metal(MetalType.title))
+                        .foregroundStyle(colorway.tokens.ink.color)
+                        .frame(width: 120, alignment: .leading)
+                    HStack(spacing: 8) {
+                        ForEach([0.1, 0.5, 0.9], id: \.self) { weight in
+                            MetalMaterialSpecimen(material, weight: weight, size: 132)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(32)
+        .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+        .metalColorway(colorway)
+    }
+
+    func testGadgetMaterials() {
+        for colorway in MetalColorway.allCases {
+            capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))
+        }
+    }
+
     func testFrost() {
         for colorway in MetalColorway.allCases {
             capture("frost-\(colorway.rawValue)", frostBench(colorway))

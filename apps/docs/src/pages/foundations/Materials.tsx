@@ -4,6 +4,10 @@ import { tokens } from '../../lib/tokens';
 import { useColorway } from '../../app/colorway';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { Switch } from '@unlocalhosted/metalui';
+import { GADGETS, GADGET_MATERIALS, type GadgetMaterial } from '@unlocalhosted/metalui/gadgets';
+import { createSound } from '@unlocalhosted/metalui/sound';
+import { GadgetMaterialSheet } from '../../ui/GadgetMaterialSheet';
 
 const FROST = tokens.frost;
 type FrostName = keyof typeof FROST.recipes;
@@ -31,9 +35,33 @@ export default function Materials() {
         reduceTransparency: false,
       },
       copy: { type: 'action', label: 'Copy frost backdrop' },
+      gadget: {
+        material: { type: 'select', options: [...GADGET_MATERIALS], default: 'clay' },
+        bevel: [1, 0.25, 2.5, 0.05],
+        gloss: [1, 0, 3, 0.05],
+        grain: [1, 0, 3, 0.05],
+        flecks: [1, 0, 3, 0.05],
+        shadow: [1, 0, 2, 0.05],
+        contrast: false,
+      },
+      copyFinish: { type: 'action', label: 'Copy gadget finish' },
     },
-    { onAction: (a) => a === 'copy' && copyJSON({ blur: d.frost.blur, saturate: d.frost.saturate }) },
+    {
+      onAction: (a) => {
+        if (a === 'copy') copyJSON({ blur: d.frost.blur, saturate: d.frost.saturate });
+        if (a === 'copyFinish') {
+          const m = d.gadget.material as GadgetMaterial, base = GADGETS.materials[m] as unknown as { bevel: number; gloss: readonly number[]; grain: readonly number[]; flecks: number };
+          copyJSON({ material: m, bevel: +(base.bevel * d.gadget.bevel).toFixed(2), gloss: [base.gloss[0], +(base.gloss[1] * d.gadget.gloss).toFixed(3)], grain: [base.grain[0], +(base.grain[1] * d.gadget.grain).toFixed(4)], flecks: +(base.flecks * d.gadget.flecks).toFixed(2), shadowScale: d.gadget.shadow });
+        }
+      },
+    },
   );
+  const sound = React.useMemo(() => createSound(), []);
+  const [soundOn, setSoundOn] = React.useState(false);
+  const gadgetTune = React.useMemo(() => ({
+    material: d.gadget.material as GadgetMaterial,
+    values: { bevel: d.gadget.bevel, gloss: d.gadget.gloss, grain: d.gadget.grain, flecks: d.gadget.flecks, shadow: d.gadget.shadow },
+  }), [d.gadget.material, d.gadget.bevel, d.gadget.gloss, d.gadget.grain, d.gadget.flecks, d.gadget.shadow]);
 
   const tuned = d.frost.blur !== FROST.backdrop.blur || d.frost.saturate !== FROST.backdrop.saturate;
   const benchVars = { '--mu-backdrop': `blur(${d.frost.blur}px) saturate(${d.frost.saturate})` } as React.CSSProperties;
@@ -75,6 +103,22 @@ export default function Materials() {
         <SwiftCapture name="frost" />
       </Section>
 
+      <Section
+        title="Gadget materials"
+        lede="Gadgets are cut from seven materials, each a finish the one light shades: how deep the bevel, how glossy, how rough, how flecked, how much light passes through, how heavy its shadow. The same seven sound when struck (Foundations › Sound), so every body you see here also has a voice. Each row shows a material light, middling and heavy. Strike a body, or drag along a row."
+      >
+        <Bench caption={`web · one light from the upper left · ${colorway}${d.gadget.contrast ? ' · increased contrast' : ''} · tuning ${d.gadget.material}`}>
+          <div className="flex w-full flex-col gap-20">
+            <label className="flex items-center gap-12 type-ui text-ink">
+              <Switch aria-label="Sound" checked={soundOn} onCheckedChange={async (next) => { if (next) await sound.enable(); else sound.disable(); setSoundOn(next); }} />
+              Sound
+            </label>
+            <GadgetMaterialSheet host={colorway === 'graphite' ? 'graphite' : 'bone'} contrast={d.gadget.contrast} sound={sound} tune={gadgetTune} />
+          </div>
+        </Bench>
+        <SwiftCapture name="gadget-materials" />
+      </Section>
+
       <Section title="Recipes" lede="Each recipe names its fill, its opaque twin and its shadow stack. A value that names a colorway token follows the colorway; a literal is the same in both.">
         <TokenTable
           head={['Recipe', 'Fill · opaque twin · shadow', 'Used for']}
@@ -112,7 +156,7 @@ export default function Materials() {
           rules={[
             { id: 'F1', title: 'Floating is always frosted', body: 'Palette, menus, lens bar, tool strip and toast blur what is behind them. They read as higher than raised without a heavier shadow.', origin: 'Elevation E2' },
             { id: 'F2', title: 'One frost', body: 'Every frosted surface uses the same backdrop, blur 22 and saturate 1.6. A surface that needs more separation takes the denser plate fill, never more blur.' },
-            { id: 'F3', title: 'Every frost has an opaque twin', body: 'Under Reduce Transparency the fill turns opaque and the blur goes; the shadow stack stays, so the surface still reads as floating.', origin: 'Kamui KamuiMaterials' },
+            { id: 'F3', title: 'Every frost has an opaque twin', body: 'Under Reduce Transparency the fill turns opaque and the blur goes; the shadow stack stays, so the surface still reads as floating.', origin: 'the native reference materials' },
             { id: 'F4', title: 'Dark frost needs density', body: 'Graphite frost over a light backdrop needs about 0.9 opacity or it turns muddy grey, which is why the graphite recipe runs .94 to .96.', origin: 'Elevation E4' },
             { id: 'F5', title: 'Shadows stay outside', body: 'A translucent fill never shows its own drop shadow through it: CSS paints outer shadows only outside the box, and SwiftUI masks them to match.' },
           ]}
