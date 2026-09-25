@@ -8,23 +8,22 @@ import { ComponentPage } from '../../ui/ComponentPage';
  * PUTTING A THING IN A FOLDER
  *
  *  drag     the thing follows the pointer; over the folder, the folder opens wide
- *    0ms    let go over it: the folder stays open
- *    0ms    the thing flies to the pocket's front slot on the object spring, turning to
- *           the front card's lean and settling to a card's size
- *  380ms    it sinks into the pocket, cut off exactly at the flap's edge as it goes
- *  640ms    it is one of the folder's cards now: the folder closes, the flap swings shut
- *           past rest and settles; the count goes up
+ *    0ms    let go over it: the folder stays open; its cards each glide one slot back
+ *           (the oldest slides down into the pocket), leaving the front slot empty
+ *    0ms    the thing flies into that slot on the object spring, turning to its lean
+ *  420ms    it is there: it simply is the front card now
+ *  520ms    the whole fan settles down together and the flap swings shut; the count goes up
  *  let go anywhere else: the thing springs back to where it was
  * ───────────────────────────────────────────────────────── */
 
-const TIMING = { fly: 380, sink: 260 };
+const TIMING = { fly: 420, settle: 100 };
 
 interface Thing { id: string; peek: FolderPeek; label: string; home: { x: number; y: number } }
 
 const START: FolderPeek[] = [
-  { thumb: 'linear-gradient(135deg,#F2A56B,#E0673C 60%,#9E3B25)' },
-  { thumb: 'radial-gradient(60% 60% at 30% 30%,#7FA8FF,#2B3F8F)', link: true },
-  { thumb: 'linear-gradient(160deg,#3D4B45,#1E2623),radial-gradient(40% 40% at 70% 30%,#9FE3BF,transparent)' },
+  { id: 'poster', thumb: 'linear-gradient(135deg,#F2A56B,#E0673C 60%,#9E3B25)' },
+  { id: 'type', thumb: 'radial-gradient(60% 60% at 30% 30%,#7FA8FF,#2B3F8F)', link: true },
+  { id: 'night', thumb: 'linear-gradient(160deg,#3D4B45,#1E2623),radial-gradient(40% 40% at 70% 30%,#9FE3BF,transparent)' },
 ];
 const THINGS: Thing[] = [
   { id: 'photo', label: 'a photo', peek: { thumb: 'linear-gradient(135deg,#F7D774,#D99A1E 55%,#8C5A12)' }, home: { x: 36, y: 40 } },
@@ -69,35 +68,29 @@ function Play() {
     return x > f.left && x < f.right && y > f.top && y < f.bottom;
   };
 
-  // The thing flies to the pocket's front slot, then sinks behind the flap.
+  // The cards make room, the thing flies into the empty front slot and becomes that card.
   const putIn = async (id: string) => {
     const el = els.current[id]!, from = el.getBoundingClientRect();
-    const front = folder.current!.querySelector('.folder-card-3') ?? folder.current!;
-    const slot = front.getBoundingClientRect();
-    const flapTop = folder.current!.querySelector('.folder-flap')!.getBoundingClientRect().top;
+    const thing = THINGS.find((t) => t.id === id)!;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     setBusy(true);
+    setPeeks((p) => [...p, { ...thing.peek, id, waiting: true }]);
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const slot = folder.current!.querySelector(`[data-card="${id}"]`)!.getBoundingClientRect();
     if (!reduce) {
       const dx = slot.left + slot.width / 2 - (from.left + from.width / 2);
       const dy = slot.top + slot.height / 2 - (from.top + from.height / 2);
+      const lean = getComputedStyle(folder.current!.querySelector(`[data-card="${id}"]`)!).getPropertyValue('--r').trim() || '0deg';
       await el.animate(
-        [{ transform: 'translate(0,0) rotate(0deg)' }, { transform: `translate(${dx}px, ${dy}px) rotate(-14deg)` }],
+        [{ transform: 'translate(0,0) rotate(0deg)' }, { transform: `translate(${dx}px, ${dy}px) rotate(${lean})` }],
         { duration: TIMING.fly, easing: springEase(), fill: 'forwards' },
       ).finished;
-      // Sink: down into the pocket, cut off at the flap's edge as it goes.
-      const r = el.getBoundingClientRect();
-      await el.animate(
-        [
-          { transform: `translate(${dx}px, ${dy}px) rotate(-14deg)`, clipPath: `inset(-40px -40px ${Math.max(0, r.bottom - flapTop)}px -40px)` },
-          { transform: `translate(${dx}px, ${dy + r.height}px) rotate(-10deg)`, clipPath: `inset(-40px -40px ${Math.max(0, r.bottom - flapTop) + r.height}px -40px)` },
-        ],
-        { duration: TIMING.sink, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' },
-      ).finished;
     }
-    const thing = THINGS.find((t) => t.id === id)!;
+    // It is there: it is the front card now.
+    setPeeks((p) => p.map((c) => (c.id === id ? { ...c, waiting: false } : c)));
     setLeft((l) => l.filter((x) => x !== id));
-    setPeeks((p) => [...p, thing.peek].slice(-3));
     setCount((n) => n + 1);
+    await new Promise((r) => setTimeout(r, TIMING.settle));
     setOver(false);
     setLanded((n) => n + 1);
     setBusy(false);

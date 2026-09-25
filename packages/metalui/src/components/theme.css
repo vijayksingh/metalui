@@ -1984,16 +1984,7 @@
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--mu-r-folder-back-height) + var(--mu-r-folder-back-tab-rise)); background: linear-gradient(180deg, color-mix(in srgb, var(--mu-folder-top) var(--mu-r-folder-shape-translucency), transparent), color-mix(in srgb, var(--mu-folder-bottom) var(--mu-r-folder-shape-translucency), transparent)); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
 @utility folder-card {
-  position: absolute; left: calc(50% - var(--mu-r-folder-card-width) / 2); bottom: var(--mu-r-folder-card-bottom); width: var(--mu-r-folder-card-width); height: var(--mu-r-folder-card-height); box-sizing: border-box; border-radius: var(--mu-r-folder-card-radius); padding: var(--mu-r-folder-card-pad) var(--mu-r-folder-card-pad) 0; overflow: hidden; background: var(--mu-r-folder-card-background); border: .5px solid var(--mu-r-folder-card-border); box-shadow: var(--mu-r-folder-card-shadow); transform-origin: 50% 100%; transform: translateY(var(--y)) rotate(var(--r)); transition: transform var(--mu-spring-object-d) var(--mu-spring-object); @media (prefers-reduced-motion: reduce) { transition: none; }
-}
-@utility folder-card-1 {
-  --y: var(--mu-r-folder-pose-c1-rest-y); --r: var(--mu-r-folder-pose-c1-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c1-hover-y); --r: var(--mu-r-folder-pose-c1-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c1-open-y); --r: var(--mu-r-folder-pose-c1-open-r); } z-index: 1;
-}
-@utility folder-card-2 {
-  --y: var(--mu-r-folder-pose-c2-rest-y); --r: var(--mu-r-folder-pose-c2-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c2-hover-y); --r: var(--mu-r-folder-pose-c2-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c2-open-y); --r: var(--mu-r-folder-pose-c2-open-r); } z-index: 2; transition-delay: .05s;
-}
-@utility folder-card-3 {
-  --y: var(--mu-r-folder-pose-c3-rest-y); --r: var(--mu-r-folder-pose-c3-rest-r); .mu-folder:is(:hover,:focus-visible) & { --y: var(--mu-r-folder-pose-c3-hover-y); --r: var(--mu-r-folder-pose-c3-hover-r); } .mu-folder[data-open] & { --y: var(--mu-r-folder-pose-c3-open-y); --r: var(--mu-r-folder-pose-c3-open-r); } z-index: 3; transition-delay: .1s;
+  position: absolute; left: calc(50% - var(--mu-r-folder-card-width) / 2); bottom: var(--mu-r-folder-card-bottom); width: var(--mu-r-folder-card-width); height: var(--mu-r-folder-card-height); box-sizing: border-box; border-radius: var(--mu-r-folder-card-radius); padding: var(--mu-r-folder-card-pad) var(--mu-r-folder-card-pad) 0; overflow: hidden; background: var(--mu-r-folder-card-background); border: .5px solid var(--mu-r-folder-card-border); box-shadow: var(--mu-r-folder-card-shadow); --t: 1; --k: 1; --n: 1; --fx: calc((var(--t) - .5) * (var(--n) - 1) * var(--mu-r-folder-fan-spread)); --fy: calc(var(--mu-r-folder-fan-rest-y-back) + (var(--mu-r-folder-fan-rest-y-front) - var(--mu-r-folder-fan-rest-y-back)) * var(--t)); --fr: calc((var(--mu-r-folder-fan-rest-r-back) + (var(--mu-r-folder-fan-rest-r-front) - var(--mu-r-folder-fan-rest-r-back)) * var(--t)) * var(--k)); transform-origin: 50% 100%; transform: translateX(var(--px, var(--fx))) translateY(var(--py, var(--fy))) rotate(var(--pr, var(--fr))); transition: transform var(--mu-spring-object-d) var(--mu-spring-object), opacity .3s ease; transition-delay: calc((1 - var(--t)) * (var(--n) - 1) * var(--mu-r-folder-fan-stagger)); .mu-folder:is(:hover,:focus-visible) & { --fy: calc(var(--mu-r-folder-fan-hover-y-back) + (var(--mu-r-folder-fan-hover-y-front) - var(--mu-r-folder-fan-hover-y-back)) * var(--t)); --fr: calc((var(--mu-r-folder-fan-hover-r-back) + (var(--mu-r-folder-fan-hover-r-front) - var(--mu-r-folder-fan-hover-r-back)) * var(--t)) * var(--k)); transition-delay: calc(var(--t) * (var(--n) - 1) * var(--mu-r-folder-fan-stagger)); } .mu-folder[data-open] & { --fy: calc(var(--mu-r-folder-fan-open-y-back) + (var(--mu-r-folder-fan-open-y-front) - var(--mu-r-folder-fan-open-y-back)) * var(--t)); --fr: calc((var(--mu-r-folder-fan-open-r-back) + (var(--mu-r-folder-fan-open-r-front) - var(--mu-r-folder-fan-open-r-back)) * var(--t)) * var(--k)); transition-delay: calc(var(--t) * (var(--n) - 1) * var(--mu-r-folder-fan-stagger)); } @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility folder-thumb {
   height: var(--mu-r-folder-card-thumb); border-radius: var(--mu-r-folder-card-thumb-radius); background-size: cover; background-position: center; margin-bottom: 9px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.08), inset 0 0 6px 1px rgba(255,255,255,.18);
@@ -2008,7 +1999,7 @@
   background: var(--mu-r-folder-card-line-blue);
 }
 @utility folder-flap {
-  position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; transform-style: preserve-3d; transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); .mu-folder:is(:hover,:focus-visible) & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
+  position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); .mu-folder:is(:hover,:focus-visible) & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility folder-land {
   animation: mu-folder-land var(--mu-spring-hinge-d) var(--mu-spring-hinge);
@@ -2026,7 +2017,7 @@
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--mu-r-folder-back-height) + var(--mu-r-folder-back-tab-rise)); filter: var(--mu-r-folder-shape-shadow-blur); transform: translateY(14px) scale(.96, .92); transform-origin: 50% 100%; pointer-events: none;
 }
 @utility folder-flap-shade {
-  position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); filter: blur(8px); transform: translateY(6px) scale(.97, .9); transform-origin: 50% 100%; pointer-events: none; opacity: .7;
+  position: absolute; z-index: 19; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); filter: blur(8px); transform: translateY(6px) scale(.97, .9); transform-origin: 50% 100%; pointer-events: none; opacity: .7;
 }
 @utility folder-shade-body {
   position: absolute; inset: 0; background: var(--mu-r-folder-shade-ink);
@@ -2055,6 +2046,12 @@
 @utility folder-layer {
   transform: translateZ(0); -webkit-backface-visibility: hidden; backface-visibility: hidden; will-change: transform;
 }
+@utility folder-card-waiting {
+  visibility: hidden;
+}
+@utility folder-card-pocketed {
+  --px: 0px; --py: var(--mu-r-folder-fan-pocket-y); --pr: var(--mu-r-folder-fan-pocket-r); opacity: 0;
+}
 @utility stroke-width-folder-width {
   stroke-width: var(--mu-r-folder-self-width);
 }
@@ -2071,6 +2068,13 @@
 @utility backdrop-folder-shape-shadow-blur {
   -webkit-backdrop-filter: var(--mu-r-folder-shape-shadow-blur);
   backdrop-filter: var(--mu-r-folder-shape-shadow-blur);
+}
+@utility duration-folder-fan-stagger {
+  --tw-duration: var(--mu-r-folder-fan-stagger);
+  transition-duration: var(--mu-r-folder-fan-stagger);
+}
+@utility opacity-folder-fan-max {
+  opacity: var(--mu-r-folder-fan-max);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }

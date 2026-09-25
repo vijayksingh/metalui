@@ -14,14 +14,18 @@ import { Label } from '../label/label';
  *             blurred layers, since the tapered outline is a clip. The flap is frosted
  *             glass: a clipped blur layer of its own (translateZ, back face hidden) under a
  *             see-through fill, so the blur keeps the pocket's shape while the flap hinges
- *   rest      the back panel with its tab; up to three of its blocks peek up as cards (-10,
- *             leaning 10°, 2°, -5°); the frosted flap tipped back 15° with the name, what it
- *             is and the count
- *   hover     (and keyboard focus) the cards rise and fan (-30/-37/-44, staggered 50 ms) on the
- *             object spring; the flap tips back to 45° on the hinge spring
- *   open      a block is dragged over it: the cards rise out (-86/-96/-106) and the flap opens
- *             to 55°, saying "drop in here"; also the first beat of unfolding
- *   landing   a block was dropped in: the flap swings shut past rest and settles (hinge spring);
+ *   rest      the back panel with its tab; up to six of its blocks peek up as cards, each posed
+ *             by its place in the pile (back to front: leaning 10° to -5°, 10 up; the sheet's
+ *             poses exactly at three); more cards widen the fan a little
+ *   hover     (and keyboard focus) the cards rise and fan (-30 to -44, 14° to -9°): the back
+ *             lifts first, the front last (45 ms apart), on the object spring; the flap tips
+ *             back to 45° on the hinge spring. Leaving, the front settles first
+ *   open      a block is dragged over it: the cards rise out (-86 to -106, 18° to -14°) and the
+ *             flap opens to 55°, saying "drop in here"; also the first beat of unfolding
+ *   joining   a block is put in: it is added at the front and the others re-spread to make
+ *             room, all still in view (past six, the oldest slides down into the pocket); its
+ *             slot waits empty (`waiting`) until the block lands there; then the fan settles
+ *   landing   the block is in: the flap swings shut past rest and settles (hinge spring);
  *             the count changes at once
  *   empty     no cards; the count reads 0
  *   colour    six soft paper stocks (neutral, red, amber, green, blue, violet); the frosted flap
@@ -33,6 +37,10 @@ import { Label } from '../label/label';
 export type FolderHue = 'neutral' | 'red' | 'amber' | 'green' | 'blue' | 'violet';
 
 export interface FolderPeek {
+  /** Who it is, so a card glides to its new slot when another joins (else its position is used). */
+  id?: string;
+  /** Held empty: a thing is on its way into this slot; it becomes the card when it arrives. */
+  waiting?: boolean;
   /** The card's picture: an image URL, or any CSS background (a gradient for a colour or a link's tint). */
   thumb?: string;
   /** A link card shows a blue line under its title. */
@@ -58,7 +66,9 @@ const ROOT = 'mu-folder folder';
 const SHADE = 'folder-shade';
 const BACK = 'mu-folder-back folder-back';
 const FLAP_SHADE = 'folder-flap-shade';
-const CARD = ['folder-card folder-card-1', 'folder-card folder-card-2', 'folder-card folder-card-3'];
+const CARD = 'folder-card';
+/** How many cards peek at once (the recipe's fan-max); an older one slides down into the pocket. */
+const FAN_MAX = 6;
 const THUMB = 'folder-thumb';
 const LINE = 'folder-line';
 const FLAP = 'mu-folder-flap folder-flap';
@@ -104,9 +114,17 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
   { name, count, peeks = [], hue = 'neutral', open, landed, onUnfold, className, onKeyDown, onDoubleClick, ...props },
   ref,
 ) {
-  const cards = peeks.slice(-3);
-  // The front card is always card 3, the one nearest the flap; fewer cards drop from the back.
-  const slot = (i: number) => 3 - cards.length + i;
+  // Up to six cards peek, spread by their place in the pile: t runs 0 (back) to 1 (front), and
+  // the fan widens with the count (k), so a new card joins the others instead of replacing one.
+  // One more, the oldest, slides down into the pocket as it leaves the fan.
+  const shown = peeks.slice(-(FAN_MAX + 1));
+  const pocketed = shown.length > FAN_MAX ? 1 : 0;
+  const n = shown.length - pocketed;
+  const k = Math.min(1.35, Math.max(0.8, Math.sqrt(n / 3)));
+  const fan = (i: number) => {
+    const at = i - pocketed;
+    return { '--t': n > 1 ? at / (n - 1) : 1, '--n': n, '--k': k, zIndex: i + 1 } as React.CSSProperties;
+  };
   return (
     <div
       ref={ref}
@@ -123,8 +141,14 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
       <div aria-hidden className={SHADE}><div className="folder-shade-body" style={clip(BACK_D)} /></div>
       <div aria-hidden className={`${BACK} folder-layer`} style={clip(BACK_D)} />
       <div aria-hidden className="folder-frame"><Edge d={BACK_D} h={166} /></div>
-      {cards.map((c, i) => (
-        <div key={i} aria-hidden className={CARD[slot(i)]}>
+      {shown.map((c, i) => (
+        <div
+          key={c.id ?? i}
+          aria-hidden
+          data-card={c.id}
+          className={[CARD, i < pocketed && 'folder-card-pocketed', c.waiting && 'folder-card-waiting'].filter(Boolean).join(' ')}
+          style={fan(i)}
+        >
           <div className={THUMB} style={{ background: bg(c.thumb) }} />
           <i className={`${LINE} folder-line-lg`} style={{ width: '70%' }} />
           <i className={c.link ? `${LINE} folder-line-blue` : LINE} />
@@ -133,7 +157,9 @@ export const Folder = React.forwardRef<HTMLDivElement, FolderProps>(function Fol
       ))}
       <div aria-hidden className={FLAP_SHADE}><div className="folder-shade-body" style={clip(FLAP_D)} /></div>
       <div key={landed} aria-hidden className={landed ? `${FLAP} ${LAND}` : FLAP}>
-        {/* The frost is its own clipped layer, so the blur keeps the pocket's shape while the flap hinges in 3D. */}
+        {/* The frost is its own clipped layer, so the blur keeps the pocket's shape while the flap
+            hinges. The flap stays flat (no preserve-3d): in a 3D scene the cards' depth would beat
+            the flap's z-index and paint them over it. */}
         <div className="folder-frost" style={clip(FLAP_D)} />
         <Edge d={FLAP_D} h={106} fill />
         <div className="folder-flap-content">

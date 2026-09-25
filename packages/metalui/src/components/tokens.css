@@ -1667,26 +1667,25 @@
   --mu-r-folder-count-size: 24px;
   --mu-r-folder-count-pad: 7px;
   --mu-r-folder-name-gap: 4px;
-  --mu-r-folder-pose-c1-rest-y: -10px;
-  --mu-r-folder-pose-c1-rest-r: 10deg;
-  --mu-r-folder-pose-c1-hover-y: -30px;
-  --mu-r-folder-pose-c1-hover-r: 14deg;
-  --mu-r-folder-pose-c1-open-y: -86px;
-  --mu-r-folder-pose-c1-open-r: 18deg;
-  --mu-r-folder-pose-c2-rest-y: -10px;
-  --mu-r-folder-pose-c2-rest-r: 2deg;
-  --mu-r-folder-pose-c2-hover-y: -37px;
-  --mu-r-folder-pose-c2-hover-r: -1deg;
-  --mu-r-folder-pose-c2-open-y: -96px;
-  --mu-r-folder-pose-c2-open-r: -3deg;
-  --mu-r-folder-pose-c3-rest-y: -10px;
-  --mu-r-folder-pose-c3-rest-r: -5deg;
-  --mu-r-folder-pose-c3-hover-y: -44px;
-  --mu-r-folder-pose-c3-hover-r: -9deg;
-  --mu-r-folder-pose-c3-open-y: -106px;
-  --mu-r-folder-pose-c3-open-r: -14deg;
   --mu-r-folder-shape-translucency: 80%;
   --mu-r-folder-shape-shadow-blur: blur(14px);
+  --mu-r-folder-fan-rest-y-back: -10px;
+  --mu-r-folder-fan-rest-y-front: -10px;
+  --mu-r-folder-fan-rest-r-back: 10deg;
+  --mu-r-folder-fan-rest-r-front: -5deg;
+  --mu-r-folder-fan-hover-y-back: -30px;
+  --mu-r-folder-fan-hover-y-front: -44px;
+  --mu-r-folder-fan-hover-r-back: 14deg;
+  --mu-r-folder-fan-hover-r-front: -9deg;
+  --mu-r-folder-fan-open-y-back: -86px;
+  --mu-r-folder-fan-open-y-front: -106px;
+  --mu-r-folder-fan-open-r-back: 18deg;
+  --mu-r-folder-fan-open-r-front: -14deg;
+  --mu-r-folder-fan-spread: 5px;
+  --mu-r-folder-fan-stagger: 45ms;
+  --mu-r-folder-fan-pocket-y: 70px;
+  --mu-r-folder-fan-pocket-r: 4deg;
+  --mu-r-folder-fan-max: 6;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

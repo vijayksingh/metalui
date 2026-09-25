@@ -572,15 +572,18 @@ From the Soft Hardware sheet's stack folder, 220 × 204: a translucent paper bac
 
 ## States and motion
 
-| State | Cards (y, lean) | Flap | Spring |
+Up to six cards peek, each posed by its place in the pile (t: 0 back → 1 front); the fan widens a little with the count. At three cards the poses are the sheet's exactly.
+
+| State | Cards (y, lean, back → front) | Flap | Order |
 |---|---|---|---|
-| rest | -10: 10°, 2°, -5° | -15° | – |
-| hover / focus | -30 / -37 / -44: 14°, -1°, -9° (staggered 50 ms) | -45° | object (cards), hinge (flap) |
-| open (dragged over, or unfolding) | -86 / -96 / -106: 18°, -3°, -14° | -55° | same |
-| landing | – | shuts past rest to -4°, settles | hinge |
+| rest | -10: 10° → -5° | -15° | leaving hover: the front settles first |
+| hover / focus | -30 → -44: 14° → -9° | -45° | the back lifts first, 45 ms apart (object spring) |
+| open (dragged over, or unfolding) | -86 → -106: 18° → -14° | -55° | same |
+| joining | the new card is added at the front, the others re-spread; its slot waits (`waiting`) until the block lands | open | – |
+| landing | the fan settles together | shuts past rest to -4°, settles (hinge spring) | – |
 | empty | none | -15° | – |
 
-Colour: `hue` = neutral (the sheet), red, amber, green, blue, violet; soft paper on the back, tinting the glass flap. Reduce Motion: poses at once.
+Past six, the oldest slides down into the pocket. Colour: `hue` = neutral (the sheet), red, amber, green, blue, violet; soft paper on the back, tinting the glass flap. Reduce Motion: poses at once.
 
 ## API
 
