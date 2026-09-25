@@ -71,10 +71,11 @@ final class MetalMechanismParity: XCTestCase {
 
     func testTheDriveMovesLikeTheWeb() throws {
         let scenes = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("drive-samples.json"))) as! [String: [String: Any]]
-        XCTAssertEqual(scenes.count, 2)
+        XCTAssertEqual(scenes.count, 3)
         for (name, scene) in scenes {
             let start = scene["start"] as! [Double], steps = scene["steps"] as! [[Any]]
-            var model = try XCTUnwrap(MetalDriveModel(.slide, start: start))
+            let mechanism = (scene["mechanism"] as? String).flatMap { n in MetalMechanism.all.first { $0.name == n } } ?? .slide
+            var model = try XCTUnwrap(MetalDriveModel(mechanism, start: start))
             var next = 0, events: [MetalDriveModel.Event] = []
             for row in scene["samples"] as! [[Double]] {
                 let t = row[0]

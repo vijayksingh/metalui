@@ -2,6 +2,18 @@
 // The same tracks and cues the web player runs (mechanisms.generated.ts).
 
 extension MetalMechanism {
+    /// Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them.
+    public static let glow = MetalMechanism(
+        name: "glow", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .settle,
+        tracks: [
+
+        ],
+        cues: [],
+        states: [:],
+        reduced: ["lamp", "sound"],
+        held: .init(slot: "cells", from: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.0, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
+    )
+
     /// The keys drop into their skirts one after another and spring back: a chord.
     public static let press = MetalMechanism(
         name: "press", momentary: true, duration: 424.0, stagger: 60.0, loops: false, phased: [], spring: .release,
@@ -76,5 +88,5 @@ extension MetalMechanism {
         held: .init(slot: "needle", from: .init(x: 0.0, y: 0.0, r: -60.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 60.0, sx: 1.0, sy: 1.0), detents: 0, stagger: 0.0, wall: 0.35, impactFull: 1.0, scrapeFull: 1.0, tickMin: 0.15, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0)
     )
 
-    public static let all: [MetalMechanism] = [press, roll, seat, slide, sweep, swing]
+    public static let all: [MetalMechanism] = [glow, press, roll, seat, slide, sweep, swing]
 }

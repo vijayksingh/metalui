@@ -99,6 +99,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     /// The state it shows for a value: a needle past its threshold makes it `over`; back under, `over`
     /// falls back to its initial state (or rest). The same rule as draw.ts.
     public func derivedState(_ state: String, value: Double?) -> String {
+        // Cells that fill: none lit is rest, some filling, all full. A first run is the host's.
+        if parts.contains(where: { $0.part == "cell" }), states["filling"] != nil, states["full"] != nil, let value, state != "first-run" {
+            let u = driveShare(value)
+            return u <= 0 ? "rest" : u >= 1 ? "full" : "filling"
+        }
         guard let t = parts.first(where: { $0.part == "needle" })?.params?["threshold"]?.number, states["over"] != nil, let value else { return state }
         if driveShare(value) >= t { return "over" }
         let initial = self.state(nil)
@@ -108,9 +113,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     /// Where each actor of a held gadget goes for a drive value: a needle points at the value's share of
     /// its range; a cap goes to its rest place (its `value` param) shifted by how far the value sits
     /// from the middle. The same rule as draw.ts.
-    public func driveTargets(_ value: Double) -> [Double] {
+    public func driveTargets(_ value: Double, state: String? = nil) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
         let ids = mechanism.bind[held.slot] ?? []
+        // Cells light to the value's share; on a first run the grid rises all the way.
+        if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "cell" }) { return ids.map { _ in state == "first-run" ? 1 : driveShare(value) } }
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "needle" }) { return ids.map { _ in driveShare(value) } }
         return ids.map { id in
             let rest = parts.first { $0.id == id }?.params?["value"]?.number ?? 0.5
@@ -134,6 +141,7 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         let text = (describe ?? "{title}: {state}").replacingOccurrences(of: "{title}", with: title).replacingOccurrences(of: "{state}", with: state)
             .replacingOccurrences(of: "{value}", with: String(v))
             .replacingOccurrences(of: "{max}", with: String(Int(driveRange.max))).replacingOccurrences(of: "{unit}", with: driveRange.unit ?? "")
+            .replacingOccurrences(of: "{share}", with: "\(Int((driveShare(value ?? driveDefault) * 100).rounded()))%")
             .trimmingCharacters(in: .whitespaces)
         return states[state]?.hint.map { "\(text), \($0)" } ?? text
     }

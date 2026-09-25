@@ -1,0 +1,12 @@
+{
+  "name": "cell-grid",
+  "title": "Cell grid",
+  "status": "alpha",
+  "description": "A gadget for something kept that fills: sixteen translucent resin cells in a tray sunk into a resin slab, lit from behind, and a lamp. A share lights the cells in turn from the bottom row up and the light behind them brightens with them; on a first run the whole grid rises. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/cell-grid.gadget.json",
+  "uses": ["slab", "cell", "backlight", "led"],
+  "page": "/gadgets/cell-grid"
+}

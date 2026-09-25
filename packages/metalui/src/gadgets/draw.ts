@@ -8,7 +8,7 @@ import { GADGETS, type GadgetMaterial } from './gadgets.generated';
 import type { GadgetSpec, PartPlacement } from './spec';
 import { resolve, type ResolvedGadget, type Oklch } from './resolve';
 import { tierFor, type Host, type Tier } from './light';
-import { drawSlab, type Cut } from './parts/slab';
+import { cutPath, drawSlab, type Cut } from './parts/slab';
 import { drawJack } from './parts/jack';
 import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
@@ -18,6 +18,7 @@ import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
 import { drawDrum } from './parts/drum';
 import { drawNeedle } from './parts/needle';
+import { drawCells } from './parts/cell';
 import { digitOf } from './drive';
 import { drawBezel } from './parts/bezel';
 import { drawGlass } from './parts/glass';
@@ -55,7 +56,8 @@ export function describeGadget(spec: GadgetSpec, state: string, value?: number):
   const v = value ?? driveDefault(spec);
   const r = driveRange(spec);
   const text = (spec.describe ?? '{title}: {state}').replace('{title}', spec.title).replace('{state}', state).replace('{value}', String(Math.round(v)))
-    .replace('{max}', String(r.max)).replace('{unit}', r.unit ?? '').replace(/\s+$/, '');
+    .replace('{max}', String(r.max)).replace('{unit}', r.unit ?? '')
+    .replace('{share}', `${Math.round(driveShare(spec, v) * 100)}%`).replace(/\s+$/, '');
   const hint = spec.states[state]?.hint;
   return hint ? `${text}, ${hint}` : text;
 }
@@ -95,15 +97,22 @@ export const driveShare = (spec: GadgetSpec, value: number) => { const r = drive
 /** The state a gadget shows for a value: a needle past its threshold makes it `over` (the value
  *  decides, not the host); back under, `over` falls back to rest. Other states are the host's. */
 export function derivedState(spec: GadgetSpec, state: string, value?: number): string {
+  // Cells that fill: none lit is rest, some filling, all full. A first run is the host's.
+  if (spec.parts.some((p) => p.part === 'cell') && spec.states.filling && spec.states.full && value !== undefined && state !== 'first-run') {
+    const u = driveShare(spec, value);
+    return u <= 0 ? 'rest' : u >= 1 ? 'full' : 'filling';
+  }
   const needle = spec.parts.find((p) => p.part === 'needle'), t = needle?.params?.threshold;
   if (t === undefined || !spec.states.over || value === undefined) return state;
   if (driveShare(spec, value) >= Number(t)) return 'over';
   return state === 'over' ? stateOf(spec, undefined) === 'over' ? 'rest' : stateOf(spec, undefined) : state;
 }
 
-export function driveTargets(spec: GadgetSpec, value: number): number[] {
+export function driveTargets(spec: GadgetSpec, value: number, state?: string): number[] {
   const held = heldOf(spec);
   if (!held) return [];
+  // Cells light to the value's share; on a first run the grid rises all the way.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'cell')) return boundTo(spec, held.slot).map(() => (state === 'first-run' ? 1 : driveShare(spec, value)));
   // A needle points at the value's share of its range.
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'needle')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   return boundTo(spec, held.slot).map((id) => {
@@ -111,6 +120,9 @@ export function driveTargets(spec: GadgetSpec, value: number): number[] {
     return Math.min(1, Math.max(0, rest + (value - 0.5)));
   });
 }
+
+/** How bright the light behind cells burns for a share lit: never quite dark, never quite white. */
+export const backlightLevel = (share: number) => { const [a0, a1] = GADGETS.cell.backlight; return a0 + (a1 - a0) * Math.min(1, Math.max(0, share)); };
 
 export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   const tier = o.tier ?? 'full', host = o.host ?? 'bone', id = o.id ?? `g-${spec.name}`;
@@ -130,16 +142,18 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   for (const p of spec.parts) {
     if (p.part !== 'slab' || p.role !== 'cut') continue;
     const kind = (p.params?.cut as Cut['kind'] | undefined) ?? 'tray';
-    cuts.push({ kind, at: p.at, size: sizeOf(p), depth: p.params?.depth === undefined ? undefined : Number(p.params.depth) });
+    cuts.push({ kind, at: p.at, size: sizeOf(p), depth: p.params?.depth === undefined ? undefined : Number(p.params.depth), radius: p.params?.radius === undefined ? undefined : Number(p.params.radius) });
   }
   // A driven actor runs in a slot cut as long as its travel.
   const held = heldOf(spec), driven = held ? boundTo(spec, held.slot) : [];
   if (held) for (const id of driven) {
-    const p = spec.parts.find((q) => q.id === id); if (!p) continue;
+    const p = spec.parts.find((q) => q.id === id); if (!p || p.part !== 'cap') continue;
     const y0 = held.from.y ?? 0, y1 = held.to.y ?? 0, [sw, pad] = GADGETS.cap.slot;
     cuts.push({ kind: 'slot', at: [p.at[0], p.at[1] + (y0 + y1) / 2], size: [sw, Math.abs(y1 - y0) + pad] });
   }
   const start = held ? driveTargets(spec, driveDefault(spec)) : [];
+  // The value's share, for parts that show it as they are drawn (the cells lit, the light behind them).
+  const share = driveShare(spec, o.value ?? driveDefault(spec)), lit = state === 'first-run' ? 1 : share;
   let body = { defs: '', html: '' }, top = { defs: '', html: '' };
   // An inset gadget: its face (the glass) is the body layer, the light in it the parts, and its surface
   // and frame the top, so light sits inside the glass and under the frame.
@@ -198,7 +212,17 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const d = drawBacklight(pid, { at: p.at, size: size[0], shape, color });
       defs += d.defs;
       const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
-      lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`;
+      if (!bodyPart || bodyPart.part !== 'slab') { lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`; continue; }
+      // On a slab, light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
+      const cut = cuts.find((c) => c.at[0] === p.at[0] && c.at[1] === p.at[1]);
+      if (cut) defs += `<clipPath id="${pid}-clip"><path d="${cutPath(cut)}"/></clipPath>`;
+      trims += `<g data-id="${p.id}"${cut ? ` clip-path="url(#${pid}-clip)"` : ''}><g data-part="backlight.level" style="opacity: ${+backlightLevel(lit).toFixed(3)}">${d.body}</g></g>`;
+    } else if (p.part === 'cell') {
+      // Resin cells dyed in the gadget's glass colour, lit to the value's share (the glow lights them from then on).
+      const d = drawCells(pid, { at: p.at, size: size[0], cols: Number(p.params?.cols ?? 4), rows: Number(p.params?.rows ?? 4), gap: p.params?.gap === undefined ? undefined : Number(p.params.gap),
+        lit: lit * Number(p.params?.cols ?? 4) * Number(p.params?.rows ?? 4), color: { ...resolved.face, C: Math.max(resolved.face.C, GADGETS.cell.dye) } }, { tier, host });
+      defs += d.defs;
+      trims += `<g data-id="${p.id}">${d.shadow}${d.halo}${d.body}${d.glow}</g>`;
     } else if (p.part === 'needle') {
       // Printed on the glass and turned in it: its scale, the needle (which the swing turns) and its cap.
       const r = byId[p.id], held = heldOf(spec), k = held ? boundTo(spec, held.slot).indexOf(p.id) : -1;

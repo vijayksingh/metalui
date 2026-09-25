@@ -1,0 +1,23 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "cell-grid", "title": "Memory",
+  "job": "keep", "feel": { "v": 0.7, "a": 0.3, "w": 0.3 }, "container": "slab", "station": 300, "material": "resin",
+  "parts": [
+    { "id": "body",  "part": "slab",      "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp",  "part": "led",       "at": [313, 78],  "role": "lamp" },
+    { "id": "tray",  "part": "slab",      "at": [200, 214], "size": [236, 236], "role": "cut", "params": { "cut": "tray", "depth": 12, "radius": 40 } },
+    { "id": "light", "part": "backlight", "at": [200, 214], "size": [236, 236], "role": "trim", "params": { "shape": "glow", "color": "glass" } },
+    { "id": "cells", "part": "cell",      "at": [200, 214], "size": [46, 46],   "role": "actor", "params": { "cols": 4, "rows": 4, "gap": 8 } }
+  ],
+  "mechanism": { "name": "glow", "bind": { "cells": "cells", "light": "light", "lamp": "lamp" }, "drive": "fill" },
+  "ports": { "in": { "fill": { "kind": "number", "min": 0, "max": 1, "default": 0.4 }, "first-run": { "kind": "pulse" } },
+             "out": { "full": { "kind": "boolean" } } },
+  "states": {
+    "rest":      { "lamp": ["off", "steady"], "hint": "dark" },
+    "filling":   { "lamp": ["live", "steady"] },
+    "full":      { "lamp": ["live", "steady"], "hint": "full" },
+    "first-run": { "lamp": ["live", "breathe"], "beep": "ready" }
+  },
+  "initial": "filling",
+  "describe": "{title}: {share} kept"
+}

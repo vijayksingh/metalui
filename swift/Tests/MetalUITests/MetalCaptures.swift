@@ -387,6 +387,24 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetCellGrid() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/cell-grid.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0, 0.4, 1].map { spec.derivedState("filling", value: $0) }, ["rest", "filling", "full"])
+        XCTAssertEqual(spec.derivedState("first-run", value: 0), "first-run")
+        XCTAssertEqual(spec.driveTargets(0.4, state: "first-run"), [1])
+        XCTAssertEqual(spec.description("filling", value: 0.4), "Memory: 40% kept")
+        let looks: [(Double, String?)] = [(0, nil), (0.4, nil), (0.75, nil), (1, nil), (0, "first-run")]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(0..<looks.count, id: \.self) { i in MetalGadget(spec: spec, state: looks[i].1, value: looks[i].0, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-cell-grid-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

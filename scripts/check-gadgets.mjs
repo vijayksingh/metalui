@@ -23,6 +23,7 @@ registerHooks({
 const dir = root('packages/metalui/src/gadgets');
 const { validateGadget, validateRig } = await import(pathToFileURL(`${dir}/validate.ts`).href);
 const { resolve, resolveFeel, checkSet } = await import(pathToFileURL(`${dir}/resolve.ts`).href);
+const { GADGETS } = await import(pathToFileURL(`${dir}/gadgets.generated.ts`).href);
 
 const fixtures = readdirSync(`${dir}/fixtures`);
 const read = (f) => JSON.parse(readFileSync(`${dir}/fixtures/${f}`, 'utf8'));
@@ -44,7 +45,9 @@ for (const f of fixtures.filter((f) => f.endsWith('.rig.json'))) {
   const v = validateRig(read(f), catalog);
   if (!v.ok) report(`${f} does not validate`, v.problems);
 }
-const members = Object.values(catalog).map((g) => ({ name: g.name, resolved: resolveFeel(g), mechanism: g.mechanism.name, silhouette: g.parts.map((p) => p.part).sort().join(',') }));
+// Read side by side in the catalog's shelf order (names off the shelf go last).
+const shelf = (n) => { const i = GADGETS.set.order.indexOf(n); return i < 0 ? Infinity : i; };
+const members = Object.values(catalog).sort((a, b) => shelf(a.name) - shelf(b.name)).map((g) => ({ name: g.name, resolved: resolveFeel(g), mechanism: g.mechanism.name, silhouette: g.parts.map((p) => p.part).sort().join(',') }));
 const setProblems = checkSet(members);
 if (setProblems.length) report('the catalog repeats itself', setProblems.map((p) => ({ path: p.members.join(' + '), code: p.code, message: p.message, fix: p.fix })));
 
@@ -73,10 +76,12 @@ const { DriveModel } = await import(pathToFileURL(`${dir}/drive.ts`).href);
 const scenes = {
   'new-mix': { start: [0.5, 0.5, 0.5], steps: [[0, [0.2, 0.9, 1]]] },
   'changed-mid-flight': { start: [0, 0, 0], steps: [[0, [1, 1, 1]], [150, [0.3, 0.3, 0.3]]] },
+  // The glow: light eases up to full against the wall with no bounce and no knock.
+  'glow-fills': { mechanism: 'glow', start: [0.2], steps: [[0, [1]], [400, [0.5]]] },
 };
 const drives = {};
 for (const [name, scene] of Object.entries(scenes)) {
-  const m = new DriveModel('slide', scene.start), samples = [], events = [];
+  const m = new DriveModel(scene.mechanism ?? 'slide', scene.start), samples = [], events = [];
   let next = 0;
   for (let t = 0; t <= 1200; t += 20) {
     while (next < scene.steps.length && scene.steps[next][0] <= t) { m.advance(scene.steps[next][0]); m.retarget(scene.steps[next][1]); next++; }

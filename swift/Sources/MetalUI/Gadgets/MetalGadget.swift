@@ -68,6 +68,9 @@ public struct MetalGadget: View {
             ZStack(alignment: .topLeading) {
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { _ in
                     MetalSlab(r.material, color: body(r), cuts: cuts, size: size)
+                    // Light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
+                    ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in trayLight(q, r: r) }
+                    ForEach(spec.parts.filter { $0.part == "cell" }, id: \.id) { q in cells(q, r: r) }
                 }
                 // An inset gadget: its glass in a bezel, with the light in the glass.
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "bezel" }, id: \.id) { p in
@@ -128,7 +131,8 @@ public struct MetalGadget: View {
                 roll = d
             }
             if let m, let held = m.held, !held.roll, drive == nil {
-                let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault), sound: sound,
+                // Light is silent: a glow has no knock and no scrape.
+                let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault, state: state), sound: lit ? nil : sound,
                                    material: driveMaterial, partSize: MetalGadgetTokens.partSizes["cap"]?.0 ?? 60)
                 d?.reduced = reduceMotion
                 drive = d
@@ -149,7 +153,7 @@ public struct MetalGadget: View {
             if let next, let roll { roll.reduced = reduceMotion; roll.set(Int(next.rounded())) }
             guard let next, let drive else { return }
             drive.reduced = reduceMotion
-            drive.set(spec.driveTargets(next))
+            drive.set(spec.driveTargets(next, state: state))
         }
     }
 
@@ -162,7 +166,7 @@ public struct MetalGadget: View {
             // A slab placed with the cut role is a cut into the body: a tray, a well, a slot, a hole.
             if p.part == "slab", p.role == "cut" {
                 let kind = MetalSlabCut.Kind(rawValue: p.params?["cut"]?.text ?? "tray") ?? .tray
-                return MetalSlabCut(kind, at: (p.at[0], p.at[1]), size: footprint(p), depth: p.params?["depth"]?.number)
+                return MetalSlabCut(kind, at: (p.at[0], p.at[1]), size: footprint(p), depth: p.params?["depth"]?.number, radius: p.params?["radius"]?.number)
             }
             return nil
         } + slots
@@ -173,10 +177,32 @@ public struct MetalGadget: View {
         guard let held = MetalMechanism.all.first(where: { $0.name == spec.mechanism.name })?.held else { return [] }
         let slot = MetalGadgetTokens.capSlot
         return (spec.mechanism.bind[held.slot] ?? []).compactMap { id in
-            part(id).map { p in
+            part(id).flatMap { $0.part == "cap" ? $0 : nil }.map { p in
                 MetalSlabCut(.slot, at: (p.at[0], p.at[1] + (held.from.y + held.to.y) / 2), size: (slot.width, abs(held.to.y - held.from.y) + slot.pad))
             }
         }
+    }
+
+    /// Whether the gadget's drive lights cells rather than moving parts.
+    private var lit: Bool { spec.parts.contains { $0.part == "cell" } }
+
+    /// The share the cells are lit to: where the glow has carried them, or the value's before it runs.
+    private var litShare: Double { drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0 }
+
+    /// Light in the floor of a slab's cut, behind the cells: as bright as they are full.
+    @ViewBuilder private func trayLight(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let cut = cuts.first { $0.at == CGPoint(x: p.at[0], y: p.at[1]) }, lv = MetalGadgetTokens.cellBacklight
+        MetalBacklight(.glow, color: .glass(r.face), at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
+            .opacity(lv.empty + (lv.full - lv.empty) * min(1, max(0, litShare)))
+            .mask { if let cut { Path(cut.path).applying(CGAffineTransform(scaleX: unit, y: unit)).fill(.black) } else { Rectangle() } }
+    }
+
+    /// Resin cells dyed in the gadget's glass colour, lit to the share.
+    @ViewBuilder private func cells(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let cols = Int(p.params?["cols"]?.number ?? 4), rows = Int(p.params?["rows"]?.number ?? 4)
+        MetalCell(cols: cols, rows: rows, gap: p.params?["gap"]?.number ?? MetalGadgetTokens.cellAlone.gap, lit: litShare * Double(cols * rows),
+                  color: MetalOklch(L: r.face.L, C: max(r.face.C, MetalGadgetTokens.cellDye), H: r.face.H), side: footprint(p).0,
+                  center: CGPoint(x: p.at[0], y: p.at[1]), size: size)
     }
 
     private var driveMaterial: MetalSoundMaterial {
@@ -320,7 +346,16 @@ public struct MetalGadget: View {
     private var reach: MetalSoundReach { spec.reach.flatMap(MetalSoundReach.init(rawValue:)) ?? .world }
 
     private func enter(_ next: String, bind: [String: String]) {
-        guard let player, next != shown else { return }
+        // A state may move a held drive (a first run fills the grid).
+        if let drive { drive.reduced = reduceMotion; drive.set(spec.driveTargets(value ?? spec.driveDefault, state: next)) }
+        guard let player, next != shown else {
+            // A held gadget has no act: the state's news plays straight on the beeper.
+            if player == nil, next != shown {
+                shown = next; lampGesture = nil
+                if let news = spec.states[next]?.beep.flatMap(MetalEarcon.init(rawValue:)) { beep(news) }
+            }
+            return
+        }
         shown = next
         lampGesture = nil
         player.reduced = reduceMotion

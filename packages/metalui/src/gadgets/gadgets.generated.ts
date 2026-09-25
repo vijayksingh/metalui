@@ -631,7 +631,12 @@ export const GADGETS = {
     "alone": [
       64,
       10
-    ]
+    ],
+    "backlight": [
+      0.08,
+      0.92
+    ],
+    "dye": 0.13
   },
   "rig": {
     "pitch": 440,
@@ -930,7 +935,23 @@ export const GADGETS = {
     "cvdDeltaE": 0.06,
     "slabRun": 3,
     "panelLGap": 0.06,
-    "hueMinC": 0.04
+    "hueMinC": 0.04,
+    "order": [
+      "patch-bay",
+      "fader-bank",
+      "keycap-chord",
+      "scope",
+      "drawer",
+      "lidded-bin",
+      "shutter-lens",
+      "counter-drum",
+      "needle-gauge",
+      "cell-grid",
+      "rocker",
+      "ink-well",
+      "thumbwheel",
+      "glass-badge"
+    ]
   },
   "parts": {
     "slab": {

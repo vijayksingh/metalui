@@ -2,6 +2,47 @@
 // How gadgets move when they act: tracks (poses as numbers, easings as cubic-bezier points), cues,
 // held poses and what survives reduced motion. MetalMechanisms.generated.swift carries the same.
 export const MECHANISMS = {
+  "glow": {
+    "name": "glow",
+    "mode": "held",
+    "duration": 0,
+    "caption": "Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them.",
+    "stages": [
+      "Rise",
+      "Fill",
+      "Settle"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "settle",
+    "slots": {
+      "cells": "actor",
+      "light": "trim",
+      "lamp": "lamp"
+    },
+    "tracks": [],
+    "cues": [],
+    "states": {},
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": {
+      "drive": "number",
+      "slot": "cells",
+      "from": {},
+      "to": {},
+      "detents": 0,
+      "stagger": 0,
+      "wall": 0,
+      "impactFull": 1,
+      "scrapeFull": 1,
+      "tickMin": 0.15,
+      "tickGap": 40,
+      "step": 240
+    }
+  },
   "press": {
     "name": "press",
     "mode": "momentary",

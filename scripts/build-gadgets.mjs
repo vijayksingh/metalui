@@ -195,6 +195,8 @@ public enum MetalGadgetTokens {
     public static let cellCore: (share: Double, lift: Double, turn: Double, chroma: Double) = (${G.cell.core.map(num).join(', ')})
     public static let cellHalo: (blur: Double, alpha: Double) = (${G.cell.halo.map(num).join(', ')})
     public static let cellShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cell.shadow.map(num).join(', ')})
+    public static let cellBacklight: (empty: Double, full: Double) = (${G.cell.backlight.map(num).join(', ')})
+    public static let cellDye: Double = ${num(G.cell.dye)}
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

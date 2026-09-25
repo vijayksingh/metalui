@@ -8,8 +8,9 @@
 import * as React from 'react';
 import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
-import { derivedState, drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
+import { backlightLevel, derivedState, drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
 import { needleAngle } from './parts/needle';
+import { lightCells } from './parts/cell';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
 import { MECHANISMS as TIMELINES } from './mechanisms.generated';
@@ -174,18 +175,25 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       roll.current = r;
       return () => { r.destroy(); roll.current = null; };
     }
-    // A needle turns about its pivot by its own arc; caps slide between the mechanism's poses.
-    const needles = valid.parts.filter((p) => p.part === 'needle');
+    // A needle turns about its pivot by its own arc; cells light to their share, the light behind them
+    // with them; caps slide between the mechanism's poses.
+    const needles = valid.parts.filter((p) => p.part === 'needle'), cells = valid.parts.filter((p) => p.part === 'cell');
     const actors = needles.length
       ? needles.map((p) => svg.querySelector(`[data-id="${p.id}"] [data-part="needle"]`))
+      : cells.length ? cells.map((p) => svg.querySelector(`[data-id="${p.id}"]`))
       : [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
     const paint = needles.length ? (el: Element, i: number, u: number) => {
       const p = needles[i];
       el.setAttribute('transform', `rotate(${+needleAngle(u, Number(p.params?.arc ?? 120)).toFixed(3)} ${p.at[0]} ${p.at[1]})`);
+    } : cells.length ? (el: Element, i: number, u: number) => {
+      const p = cells[i];
+      lightCells(el, u * Number(p.params?.cols ?? 4) * Number(p.params?.rows ?? 4));
+      svg.querySelectorAll<SVGGElement>('[data-part="backlight.level"]').forEach((b) => { b.style.opacity = String(+backlightLevel(u).toFixed(3)); });
     } : undefined;
     const firstActor = valid.parts.find((p) => p.part === 'cap');
-    const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid)), {
-      sound, material: firstActor?.material === 'ceramic' ? 'ceramic' : 'clay', partSize: GADGETS.parts.cap.size[0], reduced: reducedMotion(), paint,
+    // Light is silent: a glow has no knock and no scrape.
+    const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid), state), {
+      sound: cells.length ? null : sound, material: firstActor?.material === 'ceramic' ? 'ceramic' : 'clay', partSize: GADGETS.parts.cap.size[0], reduced: reducedMotion(), paint,
     });
     drive.current = d;
     return () => { d.destroy(); drive.current = null; };
@@ -198,8 +206,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!valid || value === undefined || !drive.current) return;
-    drive.current.setOptions({ reduced: reducedMotion(), sound });
-    drive.current.set(driveTargets(valid, value));
+    drive.current.setOptions({ reduced: reducedMotion(), sound: valid.parts.some((p) => p.part === 'cell') ? null : sound });
+    drive.current.set(driveTargets(valid, value, state));
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // A state change: parts spring to the state's poses, the lamp relights, and the state's news plays
@@ -207,6 +215,9 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   React.useEffect(() => {
     if (!valid || state === shown.current) return;
     shown.current = state;
+    // A state may move a held drive (a first run fills the grid).
+    drive.current?.setOptions({ reduced: reducedMotion() });
+    drive.current?.set(driveTargets(valid, value ?? driveDefault(valid), state));
     setLampCue(null);
     const st = valid.states[state], bind = valid.mechanism.bind as Record<string, string>, p = player.current;
     beepFor.current = st.beep ?? null;

@@ -33,7 +33,8 @@ test('the mix moves the bank together until the caps meet the tops', async ({ pa
   await page.getByRole('button', { name: 'All the way down' }).click();
   await expect.poll(async () => (await placesOf(bank)).map((y) => Math.round(y))).toEqual([92, 52, 92]);            // cap 2 keeps its lead: 0.72 − 0.5
   await page.getByRole('button', { name: 'Back to rest' }).click();
-  await expect.poll(async () => (await placesOf(bank)).map((y) => Math.round(y))).toEqual([37, -40, 0]);
+  // Cap 1 rests at −40.5: the drive settles within a fraction of a unit of it, from either side.
+  await expect.poll(async () => (await placesOf(bank)).every((y, i) => Math.abs(y - [37, -40.5, 0][i]) <= 0.75)).toBe(true);
   // The slider is the same value.
   await page.getByRole('slider', { name: 'Mix' }).focus();
   await page.keyboard.press('End');

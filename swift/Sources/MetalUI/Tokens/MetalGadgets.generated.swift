@@ -214,6 +214,8 @@ public enum MetalGadgetTokens {
     public static let cellCore: (share: Double, lift: Double, turn: Double, chroma: Double) = (0.4, 0.2, 34.0, 0.95)
     public static let cellHalo: (blur: Double, alpha: Double) = (0.32, 0.5)
     public static let cellShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.09, 0.04, 0.1, 0.3)
+    public static let cellBacklight: (empty: Double, full: Double) = (0.08, 0.92)
+    public static let cellDye: Double = 0.13
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0
