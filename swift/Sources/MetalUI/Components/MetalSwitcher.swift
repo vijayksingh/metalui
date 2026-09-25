@@ -1,8 +1,113 @@
 import SwiftUI
 
-// Switcher. Mirrors components/switcher from MetalSwitcherMetrics and the colorway.
+struct MetalTrackOption<Value: Hashable>: Identifiable {
+    let value: Value
+    let title: String
+    var disabled = false
+    var id: Value { value }
+}
 
-/// A pill of pills: one of a few options. The thumb glides to the selection on the part spring.
+/// Shared track and travelling thumb for Switcher values and Tabs panels.
+struct MetalSwitchTrack<Value: Hashable>: View {
+    enum Role { case value, tab }
+
+    let label: String
+    @Binding var selection: Value
+    let options: [MetalTrackOption<Value>]
+    let size: MetalSwitcher<Value>.Size
+    let role: Role
+
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Namespace private var thumb
+    @State private var hovering: Value?
+    @FocusState private var focused: Value?
+
+    @ViewBuilder
+    var body: some View {
+        if role == .tab {
+            track.accessibilityRepresentation {
+                TabView(selection: $selection) {
+                    ForEach(options, id: \.value) { option in
+                        Color.clear
+                            .tabItem { Text(option.title) }
+                            .tag(option.value)
+                            .disabled(option.disabled)
+                    }
+                }
+                .accessibilityLabel(label)
+            }
+        } else {
+            track
+        }
+    }
+
+    private var track: some View {
+        let recipe = MetalRecipes.switcher
+        let cw = MetalRecipeColorway(colorway)
+        let h = recipe.points(size == .compact ? "option.height" : "option.height-regular")
+        return HStack(spacing: .zero) {
+            ForEach(options, id: \.value) { option in
+                let on = option.value == selection
+                Button {
+                    withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = option.value }
+                } label: {
+                    Text(option.title)
+                        .font(recipe.font("option.font"))
+                        .tracking(recipe.tracking("option.tracking", size: recipe.fontSize("option.font")))
+                        .foregroundColor((recipe.color(on || hovering == option.value ? "option.ink-on" : "option.ink", colorway: cw) ?? colorway.tokens.ink).color)
+                        .padding(.horizontal, recipe.points("option.pad-x"))
+                        .frame(height: h)
+                        .background {
+                            if on {
+                                Color.clear
+                                    .metalObjectRecipe(recipe, part: "thumb", in: Capsule(style: .continuous))
+                                    .matchedGeometryEffect(id: "thumb", in: thumb)
+                            }
+                        }
+                        .contentShape(Capsule())
+                        .overlay {
+                            if focused == option.value {
+                                Capsule().strokeBorder(MetalShared.focus.color, lineWidth: recipe.points("option.focus-width"))
+                            }
+                        }
+                }
+                .buttonStyle(.plain)
+                .disabled(option.disabled)
+                .focused($focused, equals: option.value)
+                .focusEffectDisabled()
+                .onHover { hovering = $0 ? option.value : nil }
+                .onKeyPress(.leftArrow) { move(-1); return .handled }
+                .onKeyPress(.rightArrow) { move(1); return .handled }
+                .onKeyPress(.home) { select(options.first { !$0.disabled }?.value); return .handled }
+                .onKeyPress(.end) { select(options.last { !$0.disabled }?.value); return .handled }
+                .accessibilityAddTraits(on ? [.isSelected] : [])
+            }
+        }
+        .padding(recipe.points("self.pad"))
+        .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
+        .opacity(isEnabled ? Double.one : recipe.scalar("option.disabled"))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(label)
+    }
+
+    private func select(_ value: Value?) {
+        guard let value else { return }
+        withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = value }
+        focused = value
+    }
+
+    private func move(_ step: Int) {
+        let enabled = options.filter { !$0.disabled }
+        guard !enabled.isEmpty else { return }
+        let index = enabled.firstIndex { $0.value == selection } ?? .zero
+        let next = (index + step + enabled.count) % enabled.count
+        select(enabled[next].value)
+    }
+}
+
+/// A pill of pills: one of a few values. The thumb glides on the part spring.
 public struct MetalSwitcher<Value: Hashable>: View {
     public enum Size: Sendable { case compact, regular }
 
@@ -10,11 +115,6 @@ public struct MetalSwitcher<Value: Hashable>: View {
     let options: [(value: Value, title: String)]
     @Binding var selection: Value
     let size: Size
-
-    @Environment(\.metalColorway) private var colorway
-    @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Namespace private var thumb
 
     public init(_ label: String, selection: Binding<Value>, options: [(value: Value, title: String)], size: Size = .regular) {
         self.label = label
@@ -24,37 +124,9 @@ public struct MetalSwitcher<Value: Hashable>: View {
     }
 
     public var body: some View {
-        let t = colorway.tokens
-        let h = size == .compact ? MetalSwitcherMetrics.compact : MetalSwitcherMetrics.regular
-        HStack(spacing: 0) {
-            ForEach(options, id: \.value) { option in
-                let on = option.value == selection
-                Button {
-                    withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = option.value }
-                } label: {
-                    Text(option.title)
-                        .font(.metal(MetalType.ui)).tracking(MetalType.ui.trackingPoints)
-                        .foregroundColor((on ? t.ink : t.ink2).color)
-                        .padding(.horizontal, h / 2 - 1)
-                        .frame(height: h)
-                        .background {
-                            if on {
-                                Color.clear
-                                    .metalRecipe(MetalRecipe(fill: MetalGradient(angle: 180, stops: [.init(t.thumbHi, 0), .init(t.thumbLo, 1)]), shadows: t.raiseSm), in: Capsule(style: .continuous))
-                                    .matchedGeometryEffect(id: "thumb", in: thumb)
-                            }
-                        }
-                        .contentShape(Capsule())
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(on ? [.isSelected] : [])
-            }
-        }
-        .padding(MetalSwitcherMetrics.trackPad)
-        .metalRecipe(MetalRecipe(fill: MetalGradient(angle: 180, stops: [.init(t.wellTop, 0), .init(t.wellBot, 1)]), shadows: t.well), in: Capsule(style: .continuous))
-        .opacity(isEnabled ? 1 : 0.4)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(label)
+        MetalSwitchTrack(label: label, selection: $selection,
+                         options: options.map { MetalTrackOption(value: $0.value, title: $0.title) },
+                         size: size, role: .value)
     }
 }
 
