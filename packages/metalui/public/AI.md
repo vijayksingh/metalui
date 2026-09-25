@@ -1385,6 +1385,7 @@ A trigger that is a raised cap (the button cap, it is clicked): the value (with 
 | invalid | a thin red ring inside the cap | – |
 | list opens | the chosen row over the trigger when there is room, else below | scale .97 → 1 and fade, surface spring |
 | list closes | – | fade .12 s |
+| highlight | one soft highlight shared by pointer and keys | glides row to row, settle spring, no bounce |
 | chosen row | green LED before the label | – |
 
 Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses; ⎋ closes. Reduce Motion: fade only.

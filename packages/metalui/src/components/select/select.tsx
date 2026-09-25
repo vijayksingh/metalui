@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { menuParts } from '../menu/menu';
+import { SlidingIndicator } from '../../motion/indicator';
 
 /* ─────────────────────────────────────────────────────────
  * SELECT on Base UI Select: one value from a list of named options
@@ -22,7 +23,8 @@ import { menuParts } from '../menu/menu';
  *   list      the menu's frosted plate. With room, it opens with the chosen row over the
  *             trigger; without, below it. It grows from the trigger on the surface spring
  *             (scale .97 → 1, opacity), and fades out fast on close
- *   rows      the menu's rows: pointer and keys share one highlight; ↑ ↓, Home, End,
+ *   rows      the menu's rows under one highlight that glides row to row on the settle spring;
+ *             pointer and keys move it; ↑ ↓, Home, End,
  *             type-ahead; ↩ or a click chooses and closes; ⎋ closes without choosing
  *   chosen    the green LED the system uses for latched, in a slot before the label
  * Two sizes: regular 32 (forms, settings rows), compact 28 (dense strips, toolbars).
@@ -70,8 +72,10 @@ const TRIGGER = {
 const VALUE = 'mu-select-value select-value';
 const CHEVRON = 'mu-select-chevron select-chevron';
 const POSITIONER = 'mu-menu-positioner z-menu-z';
-const POP = `${menuParts.PLATE} mu-select-pop select-pop`;
-const ROW = menuParts.ROW;
+const POP = `${menuParts.PLATE} relative mu-select-pop select-pop`;
+// One highlight glides between rows on the settle spring (free travel in a list, no bounce); rows paint over it.
+const ROW = `${menuParts.ROW.replace('data-highlighted:recipe-menu-row-hover', '')} relative z-1`;
+const GLIDE = 'rounded-menu-row-radius recipe-menu-row-hover';
 const HEADING = menuParts.HEADING;
 const SEP = menuParts.SEP;
 const SLOT = 'select-led-slot';
@@ -135,6 +139,7 @@ export function Select<V extends string = string>({
       <BaseSelect.Portal>
         <BaseSelect.Positioner className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
           <BaseSelect.Popup className={POP}>
+            <SlidingIndicator activeSelector="[data-highlighted]" watch={['data-highlighted']} spring="settle" className={GLIDE} />
             {isGroups(options)
               ? options.flatMap((g, gi) => [
                   gi > 0 ? <BaseSelect.Separator key={`${g.label}-sep`} className={SEP} /> : null,

@@ -19,6 +19,7 @@ import * as React from 'react';
  * travel has no stop to bounce against, so it settles. Reduce Motion: it moves at once. */
 const INDICATOR = 'mu-indicator absolute top-0 left-0 z-0 pointer-events-none data-animate:indicator-glide data-animate:data-[spring=settle]:indicator-glide-settle data-animate:motion-reduce:transition-none';
 const activeItem = '[aria-checked="true"],[aria-selected="true"],[aria-current="page"]';
+const ariaState = ['aria-checked', 'aria-selected', 'aria-current'];
 
 export interface SlidingIndicatorProps {
   /** Selects the active item inside the group. Defaults to ARIA checked/selected/current. */
@@ -30,6 +31,8 @@ export interface SlidingIndicatorProps {
    * overshoot against the stop. "settle" for free travel (lists, navigation).
    */
   spring?: 'part' | 'settle';
+  /** The attributes that mark the active item. Defaults to the ARIA ones; a list highlight watches data-highlighted. */
+  watch?: string[];
 }
 
 /**
@@ -37,28 +40,30 @@ export interface SlidingIndicatorProps {
  * controls, tabs, navigation. Place it as the first child of a positioned
  * group; it follows ARIA state, so the items stay ordinary buttons or links.
  */
-export function SlidingIndicator({ activeSelector = activeItem, className, spring = 'part' }: SlidingIndicatorProps) {
+export function SlidingIndicator({ activeSelector = activeItem, className, spring = 'part', watch = ariaState }: SlidingIndicatorProps) {
   const self = React.useRef<HTMLSpanElement>(null);
-  const [box, setBox] = React.useState<{ x: number; y: number; w: number; h: number; animate: boolean } | null>(null);
+  const [box, setBox] = React.useState<{ x: number; y: number; w: number; h: number; animate: boolean; shown: boolean } | null>(null);
+  const watched = watch.join(' ');
 
   React.useLayoutEffect(() => {
     const el = self.current?.parentElement;
     if (!el) return;
     const place = (animate: boolean) => {
       const active = el.querySelector<HTMLElement>(activeSelector);
-      if (!active) return setBox(null);
+      // With nothing active it hides where it was, so the next arrival starts in place, not from the corner.
+      if (!active) return setBox((b) => (b ? { ...b, shown: false } : null));
       // offset* ignore transforms, so the measurement is stable mid-animation.
       let x = 0, y = 0, node: HTMLElement | null = active;
       while (node && node !== el) { x += node.offsetLeft; y += node.offsetTop; node = node.offsetParent as HTMLElement | null; }
-      setBox({ x, y, w: active.offsetWidth, h: active.offsetHeight, animate });
+      setBox((b) => ({ x, y, w: active.offsetWidth, h: active.offsetHeight, animate: animate && !!b?.shown, shown: true }));
     };
     place(false);
     const mo = new MutationObserver(() => place(true));
-    mo.observe(el, { subtree: true, attributes: true, attributeFilter: ['aria-checked', 'aria-selected', 'aria-current'] });
+    mo.observe(el, { subtree: true, attributes: true, attributeFilter: watched.split(' ') });
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => place(false)) : null;
     ro?.observe(el);
     return () => { mo.disconnect(); ro?.disconnect(); };
-  }, [activeSelector]);
+  }, [activeSelector, watched]);
 
   return (
     <span
@@ -67,7 +72,7 @@ export function SlidingIndicator({ activeSelector = activeItem, className, sprin
       className={className ? `${INDICATOR} ${className}` : INDICATOR}
       data-animate={box?.animate || undefined}
       data-spring={spring}
-      style={box ? { width: box.w, height: box.h, transform: `translate(${box.x}px, ${box.y}px)` } : { visibility: 'hidden' }}
+      style={box?.shown ? { width: box.w, height: box.h, transform: `translate(${box.x}px, ${box.y}px)` } : { visibility: 'hidden' }}
     />
   );
 }
