@@ -16,12 +16,14 @@ import { drawBeeper } from './parts/beeper';
 import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
+import { drawDrum } from './parts/drum';
+import { digitOf } from './drive';
 import { drawBezel } from './parts/bezel';
 import { drawGlass } from './parts/glass';
 import { drawBacklight, type BacklightShape } from './parts/backlight';
 import { MECHANISMS } from './mechanisms.generated';
 
-export interface DrawOptions { state?: string; tier?: Tier; host?: Host; id?: string; lamp?: [string, string] }
+export interface DrawOptions { state?: string; tier?: Tier; host?: Host; id?: string; lamp?: [string, string]; value?: number }
 export interface GadgetDraw {
   resolved: ResolvedGadget;
   state: string;
@@ -48,8 +50,9 @@ export function stateOf(spec: GadgetSpec, state?: string): string {
   return spec.initial && spec.states[spec.initial] ? spec.initial : Object.keys(spec.states)[0];
 }
 
-export function describeGadget(spec: GadgetSpec, state: string): string {
-  const text = (spec.describe ?? '{title}: {state}').replace('{title}', spec.title).replace('{state}', state);
+export function describeGadget(spec: GadgetSpec, state: string, value?: number): string {
+  const v = value ?? driveDefault(spec);
+  const text = (spec.describe ?? '{title}: {state}').replace('{title}', spec.title).replace('{state}', state).replace('{value}', String(Math.round(v)));
   const hint = spec.states[state]?.hint;
   return hint ? `${text}, ${hint}` : text;
 }
@@ -61,8 +64,9 @@ export function formPoses(spec: GadgetSpec, state: string): Record<string, { x?:
   return out;
 }
 
-type HeldDef = { slot: string; from: { y?: number }; to: { y?: number } };
-const heldOf = (spec: GadgetSpec) => (MECHANISMS as unknown as Record<string, { held: HeldDef | null }>)[spec.mechanism.name]?.held ?? null;
+type HeldDef = { slot: string; from?: { y?: number }; to?: { y?: number }; roll?: boolean };
+/** A held mechanism with a travel (a slide): a roll turns round and round and has none. */
+const heldOf = (spec: GadgetSpec) => { const h = (MECHANISMS as unknown as Record<string, { held: (HeldDef & { from: { y?: number }; to: { y?: number } }) | null }>)[spec.mechanism.name]?.held; return h && !h.roll ? h : null; };
 const boundTo = (spec: GadgetSpec, slot: string): string[] => { const b = spec.mechanism.bind[slot]; return b === undefined ? [] : Array.isArray(b) ? b : [b]; };
 
 /** The value a held gadget's drive port starts at: the port's default, else the middle. */
@@ -170,6 +174,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       defs += d.defs;
       const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
       lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`;
+    } else if (p.part === 'drum') {
+      // A drum shows its digit of the count; the roll moves its strip from then on.
+      const r = byId[p.id], face = r.accent && r.color ? r.color : p.params?.face === 'clay' ? clayFace() : { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H };
+      const drums = boundTo(spec, 'drums'), k = drums.indexOf(p.id);
+      const value = k >= 0 ? digitOf(o.value ?? driveDefault(spec), k, drums.length) : 0;
+      const d = drawDrum(pid, { at: p.at, size: size as [number, number], value, color: face, glyphs: (p.params?.glyphs as 'digits' | 'ticks' | undefined) }, { tier });
+      defs += d.defs;
+      trims += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.body}</g>`;
     } else if (p.part === 'key') {
       const r = byId[p.id], ceramic = p.material === 'ceramic';
       const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
@@ -200,7 +212,7 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     parts: { defs, html: (lights ? `<g clip-path="url(#${clip})" data-part="bezel.light">${lights}</g>` : '') + trims + cables + plugs },
     top,
     lamp: { defs: lamp.defs, html: lamp.body },
-    description: describeGadget(spec, state),
+    description: describeGadget(spec, state, o.value),
   };
 }
 

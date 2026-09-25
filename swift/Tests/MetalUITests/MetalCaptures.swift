@@ -339,6 +339,20 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetCounterDrum() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/counter-drum.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.description("counting", value: 12), "Streak: 12 days")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(["rest", "counting", "rolled-over"], id: \.self) { s in MetalGadget(spec: spec, state: s, value: 12, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-counter-drum-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

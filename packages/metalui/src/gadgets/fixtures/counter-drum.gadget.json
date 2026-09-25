@@ -11,13 +11,13 @@
     { "id": "d0", "part": "drum", "at": [264, 200], "role": "actor", "params": { "digits": 10, "face": "ceramic" }, "material": "accent" }
   ],
   "mechanism": { "name": "roll", "bind": { "drums": ["d2", "d1", "d0"], "window": "window", "lamp": "lamp" }, "drive": "count" },
-  "ports": { "in": { "count": { "kind": "count", "max": 999, "default": 0 }, "reset": { "kind": "pulse" } },
+  "ports": { "in": { "count": { "kind": "count", "max": 999, "default": 12 } },
              "out": { "rolled": { "kind": "pulse" }, "count": { "kind": "count", "max": 999 } } },
   "states": {
     "rest":        { "lamp": ["off", "steady"] },
-    "counting":    { "lamp": ["live", "flicker"] },
-    "rolled-over": { "lamp": ["live", "blink2"], "beep": "done" },
-    "reset":       { "lamp": ["off", "steady"], "enter": "act" }
+    "counting":    { "lamp": ["live", "steady"] },
+    "rolled-over": { "lamp": ["live", "blink2"], "beep": "done" }
   },
+  "initial": "counting",
   "describe": "{title}: {value} days"
 }

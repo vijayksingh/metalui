@@ -14,6 +14,7 @@ public struct MetalGadget: View {
     let size: Double
     @State private var player: MetalMechanismPlayer?
     @State private var drive: MetalDrive?
+    @State private var roll: MetalRoll?
     @State private var shown: String?
     @State private var lampGesture: MetalLampGesture?
     @State private var beeps = 0
@@ -62,7 +63,7 @@ public struct MetalGadget: View {
 
     public var body: some View {
         let r = resolved, bind = spec.mechanism.first
-        TimelineView(.animation(paused: !(player?.playing ?? false) && !(drive?.moving ?? false))) { timeline in
+        TimelineView(.animation(paused: !(player?.playing ?? false) && !(drive?.moving ?? false) && !(roll?.moving ?? false))) { timeline in
             ZStack(alignment: .topLeading) {
                 ForEach(spec.parts.filter { $0.role == "body" && $0.part == "slab" }, id: \.id) { _ in
                     MetalSlab(r.material, color: body(r), cuts: cuts, size: size)
@@ -84,6 +85,9 @@ public struct MetalGadget: View {
                     MetalBeeper(slots: Int(p.params?["slots"]?.number ?? Double(MetalGadgetTokens.beeperSlots)),
                                 material: p.material == "clay" ? .clay : .metal, earcon: earcon, trigger: beeps, size: s)
                         .position(x: p.at[0] * unit, y: p.at[1] * unit)
+                }
+                ForEach(spec.parts.filter { $0.part == "drum" }, id: \.id) { p in
+                    drum(p, r: r)
                 }
                 ForEach(spec.parts.filter { $0.part == "key" }, id: \.id) { p in
                     key(p, r: r, at: timeline.date)
@@ -107,14 +111,20 @@ public struct MetalGadget: View {
                 }
             }
             .frame(width: size, height: size, alignment: .topLeading)
-            .onChange(of: timeline.date) { _, now in drive?.tick(now) }
+            .onChange(of: timeline.date) { _, now in drive?.tick(now); roll?.tick(now) }
         }
         .accessibilityElement()
         .accessibilityLabel(spec.title)
-        .accessibilityValue(spec.description(state))
+        .accessibilityValue(spec.description(state, value: value))
         .onAppear {
             let m = MetalMechanism.all.first { $0.name == spec.mechanism.name }
-            if let m, m.held != nil, drive == nil {
+            if let m, m.held?.roll == true, roll == nil {
+                let d = MetalRoll(m, actors: (spec.mechanism.bind["drums"] ?? []).count, count: Int(value ?? spec.driveDefault), sound: sound,
+                                  material: spec.parts.first { $0.part == "drum" }?.params?["face"]?.text == "clay" ? .clay : .ceramic)
+                d?.reduced = reduceMotion
+                roll = d
+            }
+            if let m, let held = m.held, !held.roll, drive == nil {
                 let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault), sound: sound,
                                    material: driveMaterial, partSize: MetalGadgetTokens.partSizes["cap"]?.0 ?? 60)
                 d?.reduced = reduceMotion
@@ -133,6 +143,7 @@ public struct MetalGadget: View {
         .onChange(of: state) { _, next in enter(next, bind: bind) }
         .onChange(of: act) { play(bind: bind) }
         .onChange(of: value) { _, next in
+            if let next, let roll { roll.reduced = reduceMotion; roll.set(Int(next.rounded())) }
             guard let next, let drive else { return }
             drive.reduced = reduceMotion
             drive.set(spec.driveTargets(next))
@@ -197,6 +208,17 @@ public struct MetalGadget: View {
             }
         }
         return out
+    }
+
+    /// A drum, showing its digit of the count (turned by the roll once it runs).
+    @ViewBuilder private func drum(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let ids = spec.mechanism.bind["drums"] ?? [], i = ids.firstIndex(of: p.id) ?? 0
+        let digit = roll.map { $0.value(i) } ?? Double(MetalRollModel.digit(Int(value ?? spec.driveDefault), actor: i, actors: ids.count))
+        let accent = p.material == "accent"
+        MetalDrum(value: digit, accent: accent, face: p.params?["face"]?.text == "clay" ? .clay : .ceramic, color: accent ? r.accent : nil,
+                  width: footprint(p).0, size: size)
+            .position(x: p.at[0] * unit, y: p.at[1] * unit)
+            .accessibilityHidden(true)
     }
 
     /// A key, its face moved by the press mechanism when its slot binds it.

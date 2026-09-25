@@ -1,0 +1,12 @@
+{
+  "name": "counter-drum",
+  "title": "Counter drum",
+  "status": "alpha",
+  "description": "A gadget for a streak: three numbered drums in a window sunk into a clay slab, the units drum in orange, and a lamp. The count turns the drums like an odometer, the lowest first, ticking past each digit and settling with a small knock. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/counter-drum.gadget.json",
+  "uses": ["slab", "drum", "led"],
+  "page": "/gadgets/counter-drum"
+}

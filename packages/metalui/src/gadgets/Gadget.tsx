@@ -10,7 +10,7 @@ import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
 import { drawGadget, driveDefault, driveTargets, formPoses, stateOf } from './draw';
 import { createPlayer, type MechanismName, type Player } from './player';
-import { createDrive, type Drive, type DriveName } from './drive';
+import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
 import { MECHANISMS as TIMELINES } from './mechanisms.generated';
 import { createCableSwing, type CableSwing } from './parts/cable';
 import { playBeeper } from './parts/beeper';
@@ -53,8 +53,9 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   // Parts are drawn once per spec and look; the player moves them from then on. The body and the lamp
   // follow the state. The first paint already holds the state's poses, as the server's does.
   const first = React.useRef(state);
-  const parts = React.useMemo(() => valid ? drawGadget(valid, { state: first.current, tier, host, id: `g${uid}` }).parts : null, [valid, tier, host, uid]);
-  const drawn = React.useMemo(() => valid ? drawGadget(valid, { state, tier, host, id: `g${uid}` }) : null, [valid, state, tier, host, uid]);
+  const firstValue = React.useRef(value);
+  const parts = React.useMemo(() => valid ? drawGadget(valid, { state: first.current, tier, host, id: `g${uid}`, value: firstValue.current }).parts : null, [valid, tier, host, uid]);
+  const drawn = React.useMemo(() => valid ? drawGadget(valid, { state, tier, host, id: `g${uid}`, value }) : null, [valid, state, tier, host, uid, value]);
   const lamp = React.useMemo(() => {
     if (!valid || !drawn) return null;
     const signal = drawn.resolved.states[state].lamp[0];
@@ -159,8 +160,18 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   const drive = React.useRef<Drive | null>(null);
   React.useEffect(() => {
     const svg = ref.current;
-    const held = valid ? (TIMELINES as unknown as Record<string, { held: object | null }>)[valid.mechanism.name]?.held : null;
+    const held = valid ? (TIMELINES as unknown as Record<string, { held: { roll?: boolean } | null }>)[valid.mechanism.name]?.held : null;
     if (!valid || !svg || !held) return;
+    if (held.roll) {
+      // Drums that count: the roll turns each drum's strip so its digit of the count sits in the window.
+      const ids = ([] as string[]).concat(valid.mechanism.bind.drums ?? []);
+      const strips = ids.map((id) => svg.querySelector(`[data-id="${id}"] [data-moves]`));
+      const pitches = ids.map((id) => { const q = valid.parts.find((x) => x.id === id); const H = (q?.size ?? GADGETS.parts.drum.size)[1] as number; return GADGETS.drum.pitch * (H / GADGETS.parts.drum.size[1]); });
+      const face = valid.parts.find((x) => x.part === 'drum')?.params?.face === 'clay' ? 'clay' : 'ceramic';
+      const r = createRoll(valid.mechanism.name, strips, pitches, value ?? driveDefault(valid), { sound, material: face, reduced: reducedMotion() });
+      roll.current = r;
+      return () => { r.destroy(); roll.current = null; };
+    }
     const actors = [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
     const firstActor = valid.parts.find((p) => p.part === 'cap');
     const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid)), {
@@ -169,6 +180,12 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     drive.current = d;
     return () => { d.destroy(); drive.current = null; };
   }, [parts]); // eslint-disable-line react-hooks/exhaustive-deps
+  const roll = React.useRef<Roll | null>(null);
+  React.useEffect(() => {
+    if (!valid || value === undefined || !roll.current) return;
+    roll.current.setOptions({ reduced: reducedMotion(), sound });
+    roll.current.set(value);
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!valid || value === undefined || !drive.current) return;
     drive.current.setOptions({ reduced: reducedMotion(), sound });

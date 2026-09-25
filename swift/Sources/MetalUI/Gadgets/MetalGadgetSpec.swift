@@ -108,8 +108,10 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     }
 
     /// Its spoken description: `describe` with {title} and {state}, then the state's hint.
-    public func description(_ state: String) -> String {
+    public func description(_ state: String, value: Double? = nil) -> String {
+        let v = Int((value ?? driveDefault).rounded())
         let text = (describe ?? "{title}: {state}").replacingOccurrences(of: "{title}", with: title).replacingOccurrences(of: "{state}", with: state)
+            .replacingOccurrences(of: "{value}", with: String(v))
         return states[state]?.hint.map { "\(text), \($0)" } ?? text
     }
 }
