@@ -719,24 +719,27 @@ export const ICON_CATALOG = {
     motion: {"duration":754,"caption":"A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.","stages":["Mark","Cross out","Settle"],"tracks":[{"part":"x1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.14589,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34483,"transform":"translate(0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.43103,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.46419,"transform":"translate(-0.5657px,0.5657px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.8687,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"x2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"linear"},{"offset":0.30504,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.4244,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.58355,"transform":"translate(-0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0}]},{"part":"impact","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.4443,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48408,"transform":"scale(.8)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64987,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * CHECK · Actions
+   * CHECK · Actions · one act, 793ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          it nods yes about its vertex
-   * PRESS one-shot (from the current pose)
-   *          the tick is drawn again and lands with weight
-   *     0ms   .tk plays ck-p (420ms)
+   * Touch down → Press and flick → Ring out
+   *          A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.
+   *  nod        0 → 120 → 260 → 300 → 420 → 793ms
+   *  tick       0 → 120 → 440 → 520 → 793ms
+   *  ink        0 → 110 → 120 → 260 → 300 → 420 → 520 → 530 → 793ms
+   *  rays       0 → 415 → 455 → 640 → 793ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "check": {
     label: "Check",
     category: "Actions",
-    hover: "it nods yes about its vertex",
-    press: "the tick is drawn again and lands with weight",
-    pressMs: 420,
+    hover: "A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.",
+    press: "plays the same act",
+    pressMs: 793,
     defs: "",
-    body: "<g class=\"nd\"><path class=\"tk\" pathLength=\"1\" d=\"M5.4 12.6l4.1 4.1 9.1-9.4\"/></g>",
+    body: "<g data-part=\"nod\"><path data-part=\"tick\" d=\"M5.4 12.6l4.1 4.1 9.1-9.4\"/><path class=\"ac\" data-part=\"ink\" opacity=\"0\" pathLength=\"1\" d=\"M5.4 12.6l4.1 4.1 9.1-9.4\"/><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M20.28 7.06l1.19 -0.17M18.84 5.62l0.17 -1.19\" style=\"stroke-width:calc(var(--sw) * .7)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":793,"caption":"A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.","stages":["Touch down","Press and flick","Ring out"],"tracks":[{"part":"nod","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15132,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32787,"transform":"translate(0px,0px) rotate(5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.37831,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.52963,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tick","keyframes":[{"offset":0,"opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15132,"opacity":0.3,"easing":"linear"},{"offset":0.55485,"opacity":0.3,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65574,"opacity":1},{"offset":1,"opacity":1}]},{"part":"ink","keyframes":[{"offset":0,"opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.13871,"opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.15132,"opacity":1,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32787,"opacity":1,"strokeDashoffset":0.69,"easing":"linear"},{"offset":0.37831,"opacity":1,"strokeDashoffset":0.69,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.52963,"opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.65574,"opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.66835,"opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.52333,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.57377,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.80706,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * SYNCED · Status · one act, 1100ms

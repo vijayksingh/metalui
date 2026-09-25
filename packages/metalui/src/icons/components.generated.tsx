@@ -63,7 +63,7 @@ export const RedoIcon = createIcon("redo", "RedoIcon");
 export const MoreIcon = createIcon("more", "MoreIcon");
 /** Close. Hover: A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.. Press: plays the same act. */
 export const CloseIcon = createIcon("close", "CloseIcon");
-/** Check. Hover: it nods yes about its vertex. Press: the tick is drawn again and lands with weight. */
+/** Check. Hover: A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.. Press: plays the same act. */
 export const CheckIcon = createIcon("check", "CheckIcon");
 /** Synced. Hover: The satellite winds back, laps the core once and clicks home into its slot.. Press: plays the same act. */
 export const SyncedIcon = createIcon("synced", "SyncedIcon");

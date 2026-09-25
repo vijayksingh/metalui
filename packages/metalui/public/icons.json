@@ -555,11 +555,20 @@
       "component": "CheckIcon",
       "label": "Check",
       "category": "Actions",
-      "hover": "it nods yes about its vertex",
-      "press": "the tick is drawn again and lands with weight",
-      "pressMs": 420,
+      "hover": "A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.",
+      "press": "plays the same act",
+      "pressMs": 793,
+      "motion": {
+        "caption": "A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.",
+        "durationMs": 793,
+        "stages": [
+          "Touch down",
+          "Press and flick",
+          "Ring out"
+        ]
+      },
       "tuned16": false,
-      "construction": "Tick 4.1 / 9.1 legs about the vertex (9.5, 16.7). Hover is a single nod, yes: it dips 7° about the vertex, rises 3° past rest and settles (a one-shot, agreeing is an act). Press draws it again from the short leg and it lands heavier (2.1) where the stroke finishes, then eases back. The nod is on a wrapper so a press while hovered still draws."
+      "construction": "Tick 4.1 / 9.1 legs about the vertex (9.5, 16.7). Motion (study): a pen rewrites it. The tick lightens to a guide, ink draws down the short leg and slows into the vertex, where the tick tilts 6° under the pressure, then flicks up the long leg; the tick swings back past rest on the hinge spring and two rays ring off the tip."
     },
     {
       "name": "synced",
