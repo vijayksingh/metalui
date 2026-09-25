@@ -80,7 +80,9 @@ function Play() {
     if (!reduce) {
       const dx = slot.left + slot.width / 2 - (from.left + from.width / 2);
       const dy = slot.top + slot.height / 2 - (from.top + from.height / 2);
-      const lean = getComputedStyle(folder.current!.querySelector(`[data-card="${id}"]`)!).getPropertyValue('--r').trim() || '0deg';
+      // The slot's real lean, from its rendered transform, so the thing arrives at exactly that pose.
+      const m = new DOMMatrix(getComputedStyle(folder.current!.querySelector(`[data-card="${id}"]`)!).transform);
+      const lean = `${(Math.atan2(m.b, m.a) * 180) / Math.PI}deg`;
       await el.animate(
         [{ transform: 'translate(0,0) rotate(0deg)' }, { transform: `translate(${dx}px, ${dy}px) rotate(${lean})` }],
         { duration: TIMING.fly, easing: springEase(), fill: 'forwards' },
