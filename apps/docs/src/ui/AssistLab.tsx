@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switcher, inkColor } from '@unlocalhosted/metalui';
 import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
-import { fitFrame, settleWord } from '../lib/ink-word';
+import { fitFrame, lastWordNote, settleWord } from '../lib/ink-word';
 
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK LAB (the Brush cursor page)
@@ -99,6 +99,7 @@ export function AssistLab() {
   const [tool, setTool] = React.useState<AssistTool>('pen');
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
   const [asWritten, setAsWritten] = React.useState<'settled' | 'written'>('settled');
+  const [note, setNote] = React.useState('Write a word, then pause or move on: it settles, and this line says what happened.');
   const [strokes, setStrokes] = React.useState<Stroke[]>([]);
   const d = useDialKit('Assisted ink', {
     settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
@@ -175,6 +176,7 @@ export function AssistLab() {
     const strokesOfWord = word.current; word.current = [];
     if (!strokesOfWord.length) return;
     const result = settleWord(strokesOfWord.map((w) => w.ink!));
+    setNote(`Last word: ${lastWordNote}.`);
     if (!result) return;
     strokesOfWord.forEach((w, k) => { w.settled = result.strokes[k]; w.settledPath = undefined; w.morph = 0; });
     bump(strokesOfWord[0]);
@@ -246,6 +248,7 @@ export function AssistLab() {
         </svg>
         {!strokes.length && <span className="eng ink-hint">write here, slowly and quickly</span>}
       </div>
+      <p className="type-doc-prose max-w-[64ch] text-center text-ink2" aria-live="polite">{note}</p>
     </div>
   );
 }

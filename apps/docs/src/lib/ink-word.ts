@@ -53,7 +53,7 @@ export const WORD_PARAMS: WordParams = {
   budgetPointXh: 0.3, budgetPointPx: 8, budgetP95Xh: 0.2, silencePx: 0.35,
   xHeightMinPx: 4, xHeightMaxPx: 60,
   budgetP50Xh: 0.1,
-  trustSpreadXh: 0.25, trustTiltDeg: 25,
+  trustSpreadXh: 0.4, trustTiltDeg: 25,
   levelGain: 0.5, levelMinDeg: 3, levelMaxDeg: 25, levelClampDeg: 8,
 };
 
@@ -67,6 +67,9 @@ export interface WordFrame {
 }
 
 export interface WordSettle { strokes: InkSample[][]; frame: WordFrame; budget: { p50: number; p95: number; max: number } }
+
+/** Why the last word was or was not settled, in plain words (for the lab's readout). */
+export let lastWordNote = '';
 
 type Pt = { x: number; y: number };
 const median = (v: number[]) => { if (!v.length) return NaN; const s = [...v].sort((p, q) => p - q), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
@@ -137,20 +140,22 @@ export function fitFrame(strokes: InkSample[][]): WordFrame | null {
 }
 
 /** Letters, not a drawing: the stroke's height measured from the word's own baseline (so a word that
- * climbs is still letters) is at most 4 x-heights. */
+ * climbs is still letters) is at most `LETTER_MAX_XH` x-heights (one stroke can carry an ascender and
+ * a descender). */
+const LETTER_MAX_XH = 6;
 function letterLike(st: InkSample[], F: WordFrame): boolean {
   const hs = st.map((q) => F.a + F.b * q.x - q.y);
-  return Math.max(...hs) - Math.min(...hs) <= 4 * F.xHeight;
+  return Math.max(...hs) - Math.min(...hs) <= LETTER_MAX_XH * F.xHeight;
 }
 
 /** Settles a finished word. Returns null when it is not letters, cannot be judged, or would barely move. */
 export function settleWord(strokes: InkSample[][], p: WordParams = WORD_PARAMS, corner = 62, settleMs = 36): WordSettle | null {
   const frame = fitFrame(strokes);
-  if (!frame) return null;
+  if (!frame) { lastWordNote = 'left as written: not enough letter tops and bottoms to find its lines'; return null; }
   const xh = frame.xHeight;
   // Handwriting has a handwriting-sized x-height; outside it, this is a drawing (a lone zigzag would
   // otherwise set its own x-height and pass as letters).
-  if (xh < p.xHeightMinPx || xh > p.xHeightMaxPx) return null;
+  if (xh < p.xHeightMinPx || xh > p.xHeightMaxPx) { lastWordNote = `left as written: an x-height of ${xh.toFixed(0)} px reads as a drawing`; return null; }
   // Trust: only settle a word whose frame is clear. At least 3 bottoms on the line, scattered less
   // than `trustSpreadXh` around it, and a baseline tilted less than `trustTiltDeg`. Otherwise the
   // frame is a guess (a short word with a tall h and a y's tail), and the writing is left alone.
@@ -164,7 +169,12 @@ export function settleWord(strokes: InkSample[][], p: WordParams = WORD_PARAMS, 
     const letterOk = out.map((st) => letterLike(st, frame));
     let extended = false;
     out.forEach((st, k) => { if (letterOk[k] && extendLegs(st, frame, p, corner, settleMs)) extended = true; });
-    if (!extended) return null;
+    if (!extended) {
+      const why = onLine.length < 3 ? `only ${onLine.length} letter bottoms on the line` : spread > p.trustSpreadXh * xh ? `its bottoms scatter ${(spread / xh).toFixed(2)} x-height around the line (limit ${p.trustSpreadXh})` : `it tilts ${Math.abs(Math.atan(frame.b) * 180 / Math.PI).toFixed(0)}° (steeper than ${p.trustTiltDeg}° reads as deliberate)`;
+      lastWordNote = `left as written: its lines are unclear, ${why}`;
+      return null;
+    }
+    lastWordNote = 'a short leg finished; the rest left as written (lines unclear)';
     const m = out.flatMap((st, k) => st.map((q, i) => Math.hypot(q.x - strokes[k][i].x, q.y - strokes[k][i].y)));
     return { strokes: out, frame, budget: { p50: median(m), p95: quantile(m, 0.95), max: Math.max(...m) } };
   }
@@ -194,7 +204,8 @@ export function settleWord(strokes: InkSample[][], p: WordParams = WORD_PARAMS, 
   let extended = false;
   out.forEach((st, k) => { if (letter[k] && extendLegs(st, F, p, corner, settleMs)) extended = true; });
   const m = out.flatMap((s, k) => s.map((q, i) => Math.hypot(q.x - strokes[k][i].x, q.y - strokes[k][i].y)));
-  if (median(m) < p.silencePx && !extended) return null;
+  if (median(m) < p.silencePx && !extended) { lastWordNote = 'left as written: already neat (it would move under 0.35 px)'; return null; }
+  lastWordNote = `settled: tilt ${Math.abs(tilt * 180 / Math.PI).toFixed(0)}°${deg > p.levelMinDeg && deg <= p.levelMaxDeg ? ' levelled half way' : ''}, x-height ${xh.toFixed(0)} px; points moved ${median(m).toFixed(1)} px typically, ${Math.max(...m).toFixed(1)} px at most${extended ? '; a short leg finished' : ''}`;
   return { strokes: out, frame: F, budget: { p50: median(m), p95: quantile(m, 0.95), max: Math.max(...m) } };
 }
 
