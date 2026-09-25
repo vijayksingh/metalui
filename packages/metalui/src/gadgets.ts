@@ -11,3 +11,4 @@ export { createPlayer, sampleTrack, bezier, REST, type Player, type PlayerOption
 export { drawSlab, slabPath, cutPath, floorColor, roundedRect, type Cut, type CutKind, type SlabSpec } from './gadgets/parts/slab';
 export { useHost } from './gadgets/host';
 export { drawJack, type JackSpec } from './gadgets/parts/jack';
+export { drawPlug, type PlugSpec } from './gadgets/parts/plug';

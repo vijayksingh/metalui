@@ -1,0 +1,21 @@
+{
+  "name": "plug",
+  "title": "Plug",
+  "status": "alpha",
+  "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Plug",
+    "files": [
+      "plug.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalPlug",
+    "file": "swift/Sources/MetalUI/Components/MetalPlug.swift"
+  },
+  "agent": "plug.agent.md",
+  "layer": "part",
+  "page": "/components/plug",
+  "recipe": "gadgets"
+}

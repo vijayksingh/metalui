@@ -48,6 +48,11 @@
           "target": "components/gadgets/parts/jack.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/plug.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/plug.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/slab.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/slab.ts"
@@ -592,6 +597,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
+    },
+    {
+      "name": "plug",
+      "type": "registry:ui",
+      "title": "Plug",
+      "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/plug/plug.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/plug/plug.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/plug.md. SwiftUI: MetalPlug in the MetalUI Swift package."
     },
     {
       "name": "provenance-tooltip",

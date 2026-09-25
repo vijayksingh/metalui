@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "plug",
+  "type": "registry:ui",
+  "title": "Plug",
+  "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/plug/plug.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/plug/plug.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawPlug, type PlugSpec } from '../../gadgets/parts/plug';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Plug (a Part): a knurled cap that seats in a Jack. A round face on its darker skirt, six grip knurls,\n * a centre boss, maybe a cable stub, and its own shadow (a separate layer, so a lift can open it).\n * The plug you would touch wears the accent. Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface PlugProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  /** Wear the accent: the plug you would touch. Otherwise it is clay in the material's own colour. */\n  accent?: boolean;\n  /** The face's pigment, OKLCH; overrides accent. */\n  color?: PlugSpec['color'];\n  stub?: PlugSpec['stub'];\n  size?: number;\n  host?: Host;\n}\n\nexport function Plug({ accent = false, color, stub = 'none', size = 96, host: forced, ...props }: PlugProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const clay = GADGETS.materials.clay as unknown as { sample: number };\n  const face = color ?? (accent ? { L: wL, C: wC, H: wH } : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: clay.sample });\n  const d = React.useMemo(() => drawPlug(`plug-${uid}`, { at: [200, GADGETS.plug.centreY], size: GADGETS.plug.alone, color: face, stub }, { tier, host }),\n    [uid, face.L, face.C, face.H, stub, tier, host]); // eslint-disable-line react-hooks/exhaustive-deps\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={accent ? 'plug (accent)' : 'plug'} data-tier={tier} data-host={host} data-accent={accent || undefined} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/plug.md. SwiftUI: MetalPlug in the MetalUI Swift package."
+}

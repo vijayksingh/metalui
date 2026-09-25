@@ -172,6 +172,17 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testPlug() {
+        let stubs: [MetalPlug.Stub] = [.none, .up, .left, .right]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) { ForEach(0..<stubs.count, id: \.self) { i in MetalPlug(accent: i % 2 == 1, stub: stubs[i], size: 112) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("plug-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

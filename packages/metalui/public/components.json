@@ -495,6 +495,23 @@
       "agent": "https://metalui.dev/r/perfect-preview.md"
     },
     {
+      "name": "plug",
+      "title": "Plug",
+      "status": "alpha",
+      "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Plug",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPlug"
+      },
+      "registry": "https://metalui.dev/r/plug.json",
+      "agent": "https://metalui.dev/r/plug.md"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

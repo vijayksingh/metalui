@@ -323,6 +323,37 @@ export const GADGETS = {
     "knurlAlpha": 0.22,
     "glow": 0.8
   },
+  "plug": {
+    "side": 0.15,
+    "skirt": 0.12,
+    "knurls": 6,
+    "knurl": [
+      0.62,
+      0.86
+    ],
+    "knurlAlpha": 0.2,
+    "boss": 0.4,
+    "stub": [
+      0.9,
+      0.5
+    ],
+    "shadow": [
+      0.26,
+      0.3,
+      0.5,
+      0.42
+    ],
+    "alone": 180,
+    "face": 0.94,
+    "centreY": 196,
+    "stubFrom": 0.7,
+    "stubL": 0.34,
+    "stubC": 0.01,
+    "faceClay": 0.9,
+    "faceC": 0.012,
+    "bossDrop": 0.04,
+    "knurlWidth": 0.1
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,
