@@ -116,6 +116,14 @@ public enum MetalGadgetTokens {
     public static let plugFaceChroma: Double = 0.012
     public static let plugBossDrop: Double = 0.04
     public static let plugKnurlWidth: Double = 0.1
+    public static let cableWidth: Double = 13.5
+    public static let cableSag: (share: Double, min: Double, max: Double) = (0.18, 24.0, 90.0)
+    public static let cableHandle: Double = 0.3
+    public static let cableRubber: (L: Double, C: Double) = (0.3, 0.012)
+    public static let cableShade: (drop: Double, width: Double, dx: Double, dy: Double) = (0.07, 0.5, 0.1, 0.13)
+    public static let cableSheen: (width: Double, dx: Double, dy: Double, alpha: Double) = (0.2, -0.16, -0.2, 0.22)
+    public static let cableShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.35, 0.25, 0.45, 0.4)
+    public static let cableSpring = MetalSprings.hinge
     public static let jackKnurlWidth: Double = 0.07
     public static let jackKnurlAlpha: Double = 0.22
     public static let jackGlow: Double = 0.8

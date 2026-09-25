@@ -354,6 +354,39 @@ export const GADGETS = {
     "bossDrop": 0.04,
     "knurlWidth": 0.1
   },
+  "cable": {
+    "width": 13.5,
+    "sag": [
+      0.18,
+      24,
+      90
+    ],
+    "handle": 0.3,
+    "rubber": [
+      0.3,
+      0.012
+    ],
+    "shade": [
+      0.07,
+      0.5,
+      0.1,
+      0.13
+    ],
+    "sheen": [
+      0.2,
+      -0.16,
+      -0.2,
+      0.22
+    ],
+    "shadow": [
+      0.35,
+      0.25,
+      0.45,
+      0.4
+    ],
+    "spring": "hinge",
+    "seatReach": 30
+  },
   "surface": {
     "grainOctaves": 2,
     "grainSeed": 3,

@@ -43,6 +43,11 @@
           "target": "components/gadgets/host.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/cable.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/cable.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/jack.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/jack.ts"
@@ -114,6 +119,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
+    },
+    {
+      "name": "cable",
+      "type": "registry:ui",
+      "title": "Cable",
+      "description": "A rubber patch cord between two plugs, drooping under gravity. With a length it hangs like a real cord, taut or slack as its ends move, and its belly swings after them.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/cable/cable.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/cable/cable.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/cable.md. SwiftUI: MetalCable in the MetalUI Swift package."
     },
     {
       "name": "checkbox",

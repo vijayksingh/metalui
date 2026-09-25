@@ -12,3 +12,4 @@ export { drawSlab, slabPath, cutPath, floorColor, roundedRect, type Cut, type Cu
 export { useHost } from './gadgets/host';
 export { drawJack, type JackSpec } from './gadgets/parts/jack';
 export { drawPlug, type PlugSpec } from './gadgets/parts/plug';
+export { cableControls, cablePath, cableSag, createCableSwing, drawCable, type CableSpec, type CableSwing } from './gadgets/parts/cable';

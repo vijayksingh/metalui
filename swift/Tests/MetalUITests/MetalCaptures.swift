@@ -183,6 +183,21 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testCable() {
+        let ends: [(Double, Double)] = [(60, 340), (90, 310), (150, 250)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                ForEach(0..<ends.count, id: \.self) { i in
+                    MetalCable(from: CGPoint(x: ends[i].0, y: 150), to: CGPoint(x: ends[i].1, y: 150), length: 280, size: 180)
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("cable-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -1,0 +1,21 @@
+{
+  "name": "cable",
+  "title": "Cable",
+  "status": "alpha",
+  "description": "A rubber patch cord between two plugs, drooping under gravity. With a length it hangs like a real cord, taut or slack as its ends move, and its belly swings after them.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Cable",
+    "files": [
+      "cable.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCable",
+    "file": "swift/Sources/MetalUI/Components/MetalCable.swift"
+  },
+  "agent": "cable.agent.md",
+  "layer": "part",
+  "page": "/components/cable",
+  "recipe": "gadgets"
+}

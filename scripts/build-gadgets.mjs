@@ -97,6 +97,14 @@ public enum MetalGadgetTokens {
     public static let plugFaceChroma: Double = ${num(G.plug['face-C'])}
     public static let plugBossDrop: Double = ${num(G.plug['boss-drop'])}
     public static let plugKnurlWidth: Double = ${num(G.plug['knurl-width'])}
+    public static let cableWidth: Double = ${num(G.cable.width)}
+    public static let cableSag: (share: Double, min: Double, max: Double) = (${G.cable.sag.map(num).join(', ')})
+    public static let cableHandle: Double = ${num(G.cable.handle)}
+    public static let cableRubber: (L: Double, C: Double) = (${G.cable.rubber.map(num).join(', ')})
+    public static let cableShade: (drop: Double, width: Double, dx: Double, dy: Double) = (${G.cable.shade.map(num).join(', ')})
+    public static let cableSheen: (width: Double, dx: Double, dy: Double, alpha: Double) = (${G.cable.sheen.map(num).join(', ')})
+    public static let cableShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.cable.shadow.map(num).join(', ')})
+    public static let cableSpring = MetalSprings.${G.cable.spring}
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
     public static let jackKnurlAlpha: Double = ${num(G.jack['knurl-alpha'])}
     public static let jackGlow: Double = ${num(G.jack.glow)}

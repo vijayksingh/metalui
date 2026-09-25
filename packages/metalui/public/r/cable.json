@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cable",
+  "type": "registry:ui",
+  "title": "Cable",
+  "description": "A rubber patch cord between two plugs, drooping under gravity. With a length it hangs like a real cord, taut or slack as its ends move, and its belly swings after them.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/cable/cable.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/cable/cable.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { createCableSwing, drawCable, type CableSpec, type CableSwing } from '../../gadgets/parts/cable';\nimport { tierFor } from '../../gadgets/light';\n\n/* Cable (a Part): a rubber patch cord between two plugs, drooping under gravity. Give it a length and\n * it hangs like a real cord: taut when its ends are pulled apart, slack when they come together. When\n * its ends move they go at once and its belly swings after them on the hinge spring (at once with\n * reduced motion). Geometry is canvas units on a 400-unit square; `size` is drawn pixels. */\n\nexport interface CableProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children' | 'from' | 'to'> {\n  from: CableSpec['from'];\n  to: CableSpec['to'];\n  sag?: number;\n  length?: number;\n  color?: CableSpec['color'];\n  size?: number;\n}\n\nconst reducedQuery = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;\n\nexport function Cable({ from, to, sag, length, color, size = 160, ...props }: CableProps) {\n  const root = React.useRef<SVGGElement>(null);\n  const swing = React.useRef<CableSwing | null>(null);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  // Drawn once per look; after that the swing moves the paths, so React never rewrites them mid-swing.\n  const first = React.useRef<CableSpec>({ from, to, sag, length });\n  const d = React.useMemo(() => drawCable(`cable-${uid}`, { ...first.current, color }, { tier }),\n    [uid, tier, color?.L, color?.C, color?.H]); // eslint-disable-line react-hooks/exhaustive-deps\n  React.useEffect(() => {\n    if (!root.current) return;\n    const s = createCableSwing(root.current, first.current, { reduced: reducedQuery() });\n    swing.current = s;\n    return () => s.destroy();\n  }, [d]);\n  React.useEffect(() => { swing.current?.setReduced(reducedQuery()); swing.current?.set({ from, to, sag, length }); }, [from[0], from[1], to[0], to[1], sag, length]); // eslint-disable-line react-hooks/exhaustive-deps\n  return (\n    <svg viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label=\"cable\" data-tier={tier} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g ref={root} dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/cable.md. SwiftUI: MetalCable in the MetalUI Swift package."
+}
