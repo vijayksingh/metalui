@@ -14,6 +14,8 @@ import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type 
  * Cost stays flat however long the word: a live stroke's frozen ink is outlined once, in chunks,
  * and only its tail is recomputed each frame; a finished stroke is outlined once, on lift.
  * The dials tune the assist for new strokes (per tool presets are the defaults).
+ * Copy strokes copies every stroke's raw samples (x, y, time, pressure) as JSON: real handwriting
+ * for the engine's fixtures.
  * ───────────────────────────────────────────────────────── */
 
 const LOOK: Record<AssistTool, { size: number; thinning: number; taper: number; opacity: number }> = {
@@ -69,7 +71,7 @@ export function AssistLab() {
   const [view, setView] = React.useState<'assisted' | 'raw' | 'both'>('both');
   const [strokes, setStrokes] = React.useState<Stroke[]>([]);
   const d = useDialKit('Assisted ink', {
-    settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1] },
+    settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
     corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1] },
     landing: { dehook: [TOOL_ASSIST.pen.dehook, 0, 16, 1] },
   });
@@ -78,6 +80,7 @@ export function AssistLab() {
     const base = TOOL_ASSIST[t], pen = TOOL_ASSIST.pen;
     return {
       settleMs: d.settle.settleMs !== pen.settleMs ? d.settle.settleMs : base.settleMs,
+      sigmaPx: d.settle.sigmaPx !== pen.sigmaPx ? d.settle.sigmaPx : base.sigmaPx,
       corner: d.corners.corner !== pen.corner ? d.corners.corner : base.corner,
       dehook: d.landing.dehook !== pen.dehook ? d.landing.dehook : base.dehook,
     };
@@ -155,6 +158,7 @@ export function AssistLab() {
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
         <Button size="compact" onClick={() => setStrokes([])}>Clear</Button>
+        <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
       </div>
       <div ref={box} className="snap-canvas" style={{ height: 300, touchAction: 'none', cursor: 'crosshair' }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
         <svg className="snap-world" style={{ overflow: 'visible' }} aria-hidden>

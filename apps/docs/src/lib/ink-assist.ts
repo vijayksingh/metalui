@@ -33,6 +33,8 @@ export interface AssistParams {
   corner: number;
   /** Px. A landing flick is looked for within this much travel. */
   dehook: number;
+  /** Px of path one sigma may cover: smaller keeps fast small letters sharper, larger smooths more. */
+  sigmaPx: number;
 }
 
 export type AssistTool = 'pen' | 'pencil' | 'marker';
@@ -40,14 +42,49 @@ export type AssistTool = 'pen' | 'pencil' | 'marker';
 /** Per tool: a pen is helped most in writing; a pencil least, since it is the sketching tool and
  * its texture is the point; a marker's tip is broad, so it levels more and has no corners. */
 export const TOOL_ASSIST: Record<AssistTool, AssistParams> = {
-  pen: { settleMs: 36, corner: 62, dehook: 8 },
-  pencil: { settleMs: 20, corner: 62, dehook: 4 },
-  marker: { settleMs: 40, corner: 180, dehook: 8 },
+  pen: { settleMs: 36, corner: 62, dehook: 8, sigmaPx: 8 },
+  pencil: { settleMs: 20, corner: 62, dehook: 4, sigmaPx: 3 },
+  marker: { settleMs: 40, corner: 180, dehook: 8, sigmaPx: 6 },
 };
 
 /** The assisted stroke for all its raw samples at once (a finished stroke). */
 export function assistStroke(raw: InkSample[], p: AssistParams): InkSample[] {
-  return settle(dehook(raw, p.dehook), p);
+  return settle(densify(dehook(raw, p.dehook)), p);
+}
+
+/* Filling gaps. A fast stroke on a 60 Hz mouse, or a dropped event, leaves samples far apart, and a
+ * straight chord across the gap flattens a curve (the loop of a y goes straight for a bit). Any gap
+ * wider than `GAP` px is filled with points on a centripetal Catmull-Rom curve through the
+ * neighbouring samples, with time and pressure interpolated. */
+const GAP = 2;
+
+function catmull(p0: InkSample, p1: InkSample, p2: InkSample, p3: InkSample, u: number): InkSample {
+  // Centripetal parameterisation (alpha 0.5): no loops or cusps inside a segment.
+  const d = (a: InkSample, b: InkSample) => Math.max(1e-3, Math.sqrt(Math.hypot(b.x - a.x, b.y - a.y)));
+  const t1 = d(p0, p1), t2 = t1 + d(p1, p2), t3 = t2 + d(p2, p3), t = t1 + (t2 - t1) * u;
+  const lerp = (a: InkSample, b: InkSample, ta: number, tb: number) => { const k = (t - ta) / (tb - ta); return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k }; };
+  const a1 = lerp(p0, p1, 0, t1), a2 = lerp(p1, p2, t1, t2), a3 = lerp(p2, p3, t2, t3);
+  const b1 = { x: a1.x + (a2.x - a1.x) * ((t - 0) / t2), y: a1.y + (a2.y - a1.y) * ((t - 0) / t2) };
+  const b2 = { x: a2.x + (a3.x - a2.x) * ((t - t1) / (t3 - t1)), y: a2.y + (a3.y - a2.y) * ((t - t1) / (t3 - t1)) };
+  const k = (t - t1) / (t2 - t1);
+  return { x: b1.x + (b2.x - b1.x) * k, y: b1.y + (b2.y - b1.y) * k, t: p1.t + (p2.t - p1.t) * u, pressure: p1.pressure + (p2.pressure - p1.pressure) * u };
+}
+
+/** The points to insert between raw[i] and raw[i + 1] (not including either). */
+function fill(raw: InkSample[], i: number): InkSample[] {
+  const p1 = raw[i], p2 = raw[i + 1], gap = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+  if (gap <= GAP) return [];
+  const p0 = raw[i - 1] ?? { ...p1, x: 2 * p1.x - p2.x, y: 2 * p1.y - p2.y };
+  const p3 = raw[i + 2] ?? { ...p2, x: 2 * p2.x - p1.x, y: 2 * p2.y - p1.y };
+  const n = Math.ceil(gap / GAP), out: InkSample[] = [];
+  for (let k = 1; k < n; k++) out.push(catmull(p0, p1, p2, p3, k / n));
+  return out;
+}
+
+function densify(raw: InkSample[]): InkSample[] {
+  const out: InkSample[] = [];
+  for (let i = 0; i < raw.length; i++) { out.push(raw[i]); if (i < raw.length - 1) out.push(...fill(raw, i)); }
+  return out;
 }
 
 /**
@@ -59,6 +96,7 @@ export function assistStroke(raw: InkSample[], p: AssistParams): InkSample[] {
 export class LiveInk {
   private raw: InkSample[] = [];
   private landed: InkSample[] | null = null; // the stroke after its landing flick, judged once
+  private dense: InkSample[] = []; // `landed` with its gaps filled; the newest segment stays open until the next sample
   private frozen: InkSample[] = [];
   private start = 0; // index in `landed` of the first point not yet frozen
   constructor(private p: AssistParams) {}
@@ -67,12 +105,20 @@ export class LiveInk {
     this.raw.push(s);
     if (this.landed) this.landed.push(s);
     else if (travel(this.raw) >= this.p.dehook + 12) this.landed = dehook(this.raw, this.p.dehook).slice();
+    else return;
+    // Close the segment before the newest one: its curve needs the sample after it.
+    const L = this.landed, closed = this.dense.length ? this.closedTo : 0;
+    if (!this.dense.length) this.dense.push(L[0]);
+    for (let i = closed; i < L.length - 2; i++) { this.dense.push(...fill(L, i), L[i + 1]); this.closedTo = i + 1; }
   }
+  private closedTo = 0;
 
   /** The assisted stroke so far: the frozen part (never changes) and the live tail. */
   read(): { frozen: InkSample[]; tail: InkSample[] } {
-    if (!this.landed) return { frozen: [], tail: settle(dehook(this.raw, this.p.dehook), this.p) };
-    const pts = this.landed, reach = this.p.settleMs * 6, now = pts[pts.length - 1].t;
+    if (!this.landed) return { frozen: [], tail: settle(densify(dehook(this.raw, this.p.dehook)), this.p) };
+    // The filled points, then the newest (still open) segment as it stands.
+    const L = this.landed, pts = L.length > 1 ? this.dense.concat(fill(L, L.length - 2), L[L.length - 1]) : this.dense;
+    const reach = this.p.settleMs * 6, now = pts[pts.length - 1].t;
     let from = this.start;
     while (from > 0 && pts[this.start].t - pts[from - 1].t < reach) from--;
     const settled = settle(pts.slice(from), this.p);
@@ -112,7 +158,9 @@ function dehook(pts: InkSample[], limit: number): InkSample[] {
   return pts.slice(at);
 }
 
-function settle(raw: InkSample[], { settleMs, corner }: AssistParams): InkSample[] {
+const SIGMA_MIN = 6;
+
+function settle(raw: InkSample[], { settleMs, corner, sigmaPx }: AssistParams): InkSample[] {
   if (raw.length < 3 || settleMs <= 0) return raw.map((p) => ({ ...p }));
   // Corners, judged on a lightly levelled copy so a tremor's wiggle is not a corner.
   const soft = raw.map((p) => {
@@ -136,22 +184,29 @@ function settle(raw: InkSample[], { settleMs, corner }: AssistParams): InkSample
     if (turned && here < 0.75 * Math.max(a.speed, b.speed)) cuts.push(i);
   }
   // Settle each piece between corners; its ends are pinned.
+  // Speed-adaptive: a point's sigma covers at most `sigmaPx` of path, so a fast, small letter (an s)
+  // keeps its shape while slow, shaky writing gets the full `settleMs`.
+  const sigmaAt = raw.map((p, i) => {
+    const a = raw[Math.max(0, i - 2)], b = raw[Math.min(raw.length - 1, i + 2)];
+    const speed = Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, b.t - a.t);
+    return Math.max(SIGMA_MIN, Math.min(settleMs, sigmaPx / Math.max(1e-3, speed)));
+  });
   const out: InkSample[] = [];
-  const sig2 = 2 * settleMs * settleMs;
   let from = 0;
   for (const to of [...cuts, raw.length - 1]) {
     for (let i = from; i <= to; i++) {
       if (out.length && i === from) continue; // a corner point is shared by two pieces
       if (i === from || i === to) { out.push({ ...raw[i] }); continue; }
       let wx = 0, wy = 0, wp = 0, ws = 0;
+      const sig = sigmaAt[i], sig2 = 2 * sig * sig;
       for (let j = from; j <= to; j++) {
         const dt = raw[j].t - raw[i].t;
-        if (Math.abs(dt) > settleMs * 3) continue;
+        if (Math.abs(dt) > sig * 3) continue;
         const w = Math.exp(-(dt * dt) / sig2);
         wx += w * raw[j].x; wy += w * raw[j].y; wp += w * raw[j].pressure; ws += w;
       }
       // Near a pinned end the window is one-sided; blend toward the raw point so ends do not pull in.
-      const k = Math.min(1, Math.min(raw[i].t - raw[from].t, raw[to].t - raw[i].t) / (settleMs * 2));
+      const k = Math.min(1, Math.min(raw[i].t - raw[from].t, raw[to].t - raw[i].t) / (sig * 2));
       out.push({ x: raw[i].x + (wx / ws - raw[i].x) * k, y: raw[i].y + (wy / ws - raw[i].y) * k, t: raw[i].t, pressure: raw[i].pressure + (wp / ws - raw[i].pressure) * k });
     }
     from = to;
