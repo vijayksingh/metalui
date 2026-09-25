@@ -2093,49 +2093,49 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | Component | Name | Category | Hover | Press |
 |---|---|---|---|---|
 | `SelectIcon` | `select` | Tools | The pointer draws back, clicks its tip down, and a ring opens where it lands. | plays the same act |
-| `TextIcon` | `text` | Tools | glyph steps aside, caret appears and blinks | glyph stamps down |
-| `NoteIcon` | `note` | Tools | corner curls up | lines write themselves in |
-| `ImageIcon` | `image` | Tools | sun rises behind the ridge | frame breathes, sun flares |
-| `LinkIcon` | `link` | Tools | links pull apart, bar thins | snap together |
-| `DrawIcon` | `draw` | Tools | tip slides and draws a stroke | taps the paper |
-| `PenIcon` | `pen` | Tools | the nib glides and lays a wave of ink | the nib presses: the line swells and a drop of ink blooms |
-| `MarkerIcon` | `marker` | Tools | it sweeps right and lays a see-through band | it lifts back, then sweeps a fresh band |
-| `LineIcon` | `line` | Tools | plucked like a string: it bows, swings back and settles straight | it pulls back into its start and is drawn out again |
-| `ArrowIcon` | `arrow` | Tools | it bends into a connector and the head swings round to follow | it draws back and shoots, the shaft stretching behind the head |
-| `RectangleIcon` | `rectangle` | Tools | a rough hand-drawn box snaps into a clean one | the box is dragged out again from its corner |
-| `EllipseIcon` | `ellipse` | Tools | it is pulled toward a circle, narrowing as it grows | a pen point traces it again, all the way round |
-| `EraserIcon` | `eraser` | Tools | it leans onto a scribble, ready | it rubs back and forth, the scribble goes and crumbs fall |
-| `LayoutIcon` | `layout` | Tools | tiles swap sides | tiles settle together |
-| `TidyIcon` | `tidy` | Tools | loose tiles snap to the guide | guide pulses, tiles click home |
-| `SearchIcon` | `search` | Tools | lens sweeps, glint crosses glass | lens focuses |
-| `ZoomInIcon` | `zoom-in` | Tools | the plus is magnified: it grows more than the lens | the lens swells one step in |
-| `ZoomOutIcon` | `zoom-out` | Tools | minus narrows, lens recedes | lens shrinks |
-| `FitIcon` | `fit` | Tools | content grows to the frame | corners clamp |
-| `DuplicateIcon` | `duplicate` | Actions | copy slides off the original | copy stamps back and out |
-| `SendAwayIcon` | `send-away` | Actions | well turns, dot is drawn in | dot is pulled into the centre and vanishes |
-| `TrashIcon` | `trash` | Actions | lid lifts on its hinge | lid closes with a small settle |
-| `GroupIcon` | `group` | Actions | cards rise and fan above the flap | cards drop into the folder |
-| `UngroupIcon` | `ungroup` | Actions | cards spread wider | cards pop out and separate |
-| `PinIcon` | `pin` | Actions | pin lifts, its contact shadow fades | pushes in |
-| `BoardIcon` | `board` | Actions | ribbon lengthens | drops into place |
-| `ShareIcon` | `share` | Actions | arrow lifts out of the tray | arrow leaves, a new one rises |
-| `UndoIcon` | `undo` | Actions | head reaches back | arrow arcs back and returns |
-| `RedoIcon` | `redo` | Actions | head reaches forward | arrow arcs forward and returns |
-| `MoreIcon` | `more` | Actions | a wave runs through the dots, left to right: it goes on | dots gather and part |
-| `CloseIcon` | `close` | Actions | its arms draw in toward the crossing, ready | it folds into its centre and springs back out |
-| `CheckIcon` | `check` | Actions | it nods yes about its vertex | the tick is drawn again and lands with weight |
-| `SyncedIcon` | `synced` | Status | satellite advances along its orbit | orbit completes a full turn |
-| `OfflineIcon` | `offline` | Status | satellite drifts further out | tries to return, drifts away |
-| `SyncErrorIcon` | `sync-error` | Status | the orbit tries to turn, catches and snaps back; the mark jumps | orbit shivers once |
-| `CaptureIcon` | `capture` | Status | viewfinder focuses in | shutter blinks |
-| `PasteIcon` | `paste` | Status | clip lifts | contents land on the board |
-| `KeeperIcon` | `keeper` | Status | blinks | ring tips, eyes look up |
-| `PlusIcon` | `plus` | Actions | the plus grows out from the centre of the tile | the tile presses in and the plus pops out, made |
-| `RegionIcon` | `region` | Tools | the name writes across the head | the frame settles |
-| `TaskIcon` | `task` | Tools | the tick nods yes inside its box | the box presses in and comes back up ticked |
-| `TagIcon` | `tag` | Tools | the tag swings on its eyelet | the tag stamps |
-| `CalendarIcon` | `calendar` | Tools | the rings lift | the page turns in |
-| `DocumentIcon` | `document` | Tools | the second line writes on | the lines redraw |
-| `ClockIcon` | `clock` | Status | an hour passes: the minute hand sweeps round as the hour hand moves one on | the minute hand ticks forward a minute |
-| `MeIcon` | `me` | Tools | the trend redraws to its last point | the last point pulses |
-| `SeedIcon` | `seed` | Actions | the sprout grows | the seed settles |
+| `TextIcon` | `text` | Tools | The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it. | plays the same act |
+| `NoteIcon` | `note` | Tools | The corner peels open, the lines are written fresh, and the corner is pressed back down. | plays the same act |
+| `ImageIcon` | `image` | Tools | The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again. | plays the same act |
+| `LinkIcon` | `link` | Tools | The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join. | plays the same act |
+| `DrawIcon` | `draw` | Tools | The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place. | plays the same act |
+| `PenIcon` | `pen` | Tools | The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in. | plays the same act |
+| `MarkerIcon` | `marker` | Tools | The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes. | plays the same act |
+| `LineIcon` | `line` | Tools | The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end. | plays the same act |
+| `ArrowIcon` | `arrow` | Tools | The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds. | plays the same act |
+| `RectangleIcon` | `rectangle` | Tools | A handle grabs the far corner and drags the box in toward its pinned corner, then out past its size; let go, it springs back. | plays the same act |
+| `EllipseIcon` | `ellipse` | Tools | A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began. | plays the same act |
+| `EraserIcon` | `eraser` | Tools | The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away. | plays the same act |
+| `LayoutIcon` | `layout` | Tools | The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat. | plays the same act |
+| `TidyIcon` | `tidy` | Tools | The loose pills are knocked square against the guide, and registration ticks flash where they sit flush. | plays the same act |
+| `SearchIcon` | `search` | Tools | The lens is swept across the field and stops; the focus closes in and a glint crosses the glass. | plays the same act |
+| `ZoomInIcon` | `zoom-in` | Tools | The lens is pushed in along its handle and the plus under it is magnified. | plays the same act |
+| `ZoomOutIcon` | `zoom-out` | Tools | The lens is drawn back along its handle; the minus recedes and the old view closes in. | plays the same act |
+| `FitIcon` | `fit` | Tools | The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut. | plays the same act |
+| `DuplicateIcon` | `duplicate` | Actions | The copy slides back onto the original, presses to take its impression, and is peeled off into place. | plays the same act |
+| `SendAwayIcon` | `send-away` | Actions | The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim. | plays the same act |
+| `TrashIcon` | `trash` | Actions | The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge. | plays the same act |
+| `GroupIcon` | `group` | Actions | The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing. | plays the same act |
+| `UngroupIcon` | `ungroup` | Actions | The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam. | plays the same act |
+| `PinIcon` | `pin` | Actions | The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands. | plays the same act |
+| `BoardIcon` | `board` | Actions | The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back. | plays the same act |
+| `ShareIcon` | `share` | Actions | The arrow crouches into the tray, pushes off and leaves; the next one rises in its place. | plays the same act |
+| `UndoIcon` | `undo` | Actions | The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back. | plays the same act |
+| `RedoIcon` | `redo` | Actions | The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on. | plays the same act |
+| `MoreIcon` | `more` | Actions | The first dot is struck into the row; the knock runs through and kicks the last one out: there is more. | plays the same act |
+| `CloseIcon` | `close` | Actions | A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact. | plays the same act |
+| `CheckIcon` | `check` | Actions | A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings. | plays the same act |
+| `SyncedIcon` | `synced` | Status | The satellite winds back, laps the core once and clicks home into its slot. | plays the same act |
+| `OfflineIcon` | `offline` | Status | The lost satellite swings back toward its slot, falls a unit short and is thrown back out. | plays the same act |
+| `SyncErrorIcon` | `sync-error` | Status | The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts. | plays the same act |
+| `CaptureIcon` | `capture` | Status | The corners close in and hunt for focus, lock, and the shutter blinks over the aperture. | plays the same act |
+| `PasteIcon` | `paste` | Status | The clip levers open, the content drops onto the board, and the clip clamps it down. | plays the same act |
+| `KeeperIcon` | `keeper` | Status | The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod. | plays the same act |
+| `PlusIcon` | `plus` | Actions | The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends. | plays the same act |
+| `RegionIcon` | `region` | Tools | The frame is set down on the canvas, and its name writes into the head behind a caret. | plays the same act |
+| `TaskIcon` | `task` | Tools | The box is pressed down; while it is held the tick is written, and released it springs back up with a click. | plays the same act |
+| `TagIcon` | `tag` | Tools | The cord tugs the tag by its eyelet, and it swings there and comes to hang still. | plays the same act |
+| `CalendarIcon` | `calendar` | Tools | Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left. | plays the same act |
+| `DocumentIcon` | `document` | Tools | A thumb folds the corner down, the page turns, and the next page's lines write in. | plays the same act |
+| `ClockIcon` | `clock` | Status | An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back. | plays the same act |
+| `MeIcon` | `me` | Tools | Today's point runs back along your days and climbs to today again, drawing the trend behind it. | plays the same act |
+| `SeedIcon` | `seed` | Actions | The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings. | plays the same act |
