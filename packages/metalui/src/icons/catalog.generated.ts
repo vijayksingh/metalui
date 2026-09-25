@@ -193,26 +193,27 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * LINE · Tools
+   * LINE · Tools · one act, 1000ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          plucked like a string: it bows, swings back and settles straight
-   * PRESS one-shot (from the current pose)
-   *          it pulls back into its start and is drawn out again
-   *     0ms   .ln plays ln-draw (640ms)
-   *     0ms   .b plays ln-ride (640ms)
-   *     0ms   .a plays ln-anchor (640ms)
+   * Pick up → Drag out → Snap
+   *          The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.
+   *  stroke     0 → 90 → 270 → 330 → 540 → 620 → 660 → 800 → 1000ms
+   *  end        0 → 90 → 270 → 330 → 540 → 620 → 660 → 800 → 1000ms
+   *  start      0 → 270 → 330 → 460 → 580 → 1000ms
+   *  snap       0 → 640 → 700 → 920 → 1000ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "line": {
     label: "Line",
     category: "Tools",
-    hover: "plucked like a string: it bows, swings back and settles straight",
-    press: "it pulls back into its start and is drawn out again",
-    pressMs: 640,
+    hover: "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",
+    press: "plays the same act",
+    pressMs: 1000,
     defs: "",
-    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4\"/><circle class=\"a s\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"b s\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/>",
+    body: "<path data-part=\"stroke\" pathLength=\"1\" d=\"M5.4 18.6C9.8 14.2 14.2 9.8 18.6 5.4\"/><circle class=\"s\" data-part=\"start\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"s\" data-part=\"end\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/><circle class=\"ac\" data-part=\"snap\" opacity=\"0\" cx=\"18.6\" cy=\"5.4\" r=\"2.8\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
     sw16: 1.85,
+    motion: {"duration":1000,"caption":"The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.","stages":["Pick up","Drag out","Snap"],"tracks":[{"part":"stroke","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.09,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.62,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.62,"easing":"cubic-bezier(.35,0,.55,1)"},{"offset":0.54,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.62,"transform":"translate(0px,0px) rotate(0deg) scale(1.09,1.09)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66,"transform":"translate(0px,0px) rotate(0deg) scale(1.07,1.07)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.015,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0}]},{"part":"end","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.09,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(-8.184px,8.184px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33,"transform":"translate(-8.184px,8.184px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.35,0,.55,1)"},{"offset":0.54,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.62,"transform":"translate(1.188px,-1.188px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66,"transform":"translate(0.924px,-0.924px) rotate(0deg) scale(0.8,0.8)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.8,"transform":"translate(-0.198px,0.198px) rotate(0deg) scale(1.04,1.04)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"start","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33,"transform":"translate(0px,0px) rotate(0deg) scale(0.72,0.72)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.46,"transform":"translate(0px,0px) rotate(0deg) scale(1.08,1.08)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.58,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"snap","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.64,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.7,"transform":"scale(.85)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.92,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * ARROW · Tools

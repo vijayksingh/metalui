@@ -17,7 +17,7 @@ export const DrawIcon = createIcon("draw", "DrawIcon");
 export const PenIcon = createIcon("pen", "PenIcon");
 /** Marker. Hover: it sweeps right and lays a see-through band. Press: it lifts back, then sweeps a fresh band. */
 export const MarkerIcon = createIcon("marker", "MarkerIcon");
-/** Line. Hover: plucked like a string: it bows, swings back and settles straight. Press: it pulls back into its start and is drawn out again. */
+/** Line. Hover: The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.. Press: plays the same act. */
 export const LineIcon = createIcon("line", "LineIcon");
 /** Arrow. Hover: it bends into a connector and the head swings round to follow. Press: it draws back and shoots, the shaft stretching behind the head. */
 export const ArrowIcon = createIcon("arrow", "ArrowIcon");

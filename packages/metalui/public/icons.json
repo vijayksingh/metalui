@@ -104,11 +104,20 @@
       "component": "LineIcon",
       "label": "Line",
       "category": "Tools",
-      "hover": "plucked like a string: it bows, swings back and settles straight",
-      "press": "it pulls back into its start and is drawn out again",
-      "pressMs": 640,
+      "hover": "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.",
+        "durationMs": 1000,
+        "stages": [
+          "Pick up",
+          "Drag out",
+          "Snap"
+        ]
+      },
       "tuned16": false,
-      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end, drawn as a cubic so it can bend. Hover plucks it: pinned at both dots, it bows 3 up-left, swings 2 the other way, then 1 and .4, and rests straight. Press pulls it back into its start and drags it out again, the far dot riding the tip."
+      "construction": "One diagonal corner to corner (5.4 to 18.6), a cubic with its handles on the line, and a 1.3 dot at each end. Motion (study): the end dot is picked up (1.35) and dragged back to .38 of the length, the stroke retracting with it; the start dot is pressed (.72); the drag draws the stroke out, carries 9% past the end (the stroke stretched from its start), and the handle drops onto its point with a snap ring."
     },
     {
       "name": "arrow",
