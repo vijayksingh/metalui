@@ -374,7 +374,7 @@ A modal layer. React: `Dialog` with parts `Dialog.Root` (open, onOpenChange) and
 
 # Draw picks
 
-The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: not yet.
+The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: `MetalInkPicks`, `MetalWidthPicks` with `Binding<MetalInk>` and `Binding<MetalInkWidth>`.
 
 ## Use it for
 
