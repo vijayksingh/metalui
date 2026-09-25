@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { animate } from 'motion';
-import { Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionFrame, SnapGuides, Surface, Swatch, Switch, Well } from '@unlocalhosted/metalui';
+import { hop as hopTo, Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionFrame, SnapGuides, Surface, Swatch, Switch, Well } from '@unlocalhosted/metalui';
 
 /* ─────────────────────────────────────────────────────────
  * WHERE DOES IT GO? (the layers page): the six tests, asked in order
  *
  *   pick      each thing is the real part, live; the picked one gets the selection frame,
  *             and the light starts at the first question
- *   ask       every 420 ms the light hops down one question (no rail: the hops are the path): 250 ms ease-out along an arc that
- *             bows out min(.8, 14 / distance) of the way (about 7 px), counter-clockwise going
- *             down, clockwise going back up, like a bead jumping from stop to stop;
+ *   ask       every 420 ms the light hops down one question (MetalUI's hop, ccw: it bows left
+ *             going down and right going back up; no rail, the hops are the path);
  *             the question it leaves is marked "no" in ink3
  *   answer    at the first yes it stops: the question and its layer light up in ink,
  *             "yes" with a live LED, and the reason appears under the rail
@@ -128,34 +126,29 @@ export function LayerSorter() {
   const rows = React.useRef<(HTMLLIElement | null)[]>([]);
   const light = React.useRef<HTMLSpanElement>(null);
   const lastY = React.useRef<number | null>(null);
-  const hop = React.useRef<{ stop: () => void } | null>(null);
-  const put = (x: number, y: number) => { if (light.current) light.current.style.transform = `translate(${x}px, ${y}px)`; };
+  const hop = React.useRef<Animation | null>(null);
+  const put = (x: number, y: number) => { hop.current?.cancel(); hop.current = null; if (light.current) light.current.style.transform = `translate(${x}px, ${y}px)`; };
   const yOf = (i: number) => { const r = rows.current[i]; return r ? r.offsetTop + r.offsetHeight / 2 - LIGHT / 2 : 0; };
   // Resizes read the current step through a ref; the effect runs once, so a closed-over step would be stale.
   const stepNow = React.useRef(step);
   stepNow.current = step;
   React.useLayoutEffect(() => {
-    const snap = () => { hop.current?.stop(); const y = yOf(stepNow.current); put(0, y); lastY.current = y; };
+    const snap = () => { const y = yOf(stepNow.current); put(0, y); lastY.current = y; };
     snap();
     window.addEventListener('resize', snap);
     return () => window.removeEventListener('resize', snap);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   React.useEffect(() => {
-    const to = yOf(step), from = lastY.current ?? to, d = to - from;
+    const el = light.current;
+    const to = yOf(step), from = lastY.current ?? to;
     lastY.current = to;
-    if (d === 0) return;
-    hop.current?.stop();
-    if (reduced()) { put(0, to); return; }
-    // A quadratic arc: the middle point pushed sideways by strength × distance, to the left
-    // going down (counter-clockwise) and to the right going up (clockwise).
-    const bow = -Math.sign(d) * Math.min(0.8, 14 / Math.abs(d)) * Math.abs(d);
-    hop.current = animate(0, 1, {
-      duration: 0.25,
-      ease: 'easeOut',
-      onUpdate: (t) => put(2 * (1 - t) * t * bow, from + d * t),
-      onComplete: () => put(0, to),
-    });
+    if (!el || to === from) return;
+    // MetalUI's hop, bowing to the left of travel (ccw): left going down, right going back up.
+    put(0, from);
+    const a = hopTo(el, { x: 0, y: from }, { x: 0, y: to }, { side: 'ccw' });
+    hop.current = a;
+    a.onfinish = () => { if (hop.current === a) put(0, to); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 

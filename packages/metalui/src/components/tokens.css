@@ -81,6 +81,8 @@
   --mu-motion-focus-step: 2px; /* defocus for a drum turn (half the step) */
   --mu-motion-focus-content: 4px; /* defocus for a content change (half the travel) */
   --mu-motion-stagger: var(--mu-spring-release-half); /* offset between items: each starts as the previous is half gone */
+  --mu-motion-hop-duration: 250ms; /* a hop: one short throw from stop to stop (a light down a list, a thing from one region to another), easing out */
+  --mu-motion-hop-lift: 14px; /* the most a hop's arc bows: its control point sits min(0.8 × distance, 14) off the straight line, so the arc peaks at half that */
   --mu-swap-spring: var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-swap-turn: var(--mu-motion-step);
   --mu-swap-focus: var(--mu-motion-focus-step);
