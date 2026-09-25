@@ -304,6 +304,9 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 45%, transparent), transparent 60%),
     radial-gradient(100% 80% at 80% 110%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 60%), var(--page);
   box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--ink) 10%, transparent); }
+/* A pit for instruments: they act on what lies in a work surface. MetalUI's consistent pit (a rim on
+   every side, shade on the top and left walls, a catch light under the bottom edge) with a light fill. */
+.stage.on-pit, [data-mu-colorway] .stage.on-pit { background: linear-gradient(color-mix(in srgb, var(--ink) 3%, transparent), color-mix(in srgb, var(--ink) 2%, transparent)); box-shadow: var(--mu-well); }
 /* A host's placeholder content: faint bars that say "something is here" without being read. */
 .host .host-line { display: block; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
 [data-mu-colorway="graphite"] .stage.on-canvas, .cw-graphite .stage.on-canvas { background: radial-gradient(120% 90% at 30% 10%, color-mix(in srgb, white 4%, transparent), transparent 60%), var(--page); box-shadow: inset 0 0 0 .5px color-mix(in srgb, white 8%, transparent); }
@@ -800,6 +803,8 @@ html.rm .xr-dialogwrap { animation: none; }
 .snap-canvas { position: relative; width: 100%; overflow: hidden; border-radius: 22px;
   background-color: color-mix(in srgb, var(--page) 60%, transparent);
   background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1.2px); background-size: 20px 20px; }
+/* In an instrument's pit the pit is the work surface: the board keeps its size but draws nothing. */
+.stage.on-pit .snap-canvas { background: none; }
 .snap-world { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 0 0; }
 .xr-catch { background: color-mix(in srgb, var(--green-deep) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--green-deep) 30%, transparent); border-radius: 4px; }
 .xr-solid:has(.snap-canvas) { width: 100%; cursor: default; }

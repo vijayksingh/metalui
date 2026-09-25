@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
+import { PARTS } from '../app/parts';
 import { Button, Surface, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
@@ -86,23 +87,25 @@ export interface StageProps {
   style?: React.CSSProperties;
   /** stage: the light object. dark: the specimen needs a graphite surface (strip caps). */
   tone?: 'stage' | 'dark';
-  /** What the specimen sits on: the table (parts, components), a piece of canvas (objects,
-   * instruments, places) or, until every page moves over, the old well. */
-  on?: 'well' | 'table' | 'canvas';
+  /** What the specimen sits on. Left out, it follows the page's layer: paper for parts, components and
+   * objects (the region look, hugging the demo); a pit for instruments (they act on what lies in a work
+   * surface; full width); the plain canvas for places (full width). table: no surface at all. */
+  on?: 'paper' | 'pit' | 'canvas' | 'table' | 'well';
   /** Let the stage run wider than the measure on large screens (default true). */
   bleed?: boolean;
   stageRef?: React.Ref<HTMLDivElement>;
 }
 
 /** The reference stage: specimens sit on the table; the caption is engraved at its foot. */
-export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', on = 'well', stageRef }: StageProps) {
+export function Stage({ caption, cost, bar, children, className = '', style, tone = 'stage', on, stageRef }: StageProps) {
+  const surface = useStageSurface(on);
   return (
     <figure style={{ margin: 0 }}>
       <div
         ref={stageRef}
         data-md="skip"
         data-mu-colorway={tone === 'dark' ? 'graphite' : undefined}
-        className={['stage', on === 'well' ? '' : `on-${on}`, className].join(' ')}
+        className={['stage', surface === 'paper' ? '' : `on-${surface}`, surface === 'pit' || surface === 'canvas' ? 'wide' : '', className].join(' ')}
         style={{ ...(tone === 'dark' ? { background: 'var(--page)' } : null), ...((caption || cost) ? { paddingBottom: 28, rowGap: 24 } : null), ...style }}
       >
         {children}
@@ -111,6 +114,14 @@ export function Stage({ caption, cost, bar, children, className = '', style, ton
       {bar && <div className="status-row" style={{ justifyContent: 'center', margin: '-8px 0 24px' }}>{bar}</div>}
     </figure>
   );
+}
+
+/** The surface a demo sits on, from its page's layer (docs/COMPOSITION.md) unless the page names one. */
+function useStageSurface(on: StageProps['on']): 'paper' | 'pit' | 'canvas' | 'table' {
+  const { pathname } = useLocation();
+  if (on) return on === 'well' ? 'paper' : on;
+  const layer = PARTS.find((m) => m.page === pathname)?.layer;
+  return layer === 'instrument' ? 'pit' : layer === 'place' ? 'canvas' : 'paper';
 }
 
 /** Short captions are engraved like the reference; a sentence reads as quiet text. Both sit in flow at the stage's foot. */
