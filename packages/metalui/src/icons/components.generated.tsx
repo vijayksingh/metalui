@@ -43,7 +43,7 @@ export const FitIcon = createIcon("fit", "FitIcon");
 export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
-/** Delete · Trash. Hover: lid lifts on its hinge. Press: lid closes with a small settle. */
+/** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */
 export const TrashIcon = createIcon("trash", "TrashIcon");
 /** Group · Stack. Hover: cards rise and fan above the flap. Press: cards drop into the folder. */
 export const GroupIcon = createIcon("group", "GroupIcon");

@@ -427,11 +427,20 @@
       "component": "TrashIcon",
       "label": "Delete · Trash",
       "category": "Actions",
-      "hover": "lid lifts on its hinge",
-      "press": "lid closes with a small settle",
-      "pressMs": 380,
+      "hover": "The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.",
+      "press": "plays the same act",
+      "pressMs": 1063,
+      "motion": {
+        "caption": "The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.",
+        "durationMs": 1063,
+        "stages": [
+          "Lift",
+          "Slam",
+          "Settle"
+        ]
+      },
       "tuned16": false,
-      "construction": "Portrait keyline bin, tapered 0.9u each side, lid hinged at the left end."
+      "construction": "Portrait keyline bin, tapered 0.9u each side, lid hinged at the left end. Motion (study): the lid swings up 15.5° about its hinge, hangs, falls shut; the bin squashes .94 from its foot with the lid riding the rim, air puffs from the free edge, and the lid kicks 3.5° and settles."
     },
     {
       "name": "group",
