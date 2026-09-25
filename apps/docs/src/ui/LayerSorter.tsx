@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Button, Led } from '@unlocalhosted/metalui';
+import { Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionFrame, SnapGuides, Surface, Swatch, Switch, Well } from '@unlocalhosted/metalui';
 
 /* ─────────────────────────────────────────────────────────
  * WHERE DOES IT GO? (the layers page): the six tests, asked in order
  *
- *   pick      a thing latches; the light starts at the first question
+ *   pick      each thing is the real part, live; the picked one gets the selection frame,
+ *             and the light starts at the first question
  *   ask       every 420 ms the light moves down one question on the settle spring;
  *             the question it leaves is marked "no" in ink3
  *   answer    at the first yes it stops: the question and its layer light up in ink,
@@ -36,6 +37,61 @@ const THINGS = [
   { name: 'Region', at: 5, why: 'It has area, and you put cards in it. It is where they live.' },
   { name: 'Yesterday', at: 5, why: 'You go back to it and look around. It holds what was on the canvas that day.' },
 ];
+
+
+/* A small object on the canvas, for the instruments to act on. */
+const Block = ({ x, y, w = 34, h = 24 }: { x: number; y: number; w?: number; h?: number }) => (
+  <Surface material="raise" radius="card" className="absolute" style={{ left: x, top: y, width: w, height: h, borderRadius: 7 }} />
+);
+
+/* A die-cut sticker: a drawing with a white border and a soft shadow, as it sits on the canvas. */
+const Sticker = () => (
+  <svg viewBox="0 0 64 64" width="58" height="58" aria-hidden style={{ filter: 'drop-shadow(0 2px 3px rgba(24,22,16,.18))' }}>
+    <path d="M32 6l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 23l16-2z" fill="#F5BF55" stroke="#fff" strokeWidth="6" strokeLinejoin="round" paintOrder="stroke" />
+    <circle cx="27" cy="30" r="2" fill="#5C4210" /><circle cx="37" cy="30" r="2" fill="#5C4210" />
+    <path d="M27 37q5 4 10 0" fill="none" stroke="#5C4210" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+/* A spring is a value: the curve it follows, and a dot that rides it. */
+const Spring = () => (
+  <svg viewBox="0 0 120 60" width="120" height="60" aria-hidden className="text-ink2">
+    <line x1="6" y1="18" x2="114" y2="18" stroke="currentColor" strokeOpacity=".25" strokeDasharray="2 3" />
+    <path d="M6 54 C 24 -8, 34 6, 46 22 S 64 12, 76 19 S 96 17, 114 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+
+const scaled = (node: React.ReactNode, k: number) => <div style={{ transform: `scale(${k})` }}>{node}</div>;
+
+const SPECIMENS: Record<string, () => React.ReactNode> = {
+  'Ink colour': () => <Swatch hex="#3FB97A" label="green" />,
+  'Hinge spring': () => <Spring />,
+  Keycap: () => <span className="flex gap-4"><Kbd>⌘</Kbd><Kbd>K</Kbd></span>,
+  Well: () => <Well variant="field" radius="field" style={{ width: 110, height: 30 }} />,
+  Toggle: () => <Switch aria-label="Snap to grid" defaultChecked />,
+  'Search field': () => scaled(<SearchField placeholder="Search" tone="light" />, 0.8),
+  Sticker: () => <Sticker />,
+  Connector: () => (
+    <div className="relative" style={{ width: 130, height: 70 }}>
+      <Block x={4} y={6} /><Block x={92} y={40} />
+      <Connector from={{ x: 38, y: 18, attached: true }} to={{ x: 92, y: 52, attached: true }} />
+    </div>
+  ),
+  Lasso: () => (
+    <div className="relative" style={{ width: 130, height: 76 }}>
+      <Block x={22} y={20} /><Block x={68} y={36} />
+      <Lasso rect={{ x: 12, y: 10, width: 100, height: 58 }} count={2} />
+    </div>
+  ),
+  'Snap guide': () => (
+    <div className="relative" style={{ width: 130, height: 76 }}>
+      <Block x={30} y={6} /><Block x={30} y={46} w={50} />
+      <SnapGuides guides={[{ axis: 'vertical', kind: 'edge', position: 30, start: 6, end: 70 }]} />
+    </div>
+  ),
+  Region: () => <Region name="ideas" rule="folders" width={140} height={78} />,
+  Yesterday: () => scaled(<PastBanner moment="Yesterday · 18:40" onBack={() => {}} />, 0.55),
+};
 
 const STEP = 420;
 
@@ -79,11 +135,19 @@ export function LayerSorter() {
     <div className="flex w-full flex-col gap-24">
       <div className="flex flex-col gap-12">
         <span className="type-label engraved">Pick a thing</span>
-        <div className="flex flex-wrap gap-8">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
           {THINGS.map((t, i) => (
-            <Button key={t.name} size="compact" aria-pressed={pick === i} className="aria-pressed:recipe-button-compact-pressed aria-pressed:text-ink" onClick={() => setPick(i)}>
-              {t.name}
-            </Button>
+            <button
+              key={t.name}
+              type="button"
+              aria-pressed={pick === i}
+              onClick={() => setPick(i)}
+              className="relative flex h-[128px] cursor-pointer flex-col items-center justify-between rounded-plate border-0 bg-transparent px-8 pb-10 pt-12 outline-none tap-highlight-none focus-visible:focus-ring"
+            >
+              <span className="pointer-events-none grid flex-1 place-items-center">{SPECIMENS[t.name]()}</span>
+              <span className={`type-label ${pick === i ? 'text-ink' : 'engraved'}`}>{t.name}</span>
+              {pick === i && <SelectionFrame state="selected" variant="lite" radius={18} handles="none" readout={false} />}
+            </button>
           ))}
         </div>
       </div>
