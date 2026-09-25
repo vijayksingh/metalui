@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 public struct MetalSliderTick: Identifiable, Sendable {
@@ -101,13 +102,26 @@ public struct MetalSlider: View {
             }
             .frame(width: width, height: geometry.size.height)
             .contentShape(Rectangle())
+            // The web slider's cursors: a pointing hand over the track, an open hand on the
+            // knob, a closed hand while dragging.
+            .onContinuousHover { phase in
+                guard !dragging else { return }
+                switch phase {
+                case let .active(point):
+                    let overKnob = abs(point.x - x) <= knob / 2 && abs(point.y - centre) <= knob / 2
+                    (overKnob ? NSCursor.openHand : NSCursor.pointingHand).set()
+                case .ended:
+                    NSCursor.arrow.set()
+                }
+            }
             .gesture(DragGesture(minimumDistance: .zero)
                 .onChanged { gesture in
+                    if !dragging { NSCursor.closedHand.set() }
                     dragging = true
                     focused = true
                     set(range.lowerBound + clamp(gesture.location.x / max(.leastNonzeroMagnitude, width)) * span)
                 }
-                .onEnded { _ in dragging = false })
+                .onEnded { _ in dragging = false; NSCursor.openHand.set() })
             .animation(dragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
         }
