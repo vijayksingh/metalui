@@ -108,6 +108,7 @@ public struct MetalMenuPanel: View {
         .focusEffectDisabled()
         .focused($focused)
         .onAppear { focused = true }
+        .onHover { if !$0 { highlighted = nil } }
         // A click elsewhere takes focus: the menu closes, nothing runs.
         .onChange(of: focused) { _, now in if !now { onClose() } }
         .onKeyPress(.downArrow) { move(1); return .handled }
@@ -116,6 +117,11 @@ public struct MetalMenuPanel: View {
         .onKeyPress(.end) { highlighted = choosable.last; return .handled }
         .onKeyPress(.return) { choose(highlighted); return .handled }
         .onKeyPress(.space) { choose(highlighted); return .handled }
+        .onKeyPress { press in
+            guard let character = press.characters.first, character.isLetter || character.isNumber else { return .ignored }
+            highlighted = choosable.first { items[$0].label.localizedLowercase.hasPrefix(String(character).localizedLowercase) }
+            return .handled
+        }
         .onKeyPress(.escape) { onClose(); return .handled }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(heading ?? "Menu")
@@ -164,10 +170,7 @@ public struct MetalMenuPanel: View {
         .contentShape(Rectangle())
         .metalIconInteraction(MetalIconInteraction(isHovered: on, isPressed: false))
         .opacity(item.disabled ? recipe.scalar("row.disabled") : .one)
-        .onHover { hovering in
-            guard !item.disabled else { return }
-            if hovering { highlighted = index } else if highlighted == index { highlighted = nil }
-        }
+        .onHover { hovering in if hovering && !item.disabled { highlighted = index } }
         .onTapGesture { choose(index) }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
