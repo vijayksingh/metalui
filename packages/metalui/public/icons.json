@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 40,
+  "count": 47,
   "icons": [
     {
       "name": "select",
@@ -67,6 +67,83 @@
       "pressMs": 320,
       "tuned16": false,
       "construction": "Pencil built upright (body w4.6, eraser band at y8) then rotated 45°. Stroke is revealed by trim in sync with the pencil travelling on the same curve."
+    },
+    {
+      "name": "pen",
+      "component": "PenIcon",
+      "label": "Pen",
+      "category": "Tools",
+      "hover": "the nib glides and lays a stroke",
+      "press": "the nib flexes under pressure",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Rest shows the nib alone; hover glides it on the pencil curve and the ink follows."
+    },
+    {
+      "name": "marker",
+      "component": "MarkerIcon",
+      "label": "Marker",
+      "category": "Tools",
+      "hover": "slides on and the band grows under it",
+      "press": "the chisel tip presses",
+      "pressMs": 320,
+      "tuned16": false,
+      "construction": "A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. Rest shows the marker alone; hover slides it right and a see-through band (duo .26) grows behind the tip, a mark that sits under the words."
+    },
+    {
+      "name": "line",
+      "component": "LineIcon",
+      "label": "Line",
+      "category": "Tools",
+      "hover": "the ends pull outward",
+      "press": "the line is drawn again from its start",
+      "pressMs": 440,
+      "tuned16": false,
+      "construction": "One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does; press redraws it from the start, the far dot riding the tip."
+    },
+    {
+      "name": "arrow",
+      "component": "ArrowIcon",
+      "label": "Arrow",
+      "category": "Tools",
+      "hover": "reaches forward",
+      "press": "the head thrusts",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover lengthens the shaft and carries the head; press thrusts the head."
+    },
+    {
+      "name": "rectangle",
+      "component": "RectangleIcon",
+      "label": "Rectangle",
+      "category": "Tools",
+      "hover": "a corner handle appears and pulls it",
+      "press": "the shape settles",
+      "pressMs": 340,
+      "tuned16": false,
+      "construction": "A 17.2 × 14 rounded box (r3.2, open like the Image frame), the same frame as Image. Rest is the box alone; hover grows a drag handle on its bottom-right corner and the box follows it from the pinned top-left."
+    },
+    {
+      "name": "ellipse",
+      "component": "EllipseIcon",
+      "label": "Ellipse",
+      "category": "Tools",
+      "hover": "it is pulled taller",
+      "press": "it is drawn again, round",
+      "pressMs": 500,
+      "tuned16": false,
+      "construction": "An 8.6 × 6.9 ellipse (open, no tint), as wide as the Image frame. Hover stretches it toward a circle, as a drag does; press traces it again from the top."
+    },
+    {
+      "name": "eraser",
+      "component": "EraserIcon",
+      "label": "Eraser",
+      "category": "Tools",
+      "hover": "rubs, and crumbs fall",
+      "press": "presses into the paper",
+      "pressMs": 300,
+      "tuned16": false,
+      "construction": "An eraser on the Draw pencil frame, a little wider (6.4) with round ends, one band line between the sleeve and the rubber. Rest shows the eraser alone; hover rubs it and two crumbs fall under it."
     },
     {
       "name": "layout",

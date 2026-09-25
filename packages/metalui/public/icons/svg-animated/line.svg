@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mu-icon mu-ic-line" width="24" height="24" viewBox="0 0 24 24">
+<!-- MetalUI icon: Line. Hover: the ends pull outward. Press (:active or data-state="press"): the line is drawn again from its start. Reduced motion: static. -->
+<style>
+.mu-icon{--sw:1.7;--k-spring:linear(0,0.0117,0.0435,0.0909,0.1499,0.217,0.2892,0.3637,0.4386,0.512,0.5826,0.6494,0.7114,0.7683,0.8196,0.8654,0.9056,0.9403,0.9698,0.9944,1.0145,1.0305,1.0428,1.0518,1.0579,1.0616,1.0632,1.063,1.0615,1.0588,1.0554,1.0513,1.0468,1.0422,1.0374,1.0327,1.0282,1.0238,1.0198,1.0161,1.0127,1.0096,1.007,1.0046,1);--k-soft:linear(0,0.0063,0.0235,0.0493,0.0818,0.1194,0.1605,0.2042,0.2492,0.2949,0.3406,0.3856,0.4297,0.4723,0.5133,0.5525,0.5898,0.625,0.6581,0.6892,0.7181,0.745,0.77,0.793,0.8142,0.8337,0.8515,0.8678,0.8826,0.896,0.9082,0.9192,0.9291,0.938,0.9459,0.953,0.9594,0.965,0.97,0.9745,0.9784,0.9818,0.9848,0.9874,1);--k-dur:.46s;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw);stroke-linecap:round;stroke-linejoin:round}
+.mu-icon *{transform-box:view-box}
+.mu-icon .f{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1))}
+.mu-icon .s{fill:currentColor;stroke:none}
+.mu-icon .d{fill:currentColor;fill-opacity:calc(var(--duo,.14) * var(--mu-duo-k,1));stroke:none}
+@media (prefers-reduced-motion:no-preference){
+.mu-icon *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .2s ease var(--dl,0s),d var(--k-dur) var(--k-spring) var(--dl,0s),stroke-dashoffset var(--k-dur) var(--k-spring) var(--dl,0s),fill-opacity .2s ease}
+}
+svg.mu-icon .ln{stroke-dasharray:1 1;stroke-dashoffset:0;transform-origin:12px 12px}
+@media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,[data-state~="hover"]) .a{transform:translate(-1px,1px)} svg.mu-icon:is(:hover,[data-state~="hover"]) .b{transform:translate(1px,-1px)} svg.mu-icon:is(:hover,[data-state~="hover"]) .ln{transform:scale(1.1)} svg.mu-icon:is(:active,[data-state~="press"]) .ln{animation:ln-p .44s cubic-bezier(.2,.7,.3,1)} svg.mu-icon:is(:active,[data-state~="press"]) .b{animation:ln-b .44s cubic-bezier(.2,.7,.3,1)} @keyframes ln-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}} @keyframes ln-b{0%{transform:translate(-13.2px,13.2px) scale(.6)}100%{transform:translate(1px,-1px)}}}</style>
+<path class="ln" pathLength="1" d="M5.4 18.6 18.6 5.4"/><circle class="a s" cx="5.4" cy="18.6" r="1.3"/><circle class="b s" cx="18.6" cy="5.4" r="1.3"/>
+</svg>

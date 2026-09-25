@@ -82,5 +82,19 @@
     "match": "Fragment",
     "lineIncludes": "React.Fragment",
     "reason": "React.Fragment is the framework's official element name, not MetalUI product vocabulary."
+  },
+  {
+    "file": "packages/metalui/icons/src/icons.mjs",
+    "word": "keeper",
+    "match": "keeper",
+    "lineIncludes": "name: 'keeper'",
+    "reason": "The keeper mascot glyph is waiting on the owner's decision to remove it; drop this entry with the glyph."
+  },
+  {
+    "file": "packages/metalui/icons/src/icons.mjs",
+    "word": "keeper",
+    "match": "Keeper",
+    "lineIncludes": "name: 'keeper'",
+    "reason": "The keeper mascot glyph is waiting on the owner's decision to remove it; drop this entry with the glyph."
   }
 ]

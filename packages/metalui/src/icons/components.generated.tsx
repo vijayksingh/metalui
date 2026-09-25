@@ -13,6 +13,20 @@ export const ImageIcon = createIcon("image", "ImageIcon");
 export const LinkIcon = createIcon("link", "LinkIcon");
 /** Draw. Hover: tip slides and draws a stroke. Press: taps the paper. */
 export const DrawIcon = createIcon("draw", "DrawIcon");
+/** Pen. Hover: the nib glides and lays a stroke. Press: the nib flexes under pressure. */
+export const PenIcon = createIcon("pen", "PenIcon");
+/** Marker. Hover: slides on and the band grows under it. Press: the chisel tip presses. */
+export const MarkerIcon = createIcon("marker", "MarkerIcon");
+/** Line. Hover: the ends pull outward. Press: the line is drawn again from its start. */
+export const LineIcon = createIcon("line", "LineIcon");
+/** Arrow. Hover: reaches forward. Press: the head thrusts. */
+export const ArrowIcon = createIcon("arrow", "ArrowIcon");
+/** Rectangle. Hover: a corner handle appears and pulls it. Press: the shape settles. */
+export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
+/** Ellipse. Hover: it is pulled taller. Press: it is drawn again, round. */
+export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
+/** Eraser. Hover: rubs, and crumbs fall. Press: presses into the paper. */
+export const EraserIcon = createIcon("eraser", "EraserIcon");
 /** Layout. Hover: tiles swap sides. Press: tiles settle together. */
 export const LayoutIcon = createIcon("layout", "LayoutIcon");
 /** Tidy. Hover: loose tiles snap to the guide. Press: guide pulses, tiles click home. */

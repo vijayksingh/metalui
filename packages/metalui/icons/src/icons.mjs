@@ -1,4 +1,4 @@
-// MetalUI Soft Hardware icon set — source of truth (ported verbatim from the Kamui set, 2026-09-23).
+// MetalUI Soft Hardware icon set — source of truth (ported verbatim from the reference set, 2026-09-23).
 // 24×24 grid, stroke 1.7 (var --sw), round caps/joins.
 // Classes: .f = stroked + duotone fill, .s = solid fill, .d = duotone fill only (no stroke)
 // CSS tokens:  &  -> icon root     @H -> hovered host     @P -> pressed host
@@ -86,6 +86,67 @@ export const ICONS = [
        @P .pen{animation:pen-p .32s cubic-bezier(.3,0,.2,1)}
        @keyframes pen-p{40%{transform:translate(-.5px,.7px) rotate(-4deg)}}`,
   shape: 'Pencil built upright (body w4.6, eraser band at y8) then rotated 45°. Stroke is revealed by trim in sync with the pencil travelling on the same curve.' },
+
+/* ---- drawing tools (DRAWING.md DR-01). The pencil is `draw` above. Each motion is the tool's own act. */
+{ name: 'pen', cat: 'Tools', label: 'Pen', hover: 'the nib glides and lays a stroke', press: 'the nib flexes under pressure',
+  body: `<path class="ln" pathLength="1" d="M5.2 17.8c1.05.7 2 .7 3 0"/><g class="nib"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z"/><path d="M12 19.4v-5"/><circle class="s" cx="12" cy="12.4" r=".75" style="stroke:none"/></g></g>`,
+  base: `& .ln{stroke-dasharray:1 2;stroke-dashoffset:1} & .nib{transform-origin:5.2px 17.8px}`,
+  mo: `& .nib{offset-path:path("M0 0c1.05.7 2 .7 3 0");offset-distance:0%;offset-rotate:0deg;offset-anchor:0 0;transition:offset-distance .46s var(--k-spring),transform .3s var(--k-soft)}
+       @H .nib{offset-distance:100%} @H .ln{stroke-dashoffset:0}
+       @P .nib{animation:pn-p .34s cubic-bezier(.3,0,.2,1)}
+       @keyframes pn-p{40%{transform:translate(.3px,.5px) scale(1.06,.94)}}`,
+  shape: 'A fountain nib on the Draw pencil frame (same length, angle and tip point): shoulders 6.4 wide, a slit from the tip to the breather hole. Rest shows the nib alone; hover glides it on the pencil curve and the ink follows.' },
+
+{ name: 'marker', cat: 'Tools', label: 'Marker', hover: 'slides on and the band grows under it', press: 'the chisel tip presses',
+  body: `<rect class="band d" style="--duo:.26" x="3.6" y="15.2" width="5.4" height="3.4" rx="1.3"/><g class="mk"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z"/><path d="M10.2 13.4h3.6v2.1l-3.6 3.1Z"/></g></g>`,
+  base: `& .band{transform-origin:3.6px 16.9px;transform:scaleX(0)} & .mk{transform-origin:5px 16px}`,
+  mo: `& .band{transition:transform .46s var(--k-spring)} & .mk{transition:transform .46s var(--k-spring)}
+       @H .band{transform:scaleX(1)} @H .mk{transform:translateX(3.4px)}
+       @P .mk{animation:mk-p .32s cubic-bezier(.3,0,.2,1)}
+       @keyframes mk-p{40%{transform:translate(.4px,.6px) rotate(-3deg)}}`,
+  shape: 'A marker on the Draw pencil frame: the same 5.2 barrel, ending in a slanted chisel tip. Rest shows the marker alone; hover slides it right and a see-through band (duo .26) grows behind the tip, a mark that sits under the words.' },
+
+{ name: 'line', cat: 'Tools', label: 'Line', hover: 'the ends pull outward', press: 'the line is drawn again from its start',
+  body: `<path class="ln" pathLength="1" d="M5.4 18.6 18.6 5.4"/><circle class="a s" cx="5.4" cy="18.6" r="1.3"/><circle class="b s" cx="18.6" cy="5.4" r="1.3"/>`,
+  base: `& .ln{stroke-dasharray:1 1;stroke-dashoffset:0;transform-origin:12px 12px}`,
+  mo: `@H .a{transform:translate(-1px,1px)} @H .b{transform:translate(1px,-1px)} @H .ln{transform:scale(1.1)}
+       @P .ln{animation:ln-p .44s cubic-bezier(.2,.7,.3,1)} @P .b{animation:ln-b .44s cubic-bezier(.2,.7,.3,1)}
+       @keyframes ln-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}
+       @keyframes ln-b{0%{transform:translate(-13.2px,13.2px) scale(.6)}100%{transform:translate(1px,-1px)}}`,
+  shape: 'One diagonal corner to corner (5.4 to 18.6) with a 1.3 dot at each end: a line is its two ends. Hover spreads the ends as a drag does; press redraws it from the start, the far dot riding the tip.' },
+
+{ name: 'arrow', cat: 'Tools', label: 'Arrow', hover: 'reaches forward', press: 'the head thrusts',
+  body: `<g class="ar"><path class="sh" d="M5.4 18.6 18 6"/><path class="hd" d="M10.8 5.4h7.8v7.8"/></g>`,
+  base: `& .sh{transform-origin:5.4px 18.6px} & .hd{transform-origin:18.6px 5.4px}`,
+  mo: `@H .sh{transform:scale(1.06)} @H .hd{transform:translate(.8px,-.8px)}
+       @P .hd{animation:ar-p .34s cubic-bezier(.3,0,.2,1)} @P .sh{animation:ar-s .34s cubic-bezier(.3,0,.2,1)}
+       @keyframes ar-p{40%{transform:translate(1.6px,-1.6px)}}
+       @keyframes ar-s{40%{transform:scale(1.12)}}`,
+  shape: 'A corner-to-corner 45° shaft with an open right-angle head (7.8 legs), the same span as Line so the two read as a pair. Hover lengthens the shaft and carries the head; press thrusts the head.' },
+
+{ name: 'rectangle', cat: 'Tools', label: 'Rectangle', hover: 'a corner handle appears and pulls it', press: 'the shape settles',
+  body: `<rect class="rc" x="3.4" y="5" width="17.2" height="14" rx="3.2"/><circle class="hn s" cx="20.6" cy="19" r="1.7"/>`,
+  base: `& .rc{transform-origin:3.4px 5px} & .hn{transform-origin:20.6px 19px;transform:scale(0)}`,
+  mo: `& .hn{transition:transform .4s var(--k-spring)}
+       @H .hn{transform:translate(.5px,.7px) scale(1)} @H .rc{transform:scale(1.03,1.05)}
+       @P .rc{animation:rc-p .34s cubic-bezier(.3,0,.2,1)} @keyframes rc-p{40%{transform:scale(.97,.95)}}`,
+  shape: 'A 17.2 × 14 rounded box (r3.2, open like the Image frame), the same frame as Image. Rest is the box alone; hover grows a drag handle on its bottom-right corner and the box follows it from the pinned top-left.' },
+
+{ name: 'ellipse', cat: 'Tools', label: 'Ellipse', hover: 'it is pulled taller', press: 'it is drawn again, round',
+  body: `<ellipse class="el" pathLength="1" cx="12" cy="12" rx="8.6" ry="6.9"/>`,
+  base: `& .el{transform-origin:12px 12px;stroke-dasharray:1 1;stroke-dashoffset:0}`,
+  mo: `@H .el{transform:scaleY(1.14)}
+       @P .el{animation:el-p .5s cubic-bezier(.2,.7,.3,1)} @keyframes el-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
+  shape: 'An 8.6 × 6.9 ellipse (open, no tint), as wide as the Image frame. Hover stretches it toward a circle, as a drag does; press traces it again from the top.' },
+
+{ name: 'eraser', cat: 'Tools', label: 'Eraser', hover: 'rubs, and crumbs fall', press: 'presses into the paper',
+  body: `<path class="cr" d="M4.4 20h1.2M7.4 20.6h1.2"/><g class="er"><g transform="translate(-1.6 .6) rotate(45 12 12)"><path class="f" style="--duo:.16" d="M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z"/><path d="M8.8 12.8h6.4"/></g></g>`,
+  base: `& .er{transform-origin:5.2px 17.8px} & .cr{opacity:0;transition:opacity .3s ease}`,
+  mo: `@H .er{animation:er-h .6s ease-in-out infinite alternate} @H .cr{opacity:1;transition-delay:.2s}
+       @P .er{animation:er-p .3s cubic-bezier(.3,0,.2,1)}
+       @keyframes er-h{from{transform:translateX(-.8px)}to{transform:translateX(.8px)}}
+       @keyframes er-p{40%{transform:translate(.4px,.7px) scale(.96)}}`,
+  shape: 'An eraser on the Draw pencil frame, a little wider (6.4) with round ends, one band line between the sleeve and the rubber. Rest shows the eraser alone; hover rubs it and two crumbs fall under it.' },
 
 { name: 'layout', cat: 'Tools', label: 'Layout', hover: 'tiles swap sides', press: 'tiles settle together',
   body: `<rect class="lt f" style="--duo:.16" x="3.6" y="3.6" width="7" height="16.8" rx="2.4"/><rect class="l1" x="13.4" y="3.6" width="7" height="7" rx="2.4"/><rect class="l2" x="13.4" y="13.4" width="7" height="7" rx="2.4"/>`,

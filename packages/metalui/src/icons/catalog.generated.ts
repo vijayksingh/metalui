@@ -141,6 +141,148 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
+   * PEN · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the nib glides and lays a stroke
+   * PRESS one-shot (from the current pose)
+   *          the nib flexes under pressure
+   *     0ms   .nib plays pn-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "pen": {
+    label: "Pen",
+    category: "Tools",
+    hover: "the nib glides and lays a stroke",
+    press: "the nib flexes under pressure",
+    pressMs: 340,
+    defs: "",
+    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.2 17.8c1.05.7 2 .7 3 0\"/><g class=\"nib\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 3.2h6.4v5.2l1.4 2.8-4.6 8.2-4.6-8.2 1.4-2.8Z\"/><path d=\"M12 19.4v-5\"/><circle class=\"s\" cx=\"12\" cy=\"12.4\" r=\".75\" style=\"stroke:none\"/></g></g>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * MARKER · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          slides on and the band grows under it
+   * PRESS one-shot (from the current pose)
+   *          the chisel tip presses
+   *     0ms   .mk plays mk-p (320ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "marker": {
+    label: "Marker",
+    category: "Tools",
+    hover: "slides on and the band grows under it",
+    press: "the chisel tip presses",
+    pressMs: 320,
+    defs: "",
+    body: "<rect class=\"band d\" style=\"--duo:.26\" x=\"3.6\" y=\"15.2\" width=\"5.4\" height=\"3.4\" rx=\"1.3\"/><g class=\"mk\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M9.4 4.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v8.8H9.4Z\"/><path d=\"M10.2 13.4h3.6v2.1l-3.6 3.1Z\"/></g></g>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * LINE · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          the ends pull outward
+   * PRESS one-shot (from the current pose)
+   *          the line is drawn again from its start
+   *     0ms   .ln plays ln-p (440ms)
+   *     0ms   .b plays ln-b (440ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "line": {
+    label: "Line",
+    category: "Tools",
+    hover: "the ends pull outward",
+    press: "the line is drawn again from its start",
+    pressMs: 440,
+    defs: "",
+    body: "<path class=\"ln\" pathLength=\"1\" d=\"M5.4 18.6 18.6 5.4\"/><circle class=\"a s\" cx=\"5.4\" cy=\"18.6\" r=\"1.3\"/><circle class=\"b s\" cx=\"18.6\" cy=\"5.4\" r=\"1.3\"/>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * ARROW · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          reaches forward
+   * PRESS one-shot (from the current pose)
+   *          the head thrusts
+   *     0ms   .hd plays ar-p (340ms)
+   *     0ms   .sh plays ar-s (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "arrow": {
+    label: "Arrow",
+    category: "Tools",
+    hover: "reaches forward",
+    press: "the head thrusts",
+    pressMs: 340,
+    defs: "",
+    body: "<g class=\"ar\"><path class=\"sh\" d=\"M5.4 18.6 18 6\"/><path class=\"hd\" d=\"M10.8 5.4h7.8v7.8\"/></g>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * RECTANGLE · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          a corner handle appears and pulls it
+   * PRESS one-shot (from the current pose)
+   *          the shape settles
+   *     0ms   .rc plays rc-p (340ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "rectangle": {
+    label: "Rectangle",
+    category: "Tools",
+    hover: "a corner handle appears and pulls it",
+    press: "the shape settles",
+    pressMs: 340,
+    defs: "",
+    body: "<rect class=\"rc\" x=\"3.4\" y=\"5\" width=\"17.2\" height=\"14\" rx=\"3.2\"/><circle class=\"hn s\" cx=\"20.6\" cy=\"19\" r=\"1.7\"/>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * ELLIPSE · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          it is pulled taller
+   * PRESS one-shot (from the current pose)
+   *          it is drawn again, round
+   *     0ms   .el plays el-p (500ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "ellipse": {
+    label: "Ellipse",
+    category: "Tools",
+    hover: "it is pulled taller",
+    press: "it is drawn again, round",
+    pressMs: 500,
+    defs: "",
+    body: "<ellipse class=\"el\" pathLength=\"1\" cx=\"12\" cy=\"12\" rx=\"8.6\" ry=\"6.9\"/>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
+   * ERASER · Tools
+   *
+   * HOVER pose (spring, reversible, interruptible)
+   *          rubs, and crumbs fall
+   * PRESS one-shot (from the current pose)
+   *          presses into the paper
+   *     0ms   .er plays er-p (300ms)
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eraser": {
+    label: "Eraser",
+    category: "Tools",
+    hover: "rubs, and crumbs fall",
+    press: "presses into the paper",
+    pressMs: 300,
+    defs: "",
+    body: "<path class=\"cr\" d=\"M4.4 20h1.2M7.4 20.6h1.2\"/><g class=\"er\"><g transform=\"translate(-1.6 .6) rotate(45 12 12)\"><path class=\"f\" style=\"--duo:.16\" d=\"M8.8 5.4a2 2 0 0 1 2-2h2.4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2.4a2 2 0 0 1-2-2Z\"/><path d=\"M8.8 12.8h6.4\"/></g></g>",
+    sw16: 1.85,
+  },
+  /* ─────────────────────────────────────────────────────────
    * LAYOUT · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
