@@ -377,12 +377,15 @@ export const ICONS = [
   shape: 'Frame 17 × 14 r3.5, tinted .08; head rule on the 9.6 line; the name a 3.6 wire in the head.' },
 
 // A task: the dimple with its tick. Body: the dimple. Mark: the tick (the check glyph's, smaller).
-{ name: 'task', cat: 'Tools', label: 'Task', hover: 'the tick lifts', press: 'the tick redraws',
-  body: `<rect class="tb f" style="--duo:.12" x="5" y="5" width="14" height="14" rx="3.5"/><path class="tk" pathLength="1" d="M8.7 12.2l2.3 2.3 4.4-4.9"/>`,
-  base: `& .tk{stroke-dasharray:1 2;transform-origin:11px 14.5px}`,
-  mo: `@H .tk{transform:translateY(-.5px) rotate(-4deg)}
-       @P .tk{animation:tk-p .3s cubic-bezier(.3,.1,.2,1) both} @keyframes tk-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
-  shape: 'Dimple 14 × 14 r3.5, tinted .12; the tick draws with trim(0→1).' },
+{ name: 'task', cat: 'Tools', label: 'Task', hover: 'the tick nods yes inside its box', press: 'the box presses in and comes back up ticked',
+  body: `<rect class="tb f" style="--duo:.12" x="5" y="5" width="14" height="14" rx="3.5"/><g class="nd"><path class="tk" pathLength="1" d="M8.7 12.2l2.3 2.3 4.4-4.9"/></g>`,
+  base: `& .tk{stroke-dasharray:1 2} & .nd{transform-origin:11px 14.5px} & .tb{transform-origin:12px 12px}`,
+  mo: `@H .nd{animation:tk-nod .52s cubic-bezier(.3,0,.3,1)}
+       @P .tb{animation:tk-box .38s cubic-bezier(.3,0,.2,1)} @P .tk{animation:tk-p .3s cubic-bezier(.3,.1,.2,1) both} @P .tk{animation-delay:.08s}
+       @keyframes tk-nod{27%{transform:rotate(6deg)}62%{transform:rotate(-2.5deg)}}
+       @keyframes tk-box{32%{transform:scale(.94)}}
+       @keyframes tk-p{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}`,
+  shape: 'Dimple 14 × 14 r3.5, tinted .12, with the check tick at the size of the box. Hover is the check nod, a little smaller, about the tick\'s vertex. Press is completion by the item itself: the box presses in (.94) like a physical checkbox, and the tick draws in once the press has bottomed out (80 ms), the result of the press.' },
 
 // A tag: the price tag with its eyelet. Body: the tag. Mark: the eyelet, a bead.
 { name: 'tag', cat: 'Tools', label: 'Tag', hover: 'the tag swings on its eyelet', press: 'the tag stamps',

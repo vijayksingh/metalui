@@ -1964,7 +1964,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `KeeperIcon` | `keeper` | Status | blinks | ring tips, eyes look up |
 | `PlusIcon` | `plus` | Actions | the plus turns a quarter | the tile presses in |
 | `RegionIcon` | `region` | Tools | the name writes across the head | the frame settles |
-| `TaskIcon` | `task` | Tools | the tick lifts | the tick redraws |
+| `TaskIcon` | `task` | Tools | the tick nods yes inside its box | the box presses in and comes back up ticked |
 | `TagIcon` | `tag` | Tools | the tag swings on its eyelet | the tag stamps |
 | `CalendarIcon` | `calendar` | Tools | the rings lift | the page turns in |
 | `DocumentIcon` | `document` | Tools | the second line writes on | the lines redraw |

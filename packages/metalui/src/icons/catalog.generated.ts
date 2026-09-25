@@ -860,20 +860,21 @@ export const ICON_CATALOG = {
    * TASK · Tools
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the tick lifts
+   *          the tick nods yes inside its box
    * PRESS one-shot (from the current pose)
-   *          the tick redraws
-   *     0ms   .tk plays tk-p (300ms)
+   *          the box presses in and comes back up ticked
+   *     0ms   .tb plays tk-box (380ms)
+   *    80ms   .tk plays tk-p (300ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "task": {
     label: "Task",
     category: "Tools",
-    hover: "the tick lifts",
-    press: "the tick redraws",
-    pressMs: 300,
+    hover: "the tick nods yes inside its box",
+    press: "the box presses in and comes back up ticked",
+    pressMs: 380,
     defs: "",
-    body: "<rect class=\"tb f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><path class=\"tk\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/>",
+    body: "<rect class=\"tb f\" style=\"--duo:.12\" x=\"5\" y=\"5\" width=\"14\" height=\"14\" rx=\"3.5\"/><g class=\"nd\"><path class=\"tk\" pathLength=\"1\" d=\"M8.7 12.2l2.3 2.3 4.4-4.9\"/></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

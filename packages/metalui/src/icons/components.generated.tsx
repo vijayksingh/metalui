@@ -81,7 +81,7 @@ export const KeeperIcon = createIcon("keeper", "KeeperIcon");
 export const PlusIcon = createIcon("plus", "PlusIcon");
 /** Region. Hover: the name writes across the head. Press: the frame settles. */
 export const RegionIcon = createIcon("region", "RegionIcon");
-/** Task. Hover: the tick lifts. Press: the tick redraws. */
+/** Task. Hover: the tick nods yes inside its box. Press: the box presses in and comes back up ticked. */
 export const TaskIcon = createIcon("task", "TaskIcon");
 /** Tag. Hover: the tag swings on its eyelet. Press: the tag stamps. */
 export const TagIcon = createIcon("tag", "TagIcon");

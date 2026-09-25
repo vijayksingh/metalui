@@ -447,11 +447,11 @@
       "component": "TaskIcon",
       "label": "Task",
       "category": "Tools",
-      "hover": "the tick lifts",
-      "press": "the tick redraws",
-      "pressMs": 300,
+      "hover": "the tick nods yes inside its box",
+      "press": "the box presses in and comes back up ticked",
+      "pressMs": 380,
       "tuned16": false,
-      "construction": "Dimple 14 × 14 r3.5, tinted .12; the tick draws with trim(0→1)."
+      "construction": "Dimple 14 × 14 r3.5, tinted .12, with the check tick at the size of the box. Hover is the check nod, a little smaller, about the tick's vertex. Press is completion by the item itself: the box presses in (.94) like a physical checkbox, and the tick draws in once the press has bottomed out (80 ms), the result of the press."
     },
     {
       "name": "tag",
