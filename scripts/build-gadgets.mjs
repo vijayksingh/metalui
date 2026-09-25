@@ -74,6 +74,14 @@ public enum MetalGadgetTokens {
     public static let contrastShadow: Double = ${num(G.host.contrast.shadow)}
     public static let glintAbove: Double = ${num(G.strike['glint-above'])}
     public static let glintMs: Double = ${num(G.strike['glint-ms'])}
+    public static let holeFloorDrop: Double = ${num(G.hole.floor.drop)}
+    public static let holeFloorDepthDrop: Double = ${num(G.hole.floor['depth-drop'])}
+    public static let holeFloorChroma: Double = ${num(G.hole.floor.chroma)}
+    public static let holeLip: Double = ${num(G.hole.lip)}
+    public static let holeLipAlpha: Double = ${num(G.hole['lip-alpha'])}
+    public static let trayRadius: Double = ${num(G.hole['tray-radius'])}
+    /// Default depth per cut kind, in units.
+    public static let cutDepths: [String: Double] = [${Object.entries(G.hole.depths).map(([k, v]) => `${JSON.stringify(k)}: ${num(v)}`).join(', ')}]
     public static let glossElevation: Double = ${num(G.light['gloss-elevation'])}
     public static let litGain: Double = ${num(G.light['lit-gain'])}
     /// The shadow colour, sRGB components.

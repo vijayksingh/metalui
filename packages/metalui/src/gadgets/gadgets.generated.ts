@@ -290,7 +290,20 @@ export const GADGETS = {
       6
     ],
     "alpha": 0.55,
-    "lip": 1
+    "lip": 1,
+    "floor": {
+      "drop": 0.16,
+      "depthDrop": 0.2,
+      "chroma": 0.7
+    },
+    "depths": {
+      "slot": 14,
+      "hole": 18,
+      "tray": 10,
+      "well": 6
+    },
+    "lipAlpha": 0.5,
+    "trayRadius": 20
   },
   "surface": {
     "grainOctaves": 2,

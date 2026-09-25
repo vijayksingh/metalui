@@ -1,0 +1,21 @@
+{
+  "name": "slab",
+  "title": "Slab",
+  "status": "alpha",
+  "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
+  "base": "none (an SVG part)",
+  "react": {
+    "export": "Slab",
+    "files": [
+      "slab.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSlab",
+    "file": "swift/Sources/MetalUI/Components/MetalSlab.swift"
+  },
+  "agent": "slab.agent.md",
+  "layer": "part",
+  "page": "/components/slab",
+  "recipe": "gadgets"
+}

@@ -93,6 +93,14 @@ public enum MetalGadgetTokens {
     public static let contrastShadow: Double = 1.2
     public static let glintAbove: Double = 0.2
     public static let glintMs: Double = 420.0
+    public static let holeFloorDrop: Double = 0.16
+    public static let holeFloorDepthDrop: Double = 0.2
+    public static let holeFloorChroma: Double = 0.7
+    public static let holeLip: Double = 1.0
+    public static let holeLipAlpha: Double = 0.5
+    public static let trayRadius: Double = 20.0
+    /// Default depth per cut kind, in units.
+    public static let cutDepths: [String: Double] = ["slot": 14.0, "hole": 18.0, "tray": 10.0, "well": 6.0]
     public static let glossElevation: Double = 52.0
     public static let litGain: Double = 1.01
     /// The shadow colour, sRGB components.

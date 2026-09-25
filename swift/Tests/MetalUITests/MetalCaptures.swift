@@ -138,6 +138,28 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Parts › Slab: every cut kind on the slab materials, the way the docs sheet shows them.
+    func testSlab() {
+        let cuts: [(String, [MetalSlabCut])] = [
+            ("slots", [72, 124, 176].map { MetalSlabCut(.slot, at: ($0 * 1.0 + 56, 200), size: (18, 212)) }),
+            ("holes", [MetalSlabCut(.hole, at: (140, 150), size: (40, 40)), MetalSlabCut(.hole, at: (260, 150), size: (40, 40)), MetalSlabCut(.hole, at: (200, 262), size: (26, 26))]),
+            ("tray", [MetalSlabCut(.tray, at: (200, 218), size: (268, 164))]),
+            ("well", [MetalSlabCut(.well, at: (200, 200), size: (220, 220))]),
+        ]
+        let materials: [MetalSoundMaterial] = [.clay, .stone, .ceramic, .rubber, .metal, .resin]
+        for colorway in MetalColorway.allCases {
+            let view = Grid(horizontalSpacing: 14, verticalSpacing: 14) {
+                ForEach(materials, id: \.self) { m in
+                    GridRow { ForEach(cuts, id: \.0) { _, c in MetalSlab(m, cuts: c, size: 120) } }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("slab-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

@@ -8,3 +8,5 @@ export { validate, validateGadget, validateRig, type Problem, type ProblemCode, 
 export { simulateCvd } from './gadgets/color';
 export { MECHANISMS as MECHANISM_TIMELINES } from './gadgets/mechanisms.generated';
 export { createPlayer, sampleTrack, bezier, REST, type Player, type PlayerOptions, type CueEvent, type Cue, type Pose, type MechanismName } from './gadgets/player';
+export { drawSlab, slabPath, cutPath, floorColor, roundedRect, type Cut, type CutKind, type SlabSpec } from './gadgets/parts/slab';
+export { useHost } from './gadgets/host';

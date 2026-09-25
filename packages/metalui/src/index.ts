@@ -20,6 +20,7 @@ export { Menu, ContextMenu, MenuItem, MenuSeparator, menuParts, type MenuProps, 
 export { CommandPalette, paletteParts, type CommandPaletteItem, type CommandPaletteProps } from './components/command-palette/command-palette';
 export { ToastProvider, useToast, toastParts, type ToastOptions, type ToastTone } from './components/toast/toast';
 export { Led, type LedProps, type LedKind, type LedGesture } from './components/led/led';
+export { Slab, type SlabProps } from './components/slab/slab';
 export { StatusBadge, type StatusBadgeProps } from './components/status/status';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';

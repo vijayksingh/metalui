@@ -127,8 +127,12 @@ const inCustomBlock = (p) => { const m = p.match(/src\/blocks\/([\w-]+)\//); ret
 const react = [...walk(join(root, 'packages/metalui/src/components'), ['.tsx']), ...walk(join(root, 'packages/metalui/src/blocks'), ['.tsx']).filter(inCustomBlock)].filter((p) => !p.includes('.generated.'));
 const swiftCustom = new Set([...customBlocks].map((d) => norm(d)));
 const native = [...walk(join(root, 'swift/Sources/MetalUI/Components'), ['.swift']), ...walk(join(root, 'swift/Sources/MetalUI/Blocks'), ['.swift']).filter((p) => swiftCustom.has(norm(p.split('/').at(-1).replace('.swift', ''))))].filter((p) => !p.includes('.generated.'));
+// Gadget Parts take their look from the gadget foundations (tokens gadgets.*), checked by build-gadgets
+// and the parity fixtures; their meta.json says "recipe": "gadgets" and they carry no CSS recipe.
+const gadgetParts = new Set(readdirSync(join(root, 'packages/metalui/src/components')).filter((d) => { const m = join(root, 'packages/metalui/src/components', d, 'meta.json'); return existsSync(m) && JSON.parse(readFileSync(m, 'utf8')).recipe === 'gadgets'; }).map((d) => norm(d)));
 for (const path of [...react, ...native]) {
   const name = norm(path.split('/').at(-1).replace(/\.(tsx|swift)$/, ''));
+  if (gadgetParts.has(name)) continue;
   if (![...names].some((n) => norm(n) === name)) errors.push(`${path.slice(root.length + 1)}: component has no matching component recipe`);
 }
 for (const error of errors) console.log(error);

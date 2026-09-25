@@ -614,6 +614,23 @@
       "agent": "https://metalui.dev/r/size-readout.md"
     },
     {
+      "name": "slab",
+      "title": "Slab",
+      "status": "alpha",
+      "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Slab",
+        "base": "none (an SVG part)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSlab"
+      },
+      "registry": "https://metalui.dev/r/slab.json",
+      "agent": "https://metalui.dev/r/slab.md"
+    },
+    {
       "name": "slider",
       "title": "Slider",
       "status": "alpha",

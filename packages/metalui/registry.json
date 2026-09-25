@@ -17,6 +17,39 @@
       ]
     },
     {
+      "name": "gadgets",
+      "type": "registry:lib",
+      "title": "MetalUI gadget foundations",
+      "description": "The seven materials lit by one light (OKLCH pigments, SVG lighting filters), the host, and the drawings of the gadget Parts.",
+      "files": [
+        {
+          "path": "packages/metalui/src/gadgets/gadgets.generated.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/gadgets.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/color.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/color.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/light.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/light.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/host.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/host.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/parts/slab.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/slab.ts"
+        }
+      ]
+    },
+    {
       "name": "block-silhouette",
       "type": "registry:ui",
       "title": "Block silhouette",
@@ -683,6 +716,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
+    },
+    {
+      "name": "slab",
+      "type": "registry:ui",
+      "title": "Slab",
+      "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/slab/slab.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/slab/slab.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/slab.md. SwiftUI: MetalSlab in the MetalUI Swift package."
     },
     {
       "name": "slider",

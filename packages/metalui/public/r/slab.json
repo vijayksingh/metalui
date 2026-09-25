@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slab",
+  "type": "registry:ui",
+  "title": "Slab",
+  "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/slab/slab.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/slab/slab.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS, type GadgetMaterial } from '../../gadgets/gadgets.generated';\nimport { drawSlab, type Cut } from '../../gadgets/parts/slab';\nimport { tierFor, type Host } from '../../gadgets/light';\nimport { useHost } from '../../gadgets/host';\n\n/* Slab (a Part): the thick panel a gadget is cut from, lit by the one light, with its cuts (slot, hole,\n * tray, well). The floor of a cut is the slab's own material in shadow; its top wall is dark and its\n * lower lip catches the light. Geometry is on the gadget canvas (400 units); `size` is drawn pixels. */\n\nexport interface SlabProps extends Omit<React.SVGProps<SVGSVGElement>, 'color'> {\n  material: GadgetMaterial;\n  /** The body's pigment, OKLCH. Defaults to the material's own sample. */\n  color?: { L: number; C: number; H: number };\n  /** Cuts through the body, on the 400-unit canvas. */\n  cuts?: Cut[];\n  /** Drawn size in pixels; sets the detail tier (full ≥ 96, lite ≥ 48, flat below). */\n  size?: number;\n  /** Force a colorway's world; by default the nearest data-mu-colorway or the system's. */\n  host?: Host;\n  /** Anything drawn on the slab (actors), between the body and the lips. */\n  children?: React.ReactNode;\n}\n\nconst sample = (m: GadgetMaterial) => {\n  const f = GADGETS.materials[m] as unknown as { L: readonly [number, number]; CCap: number; sample: number };\n  return { L: Math.min(f.L[1], Math.max(f.L[0], 0.72)), C: Math.min(f.CCap, 0.06), H: f.sample };\n};\n\nexport function Slab({ material, color, cuts, size = 160, host: forced, children, ...props }: SlabProps) {\n  const ref = React.useRef<SVGSVGElement>(null);\n  const { host, contrast } = useHost(ref, forced);\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const d = React.useMemo(() => drawSlab(`slab-${uid}`, { material, color: color ?? sample(material), cuts }, { tier, host, contrast }),\n    [uid, material, color?.L, color?.C, color?.H, JSON.stringify(cuts), tier, host, contrast]); // eslint-disable-line react-hooks/exhaustive-deps\n  return (\n    <svg ref={ref} viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`${material} slab`} data-material={material} data-tier={tier} data-host={host} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.floors }} />\n      <g dangerouslySetInnerHTML={{ __html: d.body }} />\n      {children}\n      <g dangerouslySetInnerHTML={{ __html: d.lips }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/slab.md. SwiftUI: MetalSlab in the MetalUI Swift package."
+}

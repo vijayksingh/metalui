@@ -77,6 +77,8 @@ public enum MetalPigment {
 // MARK: - Lighting
 
 public enum MetalGadgetLighting {
+    /// The shadow colour (tokens gadgets.light.shadow-color), for parts drawn in SwiftUI.
+    public static let shadow = Color(red: MetalGadgetTokens.shadowColor.red, green: MetalGadgetTokens.shadowColor.green, blue: MetalGadgetTokens.shadowColor.blue)
     private static let context = CIContext(options: [.workingColorSpace: CGColorSpace(name: CGColorSpace.displayP3)!])
     nonisolated(unsafe) private static var cache: [String: CGImage] = [:]
     private static let lock = NSLock()
@@ -85,26 +87,37 @@ public enum MetalGadgetLighting {
     /// drawn at `size` points and `scale`. Returns the image with room for its shadow around it.
     public static func body(_ material: MetalSoundMaterial, lightness: Double, chroma: Double, hue: Double,
                             size: Double, scale: Double = 2, colorway: MetalColorway = .bone, contrast: Bool = false) -> CGImage? {
-        let key = "\(material.rawValue)|\(lightness)|\(chroma)|\(hue)|\(size)|\(scale)|\(colorway.rawValue)|\(contrast)"
+        let r = MetalGadgetTokens.bodyRect
+        let path = CGPath(roundedRect: CGRect(x: r.x, y: r.y, width: r.width, height: r.height),
+                          cornerWidth: MetalGadgetTokens.bodyRadius, cornerHeight: MetalGadgetTokens.bodyRadius, transform: nil)
+        return surface(path, key: "body", material: material, lightness: lightness, chroma: chroma, hue: hue, size: size, scale: scale, colorway: colorway, contrast: contrast)
+    }
+
+    /// Any shape on the 400-unit canvas (even-odd, so cuts are holes), lit as `material` in one pigment.
+    /// `key` names the shape for the cache.
+    public static func surface(_ path: CGPath, key shape: String, material: MetalSoundMaterial, lightness: Double, chroma: Double, hue: Double,
+                               size: Double, scale: Double = 2, colorway: MetalColorway = .bone, contrast: Bool = false) -> CGImage? {
+        let key = "\(shape)|\(material.rawValue)|\(lightness)|\(chroma)|\(hue)|\(size)|\(scale)|\(colorway.rawValue)|\(contrast)"
         lock.lock(); if let hit = cache[key] { lock.unlock(); return hit }; lock.unlock()
-        guard let image = render(material, lightness: lightness, chroma: chroma, hue: hue, size: size, scale: scale,
+        guard let image = render(material, path: path, lightness: lightness, chroma: chroma, hue: hue, size: size, scale: scale,
                                  colorway: colorway, contrast: contrast) else { return nil }
         lock.lock(); cache[key] = image; lock.unlock()
         return image
     }
 
-    private static func render(_ material: MetalSoundMaterial, lightness: Double, chroma: Double, hue: Double,
+    private static func render(_ material: MetalSoundMaterial, path: CGPath, lightness: Double, chroma: Double, hue: Double,
                                size: Double, scale: Double, colorway: MetalColorway, contrast: Bool) -> CGImage? {
         let f = material.finish
         let px = size * scale, unit = px / MetalGadgetTokens.canvas      // pixels per canvas unit
         var L = lightness
         if colorway == .graphite, L > MetalGadgetTokens.graphiteBrightAbove { L -= MetalGadgetTokens.graphiteBrightDrop }
 
-        // The body's mask, on a canvas with room for the shadow.
-        let r = MetalGadgetTokens.bodyRect
+        // The shape's mask, on a canvas with room for the shadow (canvas units, y down → pixels, y up).
         let canvas = CGRect(x: 0, y: 0, width: px, height: px)
-        let bodyRect = CGRect(x: r.x * unit, y: (MetalGadgetTokens.canvas - r.y - r.height) * unit, width: r.width * unit, height: r.height * unit)
-        guard let mask = maskImage(canvas: canvas, rect: bodyRect, radius: MetalGadgetTokens.bodyRadius * unit) else { return nil }
+        var toPixels = CGAffineTransform(translationX: 0, y: px).scaledBy(x: unit, y: -unit)
+        guard let shape = path.copy(using: &toPixels) else { return nil }
+        let bodyRect = shape.boundingBoxOfPath
+        guard let mask = maskImage(canvas: canvas, path: shape) else { return nil }
 
         // Height: the blurred mask.
         let height = CIFilter.heightFieldFromMask()
@@ -195,13 +208,13 @@ public enum MetalGadgetLighting {
         CIFilter.randomGenerator().outputImage!.settingAlphaOne(in: canvas).cropped(to: canvas)
     }
 
-    /// The body's alpha: white inside the rounded rect, clear outside.
-    private static func maskImage(canvas: CGRect, rect: CGRect, radius: CGFloat) -> CIImage? {
+    /// The shape's alpha: white inside (even-odd, so cuts stay clear), clear outside.
+    private static func maskImage(canvas: CGRect, path: CGPath) -> CIImage? {
         guard let ctx = CGContext(data: nil, width: Int(canvas.width), height: Int(canvas.height), bitsPerComponent: 8, bytesPerRow: 0,
                                   space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
         ctx.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
-        ctx.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
-        ctx.fillPath()
+        ctx.addPath(path)
+        ctx.fillPath(using: .evenOdd)
         return ctx.makeImage().map { CIImage(cgImage: $0) }
     }
 
