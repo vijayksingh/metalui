@@ -4,6 +4,7 @@
 // SwiftUI (MetalJack) from the same numbers (tokens gadgets.parts.jack, gadgets.jack).
 import { GADGETS } from '../gadgets.generated';
 import { pigment } from '../color';
+import { LAMP_COLORS as LAMP } from './led';
 import { holeFilter, materialFilter, type Host, type Tier } from '../light';
 
 export interface JackSpec {
@@ -18,7 +19,6 @@ export interface JackSpec {
 const J = GADGETS.jack;
 const n = (x: number) => +x.toFixed(2);
 const circle = (cx: number, cy: number, r: number) => `M${n(cx - r)},${n(cy)} a${n(r)},${n(r)} 0 1 0 ${n(2 * r)},0 a${n(r)},${n(r)} 0 1 0 ${n(-2 * r)},0 Z`;
-const LAMP: Record<string, [string, string]> = { live: ['#D9FFE9', '#2FB673'], link: ['#D8E6FF', '#2457F2'], waiting: ['#FFF1CF', '#C98A18'], failed: ['#FFD9D2', '#D5392A'] };
 
 export interface JackDraw { defs: string; socket: string; nut: string }
 

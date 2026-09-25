@@ -71,6 +71,12 @@ export interface Player {
   act(): boolean;
   /** Springs to a state's held pose (or rest with null), from wherever the part is now. */
   hold(state: string | null): void;
+  /** Springs one part to a pose given outright (a gadget state's form), or snaps with `immediate`. Its
+   *  shadow moves with it: a plug held out lies on the panel, so its shadow lies under it. */
+  /** Plays only the act's landing (its cues from the last strike on), now: for a part that came home
+   *  another way, like a plug springing back into its socket from lying aside. */
+  land(): void;
+    holdPose(part: string, pose: Partial<Pose> | null, o?: { immediate?: boolean }): void;
   readonly playing: boolean;
   pose(part: string): Pose;
   setOptions(o: Partial<PlayerOptions>): void;
@@ -179,6 +185,34 @@ export function createPlayer(name: MechanismName, parts: Record<string, Element 
         return;
       }
       for (const part of Object.keys(target)) apply(part, poses[part], 1);
+      springing = true;
+      if (!raf) raf = requestAnimationFrame(frame);
+    },
+    land() {
+      const strikes = m.cues.filter((c) => c.kind === 'strike') as Extract<Cue, { kind: 'strike' }>[];
+      const from = strikes.length ? Math.max(...strikes.map((c) => c.at)) : 0;
+      for (const cue of m.cues) {
+        if (cue.kind === 'detent' || cue.kind === 'friction' || cue.at < from) continue;
+        const at = cue.at - from;
+        if (cue.kind === 'strike') o.onStrike?.(cue, at / 1000);
+        window.setTimeout(() => {
+          if (cue.kind === 'lamp') o.onLamp?.(cue.gesture);
+          if (cue.kind === 'beep') o.onBeep?.();
+          o.onCue?.({ at, cue });
+        }, at);
+      }
+    },
+    holdPose(part, pose, opt = {}) {
+      if (!(part in target)) return;
+      if (act) { for (const id of act.timers) clearTimeout(id); act = null; }
+      target[part] = { ...REST, ...pose };
+      const shadow = `${part}.shadow`;
+      if (shadow in target) target[shadow] = { ...REST, x: pose?.x ?? 0, y: pose?.y ?? 0 };
+      if (o.reduced || opt.immediate) {
+        for (const k of [part, shadow]) if (k in target) { poses[k] = { ...target[k] }; velocity[k] = { x: 0, y: 0, r: 0, sx: 0, sy: 0 }; apply(k, poses[k], 1); }
+        o.onFrame?.(-1, { ...poses });
+        return;
+      }
       springing = true;
       if (!raf) raf = requestAnimationFrame(frame);
     },

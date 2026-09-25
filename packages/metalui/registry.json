@@ -58,6 +58,11 @@
           "target": "components/gadgets/parts/jack.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/led.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/led.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/plug.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/plug.ts"

@@ -1,0 +1,12 @@
+{
+  "name": "patch-bay",
+  "title": "Patch bay",
+  "status": "alpha",
+  "description": "A gadget for sync: two jacks in a stone slab, a cord between their plugs, a lamp and a beeper. Drawn at runtime from its spec by the gadget renderer.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/patch-bay.gadget.json",
+  "uses": ["slab", "jack", "plug", "cable", "led", "beeper"],
+  "page": "/gadgets/patch-bay"
+}
