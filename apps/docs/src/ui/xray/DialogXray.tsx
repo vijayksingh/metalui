@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, Surface } from '@unlocalhosted/metalui';
+import { Button, Dialog, Field, Surface } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
 
@@ -169,10 +169,15 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
       card={card}
     />
     <Dialog open={real} onOpenChange={setReal}>
-        <Dialog.Popup aria-label="Rename canvas" style={{ width: 320, padding: 20 }}>
-          <b style={{ display: 'block', marginBottom: 12 }}>Rename canvas</b>
-          <input defaultValue="Trip notes" aria-label="Name" style={{ width: '100%', height: 32, borderRadius: 10, border: '1px solid var(--rule)', padding: '0 10px', font: 'inherit', background: 'transparent', color: 'inherit' }} />
-          <span style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 14 }}><Button onClick={() => setReal(false)}>Cancel</Button><Button cap="primary" onClick={() => setReal(false)}>Save</Button></span>
+        <Dialog.Popup>
+          <Dialog.Title>Rename canvas</Dialog.Title>
+          <Field>
+            <Field.Input defaultValue="Trip notes" aria-label="Name" />
+          </Field>
+          <Dialog.Actions>
+            <Button onClick={() => setReal(false)}>Cancel</Button>
+            <Button cap="primary" onClick={() => setReal(false)}>Save</Button>
+          </Dialog.Actions>
         </Dialog.Popup>
       </Dialog>
     </>

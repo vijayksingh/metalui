@@ -870,15 +870,15 @@ public enum MetalRecipes {
             .init(part: "graphite", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:button:36 rgba(255,255,255,.09)
             .init(part: "strip", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:button:37 rgba(255,255,255,.08)
             .init(part: "strip", state: "pressed", colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:button:38 rgba(0,0,0,.35)
-            .init(part: "primary", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(56.0, 56.0, 60.0, 1.0)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 40.0, 1.0)), 1.0)])), // mu-recipe:button:39 linear-gradient(#38383C,#252528)
-            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 5.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:button:40 inset 0 0 5px 1px rgba(255,255,255,.07)
-            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.18)))), // mu-recipe:button:41 inset 1px 2px 2px -1px rgba(255,255,255,.18)
-            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:button:42 0 0 0 .5px rgba(0,0,0,.5)
-            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.15)))), // mu-recipe:button:43 0 1px 2px rgba(0,0,0,.15)
-            .init(part: "primary", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:button:44 0 5px 12px -4px rgba(0,0,0,.22)
-            .init(part: "primary", state: "pressed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(28.0, 28.0, 30.0, 1.0)), 0.0), .init(.color(MetalRGBA(36.0, 36.0, 39.0, 1.0)), 1.0)])), // mu-recipe:button:45 linear-gradient(#1C1C1E,#242427)
-            .init(part: "primary", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:46 inset 0 1px 3px rgba(0,0,0,.6)
-            .init(part: "primary", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:button:47 0 0 0 .5px rgba(0,0,0,.7)
+            .init(part: "primary", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(56.0, 56.0, 60.0, 1.0)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 40.0, 1.0)), 1.0)])), // mu-recipe:button:39 linear-gradient(#38383C,#252528)
+            .init(part: "primary", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 5.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:button:40 inset 0 0 5px 1px rgba(255,255,255,.07)
+            .init(part: "primary", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.18)))), // mu-recipe:button:41 inset 1px 2px 2px -1px rgba(255,255,255,.18)
+            .init(part: "primary", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:button:42 0 0 0 .5px rgba(0,0,0,.5)
+            .init(part: "primary", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.15)))), // mu-recipe:button:43 0 1px 2px rgba(0,0,0,.15)
+            .init(part: "primary", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:button:44 0 5px 12px -4px rgba(0,0,0,.22)
+            .init(part: "primary", state: "pressed", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(28.0, 28.0, 30.0, 1.0)), 0.0), .init(.color(MetalRGBA(36.0, 36.0, 39.0, 1.0)), 1.0)])), // mu-recipe:button:45 linear-gradient(#1C1C1E,#242427)
+            .init(part: "primary", state: "pressed", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:46 inset 0 1px 3px rgba(0,0,0,.6)
+            .init(part: "primary", state: "pressed", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:button:47 0 0 0 .5px rgba(0,0,0,.7)
             .init(part: "destructive", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(230.0, 89.0, 78.0, 1.0)), 0.0), .init(.color(MetalRGBA(208.0, 67.0, 58.0, 1.0)), 1.0)])), // mu-recipe:button:48 linear-gradient(#E6594E,#D0433A)
             .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:button:49 inset 0 0 6px 1px rgba(255,255,255,.14)
             .init(part: "destructive", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.32)))), // mu-recipe:button:50 inset 1px 2px 2px -1px rgba(255,255,255,.32)
@@ -889,6 +889,15 @@ public enum MetalRecipes {
             .init(part: "destructive", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(80.0, 0.0, 0.0, 0.45)))), // mu-recipe:button:55 inset 0 1px 3px rgba(80,0,0,.45)
             .init(part: "destructive", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(110.0, 10.0, 0.0, 0.55)))), // mu-recipe:button:56 0 0 0 .5px rgba(110,10,0,.55)
             .init(part: "strip", state: "focus", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 1.5, paint: .color(MetalRGBA(63.0, 185.0, 122.0, 1.0)))), // mu-recipe:button:57 0 0 0 1.5px #3FB97A
+            .init(part: "primary", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(244.0, 243.0, 240.0, 1.0)), 0.0), .init(.color(MetalRGBA(228.0, 227.0, 223.0, 1.0)), 1.0)])), // mu-recipe:button:58 linear-gradient(#F4F3F0,#E4E3DF)
+            .init(part: "primary", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.7)))), // mu-recipe:button:59 inset 0 0 4px 1px rgba(255,255,255,.7)
+            .init(part: "primary", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:button:60 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "primary", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:61 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "primary", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:button:62 0 1px 2px rgba(0,0,0,.35)
+            .init(part: "primary", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:button:63 0 5px 12px -4px rgba(0,0,0,.45)
+            .init(part: "primary", state: "pressed", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(218.0, 217.0, 213.0, 1.0)), 0.0), .init(.color(MetalRGBA(227.0, 226.0, 222.0, 1.0)), 1.0)])), // mu-recipe:button:64 linear-gradient(#DAD9D5,#E3E2DE)
+            .init(part: "primary", state: "pressed", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.28)))), // mu-recipe:button:65 inset 0 1px 3px rgba(0,0,0,.28)
+            .init(part: "primary", state: "pressed", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:66 0 0 0 .5px rgba(0,0,0,.6)
         ],
         props: [
             "self.height": .number(32.0),
@@ -926,7 +935,7 @@ public enum MetalRecipes {
             "strip.ink": .text("#D6D6D8"),
             "strip.ink-hover": .text("#FFFFFF"),
             "strip-danger.ink": .text("#FF8A7E"),
-            "primary.ink": .text("#FFFFFF"),
+            "primary.ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
             "destructive.ink": .text("#FFFFFF"),
         ]
     )
@@ -1495,7 +1504,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it. (reference style.css #palette)
+    /// A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it. The dialog owns its layout: 360 wide (never wider than the viewport less a gutter), padded 20, its parts 14 apart; a title, the body, and actions at the end. (reference style.css #palette)
     public static let dialog = MetalObjectRecipe(
         name: "dialog",
         layers: [
@@ -1508,6 +1517,10 @@ public enum MetalRecipes {
             "self.enter-y": .number(-6.0),
             "self.enter-scale": .text("0.985"),
             "self.transition": .text("opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface)"),
+            "self.width": .number(360.0),
+            "self.pad": .number(20.0),
+            "self.gap": .number(14.0),
+            "actions.gap": .number(8.0),
         ]
     )
 

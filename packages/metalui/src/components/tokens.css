@@ -1014,19 +1014,6 @@
     /* mu-recipe:button:37 */ rgba(255,255,255,.08);
   --mu-r-button-strip-pressed-background:
     /* mu-recipe:button:38 */ rgba(0,0,0,.35);
-  --mu-r-button-primary-background:
-    /* mu-recipe:button:39 */ linear-gradient(#38383C,#252528);
-  --mu-r-button-primary-shadow:
-    /* mu-recipe:button:40 */ inset 0 0 5px 1px rgba(255,255,255,.07),
-    /* mu-recipe:button:41 */ inset 1px 2px 2px -1px rgba(255,255,255,.18),
-    /* mu-recipe:button:42 */ 0 0 0 .5px rgba(0,0,0,.5),
-    /* mu-recipe:button:43 */ 0 1px 2px rgba(0,0,0,.15),
-    /* mu-recipe:button:44 */ 0 5px 12px -4px rgba(0,0,0,.22);
-  --mu-r-button-primary-pressed-background:
-    /* mu-recipe:button:45 */ linear-gradient(#1C1C1E,#242427);
-  --mu-r-button-primary-pressed-shadow:
-    /* mu-recipe:button:46 */ inset 0 1px 3px rgba(0,0,0,.6),
-    /* mu-recipe:button:47 */ 0 0 0 .5px rgba(0,0,0,.7);
   --mu-r-button-destructive-background:
     /* mu-recipe:button:48 */ linear-gradient(#E6594E,#D0433A);
   --mu-r-button-destructive-shadow:
@@ -1077,7 +1064,6 @@
   --mu-r-button-strip-ink: #D6D6D8;
   --mu-r-button-strip-ink-hover: #FFFFFF;
   --mu-r-button-strip-danger-ink: #FF8A7E;
-  --mu-r-button-primary-ink: #FFFFFF;
   --mu-r-button-destructive-ink: #FFFFFF;
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */
   --mu-r-kbd-strip-background:
@@ -1348,6 +1334,10 @@
   --mu-r-dialog-self-enter-y: -6px;
   --mu-r-dialog-self-enter-scale: 0.985;
   --mu-r-dialog-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface);
+  --mu-r-dialog-self-width: 360px;
+  --mu-r-dialog-self-pad: 20px;
+  --mu-r-dialog-self-gap: 14px;
+  --mu-r-dialog-actions-gap: 8px;
   /* slider: reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob */
   --mu-r-slider-fill-background:
     /* mu-recipe:slider:0 */ linear-gradient(#9BE6BF, #5FC894);
@@ -1798,6 +1788,20 @@
   --mu-r-button-compact-pressed-shadow:
     /* mu-recipe:button:32 */ inset 0 1px 2.5px rgba(0,0,0,.14),
     /* mu-recipe:button:33 */ inset 0 0 0 .5px rgba(0,0,0,.08);
+  --mu-r-button-primary-background:
+    /* mu-recipe:button:39 */ linear-gradient(#38383C,#252528);
+  --mu-r-button-primary-shadow:
+    /* mu-recipe:button:40 */ inset 0 0 5px 1px rgba(255,255,255,.07),
+    /* mu-recipe:button:41 */ inset 1px 2px 2px -1px rgba(255,255,255,.18),
+    /* mu-recipe:button:42 */ 0 0 0 .5px rgba(0,0,0,.5),
+    /* mu-recipe:button:43 */ 0 1px 2px rgba(0,0,0,.15),
+    /* mu-recipe:button:44 */ 0 5px 12px -4px rgba(0,0,0,.22);
+  --mu-r-button-primary-pressed-background:
+    /* mu-recipe:button:45 */ linear-gradient(#1C1C1E,#242427);
+  --mu-r-button-primary-pressed-shadow:
+    /* mu-recipe:button:46 */ inset 0 1px 3px rgba(0,0,0,.6),
+    /* mu-recipe:button:47 */ 0 0 0 .5px rgba(0,0,0,.7);
+  --mu-r-button-primary-ink: #FFFFFF;
   --mu-r-kbd-self-background:
     /* mu-recipe:kbd:0 */ linear-gradient(#FFFFFF, #F2F1EE);
   --mu-r-kbd-self-shadow:
@@ -2185,6 +2189,20 @@
   --mu-r-button-compact-pressed-shadow:
     /* mu-recipe:button:34 */ inset 0 1px 2.5px rgba(0,0,0,.6),
     /* mu-recipe:button:35 */ inset 0 0 0 .5px rgba(0,0,0,.5);
+  --mu-r-button-primary-background:
+    /* mu-recipe:button:58 */ linear-gradient(#F4F3F0,#E4E3DF);
+  --mu-r-button-primary-shadow:
+    /* mu-recipe:button:59 */ inset 0 0 4px 1px rgba(255,255,255,.7),
+    /* mu-recipe:button:60 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:button:61 */ 0 0 0 .5px rgba(0,0,0,.6),
+    /* mu-recipe:button:62 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:button:63 */ 0 5px 12px -4px rgba(0,0,0,.45);
+  --mu-r-button-primary-pressed-background:
+    /* mu-recipe:button:64 */ linear-gradient(#DAD9D5,#E3E2DE);
+  --mu-r-button-primary-pressed-shadow:
+    /* mu-recipe:button:65 */ inset 0 1px 3px rgba(0,0,0,.28),
+    /* mu-recipe:button:66 */ 0 0 0 .5px rgba(0,0,0,.6);
+  --mu-r-button-primary-ink: #1B1B1D;
   --mu-r-kbd-self-background:
     /* mu-recipe:kbd:1 */ linear-gradient(#35353A,#2A2A2D);
   --mu-r-kbd-self-shadow:
@@ -2573,6 +2591,20 @@
     --mu-r-button-compact-pressed-shadow:
       inset 0 1px 2.5px rgba(0,0,0,.6),
       inset 0 0 0 .5px rgba(0,0,0,.5);
+    --mu-r-button-primary-background:
+      linear-gradient(#F4F3F0,#E4E3DF);
+    --mu-r-button-primary-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.7),
+      inset 1px 2px 2px -1px #FFFFFF,
+      0 0 0 .5px rgba(0,0,0,.6),
+      0 1px 2px rgba(0,0,0,.35),
+      0 5px 12px -4px rgba(0,0,0,.45);
+    --mu-r-button-primary-pressed-background:
+      linear-gradient(#DAD9D5,#E3E2DE);
+    --mu-r-button-primary-pressed-shadow:
+      inset 0 1px 3px rgba(0,0,0,.28),
+      0 0 0 .5px rgba(0,0,0,.6);
+    --mu-r-button-primary-ink: #1B1B1D;
     --mu-r-kbd-self-background:
       linear-gradient(#35353A,#2A2A2D);
     --mu-r-kbd-self-shadow:

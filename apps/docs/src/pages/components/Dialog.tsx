@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog } from '@unlocalhosted/metalui';
+import { Button, Dialog, Field } from '@unlocalhosted/metalui';
 import { DialogXray } from '../../ui/xray/DialogXray';
 import reactSource from '../../../../../packages/metalui/src/components/dialog/dialog.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -16,10 +16,15 @@ export default function DialogPage() {
           <>
             <Button onClick={() => setOpen(true)}>Rename canvas…</Button>
             <Dialog open={open} onOpenChange={setOpen}>
-              <Dialog.Popup aria-label="Rename canvas" style={{ width: 320, padding: 20 }}>
-                <b style={{ display: 'block', marginBottom: 12 }}>Rename canvas</b>
-                <input defaultValue="Trip notes" aria-label="Name" style={{ width: '100%', height: 32, borderRadius: 10, border: '1px solid var(--rule)', padding: '0 10px', font: 'inherit', background: 'transparent', color: 'inherit' }} />
-                <span style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 14 }}><Button onClick={() => setOpen(false)}>Cancel</Button><Button cap="primary" onClick={() => setOpen(false)}>Save</Button></span>
+              <Dialog.Popup>
+                <Dialog.Title>Rename canvas</Dialog.Title>
+                <Field>
+                  <Field.Input defaultValue="Trip notes" aria-label="Name" />
+                </Field>
+                <Dialog.Actions>
+                  <Button onClick={() => setOpen(false)}>Cancel</Button>
+                  <Button cap="primary" onClick={() => setOpen(false)}>Save</Button>
+                </Dialog.Actions>
               </Dialog.Popup>
             </Dialog>
           </>

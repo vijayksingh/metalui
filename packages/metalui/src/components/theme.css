@@ -577,6 +577,10 @@
   --spacing-sparkline-height-mini: var(--mu-r-sparkline-self-height-mini);
   --color-dialog-scrim-color: var(--mu-r-dialog-scrim-color);
   --spacing-dialog-enter-y: var(--mu-r-dialog-self-enter-y);
+  --spacing-dialog-width: var(--mu-r-dialog-self-width);
+  --spacing-dialog-pad: var(--mu-r-dialog-self-pad);
+  --spacing-dialog-gap: var(--mu-r-dialog-self-gap);
+  --spacing-dialog-actions-gap: var(--mu-r-dialog-actions-gap);
   --spacing-slider-track-height: var(--mu-r-slider-track-height);
   --spacing-slider-track-inset: var(--mu-r-slider-track-inset);
   --spacing-slider-mark-w: var(--mu-r-slider-mark-w);
@@ -1572,6 +1576,12 @@
 @utility dialog-enter {
   opacity: 0; transform: translateY(calc(var(--mu-r-dialog-self-enter-y) * var(--mu-travel-surface))) scale(calc(1 - (1 - var(--mu-r-dialog-self-enter-scale)) * var(--mu-travel-surface)));
 }
+@utility dialog-frame {
+  box-sizing: border-box; display: flex; flex-direction: column; gap: var(--mu-r-dialog-self-gap); width: min(var(--mu-r-dialog-self-width), calc(100vw - 32px)); padding: var(--mu-r-dialog-self-pad);
+}
+@utility dialog-actions {
+  display: flex; justify-content: flex-end; gap: var(--mu-r-dialog-actions-gap);
+}
 @utility z-dialog-scrim-z {
   z-index: var(--mu-r-dialog-scrim-z);
 }
@@ -1580,6 +1590,9 @@
 }
 @utility transition-dialog {
   transition: var(--mu-r-dialog-self-transition);
+}
+@utility stroke-width-dialog-width {
+  stroke-width: var(--mu-r-dialog-self-width);
 }
 @utility recipe-slider-fill {
   background: var(--mu-r-slider-fill-background);

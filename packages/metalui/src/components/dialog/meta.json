@@ -19,7 +19,9 @@
   "slots": {
     "Dialog": [
       "Root",
-      "Popup"
+      "Popup",
+      "Title",
+      "Actions"
     ]
   },
   "page": "/components/dialog"
