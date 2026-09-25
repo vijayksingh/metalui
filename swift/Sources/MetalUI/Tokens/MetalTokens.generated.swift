@@ -1990,6 +1990,20 @@ public enum MetalRecipes {
             "label.radius": .number(7.0),
         ]
     )
+
+    /// Hold to perfect (DRAWING.md DR-05). While a person holds the pen still at the end of a rough stroke, the clean shape the core fitted appears as a faint green outline that draws itself round over the hold time (450 ms): the outline is the timer. When it closes, the host morphs the drawn stroke into the clean shape (180 ms on the settle spring) while the outline fades. Moving again or Escape removes the outline at once and keeps the hand-drawn stroke. (DRAWING.md DR-05 and §6)
+    public static let perfect = MetalObjectRecipe(
+        name: "perfect",
+        layers: [
+
+        ],
+        props: [
+            "self.line": .number(1.5),
+            "self.opacity": .text("0.7"),
+            "self.hold": .text("450ms"),
+            "self.morph": .text("180ms"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

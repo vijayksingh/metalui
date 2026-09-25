@@ -465,6 +465,24 @@
       "docs": "Agent guide: https://metalui.dev/r/past-banner.md. SwiftUI: MetalPastBanner in the MetalUI Swift package."
     },
     {
+      "name": "perfect-preview",
+      "type": "registry:ui",
+      "title": "Perfect preview",
+      "description": "Hold to perfect: while the pen is held still after a rough stroke, the fitted clean shape draws itself round as a faint green outline over 450 ms; when it closes the host morphs the stroke into the shape.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/perfect-preview/perfect-preview.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/perfect-preview/perfect-preview.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
+    },
+    {
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",

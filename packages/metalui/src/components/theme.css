@@ -763,6 +763,7 @@
   --spacing-connector-label-pad-y: var(--mu-r-connector-label-pad-y);
   --spacing-connector-label-radius: var(--mu-r-connector-label-radius);
   --radius-connector-label-radius: var(--mu-r-connector-label-radius);
+  --spacing-perfect-line: var(--mu-r-perfect-self-line);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -1843,6 +1844,29 @@
 @utility stroke-width-connector-halo-width {
   stroke-width: var(--mu-r-connector-halo-width);
 }
+@utility perfect-layer {
+  position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;
+}
+@utility perfect-outline {
+  fill: none; stroke: var(--mu-presence-guide); stroke-width: calc(var(--mu-r-perfect-self-line) / var(--mu-canvas-scale, 1)); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; opacity: var(--mu-r-perfect-self-opacity); [data-mu-colorway="graphite"] & { stroke: var(--mu-presence-guide-dark); }
+}
+@utility perfect-holding {
+  animation: mu-perfect-trace var(--mu-r-perfect-self-hold) linear forwards;
+}
+@utility perfect-done {
+  stroke-dashoffset: 0; animation: mu-perfect-done var(--mu-r-perfect-self-morph) var(--mu-spring-settle) forwards;
+}
+@utility opacity-perfect-opacity {
+  opacity: var(--mu-r-perfect-self-opacity);
+}
+@utility duration-perfect-hold {
+  --tw-duration: var(--mu-r-perfect-self-hold);
+  transition-duration: var(--mu-r-perfect-self-hold);
+}
+@utility duration-perfect-morph {
+  --tw-duration: var(--mu-r-perfect-self-morph);
+  transition-duration: var(--mu-r-perfect-self-morph);
+}
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
@@ -1860,6 +1884,12 @@
 }
 @keyframes mu-silhouette-in {
   from { opacity: 0; }
+}
+@keyframes mu-perfect-trace {
+  from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; }
+}
+@keyframes mu-perfect-done {
+  from { opacity: var(--mu-r-perfect-self-opacity); } to { opacity: 0; }
 }
 
 /* The layout groups as theme values, and each spring's duration (duration-settle, …). */

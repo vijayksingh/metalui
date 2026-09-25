@@ -410,6 +410,23 @@
       "agent": "https://metalui.dev/r/past-banner.md"
     },
     {
+      "name": "perfect-preview",
+      "title": "Perfect preview",
+      "status": "alpha",
+      "description": "Hold to perfect: while the pen is held still after a rough stroke, the fitted clean shape draws itself round as a faint green outline over 450 ms; when it closes the host morphs the stroke into the shape.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PerfectPreview",
+        "base": "none (world overlay)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPerfectPreview"
+      },
+      "registry": "https://metalui.dev/r/perfect-preview.json",
+      "agent": "https://metalui.dev/r/perfect-preview.md"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

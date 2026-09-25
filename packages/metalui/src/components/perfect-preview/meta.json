@@ -1,0 +1,19 @@
+{
+  "name": "perfect-preview",
+  "title": "Perfect preview",
+  "status": "alpha",
+  "description": "Hold to perfect: while the pen is held still after a rough stroke, the fitted clean shape draws itself round as a faint green outline over 450 ms; when it closes the host morphs the stroke into the shape.",
+  "base": "none (world overlay)",
+  "react": {
+    "export": "PerfectPreview",
+    "files": [
+      "perfect-preview.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalPerfectPreview",
+    "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift"
+  },
+  "agent": "perfect-preview.agent.md",
+  "layer": "component"
+}

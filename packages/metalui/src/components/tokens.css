@@ -1617,6 +1617,11 @@
   --mu-r-connector-label-pad-x: 7px;
   --mu-r-connector-label-pad-y: 2px;
   --mu-r-connector-label-radius: 7px;
+  /* perfect: DRAWING.md DR-05 and §6 */
+  --mu-r-perfect-self-line: 1.5px;
+  --mu-r-perfect-self-opacity: 0.7;
+  --mu-r-perfect-self-hold: 450ms;
+  --mu-r-perfect-self-morph: 180ms;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
