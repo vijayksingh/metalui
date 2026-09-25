@@ -820,20 +820,22 @@ export const ICON_CATALOG = {
    * NEW · Actions
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          the plus turns a quarter
+   *          the plus grows out from the centre of the tile
    * PRESS one-shot (from the current pose)
-   *          the tile presses in
-   *     0ms   .pt plays pl-p (300ms)
+   *          the tile presses in and the plus pops out, made
+   *     0ms   .pt plays pl-p (360ms)
+   *     0ms   .ph plays pl-h (360ms)
+   *     0ms   .pv plays pl-v (360ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "plus": {
     label: "New",
     category: "Actions",
-    hover: "the plus turns a quarter",
-    press: "the tile presses in",
-    pressMs: 300,
+    hover: "the plus grows out from the centre of the tile",
+    press: "the tile presses in and the plus pops out, made",
+    pressMs: 360,
     defs: "",
-    body: "<rect class=\"pt f\" style=\"--duo:.12\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3.5\"/><path class=\"pa\" d=\"M8.8 12h6.4\"/><path class=\"pa\" d=\"M12 8.8v6.4\"/>",
+    body: "<rect class=\"pt f\" style=\"--duo:.12\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3.5\"/><path class=\"pa ph\" d=\"M8.8 12h6.4\"/><path class=\"pa pv\" d=\"M12 8.8v6.4\"/>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

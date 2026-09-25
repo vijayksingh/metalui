@@ -1962,7 +1962,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `CaptureIcon` | `capture` | Status | viewfinder focuses in | shutter blinks |
 | `PasteIcon` | `paste` | Status | clip lifts | contents land on the board |
 | `KeeperIcon` | `keeper` | Status | blinks | ring tips, eyes look up |
-| `PlusIcon` | `plus` | Actions | the plus turns a quarter | the tile presses in |
+| `PlusIcon` | `plus` | Actions | the plus grows out from the centre of the tile | the tile presses in and the plus pops out, made |
 | `RegionIcon` | `region` | Tools | the name writes across the head | the frame settles |
 | `TaskIcon` | `task` | Tools | the tick nods yes inside its box | the box presses in and comes back up ticked |
 | `TagIcon` | `tag` | Tools | the tag swings on its eyelet | the tag stamps |

@@ -361,12 +361,15 @@ export const ICONS = [
   shape: 'The buddy as a glyph: solid body r6.8 with eye capsules knocked out (2.4×4.2), accretion ring rx9.8 ry2.5 tilted −12°; the front arc knocks a 1.1u gap into the body, the back arc hides behind it.' },
 
 // A tile with a plus: the new-block cap. Body: the tile. Marks: the two arms.
-{ name: 'plus', cat: 'Actions', label: 'New', hover: 'the plus turns a quarter', press: 'the tile presses in',
-  body: `<rect class="pt f" style="--duo:.12" x="4.5" y="4.5" width="15" height="15" rx="3.5"/><path class="pa" d="M8.8 12h6.4"/><path class="pa" d="M12 8.8v6.4"/>`,
-  base: `& .pa{transform-origin:12px 12px} & .pt{transform-origin:12px 12px}`,
-  mo: `@H .pa{transform:rotate(90deg)}
-       @P .pt{animation:pl-p .3s cubic-bezier(.3,0,.2,1)} @keyframes pl-p{40%{transform:scale(.92)}}`,
-  shape: 'Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre.' },
+{ name: 'plus', cat: 'Actions', label: 'New', hover: 'the plus grows out from the centre of the tile', press: 'the tile presses in and the plus pops out, made',
+  body: `<rect class="pt f" style="--duo:.12" x="4.5" y="4.5" width="15" height="15" rx="3.5"/><path class="pa ph" d="M8.8 12h6.4"/><path class="pa pv" d="M12 8.8v6.4"/>`,
+  base: `& .pt{transform-origin:12px 12px}`,
+  mo: `@H .ph{d:path("M8.1 12h7.8")} @H .pv{d:path("M12 8.1v7.8")}
+       @P .pt{animation:pl-p .36s cubic-bezier(.3,0,.2,1)} @P .ph{animation:pl-h .36s cubic-bezier(.3,0,.2,1)} @P .pv{animation:pl-v .36s cubic-bezier(.3,0,.2,1)}
+       @keyframes pl-p{36%{transform:scale(.92)}64%{transform:none}}
+       @keyframes pl-h{36%{d:path("M9.1 12h5.8")}64%{d:path("M7.7 12h8.6")}}
+       @keyframes pl-v{36%{d:path("M12 9.1v5.8")}64%{d:path("M12 7.7v8.6")}}`,
+  shape: 'Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre, always upright: at 45° a plus is the close glyph, so it never turns. Hover grows the arms out from the centre to 7.8 (the path, so the stroke keeps its weight), the new thing about to be made. Press squeezes the tile (.92) and the plus with it (5.8), then as the tile comes back the plus pops to 8.6 and settles: made.' },
 
 // A region: a drawn frame whose head carries its name. Body: the frame. Marks: the head rule, the name.
 { name: 'region', cat: 'Tools', label: 'Region', hover: 'the name writes across the head', press: 'the frame settles',

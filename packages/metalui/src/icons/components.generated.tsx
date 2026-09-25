@@ -77,7 +77,7 @@ export const CaptureIcon = createIcon("capture", "CaptureIcon");
 export const PasteIcon = createIcon("paste", "PasteIcon");
 /** Keeper. Hover: blinks. Press: ring tips, eyes look up. */
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
-/** New. Hover: the plus turns a quarter. Press: the tile presses in. */
+/** New. Hover: the plus grows out from the centre of the tile. Press: the tile presses in and the plus pops out, made. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
 /** Region. Hover: the name writes across the head. Press: the frame settles. */
 export const RegionIcon = createIcon("region", "RegionIcon");
