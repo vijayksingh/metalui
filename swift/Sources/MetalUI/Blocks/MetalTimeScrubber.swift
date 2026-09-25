@@ -8,18 +8,24 @@ public struct MetalTimeScrubber: View {
     let marks: [Date]
     let format: (Date) -> String
     let onFocusChange: ((Bool) -> Void)?
+    let onScrubChange: ((Bool) -> Void)?
+    let isScrubbing: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(range: ClosedRange<Date>, selection: Binding<Date?>,
                 marks: [Date] = [],
                 format: @escaping (Date) -> String = MetalTimeScrubber.defaultFormat,
-                onFocusChange: ((Bool) -> Void)? = nil) {
+                onFocusChange: ((Bool) -> Void)? = nil,
+                onScrubChange: ((Bool) -> Void)? = nil,
+                isScrubbing: Bool = false) {
         self.range = range
         _selection = selection
         self.marks = marks
         self.format = format
         self.onFocusChange = onFocusChange
+        self.onScrubChange = onScrubChange
+        self.isScrubbing = isScrubbing
     }
 
     public static func defaultFormat(_ date: Date) -> String {
@@ -75,7 +81,9 @@ public struct MetalTimeScrubber: View {
                 largeStep: MetalScrubberMetrics.largeStepMs / 1000,
                 marks: marks.map(fraction), ticks: dayTicks,
                 label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
-                onFocusChange: onFocusChange
+                onFocusChange: onFocusChange,
+                onDragChange: onScrubChange,
+                isExternallyDragging: isScrubbing
             )
             HStack(spacing: MetalScrubberMetrics.readoutGap) {
                 HStack(spacing: MetalScrubberMetrics.glyphGap) {

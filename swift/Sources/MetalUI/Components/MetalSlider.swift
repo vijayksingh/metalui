@@ -24,6 +24,8 @@ public struct MetalSlider: View {
     let label: String
     let valueText: (Double) -> String
     let onFocusChange: ((Bool) -> Void)?
+    let onDragChange: ((Bool) -> Void)?
+    let isExternallyDragging: Bool
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -34,7 +36,9 @@ public struct MetalSlider: View {
                 step: Double, largeStep: Double, marks: [Double] = [],
                 ticks: [MetalSliderTick] = [], label: String,
                 valueText: @escaping (Double) -> String,
-                onFocusChange: ((Bool) -> Void)? = nil) {
+                onFocusChange: ((Bool) -> Void)? = nil,
+                onDragChange: ((Bool) -> Void)? = nil,
+                isExternallyDragging: Bool = false) {
         _value = value
         self.range = range
         self.step = step
@@ -44,6 +48,8 @@ public struct MetalSlider: View {
         self.label = label
         self.valueText = valueText
         self.onFocusChange = onFocusChange
+        self.onDragChange = onDragChange
+        self.isExternallyDragging = isExternallyDragging
     }
 
     private var span: Double { max(.leastNonzeroMagnitude, range.upperBound - range.lowerBound) }
@@ -75,13 +81,21 @@ public struct MetalSlider: View {
                     .opacity(recipe.scalar("fill.opacity"))
                     .frame(width: max(track, x), height: track)
                     .position(x: max(track, x) / 2, y: centre)
-                ForEach(Array(marks.enumerated()), id: \.offset) { _, mark in
-                    RoundedRectangle(cornerRadius: recipe.points("mark.radius"), style: .continuous)
-                        .fill((recipe.color("mark.color", colorway: finish) ?? colorway.tokens.scrubberMark).color)
-                        .frame(width: recipe.points("mark.w"), height: recipe.points("mark.h"))
-                        .position(x: inset + clamp(mark) * (width - inset - inset), y: centre)
-                        .accessibilityHidden(true)
+                Canvas { context, _ in
+                    let markWidth = recipe.points("mark.w")
+                    let markHeight = recipe.points("mark.h")
+                    let radius = recipe.points("mark.radius")
+                    let color = (recipe.color("mark.color", colorway: finish) ?? colorway.tokens.scrubberMark).color
+                    for mark in marks {
+                        let x = inset + clamp(mark) * (width - inset - inset)
+                        let rect = CGRect(x: x - markWidth / 2, y: centre - markHeight / 2,
+                                          width: markWidth, height: markHeight)
+                        context.fill(Path(roundedRect: rect, cornerRadius: radius), with: .color(color))
+                    }
                 }
+                .frame(width: width, height: geometry.size.height)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
                 ForEach(ticks) { tick in
                     VStack(spacing: .zero) {
                         Rectangle()
@@ -116,13 +130,20 @@ public struct MetalSlider: View {
             }
             .gesture(DragGesture(minimumDistance: .zero)
                 .onChanged { gesture in
-                    if !dragging { NSCursor.closedHand.set() }
+                    if !dragging {
+                        NSCursor.closedHand.set()
+                        onDragChange?(true)
+                    }
                     dragging = true
                     focused = true
                     set(range.lowerBound + clamp(gesture.location.x / max(.leastNonzeroMagnitude, width)) * span)
                 }
-                .onEnded { _ in dragging = false; NSCursor.openHand.set() })
-            .animation(dragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
+                .onEnded { _ in
+                    dragging = false
+                    onDragChange?(false)
+                    NSCursor.openHand.set()
+                })
+            .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
         }
         .focusable()
