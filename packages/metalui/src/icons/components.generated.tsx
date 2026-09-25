@@ -79,7 +79,7 @@ export const PasteIcon = createIcon("paste", "PasteIcon");
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
 /** New. Hover: the plus grows out from the centre of the tile. Press: the tile presses in and the plus pops out, made. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
-/** Region. Hover: the name writes across the head. Press: the frame settles. */
+/** Region. Hover: The frame is set down on the canvas, and its name writes into the head behind a caret.. Press: plays the same act. */
 export const RegionIcon = createIcon("region", "RegionIcon");
 /** Task. Hover: the tick nods yes inside its box. Press: the box presses in and comes back up ticked. */
 export const TaskIcon = createIcon("task", "TaskIcon");

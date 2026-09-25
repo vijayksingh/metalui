@@ -499,11 +499,20 @@
       "component": "RegionIcon",
       "label": "Region",
       "category": "Tools",
-      "hover": "the name writes across the head",
-      "press": "the frame settles",
-      "pressMs": 340,
+      "hover": "The frame is set down on the canvas, and its name writes into the head behind a caret.",
+      "press": "plays the same act",
+      "pressMs": 1040,
+      "motion": {
+        "caption": "The frame is set down on the canvas, and its name writes into the head behind a caret.",
+        "durationMs": 1040,
+        "stages": [
+          "Lift",
+          "Land",
+          "Name"
+        ]
+      },
       "tuned16": false,
-      "construction": "Frame 17 × 14 r3.5, tinted .08; head rule on the 9.6 line; the name a 3.6 wire in the head."
+      "construction": "Frame 17 × 14 r3.5, tinted .08; head rule on the 9.6 line; the name a 3.6 wire in the head. Motion (study): the frame lifts 1.4 and lands on its bottom edge (squash .92, object spring) while the name erases, then the name writes back in behind a caret that blinks once at its end."
     },
     {
       "name": "task",

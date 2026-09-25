@@ -858,24 +858,26 @@ export const ICON_CATALOG = {
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────
-   * REGION · Tools
+   * REGION · Tools · one act, 1040ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          the name writes across the head
-   * PRESS one-shot (from the current pose)
-   *          the frame settles
-   *     0ms   .rb plays rg-p (340ms)
+   * Lift → Land → Name
+   *          The frame is set down on the canvas, and its name writes into the head behind a caret.
+   *  frame      0 → 150 → 290 → 646 → 1003 → 1040ms
+   *  name       0 → 170 → 360 → 640 → 1040ms
+   *  caret      0 → 320 → 360 → 640 → 720 → 740 → 800 → 820 → 900 → 960 → 1040ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "region": {
     label: "Region",
     category: "Tools",
-    hover: "the name writes across the head",
-    press: "the frame settles",
-    pressMs: 340,
+    hover: "The frame is set down on the canvas, and its name writes into the head behind a caret.",
+    press: "plays the same act",
+    pressMs: 1040,
     defs: "",
-    body: "<rect class=\"rb f\" style=\"--duo:.08\" x=\"3.5\" y=\"5\" width=\"17\" height=\"14\" rx=\"3.5\"/><path d=\"M3.5 9.6h17\"/><path class=\"rn\" d=\"M6.8 7.3h3.6\"/>",
+    body: "<g data-part=\"frame\"><rect class=\"f\" style=\"--duo:.08\" x=\"3.5\" y=\"5\" width=\"17\" height=\"14\" rx=\"3.5\"/><path d=\"M3.5 9.6h17\"/><path data-part=\"name\" pathLength=\"1\" d=\"M6.8 7.3h3.6\"/><path class=\"ac\" data-part=\"caret\" opacity=\"0\" d=\"M10.4 6.1v2.4\" style=\"stroke-width:calc(var(--sw) * .7)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":1040,"caption":"The frame is set down on the canvas, and its name writes into the head behind a caret.","stages":["Lift","Land","Name"],"tracks":[{"part":"frame","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.14423,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27885,"transform":"translate(0px,0px) rotate(0deg) scale(1.04,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62115,"transform":"translate(0px,0px) rotate(0deg) scale(0.9961,1.0079)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96442,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"name","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16346,"strokeDashoffset":1,"easing":"linear"},{"offset":0.34615,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"caret","keyframes":[{"offset":0,"transform":"translate(-3.6px,0px)","opacity":0},{"offset":0.30769,"transform":"translate(-3.6px,0px)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.34615,"transform":"translate(-3.6px,0px)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"transform":"translate(0px,0px)","opacity":1},{"offset":0.69231,"transform":"translate(0px,0px)","opacity":1,"easing":"linear"},{"offset":0.71154,"transform":"translate(0px,0px)","opacity":0,"easing":"linear"},{"offset":0.76923,"transform":"translate(0px,0px)","opacity":0,"easing":"linear"},{"offset":0.78846,"transform":"translate(0px,0px)","opacity":1,"easing":"linear"},{"offset":0.86538,"transform":"translate(0px,0px)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.92308,"transform":"translate(0px,0px)","opacity":0},{"offset":1,"transform":"translate(-3.6px,0px)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * TASK · Tools
