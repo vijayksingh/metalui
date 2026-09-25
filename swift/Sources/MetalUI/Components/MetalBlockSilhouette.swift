@@ -29,7 +29,7 @@ public struct MetalBlockSilhouette: View {
         GeometryReader { geometry in
             ZStack(alignment: .topLeading) {
                 if kind == .text || kind == .code {
-                    let pad = kind == .code ? recipe.points("code.pad") : .zero
+                    let pad: CGFloat = kind == .code ? CGFloat(recipe.points("code.pad")) : .zero
                     bars(in: geometry.size, pad: pad, recipe: recipe)
                 }
                 if kind == .region, let label, !label.isEmpty {
@@ -57,8 +57,8 @@ public struct MetalBlockSilhouette: View {
 
     private func bars(in size: CGSize, pad: CGFloat, recipe: MetalObjectRecipe) -> some View {
         let part = kind.rawValue
-        let pitch = recipe.points("\(part).line")
-        let bar = recipe.points("\(part).bar")
+        let pitch = CGFloat(recipe.points("\(part).line"))
+        let bar = CGFloat(recipe.points("\(part).bar"))
         let ink = recipe.color("\(part).ink", colorway: MetalRecipeColorway(colorway))?.color ?? Color.clear
         let height = max(.zero, size.height - pad - pad)
         let extent = lines.map { min(height, CGFloat(max(0, $0)) * pitch) } ?? height

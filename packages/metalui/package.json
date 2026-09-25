@@ -1,6 +1,6 @@
 {
   "name": "@unlocalhosted/metalui",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "Soft Hardware components for React (on Base UI) and SwiftUI, with animated duotone icons and agent guides",
   "type": "module",
   "license": "MIT",
@@ -42,7 +42,7 @@
       "types": "./dist/gadgets.d.ts",
       "import": "./dist/gadgets.js"
     },
-    "./styles.css": "./src/components/tokens.css",
+    "./styles.css": "./dist/styles.css",
     "./icons.css": "./dist/icons.css",
     "./icons/life.css": "./dist/icons-life.css",
     "./tokens.css": "./src/components/tokens.css",
@@ -52,7 +52,7 @@
     "./icons-life.json": "./public/icons-life.json"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tailwindcss -i styles.input.css -o dist/styles.css --minify",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -63,13 +63,15 @@
     "@base-ui/react": "^1.8.0"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "tsup": "^8.0.0",
-    "typescript": "^5.8.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.3",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0"
   },
   "publishConfig": {
     "access": "public",

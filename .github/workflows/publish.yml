@@ -1,0 +1,44 @@
+name: Publish npm
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check tag and branch
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          version=$(node -p "require('./packages/metalui/package.json').version")
+          test "$GITHUB_REF_NAME" = "v$version"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: npm install --global npm@11.19.1
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run verify:package
+      - name: Check npm version
+        id: registry
+        run: |
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://registry.npmjs.org/@unlocalhosted%2fmetalui/${GITHUB_REF_NAME#v}")
+          case "$status" in
+            200) echo "exists=true" >> "$GITHUB_OUTPUT"; echo "Version already published on npm" ;;
+            404) echo "exists=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "npm registry returned HTTP $status" >&2; exit 1 ;;
+          esac
+      - name: Publish
+        if: steps.registry.outputs.exists == 'false'
+        run: npm publish --workspace @unlocalhosted/metalui --access public

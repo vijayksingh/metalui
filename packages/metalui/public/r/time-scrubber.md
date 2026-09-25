@@ -36,6 +36,7 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 | `start`, `end` | `range:` | ms / `ClosedRange<Date>` |
 | `value`, `onValueChange` | `selection:` (Binding<Date?>) | `null`/`nil` is now |
 | `marks` | `marks:` | block and edit moments |
+| drag state | `onScrubChange:`, `isScrubbing:` | host can defer heavy analysis until release; an active drag has no jump spring |
 | `format` | `format:` | the readout for a past moment |
 | `title` | `title:` | the word before the moment, default MEMORY |
 | `glyph` | (MetalIcon built in) | the clock at 10 |

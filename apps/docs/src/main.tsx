@@ -5,8 +5,12 @@ import './styles.css';
 import { ColorwayProvider } from './app/colorway';
 import { Shell } from './app/Shell';
 import { NotFound } from './pages/NotFound';
+import { syncSiteMetadata } from './app/site-metadata';
 
 const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
+const DevAgentation = import.meta.env.DEV
+  ? React.lazy(() => import('agentation').then(({ Agentation }) => ({ default: Agentation })))
+  : null;
 
 const router = createBrowserRouter([
   { path: '/', lazy: lazy(() => import('./pages/Landing')), errorElement: <NotFound /> },
@@ -102,10 +106,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+router.subscribe(({ location }) => { void syncSiteMetadata(location.pathname); });
+
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ColorwayProvider>
       <RouterProvider router={router} />
+      {DevAgentation && <React.Suspense fallback={null}><DevAgentation appName="MetalUI docs" /></React.Suspense>}
     </ColorwayProvider>
   </React.StrictMode>,
 );

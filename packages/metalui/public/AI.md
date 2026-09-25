@@ -2030,6 +2030,7 @@ A value on a track. React: `Slider` with parts `Slider.Root` (value, min, max, s
 
 - Arrows step (`step`), Shift + arrows step large (`largeStep`); Home / End go to the ends.
 - A jump (a click on the track, a key) rides the part spring; a drag follows the pointer exactly. Under Reduce Motion a jump lands at once.
+- SwiftUI `onDragChange` reports drag start before the first value change and drag end after release. `isExternallyDragging` lets an offscreen host or controlled gesture suppress the jump spring during a scrub.
 - Name the knob (`aria-label`) and give it a value text (`getAriaValueText`) a person reads ("THU 24 SEP · 14:10").
 
 ---
@@ -2431,6 +2432,7 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 | `start`, `end` | `range:` | ms / `ClosedRange<Date>` |
 | `value`, `onValueChange` | `selection:` (Binding<Date?>) | `null`/`nil` is now |
 | `marks` | `marks:` | block and edit moments |
+| drag state | `onScrubChange:`, `isScrubbing:` | host can defer heavy analysis until release; an active drag has no jump spring |
 | `format` | `format:` | the readout for a past moment |
 | `title` | `title:` | the word before the moment, default MEMORY |
 | `glyph` | (MetalIcon built in) | the clock at 10 |

@@ -1,1 +1,157 @@
-[]
+[
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: \\.padding\\(\\.horizontal, MetalPaletteMetrics\\.rowPad\\)\\.padding\\(\\.vertical, 14\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: Rectangle\\(\\)\\.fill\\(MetalShared\\.greenDeep\\.color\\)\\.frame\\(width: 1\\.5, height: 18\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^shadow: \\.shadow\\(color: t\\.lip\\.color, radius: 0, x: 0, y: 0\\.5\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: \\.padding\\(\\.top, 4\\)\\.padding\\(\\.bottom, 2\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: \\.frame\\(maxHeight: \\(NSScreen\\.main\\?\\.visibleFrame\\.height \\?\\? 900\\) \\* MetalPaletteMetrics\\.listMax\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: VStack\\(spacing: 0\\) \\{ Rectangle\\(\\)\\.fill\\(t\\.rule\\.color\\)\\.frame\\(height: 1\\); Rectangle\\(\\)\\.fill\\(t\\.ruleLip\\.color\\)\\.frame\\(height: 1\\) \\}$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalCommandPalette.swift",
+    "pattern": "^spacing: \\.padding\\(\\.top, 4\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalKbd.swift",
+    "pattern": "^radius: let shape = RoundedRectangle\\(cornerRadius: surface == \\.sunk \\? 999 : MetalRadius\\.key, style: \\.continuous\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalLensBar.swift",
+    "pattern": "^spacing: Circle\\(\\)\\.fill\\(MetalShared\\.ledAmber\\.gradient\\(diameter: 5\\)\\)\\.frame\\(width: 5, height: 5\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalLensBar.swift",
+    "pattern": "^opacity: \\.opacity\\(arrived \\? 1 : 0\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalLensBar.swift",
+    "pattern": "^opacity: \\.opacity\\(hovering \\? 0\\.05 : 0\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift",
+    "pattern": "^opacity: \\.opacity\\(shown \\? 1 : 0\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalSegmented.swift",
+    "pattern": "^spacing: \\.padding\\(\\.horizontal, h / 2 - 1\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalSegmented.swift",
+    "pattern": "^opacity: \\.opacity\\(isEnabled \\? 1 : 0\\.4\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Blocks/MetalToolStrip.swift",
+    "pattern": "^spacing: \\.frame\\(width: MetalSpace\\.s2 / 2,$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Blocks/MetalToolStrip.swift",
+    "pattern": "^spacing: \\.frame\\(width: MetalSpace\\.s2 / 2\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Blocks/MetalToolStrip.swift",
+    "pattern": "^spacing: \\.padding\\(\\.horizontal, MetalSpace\\.s6 / 2\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Blocks/MetalToolStrip.swift",
+    "pattern": "^opacity: \\.opacity\\(arrived \\? 1 : 0\\)$",
+    "reason": "Existing literal in pre-release Swift source; replace with a token when this component is revised."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^spacing: \\.frame\\(width: radius \\* 2, height: radius \\* 2\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^font: \\.font\\(\\.system\\(size: 12 / zoom\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^opacity: bandPath\\(mid\\)\\.stroke\\(ink\\.opacity\\(0\\.3\\), style: StrokeStyle\\(lineWidth: width, lineCap: \\.round\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^spacing: \\.frame\\(width: width \\* 1\\.7, height: width \\* 1\\.7\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^spacing: \\.frame\\(width: width \\* \\(1 - Double\\(tail\\) / 20\\), height: width \\* \\(1 - Double\\(tail\\) / 20\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^spacing: \\.frame\\(width: width \\* \\(1\\.24 \\+ shimmer \\* 0\\.9\\), height: width \\* \\(1\\.24 \\+ shimmer \\* 0\\.9\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^duration: \\.animation\\(minimumInterval: 1\\.0 / 120\\.0\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^opacity: \\.opacity\\(sqrt\\(max\\(0, sin\\(\\.pi \\* phase\\)\\)\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^opacity: \\.opacity\\(pow\\(1 - Double\\(tail\\) / 16, 1\\.4\\) \\* sqrt\\(max\\(0, sin\\(\\.pi \\* phase\\)\\)\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalConnector.swift",
+    "pattern": "^opacity: \\.opacity\\(min\\(1, 0\\.45 \\+ shimmer \\* 0\\.6\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift",
+    "pattern": "^font: \\.font\\(\\.system\\(size: 11 / zoom, weight: \\.m\\u0065dium, design: \\.rounded\\)\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift",
+    "pattern": "^opacity: \\.opacity\\(phase == \\.done \\? 0 : 1\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift",
+    "pattern": "^spacing: \\.frame\\(width: recipe\\.points\\(\"tune\\.centre\"\\) \\* 2 / zoom, height: recipe\\.points\\(\"tune\\.centre\"\\) \\* 2 / zoom\\)$",
+    "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  }
+]
