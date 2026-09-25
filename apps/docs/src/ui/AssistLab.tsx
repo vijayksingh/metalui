@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, Switcher, inkColor } from '@unlocalhosted/metalui';
+import { Button, Field, Switcher, inkColor } from '@unlocalhosted/metalui';
 import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
 import { fitFrame, lastWordNote, settleWord } from '../lib/ink-word';
+import { lastLettersNote, learnFrom, letterFrame, readWord, repairLetters, sampleOf, type LetterBank } from '../lib/ink-letters';
+import { LetterPad } from './LetterPad';
 
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK LAB (the Brush cursor page)
@@ -18,6 +20,9 @@ import { fitFrame, lastWordNote, settleWord } from '../lib/ink-word';
  * Words: a 600 ms pause, or a new stroke more than 1.2 x-heights past the word or 1.5 off its line,
  * completes the word; it then settles (ink-word.ts) in one morph on MetalUI's settle spring (a
  * crossfade under Reduce Motion). Settled · As written compares.
+ * Letters: type what the last word says and Repair. A letter the lab has not learned yet is asked
+ * for on the letter pad (twice each); then each letter that strays from your usual one is pulled
+ * part way back (ink-letters.ts), in the same morph. Letters close to your usual ones teach the bank.
  * Copy strokes copies every stroke's raw samples (x, y, time, pressure) as JSON: real handwriting
  * for the engine's fixtures.
  * ───────────────────────────────────────────────────────── */
@@ -64,6 +69,12 @@ function restore(): Stroke[] {
     });
   } catch { return []; }
 }
+// Your letters, kept in this browser like the strokes; Forget letters removes them.
+const BANK = 'metalui-assist-lab-letters';
+function loadBank(): LetterBank { try { return JSON.parse(localStorage.getItem(BANK) ?? '{}') as LetterBank; } catch { return {}; } }
+function keepBank(b: LetterBank) { try { localStorage.setItem(BANK, JSON.stringify(b)); } catch { /* storage unavailable */ } }
+const TEACH_TIMES = 2;
+
 /** Word finding (INK_ENGINE.md §4.8): a pause, or a gap past the word, or a new line. */
 const PAUSE = 600, WORD_GAP = 1.2, LINE_GAP = 1.5;
 
@@ -122,6 +133,16 @@ export function AssistLab() {
   // Your writing survives a reload (the dev server reloads the page when the code changes): finished
   // strokes are kept in this browser and restored; Clear removes them. A per-viewer convenience only.
   const [strokes, setStrokes] = React.useState<Stroke[]>(() => restore());
+  const bank = React.useRef<LetterBank>(loadBank());
+  const [bankSize, setBankSize] = React.useState(() => Object.keys(bank.current).length);
+  const setBank = (b: LetterBank) => { bank.current = b; keepBank(b); setBankSize(Object.keys(b).length); };
+  const [says, setSays] = React.useState('');
+  type Teach = { letters: string[]; xh: number; says: string; taught: number };
+  const [teach, setTeach] = React.useState<Teach | null>(null);
+  const teachNow = React.useRef<Teach | null>(null);
+  const setTeachBoth = (t: Teach | null) => { teachNow.current = t; setTeach(t); };
+  // The word the letters apply to: the last one completed (after a reload, the last stroke kept).
+  const lastWord = React.useRef<Stroke[]>([]);
   const d = useDialKit('Assisted ink', {
     settle: { settleMs: [TOOL_ASSIST.pen.settleMs, 0, 80, 1], sigmaPx: [TOOL_ASSIST.pen.sigmaPx, 1, 20, 0.5] },
     corners: { corner: [TOOL_ASSIST.pen.corner, 30, 180, 1] },
@@ -197,19 +218,52 @@ export function AssistLab() {
     window.clearTimeout(pause.current);
     const strokesOfWord = word.current; word.current = [];
     if (!strokesOfWord.length) return;
+    lastWord.current = strokesOfWord;
     const result = settleWord(strokesOfWord.map((w) => w.ink!));
     setNote(`Last word: ${lastWordNote}.`);
     if (!result) return;
-    strokesOfWord.forEach((w, k) => { w.settled = result.strokes[k]; w.settledPath = undefined; w.morph = 0; });
-    bump(strokesOfWord[0]);
+    morphTo(strokesOfWord, result.strokes);
+  };
+  // A word's strokes move to new ink in one morph on the settle spring (from the ink as written).
+  const morphTo = (ws: Stroke[], next: InkSample[][]) => {
+    ws.forEach((w, k) => { w.settled = next[k]; w.settledPath = undefined; w.morph = 0; });
+    bump(ws[0]);
     const { ms } = settleSpring(), start = performance.now();
     const step = () => {
       const t = (performance.now() - start) / ms;
-      for (const w of strokesOfWord) w.morph = Math.min(1, t);
-      bump(strokesOfWord[0]);
+      for (const w of ws) w.morph = Math.min(1, t);
+      bump(ws[0]);
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
+  };
+  // Letters: read the last word as `text`, repair the letters that stray, and learn the ones that do not.
+  const repair = (text: string) => {
+    const ws = lastWord.current.length ? lastWord.current : strokes.filter((st) => !st.live && st.tool !== 'marker' && st.ink).slice(-1);
+    const word = text.replace(/\s+/g, '');
+    if (!ws.length || !word) { setNote('Write a word first, then type what it says.'); return; }
+    const base = ws.map((w) => w.settled ?? w.ink!);
+    const missing = [...new Set([...word])].filter((c) => !bank.current[c]?.length);
+    if (missing.length) {
+      const xh = Math.round(Math.min(40, Math.max(18, letterFrame(base)?.xHeight ?? 24)));
+      setTeachBoth({ letters: missing, xh, says: word, taught: 0 });
+      setNote(`The lab has not learned ${missing.join(', ')} yet. Write ${missing.length > 1 ? 'each' : 'it'} twice on the pad below.`);
+      return;
+    }
+    const read = readWord(base, word, bank.current);
+    if (!read) { setNote(`“${word}”: ${lastLettersNote}.`); return; }
+    const out = repairLetters(base, read, bank.current);
+    setBank(learnFrom(read, bank.current));
+    setNote(`“${word}”: ${lastLettersNote}.`);
+    if (out) morphTo(ws, out);
+  };
+  const learnLetter = (ch: string, written: InkSample[][], baseline: number, xh: number) => {
+    setBank({ ...bank.current, [ch]: [...(bank.current[ch] ?? []), sampleOf(written, baseline, xh)] });
+    const t = teachNow.current; if (!t) return;
+    const taught = t.taught + 1;
+    if (taught < t.letters.length * TEACH_TIMES) { setTeachBoth({ ...t, taught }); return; }
+    setTeachBoth(null);
+    repair(t.says);
   };
   // A new stroke far past the word, or off its line, completes the word first.
   const startsNewWord = (x: number, y: number) => {
@@ -250,7 +304,7 @@ export function AssistLab() {
         <Switcher size="compact" aria-label="Show" value={view} onValueChange={setView} options={[{ value: 'assisted', label: 'Assisted' }, { value: 'raw', label: 'Raw' }, { value: 'both', label: 'Both' }]} />
         <Switcher size="compact" aria-label="Word" value={asWritten} onValueChange={setAsWritten} options={[{ value: 'settled', label: 'Settled' }, { value: 'written', label: 'As written' }]} />
         <Button size="compact" onClick={shaky}>Shaky hand</Button>
-        <Button size="compact" onClick={() => { setStrokes([]); keep([]); }}>Clear</Button>
+        <Button size="compact" onClick={() => { setStrokes([]); keep([]); lastWord.current = []; }}>Clear</Button>
         <Button size="compact" onClick={() => { void navigator.clipboard?.writeText(JSON.stringify({ tool, strokes: strokes.map((st) => ({ tool: st.tool, samples: st.raw.map((q) => [+q.x.toFixed(2), +q.y.toFixed(2), +q.t.toFixed(1), +q.pressure.toFixed(3)]) })) })); }}>Copy strokes</Button>
       </div>
       <div ref={box} className="snap-canvas" style={{ height: 300, touchAction: 'none', cursor: 'crosshair' }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
@@ -270,7 +324,13 @@ export function AssistLab() {
         </svg>
         {!strokes.length && <span className="eng ink-hint">write here, slowly and quickly</span>}
       </div>
+      <form className="flex flex-wrap items-center justify-center gap-12" onSubmit={(e) => { e.preventDefault(); repair(says); }}>
+        <Field className="w-[240px]"><Field.Input aria-label="What the last word says" placeholder="The last word says…" value={says} onChange={(e) => setSays(e.target.value)} /></Field>
+        <Button size="compact" type="submit">Repair letters</Button>
+        <Button size="compact" type="button" disabled={!bankSize} onClick={() => { setBank({}); setTeachBoth(null); setNote('Letters forgotten.'); }}>Forget letters</Button>
+      </form>
       <p className="type-doc-prose max-w-[64ch] text-center text-ink2" aria-live="polite">{note}</p>
+      {teach && <LetterPad key={teach.says + teach.letters.join('')} letters={teach.letters} xh={teach.xh} times={TEACH_TIMES} onLetter={learnLetter} />}
     </div>
   );
 }
