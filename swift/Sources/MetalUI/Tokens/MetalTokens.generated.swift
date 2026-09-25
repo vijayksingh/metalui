@@ -1943,6 +1943,31 @@ public enum MetalRecipes {
             "eraser.ink": .perColorway(bone: "rgba(27,27,29,.45)", graphite: "rgba(255,255,255,.45)"),
         ]
     )
+
+    /// The drawing group's ink and width picks, beside the drawing tools in the toolbar. An ink is a small glossy bead in its colour; a width is a dot of that size in the current ink. The chosen one sits in a sunk well, like a latched tool. Hover lifts the bead a little on the part spring; press squeezes it. A fixed set of five inks and three widths, never a free colour picker. (DRAWING.md DR-06 (five inks from the signal colours, three widths); the toolbar's latched well)
+    public static let draw = MetalObjectRecipe(
+        name: "draw",
+        layers: [
+
+        ],
+        props: [
+            "self.size": .number(28.0),
+            "self.bead": .number(14.0),
+            "self.gap": .number(2.0),
+            "ink.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "ink.red": .text("#D8453B"),
+            "ink.blue": .text("#2457F2"),
+            "ink.green": .text("#3FB97A"),
+            "ink.amber": .text("#E0A12A"),
+            "ink.on-dark": .text("#F2F2F0"),
+            "width.fine": .number(3.0),
+            "width.regular": .number(6.0),
+            "width.bold": .number(10.0),
+            "bead.gloss": .perColorway(bone: "inset 0 1px 1px rgba(255,255,255,.45), inset 0 -1.5px 2px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.18), 0 1px 2px rgba(0,0,0,.12)", graphite: "inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35)"),
+            "bead.hover": .text("1.14"),
+            "bead.press": .text("0.88"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

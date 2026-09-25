@@ -1,0 +1,19 @@
+{
+  "name": "draw-picks",
+  "title": "Draw picks",
+  "status": "alpha",
+  "description": "The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.",
+  "base": "@base-ui/react/toolbar + @base-ui/react/toggle",
+  "react": {
+    "export": "InkPicks",
+    "files": [
+      "draw-picks.tsx"
+    ]
+  },
+  "layer": "component",
+  "swift": {
+    "symbol": "MetalDrawPicks",
+    "file": "swift/Sources/MetalUI/Components/MetalDrawPicks.swift"
+  },
+  "agent": "draw-picks.agent.md"
+}

@@ -169,6 +169,46 @@
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
     },
     {
+      "name": "draw-picks",
+      "type": "registry:ui",
+      "title": "Draw picks",
+      "description": "The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/draw-picks/draw-picks.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/draw-picks/draw-picks.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/draw-picks.md. SwiftUI: MetalDrawPicks in the MetalUI Swift package."
+    },
+    {
+      "name": "draw-tools",
+      "type": "registry:ui",
+      "title": "Draw tools",
+      "description": "The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/draw-tools/draw-tools.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/draw-tools/draw-tools.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
+    },
+    {
       "name": "field",
       "type": "registry:ui",
       "title": "Field",

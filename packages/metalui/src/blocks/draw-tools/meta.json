@@ -1,0 +1,24 @@
+{
+  "name": "draw-tools",
+  "title": "Draw tools",
+  "status": "alpha",
+  "layer": "block",
+  "kind": "composition",
+  "uses": [
+    "toolbar",
+    "draw-picks"
+  ],
+  "description": "The drawing group of the toolbar: eight tool caps (pen, pencil, marker, line, arrow, rectangle, ellipse, eraser) with one latched, then the five inks and three widths.",
+  "base": "@base-ui/react/toolbar",
+  "react": {
+    "export": "DrawTools",
+    "files": [
+      "draw-tools.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalDrawTools",
+    "file": "swift/Sources/MetalUI/Blocks/MetalDrawTools.swift"
+  },
+  "agent": "draw-tools.agent.md"
+}

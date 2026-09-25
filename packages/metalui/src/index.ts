@@ -23,6 +23,8 @@ export { Led, StatusBadge, type LedProps, type LedKind, type StatusBadgeProps } 
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
+export { InkPicks, WidthPicks, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
+export { DrawTools, DRAW_TOOLS, type DrawTool, type DrawToolsProps } from './blocks/draw-tools/draw-tools';
 export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { TimeScrubber, MemoryScrubber, type TimeScrubberProps, type MemoryScrubberProps } from './blocks/time-scrubber/time-scrubber';

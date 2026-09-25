@@ -378,7 +378,7 @@ The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPic
 
 ## Use it for
 
-- Choosing the ink (ink, red, blue, green, amber) and width (fine, medium, bold) of the pen, pencil, marker, line, arrow, rectangle and ellipse.
+- Choosing the ink (ink, red, blue, green, amber) and width (fine, regular, bold) of the pen, pencil, marker, line, arrow, rectangle and ellipse.
 
 ## Don't use it for
 
@@ -404,7 +404,7 @@ A 28 round cap. Ink: a 14 bead in its colour with a gloss. Width: a dot of 3, 6 
 | React | Notes |
 |---|---|
 | `InkPicks value onValueChange disabled` | `Ink`: `'ink' \| 'red' \| 'blue' \| 'green' \| 'amber'` |
-| `WidthPicks value onValueChange ink disabled` | `InkWidth`: `'fine' \| 'medium' \| 'bold'` |
+| `WidthPicks value onValueChange ink disabled` | `InkWidth`: `'fine' \| 'regular' \| 'bold'` |
 | `inkColor(ink)` | the CSS colour to draw with |
 
 ---

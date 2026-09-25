@@ -1593,6 +1593,20 @@
   --mu-r-brush-self-ring: 0.5px;
   --mu-r-brush-eraser-width: 1px;
   --mu-r-brush-eraser-dash: 3 2;
+  /* draw: DRAWING.md DR-06 (five inks from the signal colours, three widths); the toolbar's latched well */
+  --mu-r-draw-self-size: 28px;
+  --mu-r-draw-self-bead: 14px;
+  --mu-r-draw-self-gap: 2px;
+  --mu-r-draw-ink-red: #D8453B;
+  --mu-r-draw-ink-blue: #2457F2;
+  --mu-r-draw-ink-green: #3FB97A;
+  --mu-r-draw-ink-amber: #E0A12A;
+  --mu-r-draw-ink-on-dark: #F2F2F0;
+  --mu-r-draw-width-fine: 3px;
+  --mu-r-draw-width-regular: 6px;
+  --mu-r-draw-width-bold: 10px;
+  --mu-r-draw-bead-hover: 1.14;
+  --mu-r-draw-bead-press: 0.88;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -1942,6 +1956,8 @@
   --mu-r-brush-self-ring-ink: rgba(255,255,255,.75);
   --mu-r-brush-self-edge-ink: rgba(27,27,29,.35);
   --mu-r-brush-eraser-ink: rgba(27,27,29,.45);
+  --mu-r-draw-ink-ink: #1B1B1D;
+  --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.45), inset 0 -1.5px 2px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.18), 0 1px 2px rgba(0,0,0,.12);
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2269,6 +2285,8 @@
   --mu-r-brush-self-ring-ink: rgba(255,255,255,.6);
   --mu-r-brush-self-edge-ink: rgba(0,0,0,.5);
   --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
+  --mu-r-draw-ink-ink: #F2F2F0;
+  --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2597,5 +2615,7 @@
     --mu-r-brush-self-ring-ink: rgba(255,255,255,.6);
     --mu-r-brush-self-edge-ink: rgba(0,0,0,.5);
     --mu-r-brush-eraser-ink: rgba(255,255,255,.45);
+    --mu-r-draw-ink-ink: #F2F2F0;
+    --mu-r-draw-bead-gloss: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35);
   }
 }
