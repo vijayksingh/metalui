@@ -7,7 +7,7 @@ import { Connector, Kbd, Lasso, Led, PastBanner, Region, SearchField, SelectionF
  *
  *   pick      each thing is the real part, live; the picked one gets the selection frame,
  *             and the light starts at the first question
- *   ask       every 420 ms the light hops down one question: 250 ms ease-out along an arc that
+ *   ask       every 420 ms the light hops down one question (no rail: the hops are the path): 250 ms ease-out along an arc that
  *             bows out min(.8, 14 / distance) of the way (about 7 px), counter-clockwise going
  *             down, clockwise going back up, like a bead jumping from stop to stop;
  *             the question it leaves is marked "no" in ink3
@@ -131,8 +131,11 @@ export function LayerSorter() {
   const hop = React.useRef<{ stop: () => void } | null>(null);
   const put = (x: number, y: number) => { if (light.current) light.current.style.transform = `translate(${x}px, ${y}px)`; };
   const yOf = (i: number) => { const r = rows.current[i]; return r ? r.offsetTop + r.offsetHeight / 2 - LIGHT / 2 : 0; };
+  // Resizes read the current step through a ref; the effect runs once, so a closed-over step would be stale.
+  const stepNow = React.useRef(step);
+  stepNow.current = step;
   React.useLayoutEffect(() => {
-    const snap = () => { hop.current?.stop(); const y = yOf(step); put(0, y); lastY.current = y; };
+    const snap = () => { hop.current?.stop(); const y = yOf(stepNow.current); put(0, y); lastY.current = y; };
     snap();
     window.addEventListener('resize', snap);
     return () => window.removeEventListener('resize', snap);
@@ -181,7 +184,6 @@ export function LayerSorter() {
 
       <div className="flex flex-col gap-16" aria-live="polite">
         <ol className="relative flex flex-col">
-          <span aria-hidden className="absolute bottom-20 left-11 top-20 w-1 bg-[var(--mu-rule)]" />
           <span
             ref={light}
             aria-hidden
