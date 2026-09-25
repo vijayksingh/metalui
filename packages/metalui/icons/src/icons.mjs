@@ -288,13 +288,14 @@ export const ICONS = [
        @P .ug{animation:rd-p .42s cubic-bezier(.3,0,.2,1)} @keyframes rd-p{40%{transform:rotate(-26deg)}}`,
   shape: 'Undo mirrored on x.' },
 
-{ name: 'more', cat: 'Actions', label: 'More', hover: 'dots swell in sequence', press: 'dots gather and part',
-  body: `<circle class="m1 s" cx="5.6" cy="12" r="1.55"/><circle class="m2 s" cx="12" cy="12" r="1.55"/><circle class="m3 s" cx="18.4" cy="12" r="1.55"/>`,
-  base: `& .m1{transform-origin:5.6px 12px} & .m2{transform-origin:12px 12px;--dl:.04s} & .m3{transform-origin:18.4px 12px;--dl:.08s}`,
-  mo: `@H .m1,@H .m2,@H .m3{transform:scale(1.22)}
+{ name: 'more', cat: 'Actions', label: 'More', hover: 'a wave runs through the dots, left to right: it goes on', press: 'dots gather and part',
+  body: `<g class="w1"><circle class="m1 s" cx="5.6" cy="12" r="1.55"/></g><g class="w2"><circle class="m2 s" cx="12" cy="12" r="1.55"/></g><g class="w3"><circle class="m3 s" cx="18.4" cy="12" r="1.55"/></g>`,
+  base: `& .m1,& .w1{transform-origin:5.6px 12px} & .m2,& .w2{transform-origin:12px 12px} & .m3,& .w3{transform-origin:18.4px 12px} & .w2{--dl:.07s} & .w3{--dl:.14s}`,
+  mo: `@H .w1,@H .w2,@H .w3{animation:mo-w .42s cubic-bezier(.3,0,.3,1) var(--dl,0s) both}
        @P .m1{animation:mo-1 .34s cubic-bezier(.3,0,.2,1)} @P .m3{animation:mo-3 .34s cubic-bezier(.3,0,.2,1)}
+       @keyframes mo-w{40%{transform:translateY(-1.2px) scale(1.15)}}
        @keyframes mo-1{40%{transform:translateX(2.4px) scale(1.1)}} @keyframes mo-3{40%{transform:translateX(-2.4px) scale(1.1)}}`,
-  shape: 'Three r1.55 dots on 6.4u pitch.' },
+  shape: 'Three r1.55 dots on 6.4u pitch. An ellipsis means it continues, so hover is a wave, not a swell: each dot rises 1.2 and swells 1.15 in turn, 70 ms apart, left to right, once. The wave is on a wrapper per dot so the press (the outer dots gather to the centre and part: the menu opens from one point) still plays while hovered.' },
 
 { name: 'close', cat: 'Actions', label: 'Close', hover: 'its arms draw in toward the crossing, ready', press: 'it folds into its centre and springs back out',
   body: `<path class="x" d="M7.2 7.2l9.6 9.6M16.8 7.2l-9.6 9.6"/>`,

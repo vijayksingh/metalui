@@ -1953,7 +1953,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ShareIcon` | `share` | Actions | arrow lifts out of the tray | arrow leaves, a new one rises |
 | `UndoIcon` | `undo` | Actions | head reaches back | arrow arcs back and returns |
 | `RedoIcon` | `redo` | Actions | head reaches forward | arrow arcs forward and returns |
-| `MoreIcon` | `more` | Actions | dots swell in sequence | dots gather and part |
+| `MoreIcon` | `more` | Actions | a wave runs through the dots, left to right: it goes on | dots gather and part |
 | `CloseIcon` | `close` | Actions | its arms draw in toward the crossing, ready | it folds into its centre and springs back out |
 | `CheckIcon` | `check` | Actions | it nods yes about its vertex | the tick is drawn again and lands with weight |
 | `SyncedIcon` | `synced` | Status | satellite advances along its orbit | orbit completes a full turn |

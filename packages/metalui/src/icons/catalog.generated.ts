@@ -636,21 +636,21 @@ export const ICON_CATALOG = {
    * MORE · Actions
    *
    * HOVER pose (spring, reversible, interruptible)
-   *          dots swell in sequence
+   *          a wave runs through the dots, left to right: it goes on
    * PRESS one-shot (from the current pose)
    *          dots gather and part
    *     0ms   .m1 plays mo-1 (340ms)
-   *    80ms   .m3 plays mo-3 (340ms)
+   *     0ms   .m3 plays mo-3 (340ms)
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "more": {
     label: "More",
     category: "Actions",
-    hover: "dots swell in sequence",
+    hover: "a wave runs through the dots, left to right: it goes on",
     press: "dots gather and part",
-    pressMs: 420,
+    pressMs: 340,
     defs: "",
-    body: "<circle class=\"m1 s\" cx=\"5.6\" cy=\"12\" r=\"1.55\"/><circle class=\"m2 s\" cx=\"12\" cy=\"12\" r=\"1.55\"/><circle class=\"m3 s\" cx=\"18.4\" cy=\"12\" r=\"1.55\"/>",
+    body: "<g class=\"w1\"><circle class=\"m1 s\" cx=\"5.6\" cy=\"12\" r=\"1.55\"/></g><g class=\"w2\"><circle class=\"m2 s\" cx=\"12\" cy=\"12\" r=\"1.55\"/></g><g class=\"w3\"><circle class=\"m3 s\" cx=\"18.4\" cy=\"12\" r=\"1.55\"/></g>",
     sw16: 1.85,
   },
   /* ─────────────────────────────────────────────────────────

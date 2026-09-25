@@ -59,7 +59,7 @@ export const ShareIcon = createIcon("share", "ShareIcon");
 export const UndoIcon = createIcon("undo", "UndoIcon");
 /** Redo. Hover: head reaches forward. Press: arrow arcs forward and returns. */
 export const RedoIcon = createIcon("redo", "RedoIcon");
-/** More. Hover: dots swell in sequence. Press: dots gather and part. */
+/** More. Hover: a wave runs through the dots, left to right: it goes on. Press: dots gather and part. */
 export const MoreIcon = createIcon("more", "MoreIcon");
 /** Close. Hover: its arms draw in toward the crossing, ready. Press: it folds into its centre and springs back out. */
 export const CloseIcon = createIcon("close", "CloseIcon");

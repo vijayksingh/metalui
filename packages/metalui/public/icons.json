@@ -326,11 +326,11 @@
       "component": "MoreIcon",
       "label": "More",
       "category": "Actions",
-      "hover": "dots swell in sequence",
+      "hover": "a wave runs through the dots, left to right: it goes on",
       "press": "dots gather and part",
-      "pressMs": 420,
+      "pressMs": 340,
       "tuned16": false,
-      "construction": "Three r1.55 dots on 6.4u pitch."
+      "construction": "Three r1.55 dots on 6.4u pitch. An ellipsis means it continues, so hover is a wave, not a swell: each dot rises 1.2 and swells 1.15 in turn, 70 ms apart, left to right, once. The wave is on a wrapper per dot so the press (the outer dots gather to the centre and part: the menu opens from one point) still plays while hovered."
     },
     {
       "name": "close",
