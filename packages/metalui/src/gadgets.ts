@@ -18,6 +18,7 @@ export { drawCap, pressCap, type CapSpec, type CapShape } from './gadgets/parts/
 export { drawBezel, type BezelSpec } from './gadgets/parts/bezel';
 export { drawBacklight, backlightColor, type BacklightSpec, type BacklightShape } from './gadgets/parts/backlight';
 export { drawGlass, glassPath, type GlassSpec } from './gadgets/parts/glass';
+export { drawNeedle, needleAngle, type NeedleSpec } from './gadgets/parts/needle';
 export { drawDrum, stripOffset, DRUM_FONT, type DrumSpec } from './gadgets/parts/drum';
 export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';

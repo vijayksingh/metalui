@@ -580,6 +580,23 @@
       "agent": "https://metalui.dev/r/menu.md"
     },
     {
+      "name": "needle",
+      "title": "Needle",
+      "status": "alpha",
+      "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Needle",
+        "base": "none (SVG content)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalNeedle"
+      },
+      "registry": "https://metalui.dev/r/needle.json",
+      "agent": "https://metalui.dev/r/needle.md"
+    },
+    {
       "name": "past-banner",
       "title": "Past banner",
       "status": "alpha",

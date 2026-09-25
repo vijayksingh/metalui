@@ -1,0 +1,21 @@
+{
+  "name": "needle",
+  "title": "Needle",
+  "status": "alpha",
+  "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
+  "base": "none (SVG content)",
+  "react": {
+    "export": "Needle",
+    "files": [
+      "needle.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalNeedle",
+    "file": "swift/Sources/MetalUI/Components/MetalNeedle.swift"
+  },
+  "agent": "needle.agent.md",
+  "layer": "part",
+  "page": "/components/needle",
+  "recipe": "gadgets"
+}

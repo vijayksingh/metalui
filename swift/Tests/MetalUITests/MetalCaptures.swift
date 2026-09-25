@@ -353,6 +353,24 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testNeedle() {
+        let today = MetalGadgetModel.resolve(MetalGadgetPlacement(job: .signal, feel: MetalGadgetFeel(v: 0.6, a: 0.5, w: 0.45), material: .metal))
+        let looks: [(Double, Double, Int, Double?)] = [(0.2, 120, 9, 0.75), (0.5, 120, 9, 0.75), (0.9, 120, 9, 0.75), (0.35, 150, 13, nil)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                ForEach(0..<looks.count, id: \.self) { i in
+                    MetalBezel(.metal, color: today.body, glass: today.face, rings: false, size: 180) {
+                        MetalNeedle(value: looks[i].0, arc: looks[i].1, ticks: looks[i].2, threshold: looks[i].3, color: today.accent, glass: today.face, size: 180)
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("needle-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

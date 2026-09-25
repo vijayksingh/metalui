@@ -93,6 +93,11 @@
           "target": "components/gadgets/parts/led.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/needle.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/needle.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/plug.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/plug.ts"
@@ -739,6 +744,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/menu.md. SwiftUI: MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:) in the MetalUI Swift package."
+    },
+    {
+      "name": "needle",
+      "type": "registry:ui",
+      "title": "Needle",
+      "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/needle/needle.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/needle/needle.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/needle.md. SwiftUI: MetalNeedle in the MetalUI Swift package."
     },
     {
       "name": "past-banner",

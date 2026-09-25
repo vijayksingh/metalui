@@ -569,6 +569,37 @@ export const GADGETS = {
     ],
     "alone": 150
   },
+  "needle": {
+    "base": 7,
+    "tip": 2.4,
+    "tail": 0.16,
+    "shadow": [
+      1.6,
+      3,
+      5,
+      0.3
+    ],
+    "cap": 13,
+    "scale": [
+      0.9,
+      1.02,
+      0.84
+    ],
+    "major": 2,
+    "line": [
+      2.4,
+      0.6
+    ],
+    "zone": [
+      0.88,
+      1.03,
+      0.5
+    ],
+    "alone": 150,
+    "majorWidth": 1.3,
+    "crown": 0.14,
+    "capShadow": 0.4
+  },
   "drive": {
     "detentSize": 0.33,
     "detentPitch": 1.6,

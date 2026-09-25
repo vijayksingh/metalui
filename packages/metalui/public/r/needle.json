@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "needle",
+  "type": "registry:ui",
+  "title": "Needle",
+  "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/needle/needle.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/needle/needle.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawNeedle, type NeedleSpec } from '../../gadgets/parts/needle';\n\n/* Needle (a Part): a tapered pointer on a pivot cap over a printed scale. Its scale is printed on\n * glass, so it is SVG content for a Bezel (its children), on the 400-unit canvas; the glass colour\n * inks the scale. `value` (0 to 1) turns it; in a gadget the swing mechanism does. */\n\nexport interface NeedleProps extends Omit<NeedleSpec, 'at' | 'color'> {\n  at?: [number, number];\n  /** The needle's pigment; defaults to the accent. */\n  color?: NeedleSpec['color'];\n}\n\nexport function Needle({ at = [200, 222], color, ...spec }: NeedleProps) {\n  const uid = React.useId().replace(/:/g, '');\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const d = drawNeedle(`needle-${uid}`, { at, color: color ?? { L: wL, C: wC, H: wH }, ...spec });\n  return <g data-value={spec.value}><defs dangerouslySetInnerHTML={{ __html: d.defs }} /><g dangerouslySetInnerHTML={{ __html: d.scale + d.needle + d.cap }} /></g>;\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/needle.md. SwiftUI: MetalNeedle in the MetalUI Swift package."
+}

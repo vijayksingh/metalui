@@ -177,6 +177,17 @@ public enum MetalGadgetTokens {
     public static let drumEdge: Double = ${num(G.drum.edge)}
     public static let drumGlint: (at: Double, width: Double, alpha: Double) = (${G.drum.glint.map(num).join(', ')})
     public static let drumAlone: Double = ${num(G.drum.alone)}
+    public static let needleWidth: (base: Double, tip: Double) = (${num(G.needle.base)}, ${num(G.needle.tip)})
+    public static let needleTail: Double = ${num(G.needle.tail)}
+    public static let needleShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.needle.shadow.map(num).join(', ')})
+    public static let needleCap: Double = ${num(G.needle.cap)}
+    public static let needleScale: (inner: Double, outer: Double, major: Double) = (${G.needle.scale.map(num).join(', ')})
+    public static let needleMajor: Int = ${G.needle.major}
+    public static let needleLine: (width: Double, alpha: Double) = (${G.needle.line.map(num).join(', ')})
+    public static let needleZone: (inner: Double, outer: Double, alpha: Double) = (${G.needle.zone.map(num).join(', ')})
+    public static let needleMajorWidth: Double = ${num(G.needle['major-width'])}
+    public static let needleCrown: Double = ${num(G.needle.crown)}
+    public static let needleCapShadow: Double = ${num(G.needle['cap-shadow'])}
     /// Each Part's footprint on the canvas, units: [width, height].
     public static let partSizes: [String: (Double, Double)] = [${Object.entries(G.parts).filter(([k]) => !k.startsWith('$')).map(([k, v]) => `${JSON.stringify(k)}: (${num(v.size[0])}, ${num(v.size[1])})`).join(', ')}]
     public static let jackKnurlWidth: Double = ${num(G.jack['knurl-width'])}
