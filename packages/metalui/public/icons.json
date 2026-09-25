@@ -447,11 +447,20 @@
       "component": "GroupIcon",
       "label": "Group · Stack",
       "category": "Actions",
-      "hover": "cards rise and fan above the flap",
-      "press": "cards drop into the folder",
-      "pressMs": 490,
+      "hover": "The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.",
+      "press": "plays the same act",
+      "pressMs": 1253,
+      "motion": {
+        "caption": "The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.",
+        "durationMs": 1253,
+        "stages": [
+          "Gather",
+          "Drop in",
+          "Land"
+        ]
+      },
       "tuned16": true,
-      "construction": "Folder back (tab left) knocked out around two fanned cards (−8° / +5°); the front card knocks out the back card; both clipped 1u above the flap. Frosted flap = duotone 16%. Mirrors the Softness Folder component."
+      "construction": "Folder back (tab left) knocked out around two fanned cards (−8° / +5°, drawn as rest rotations inside each card); the front card knocks out the back card; both clipped 1u above the flap, and the clip moves with the flap. Frosted flap = duotone 16%. Motion (study): the cards lift 2.6, square into one stack, drop .7 past rest and splay back into the fan; the flap squashes .93 and air puffs from the mouth."
     },
     {
       "name": "ungroup",

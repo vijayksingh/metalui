@@ -45,7 +45,7 @@ export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */
 export const TrashIcon = createIcon("trash", "TrashIcon");
-/** Group · Stack. Hover: cards rise and fan above the flap. Press: cards drop into the folder. */
+/** Group · Stack. Hover: The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.. Press: plays the same act. */
 export const GroupIcon = createIcon("group", "GroupIcon");
 /** Ungroup. Hover: cards spread wider. Press: cards pop out and separate. */
 export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
