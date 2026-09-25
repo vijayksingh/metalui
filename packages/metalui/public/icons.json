@@ -144,11 +144,20 @@
       "component": "RectangleIcon",
       "label": "Rectangle",
       "category": "Tools",
-      "hover": "a rough hand-drawn box snaps into a clean one",
-      "press": "the box is dragged out again from its corner",
-      "pressMs": 600,
+      "hover": "A handle grabs the far corner and drags the box in toward its pinned corner, then out past its size; let go, it springs back.",
+      "press": "plays the same act",
+      "pressMs": 920,
+      "motion": {
+        "caption": "A handle grabs the far corner and drags the box in toward its pinned corner, then out past its size; let go, it springs back.",
+        "durationMs": 920,
+        "stages": [
+          "Grab",
+          "Drag out",
+          "Let go"
+        ]
+      },
       "tuned16": false,
-      "construction": "A 17.2 × 14 rounded box (r3.2) as a path, open like the Image frame. Hover is hold-to-perfect: the box wobbles into a rough hand-drawn quad (corners off by up to a unit), then springs back to the clean box with a small overshoot. Press drags it out again from its pinned corner, the handle riding the corner."
+      "construction": "A 17.2 × 14 rounded box (r3.2), open, drawn as eight pieces (four corner arcs, four straight sides) that join into the same contour. Motion (study): a handle appears on the bottom-right corner and drags the box in to 9 × 8 toward its pinned top-left corner, then out .9 past its size; the far corners translate with the drag and the sides stretch only along their length, so the corners stay round and the stroke keeps its width. Let go, the handle drops, a ring opens at the corner and the box springs back."
     },
     {
       "name": "ellipse",
