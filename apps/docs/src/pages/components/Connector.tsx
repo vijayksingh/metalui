@@ -8,7 +8,7 @@ export default function ConnectorPage() {
     <ComponentPage
       title="Connector"
       lede="A line or arrow that joins two blocks. Move a block and the line follows it."
-      play={{ lede: 'Five looks to choose from. Drag a block hard and let go, hover the line, click it to select it.', node: <ConnectorLab /> }}
+      play={{ lede: 'Drag a block hard and let go: the elastic line bends and whips back. Switch to Current or Stardust to show a flow, and pick which way it runs.', node: <ConnectorLab /> }}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

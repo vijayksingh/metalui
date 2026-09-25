@@ -763,6 +763,7 @@
   --spacing-connector-label-pad-y: var(--mu-r-connector-label-pad-y);
   --spacing-connector-label-radius: var(--mu-r-connector-label-radius);
   --radius-connector-label-radius: var(--mu-r-connector-label-radius);
+  --spacing-connector-hit-width: var(--mu-r-connector-hit-width);
   --spacing-perfect-line: var(--mu-r-perfect-self-line);
 }
 @utility recipe-swatch {
@@ -1841,8 +1842,17 @@
 @utility connector-label {
   position: absolute; transform: translate(-50%, -50%) scale(calc(1 / var(--mu-canvas-scale, 1))); padding: var(--mu-r-connector-label-pad-y) var(--mu-r-connector-label-pad-x); border-radius: var(--mu-r-connector-label-radius); background: var(--mu-cap-bg); box-shadow: var(--mu-cap-sh); font: var(--mu-type-ui); letter-spacing: var(--mu-type-ui-tracking); color: var(--mu-ink); white-space: nowrap;
 }
+@utility connector-glow {
+  fill: var(--mu-presence-guide); [data-mu-colorway="graphite"] & { fill: var(--mu-presence-guide-dark); }
+}
+@utility connector-hit {
+  fill: none; stroke: transparent; stroke-width: calc(var(--mu-r-connector-hit-width) / var(--mu-canvas-scale, 1)); stroke-linecap: round; pointer-events: stroke; cursor: pointer;
+}
 @utility stroke-width-connector-halo-width {
   stroke-width: var(--mu-r-connector-halo-width);
+}
+@utility stroke-width-connector-hit-width {
+  stroke-width: var(--mu-r-connector-hit-width);
 }
 @utility perfect-layer {
   position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;

@@ -1969,7 +1969,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A connector is ink whose ends sit on two blocks (DRAWING.md DR-07). At rest it is only its ink and its label. Hover: a soft green halo along the path and a dot at each end, solid where the end is attached to a block, hollow where it is free. Selected: the halo stays and the ends become handles to drag and re-attach. The label is a small chip at the middle of the path. Sizes stay the same on screen at every zoom. (DRAWING.md DR-07 and §6; the presence language (guide green, handles))
+    /// A connector is a line between two blocks (DRAWING.md DR-07). Looks: elastic (default; a taut band whose middle rides a spring, so it bends behind a moving block and whips back), current (comets of light flow along a quiet line and the target glows as each lands) and stardust (drifting, twinkling motes with a shimmer in the flow's direction). Flow: forward, backward or both. Hover: a soft green halo and a dot at each end, solid where attached, hollow where free. Selected: the ends become handles. The label is a chip at the middle. The chrome keeps its screen size at every zoom. (DRAWING.md DR-07 and §6; the presence language (guide green, handles))
     public static let connector = MetalObjectRecipe(
         name: "connector",
         layers: [
@@ -1988,6 +1988,7 @@ public enum MetalRecipes {
             "label.pad-x": .number(7.0),
             "label.pad-y": .number(2.0),
             "label.radius": .number(7.0),
+            "hit.width": .number(18.0),
         ]
     )
 
