@@ -43,14 +43,14 @@ export const XRAYS = {
 export type XrayKind = keyof typeof XRAYS;
 
 /** The x-ray overlay: a sheet over a blurred page; click outside or press Escape to close.
- *  `from` names the floating object it opened from: the model takes that object's
- *  view-transition name, so the object flies onto the model and back out of it. */
+ *  `from` names the floating object it opened from; flown in (useXrayFlight), the card
+ *  composes around the object as it lands on the model. */
 export function XrayOverlay({ kind, from, onClose }: { kind: XrayKind; from?: string; onClose: () => void }) {
   const { title, View } = XRAYS[kind];
   // flown in: the flight is the entrance, so the sheet skips its rise and the model its tilt (read once, at mount)
   const [flown] = React.useState(() => from !== undefined && document.documentElement.dataset.flight === 'open');
   return createPortal(
-    <div className={flown ? 'xr-overlay is-flown' : 'xr-overlay'} data-from={from} style={from ? { '--flight': `float-${from}` } as React.CSSProperties : undefined} role="dialog" aria-modal="true" aria-label={`${title}, x-ray`} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className={flown ? 'xr-overlay is-flown' : 'xr-overlay'} role="dialog" aria-modal="true" aria-label={`${title}, x-ray`} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="xr-sheet"><View startOpen /></div>
     </div>,
     document.body,

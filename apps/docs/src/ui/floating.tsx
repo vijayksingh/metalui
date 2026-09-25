@@ -136,18 +136,17 @@ const ITEMS: Item[] = [
 /** An open x-ray, and the object it was opened from. */
 export interface XrayOpen { kind: XrayKind; from: string }
 
-/* The x-ray flight. The model inside the x-ray card borrows the object's view-transition
- * name while the object hides, so one thing seems to travel:
- *   open    1 lift    the object rises a little off the table
- *           2 fly     it flies to the model's place in the card, growing to the model's
- *                     size and tilting as it goes, so it lands at the x-ray's angle with
- *                     its face on the model's face; the card fades in around it
- *           3 land    the object hands over to the model through the end of its flight
- * Meanwhile the card composes around it (kds.css, .xr-overlay.is-flown): the bench and the
- * card surface while it flies, and the callouts and their leader lines follow once it lands.
- *   close   the same backwards: the model lifts out of the card, turns flat and flies home
- * The browser's own morph is one straight line with no tilt, so the travelling box and
- * the tilt are keyed here. */
+/* The x-ray flight. A copy of the object (the flyer) leaves the table and lands on its model
+ * in the x-ray card:
+ *   1 lift    it rises a little off the table
+ *   2 fly     it flies to the model's place, growing to the model's size and tilting to the
+ *             x-ray's angle as it goes, so its face lands on the model's face
+ *   3 land    it hands over to the model through the end of its flight
+ * Meanwhile the card composes around it (kds.css, .xr-overlay.is-flown).
+ *
+ * It is one timeline on live elements: open plays it forward, close plays it backward, and
+ * either can be turned around mid-air (Esc, a click outside the card, or a click on the
+ * flyer), carrying on from exactly where it is. */
 const OPEN_MS = 1100;
 const CLOSE_MS = 900;
 /** The x-ray's angle (.xr-iso): a flat face turned and laid back. */
@@ -157,63 +156,87 @@ const FLAT = 'rotateX(0deg) rotateZ(0deg)';
 const LIFT_EASE = 'cubic-bezier(.3, 0, .2, 1)';
 const FLY_EASE = 'cubic-bezier(.55, 0, .2, 1)';
 
-function choreograph(name: string, dir: 'open' | 'close') {
-  const html = document.documentElement;
-  const pseudo = (part: string) => `::view-transition-${part}(${name})`;
-  const on = (part: string) => document.getAnimations().filter((a) => (a.effect as KeyframeEffect | null)?.pseudoElement === pseudo(part));
-  const ua = on('group').find((a) => (a.effect as KeyframeEffect).getKeyframes()[0]?.transform);
-  if (!ua) return;
-  // drop the browser's crossfade (keep its plus-lighter blend, which keeps the fade even)
-  for (const a of [...on('old'), ...on('new')]) if ((a.effect as KeyframeEffect).getKeyframes().some((k) => 'opacity' in k)) a.cancel();
-  // the browser's start (the old box) and, with its morph gone, the end (the new box)
-  const start = (ua.effect as KeyframeEffect).getKeyframes()[0] as unknown as { transform: string; width: string; height: string };
-  ua.cancel();
-  const cs = getComputedStyle(html, pseudo('group'));
-  const end = { transform: cs.transform === 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : cs.transform, width: cs.width, height: cs.height };
-  // the object's box, just raised off the table
-  const home = dir === 'open' ? start : end;
-  const lifted = { ...home, transform: `${home.transform} translateY(-14px) scale(1.08)` };
-  const play = (part: string, frames: Keyframe[], duration: number) => html.animate(frames, { duration, fill: 'both', pseudoElement: pseudo(part) });
-  if (dir === 'open') {
-    play('group', [{ ...start, easing: LIFT_EASE }, { ...lifted, offset: 0.2, easing: FLY_EASE }, { ...end }], OPEN_MS);
-    // the object: flat through the lift, then tilting into the x-ray's angle as it flies
-    // the object: flat through the lift, tilting into the x-ray's angle as it flies, and handing
-    // over to the model through its last stretch rather than at the very end
-    play('old', [{ transform: FLAT }, { transform: FLAT, offset: 0.2, easing: FLY_EASE }, { transform: ISO, offset: 0.85 }, { transform: ISO }], OPEN_MS);
-    play('old', [{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0, offset: 0.92 }, { opacity: 0 }], OPEN_MS);
-    play('new', [{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1, offset: 0.9 }, { opacity: 1 }], OPEN_MS);
-  } else {
-    play('group', [{ ...start, easing: FLY_EASE }, { ...lifted, offset: 0.8, easing: LIFT_EASE }, { ...end }], CLOSE_MS);
-    play('old', [{ opacity: 1 }, { opacity: 0, offset: 0.14 }, { opacity: 0 }], CLOSE_MS);
-    play('new', [{ transform: ISO }, { transform: ISO, offset: 0.06, easing: FLY_EASE }, { transform: FLAT, offset: 0.76 }, { transform: FLAT }], CLOSE_MS);
-    play('new', [{ opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 1 }], CLOSE_MS);
-  }
+interface Flight { from: string; dir: 'open' | 'close'; anims: Animation[]; flyer: HTMLElement }
+
+/** Builds the flight between an object on the table and its x-ray, parked at the start. */
+function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'from' | 'dir'> {
+  const model = overlay.querySelector<HTMLElement>('.xr-scene') ?? overlay.querySelector<HTMLElement>('.xr-bench') ?? overlay;
+  const flyer = document.createElement('div');
+  flyer.className = 'xr-flyer';
+  flyer.setAttribute('aria-hidden', 'true');
+  item.childNodes.forEach((n) => flyer.appendChild(n.cloneNode(true)));
+  const ow = item.offsetWidth, oh = item.offsetHeight;
+  flyer.style.width = `${ow}px`;
+  flyer.style.height = `${oh}px`;
+  document.body.appendChild(flyer);
+  // home: where the object hangs now; land: the model's flat face, which the object fills
+  const h = item.getBoundingClientRect(), m = model.getBoundingClientRect();
+  const hs = h.width / ow, ls = Math.min(m.width / ow, m.height / oh);
+  const at = (cx: number, cy: number, k: number, turn: string) => `translate(${cx - ow / 2}px, ${cy - oh / 2}px) scale(${k}) ${turn}`;
+  const hx = h.left + h.width / 2, hy = h.top + h.height / 2;
+  const home = at(hx, hy, hs, FLAT), lifted = at(hx, hy - 14, hs * 1.08, FLAT), land = at(m.left + m.width / 2, m.top + m.height / 2, ls, ISO);
+  const opts = { duration: OPEN_MS, fill: 'both' as const };
+  const anims = [
+    flyer.animate([{ transform: home, easing: LIFT_EASE }, { transform: lifted, offset: 0.2, easing: FLY_EASE }, { transform: land, offset: 0.85 }, { transform: land }], opts),
+    flyer.animate([{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0, offset: 0.92 }, { opacity: 0 }], opts),
+    overlay.animate([{ opacity: 0, easing: 'ease-out' }, { opacity: 1, offset: 0.4 }, { opacity: 1 }], opts),
+    ...(model.classList.contains('xr-scene') ? [model.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1, offset: 0.9 }, { opacity: 1 }], opts)] : []),
+  ];
+  return { anims, flyer };
 }
 
 export function useXrayFlight() {
   const [open, setOpen] = React.useState<XrayOpen | null>(null);
-  const flight = React.useRef(0);
+  /** The object that is away from the table: in the air, or in its x-ray. */
+  const [away, setAway] = React.useState<string | undefined>();
+  const flight = React.useRef<Flight | null>(null);
   const openRef = React.useRef(open);
   openRef.current = open;
+
+  const land = React.useCallback((f: Flight) => {
+    if (flight.current !== f) return;
+    flight.current = null;
+    delete document.documentElement.dataset.flight;
+    f.flyer.remove();
+    if (f.dir === 'open') f.anims.slice(2).forEach((a) => a.cancel());
+    else flushSync(() => { setOpen(null); setAway(undefined); });
+  }, []);
+
   const fly = React.useCallback((next: XrayOpen | null) => {
     const root = document.documentElement;
-    if (!document.startViewTransition || root.classList.contains('rm')) { setOpen(next); return; }
-    const id = ++flight.current;
-    // only the travelling object keeps its name; the rest stay behind the backdrop
+    const f = flight.current;
+    // mid-air: turn around, from exactly where it is
+    if (f) {
+      const dir = next ? 'open' : 'close';
+      if (dir === f.dir || (next && next.from !== f.from)) return;
+      f.dir = dir;
+      root.dataset.flight = dir;
+      f.anims.forEach((a) => { a.playbackRate = dir === 'open' ? 1 : -OPEN_MS / CLOSE_MS; });
+      return;
+    }
+    const reduced = root.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
     const from = next?.from ?? openRef.current?.from;
-    document.querySelectorAll('[data-flying]').forEach((el) => el.removeAttribute('data-flying'));
-    document.querySelector(`[data-float="${from}"]`)?.setAttribute('data-flying', '');
+    const item = from ? document.querySelector<HTMLElement>(`[data-float="${from}"]`) : null;
+    if (reduced || !from || !item) { setOpen(next); setAway(next?.from); return; }
     root.dataset.flight = next ? 'open' : 'close';
-    const t = document.startViewTransition(() => flushSync(() => setOpen(next)));
-    t.ready.then(() => { if (from) choreograph(`float-${from}`, next ? 'open' : 'close'); }).catch(() => {});
-    t.finished.finally(() => {
-      if (flight.current !== id) return;
-      delete root.dataset.flight;
-      document.querySelectorAll('[data-flying]').forEach((el) => el.removeAttribute('data-flying'));
-    });
-  }, []);
+    if (next) flushSync(() => { setOpen(next); setAway(next.from); });
+    const overlay = document.querySelector<HTMLElement>('.xr-overlay');
+    if (!overlay) { delete root.dataset.flight; setOpen(next); setAway(next?.from); return; }
+    const built = buildFlight(item, overlay);
+    const nf: Flight = { from, dir: next ? 'open' : 'close', ...built };
+    flight.current = nf;
+    if (!next) nf.anims.forEach((a) => { a.currentTime = OPEN_MS; a.playbackRate = -OPEN_MS / CLOSE_MS; });
+    nf.anims[0].onfinish = () => land(nf);
+    // the flyer is the object: click it mid-air to send it back
+    nf.flyer.addEventListener('click', () => flyRef.current(nf.dir === 'open' ? null : { kind: openRef.current!.kind, from: nf.from }));
+  }, [land]);
+  const flyRef = React.useRef(fly);
+  flyRef.current = fly;
+
   const close = React.useCallback(() => fly(null), [fly]);
-  return { open, fly, close };
+  // leaving the page mid-air: take the flyer with it
+  React.useEffect(() => () => { flight.current?.flyer.remove(); delete document.documentElement.dataset.flight; }, []);
+  return { open, away, fly, close };
 }
 
 export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table'; lifted?: string; onXray: (open: XrayOpen) => void }) {
@@ -249,9 +272,8 @@ export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table
             ['--dx' as string]: it.drift[0],
             ['--dy' as string]: it.drift[1],
             ['--delay' as string]: `-${parseFloat(it.dur) / 3}s`,
-            // while its x-ray is open, the sheet carries this name and the object is away
-            viewTransitionName: it.id === lifted ? 'none' : `float-${it.id}`,
-            viewTransitionClass: 'float',
+            viewTransitionName: `float-${it.id}`,
+            // while it is in the air or in its x-ray, the object is away from the table
             visibility: it.id === lifted ? 'hidden' : undefined,
           } as React.CSSProperties;
           return (

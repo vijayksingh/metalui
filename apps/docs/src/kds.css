@@ -658,23 +658,17 @@ html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
 
-/* The x-ray flight (useXrayFlight keys the travelling box, the tilt and the fades). The
- * model in the card carries the object's name; the object's snapshot fills the travelling
- * box without stretching, so it lands on the model's flat face and tilts with it. The card
- * and the page behind cross-fade while it flies. */
-.xr-overlay[data-from] .xr-scene { view-transition-name: var(--flight); view-transition-class: float; }
-html[data-flight="open"]::view-transition-old(.float),
-html[data-flight="close"]::view-transition-new(.float) { width: 100%; height: 100%; object-fit: contain; }
-html[data-flight="open"]::view-transition-old(root), html[data-flight="open"]::view-transition-new(root) { animation-duration: .45s; }
-html[data-flight="close"]::view-transition-old(root), html[data-flight="close"]::view-transition-new(root) { animation-duration: .5s; }
-html[data-flight] .drift-item:not([data-flying]) { view-transition-name: none !important; }
+/* The x-ray flight (useXrayFlight): a copy of the object flies over everything, onto its
+ * model in the card. It is the object, so a click on it mid-air sends it back. */
+.xr-flyer { position: fixed; left: 0; top: 0; z-index: 110; transform-origin: 50% 50%; will-change: transform, opacity; cursor: pointer; }
+.xr-flyer * { pointer-events: none; }
 .xr-overlay.is-flown { animation: none; }
 .xr-overlay.is-flown .xr-iso { animation: none; }
 /* Flown in, the x-ray composes around the object instead of arriving all at once: the bench
- * and the card surface while the object is in the air, it lands on a set stage, then the
- * callouts pop in one by one and their leader lines draw out to the model. (The browser keeps
- * the incoming page live during the flight, so these play through it.) */
-.xr-overlay.is-flown .xr-bench { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .1s both; }
+ * and the card surface while the object is in the air (the bench only fades, so the place the
+ * object lands on holds still), it lands on a set stage, then the callouts pop in one by one
+ * and their leader lines draw out to the model. */
+.xr-overlay.is-flown .xr-bench { animation: xr-fade .5s cubic-bezier(.2, .8, .25, 1) .1s both; }
 .xr-overlay.is-flown .xr-card { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .26s both; }
 .xr-overlay.is-flown .xr-callout .xr-callout-ico { animation: xr-callout-in var(--spring-part-d, .6s) var(--spring-part, ease-out) calc(.92s + var(--i, 0) * 60ms) both; }
 .xr-overlay.is-flown .xr-leaders path, .xr-overlay.is-flown .xr-leaders circle { animation: xr-draw .42s cubic-bezier(.3, 0, .2, 1) calc(.98s + var(--i, 0) * 60ms) both; }
