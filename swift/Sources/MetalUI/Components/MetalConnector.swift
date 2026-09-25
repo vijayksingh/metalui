@@ -22,6 +22,7 @@ public struct MetalConnector: View {
     public let state: State
     public let label: String?
     public let scale: CGFloat
+    public let showsPath: Bool
     public let onPress: () -> Void
     public let onEndPress: (Side) -> Void
     public let onHoverChange: (Bool) -> Void
@@ -32,13 +33,14 @@ public struct MetalConnector: View {
 
     public init(from: End, to: End, look: Look = .elastic, flow: Flow = .forward,
                 ink: Color = .primary, width: CGFloat = 2, state: State = .rest,
-                label: String? = nil, scale: CGFloat = 1,
+                label: String? = nil, scale: CGFloat = 1, showsPath: Bool = true,
                 onPress: @escaping () -> Void = {},
                 onEndPress: @escaping (Side) -> Void = { _ in },
                 onHoverChange: @escaping (Bool) -> Void = { _ in }) {
         self.from = from; self.to = to; self.look = look; self.flow = flow
         self.ink = ink; self.width = width; self.state = state
         self.label = label; self.scale = scale
+        self.showsPath = showsPath
         self.onPress = onPress; self.onEndPress = onEndPress; self.onHoverChange = onHoverChange
     }
 
@@ -49,11 +51,13 @@ public struct MetalConnector: View {
         let mid = reduceMotion ? centre : middle
         let band = bandPath(mid)
         ZStack(alignment: .topLeading) {
-            if state != .rest {
+            if showsPath && state != .rest {
                 band.stroke((recipe.color("halo.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink).color,
                             style: StrokeStyle(lineWidth: recipe.points("halo.width") / zoom, lineCap: .round))
             }
-            if look == .elastic || reduceMotion {
+            if !showsPath {
+                EmptyView()
+            } else if look == .elastic || reduceMotion {
                 band.stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round))
                 arrowheads(mid).stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round))
             } else {
@@ -63,10 +67,12 @@ public struct MetalConnector: View {
                     else { stardust(mid: mid, time: t) }
                 }
             }
-            band.stroke(.clear, style: StrokeStyle(lineWidth: recipe.points("hit.width") / zoom))
-                .contentShape(band.strokedPath(StrokeStyle(lineWidth: recipe.points("hit.width") / zoom)))
-                .onTapGesture(perform: onPress)
-                .onHover(perform: onHoverChange)
+            if showsPath {
+                band.stroke(.clear, style: StrokeStyle(lineWidth: recipe.points("hit.width") / zoom))
+                    .contentShape(band.strokedPath(StrokeStyle(lineWidth: recipe.points("hit.width") / zoom)))
+                    .onTapGesture(perform: onPress)
+                    .onHover(perform: onHoverChange)
+            }
             ForEach([Side.from, .to], id: \.self) { side in
                 let end = side == .from ? from : to
                 let radius = recipe.points(state == .selected ? "handle.size" : "end.size") / zoom
