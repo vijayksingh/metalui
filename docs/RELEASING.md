@@ -21,7 +21,7 @@ Check the registry before tagging:
 npm view @unlocalhosted/metalui@0.1.0 version
 ```
 
-Then connect the npm package to GitHub Actions as a trusted publisher. In npm package settings, choose GitHub Actions, owner `vijayksingh`, repository `metalui`, workflow filename `publish.yml`, no environment, and allow `npm publish`. Alternatively, with npm CLI 11.5.1 or newer and an authenticated maintainer account:
+Then connect the npm package to GitHub Actions as a trusted publisher. In npm package settings, choose GitHub Actions, owner `vijayksingh`, repository `metalui`, workflow filename `publish.yml`, no environment, and allow `npm publish`. Alternatively, with npm CLI 11.15.0 or newer and an authenticated maintainer account:
 
 ```sh
 npm trust github @unlocalhosted/metalui --repo vijayksingh/metalui --file publish.yml --allow-publish
