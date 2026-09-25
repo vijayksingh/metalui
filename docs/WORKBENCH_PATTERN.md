@@ -1,5 +1,7 @@
 # Component workbench pattern
 
+> For x-ray cards and the editing layer, `docs/EDITING_LAYER.md` is the current pattern and wins where the two differ: no sliders in a card, and values that come in steps snap between their real options instead of scaling freely.
+
 Button is the first trial. Review its interaction and visual treatment before applying this pattern to another component.
 
 1. **One specimen, one model.** The live component, X-ray scene, graphical controls, contextual controls, and precise values read the same DialKit controller. Reset restores its defaults. Do not keep a second model inside the inspector.

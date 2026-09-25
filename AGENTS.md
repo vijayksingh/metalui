@@ -31,6 +31,7 @@ e2e/                       Playwright feature slices; captures land in docs/capt
 - **Swift types are prefixed `Metal`.** Minimum platforms: macOS 14 and iOS 17.
 - **Material recipes are shared.** CSS and SwiftUI render the same fill and shadow stack; never tune one platform alone.
 - **Tests are integration or e2e only** (Playwright feature slices). No unit tests.
+- **X-ray cards are handled, not slid.** Every x-ray card holds a specimen: the real component, changed by handling it, never sliders. Follow `docs/EDITING_LAYER.md` (the Button x-ray is the reference) and build on `apps/docs/src/ui/edit`.
 - **Every docs page is real documentation.** No throwaway demo pages. Tunable values go in a DialKit panel on the page.
 
 ## Commands
