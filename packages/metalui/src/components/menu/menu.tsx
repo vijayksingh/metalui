@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { SlidingIndicator } from '../../motion/indicator';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
@@ -19,14 +20,23 @@ import { Kbd } from '../kbd/kbd';
 const POSITIONER = 'mu-menu-positioner z-menu-z';
 const PLATE = 'mu-menu min-w-menu-min-width p-menu-pad rounded-menu-radius outline-none recipe-menu backdrop-menu-blur menu-origin transition-opacity ease-settle duration-settle data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:ease-release data-ending-style:duration-release reduce-transparency:opaque-frost';
 const HEADING = 'mu-menu-heading pt-menu-heading-pad-top px-menu-heading-pad-x pb-menu-heading-pad-bottom type-label engraved';
-const ROW = 'mu-menu-row mu-icon-trigger flex items-center gap-menu-row-gap h-menu-row-height px-menu-row-pad rounded-menu-row-radius type-menu-row text-ink cursor-default outline-none select-none data-highlighted:recipe-menu-row-hover data-danger:text-red data-disabled:opacity-menu-row-disabled';
+const ROW_BASE = 'mu-menu-row mu-icon-trigger flex items-center gap-menu-row-gap h-menu-row-height px-menu-row-pad rounded-menu-row-radius type-menu-row text-ink cursor-default outline-none select-none data-danger:text-red data-disabled:opacity-menu-row-disabled';
+/* A still row (docs, previews) lights where it stands; a live list has one highlight that glides row to
+ * row on the settle spring (free travel, no bounce), and its rows paint over it. */
+const ROW = `${ROW_BASE} data-highlighted:recipe-menu-row-hover`;
+const LIVE_ROW = `${ROW_BASE} relative z-1`;
 const GLYPH = 'mu-menu-glyph inline-grid flex-none text-ink2 in-data-danger:text-red [&>svg]:size-menu-row-glyph';
 const LABEL = 'mu-menu-label flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap';
 const KEY = 'mu-menu-key ml-menu-row-key-gap';
 const SEP = 'mu-menu-sep h-menu-sep-thickness my-menu-sep-inset-y mx-menu-sep-inset-x recipe-menu-sep';
 
 /** The menu's part classes, for stills of it outside a popup (docs, previews). */
-export const menuParts = { PLATE, HEADING, ROW, GLYPH, LABEL, KEY, SEP } as const;
+export const menuParts = { PLATE, HEADING, ROW, LIVE_ROW, GLYPH, LABEL, KEY, SEP } as const;
+
+/** The one highlight of a live list (Menu, Select): put it first inside the popup. */
+export function ListGlide() {
+  return <SlidingIndicator activeSelector="[data-highlighted]" watch={['data-highlighted']} spring="settle" className="rounded-menu-row-radius recipe-menu-row-hover" />;
+}
 
 function offset() {
   if (typeof window === 'undefined') return 6;
@@ -35,7 +45,8 @@ function offset() {
 
 function Plate({ heading, children }: { heading?: string; children: React.ReactNode }) {
   return (
-    <BaseMenu.Popup className={PLATE}>
+    <BaseMenu.Popup className={`${PLATE} relative`}>
+      <ListGlide />
       {heading ? (
         <BaseMenu.Group>
           <BaseMenu.GroupLabel className={HEADING}>{heading}</BaseMenu.GroupLabel>
@@ -115,7 +126,7 @@ export interface MenuItemProps {
 /** A 30 row. */
 export function MenuItem({ onSelect, icon, shortcut, danger, disabled, children }: MenuItemProps) {
   return (
-    <BaseMenu.Item className={ROW} onClick={onSelect} disabled={disabled} data-danger={danger ? '' : undefined}>
+    <BaseMenu.Item className={LIVE_ROW} onClick={onSelect} disabled={disabled} data-danger={danger ? '' : undefined}>
       {icon && <span aria-hidden className={GLYPH}>{icon}</span>}
       <span className={LABEL}>{children}</span>
       {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
