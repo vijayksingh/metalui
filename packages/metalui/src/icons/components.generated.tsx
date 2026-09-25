@@ -89,7 +89,7 @@ export const TagIcon = createIcon("tag", "TagIcon");
 export const CalendarIcon = createIcon("calendar", "CalendarIcon");
 /** Document. Hover: A thumb folds the corner down, the page turns, and the next page's lines write in.. Press: plays the same act. */
 export const DocumentIcon = createIcon("document", "DocumentIcon");
-/** Time. Hover: an hour passes: the minute hand sweeps round as the hour hand moves one on. Press: the minute hand ticks forward a minute. */
+/** Time. Hover: An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.. Press: plays the same act. */
 export const ClockIcon = createIcon("clock", "ClockIcon");
 /** Me. Hover: the trend redraws to its last point. Press: the last point pulses. */
 export const MeIcon = createIcon("me", "MeIcon");

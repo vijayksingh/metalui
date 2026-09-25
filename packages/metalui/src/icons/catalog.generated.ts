@@ -965,24 +965,26 @@ export const ICON_CATALOG = {
     motion: {"duration":900,"caption":"A thumb folds the corner down, the page turns, and the next page's lines write in.","stages":["Thumb","Turn","Read"],"tracks":[{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.04444,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.15)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.22222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1.08)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(45deg) scale(1,0.28)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55556,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0}]},{"part":"l1","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.32222,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.37778,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.6,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"l2","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22222,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.33333,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48889,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.68889,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * TIME · Status
+   * TIME · Status · one act, 1300ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          an hour passes: the minute hand sweeps round as the hour hand moves one on
-   * PRESS one-shot (from the current pose)
-   *          the minute hand ticks forward a minute
-   *     0ms   .mh plays ck2-p (360ms)
+   * Take up → An hour → Set back
+   *          An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.
+   *  minute     0 → 120 → 700 → 780 → 840 → 900 → 1180 → 1300ms
+   *  hour       0 → 120 → 700 → 780 → 840 → 900 → 1180 → 1300ms
+   *  tick       0 → 640 → 700 → 900 → 1300ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "clock": {
     label: "Time",
     category: "Status",
-    hover: "an hour passes: the minute hand sweeps round as the hour hand moves one on",
-    press: "the minute hand ticks forward a minute",
-    pressMs: 360,
+    hover: "An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.",
+    press: "plays the same act",
+    pressMs: 1300,
     defs: "",
-    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path class=\"mh\" d=\"M12 12V7.4\"/><path class=\"hh\" d=\"M12 12l3.2 2\"/>",
+    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path data-part=\"hour\" d=\"M12 12l3.2 2\"/><path data-part=\"minute\" d=\"M12 12V7.4\"/><path class=\"ac\" data-part=\"tick\" opacity=\"0\" d=\"M12 5v1\" style=\"stroke-width:calc(var(--sw) * .8)\"/>",
     sw16: 1.85,
+    motion: {"duration":1300,"caption":"An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.","stages":["Take up","An hour","Set back"],"tracks":[{"part":"minute","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.09231,"transform":"translate(0px,0px) rotate(-10deg) scale(1,1)","easing":"cubic-bezier(.45,0,.2,1)"},{"offset":0.53846,"transform":"translate(0px,0px) rotate(364deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(358.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64615,"transform":"translate(0px,0px) rotate(360deg) scale(1,1)","easing":"linear"},{"offset":0.69231,"transform":"translate(0px,0px) rotate(360deg) scale(1,1)","easing":"cubic-bezier(.5,0,.25,1)"},{"offset":0.90769,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"hour","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.09231,"transform":"translate(0px,0px) rotate(-0.8333deg) scale(1,1)","easing":"cubic-bezier(.45,0,.2,1)"},{"offset":0.53846,"transform":"translate(0px,0px) rotate(30.3333deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.6,"transform":"translate(0px,0px) rotate(29.875deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64615,"transform":"translate(0px,0px) rotate(30deg) scale(1,1)","easing":"linear"},{"offset":0.69231,"transform":"translate(0px,0px) rotate(30deg) scale(1,1)","easing":"cubic-bezier(.5,0,.25,1)"},{"offset":0.90769,"transform":"translate(0px,0px) rotate(-0.5deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"tick","keyframes":[{"offset":0,"transform":"scale(.3)","opacity":0},{"offset":0.49231,"transform":"scale(.3)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.53846,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.69231,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.3)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * ME · Tools

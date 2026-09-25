@@ -590,11 +590,20 @@
       "component": "ClockIcon",
       "label": "Time",
       "category": "Status",
-      "hover": "an hour passes: the minute hand sweeps round as the hour hand moves one on",
-      "press": "the minute hand ticks forward a minute",
-      "pressMs": 360,
+      "hover": "An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.",
+      "press": "plays the same act",
+      "pressMs": 1300,
+      "motion": {
+        "caption": "An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.",
+        "durationMs": 1300,
+        "stages": [
+          "Take up",
+          "An hour",
+          "Set back"
+        ]
+      },
       "tuned16": false,
-      "construction": "Face r8.5, tinted .08; two hands about the centre, minute 4.6 (up) and hour 3.8, so the face always shows a time a clock can show. Hover is an hour passing: the minute hand sweeps a full turn while the hour hand moves one hour on (30°), over .9 s on an ease-in-out (a spring would overshoot a full turn by 20°), and winds back on leave. Press is one tick of a mechanical hand: the minute hand steps on, recoils and settles (on `rotate`, so it adds to the hover pose)."
+      "construction": "Face r8.5, tinted .08; two hands about the centre, minute 4.6 (up) and hour 3.8, so the face always shows a time a clock can show. Motion (study): hands geared 12 : 1 on one timeline: a 10° take-up, the minute hand sweeps a full turn (hour one hour on) into a detent overshoot, a tick flashes at 12 on the hour, then both are set back to rest."
     },
     {
       "name": "me",
