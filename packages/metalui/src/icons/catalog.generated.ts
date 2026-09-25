@@ -674,25 +674,27 @@ export const ICON_CATALOG = {
     motion: {"duration":1010,"caption":"The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.","stages":["Wind","Cast forward","Pay out"],"tracks":[{"part":"hook","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"transform":"translate(0px,0px) rotate(-7deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"transform":"translate(0px,0px) rotate(16deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.39604,"transform":"translate(0px,0px) rotate(15deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69802,"transform":"translate(0px,0px) rotate(-1.306deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"line","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14851,"strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32673,"strokeDashoffset":0.26,"easing":"linear"},{"offset":0.42574,"strokeDashoffset":0.26,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.71287,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"echo","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.30693,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34653,"transform":"translate(1.1px,0px) rotate(0deg) scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.55446,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * MORE · Actions
+   * MORE · Actions · one act, 1143ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          a wave runs through the dots, left to right: it goes on
-   * PRESS one-shot (from the current pose)
-   *          dots gather and part
-   *     0ms   .m1 plays mo-1 (340ms)
-   *     0ms   .m3 plays mo-3 (340ms)
+   * Draw back → Knock → Carry on
+   *          The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.
+   *  m1         0 → 160 → 250 → 320 → 420 → 1143ms
+   *  m2         0 → 250 → 285 → 355 → 455 → 1143ms
+   *  m3         0 → 285 → 330 → 430 → 786 → 1143ms
+   *  knock      0 → 290 → 330 → 580 → 1143ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "more": {
     label: "More",
     category: "Actions",
-    hover: "a wave runs through the dots, left to right: it goes on",
-    press: "dots gather and part",
-    pressMs: 340,
+    hover: "The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.",
+    press: "plays the same act",
+    pressMs: 1143,
     defs: "",
-    body: "<g class=\"w1\"><circle class=\"m1 s\" cx=\"5.6\" cy=\"12\" r=\"1.55\"/></g><g class=\"w2\"><circle class=\"m2 s\" cx=\"12\" cy=\"12\" r=\"1.55\"/></g><g class=\"w3\"><circle class=\"m3 s\" cx=\"18.4\" cy=\"12\" r=\"1.55\"/></g>",
+    body: "<circle class=\"s\" data-part=\"m1\" cx=\"5.6\" cy=\"12\" r=\"1.55\"/><circle class=\"s\" data-part=\"m2\" cx=\"12\" cy=\"12\" r=\"1.55\"/><circle class=\"s\" data-part=\"m3\" cx=\"18.4\" cy=\"12\" r=\"1.55\"/><circle class=\"ac\" data-part=\"knock\" opacity=\"0\" cx=\"18.4\" cy=\"12\" r=\"2.4\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
     sw16: 1.85,
+    motion: {"duration":1143,"caption":"The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.","stages":["Draw back","Knock","Carry on"],"tracks":[{"part":"m1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13998,"transform":"translate(-2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21872,"transform":"translate(0px,0px) rotate(0deg) scale(0.8,1.16)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27997,"transform":"translate(0px,0px) rotate(0deg) scale(1.06,0.952)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.36745,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"m2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.21872,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24934,"transform":"translate(0px,0px) rotate(0deg) scale(0.86,1.1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31059,"transform":"translate(0px,0px) rotate(0deg) scale(1.042,0.97)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.39808,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"m3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.24934,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28871,"transform":"translate(0.6px,0px) rotate(0deg) scale(1.12,0.9)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3762,"transform":"translate(2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.68766,"transform":"translate(-0.1974px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"knock","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.25372,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.28871,"transform":"scale(.8)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50744,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * CLOSE · Actions

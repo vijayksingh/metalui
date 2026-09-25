@@ -515,11 +515,20 @@
       "component": "MoreIcon",
       "label": "More",
       "category": "Actions",
-      "hover": "a wave runs through the dots, left to right: it goes on",
-      "press": "dots gather and part",
-      "pressMs": 340,
+      "hover": "The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.",
+      "press": "plays the same act",
+      "pressMs": 1143,
+      "motion": {
+        "caption": "The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.",
+        "durationMs": 1143,
+        "stages": [
+          "Draw back",
+          "Knock",
+          "Carry on"
+        ]
+      },
       "tuned16": false,
-      "construction": "Three r1.55 dots on 6.4u pitch. An ellipsis means it continues, so hover is a wave, not a swell: each dot rises 1.2 and swells 1.15 in turn, 70 ms apart, left to right, once. The wave is on a wrapper per dot so the press (the outer dots gather to the centre and part: the menu opens from one point) still plays while hovered."
+      "construction": "Three r1.55 dots on 6.4u pitch. Motion (study): a Newton's-cradle knock. The first dot draws back 2 and strikes into place, squashing against the row; the middle dot compresses as the knock passes; the last is kicked 2 right, stretched along the kick, with a ring opening where it stood, and swings back on the object spring."
     },
     {
       "name": "close",
