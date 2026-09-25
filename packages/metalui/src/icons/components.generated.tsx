@@ -31,7 +31,7 @@ export const EraserIcon = createIcon("eraser", "EraserIcon");
 export const LayoutIcon = createIcon("layout", "LayoutIcon");
 /** Tidy. Hover: The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.. Press: plays the same act. */
 export const TidyIcon = createIcon("tidy", "TidyIcon");
-/** Search. Hover: lens sweeps, glint crosses glass. Press: lens focuses. */
+/** Search. Hover: The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.. Press: plays the same act. */
 export const SearchIcon = createIcon("search", "SearchIcon");
 /** Zoom In. Hover: the plus is magnified: it grows more than the lens. Press: the lens swells one step in. */
 export const ZoomInIcon = createIcon("zoom-in", "ZoomInIcon");

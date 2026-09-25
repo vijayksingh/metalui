@@ -199,11 +199,20 @@
       "component": "SearchIcon",
       "label": "Search",
       "category": "Tools",
-      "hover": "lens sweeps, glint crosses glass",
-      "press": "lens focuses",
-      "pressMs": 340,
+      "hover": "The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.",
+      "press": "plays the same act",
+      "pressMs": 1120,
+      "motion": {
+        "caption": "The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.",
+        "durationMs": 1120,
+        "stages": [
+          "Draw back",
+          "Sweep",
+          "Find"
+        ]
+      },
       "tuned16": false,
-      "construction": "Circle keyline lens r6.3; handle 45°. Glint = 50° arc r3.4 inside."
+      "construction": "Circle keyline lens r6.3; handle 45°. Motion (study): the tool turns about its grip (19.8, 19.8): drawn back 6°, swept to -10.5° and caught at -7° with one rebound; a focus ring closes from r4.2 onto a r2 subject and a glint arc (r3.4) crosses the glass; swung home with a light overshoot."
     },
     {
       "name": "zoom-in",

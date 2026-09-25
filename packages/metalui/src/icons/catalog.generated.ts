@@ -351,24 +351,26 @@ export const ICON_CATALOG = {
     motion: {"duration":1280,"caption":"The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.","stages":["Draw back","Knock square","Relax"],"tracks":[{"part":"guide","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.25781,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28906,"transform":"translate(-0.6px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.52734,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"row1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.125,"transform":"translate(0.7px,0px) rotate(-2deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.25781,"transform":"translate(-1.6px,0px) rotate(5deg) scale(0.86,1.08)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.49609,"transform":"translate(-1.6px,0px) rotate(5deg) scale(1.0122,0.993)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.65625,"transform":"translate(-1.6px,0px) rotate(5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"row2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14844,"transform":"translate(0.7px,0px) rotate(2deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28125,"transform":"translate(-2.8px,0px) rotate(-5deg) scale(0.86,1.08)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.51953,"transform":"translate(-2.8px,0px) rotate(-5deg) scale(1.0122,0.993)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.625,"transform":"translate(-2.8px,0px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"row3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17188,"transform":"translate(0.7px,0px) rotate(-1.2deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.30469,"transform":"translate(-0.9px,0px) rotate(3deg) scale(0.86,1.08)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.54297,"transform":"translate(-0.9px,0px) rotate(3deg) scale(1.0122,0.993)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.63672,"transform":"translate(-0.9px,0px) rotate(3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"ticks","keyframes":[{"offset":0,"transform":"scale(.3,1)","opacity":0},{"offset":0.26563,"transform":"scale(.3,1)","opacity":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.30469,"transform":"scale(1,1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.5,"transform":"scale(1.2,1)","opacity":0},{"offset":1,"transform":"scale(.3,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
-   * SEARCH · Tools
+   * SEARCH · Tools · one act, 1120ms
    *
-   * HOVER pose (spring, reversible, interruptible)
-   *          lens sweeps, glint crosses glass
-   * PRESS one-shot (from the current pose)
-   *          lens focuses
-   *     0ms   .lens plays srch-p (340ms)
+   * Draw back → Sweep → Find
+   *          The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.
+   *  tool       0 → 180 → 380 → 480 → 580 → 760 → 960 → 1120ms
+   *  focus      0 → 400 → 540 → 700 → 1120ms
+   *  glint      0 → 500 → 620 → 840 → 1120ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
    * REDUCED MOTION   static glyph
    * ───────────────────────────────────────────────────────── */
   "search": {
     label: "Search",
     category: "Tools",
-    hover: "lens sweeps, glint crosses glass",
-    press: "lens focuses",
-    pressMs: 340,
+    hover: "The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.",
+    press: "plays the same act",
+    pressMs: 1120,
     defs: "",
-    body: "<g class=\"sg\"><circle class=\"lens\" cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path class=\"hdl\" d=\"M15.2 15.2 19.8 19.8\"/><path class=\"gl\" d=\"M7.6 9.1a3.4 3.4 0 0 1 1.6-1.6\"/></g>",
+    body: "<g data-part=\"tool\"><circle cx=\"10.6\" cy=\"10.6\" r=\"6.3\"/><path d=\"M15.2 15.2 19.8 19.8\"/><circle class=\"ac\" data-part=\"focus\" opacity=\"0\" cx=\"10.6\" cy=\"10.6\" r=\"2\" style=\"stroke-width:calc(var(--sw) * .6)\"/><path class=\"ac\" data-part=\"glint\" opacity=\"0\" d=\"M7.6 9.1a3.4 3.4 0 0 1 1.6-1.6\" style=\"stroke-width:calc(var(--sw) * .8)\"/></g>",
     sw16: 1.85,
+    motion: {"duration":1120,"caption":"The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.","stages":["Draw back","Sweep","Find"],"tracks":[{"part":"tool","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16071,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33929,"transform":"translate(0px,0px) rotate(-10.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.42857,"transform":"translate(0px,0px) rotate(-6.3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.51786,"transform":"translate(0px,0px) rotate(-7.3deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.67857,"transform":"translate(0px,0px) rotate(-7deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.85714,"transform":"translate(0px,0px) rotate(0.9deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"focus","keyframes":[{"offset":0,"transform":"scale(2.1)","opacity":0},{"offset":0.35714,"transform":"scale(2.1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48214,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.625,"transform":"scale(.8)","opacity":0},{"offset":1,"transform":"scale(2.1)","opacity":0}]},{"part":"glint","keyframes":[{"offset":0,"transform":"rotate(-40deg)","opacity":0},{"offset":0.44643,"transform":"rotate(-40deg)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55357,"transform":"rotate(5deg)","opacity":0.75,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75,"transform":"rotate(50deg)","opacity":0},{"offset":1,"transform":"rotate(-40deg)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
    * ZOOM IN · Tools
