@@ -39,8 +39,14 @@
 ## Image glass face
 
 - **Object:** `glass-face` image screen.
-- **Missing:** generated `image.max-width` and `image.saturation` / `image.contrast` properties. `MetalImageFace` uses the common glass bezel and screen layers now; these image-only values should drive the native pixel filter and width cap.
-- **Demo CSS:** `style.css:301-302` sets `.imgobj` max-width to 340 px and its image to `saturate(.92) contrast(1.04)` with a 15 px image radius. `style.css:265-270` provides the shared bezel, screen and glare layers.
+- **Missing:** generated `image.max-width`, `image.saturation`, `image.contrast` and `image.hover-rise` properties. `MetalImageFace` uses the common glass bezel and screen layers now; these image-only values should drive the native pixel filter, width cap and hover travel. The Mac temporarily reads the generated 2 pt spacing and `part` spring for the rise.
+- **Demo CSS:** `style.css:301-302` sets `.imgobj` max-width to 340 px and its image to `saturate(.92) contrast(1.04)` with a 15 px image radius. `style.css:265-275` provides the shared bezel, screen and glare layers and the 2 px material hover lift. The reference web image currently overrides the demo's dark glass with a bone bezel (`materials.css:179-187`); reconcile that source conflict before final pixel approval.
+
+## Drawing picks recipe identity
+
+- **Object:** `draw-picks` React component and `MetalInkPicks` / `MetalWidthPicks` Swift components.
+- **Missing:** `check:recipes` reports both components missing a same-name recipe even though the Swift views read generated `MetalRecipes.draw`. Map `draw-picks` to `draw` in the checker, or give the composition its own recipe; keep the generated bead, well, size and motion values as the sole source.
+- **Reference CSS:** `packages/metalui/src/components/theme.css:1800` starts `.draw-picks` and the adjacent pick, bead and dot utilities. The demo predates this drawing group and has no pick selector.
 
 ## Checkbox disabled state
 
