@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { XrayOverlay } from '../ui/xray';
-import { FloatingTable, type XrayKind } from '../ui/floating';
+import { FloatingTable, useXrayFlight } from '../ui/floating';
 
 /* The overview, laid out like the reference design-language site's home:
  *   hero        engraved kicker · two-tone title · lede
@@ -13,13 +13,13 @@ import { FloatingTable, type XrayKind } from '../ui/floating';
 
 
 export default function Home() {
-  const [xray, setXray] = React.useState<XrayKind | null>(null);
+  const { open: xray, fly, close } = useXrayFlight();
   React.useEffect(() => {
     if (!xray) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setXray(null); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [xray]);
+  }, [xray, close]);
   return (
     <>
       <section className="hero" aria-labelledby="hero-h">
@@ -33,8 +33,8 @@ export default function Home() {
           </p>
         </div>
 
-        <FloatingTable mode="table" onXray={setXray} />
-        {xray && <XrayOverlay kind={xray} onClose={() => setXray(null)} />}
+        <FloatingTable mode="table" lifted={xray?.from} onXray={fly} />
+        {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
       </section>
 
       <section className="sec" id="two-halves">

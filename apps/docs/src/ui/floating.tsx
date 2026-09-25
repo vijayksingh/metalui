@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { flushSync } from 'react-dom';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
@@ -131,7 +132,38 @@ const ITEMS: Item[] = [
   },
 ];
 
-export function FloatingTable({ mode, onXray }: { mode: 'space' | 'table'; onXray: (which: XrayKind) => void }) {
+/** An open x-ray, and the object it was opened from. */
+export interface XrayOpen { kind: XrayKind; from: string }
+
+/* The x-ray flight: the object you click lifts off the table and opens into the sheet,
+ * and on close the sheet folds back into it. The sheet borrows the object's
+ * view-transition name while the object hides, so one element seems to travel. */
+export function useXrayFlight() {
+  const [open, setOpen] = React.useState<XrayOpen | null>(null);
+  const flight = React.useRef(0);
+  const openRef = React.useRef(open);
+  openRef.current = open;
+  const fly = React.useCallback((next: XrayOpen | null) => {
+    const root = document.documentElement;
+    if (!document.startViewTransition || root.classList.contains('rm')) { setOpen(next); return; }
+    const id = ++flight.current;
+    // only the travelling object keeps its name; the rest stay behind the backdrop
+    const from = next?.from ?? openRef.current?.from;
+    document.querySelectorAll('[data-flying]').forEach((el) => el.removeAttribute('data-flying'));
+    document.querySelector(`[data-float="${from}"]`)?.setAttribute('data-flying', '');
+    root.dataset.flight = next ? 'open' : 'close';
+    const t = document.startViewTransition(() => flushSync(() => setOpen(next)));
+    t.finished.finally(() => {
+      if (flight.current !== id) return;
+      delete root.dataset.flight;
+      document.querySelectorAll('[data-flying]').forEach((el) => el.removeAttribute('data-flying'));
+    });
+  }, []);
+  const close = React.useCallback(() => fly(null), [fly]);
+  return { open, fly, close };
+}
+
+export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table'; lifted?: string; onXray: (open: XrayOpen) => void }) {
   const [chip, setChip] = React.useState(true);
   const root = React.useRef<HTMLDivElement>(null);
 
@@ -164,11 +196,14 @@ export function FloatingTable({ mode, onXray }: { mode: 'space' | 'table'; onXra
             ['--dx' as string]: it.drift[0],
             ['--dy' as string]: it.drift[1],
             ['--delay' as string]: `-${parseFloat(it.dur) / 3}s`,
-            viewTransitionName: `float-${it.id}`,
+            // while its x-ray is open, the sheet carries this name and the object is away
+            viewTransitionName: it.id === lifted ? 'none' : `float-${it.id}`,
+            viewTransitionClass: 'float',
+            visibility: it.id === lifted ? 'hidden' : undefined,
           } as React.CSSProperties;
           return (
-            <div key={it.id} className={['drift-item', mode === 'space' ? 'in-space' : '', it.live ? 'is-live' : ''].join(' ')} style={style}>
-              {it.node({ openXray: onXray, chip, setChip })}
+            <div key={it.id} data-float={it.id} className={['drift-item', mode === 'space' ? 'in-space' : '', it.live ? 'is-live' : ''].join(' ')} style={style}>
+              {it.node({ openXray: (kind) => onXray({ kind, from: it.id }), chip, setChip })}
             </div>
           );
         })}

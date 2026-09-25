@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router';
 import { Button, Kbd, Switcher } from '@unlocalhosted/metalui';
-import { FloatingTable, type XrayKind } from '../ui/floating';
+import { FloatingTable, useXrayFlight } from '../ui/floating';
 import { XrayOverlay } from '../ui/xray';
 import { useColorway, type Colorway } from '../app/colorway';
 
@@ -10,18 +10,18 @@ import { useColorway, type Colorway } from '../app/colorway';
 export default function Landing() {
   const navigate = useNavigate();
   const { colorway, setColorway } = useColorway();
-  const [xray, setXray] = React.useState<XrayKind | null>(null);
+  const { open: xray, fly, close } = useXrayFlight();
 
   const enter = React.useCallback(() => navigate('/overview', { viewTransition: true }), [navigate]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && xray) setXray(null);
+      if (e.key === 'Escape' && xray) close();
       else if (e.key === 'Enter' && !xray && (e.target as HTMLElement)?.tagName === 'BODY') enter();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [xray, enter]);
+  }, [xray, enter, close]);
 
   return (
     <div className="landing">
@@ -30,7 +30,7 @@ export default function Landing() {
         <Switcher size="compact" aria-label="Colorway" value={colorway} onValueChange={(v) => setColorway(v as Colorway)} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
       </header>
 
-      <FloatingTable mode="space" onXray={setXray} />
+      <FloatingTable mode="space" lifted={xray?.from} onXray={fly} />
 
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
@@ -38,7 +38,7 @@ export default function Landing() {
         <span className="eng">⏎ read the docs · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
-      {xray && <XrayOverlay kind={xray} onClose={() => setXray(null)} />}
+      {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
     </div>
   );
 }
