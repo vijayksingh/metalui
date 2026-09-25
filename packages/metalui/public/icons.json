@@ -475,11 +475,20 @@
       "component": "UndoIcon",
       "label": "Undo",
       "category": "Actions",
-      "hover": "head reaches back",
-      "press": "arrow arcs back and returns",
-      "pressMs": 420,
+      "hover": "The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back.",
+      "press": "plays the same act",
+      "pressMs": 1010,
+      "motion": {
+        "caption": "The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back.",
+        "durationMs": 1010,
+        "stages": [
+          "Wind",
+          "Reel back",
+          "Pay out"
+        ]
+      },
       "tuned16": false,
-      "construction": "Hook arrow, arc r4.6. Rotation pivot = arc centre (14.6, 13.6)."
+      "construction": "Hook arrow, arc r4.6 about (14.6, 13.6). Motion (study): the hook winds forward 7° about the arc centre, whips back to −16° while the tail reels up into the curve (draw .74), an echo of the head carries on 2.4 left; it returns on the part spring and the tail pays back out."
     },
     {
       "name": "redo",

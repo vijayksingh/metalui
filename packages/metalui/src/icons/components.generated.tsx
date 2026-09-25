@@ -55,7 +55,7 @@ export const PinIcon = createIcon("pin", "PinIcon");
 export const BoardIcon = createIcon("board", "BoardIcon");
 /** Share · Export. Hover: The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.. Press: plays the same act. */
 export const ShareIcon = createIcon("share", "ShareIcon");
-/** Undo. Hover: head reaches back. Press: arrow arcs back and returns. */
+/** Undo. Hover: The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back.. Press: plays the same act. */
 export const UndoIcon = createIcon("undo", "UndoIcon");
 /** Redo. Hover: head reaches forward. Press: arrow arcs forward and returns. */
 export const RedoIcon = createIcon("redo", "RedoIcon");
