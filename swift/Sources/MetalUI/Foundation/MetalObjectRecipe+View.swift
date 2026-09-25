@@ -10,7 +10,8 @@ extension MetalObjectRecipe {
         let weight = parts.first.flatMap { Int($0) } ?? 400
         let mono = parts.last == "mono"
         let size = fontSize(key)
-        let trackingEm = trackingKey.flatMap { text($0) }.flatMap { Double($0.replacingOccurrences(of: "em", with: "")) } ?? 0
+        // MetalTypeRole stores tracking in em; recipe tracking may be px.
+        let trackingEm = trackingKey.map { tracking($0, size: size) / size } ?? 0
         return MetalTypeRole(
             name: name + "." + key, family: mono ? .mono : .sans, size: size, line: size, weight: weight,
             tracking: trackingEm, stretch: mono ? MetalType.label.stretch : 1, uppercase: false, tabular: false, maxSize: nil
