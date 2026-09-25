@@ -53,6 +53,7 @@ public struct MetalMenuPanel: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var highlighted: Int?
     @FocusState private var focused: Bool
+    @Namespace private var glide
 
     public init(heading: String? = nil, items: [MetalMenuItem], onClose: @escaping () -> Void) {
         self.heading = heading
@@ -88,6 +89,7 @@ public struct MetalMenuPanel: View {
             }
         }
         .padding(recipe.points("self.pad"))
+        .metalAnimation(.settle, value: highlighted)
         .frame(minWidth: recipe.points("self.min-width"), alignment: .leading)
         .fixedSize()
         .metalObjectRecipe(recipe, part: "self", in: shape)
@@ -110,7 +112,10 @@ public struct MetalMenuPanel: View {
         .onChange(of: focused) { _, now in if !now { onClose() } }
         .onKeyPress(.downArrow) { move(1); return .handled }
         .onKeyPress(.upArrow) { move(-1); return .handled }
+        .onKeyPress(.home) { highlighted = choosable.first; return .handled }
+        .onKeyPress(.end) { highlighted = choosable.last; return .handled }
         .onKeyPress(.return) { choose(highlighted); return .handled }
+        .onKeyPress(.space) { choose(highlighted); return .handled }
         .onKeyPress(.escape) { onClose(); return .handled }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(heading ?? "Menu")
@@ -152,8 +157,8 @@ public struct MetalMenuPanel: View {
         .frame(height: recipe.points("row.height"))
         .background {
             if on {
-                Color.clear.metalObjectRecipe(recipe, part: "row", state: "hover",
-                    in: RoundedRectangle(cornerRadius: recipe.points("row.radius"), style: .continuous))
+                MetalListGlide()
+                    .matchedGeometryEffect(id: "highlight", in: glide)
             }
         }
         .contentShape(Rectangle())
@@ -167,6 +172,15 @@ public struct MetalMenuPanel: View {
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityAction { choose(index) }
+    }
+}
+
+/// One material highlight travels between live list rows. Menu and Select share this part.
+struct MetalListGlide: View {
+    var body: some View {
+        let recipe = MetalRecipes.menu
+        Color.clear.metalObjectRecipe(recipe, part: "row", state: "hover",
+            in: RoundedRectangle(cornerRadius: recipe.points("row.radius"), style: .continuous))
     }
 }
 
