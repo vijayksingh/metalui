@@ -134,3 +134,16 @@ Primitives and blocks the React side now has. Mirror each with the same name (Me
 - **Object:** the new `switch` recipe in `tokens/tokens.json`.
 - **Missing:** Swift generation currently emits `public static let switch` in `swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift:1872`, which fails to parse. Escape Swift reserved identifiers in the generator (`switch` should be backticked) and regenerate. The native package cannot build while this generated declaration is present. The Swift Rule port is source-parsed but cannot pass its package build until this is corrected.
 - **Demo CSS:** the setting switch is `.tog` in the reference demo `style.css`; its track, thumb, on state and focus style belong to this recipe. The web Settings Recognition section currently uses `Segmented` at `Settings.tsx:170-176`.
+
+## Canvas presence recipes still missing
+
+- **Object:** `block-silhouette` recipe for `MetalBlockSilhouette` and the React component of the same name.
+  **Missing:** generated per-kind fills, bars, radius, inset, hairline, label role and the threshold entrance. The Swift component currently uses older presence/material tokens; `check:recipes` cannot verify a layer match. **Demo CSS:** reference `style.css:119` establishes text without a plate, `:277-305` shows link, code, image and file faces, and `:319-337` shows the region tray. The demo has no far-zoom silhouette; the React component and its CSS define that added LOD state.
+- **Object:** `brush-cursor` recipe for `MetalBrushCursor` and React `BrushCursor`.
+  **Missing:** generated pen minimum, disc, light ring, dark edge, eraser dash, pressure size and the no-lag motion rule. **Demo CSS:** reference `style.css:100-105` owns tool cursors, including the ink crosshair at `:103`; the demo has no custom brush disc, so the React component and CSS are the reference for this added state.
+- **Object:** `lasso` recipe for `MetalLasso` and React `Lasso`.
+  **Missing:** generated fill, border, radius, zoom-corrected stroke, readout placement and release fade. **Demo CSS:** reference `style.css:110` defines `#marquee`; `:362-364` defines the shared readout under a selection.
+- **Object:** `snap-guides` recipe for `MetalSnapGuides` and React `SnapGuides`.
+  **Missing:** generated solid/dashed strokes, screen-width scaling, overshoot, colorways and release opacity. The haptic engagement identity must stay one callback per newly engaged guide. **Demo CSS:** reference `style.css:347-364` defines the selection precision language; the demo has no snap-guide CSS, so the React component and CSS define these added lines.
+- **Object:** `size-readout` recipe for `MetalSizeReadout` and React `SizeReadout`.
+  **Missing:** generated composition of `Surface(graphite-deep)` with LED, figure/mark labels, gaps, padding and copy lifetime. **Demo CSS:** reference `style.css:362-364` defines the readout's graphite pill, line, green LED and dim mark. Current `MetalPresence` values cover measurements but the checker cannot enforce the component's layer order.
