@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switcher, inkColor } from '@unlocalhosted/metalui';
-import { TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
+import { LiveInk, TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample } from '../lib/ink-assist';
 
 /* ─────────────────────────────────────────────────────────
  * ASSISTED INK LAB (the Brush cursor page)
@@ -11,7 +11,9 @@ import { TOOL_ASSIST, assistStroke, outlinePath, type AssistTool, type InkSample
  *   view        Assisted · Raw · Both (the raw path as a faint trace under the ink)
  *   shaky hand  replays a wave and a v, written with an 8 Hz tremor and a skid on landing,
  *               in real time, through the same assist
- * The dials tune the assist live (per tool presets are the defaults).
+ * Cost stays flat however long the word: a live stroke's frozen ink is outlined once, in chunks,
+ * and only its tail is recomputed each frame; a finished stroke is outlined once, on lift.
+ * The dials tune the assist for new strokes (per tool presets are the defaults).
  * ───────────────────────────────────────────────────────── */
 
 const LOOK: Record<AssistTool, { size: number; thinning: number; taper: number; opacity: number }> = {
@@ -20,7 +22,24 @@ const LOOK: Record<AssistTool, { size: number; thinning: number; taper: number; 
   marker: { size: 10, thinning: 0.05, taper: 0, opacity: 0.45 },
 };
 
-interface Stroke { id: number; tool: AssistTool; raw: InkSample[] }
+interface Stroke { id: number; tool: AssistTool; raw: InkSample[]; live?: LiveInk; chunks: string[]; chunked: number; done?: string }
+
+const CHUNK = 32;
+
+/** The stroke's ink as outline paths: cached chunks of frozen ink and the live tail, or the finished whole. */
+function inkPaths(s: Stroke): string[] {
+  const look = LOOK[s.tool];
+  if (s.done) return [s.done];
+  if (!s.live) return [];
+  const { frozen, tail } = s.live.read();
+  while (frozen.length - s.chunked >= CHUNK) {
+    const piece = frozen.slice(Math.max(0, s.chunked - 1), s.chunked + CHUNK);
+    s.chunks.push(outlinePath(piece, look.size, look.thinning, look.taper, { start: s.chunked === 0, end: false }));
+    s.chunked += CHUNK;
+  }
+  const rest = frozen.slice(Math.max(0, s.chunked - 1)).concat(tail);
+  return [...s.chunks, outlinePath(rest, look.size, look.thinning, look.taper, { start: s.chunked === 0, end: true })];
+}
 
 // A shaky hand writing a wave (like "mmm") and a v, with a skid as the pen lands.
 function shakyStrokes(x0: number, y0: number): InkSample[][] {
@@ -66,7 +85,8 @@ export function AssistLab() {
 
   const box = React.useRef<HTMLDivElement>(null);
   const live = React.useRef<{ s: Stroke; last?: { x: number; y: number; t: number } } | null>(null);
-  const bump = (s: Stroke) => setStrokes((all) => all.map((k) => (k.id === s.id ? { ...s } : k)));
+  // Strokes are mutable records (their live ink and cached chunks); a new array re-renders them.
+  const bump = (_s: Stroke) => setStrokes((all) => [...all]);
 
   const pos = (e: React.PointerEvent) => { const r = box.current!.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
   // A pen reports pressure; otherwise slower movement presses harder.
@@ -81,12 +101,12 @@ export function AssistLab() {
     try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* synthetic */ }
     e.preventDefault();
     const p = pos(e), t = e.timeStamp;
-    const s: Stroke = { id: Date.now(), tool, raw: [] };
+    const s: Stroke = { id: Date.now(), tool, raw: [], live: new LiveInk(params(tool)), chunks: [], chunked: 0 };
     live.current = { s, last: { ...p, t } };
     feed(live.current, { ...p, t, pressure: 0.5 });
     setStrokes((all) => [...all, s]);
   };
-  const feed = (L: { s: Stroke }, sample: InkSample) => { L.s.raw.push(sample); };
+  const feed = (L: { s: Stroke }, sample: InkSample) => { L.s.raw.push(sample); L.s.live?.push(sample); };
   const move = (e: React.PointerEvent) => {
     const L = live.current; if (!L) return;
     const events = (e.nativeEvent as PointerEvent).getCoalescedEvents?.() ?? [e.nativeEvent];
@@ -97,14 +117,21 @@ export function AssistLab() {
     }
     bump(L.s);
   };
-  const up = () => { const L = live.current; live.current = null; if (L) bump(L.s); };
+  // On lift the stroke is outlined once, whole (the same ink as its live pieces), and cached.
+  const finish = (st: Stroke) => {
+    const look = LOOK[st.tool];
+    st.done = outlinePath(assistStroke(st.raw, params(st.tool)), look.size, look.thinning, look.taper);
+    st.live = undefined; st.chunks = [];
+    bump(st);
+  };
+  const up = () => { const L = live.current; live.current = null; if (L) finish(L.s); };
 
   // The shaky hand, replayed in real time through the same assist.
   const shaky = () => {
     const r = box.current!.getBoundingClientRect();
     const run = (strokesLeft: InkSample[][]) => {
       const pts = strokesLeft.shift(); if (!pts) return;
-      const s: Stroke = { id: Date.now() + Math.random(), tool, raw: [] };
+      const s: Stroke = { id: Date.now() + Math.random(), tool, raw: [], live: new LiveInk(params(tool)), chunks: [], chunked: 0 };
       const L = { s };
       setStrokes((all) => [...all, s]);
       const start = performance.now(), base = pts[0].t;
@@ -114,7 +141,7 @@ export function AssistLab() {
         while (i < pts.length && pts[i].t - base <= now) feed(L, { ...pts[i], t: pts[i].t - base }), i++;
         bump(s);
         if (i < pts.length) requestAnimationFrame(tick);
-        else setTimeout(() => run(strokesLeft), 180);
+        else { finish(s); setTimeout(() => run(strokesLeft), 180); }
       };
       requestAnimationFrame(tick);
     };
@@ -138,7 +165,7 @@ export function AssistLab() {
                 {view !== 'assisted' && s.raw.length > 1 && (
                   <polyline points={s.raw.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--ink3)" strokeOpacity={view === 'both' ? 0.5 : 1} strokeWidth={view === 'both' ? 1 : look.size * 0.8} strokeLinecap="round" strokeLinejoin="round" />
                 )}
-                {view !== 'raw' && <path d={outlinePath(assistStroke(s.raw, params(s.tool)), look.size, look.thinning, look.taper)} fill={inkColor('ink')} fillOpacity={look.opacity} />}
+                {view !== 'raw' && <g opacity={look.opacity}>{inkPaths(s).map((d, i) => <path key={i} d={d} fill={inkColor('ink')} />)}</g>}
               </g>
             );
           })}

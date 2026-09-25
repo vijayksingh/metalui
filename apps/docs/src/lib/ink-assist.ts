@@ -45,10 +45,48 @@ export const TOOL_ASSIST: Record<AssistTool, AssistParams> = {
   marker: { settleMs: 40, corner: 180, dehook: 8 },
 };
 
-/** The assisted stroke for the raw samples so far. Call it again as samples arrive: it is cheap
- * for a stroke's length, and only the newest points change. */
+/** The assisted stroke for all its raw samples at once (a finished stroke). */
 export function assistStroke(raw: InkSample[], p: AssistParams): InkSample[] {
   return settle(dehook(raw, p.dehook), p);
+}
+
+/**
+ * A live stroke, assisted as it is written at a flat cost per frame. Settling reaches three sigmas
+ * either side, so a point more than `reach` (six sigmas) behind the pen can never change again: it
+ * is frozen once and never recomputed. Each frame settles only the live tail, starting `reach`
+ * earlier so the tail's start is not pinned where the real stroke has no end.
+ */
+export class LiveInk {
+  private raw: InkSample[] = [];
+  private landed: InkSample[] | null = null; // the stroke after its landing flick, judged once
+  private frozen: InkSample[] = [];
+  private start = 0; // index in `landed` of the first point not yet frozen
+  constructor(private p: AssistParams) {}
+
+  push(s: InkSample) {
+    this.raw.push(s);
+    if (this.landed) this.landed.push(s);
+    else if (travel(this.raw) >= this.p.dehook + 12) this.landed = dehook(this.raw, this.p.dehook).slice();
+  }
+
+  /** The assisted stroke so far: the frozen part (never changes) and the live tail. */
+  read(): { frozen: InkSample[]; tail: InkSample[] } {
+    if (!this.landed) return { frozen: [], tail: settle(dehook(this.raw, this.p.dehook), this.p) };
+    const pts = this.landed, reach = this.p.settleMs * 6, now = pts[pts.length - 1].t;
+    let from = this.start;
+    while (from > 0 && pts[this.start].t - pts[from - 1].t < reach) from--;
+    const settled = settle(pts.slice(from), this.p);
+    let to = this.start;
+    while (to < pts.length - 1 && now - pts[to].t > reach) to++;
+    if (to > this.start) { this.frozen.push(...settled.slice(this.start - from, to - from)); this.start = to; }
+    return { frozen: this.frozen, tail: settled.slice(this.start - from) };
+  }
+}
+
+function travel(pts: InkSample[]) {
+  let d = 0;
+  for (let i = 1; i < pts.length; i++) d += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+  return d;
 }
 
 // A flick: as a pen lands it moves a little against the way the stroke then goes. Compare the
@@ -123,7 +161,7 @@ function settle(raw: InkSample[], { settleMs, corner }: AssistParams): InkSample
 
 /* The ink's outline: a filled shape around the centre line whose radius follows pressure, with a
  * tapered start and end (the core's outline, simplified). */
-export function outlinePath(pts: InkSample[], size: number, thinning: number, taper: number): string {
+export function outlinePath(pts: InkSample[], size: number, thinning: number, taper: number, ends: { start?: boolean; end?: boolean } = { start: true, end: true }): string {
   if (pts.length < 2) {
     const p = pts[0]; if (!p) return '';
     const r = size / 2;
@@ -138,7 +176,7 @@ export function outlinePath(pts: InkSample[], size: number, thinning: number, ta
     let tx = b.x - a.x, ty = b.y - a.y; const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
     let r = (size / 2) * (1 - thinning + thinning * 2 * pts[i].pressure);
     if (taper > 0) {
-      const s = Math.min(1, lens[i] / taper), e = Math.min(1, (total - lens[i]) / taper);
+      const s = ends.start === false ? 1 : Math.min(1, lens[i] / taper), e = ends.end === false ? 1 : Math.min(1, (total - lens[i]) / taper);
       r *= s * (2 - s) * (1 - (1 - e) ** 3);
     }
     r = Math.max(0.3, r);
