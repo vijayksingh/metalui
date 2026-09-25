@@ -76,6 +76,9 @@ public struct MetalLabel: View {
         label
             .font(font)
             .tracking(role.trackingPoints)
+            // CoreText places the ink half a point below the browser's CSS
+            // line box at DPR 2; keep the component's measured frame intact.
+            .offset(y: -CGFloat(MetalSpace.s2) / 4)
             .foregroundColor(ink)
             .shadow(color: lip?.color.color ?? .clear,
                     radius: lip?.blur ?? .zero, x: lip?.x ?? .zero, y: lip?.y ?? .zero)
