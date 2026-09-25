@@ -114,6 +114,30 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Parts › LED: every kind at each gesture, caught at a moment that shows the gesture's shape.
+    func testLedGestures() {
+        let kinds: [MetalLEDKind] = [.live, .waiting, .failed, .link, .off]
+        let moments: [(MetalLampGesture, Double)] = [(.steady, 1), (.flicker, 0.22), (.breathe, 0), (.blink2, 0.3), (.rise, 0.25)]
+        for colorway in MetalColorway.allCases {
+            let view = Grid(horizontalSpacing: 28, verticalSpacing: 16) {
+                GridRow {
+                    Text("")
+                    ForEach(moments, id: \.0) { g, _ in Text(g.rawValue.uppercased()).font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color) }
+                }
+                ForEach(kinds, id: \.recipeState) { kind in
+                    GridRow {
+                        Text(kind.recipeState.uppercased()).font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color)
+                        ForEach(moments, id: \.0) { g, p in MetalLED(kind, diameter: 10, gesture: g, phase: p) }
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("led-gestures-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

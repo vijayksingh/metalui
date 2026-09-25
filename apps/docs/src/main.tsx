@@ -34,6 +34,7 @@ const router = createBrowserRouter([
       { path: 'components/tooltip', lazy: lazy(() => import('./pages/components/Tooltip')) },
       { path: 'components/menu', lazy: lazy(() => import('./pages/components/Menu')) },
       { path: 'components/toast', lazy: lazy(() => import('./pages/components/Toast')) },
+      { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },
       { path: 'components/switcher', lazy: lazy(() => import('./pages/components/Switcher')) },

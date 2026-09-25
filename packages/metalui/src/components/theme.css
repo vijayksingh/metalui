@@ -2737,3 +2737,46 @@
 @utility animate-sf-fade {
   animation: mu-sf-fade var(--mu-spring-part-d) var(--mu-spring-part) both;
 }
+
+/* Lamp gestures (status.gestures): how an LED behaves over time. */
+@keyframes mu-led-flicker {
+  0% { filter: brightness(0.864) saturate(0.901); }
+  10% { filter: brightness(1) saturate(1); }
+  22% { filter: brightness(0.69) saturate(0.775); }
+  34% { filter: brightness(1) saturate(1); }
+  46% { filter: brightness(0.764) saturate(0.829); }
+  60% { filter: brightness(1) saturate(1); }
+  100% { filter: brightness(1) saturate(1); }
+}
+@utility animate-led-flicker {
+  animation: mu-led-flicker 800ms linear both;
+}
+@keyframes mu-led-breathe {
+  0% { filter: brightness(0.721) saturate(0.798); }
+  50% { filter: brightness(1) saturate(1); }
+  100% { filter: brightness(0.721) saturate(0.798); }
+}
+@utility animate-led-breathe {
+  animation: mu-led-breathe 2400ms ease-in-out infinite;
+}
+@keyframes mu-led-blink2 {
+  0% { filter: brightness(1) saturate(1); }
+  19% { filter: brightness(1) saturate(1); }
+  20% { filter: brightness(0.535) saturate(0.663); }
+  50% { filter: brightness(0.535) saturate(0.663); }
+  51% { filter: brightness(1) saturate(1); }
+  70% { filter: brightness(1) saturate(1); }
+  71% { filter: brightness(0.535) saturate(0.663); }
+  99% { filter: brightness(0.535) saturate(0.663); }
+  100% { filter: brightness(1) saturate(1); }
+}
+@utility animate-led-blink2 {
+  animation: mu-led-blink2 460ms linear both;
+}
+@keyframes mu-led-rise {
+  0% { filter: brightness(0.38) saturate(0.55); }
+  100% { filter: brightness(1) saturate(1); }
+}
+@utility animate-led-rise {
+  animation: mu-led-rise 1200ms cubic-bezier(.22,1,.36,1) both;
+}

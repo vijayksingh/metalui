@@ -2,7 +2,7 @@
   "name": "led",
   "title": "LED",
   "status": "alpha",
-  "description": "A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Never alone; it sits beside words.",
+  "description": "A 4\u20135 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Five gestures say how it behaves over time: steady, flicker, breathe, blink2, rise. Never alone; it sits beside words.",
   "base": "none (decorative)",
   "react": {
     "export": "Led",
@@ -15,5 +15,6 @@
     "file": "swift/Sources/MetalUI/Components/MetalStatus.swift"
   },
   "agent": "led.agent.md",
-  "layer": "part"
+  "layer": "part",
+  "page": "/components/led"
 }
