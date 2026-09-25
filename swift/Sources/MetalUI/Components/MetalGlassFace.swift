@@ -4,44 +4,22 @@ import SwiftUI
 // screen with a glare and a shaded rim, a tag with an LED. A link face glows in a hue taken from
 // its host; a code face shows numbered lines. Every value is the recipe's.
 
-/// A tag on a glass screen: an LED and a condensed mono label on a smoked chip.
-private struct MetalGlassTag: View {
-    let text: String
-    let led: String
-    var part = "tag"
-
-    var body: some View {
-        let r = MetalRecipes.glassFace
-        let role = r.typeRole("tag.font", trackingKey: "tag.tracking")
-        let ledSize = r.points("tag.led")
-        HStack(spacing: r.points("tag.gap")) {
-            if !led.isEmpty {
-                Color.clear
-                    .frame(width: ledSize, height: ledSize)
-                    .metalObjectRecipe(r, part: "tag-led", state: led, in: Circle())
-            }
-            Text(text.uppercased())
-                .font(.metal(role))
-                .tracking(role.trackingPoints)
-                .foregroundStyle((r.color(part == "tag" ? "tag.ink" : "open.ink") ?? MetalRGBA(0, 0, 0, 0)).color)
-        }
-        .padding(.horizontal, r.points("tag.pad-x"))
-        .frame(height: r.points("tag.height"))
-        .metalObjectRecipe(r, part: part, in: RoundedRectangle(cornerRadius: r.points("tag.radius"), style: .continuous))
-    }
-}
-
 /// The bezel and screen every glass face shares; `screen` names the screen's fill part.
 private struct MetalGlassBody<Content: View>: View {
     let screen: String
     let own: MetalRGBA?
     let screenRecipe: MetalObjectRecipe?
+    let underlay: Image?
+    let underlayOpacity: Double
     let content: Content
 
-    init(screen: String, own: MetalRGBA? = nil, screenRecipe: MetalObjectRecipe? = nil, @ViewBuilder content: () -> Content) {
+    init(screen: String, own: MetalRGBA? = nil, screenRecipe: MetalObjectRecipe? = nil,
+         underlay: Image? = nil, underlayOpacity: Double = .one, @ViewBuilder content: () -> Content) {
         self.screen = screen
         self.own = own
         self.screenRecipe = screenRecipe
+        self.underlay = underlay
+        self.underlayOpacity = underlayOpacity
         self.content = content()
     }
 
@@ -69,6 +47,22 @@ private struct MetalGlassBody<Content: View>: View {
             }
             if let screenRecipe {
                 Color.clear.metalObjectRecipe(screenRecipe, part: "screen", in: screenShape)
+            }
+            if let underlay {
+                GeometryReader { geometry in
+                    underlay.resizable().scaledToFill()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .opacity(underlayOpacity)
+                        .overlay {
+                            let dark = screenRecipe?.fills("screen").last.flatMap { fill -> Color? in
+                                guard case .radial(_, let stops) = fill,
+                                      let last = stops.last else { return nil }
+                                return last.paint.resolved(self: own).color
+                            } ?? .clear
+                            LinearGradient(colors: [.clear, dark], startPoint: .top, endPoint: .bottom)
+                        }
+                        .clipped()
+                }
             }
             Color.clear.metalObjectRecipe(r, part: "glare", in: screenShape)
             content
@@ -112,58 +106,142 @@ public struct MetalImageFace<Content: View>: View {
     }
 }
 
-/// A link as a glass object: its host large, its path engraved, a LINK tag and an OPEN key.
+/// Optional metadata already fetched by the host; image loading stays with the host.
+public struct MetalLinkPreview {
+    public let title: String?
+    public let description: String?
+    public let image: Image?
+    public let icon: Image?
+
+    public init(title: String? = nil, description: String? = nil, image: Image? = nil, icon: Image? = nil) {
+        self.title = title
+        self.description = description
+        self.image = image
+        self.icon = icon
+    }
+}
+
+/// A link as a glass object. The card is static; only its OPEN control acts.
 public struct MetalLinkFace: View {
     let url: URL?
     let raw: String
+    let suppliedHost: String?
+    let suppliedPath: String?
+    let hue: MetalRGBA?
+    let tag: String
+    let openLabel: String
+    let preview: MetalLinkPreview?
     let open: (() -> Void)?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    public init(_ href: String, open: (() -> Void)? = nil) {
+    public init(_ href: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
+                tag: String = "LINK", openLabel: String = "OPEN ↗", preview: MetalLinkPreview? = nil,
+                open: (() -> Void)? = nil) {
         self.raw = href
         self.url = URL(string: href)
+        self.suppliedHost = host
+        self.suppliedPath = path
+        self.hue = hue
+        self.tag = tag
+        self.openLabel = openLabel
+        self.preview = preview
         self.open = open
     }
 
+    public init(url: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
+                tag: String = "LINK", openLabel: String = "OPEN ↗", preview: MetalLinkPreview? = nil,
+                open: (() -> Void)? = nil) {
+        self.init(url, host: host, path: path, hue: hue, tag: tag, openLabel: openLabel, preview: preview, open: open)
+    }
+
     public var body: some View {
-        let r = MetalRecipes.glassFace
-        let host = Self.host(url, raw: raw)
-        let path = Self.path(url)
-        let domain = r.typeRole("domain.font", trackingKey: "domain.tracking")
+        let r = MetalRecipes.linkCard
+        let host = suppliedHost ?? Self.host(url, raw: raw)
+        let path = suppliedPath ?? Self.path(url)
+        let title = preview?.title?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let hasPreview = title.map { !$0.isEmpty } ?? false
+        let hostRole = r.typeRole("host.font", trackingKey: "host.tracking")
         let pathRole = r.typeRole("path.font", trackingKey: "path.tracking")
-        let inset = r.points("tag.inset")
-        let pad = r.points("self.pad")
-        MetalGlassBody(screen: "link-screen", own: Self.hue(for: host)) {
+        let titleRole = r.typeRole("title.font", trackingKey: "title.tracking")
+        let glass = MetalRecipes.glassFace
+        let bezel = glass.points("self.pad")
+        let screenHeight = r.points(hasPreview ? "preview.height" : "screen.height")
+        let fade = Animation.easeOut(duration: r.durationSeconds("preview.fade"))
+        MetalGlassBody(screen: "link-screen", own: hue ?? Self.hue(for: host), screenRecipe: r,
+                       underlay: hasPreview ? preview?.image : nil,
+                       underlayOpacity: r.scalar("preview.image-opacity")) {
             ZStack(alignment: .topLeading) {
-                MetalGlassTag(text: "Link", led: "link").padding(inset)
+                MetalChip(.glass) {
+                    MetalChipLead(led: .link) { EmptyView() }
+                    MetalChipText { Text(tag.uppercased()) }
+                }
+                .padding(r.points("chip.inset"))
                 HStack {
                     Spacer(minLength: 0)
-                    Button { open?() } label: { MetalGlassTag(text: "Open ↗", led: "", part: "open") }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("Open \(host)")
+                    openControl(host: host).padding(r.points("chip.inset"))
                 }
-                .padding(inset)
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: r.points("meta.gap")) {
                     Spacer(minLength: 0)
-                    Text(host).font(.metal(domain)).tracking(domain.trackingPoints)
-                        .foregroundStyle((r.color("domain.ink") ?? MetalRGBA(0, 0, 0, 0)).color).lineLimit(1)
-                    Text(path.uppercased()).font(.metal(pathRole)).tracking(pathRole.trackingPoints)
-                        .foregroundStyle((r.color("path.ink") ?? MetalRGBA(0, 0, 0, 0)).color)
-                        .lineLimit(1).truncationMode(.tail)
+                    if hasPreview, let title {
+                        Text(title)
+                            .font(.metal(titleRole)).tracking(titleRole.trackingPoints)
+                            .foregroundStyle(r.color("title.ink")?.color ?? .clear)
+                            .lineLimit(Int(r.scalar("title.lines")))
+                            .transition(.opacity.animation(fade))
+                        HStack(spacing: r.points("meta.gap")) {
+                            if let icon = preview?.icon {
+                                icon.resizable().scaledToFit()
+                                    .frame(width: r.points("meta.icon"), height: r.points("meta.icon"))
+                                    .foregroundStyle(r.color("meta.ink")?.color ?? .clear)
+                                    .clipShape(Circle())
+                                    .accessibilityHidden(true)
+                            }
+                            Text(host + (path == "/" ? "" : " · " + path))
+                                .font(.metal(pathRole)).tracking(pathRole.trackingPoints)
+                                .foregroundStyle(r.color("meta.ink")?.color ?? .clear)
+                                .textCase(.uppercase)
+                                .lineLimit(1).truncationMode(.tail)
+                        }
+                        .transition(.opacity.animation(fade))
+                    } else {
+                        Text(host).font(.metal(hostRole)).tracking(hostRole.trackingPoints)
+                            .foregroundStyle(r.color("host.ink")?.color ?? .clear).lineLimit(1)
+                        Text(path.uppercased()).font(.metal(pathRole)).tracking(pathRole.trackingPoints)
+                            .foregroundStyle(r.color("path.ink")?.color ?? .clear)
+                            .lineLimit(1).truncationMode(.tail)
+                    }
                 }
-                .padding(.horizontal, r.points("link.pad-x"))
-                .padding(.vertical, r.points("link.pad-y"))
+                .padding(.horizontal, r.points("screen.pad-x"))
+                .padding(.vertical, r.points("screen.pad-y"))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
-        .frame(width: r.points("link.width"), height: (r.points("link.height")) + (pad + pad))
+        .frame(width: r.points("self.width"), height: screenHeight + bezel + bezel)
+        .animation(reduceMotion ? nil : MetalSprings.settle.animation, value: hasPreview)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Link \(host)")
+        .accessibilityLabel("Link \(title ?? host)")
+    }
+
+    @ViewBuilder
+    private func openControl(host: String) -> some View {
+        if let open {
+            Button(action: open) {
+                MetalChip(.glassAction) { MetalChipText { Text(openLabel) } }
+            }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Open \(host)")
+        } else if let url {
+            Link(destination: url) {
+                MetalChip(.glassAction) { MetalChipText { Text(openLabel) } }
+            }
+                .accessibilityLabel("Open \(host)")
+        }
     }
 
     /// The face's size for layout.
     public static var size: CGSize {
-        let r = MetalRecipes.glassFace
-        return CGSize(width: r.points("link.width"), height: (r.points("link.height")) + 2 * (r.points("self.pad")))
+        let r = MetalRecipes.linkCard
+        return CGSize(width: r.points("self.width"), height: r.points("screen.height") + 2 * MetalRecipes.glassFace.points("self.pad"))
     }
 
     static func host(_ url: URL?, raw: String) -> String {
@@ -196,6 +274,8 @@ public struct MetalLinkFace: View {
         return MetalRGBA((r + m) * 255, (g + m) * 255, (b + m) * 255, 1)
     }
 }
+
+public typealias MetalLinkCard = MetalLinkFace
 
 /// Code as a glass object: a CODE tag (language, line count) and numbered lines.
 public enum MetalCodeDiffClass: String, Sendable {
