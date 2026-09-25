@@ -68,10 +68,12 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     const play = () => {
       if (running.length || reduce.matches || disabled(trigger)) return;
       svg.setAttribute('data-playing', '');
-      running = act.tracks.flatMap(({ part, keyframes }) => {
-        const el = svg.querySelector<SVGElement>(`[data-part="${part}"]`);
-        return el ? [el.animate(keyframes as Keyframe[], { duration: act.duration, easing: 'linear', fill: 'both' })] : [];
-      });
+      // A part and its occluders (a mask's knockout named like it) move on one track.
+      running = act.tracks.flatMap(({ part, keyframes }) =>
+        [...svg.querySelectorAll<SVGElement>(`[data-part="${part}"]`)].map((el) =>
+          el.animate(keyframes as Keyframe[], { duration: act.duration, easing: 'linear', fill: 'both' }),
+        ),
+      );
       const batch = running;
       // Released only after every part is back at rest, so nothing snaps.
       Promise.allSettled(batch.map((a) => a.finished)).then(() => {

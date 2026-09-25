@@ -25,12 +25,53 @@ function ease(e) {
 
 const hasPart = (n) => n.children.some((c) => c.attrs['data-part'] != null || hasPart(c));
 
+const isBlack = (v) => v == null || /^(#000(000)?|black)$/i.test(v);
+const isWhite = (v) => /^(#fff(fff)?|white)$/i.test(v || '');
+
+/**
+ * A mask or clip as cuts: the shapes (in the masked element's space, moved by its parts and by
+ * their own) that knock out (a mask's black) or keep (a clip's union) the element's ink.
+ */
+function cutsOf(ic, def, m, chain, partIndex) {
+  const shapes = [];
+  (function walk(n, style, cm, ch) {
+    for (const c of n.children) {
+      const st = { ...style };
+      for (const k of ['fill', 'stroke', 'stroke-width']) if (c.attrs[k] != null) st[k] = c.attrs[k];
+      const part = c.attrs['data-part'];
+      if (part != null && partIndex[part] == null) throw new Error(`${ic.name}: occluder data-part="${part}" has no track`);
+      const next = part != null ? [...ch, partIndex[part]] : ch;
+      if (c.attrs.transform && (part != null || hasPart(c))) throw new Error(`${ic.name}: an occluder part carries no static transform`);
+      const m2 = mul(cm, parseTransform(c.attrs.transform));
+      if (c.tag === 'g') { walk(c, st, m2, next); continue; }
+      const d = shapeData(c);
+      if (!d) continue;
+      const path = cmdsToD(transformData(d, m2));
+      if (def.tag === 'clipPath') { shapes.push({ d: path, chain: next, fill: true, stroke: 0 }); continue; }
+      const fill = !isNone(st.fill) && isBlack(st.fill);
+      const stroke = !isNone(st.stroke) && isBlack(st.stroke) ? +(st['stroke-width'] ?? 1) : 0;
+      if (!fill && !stroke) {
+        if (isWhite(st.fill) || isWhite(st.stroke)) continue; // the mask's open ground
+        throw new Error(`${ic.name}: mask shapes are black (cut) or white (ground)`);
+      }
+      shapes.push({ d: path, chain: next, fill, stroke });
+    }
+  })(def, { fill: undefined, stroke: 'none' }, m, chain);
+  if (def.tag === 'clipPath') {
+    const chains = new Set(shapes.map((x) => x.chain.join(',')));
+    if (chains.size > 1) throw new Error(`${ic.name}: a clip's shapes move together`);
+    return [{ d: shapes.map((x) => x.d).join(''), chain: shapes[0]?.chain ?? chain, fill: true, stroke: 0, keep: true }];
+  }
+  return shapes.map((x) => ({ ...x, keep: false }));
+}
+
 /** Every inked element of the icon, in paint order, with the chain of parts that move it. */
 function inks(ic, partIndex) {
   const svg = parseSvg(staticSvg(ic, SW, ic.body, { live: true }));
-  if (ic.defs && /<(mask|clipPath)/.test(ic.defs)) throw new Error(`${ic.name}: masks and clips are not in the SwiftUI act player yet`);
+  const defs = {};
+  (function find(n) { for (const c of n.children) { if ((c.tag === 'mask' || c.tag === 'clipPath') && c.attrs.id) defs[c.attrs.id] = c; find(c); } })(svg);
   const out = [];
-  (function walk(n, style, m, chain, opacity) {
+  (function walk(n, style, m, chain, opacity, cuts) {
     for (const c of n.children) {
       if (c.tag === 'defs' || c.tag === 'mask' || c.tag === 'clipPath' || c.tag === 'title') continue;
       const st = { ...style };
@@ -43,14 +84,30 @@ function inks(ic, partIndex) {
       if (c.attrs.transform && hasPart(c)) throw new Error(`${ic.name}: a group with a static transform may not contain a moving part`);
       const nextChain = part ? [...chain, partIndex[part]] : chain;
       const cm = mul(m, local);
-      if (c.tag === 'g') { walk(c, st, cm, nextChain, opacity * own); continue; }
+      const nextCuts = [...cuts];
+      for (const attr of ['mask', 'clip-path']) {
+        const ref = c.attrs[attr]?.match(/url\(#([^)]+)\)/)?.[1];
+        if (ref) {
+          if (!defs[ref]) throw new Error(`${ic.name}: ${attr} #${ref} not found`);
+          nextCuts.push(...cutsOf(ic, defs[ref], cm, nextChain, partIndex));
+        }
+      }
+      if (c.tag === 'g') { walk(c, st, cm, nextChain, opacity * own, nextCuts); continue; }
       const d = shapeData(c);
       if (!d) continue;
       const stroke = isNone(st.stroke) ? 0 : +(st['stroke-width'] ?? SW) / SW;
       const fill = isNone(st.fill) ? '.none' : st['fill-opacity'] != null ? `.duotone(${num(st['fill-opacity'])})` : '.solid';
-      out.push({ d: cmdsToD(transformData(d, cm)), chain: nextChain, stroke, fill, opacity: opacity * own });
+      // A fixed dash (an orbit's gap) is one run from the path's start, in pathLength units.
+      let trim = 1;
+      if (c.attrs['stroke-dasharray']) {
+        const [dash, gap] = c.attrs['stroke-dasharray'].split(/[\s,]+/).map(Number);
+        const len = +(c.attrs.pathLength ?? NaN);
+        if (!(len > 0) || !(dash + gap >= len)) throw new Error(`${ic.name}: a fixed dash is one run and one gap over pathLength`);
+        trim = dash / len;
+      }
+      out.push({ d: cmdsToD(transformData(d, cm)), chain: nextChain, stroke, fill, opacity: opacity * own, trim, cuts: nextCuts });
     }
-  })(svg, { fill: svg.attrs.fill, stroke: svg.attrs.stroke, 'stroke-width': svg.attrs['stroke-width'] }, I, [], 1);
+  })(svg, { fill: svg.attrs.fill, stroke: svg.attrs.stroke, 'stroke-width': svg.attrs['stroke-width'] }, I, [], 1, []);
   return out;
 }
 
@@ -75,8 +132,9 @@ function part(t, duration) {
 export function iconActsSwift(icons) {
   const acts = icons.filter((ic) => ic.study).map((ic) => {
     const partIndex = Object.fromEntries(ic.study.tracks.map((t, i) => [t.part, i]));
+    const cut = (c) => `MetalIconActCut(d: "${c.d}", parts: [${c.chain.join(', ')}], fill: ${c.fill}, stroke: ${num(c.stroke)}, keep: ${c.keep})`;
     const ink = inks(ic, partIndex).map((k) =>
-      `            MetalIconActInk(d: "${k.d}", parts: [${k.chain.join(', ')}], stroke: ${num(k.stroke)}, fill: ${k.fill}, opacity: ${num(k.opacity)})`);
+      `            MetalIconActInk(d: "${k.d}", parts: [${k.chain.join(', ')}], stroke: ${num(k.stroke)}, fill: ${k.fill}, opacity: ${num(k.opacity)}${k.trim < 1 ? `, trim: ${num(k.trim)}` : ''}${k.cuts.length ? `,\n                cuts: [\n                    ${k.cuts.map(cut).join(',\n                    ')},\n                ]` : ''})`);
     return `        .${camel(ic.name)}: MetalIconAct(
             duration: ${num(ic.study.duration / 1000)},
             caption: ${JSON.stringify(ic.study.caption)},

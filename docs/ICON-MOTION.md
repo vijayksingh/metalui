@@ -6,7 +6,7 @@ This replaces the old model (a held hover pose plus a press blip, written as CSS
 
 ## The format
 
-The source is data, in `packages/metalui/icons/src/icons.mjs`, with helpers from `motion.mjs`:
+The source is data. An icon's act lives in its own file, `packages/metalui/icons/src/acts/<name>.mjs`, which exports `act = { body, defs?, study, shape }` and replaces the entry's body and legacy motion in `icons.mjs`. Helpers come from `motion.mjs`:
 
 ```js
 study: motion(900, 'The pointer draws back, clicks its tip down, and a ring opens where it lands.',
@@ -37,6 +37,8 @@ study: motion(900, 'The pointer draws back, clicks its tip down, and a ring open
   - named curves in `ease`: `settle`, `smooth`, `accelerate`, `strike`. An icon may name its own.
 - **Allowed properties:** transform, opacity and draw-on, nothing else. Path reshaping (`d`), colour and stroke width don't animate: SwiftUI can't play them from the same data.
 - **Accents:** one self-closing element with class `ac`, `opacity="0"` in the body, and a `data-part`. The static glyph drops them.
+- **Occluders:** a mask's knockout that belongs to a moving part carries that part's `data-part` inside `defs`; every player moves it on the part's track (MOT-07). The body still has exactly one element per part.
+- **Static styling is in attributes**, not CSS: a fixed dash is `stroke-dasharray` with `pathLength` on the element (one run and one gap), so SwiftUI reads it too. An act has no `base` or `mo`.
 
 One source, three players:
 
@@ -56,7 +58,7 @@ The build (`scripts/build-icons.mjs`) checks every study and fails when:
 - a property isn't transform, opacity or draw;
 - a track mixes transform lists (every transform in a track is translate, rotate, scale in that order, the same functions each time, so web and SwiftUI interpolate alike).
 
-The SwiftUI generator also refuses a moving part under a group with a static transform, and (for now) masks and clips on an icon with an act.
+The SwiftUI generator also refuses a moving part under a group with a static transform, a mask shape that is neither black (cut) nor white (ground), and a dash that isn't one run and one gap.
 
 ## Physical: it is hardware
 
@@ -131,5 +133,5 @@ Every icon's entry opens with its card, as a comment above it (see `select`):
 1. Write the card. If you can't say why a part moves or what wrong action it would suggest, stop there.
 2. Name the parts in the body (`data-part`) and set their pivots. Keep the drawn contour when it's sound.
 3. Write the timeline with the icon's own numbers. Reuse the engine and the curves, never another icon's performance.
-4. Film it frame by frame in bone and graphite (`svg-animated/<name>.svg` with `data-state="play"`, paused at each time), and look at it at 16 and 24 px. SwiftUI films every act too: `METALUI_CAPTURES=$PWD/docs/captures/swift swift test --filter MetalIconActCaptures` writes `icon-acts-<colorway>.png`.
+4. Film it: `node scripts/icon-film.mjs <name>` checks the study against the build's contract and the SwiftUI generator's, compiles it as the build does, and writes a filmstrip per colorway (96 px frames, then 24 and 16 px) to `docs/captures/review/`. SwiftUI films every act too: `METALUI_CAPTURES=$PWD/docs/captures/swift swift test --filter MetalIconActCaptures` writes `icon-acts-<colorway>.png`.
 5. Check the end is at rest, re-triggers, reduced motion and the SVG export. Commit that one icon, then start the next.

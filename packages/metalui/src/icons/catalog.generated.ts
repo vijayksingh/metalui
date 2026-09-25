@@ -37,8 +37,8 @@ export const ICON_CATALOG = {
   "select": {
     label: "Select",
     category: "Tools",
-    hover: "the pointer draws back and clicks its tip down",
-    press: "the same act",
+    hover: "The pointer draws back, clicks its tip down, and a ring opens where it lands.",
+    press: "plays the same act",
     pressMs: 900,
     defs: "",
     body: "<g data-part=\"cursor\"><path class=\"f\" d=\"M6.1 4.9 18.3 10.6a.5.5 0 0 1-.04.93L13 13.2l-2.2 5.1a.5.5 0 0 1-.93-.02L6.1 4.9Z\"/></g><circle class=\"ac\" data-part=\"click\" opacity=\"0\" cx=\"6.1\" cy=\"4.9\" r=\"3.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",

@@ -83,6 +83,17 @@ enum MetalIconActFill: Sendable {
     case duotone(Double)
 }
 
+/// A mask or clip on an ink: a shape (grid units, moved by its own chain of parts) that knocks
+/// the ink out (a mask's black) or keeps only what it covers (a clip).
+struct MetalIconActCut: Sendable {
+    let d: String
+    let parts: [Int]
+    let fill: Bool
+    /// Stroke width in grid units; 0 for none.
+    let stroke: Double
+    let keep: Bool
+}
+
 /// One inked element in grid units, moved by its chain of parts (outermost first).
 struct MetalIconActInk: Sendable {
     let d: String
@@ -91,6 +102,9 @@ struct MetalIconActInk: Sendable {
     let stroke: Double
     let fill: MetalIconActFill
     let opacity: Double
+    /// A fixed dash from the path's start (an orbit's gap), as a fraction of its length.
+    var trim: Double = 1
+    var cuts: [MetalIconActCut] = []
 }
 
 struct MetalIconAct: Sendable {
@@ -155,22 +169,34 @@ struct MetalIconActCanvas: View {
             let p = act.duration > 0 ? min(max(elapsed / act.duration, 0), 1) : 0
             let states = act.parts.indices.map { act.state($0, at: p) }
             let grid = CGAffineTransform(scaleX: box / 24, y: box / 24)
+            func chain(_ parts: [Int]) -> CGAffineTransform {
+                parts.reversed().reduce(.identity) { $0.concatenating(states[$1].transform) } // innermost first
+            }
             for ink in act.ink {
-                var m = CGAffineTransform.identity
+                let m = chain(ink.parts)
                 var opacity = ink.opacity
                 var draw = 1.0
-                for index in ink.parts.reversed() { // innermost first, then each parent around it
-                    m = m.concatenating(states[index].transform)
-                }
                 for index in ink.parts {
                     opacity *= states[index].opacity
                     if !act.parts[index].draw.isEmpty { draw = states[index].draw }
                 }
                 guard opacity > 0.001 else { continue }
                 var ctx = context
+                for cut in ink.cuts {
+                    let place = chain(cut.parts).concatenating(grid)
+                    let source = MetalGridPathCache.path(cut.d)
+                    // A cut's fill and stroke are each subtracted (or kept) on their own, so their
+                    // windings never cancel.
+                    if cut.fill { ctx.clip(to: source.applying(place), options: cut.keep ? [] : .inverse) }
+                    if cut.stroke > 0 {
+                        let outline = source.strokedPath(StrokeStyle(lineWidth: cut.stroke, lineCap: .round, lineJoin: .round))
+                        ctx.clip(to: outline.applying(place), options: cut.keep ? [] : .inverse)
+                    }
+                }
                 ctx.opacity = opacity
                 ctx.concatenate(m.concatenating(grid))
                 var path = MetalGridPathCache.path(ink.d)
+                if ink.trim < 0.999 { path = path.trimmedPath(from: 0, to: ink.trim) }
                 if draw < 0.999 { path = path.trimmedPath(from: 0, to: max(draw, 0)) }
                 switch ink.fill {
                 case .none: break

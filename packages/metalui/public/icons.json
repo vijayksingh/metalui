@@ -7,8 +7,8 @@
       "component": "SelectIcon",
       "label": "Select",
       "category": "Tools",
-      "hover": "the pointer draws back and clicks its tip down",
-      "press": "the same act",
+      "hover": "The pointer draws back, clicks its tip down, and a ring opens where it lands.",
+      "press": "plays the same act",
       "pressMs": 900,
       "motion": {
         "caption": "The pointer draws back, clicks its tip down, and a ring opens where it lands.",

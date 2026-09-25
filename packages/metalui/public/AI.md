@@ -2092,7 +2092,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 | Component | Name | Category | Hover | Press |
 |---|---|---|---|---|
-| `SelectIcon` | `select` | Tools | the pointer draws back and clicks its tip down | the same act |
+| `SelectIcon` | `select` | Tools | The pointer draws back, clicks its tip down, and a ring opens where it lands. | plays the same act |
 | `TextIcon` | `text` | Tools | glyph steps aside, caret appears and blinks | glyph stamps down |
 | `NoteIcon` | `note` | Tools | corner curls up | lines write themselves in |
 | `ImageIcon` | `image` | Tools | sun rises behind the ridge | frame breathes, sun flares |

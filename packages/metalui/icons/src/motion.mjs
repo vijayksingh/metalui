@@ -99,15 +99,17 @@ export function parsePose(transform) {
 }
 
 /** Build-time contract for one study against its body. Throws with every problem at once. */
-export function validateStudy(name, study, body) {
+export function validateStudy(name, study, body, defs = '') {
   const bad = [];
   if (!(study.duration > 0)) bad.push('duration must be positive');
   if (study.stages?.length !== 3) bad.push('stages must be three beats');
   if (!study.caption) bad.push('caption is required');
   for (const t of study.tracks) {
     const where = `${name}/${t.part}`;
+    // One visible element per part; its occluders in defs (a mask's knockout) carry the same name
+    // and move on the same track (MOT-07).
     const count = (body.match(new RegExp(`data-part="${t.part}"`, 'g')) || []).length;
-    if (count !== 1) bad.push(`${where}: binds to ${count} data-part elements, needs exactly one`);
+    if (count !== 1) bad.push(`${where}: binds to ${count} data-part elements in the body, needs exactly one`);
     if (!/^-?[\d.]+px -?[\d.]+px$/.test(t.origin)) bad.push(`${where}: origin "${t.origin}" must be "Xpx Ypx"`);
     const f = t.frames;
     if (f[0]?.at !== 0) bad.push(`${where}: first frame must be at 0`);
