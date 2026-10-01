@@ -81,7 +81,7 @@
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.3.3",
     "tsup": "^8.0.0",
-    "typescript": "^5.8.0"
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public",
