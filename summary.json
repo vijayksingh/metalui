@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "sha": "22baa40970fef149bb32e21b5a199f584f45fdf5",
+  "startedAt": "2026-10-01T07:56:03.472Z",
+  "valid": true,
+  "host": {
+    "name": "platform-01",
+    "cpu": "AMD EPYC-Genoa Processor",
+    "cpus": 8,
+    "memGB": 15,
+    "hypervisor": "KVM",
+    "node": "v22.23.2",
+    "playwright": "1.60.0"
+  },
+  "load": {
+    "before": 0.91,
+    "after": 1.42,
+    "max": 1.5
+  },
+  "idle": {
+    "pages": 103,
+    "atRest": 95,
+    "chromeLoops": [
+      "span.mu-led.inline-block [mu-led-breathe]"
+    ],
+    "baseline": {
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.4
+    },
+    "notAtRest": [
+      {
+        "path": "/overview",
+        "loops": {
+          "div.drift-item.is-live [drift]": 18,
+          "div.drift-item [drift]": 1
+        },
+        "layoutsPerS": 4.4,
+        "styleRecalcsPerS": 9
+      },
+      {
+        "path": "/components/command-palette",
+        "loops": {
+          "i.xr-caret [xr-blink]": 1
+        },
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 8.4
+      },
+      {
+        "path": "/components/spinner",
+        "loops": {
+          "span.mu-spinner-arc.spinner-arc [mu-spinner-turn]": 4
+        },
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 8.4
+      },
+      {
+        "path": "/components/progress",
+        "loops": {
+          "div.mu-progress-fill.block [mu-progress-sweep]": 2
+        },
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 7
+      },
+      {
+        "path": "/",
+        "loops": {
+          "div.drift-item.in-space [drift-space]": 19
+        },
+        "layoutsPerS": 4.4,
+        "styleRecalcsPerS": 5
+      },
+      {
+        "path": "/components/weather",
+        "loops": {},
+        "layoutsPerS": 12.2,
+        "styleRecalcsPerS": 25.9
+      },
+      {
+        "path": "/components/avatar",
+        "loops": {},
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 19
+      },
+      {
+        "path": "/components/day",
+        "loops": {},
+        "layoutsPerS": 2,
+        "styleRecalcsPerS": 5.6
+      }
+    ],
+    "durations": {
+      "baselineCpuMsPerS": 39.9
+    }
+  },
+  "bundle": {
+    "package": {
+      "raw": 1489638,
+      "gzip": 234088,
+      "brotli": 191775
+    },
+    "singleImport": {
+      "Button": {
+        "gzip": 31063,
+        "raw": 91560
+      },
+      "Switch": {
+        "gzip": 32154,
+        "raw": 94923
+      },
+      "Led": {
+        "gzip": 31356,
+        "raw": 92212
+      },
+      "Well": {
+        "gzip": 31214,
+        "raw": 91752
+      },
+      "Surface": {
+        "gzip": 31122,
+        "raw": 91572
+      },
+      "Menu": {
+        "gzip": 75444,
+        "raw": 224013
+      },
+      "Tooltip": {
+        "gzip": 60724,
+        "raw": 177871
+      }
+    }
+  }
+}
