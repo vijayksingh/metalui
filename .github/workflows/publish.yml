@@ -21,7 +21,7 @@ jobs:
           git merge-base --is-ancestor "$GITHUB_SHA" origin/main
           version=$(node -p "require('./packages/metalui/package.json').version")
           test "$GITHUB_REF_NAME" = "v$version"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org/'
