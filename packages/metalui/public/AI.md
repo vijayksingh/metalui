@@ -2412,6 +2412,8 @@ Reduce Motion: the drum crossfades; nothing shakes.
 - The drum turns the way the number went: up for more, down for less.
 - A refusal moves only the digits.
 
+The step keys use the icon set's shared `minus` and `plus` at `key.glyph`, with accessible decrease/increase names. React retains Base UI repeat, range and keyboard behavior. Native keys preserve the value/range/step API, repeat while held, disable at bounds and expose adjustable accessibility; native well/drum material remains WIP. Reduced motion keeps the glyphs static.
+
 ---
 
 # Pagination

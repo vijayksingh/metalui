@@ -66,6 +66,7 @@ export default function NumberFieldPage() {
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
+        { id: 'NF4', title: 'One step glyph', body: 'Decrease and increase use the shared minus and plus glyphs. Their accessible names and repeat behavior stay with the control.', origin: 'The icon set' },
         { id: 'NF1', title: 'The drum turns the way the number went', body: 'Up for more, down for less, one grid step on the settle spring.', origin: 'Ours' },
         { id: 'NF2', title: 'Give it a range', body: 'At a limit the keycap disables; an arrow past it shakes only the digits.', origin: 'Ours' },
         { id: 'NF3', title: 'Typing is plain', body: 'No drum while typing; it formats and commits on blur.', origin: 'Ours' },

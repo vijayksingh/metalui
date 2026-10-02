@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import { buttonClasses } from '../button/button';
 import { SwapText } from '../../motion/swap';
@@ -29,7 +30,7 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
 const ROOT = 'mu-number-field inline-grid gap-number-field-gap';
 const LABEL = 'mu-number-field-label type-ui text-ink cursor-ew-resize select-none w-max';
 const GROUP = 'mu-number-field-group group/nf inline-flex items-center h-number-field-height w-number-field-width p-number-field-pad box-border rounded-pill recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-number-field-disabled relative data-invalid:invalid-ring';
-const KEY = `${buttonClasses('standard', 'compact')} mu-number-field-key flex-none size-number-field-key-size px-0 justify-center type-ui group-data-disabled/nf:opacity-100!`;
+const KEY = `${buttonClasses('standard', 'compact')} mu-number-field-key flex-none size-number-field-key-size px-0! justify-center type-ui group-data-disabled/nf:opacity-100!`;
 const WINDOW = 'mu-number-field-window relative grid flex-1 min-w-0 h-full place-items-center overflow-hidden';
 const INPUT = 'mu-number-field-input col-start-1 row-start-1 w-full min-w-0 h-full p-0 border-0 outline-none bg-transparent text-center type-lead tabular-nums text-ink caret-field-field-caret data-[turning]:text-transparent';
 const DRUM = 'mu-number-field-drum col-start-1 row-start-1 pointer-events-none type-lead tabular-nums text-ink';
@@ -91,7 +92,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
         </BaseNumberField.ScrubArea>
       )}
       <BaseNumberField.Group className={GROUP} data-invalid={invalid ? '' : undefined}>
-        <BaseNumberField.Decrement className={KEY} aria-label={decrementLabel}>−</BaseNumberField.Decrement>
+        <BaseNumberField.Decrement className={KEY} aria-label={decrementLabel}><Icon name="minus" size={16} className="size-number-field-key-glyph!" /></BaseNumberField.Decrement>
         <span className={turn?.dir === 'down' ? `${WINDOW} swap-down` : WINDOW} ref={drum}>
           <BaseNumberField.Input
             ref={input}
@@ -106,7 +107,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
           />
           <span aria-hidden className={turn ? DRUM : `${DRUM} invisible`}><SwapText value={face} /></span>
         </span>
-        <BaseNumberField.Increment className={KEY} aria-label={incrementLabel}>+</BaseNumberField.Increment>
+        <BaseNumberField.Increment className={KEY} aria-label={incrementLabel}><Icon name="plus" size={16} className="size-number-field-key-glyph!" /></BaseNumberField.Increment>
       </BaseNumberField.Group>
     </BaseNumberField.Root>
   );

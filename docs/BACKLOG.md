@@ -112,7 +112,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] breadcrumbs
 - [ ] button-group (split chevron)
 - [ ] folder
-- [ ] number-field (− and + as text)
+- [x] number-field (shared minus and plus)
 - [ ] fan (‹ as text)
 - [ ] link (↗ as text)
 

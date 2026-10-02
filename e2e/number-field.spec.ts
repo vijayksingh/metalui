@@ -8,6 +8,11 @@ for (const colorway of COLORWAYS) {
     await open(page, '/components/number-field', colorway);
     const copies = page.getByRole('textbox', { name: 'Copies', exact: true });
     await expect(copies).toHaveValue('2');
+    await expect(page.getByRole('button', { name: 'Decrease' }).first().locator('svg')).toHaveClass(/mu-ic-minus/);
+    await expect(page.getByRole('button', { name: 'Increase' }).first().locator('svg')).toHaveClass(/mu-ic-plus/);
+    const glyphSize = await page.getByRole('button', { name: 'Increase' }).first().locator('svg').evaluate(el => ({ width: parseFloat(getComputedStyle(el).width), height: parseFloat(getComputedStyle(el).height) }));
+    expect(glyphSize.width).toBeCloseTo(12, 0);
+    expect(glyphSize.height).toBeCloseTo(12, 0);
     await page.getByRole('button', { name: 'Increase' }).first().click();
     await expect(copies).toHaveValue('3');
     await copies.focus();
@@ -89,4 +94,21 @@ test('invalid shows the shared ring and says so', async ({ page }) => {
   await expect(seats).toHaveAttribute('aria-invalid', 'true');
   const group = seats.locator('xpath=ancestor::*[contains(@class,"mu-number-field-group")][1]');
   expect(await group.evaluate((el) => getComputedStyle(el, '::before').boxShadow)).toContain('inset');
+});
+
+test('shared step keys repeat and stay still under reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/number-field', 'graphite');
+  const increase = page.getByRole('button', { name: 'Increase' }).first();
+  const input = page.getByRole('textbox', { name: 'Copies', exact: true });
+  const b = (await increase.boundingBox())!;
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+  const glyph = increase.locator('svg');
+  const rest = await glyph.innerHTML();
+  await page.mouse.down();
+  await page.waitForTimeout(800);
+  await page.mouse.up();
+  expect(Number(await input.inputValue())).toBeGreaterThan(3);
+  expect(await glyph.innerHTML()).toBe(rest);
+  await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture('number-field-reduced') });
 });
