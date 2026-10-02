@@ -135,3 +135,5 @@ export { DateCue, relativeDateWords, type DateCueProps } from './components/date
 export { TagCue, type TagCueProps, type TagPickerProps } from './components/tag-cue/tag-cue';
 
 export { PersonCue, type PersonCueProps, type PersonCueChoice } from './components/person-cue/person-cue';
+
+export { LinkCue, type LinkCueProps } from './components/link-cue/link-cue';

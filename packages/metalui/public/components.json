@@ -749,6 +749,23 @@
       "agent": "https://metalui.dev/r/link-card.md"
     },
     {
+      "name": "link-cue",
+      "title": "Link cue",
+      "status": "alpha",
+      "description": "A real URL host-chip link and a separate anchored source field, with an explicit footprint and one confirmed source-history transaction.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "LinkCue",
+        "base": "@base-ui/react/button + popover + field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLinkCue"
+      },
+      "registry": "https://metalui.dev/r/link-cue.json",
+      "agent": "https://metalui.dev/r/link-cue.md"
+    },
+    {
       "name": "mark",
       "title": "Mark",
       "status": "alpha",

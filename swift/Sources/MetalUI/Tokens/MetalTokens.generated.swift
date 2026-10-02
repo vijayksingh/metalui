@@ -3068,6 +3068,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A full source URL remains a real host-pill link. A separate canonical pen key opens the shared Popover and regular Field; only confirmed source words commit. The host reserves widest source words and host display alternatives once. Donor recipes own every dimension, material and motion. (recipes.mark.url; recipes.popover; recipes.field.regular; recipes.button; content type; cue source transaction)
+    public static let linkCue = MetalObjectRecipe(
+        name: "link-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
+
     /// An exact source name opens the known-person picker. Compose the Mark quiet underline and host avatar slot, Enum fixed-footprint content type, Select/Menu plate/rows/pen and shared focus ring. Only a confirmed host name rewrites source; Escape restores the captured document selection. No separate dimensions or material. (recipes.mark; recipes.enum-cue; recipes.select; recipes.menu; motion/swap; cue source transaction)
     public static let personCue = MetalObjectRecipe(
         name: "person-cue",

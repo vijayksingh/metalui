@@ -1,0 +1,8 @@
+{
+  "name": "link-cue", "title": "Link cue", "status": "alpha", "layer": "component",
+  "description": "A real URL host-chip link and a separate anchored source field, with an explicit footprint and one confirmed source-history transaction.",
+  "base": "@base-ui/react/button + popover + field",
+  "react": { "export": "LinkCue", "files": ["link-cue.tsx", "link-cue.css"] },
+  "swift": { "symbol": "MetalLinkCue", "file": "swift/Sources/MetalUI/Components/MetalLinkCue.swift" },
+  "agent": "link-cue.agent.md", "page": "/components/link-cue"
+}

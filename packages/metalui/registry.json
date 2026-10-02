@@ -1153,6 +1153,36 @@
       "docs": "Agent guide: https://metalui.dev/r/link-card.md. SwiftUI: MetalLinkCard in the MetalUI Swift package."
     },
     {
+      "name": "link-cue",
+      "type": "registry:ui",
+      "title": "Link cue",
+      "description": "A real URL host-chip link and a separate anchored source field, with an explicit footprint and one confirmed source-history transaction.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/link-cue/link-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/link-cue/link-cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/link-cue/link-cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/link-cue/link-cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/link-cue.md. SwiftUI: MetalLinkCue in the MetalUI Swift package."
+    },
+    {
       "name": "mark",
       "type": "registry:ui",
       "title": "Mark",

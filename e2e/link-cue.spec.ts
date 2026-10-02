@@ -1,0 +1,60 @@
+import { expect, test } from '@playwright/test';
+import { COLORWAYS, capture, open } from './helpers';
+for (const colorway of COLORWAYS) {
+  test(`Link follows, edits exact words, reserves source footprint and records one Undo in ${colorway}`, async ({ page }) => {
+    await page.context().route('https://metalui.dev/**', route => route.fulfill({ contentType: 'text/html', body: '<title>Destination receipt</title>Destination' }));
+    await open(page, '/components/link-cue', colorway);
+    const host = page.getByTestId('link-document'), cue = host.locator('.mu-link-cue'), source = host.getByRole('textbox', { name: 'Link document source' });
+    const link = host.getByRole('link', { name: 'Reference: https://metalui.dev/overview' });
+    const width = (await cue.boundingBox())!.width, x = (await host.locator('[data-link-tail]').boundingBox())!.x;
+    await expect(link).toHaveAccessibleDescription(/Enter follows.*You, linked words/);
+    await expect(link).toHaveAttribute('href', 'https://metalui.dev/overview');
+    await link.focus(); const following = page.waitForEvent('popup'); await page.keyboard.press('Enter');
+    const destination = await following; await expect(destination).toHaveURL('https://metalui.dev/overview'); await destination.close();
+    await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview before Friday.');
+    const edit = host.getByRole('button', { name: 'Edit Reference URL' }); await edit.focus(); await page.keyboard.press('Enter');
+    const field = page.getByRole('textbox', { name: 'Reference URL', exact: true });
+    await expect(field).toBeFocused();
+    const words = 'https://METALUI.dev/components/Button?tab=Main#Held';
+    await field.fill(words); await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview before Friday.');
+    await page.getByRole('dialog', { name: 'Reference' }).screenshot({ path: capture(`link-field-${colorway}`) });
+    await page.keyboard.press('Enter');
+    await expect(source).toHaveValue(`🧠 Read ${words} before Friday.`);
+    await expect(host.getByRole('link')).toHaveAttribute('href', words);
+    expect((await cue.boundingBox())!.width).toBeCloseTo(width, 2); expect((await host.locator('[data-link-tail]').boundingBox())!.x).toBeCloseTo(x, 2);
+    await expect(edit).toBeFocused(); await host.screenshot({ path: capture(`link-chosen-${colorway}`) });
+    await host.getByRole('button', { name: 'Undo link edit' }).click(); await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview before Friday.');
+    await expect(host.getByRole('button', { name: 'Undo link edit' })).toBeDisabled();
+    await expect(host.getByLabel('Link retained selection')).toHaveText('UTF16 49–49 · committed');
+    await page.emulateMedia({ reducedMotion: 'reduce' }); await edit.click(); await field.fill('https://metalui.dev/components/calendar'); await page.keyboard.press('Escape');
+    await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview before Friday.'); await expect(host).not.toHaveAttribute('data-editing', 'true');
+    await expect(edit).toBeFocused(); await expect(field).toHaveCount(0);
+    await edit.click(); await field.fill('https://metalui.dev/components/calendar'); await page.getByRole('button', { name: 'Apply URL' }).click();
+    await expect(source).toHaveValue('🧠 Read https://metalui.dev/components/calendar before Friday.');
+    await host.screenshot({ path: capture(`link-chosen-${colorway}-reduced`) });
+  });
+}
+test('Link refuses invalid/oversized drafts and retains no stale source edit; readonly keeps navigation', async ({ page }) => {
+  await open(page, '/components/link-cue', 'graphite');
+  const host = page.getByTestId('link-document'), source = host.getByRole('textbox', { name: 'Link document source' }), edit = host.getByRole('button', { name: 'Edit Reference URL' });
+  await edit.focus(); await page.keyboard.press('Enter'); const field = page.getByRole('textbox', { name: 'Reference URL', exact: true });
+  await field.fill('javascript:alert(1)'); await page.keyboard.press('Enter'); await expect(page.getByRole('alert')).toContainText('HTTP');
+  await field.fill('https://metalui.dev/' + 'wide-word-'.repeat(30)); await page.keyboard.press('Enter'); await expect(page.getByRole('alert')).toContainText('footprint');
+  await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview before Friday.');
+  await host.getByRole('textbox', { name: 'Link document source' }).evaluate((input: HTMLTextAreaElement) => {
+    Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')!.set!.call(input, '🧠 Read https://metalui.dev/overview another day.'); input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(field).toHaveCount(0); await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview another day.');
+  for (const panel of await page.locator('.dialkit-panel-inner[data-collapsed="true"]').all()) await panel.click();
+  const dial = (name: string) => page.locator('.dialkit-labeled-control', { has: page.locator('.dialkit-labeled-control-label', { hasText: new RegExp(`^${name.replace(/([A-Z])/g, '\\s*$1')}$`, 'i') }) });
+  await dial('readOnly').getByRole('button', { name: 'On', exact: true }).click(); await edit.focus(); await page.keyboard.press('Enter');
+  await expect(field).toHaveCount(0); await expect(host.getByRole('link')).toHaveAttribute('href', 'https://metalui.dev/overview');
+  await dial('readOnly').getByRole('button', { name: 'Off', exact: true }).click();
+  await dial('disabled').getByRole('button', { name: 'On', exact: true }).click(); await expect(edit).toBeDisabled(); await expect(host.getByRole('link')).not.toHaveAttribute('href');
+  await dial('disabled').getByRole('button', { name: 'Off', exact: true }).click();
+  await dial('raw').getByRole('button', { name: 'On', exact: true }).click(); await expect(host.getByRole('link')).toHaveText('https://metalui.dev/overview');
+  await host.screenshot({ path: capture('link-raw-graphite') });
+  await edit.click(); await expect(host).toHaveAttribute('data-editing', 'true');
+  await dial('mounted').getByRole('button', { name: 'Off', exact: true }).evaluate((button: HTMLButtonElement) => button.click());
+  await expect(field).toHaveCount(0); await expect(host).not.toHaveAttribute('data-editing', 'true'); await expect(source).toHaveValue('🧠 Read https://metalui.dev/overview another day.');
+});

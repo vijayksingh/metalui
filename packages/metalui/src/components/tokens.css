@@ -2158,6 +2158,7 @@
   /* rename-editor: recipes.form-field; recipes.field.regular; recipes.button.primary; layout.gap-related; waiting */
   /* colour-cue: recipes.mark; recipes.well.field; recipes.slider; recipes.popover; type.readout; cue source transaction; haptic detent */
   /* enum-cue: cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent */
+  /* link-cue: recipes.mark.url; recipes.popover; recipes.field.regular; recipes.button; content type; cue source transaction */
   /* person-cue: recipes.mark; recipes.enum-cue; recipes.select; recipes.menu; motion/swap; cue source transaction */
   /* numeric-cue: docs/CUE-EDITING.md; recipes.mark; recipes.tooltip; motion/swap; foundations.space */
   /* date-cue: docs/CUE-EDITING.md; recipes.numeric-cue; recipes.mark; recipes.calendar; recipes.popover */
