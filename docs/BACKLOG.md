@@ -148,17 +148,17 @@ Owner, on the Link page: "add different states to links." (2026-09-30)
 
 Now: rest (engraved hairline underline), hover (underline darkens), pressed (dims), focus (green ring), external (a text "↗" that nudges). The hover is too quiet to notice, and the page shows no state but rest.
 
-- [ ] **Hover you can see**: the underline draws thicker from the side the pointer entered, or rises to meet the baseline (settle spring), with a faint tint behind the words; not only a colour change.
-- [ ] **Pressed**: the words sink one step (press travel) as well as dimming, the same press language as a button.
-- [ ] **Visited**: a quieter underline (ink3) for `:visited`, opt-in (`visited` on the Link, off by default in apps, on in documents).
-- [ ] **Current** (`aria-current="page"`): no underline and full ink, so a link to where you are reads as "here" (breadcrumbs and nav use it).
-- [ ] **Disabled / unavailable**: `aria-disabled`, ink3, no underline, no pointer; says why in a tooltip when given.
-- [ ] **Loading** (a link that navigates in-app and waits): the underline runs like a progress line until the route arrives.
-- [ ] **External**: the "↗" becomes the set's `external` glyph (see the icons entry) with its act on hover, instead of a text character.
-- [ ] **Download** (`download` attribute): the `download` glyph and the file size after it ("Tram map.pdf · 2.4 MB").
-- [ ] **Kinds**: `quiet` (no underline until hover, for dense lists and tables, only where the context already says "these are links") and `standalone` (a link on its own line with a trailing arrow).
-- [ ] **Show every state on the page**: a states strip (rest, hover, pressed, focus, visited, current, disabled, external, download), in both colorways, plus the x-ray card for handling it.
-- [ ] Keep the underline in every state except current and disabled (colour alone never marks a link); Swift in step.
+- [x] **Hover you can see**: the underline draws thicker from the side the pointer entered, or rises to meet the baseline (settle spring), with a faint tint behind the words; not only a colour change.
+- [x] **Pressed**: the words sink one step (press travel) as well as dimming, the same press language as a button.
+- [x] **Visited**: a quieter underline (ink3) for `:visited`, opt-in (`visited` on the Link, off by default in apps, on in documents).
+- [x] **Current** (`aria-current="page"`): no underline and full ink, so a link to where you are reads as "here" (breadcrumbs and nav use it).
+- [x] **Disabled / unavailable**: `aria-disabled`, ink3, no underline, no pointer; says why in a tooltip when given.
+- [x] **Loading** (a link that navigates in-app and waits): the underline runs like a progress line until the route arrives.
+- [x] **External**: the "↗" becomes the set's `external` glyph (see the icons entry) with its act on hover, instead of a text character.
+- [x] **Download** (`download` attribute): the `download` glyph and the file size after it ("Tram map.pdf · 2.4 MB").
+- [x] **Kinds**: `quiet` (no underline until hover, for dense lists and tables, only where the context already says "these are links") and `standalone` (a link on its own line with a trailing arrow).
+- [x] **Show every state on the page**: a states strip (rest, hover, pressed, focus, visited, current, disabled, external, download), in both colorways, plus the x-ray card for handling it.
+- [x] Keep the underline in every state except current and disabled (colour alone never marks a link); Swift in step.
 
 ## Popover: the Rename action
 

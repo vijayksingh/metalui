@@ -3,16 +3,17 @@
   "title": "Link",
   "status": "alpha",
   "layer": "component",
-  "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+  "description": "An inline destination with a persistent engraved underline, directional hover emphasis, press travel, current/unavailable/visited/loading states, and external/download glyphs.",
   "base": "@base-ui/react/use-render",
   "react": {
     "export": "Link",
-    "files": ["link.tsx"]
+    "files": [
+      "link.tsx"
+    ]
   },
   "swift": {
     "symbol": "MetalLink",
-    "file": "swift/Sources/MetalUI/Components/MetalLink.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalLink.swift"
   },
   "agent": "link.agent.md",
   "page": "/components/link"

@@ -667,7 +667,7 @@
       "name": "link",
       "title": "Link",
       "status": "alpha",
-      "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+      "description": "An inline destination with a persistent engraved underline, directional hover emphasis, press travel, current/unavailable/visited/loading states, and external/download glyphs.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Link",

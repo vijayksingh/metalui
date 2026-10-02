@@ -979,7 +979,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// An inline link in text: it takes the text's own type and ink, and is always underlined (colour alone never marks a link) with an engraved hairline 3 below the baseline. Hovered, the underline darkens to the text's ink (160 ms). An external link carries a small arrow that nudges one step up and out on the part spring when hovered, toward where it goes. Pressed, it dims for the press. Focus: the green ring. (the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look))
+    /// An inline destination with a persistent engraved underline. Hover grows a thicker line from the pointer entry edge and reveals a faint tint; pressing sinks by the shared button travel. Visited is opt-in. Current and unavailable destinations omit the underline. Loading keeps a sweeping underline only while busy and visible. External and download use the shared glyph family. (the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look))
     public static let link = MetalObjectRecipe(
         name: "link",
         layers: [
@@ -990,7 +990,7 @@ public enum MetalRecipes {
             "underline.offset": .number(3.0),
             "underline.ink": .perColorway(bone: "rgba(27,27,29,.3)", graphite: "rgba(255,255,255,.3)"),
             "underline.fade": .text("160ms"),
-            "out.size": .text("0.72em"),
+            "out.size": .text("var(--mu-r-button-compact-glyph)"),
             "out.gap": .text("0.18em"),
             "out.nudge": .number(2.0),
             "self.pressed": .text("0.64"),

@@ -1093,7 +1093,7 @@
   --mu-r-link-underline-thickness: 1px;
   --mu-r-link-underline-offset: 3px;
   --mu-r-link-underline-fade: 160ms;
-  --mu-r-link-out-size: 0.72em;
+  --mu-r-link-out-size: var(--mu-r-button-compact-glyph);
   --mu-r-link-out-gap: 0.18em;
   --mu-r-link-out-nudge: 2px;
   --mu-r-link-self-pressed: 0.64;

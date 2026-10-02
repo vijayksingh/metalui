@@ -1976,49 +1976,36 @@ Uses the connector recipe's halo, dot and handle, so every selection on the canv
 
 # Link
 
-An inline link in text. React: `Link` from `@unlocalhosted/metalui` (Base UI `useRender`, so `render` can swap in a router's link). SwiftUI: `MetalLink` (work in progress). The `link` recipe draws the underline and the external arrow.
+An inline destination. React wraps Base UI `useRender`; SwiftUI uses `MetalLink` with the same material, states and physical press. Use a Button for actions.
 
-## Use it for
+## States
 
-- Going somewhere from inside a sentence: another page, a document, a site.
+- Rest keeps a hairline below the words; colour never marks a destination alone.
+- Hover grows a thicker line from the side the pointer entered and reveals a faint menu-row tint. Press sinks by the button's existing travel and dims. Focus uses the shared green ring.
+- `visited`: opt into the browser's quieter visited underline; off by default in apps. Use in documents. Browsers restrict querying visited styles for privacy. Native tracks following this view's destination.
+- `aria-current="page"`: full ink, no underline, names the current destination. Native `current: true`.
+- `disabled` / `aria-disabled`: ink3, no underline, focusable to discover `disabledReason`, no navigation by pointer, auxiliary click or keyboard. The reason appears in the shared tooltip and spoken name. Native guards the destination action and exposes its reason.
+- `loading`: busy route underline sweeps on the existing Progress duration. Its observer pauses it off screen, removes it when the route arrives and stops travel under reduced motion. Native creates its timeline only while loading and appeared; the host owns the route lifecycle.
+- `external`: shared external glyph, animated by hover/press, new tab and spoken announcement. Native opens through the system URL action.
+- `download` with `fileSize`: shared download glyph followed by the size. Native `download: true` marks the file; use `action:` to provide the platform's download handling.
+- `kind="quiet"`: a quieter persistent hairline for lists that already establish destinations. `standalone`: a link on its own line with a trailing arrow.
 
-## Don't use it for
-
-- An action that changes something (use a button; the button's `link` cap for a quiet one), or navigation between sections (use tabs or the navigation menu).
-
-## Anatomy
-
-- The text in its surrounding type and ink, underlined with a 1 hairline 3 below the baseline.
-- External: a small arrow after the text (0.72 em), and "(opens in a new tab)" for assistive tech.
-
-## States and motion
-
-| State | Look | Motion |
-|---|---|---|
-| rest | underline at 30 % ink | – |
-| hover | underline in the text's ink | 160 ms |
-| hover, external | the arrow one step up and out | part spring |
-| pressed | dimmed | at once |
-| focus | the green ring | – |
-
-Reduce Motion: the arrow does not travel.
+Every available destination keeps its underline, including quiet/visited/loading. Current and unavailable states are explicit exceptions. Both OS and live scoped/site reduced-motion settings preserve meaning while dropping travel.
 
 ## API
 
-| React | SwiftUI |
-|---|---|
-| `href`, and every anchor attribute | `destination:` |
-| `external` | – |
-| `render` (a router's link element) | – |
+React accepts anchor attributes, `external`, `visited`, `disabled`, `disabledReason`, `loading`, `fileSize`, `kind`, and `render` for router anchors. A disabled anchor drops its href and guards activation, while preserving link semantics and focus. No pending work is inferred from click; the router sets and clears `loading`.
 
-## Keyboard and accessibility
+Swift accepts `destination:`, `external:`, `visited:`, `current:`, `disabled:`, `disabledReason:`, `loading:`, `download:`, `fileSize:`, `kind:` and optional `action:`. If no action is given, it follows through `openURL`.
 
-- A real link: Enter follows it; it is always underlined, so it is never marked by colour alone. External links say they open a new tab.
+```tsx
+<Link href="/guides/export" visited>the export guide</Link>
+<Link href="/tram.pdf" download fileSize="2.4 MB">Tram map.pdf</Link>
+<Link render={<RouterLink to="/region" />} loading={pending}>Open the region</Link>
+<Link href="/draft" disabled disabledReason="The guide is being revised">the draft guide</Link>
+```
 
-## Rules
-
-- The text says where it goes: "the export guide", never "click here".
-- Mark every link that leaves the site as external.
+The docs show every state in both colorways and an editing card: handle the real underline to change its offset, or toggle its external glyph. Readouts snap at the shared default; DialKit tunes underline thickness.
 
 ---
 
