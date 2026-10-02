@@ -35,6 +35,12 @@ const shared = {
     dependsOn: [],
     files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
+  'tick-glyph': {
+    title: 'MetalUI selected mark',
+    description: 'The shared tick pen: draw, withdraw and dash-to-tick bend on the generated check route.',
+    dependsOn: ['icons', 'motion'],
+    files: ['icons/TickGlyph.tsx'],
+  },
   'morph-icons': {
     title: 'MetalUI glyph morph runtime',
     description: 'The MorphIcon element, canonical glyph geometry and shared-settle morph engine for meaning changes.',

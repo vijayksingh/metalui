@@ -35,3 +35,5 @@ The tick is the icon set's `check` tick (`icons/src/acts/check.mjs`, read into `
 - Space toggles; the focus ring is the 2 pt green ring at offset 2.
 - Give it an accessible name (`aria-label`: the task's text). `doing` announces as mixed.
 - Ticking is a person's action: the host writes the change and offers Undo.
+
+The pen is shared through internal `TickGlyph` / `MetalTickGlyph`; selected rows and menu checks use the same generated route and draw/withdraw/bend clock. The checkbox owns its dark key, while the pen reports when its ink has gone.

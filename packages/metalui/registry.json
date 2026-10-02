@@ -129,6 +129,23 @@
       ]
     },
     {
+      "name": "tick-glyph",
+      "type": "registry:lib",
+      "title": "MetalUI selected mark",
+      "description": "The shared tick pen: draw, withdraw and dash-to-tick bend on the generated check route.",
+      "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/TickGlyph.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/TickGlyph.tsx"
+        }
+      ]
+    },
+    {
       "name": "morph-icons",
       "type": "registry:lib",
       "title": "MetalUI glyph morph runtime",
@@ -403,8 +420,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/icons.json",
-        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tick-glyph.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
