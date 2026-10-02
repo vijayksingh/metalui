@@ -83,3 +83,19 @@ test('scoped and OS reduced motion remove rotation; an offscreen arc pauses', as
   await expect(arc).toHaveCount(1);
   expect(await arc.evaluate((el) => getComputedStyle(el).animationName)).toBe('mu-progress-breathe');
 });
+
+test('start and outcome are atomic siblings outside the busy key without changing its footprint', async ({ page }) => {
+  await open(page, '/components/button', 'bone');
+  const demo = page.locator('#waiting');
+  const key = demo.locator('button[data-cap=primary]');
+  const width = (await key.boundingBox())!.width;
+  await demo.getByRole('button', { name: 'Slow save', exact: true }).click();
+  await key.click();
+  const status = demo.getByRole('status').filter({ hasText: 'Saving…' });
+  await expect(status).toHaveText('Saving…');
+  await expect(status).toHaveAttribute('aria-atomic', 'true');
+  expect(await status.evaluate((el) => Boolean(el.closest('[aria-busy=true]')))).toBe(false);
+  expect((await key.boundingBox())!.width).toBe(width);
+  await expect(demo.getByRole('status').filter({ hasText: 'Saved' })).toHaveText('Saved');
+  expect((await key.boundingBox())!.width).toBe(width);
+});

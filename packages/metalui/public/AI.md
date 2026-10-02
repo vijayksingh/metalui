@@ -694,6 +694,8 @@ Swift dense strips may use `cap: .strip` / `.stripDanger`; the danger strip acce
 
 React `iconOnly` also makes the key square at its cap height and keeps the waiting/result glyph in that slot without a label footprint. Provide its verb as `aria-label` (or text children for an automatic spoken label), and use Tooltip for discovery. Button waiting labels still announce the request and result.
 
+The start/result status is a visually hidden sibling outside the busy key, with polite atomic reading. Keep it outside any additional busy wrapper when composing a host; reserve busy for the action or item itself. This span never changes text or glyph-key geometry.
+
 ---
 
 # Button group and split button

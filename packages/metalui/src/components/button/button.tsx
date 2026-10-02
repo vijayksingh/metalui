@@ -208,7 +208,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
         <span className={size === 'compact' ? 'relative inline-flex items-center gap-button-compact-gap [&>svg]:size-button-compact-glyph' : 'relative inline-flex items-center gap-button-gap [&>svg]:size-button-glyph'}>{content}</span>
       </> : content}
     </BaseButton>
-    {state !== undefined && <span className="sr-only" aria-live="polite">{state === 'waiting' ? waitingLabel : state === 'done' ? doneLabel : state === 'error' ? errorLabel : ''}</span>}
+    {state !== undefined && <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{state === 'waiting' ? waitingLabel : state === 'done' ? doneLabel : state === 'error' ? errorLabel : ''}</span>}
     {holdEnabled && <span id={hintId} className={hint && !iconOnly ? 'basis-full type-doc-caption text-ink2' : 'sr-only'} role="status">Hold to confirm</span>}
     </>
   );
