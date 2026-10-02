@@ -1,4 +1,6 @@
+#if canImport(AppKit)
 import AppKit
+#endif
 import SwiftUI
 
 public struct MetalSliderTick: Identifiable, Sendable {
@@ -164,6 +166,8 @@ public struct MetalSlider: View {
         .onChange(of: focused) { _, isFocused in
             #if os(macOS)
             keyboardFocus = isFocused && NSApp.currentEvent?.type == .keyDown
+            #else
+            keyboardFocus = isFocused
             #endif
             onFocusChange?(isFocused)
         }
@@ -298,17 +302,23 @@ public struct MetalSlider: View {
                 switch phase {
                 case let .active(point):
                     hovering = true
+                    #if canImport(AppKit)
                     let overKnob = abs(point.x - x) <= knob / 2 && abs(point.y - centre) <= knob / 2
                     (overKnob ? NSCursor.openHand : NSCursor.pointingHand).set()
+                    #endif
                 case .ended:
                     hovering = false
+                    #if canImport(AppKit)
                     NSCursor.arrow.set()
+                    #endif
                 }
             }
             .gesture(DragGesture(minimumDistance: .zero)
                 .onChanged { gesture in
                     if !dragging {
+                        #if canImport(AppKit)
                         NSCursor.closedHand.set()
+                        #endif
                         onDragChange?(true)
                     }
                     dragging = true
@@ -320,7 +330,9 @@ public struct MetalSlider: View {
                 .onEnded { _ in
                     dragging = false
                     onDragChange?(false)
+                    #if canImport(AppKit)
                     NSCursor.openHand.set()
+                    #endif
                 })
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)

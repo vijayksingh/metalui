@@ -31,7 +31,7 @@ The package is ESM only: use \`import\`, not \`require()\`. In a Tailwind v3 app
 
 Or copy the source into your project with the shadcn CLI (Tailwind v4): \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`. The first install also adds \`@unlocalhosted/metalui\` and imports its \`tokens.css\` and \`theme.css\` into your global CSS, which is what styles the copied component; files land under \`components/metalui/\` in the same layout as the package, so imports between components resolve. Whole screens (blocks) install the same way as \`${ORIGIN}/r/block-<name>.json\` into \`components/metalui/screens/<name>/\`. Both routes work in Vite and Next.js (\`app/\` and \`src/app/\`). Release notes: ${ORIGIN}/changelog.
 
-SwiftUI: add the package \`https://github.com/vijayksingh/metalui\` and \`import MetalUI\`. It needs macOS 14; iOS is not supported yet.
+SwiftUI: add the package \`https://github.com/vijayksingh/metalui\` and \`import MetalUI\`. It needs macOS 14 or iOS 17.
 
 ## Global rules
 
@@ -96,7 +96,7 @@ emit('packages/metalui/public/llms.txt', `# MetalUI
 
 - React from npm (ESM only): \`npm install @unlocalhosted/metalui\`, then import \`@unlocalhosted/metalui/styles.css\` once.
 - React source into your project (Tailwind v4): \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`; whole screens as \`${ORIGIN}/r/block-<name>.json\` (settings, task-inbox, share-panel, ai-composer, availability-picker, studio-week).
-- SwiftUI: add \`https://github.com/vijayksingh/metalui\` with Swift Package Manager (macOS 14; iOS is not supported yet).
+- SwiftUI: add \`https://github.com/vijayksingh/metalui\` with Swift Package Manager (macOS 14 or iOS 17).
 
 ## Components
 

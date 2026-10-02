@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 // Command palette (Soft Hardware spec §3). Mirrors components/command-palette from MetalPaletteMetrics:
 // one field, sections of rows, a raised selected row, a footer of keys. Hover moves the selection;
@@ -57,8 +60,9 @@ public struct MetalCommandPalette: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.metalSnapshot) private var snapshot
+    @Environment(\.metalPaletteContainerHeight) private var hostHeight
     @State private var selected = 0
-    @FocusState private var fieldFocused: Bool
+        @FocusState private var fieldFocused: Bool
     @Namespace private var focusScope
 
     /// - Parameters:
@@ -125,7 +129,11 @@ public struct MetalCommandPalette: View {
             footer(t)
         }
         .padding(MetalPaletteMetrics.pad)
+        #if os(macOS)
         .frame(width: MetalPaletteMetrics.width)
+        #else
+        .frame(maxWidth: MetalPaletteMetrics.width)
+        #endif
         .metalFrost(.plate, in: RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous))
         // Asked once the field is in the window: in `onAppear` the field has no
         // window yet and the request is dropped (audit F-063).
@@ -141,11 +149,15 @@ public struct MetalCommandPalette: View {
         .onKeyPress(.escape) { onClose(); return .handled }
         // While the field types, ⎋ arrives as `cancelOperation:` from its field
         // editor, never as a key press.
+        #if os(macOS)
         .onExitCommand { onClose() }
+        #endif
         // The field is the palette's default focus: when the host view takes the
         // keyboard, focus lands here, not on the first focusable view in the tree.
+        #if os(macOS)
         .focusScope(focusScope)
         .defaultFocus($fieldFocused, true)
+        #endif
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Lenses and actions")
         .accessibilityAddTraits(.isModal)
@@ -218,13 +230,21 @@ public struct MetalCommandPalette: View {
         .padding(.horizontal, -MetalPaletteMetrics.barLeft)
     }
 
+    private var availableHeight: CGFloat {
+        #if os(macOS)
+        NSScreen.main?.visibleFrame.height ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)
+        #else
+        hostHeight ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)
+        #endif
+    }
+
     @ViewBuilder private func list(_ t: MetalColorwayTokens) -> some View {
         if snapshot {
             rowsView(t).padding(.horizontal, MetalPaletteMetrics.barLeft)
         } else {
             ScrollViewReader { proxy in
                 ScrollView { rowsView(t) }
-                    .frame(maxHeight: (NSScreen.main?.visibleFrame.height ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)) * MetalPaletteMetrics.listMax)
+                    .frame(maxHeight: availableHeight * MetalPaletteMetrics.listMax)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, MetalPaletteMetrics.barLeft)
                     .onChange(of: selected) { _, now in
@@ -365,6 +385,10 @@ private struct MetalCommandPalettePresenter: ViewModifier {
                             close()
                             onRun(item, pin)
                         }, onClose: close)
+                        .environment(\.metalPaletteContainerHeight, geo.size.height)
+                        #if os(iOS)
+                        .padding(.horizontal, MetalPaletteMetrics.pad)
+                        #endif
                         .padding(.top, geo.size.height * MetalPaletteMetrics.top)
                         .transition(travel
                             ? .opacity.combined(with: .offset(y: -MetalPaletteMetrics.enterRise)).combined(with: .scale(scale: MetalPaletteMetrics.enterScale, anchor: .top))
@@ -378,6 +402,14 @@ private struct MetalCommandPalettePresenter: ViewModifier {
     }
 
     private func close() { isPresented = false }
+}
+
+private struct MetalPaletteContainerHeightKey: EnvironmentKey { static let defaultValue: CGFloat? = nil }
+private extension EnvironmentValues {
+    var metalPaletteContainerHeight: CGFloat? {
+        get { self[MetalPaletteContainerHeightKey.self] }
+        set { self[MetalPaletteContainerHeightKey.self] = newValue }
+    }
 }
 
 private struct MetalSnapshotKey: EnvironmentKey { static let defaultValue = false }

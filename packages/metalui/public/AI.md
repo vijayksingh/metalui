@@ -19,7 +19,7 @@ The package is ESM only: use `import`, not `require()`. In a Tailwind v3 app imp
 
 Or copy the source into your project with the shadcn CLI (Tailwind v4): `npx shadcn@latest add https://metalui.dev/r/<name>.json`. The first install also adds `@unlocalhosted/metalui` and imports its `tokens.css` and `theme.css` into your global CSS, which is what styles the copied component; files land under `components/metalui/` in the same layout as the package, so imports between components resolve. Whole screens (blocks) install the same way as `https://metalui.dev/r/block-<name>.json` into `components/metalui/screens/<name>/`. Both routes work in Vite and Next.js (`app/` and `src/app/`). Release notes: https://metalui.dev/changelog.
 
-SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import MetalUI`. It needs macOS 14; iOS is not supported yet.
+SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import MetalUI`. It needs macOS 14 or iOS 17.
 
 ## Global rules
 

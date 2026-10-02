@@ -348,14 +348,14 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## SwiftUI on iOS
 
-Found 2026-10-01 by building the package for the iOS Simulator (`xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator'`): it fails, so `Package.swift` lists macOS 14 only. CI has only ever run `swift build` on macOS. These eight files use AppKit; each needs a UIKit twin or a platform-neutral rewrite behind `#if canImport(AppKit)`:
+Completed 2026-10-02. `swift build` passes on macOS; `xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator'` builds arm64 and x86_64 with the package's iOS 17 minimum. An iOS 17.5 smoke app loads the custom symbols, renders the field/brush recipes, presents the palette with its keyboard, and handles the Fan on a native touch surface. Platform-specific adapters stay guarded; the geometry, material recipes, and motion tokens stay shared.
 
-- [ ] **Icons** (`Icons/MetalIcon.swift`): renders the custom SF Symbols through `NSImage.SymbolConfiguration` and `NSImage(symbolName:bundle:)`. iOS needs `UIImage.SymbolConfiguration` and `UIImage(named:in:)`, with the y-up/y-down centre correction checked.
-- [ ] **Fonts** (`Foundation/MetalFonts.swift`): `NSFont` for the system and monospaced fallbacks and weights; `UIFont` has the same calls with `UIFont.Weight`. Registration of the bundled Geist, Martian Mono and Doto already goes through Core Text.
-- [ ] **Fan** (`Components/MetalFan.swift`): `NSEvent.addLocalMonitorForEvents` to close on an outside click, and an `NSViewRepresentable` window probe. iOS needs a tap-outside layer instead.
-- [ ] **Slider** (`Components/MetalSlider.swift`): `NSCursor` hand and pointer cursors and `NSApp.currentEvent` to tell keyboard focus from a click. iOS has no cursor; use `.hoverEffect` or none, and focus from `@FocusState` only.
-- [ ] **Brush cursor** (`Components/MetalBrushCursor.swift`): `NSCursor` built from an image. iOS has no pointer cursor to set; the brush ring is drawn in the canvas there.
-- [ ] **Spatial field** (`Components/MetalSpatialFieldView.swift`): a custom `NSView` that draws with `NSGraphicsContext` and `NSColor`. iOS needs a `UIView` with `UIGraphicsGetCurrentContext` or a `Canvas`.
-- [ ] **Snap guides** (`Components/MetalSnapGuides.swift`): `NSHapticFeedbackManager`. iOS has `UIImpactFeedbackGenerator` or `.sensoryFeedback`.
-- [ ] **Command palette** (`Components/MetalCommandPalette.swift`): `NSScreen.main` for the maximum height. iOS can read the container height.
-- [ ] Then: add an iOS Simulator build to `.github/workflows/ci.yml`, restore `.iOS(.v17)` in `Package.swift`, and put "iOS 17" back in the README and the agent guide.
+- [x] **Icons** (`Icons/MetalIcon.swift`): existing UIKit symbol loading and alignment-inset measurement verified in the iOS 17.5 app; UIImage's y-down centre delta is used without AppKit's y inversion.
+- [x] **Fonts** (`Foundation/MetalFonts.swift`): system/mono faces and weight interpolation use NSFont or UIFont through a private platform alias. Core Text registration and variation axes stay shared.
+- [x] **Fan** (`Components/MetalFan.swift`): UIKit observes taps outside the bar and its expanded options without consuming host gestures. Escape/arrows use iOS key presses; AppKit window monitoring stays macOS-only.
+- [x] **Slider** (`Components/MetalSlider.swift`): AppKit cursor operations stay guarded; iOS uses FocusState and the same drag/keyboard/value geometry.
+- [x] **Brush cursor** (`Components/MetalBrushCursor.swift`): UIKit renders the same token recipe into a canvas overlay (`view`) instead of setting a pointer cursor; its coordinate transform preserves the macOS drawing orientation.
+- [x] **Spatial field** (`Components/MetalSpatialFieldView.swift`): existing platform-neutral Canvas and shared geometry sampler verified on iOS; AppKit's native adapter remains guarded.
+- [x] **Snap guides** (`Components/MetalSnapGuides.swift`): iOS sensory alignment feedback fires only for newly engaged guide lines; AppKit keeps native alignment feedback.
+- [x] **Command palette** (`Components/MetalCommandPalette.swift`): iOS uses its presentation container height and fits the available width; macOS keeps its screen/focus APIs. The Region rename field also uses iOS Escape handling instead of a macOS-only exit command.
+- [x] Add the iOS Simulator build to `.github/workflows/ci.yml`, restore `.iOS(.v17)` in `Package.swift`, and restore iOS 17 in the README and generated agent guide.

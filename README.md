@@ -54,7 +54,7 @@ MetalButton("New Canvas", cap: .primary) { create() }
     .metalColorway(.graphite)
 ```
 
-macOS 14+. iOS 17 is planned but does not build yet: eight files use AppKit ([docs/BACKLOG.md](docs/BACKLOG.md), "SwiftUI on iOS").
+macOS 14+ and iOS 17+. CI builds both macOS and the iOS Simulator.
 
 ## For agents
 

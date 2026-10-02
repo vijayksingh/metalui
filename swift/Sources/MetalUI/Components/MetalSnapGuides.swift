@@ -37,6 +37,7 @@ public struct MetalSnapGuides: View {
     @State private var engaged: Set<EngagedLine> = []
     @State private var isLeaving = false
     @State private var clearTask: Task<Void, Never>?
+    @State private var alignments = 0
 
     private var guideOpacity: Double { isLeaving ? .zero : 1 }
 
@@ -86,6 +87,9 @@ public struct MetalSnapGuides: View {
             if enabled && isLeaving { clearImmediately() }
         }
         .onDisappear { clearTask?.cancel() }
+        #if os(iOS)
+        .sensoryFeedback(.alignment, trigger: alignments)
+        #endif
     }
 
     private func path(for kind: MetalSnapGuide.Kind, in guides: [MetalSnapGuide], overshoot: CGFloat) -> Path {
@@ -107,11 +111,13 @@ public struct MetalSnapGuides: View {
 
     private func update(_ next: [MetalSnapGuide]) {
         let keys = Set(next.map(EngagedLine.init))
-        #if os(macOS)
         if !keys.subtracting(engaged).isEmpty {
+            #if os(macOS)
             NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+            #else
+            alignments += 1
+            #endif
         }
-        #endif
         engaged = keys
 
         clearTask?.cancel()

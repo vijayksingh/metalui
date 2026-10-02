@@ -29,7 +29,7 @@ e2e/                       Playwright feature slices; captures land in docs/capt
 - **Foundations first, then one component at a time.** Follow the owner's global rules: atomic layered changes, every state and transition of a component thought through before the next one starts.
 - **Every component ships three things together:** React (`.tsx` + `.css`), SwiftUI (`swift/Sources/MetalUI/Components/Metal<Name>.swift`) and the agent guide (`<name>.agent.md`), plus `meta.json` and a docs page under `apps/docs/src/pages/components/`.
 - **React components wrap Base UI.** Don't reimplement focus management, keyboard handling or ARIA that a Base UI part already provides. The component layer moves to Tailwind v4 utilities from `theme.css`.
-- **Swift types are prefixed `Metal`.** Target platforms are macOS 14 and iOS 17; today only macOS builds (AppKit is used in eight files, see `docs/BACKLOG.md`, "SwiftUI on iOS"). Don't claim iOS until it builds.
+- **Swift types are prefixed `Metal`.** Target platforms are macOS 14 and iOS 17. CI builds macOS and the iOS Simulator; keep platform-specific adapters behind `canImport(AppKit)` / `canImport(UIKit)` guards.
 - **Material recipes are shared.** CSS and SwiftUI render the same fill and shadow stack; never tune one platform alone.
 - **Performance rules live in `docs/PERFORMANCE.md`.** Nothing runs at rest, only transform and opacity animate, one low-power switch, one import ships one component. `npm run check` lints transitions; `npm run bench:gate` and `npm run bench:bundle:gate` hold the numbers.
 - **Tests are integration or e2e only** (Playwright feature slices). No unit tests.

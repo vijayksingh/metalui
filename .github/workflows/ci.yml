@@ -74,3 +74,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift build
+      - name: Build iOS Simulator (minimum iOS 17)
+        run: xcodebuild -jobs 2 -scheme MetalUI -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO OTHER_SWIFT_FLAGS=-j2

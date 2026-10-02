@@ -1,4 +1,10 @@
+#if canImport(AppKit)
 import AppKit
+private typealias MetalPlatformFont = NSFont
+#elseif canImport(UIKit)
+import UIKit
+private typealias MetalPlatformFont = UIFont
+#endif
 import CoreText
 import SwiftUI
 
@@ -31,16 +37,16 @@ public enum MetalFonts {
     /// named weights so 620 or 660 land where the browser draws them.
     static func systemWeight(_ css: Int) -> CGFloat {
         let table: [(Double, CGFloat)] = [
-            (100, NSFont.Weight.ultraLight.rawValue), (200, NSFont.Weight.thin.rawValue), (300, NSFont.Weight.light.rawValue),
-            (400, NSFont.Weight.regular.rawValue), (500, 0.23 /* NSFont.Weight for 500 */), (600, NSFont.Weight.semibold.rawValue),
-            (700, NSFont.Weight.bold.rawValue), (800, NSFont.Weight.heavy.rawValue), (900, NSFont.Weight.black.rawValue),
+            (100, MetalPlatformFont.Weight.ultraLight.rawValue), (200, MetalPlatformFont.Weight.thin.rawValue), (300, MetalPlatformFont.Weight.light.rawValue),
+            (400, MetalPlatformFont.Weight.regular.rawValue), (500, 0.23 /* native system weight for CSS 500 */), (600, MetalPlatformFont.Weight.semibold.rawValue),
+            (700, MetalPlatformFont.Weight.bold.rawValue), (800, MetalPlatformFont.Weight.heavy.rawValue), (900, MetalPlatformFont.Weight.black.rawValue),
         ]
         let w = min(max(Double(css), 100), 900)
         for i in 0..<(table.count - 1) where w <= table[i + 1].0 {
             let (a, fa) = table[i], (b, fb) = table[i + 1]
             return fa + (fb - fa) * CGFloat((w - a) / (b - a))
         }
-        return NSFont.Weight.black.rawValue
+        return MetalPlatformFont.Weight.black.rawValue
     }
 
     /// A CoreText font for a type role at a size. Chrome resolves the demo's
@@ -59,10 +65,10 @@ public enum MetalFonts {
             base = CTFontCreateWithFontDescriptor(CTFontDescriptorCreateWithAttributes(attributes as CFDictionary), size, nil)
         case .mono:
             let name = role.weight > 500 ? "Courier-Bold" : "Courier"
-            base = (NSFont(name: name, size: size) ??
-                    NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight)))) as CTFont
+            base = (MetalPlatformFont(name: name, size: size) ??
+                    MetalPlatformFont.monospacedSystemFont(ofSize: size, weight: MetalPlatformFont.Weight(systemWeight(role.weight)))) as CTFont
         default:
-            base = NSFont.systemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight))) as CTFont
+            base = MetalPlatformFont.systemFont(ofSize: size, weight: MetalPlatformFont.Weight(systemWeight(role.weight))) as CTFont
         }
         guard role.tabular else { return base }
         // Tabular figures, like font-variant-numeric: tabular-nums.
