@@ -1028,7 +1028,7 @@
   --mu-r-toggle-self-latch: 1px;
   --mu-r-toggle-self-press: 50ms;
   --mu-r-toggle-self-gap: 4px;
-  /* accordion: the row recipe (panel hover), the rule recipe, the select chevron's drawing; Base UI Accordion */
+  /* accordion: the row recipe (panel hover), the rule recipe, the shared icon set chevron; Base UI Accordion */
   --mu-r-accordion-trigger-height: 40px;
   --mu-r-accordion-trigger-pad-x: 12px;
   --mu-r-accordion-trigger-radius: 12px;

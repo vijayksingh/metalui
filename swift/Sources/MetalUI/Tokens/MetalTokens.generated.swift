@@ -843,7 +843,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Sections that open in place: each header is a row (the row recipe's panel hover) with a chevron at the end, sections parted by engraved rules. Opening, the panel grows to its content on the settle spring (a control growing to new content, no overshoot) while its content fades in, and the chevron turns a quarter on the part spring (a part you touch; it may overshoot against its stop). Closing, height and content leave on the release spring and the chevron turns back. Reduce Motion: the height snaps, the content crossfades, the chevron snaps. (the row recipe (panel hover), the rule recipe, the select chevron's drawing; Base UI Accordion)
+    /// Sections that open in place: each header is a row (the row recipe's panel hover) with a chevron at the end, sections parted by engraved rules. Opening, the panel grows to its content on the settle spring (a control growing to new content, no overshoot) while its content fades in, and the shared chevron turns from right to down on the settle spring. Closing, height and content leave on the release spring and the chevron turns back. Reduce Motion: the height snaps, the content crossfades, the chevron snaps. (the row recipe (panel hover), the rule recipe, the shared icon set chevron; Base UI Accordion)
     public static let accordion = MetalObjectRecipe(
         name: "accordion",
         layers: [

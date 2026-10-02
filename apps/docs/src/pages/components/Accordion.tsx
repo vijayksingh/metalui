@@ -13,7 +13,6 @@ import { ComponentPage } from '../../ui/ComponentPage';
  *
  *   grow     the spring the panel grows on
  *   close    the spring it leaves on
- *   chevron  the spring and angle the chevron turns by
  * Springs are the system's classes; slow stretches every duration.
  * ───────────────────────────────────────────────────────── */
 
@@ -44,15 +43,11 @@ function OpeningTuner() {
   const d = useDialKit('Accordion opening', {
     grow: { type: 'select', options: SPRING_NAMES, default: 'settle' },
     close: { type: 'select', options: SPRING_NAMES, default: 'release' },
-    chevron: { type: 'select', options: SPRING_NAMES, default: 'part' },
-    turn: [90, 45, 180],
     slow: [1, 1, 10],
   });
   const vars = {
     ...springVars('settle', d.grow as SpringName, d.slow),
     ...springVars('release', d.close as SpringName, d.slow),
-    ...springVars('part', d.chevron as SpringName, d.slow),
-    '--mu-r-accordion-chevron-turn': `${d.turn}deg`,
   } as React.CSSProperties;
   return (
     <div data-testid="accordion-opening-tuner" className="w-full max-w-[440px]" style={vars}>
@@ -65,11 +60,11 @@ export default function AccordionPage() {
   return (
     <ComponentPage
       title="Accordion"
-      lede="Sections that open in place. The panel grows to its content on the settle spring while the chevron turns on the part spring; closing, both leave on release."
+      lede="Sections that open in place. The panel grows to its content on the settle spring while the shared chevron becomes a downward direction on settle; closing, the panel leaves on release."
       play={{ lede: 'Open and close sections, or Tab between headers and press Space.', caption: 'one at a time · a disabled section', node: (
         <div className="w-full max-w-[440px]"><Sections /></div>
       ) }}
-      more={[{ id: 'opening', title: 'Tune the opening', lede: 'The Accordion opening panel swaps the grow, close and chevron springs, sets the chevron\'s turn, and stretches time. Several sections can be open here.', node: <OpeningTuner /> }]}
+      more={[{ id: 'opening', title: 'Tune the opening', lede: 'The Accordion opening panel swaps the grow and close springs and stretches the panel\'s time. The shared chevron uses the icon set\'s settle morph. Several sections can be open here.', node: <OpeningTuner /> }]}
       usage={`<Accordion defaultValue={['export']}>
   <Accordion.Item value="export">
     <Accordion.Trigger>Export options</Accordion.Trigger>
@@ -82,7 +77,7 @@ export default function AccordionPage() {
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
-        { id: 'AC1', title: 'Grow, never bounce', body: 'The panel grows to its content on the settle spring; only the chevron, a part you touch, may overshoot.', origin: 'Ours' },
+        { id: 'AC1', title: 'Grow, never bounce', body: 'The panel grows to its content without overshoot; the shared chevron morphs from right to down on settle.', origin: 'Ours' },
         { id: 'AC2', title: 'Leaving is quicker', body: 'Closing rides the release spring, faster than opening.', origin: 'Ours' },
         { id: 'AC3', title: 'Say what is inside', body: '"Export options", not "More".', origin: 'Ours' },
       ]}

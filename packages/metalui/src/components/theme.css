@@ -1475,9 +1475,6 @@
 @utility accordion-panel {
   overflow: hidden; height: var(--accordion-panel-height); opacity: 1; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { height: 0; opacity: 0; } &[data-ending-style] { height: 0; opacity: 0; transition: height calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
 }
-@utility accordion-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-panel-open] > & { rotate: var(--mu-r-accordion-chevron-turn); }
-}
 @utility opacity-accordion-trigger-disabled {
   opacity: var(--mu-r-accordion-trigger-disabled);
 }

@@ -174,11 +174,12 @@
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",
-      "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the chevron turns on the part spring, and leaves on release.",
+      "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the shared chevron morphs from right to down on settle, and leaves on release.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

@@ -5,7 +5,7 @@
       "name": "accordion",
       "title": "Accordion",
       "status": "alpha",
-      "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the chevron turns on the part spring, and leaves on release.",
+      "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the shared chevron morphs from right to down on settle, and leaves on release.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Accordion",

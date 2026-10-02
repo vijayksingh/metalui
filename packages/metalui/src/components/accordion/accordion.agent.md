@@ -20,15 +20,15 @@ Sections that open in place. React: `Accordion` from `@unlocalhosted/metalui`, o
 
 | State | Look | Motion |
 |---|---|---|
-| closed | the header row, chevron pointing along | – |
+| closed | the header row, shared chevron pointing right | – |
 | hover | the row lifts (row panel hover) | the row's own fade |
 | opening | the panel grows to its content; content fades in | settle spring, no overshoot |
-| open | chevron turned a quarter | chevron on the part spring (may overshoot its stop) |
-| closing | height and content leave | release spring; chevron turns back |
+| open | shared chevron points down | quarter-turn morph on the settle spring |
+| closing | height and content leave | release spring; shared chevron morphs back on settle |
 | focus | the green ring on the header | – |
 | disabled | 40 % | – |
 
-Reduce Motion: the height snaps, the content crossfades, the chevron snaps.
+Reduce Motion: the height snaps, the content crossfades, the shared glyph changes in place. React uses `MorphIcon`; SwiftUI uses `MetalIcon(.chevron)` on the same settle class. No separate SVG or CSS rotation. SwiftUI panel/header material remains work in progress.
 
 ## API
 

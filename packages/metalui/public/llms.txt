@@ -16,7 +16,7 @@
 
 ## Components
 
-- [Accordion](https://metalui.dev/r/accordion.md): Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the chevron turns on the part spring, and leaves on release.
+- [Accordion](https://metalui.dev/r/accordion.md): Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the shared chevron morphs from right to down on settle, and leaves on release.
 - [Alert dialog](https://metalui.dev/r/alert-dialog.md): A question that must be answered: the dialog's plate and motion; a click outside shakes it once on the refusal spring instead of closing it, and focus starts on Cancel.
 - [Attachment](https://metalui.dev/r/attachment.md): A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.
 - [Avatar](https://metalui.dev/r/avatar.md): A person as a small raised disc: initials, or a photo that fades in once loaded; presence as the LED; a group overlaps and spreads apart on the object spring when hovered.
