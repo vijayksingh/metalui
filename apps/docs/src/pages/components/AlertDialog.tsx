@@ -7,6 +7,7 @@ import { type SpringName } from '../../../../../packages/metalui/src/motion/spri
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/alert-dialog/alert-dialog.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalAlertDialog.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/components/alert-dialog/alert-dialog.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -100,7 +101,7 @@ export default function AlertDialogPage() {
       lede="A question that must be answered. It rises like a dialog, starts on Cancel, and refuses a click outside: the plate shakes once instead of closing, because it needs an answer."
       play={{ lede: 'Open it, then try clicking outside. Esc cancels.', caption: deleted ? 'deleted · the regions are in the past' : 'question · consequence · cancel · confirm', node: (
         <div className="flex min-h-[120px] items-center justify-center">
-          <Button cap="destructive" onClick={() => { setDeleted(false); setOpen(true); }}>Delete 3 regions…</Button>
+          <Button cap="destructive" icon={<TrashIcon />} onClick={() => { setDeleted(false); setOpen(true); }}>Delete 3 regions…</Button>
           <AlertDialog open={open} onOpenChange={setOpen}>
             <Question onDelete={() => setDeleted(true)} />
           </AlertDialog>
@@ -113,13 +114,14 @@ export default function AlertDialogPage() {
     <AlertDialog.Description>Their notes move to the past for 30 days.</AlertDialog.Description>
     <AlertDialog.Actions>
       <AlertDialog.Cancel />
-      <AlertDialog.Confirm onClick={deleteRegions}>Delete regions</AlertDialog.Confirm>
+      <AlertDialog.Confirm icon={<TrashIcon />} onClick={deleteRegions}>Delete regions</AlertDialog.Confirm>
     </AlertDialog.Actions>
   </AlertDialog.Popup>
 </AlertDialog>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

@@ -7,9 +7,11 @@ for (const colorway of COLORWAYS) {
   test(`starts on Cancel, refuses a click outside, cancels on Esc, confirms in ${colorway}`, async ({ page }) => {
     await open(page, '/components/alert-dialog', colorway);
     const trigger = page.getByRole('button', { name: 'Delete 3 regions…' });
+    await expect(trigger.locator('svg.mu-ic-trash')).toHaveCount(1);
     await trigger.click();
     const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions?' });
     await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole('button', { name: 'Delete regions' }).locator('svg.mu-ic-trash')).toHaveCount(1);
     await expect(dialog.getByRole('button', { name: 'Cancel' })).toBeFocused();
     await page.waitForTimeout(600);
     await page.screenshot({ path: capture(`alert-dialog-${colorway}`) });

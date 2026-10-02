@@ -48,3 +48,5 @@ Reduce Motion: no shake; the rise is a crossfade.
 - A click outside is refused, not obeyed: the shake says an answer is needed.
 
 For permanent loss, Confirm may pass `hold` and a `trash` icon. Button blocks short clicks before Base UI's Close handler runs, so early release leaves the question open. Space and Enter use the same hold; completion fires the action once, then closes. The cancel button remains initially focused. The host can pass `hold={false}` for an ordinary single-pointer confirm; the question still guards the action. Never require holding for an undoable delete.
+
+The deletion launcher and confirm both lead with the authored `trash` glyph: `icon={<TrashIcon />}`. Cancel stays a plain choice. The native destructive confirm already chooses `.trash`; its launcher uses `MetalButton("Delete regions…", icon: .trash)` before `.metalAlertDialog(...)`. Opening the question is an ordinary press; only the irreversible confirm requests holding. The enclosing key is the sole accessible control, and the glyph's finite act stops at rest or under reduced motion.

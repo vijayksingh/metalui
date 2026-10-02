@@ -34,6 +34,8 @@ private struct MetalAlertQuestion: View {
 }
 
 public extension View {
+    /// Use `MetalButton("Delete regions…", icon: .trash)` for the launcher; the destructive
+    /// confirm uses the same canonical glyph while Cancel stays a plain choice.
     /// Set `hold` only for irreversible loss. Undoable deletion uses an ordinary press.
     /// Hosts may set it false when a pointer cannot sustain a hold; the question still guards loss.
     func metalAlertDialog(
