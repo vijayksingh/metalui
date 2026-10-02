@@ -677,6 +677,14 @@
   --spacing-status-badge-pad: var(--mu-r-status-badge-pad);
   --spacing-status-badge-gap: var(--mu-r-status-badge-gap);
   --tracking-status-badge-tracking: var(--mu-r-status-badge-tracking);
+  --spacing-status-lamp-size: var(--mu-r-status-lamp-size);
+  --spacing-status-lamp-size-small: var(--mu-r-status-lamp-size-small);
+  --spacing-status-lamp-bezel: var(--mu-r-status-lamp-bezel);
+  --color-status-ink-live: var(--mu-r-status-ink-live);
+  --color-status-ink-waiting: var(--mu-r-status-ink-waiting);
+  --color-status-ink-failed: var(--mu-r-status-ink-failed);
+  --color-status-ink-link: var(--mu-r-status-ink-link);
+  --color-status-ink-off: var(--mu-r-status-ink-off);
   --spacing-button-height: var(--mu-r-button-self-height);
   --spacing-button-pad: var(--mu-r-button-self-pad);
   --spacing-button-gap: var(--mu-r-button-self-gap);
@@ -1903,9 +1911,29 @@
   background: var(--mu-r-status-badge-background);
   box-shadow: var(--mu-r-status-badge-shadow);
 }
+@utility recipe-status-socket {
+  background: var(--mu-r-status-socket-background);
+  box-shadow: var(--mu-r-status-socket-shadow);
+}
+@utility recipe-status-lamp {
+  background: var(--mu-r-status-lamp-background);
+  box-shadow: var(--mu-r-status-lamp-shadow);
+}
+@utility recipe-status-lamp-off {
+  background: var(--mu-r-status-lamp-off-background);
+}
+@utility status-strong-tint {
+  background: color-mix(in srgb, var(--mu-self) calc(var(--mu-r-status-badge-tint) * 100%), transparent);
+}
+@utility status-surface {
+  &:is([data-surface=transparent], [data-surface=frosted]) { background: var(--mu-frost-strong); color: var(--mu-ink); } &[data-surface=frosted] { -webkit-backdrop-filter: var(--mu-backdrop); backdrop-filter: var(--mu-backdrop); } @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) { &:is([data-surface=transparent], [data-surface=frosted]) { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; } } :is([data-mu-transparency=reduce], [data-mu-power=low]) &:is([data-surface=transparent], [data-surface=frosted]), &:is([data-mu-transparency=reduce], [data-mu-power=low]):is([data-surface=transparent], [data-surface=frosted]) { background: var(--mu-frost-opaque); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
 @utility type-status-badge {
   font: var(--mu-r-status-badge-font);
   letter-spacing: var(--mu-r-status-badge-tracking);
+}
+@utility opacity-status-badge-tint {
+  opacity: var(--mu-r-status-badge-tint);
 }
 @utility recipe-button {
   background: var(--mu-r-button-self-background);

@@ -1415,7 +1415,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A tiny lamp lit from the top left, and the status badge: a raised pill with an LED and the state engraved; not pressable. (reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off)
+    /// An opaque dark socket holds a saturated 8pt lens (6 small), lit in the state ink with a quiet halo. Words and gesture also identify the state. A readable 26pt badge holds its own ground with a defined edge; default is solid, quiet has no plate, strong adds state tint. Transparent/frosted use the existing frost foundation and its opaque twin. (reviewed waiting/status language; opaque socket; measured current-ink lamps; existing cap and frost material recipes)
     public static let status = MetalObjectRecipe(
         name: "status",
         layers: [
@@ -1434,14 +1434,20 @@ public enum MetalRecipes {
             .init(part: "badge", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(49.0, 49.0, 52.0, 1.0)), 0.0), .init(.color(MetalRGBA(40.0, 40.0, 43.0, 1.0)), 1.0)])), // mu-recipe:status:12 linear-gradient(#313134, #28282B)
             .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:status:13 inset 0 0 4px 1px rgba(255,255,255,.85)
             .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:status:14 inset 1px 2px 2px -1px #FFFFFF
-            .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:status:15 0 0 0 .5px rgba(24,22,16,.05)
+            .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.18)))), // mu-recipe:status:15 0 0 0 .5px rgba(24,22,16,.18)
             .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:status:16 0 1px 2px rgba(24,22,16,.07)
             .init(part: "badge", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.09)))), // mu-recipe:status:17 0 5px 12px -4px rgba(24,22,16,.09)
             .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:status:18 inset 0 0 4px 1px rgba(255,255,255,.06)
             .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:status:19 inset 1px 2px 2px -1px rgba(255,255,255,.12)
-            .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:status:20 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.65)))), // mu-recipe:status:20 0 0 0 .5px rgba(0,0,0,.65)
             .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:status:21 0 1px 2px rgba(0,0,0,.3)
             .init(part: "badge", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:status:22 0 5px 12px -4px rgba(0,0,0,.3)
+            .init(part: "socket", state: nil, colorway: nil, fill: .solid(.selfColor(alpha: 1.0))), // mu-recipe:status:23 color-mix(in srgb, var(--mu-self) 100%, transparent)
+            .init(part: "socket", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:status:24 inset 0 1px 1px rgba(0,0,0,.45)
+            .init(part: "socket", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.2)))), // mu-recipe:status:25 0 0 0 .5px rgba(255,255,255,.2)
+            .init(part: "lamp", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.4)), 0.18), .init(.selfColor(alpha: 1.0), 0.5), .init(.selfColor(alpha: 1.0), 1.0)])), // mu-recipe:status:26 radial-gradient(circle at 40% 35%, rgba(255,255,255,.4) 0 18%, color-mix(in srgb, var(--mu-self) 100%, transparent) 50%, color-mix(in srgb, var(--mu-self) 100%, transparent))
+            .init(part: "lamp", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 4.0, spread: 0.0, paint: .selfColor(alpha: 0.35))), // mu-recipe:status:27 0 0 4px color-mix(in srgb, var(--mu-self) 35%, transparent)
+            .init(part: "lamp", state: "off", colorway: nil, fill: .solid(.selfColor(alpha: 1.0))), // mu-recipe:status:28 color-mix(in srgb, var(--mu-self) 100%, transparent)
         ],
         props: [
             "led.size": .number(5.0),
@@ -1449,8 +1455,17 @@ public enum MetalRecipes {
             "badge.height": .number(26.0),
             "badge.pad": .number(11.0),
             "badge.gap": .number(7.0),
-            "badge.font": .text("500 9.5px/1 mono"),
-            "badge.tracking": .text("0.1em"),
+            "badge.font": .text("500 12px/16px sans"),
+            "badge.tracking": .text("0.01em"),
+            "badge.tint": .text("0.12"),
+            "lamp.size": .number(8.0),
+            "lamp.size-small": .number(6.0),
+            "lamp.bezel": .number(1.0),
+            "ink.live": .perColorway(bone: "#009783", graphite: "#22CBA8"),
+            "ink.waiting": .perColorway(bone: "#B87900", graphite: "#E8AA28"),
+            "ink.failed": .perColorway(bone: "#D33849", graphite: "#F15A65"),
+            "ink.link": .perColorway(bone: "#416FDF", graphite: "#678EFF"),
+            "ink.off": .text("#242427"),
         ]
     )
 

@@ -1329,7 +1329,7 @@
   --mu-r-hover-engraving-led-size: 5px;
   --mu-r-hover-engraving-led-gap: 4px;
   --mu-r-hover-engraving-led-lift: 1px;
-  /* status: reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off */
+  /* status: reviewed waiting/status language; opaque socket; measured current-ink lamps; existing cap and frost material recipes */
   --mu-r-status-led-shadow:
     /* mu-recipe:status:0 */ 0 0 0 .5px rgba(0,0,0,.25);
   --mu-r-status-led-live-shadow:
@@ -1343,13 +1343,29 @@
     /* mu-recipe:status:5 */ radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A);
   --mu-r-status-led-link-background:
     /* mu-recipe:status:6 */ radial-gradient(circle at 40% 35%, #D8E6FF 0 18%, #6F9BFF 45%, #2457F2);
+  --mu-r-status-socket-background:
+    /* mu-recipe:status:23 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-status-socket-shadow:
+    /* mu-recipe:status:24 */ inset 0 1px 1px rgba(0,0,0,.45),
+    /* mu-recipe:status:25 */ 0 0 0 .5px rgba(255,255,255,.2);
+  --mu-r-status-lamp-background:
+    /* mu-recipe:status:26 */ radial-gradient(circle at 40% 35%, rgba(255,255,255,.4) 0 18%, color-mix(in srgb, var(--mu-self) 100%, transparent) 50%, color-mix(in srgb, var(--mu-self) 100%, transparent));
+  --mu-r-status-lamp-shadow:
+    /* mu-recipe:status:27 */ 0 0 4px color-mix(in srgb, var(--mu-self) 35%, transparent);
+  --mu-r-status-lamp-off-background:
+    /* mu-recipe:status:28 */ color-mix(in srgb, var(--mu-self) 100%, transparent);
   --mu-r-status-led-size: 5px;
   --mu-r-status-led-size-small: 4px;
   --mu-r-status-badge-height: 26px;
   --mu-r-status-badge-pad: 11px;
   --mu-r-status-badge-gap: 7px;
-  --mu-r-status-badge-font: 500 9.5px/1 var(--mu-mono);
-  --mu-r-status-badge-tracking: 0.1em;
+  --mu-r-status-badge-font: 500 12px/16px var(--mu-sans);
+  --mu-r-status-badge-tracking: 0.01em;
+  --mu-r-status-badge-tint: 0.12;
+  --mu-r-status-lamp-size: 8px;
+  --mu-r-status-lamp-size-small: 6px;
+  --mu-r-status-lamp-bezel: 1px;
+  --mu-r-status-ink-off: #242427;
   /* button: reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps */
   --mu-r-button-graphite-background:
     /* mu-recipe:button:36 */ rgba(255,255,255,.09);
@@ -2149,6 +2165,14 @@
     inset 0 0 6px 2px rgba(255,255,255,.12),
     0 1px 2px rgba(0,0,0,.12),
     0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
+  --mu-r-status-socket-background:
+    color-mix(in srgb, var(--mu-self) 100%, transparent);
+  --mu-r-status-lamp-background:
+    radial-gradient(circle at 40% 35%, rgba(255,255,255,.4) 0 18%, color-mix(in srgb, var(--mu-self) 100%, transparent) 50%, color-mix(in srgb, var(--mu-self) 100%, transparent));
+  --mu-r-status-lamp-shadow:
+    0 0 4px color-mix(in srgb, var(--mu-self) 35%, transparent);
+  --mu-r-status-lamp-off-background:
+    color-mix(in srgb, var(--mu-self) 100%, transparent);
   --mu-r-silhouette-link-background:
     radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
   --mu-r-silhouette-swatch-background:
@@ -2215,9 +2239,13 @@
   --mu-r-status-badge-shadow:
     /* mu-recipe:status:13 */ inset 0 0 4px 1px rgba(255,255,255,.85),
     /* mu-recipe:status:14 */ inset 1px 2px 2px -1px #FFFFFF,
-    /* mu-recipe:status:15 */ 0 0 0 .5px rgba(24,22,16,.05),
+    /* mu-recipe:status:15 */ 0 0 0 .5px rgba(24,22,16,.18),
     /* mu-recipe:status:16 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:status:17 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-status-ink-live: #009783;
+  --mu-r-status-ink-waiting: #B87900;
+  --mu-r-status-ink-failed: #D33849;
+  --mu-r-status-ink-link: #416FDF;
   --mu-r-button-self-background:
     /* mu-recipe:button:0 */ linear-gradient(#FFFFFF,#F4F3F0);
   --mu-r-button-self-shadow:
@@ -2710,9 +2738,13 @@
   --mu-r-status-badge-shadow:
     /* mu-recipe:status:18 */ inset 0 0 4px 1px rgba(255,255,255,.06),
     /* mu-recipe:status:19 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
-    /* mu-recipe:status:20 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:status:20 */ 0 0 0 .5px rgba(0,0,0,.65),
     /* mu-recipe:status:21 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:status:22 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-ink-live: #22CBA8;
+  --mu-r-status-ink-waiting: #E8AA28;
+  --mu-r-status-ink-failed: #F15A65;
+  --mu-r-status-ink-link: #678EFF;
   --mu-r-button-self-background:
     /* mu-recipe:button:1 */ linear-gradient(#313134,#28282B);
   --mu-r-button-self-shadow:
@@ -3206,9 +3238,13 @@
     --mu-r-status-badge-shadow:
       inset 0 0 4px 1px rgba(255,255,255,.06),
       inset 1px 2px 2px -1px rgba(255,255,255,.12),
-      0 0 0 .5px rgba(0,0,0,.55),
+      0 0 0 .5px rgba(0,0,0,.65),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-ink-live: #22CBA8;
+    --mu-r-status-ink-waiting: #E8AA28;
+    --mu-r-status-ink-failed: #F15A65;
+    --mu-r-status-ink-link: #678EFF;
     --mu-r-button-self-background:
       linear-gradient(#313134,#28282B);
     --mu-r-button-self-shadow:
