@@ -30,7 +30,7 @@ try {
 import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Button, Surface, NumericCue, EnumCue, DateCue, ColourCue, TagCue, TooltipProvider } from '@unlocalhosted/metalui';
+import { Button, Surface, NumericCue, EnumCue, DateCue, ColourCue, TagCue, PersonCue, LinkCue, TooltipProvider } from '@unlocalhosted/metalui';
 import { SendAwayIcon } from '@unlocalhosted/metalui/icons';
 import { LifeIcon } from '@unlocalhosted/metalui/icons/life';
 import * as Sound from '@unlocalhosted/metalui/sound';
@@ -44,6 +44,8 @@ const cues = [
   [DateCue, { value: '2026-10-04', today: '2026-10-03', min: '2026-10-01', max: '2026-10-31', footprint: ['2026-10-31', 'tomorrow'], label: 'Delivery', onValueChange: noop }, 'mu-date-cue'],
   [ColourCue, { value: '#FF6B3D', label: 'Ink', onChange: noop }, 'mu-colour-cue'],
   [TagCue, { value: '#poster', recentTags: ['#poster', '#studio'], label: 'Tag', onChange: noop }, 'mu-enum-cue'],
+  [PersonCue, { value: 'Sam', choices: [{ value: 'Sam' }, { value: 'Alexandra Rivera' }], label: 'Assigned person', onChange: noop }, 'mu-person-cue'],
+  [LinkCue, { value: 'https://metalui.dev', footprint: ['https://metalui.dev/components/calendar'], label: 'Reference', onChange: noop }, 'mu-link-cue'],
 ];
 for (const [Control, props, marker] of cues) {
   const rendered = renderToStaticMarkup(createElement(TooltipProvider, null, createElement(Control, props)));
