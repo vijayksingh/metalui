@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { SwapText } from '../../motion/swap';
 import { useAwake } from '../../motion/awake';
+import { useWaiting, type WaitingState } from '../../motion/waiting';
 import { motionReduced } from '../../motion/reduced';
 import { Button as BaseButton } from '@base-ui/react/button';
 
@@ -14,7 +15,7 @@ import { Button as BaseButton } from '@base-ui/react/button';
  */
 export type ButtonCap = 'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger';
 
-export type ButtonState = 'idle' | 'waiting' | 'done' | 'error';
+export type ButtonState = WaitingState;
 
 export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
@@ -84,7 +85,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
 ) {
   const element = React.useRef<HTMLElement>(null);
   React.useImperativeHandle(ref, () => element.current!);
-  const face = useButtonFace(state, element, showDelay, minVisible);
+  const { phase: face } = useWaiting(state ?? 'idle', element, { showDelay, minVisible });
   const blocked = state === 'waiting' || state === 'done' || face === 'waiting';
   const fill = React.useRef<HTMLSpanElement>(null);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -213,29 +214,6 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
   );
 });
 
-
-// State changes own one delayed clock. A newer request cancels the old result timer.
-function useButtonFace(state: ButtonState | undefined, root: React.RefObject<HTMLElement | null>, delay?: number, minimum?: number) {
-  const [face, setFace] = React.useState<ButtonState>(state === 'waiting' ? 'idle' : state ?? 'idle');
-  const visibleAt = React.useRef<number | undefined>(undefined);
-  React.useEffect(() => {
-    const css = root.current ? getComputedStyle(root.current) : undefined;
-    const timing = (override: number | undefined, key: string, fallback: number) => Math.max(0, override ?? (parseFloat(css?.getPropertyValue(key) ?? '') || fallback));
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    if (state === 'waiting') {
-      if (visibleAt.current === undefined) {
-        setFace('idle');
-        timer = setTimeout(() => { visibleAt.current = performance.now(); setFace('waiting'); }, timing(delay, '--mu-r-button-waiting-delay', 400));
-      }
-    } else {
-      const remaining = state === 'idle' || state === undefined || visibleAt.current === undefined ? 0 : timing(minimum, '--mu-r-button-waiting-minimum', 300) - (performance.now() - visibleAt.current);
-      const finish = () => { visibleAt.current = undefined; setFace(state ?? 'idle'); };
-      if (remaining > 0) timer = setTimeout(finish, remaining); else finish();
-    }
-    return () => clearTimeout(timer);
-  }, [state, root, delay, minimum]);
-  return face;
-}
 
 function ButtonWaitArc() {
   const [ref, awake] = useAwake();

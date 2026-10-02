@@ -1452,10 +1452,6 @@
   --tw-duration: var(--mu-r-spinner-self-turn);
   transition-duration: var(--mu-r-spinner-self-turn);
 }
-@utility duration-spinner-delay {
-  --tw-duration: var(--mu-r-spinner-self-delay);
-  transition-duration: var(--mu-r-spinner-self-delay);
-}
 @utility duration-spinner-fade {
   --tw-duration: var(--mu-r-spinner-self-fade);
   transition-duration: var(--mu-r-spinner-self-fade);
@@ -1996,14 +1992,6 @@
 @utility duration-button-hold-duration {
   --tw-duration: var(--mu-r-button-hold-duration);
   transition-duration: var(--mu-r-button-hold-duration);
-}
-@utility duration-button-waiting-delay {
-  --tw-duration: var(--mu-r-button-waiting-delay);
-  transition-duration: var(--mu-r-button-waiting-delay);
-}
-@utility duration-button-waiting-minimum {
-  --tw-duration: var(--mu-r-button-waiting-minimum);
-  transition-duration: var(--mu-r-button-waiting-minimum);
 }
 @utility recipe-kbd {
   background: var(--mu-r-kbd-self-background);

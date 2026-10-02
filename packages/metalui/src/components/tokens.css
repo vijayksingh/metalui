@@ -101,6 +101,9 @@
   --mu-swap-turn: var(--mu-motion-step);
   --mu-swap-focus: var(--mu-motion-focus-step);
   --mu-swap-shrink-delay: var(--mu-spring-settle-half);
+  --mu-waiting-show-delay: 400ms;
+  --mu-waiting-minimum-visible: 300ms;
+  --mu-waiting-long-after: 10000ms;
   --mu-radius-key: 6px;
   --mu-radius-row: 12px;
   --mu-radius-plate: 18px;
@@ -1009,7 +1012,7 @@
   --mu-r-spinner-self-small: 12px;
   --mu-r-spinner-self-ring: 2.5px;
   --mu-r-spinner-self-turn: 900ms;
-  --mu-r-spinner-self-delay: 400ms;
+  --mu-r-spinner-self-delay: var(--mu-waiting-show-delay);
   --mu-r-spinner-self-fade: 160ms;
   --mu-r-spinner-self-tail: 0.72;
   /* number-field: the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField */
@@ -1407,8 +1410,8 @@
   --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-destructive-ink: #FFFFFF;
   --mu-r-button-hold-duration: 800ms;
-  --mu-r-button-waiting-delay: 400ms;
-  --mu-r-button-waiting-minimum: 300ms;
+  --mu-r-button-waiting-delay: var(--mu-waiting-show-delay);
+  --mu-r-button-waiting-minimum: var(--mu-waiting-minimum-visible);
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */
   --mu-r-kbd-strip-background:
     /* mu-recipe:kbd:12 */ linear-gradient(#303033, #262628);

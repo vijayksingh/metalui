@@ -249,17 +249,16 @@ public struct MetalButton<Icon: View>: View {
     private var faceLabel: String { face == .waiting ? waitingLabel : face == .done ? doneLabel : face == .error ? errorLabel : title }
 
     @MainActor private func updateFace() async {
-        let recipe = MetalRecipes.button
         if state == .waiting {
             guard visibleAt == nil else { return }
             face = .idle
-            try? await Task.sleep(for: .seconds(recipe.durationSeconds("waiting.delay")))
+            try? await Task.sleep(for: .seconds(MetalWaiting.showDelay))
             guard !Task.isCancelled else { return }
             visibleAt = .now
             face = .waiting
         } else {
             if state != .idle && state != nil, let visibleAt {
-                let minimum = Duration.seconds(recipe.durationSeconds("waiting.minimum"))
+                let minimum = Duration.seconds(MetalWaiting.minimumVisible)
                 let elapsed = visibleAt.duration(to: .now)
                 if elapsed < minimum { try? await Task.sleep(for: minimum - elapsed) }
             }

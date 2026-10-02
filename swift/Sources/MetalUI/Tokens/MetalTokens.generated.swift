@@ -806,7 +806,7 @@ public enum MetalRecipes {
             "self.small": .number(12.0),
             "self.ring": .number(2.5),
             "self.turn": .text("900ms"),
-            "self.delay": .text("400ms"),
+            "self.delay": .text("var(--mu-waiting-show-delay)"),
             "self.fade": .text("160ms"),
             "self.tail": .text("0.72"),
         ]
@@ -1565,8 +1565,8 @@ public enum MetalRecipes {
             "primary.ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
             "destructive.ink": .text("#FFFFFF"),
             "hold.duration": .text("800ms"),
-            "waiting.delay": .text("400ms"),
-            "waiting.minimum": .text("300ms"),
+            "waiting.delay": .text("var(--mu-waiting-show-delay)"),
+            "waiting.minimum": .text("var(--mu-waiting-minimum-visible)"),
         ]
     )
 

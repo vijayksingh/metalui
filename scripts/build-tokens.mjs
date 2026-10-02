@@ -69,6 +69,10 @@ const swap = Object.entries(T.swap).filter(([k]) => !k.startsWith('$')).map(([k,
 // ---------- foundations ----------
 const F = T.foundations;
 const LAYOUT = F.layout;
+const WAITING = F.waiting;
+for (const [name, duration] of Object.entries(WAITING)) {
+  if (!Number.isFinite(duration) || duration < 0) throw new Error(`foundations.waiting.${name} must be a non-negative finite duration`);
+}
 if (!Number.isFinite(LAYOUT['column-min']) || LAYOUT['column-min'] <= 0) {
   throw new Error('foundations.layout.column-min must be a positive finite width');
 }
@@ -77,6 +81,7 @@ for (const [name, step] of Object.entries(LAYOUT.gap)) {
 }
 const FAMILY = { sans: 'var(--mu-sans)', mono: 'var(--mu-mono)', pixel: 'var(--mu-pixel)' };
 const foundationVars = [
+  ...Object.entries(WAITING).map(([k, v]) => `  --mu-waiting-${k}: ${v}ms;`),
   ...Object.entries(F.radius).map(([k, v]) => `  --mu-radius-${k}: ${v}px;`),
   ...F.space.map((v) => `  --mu-space-${v}: ${v}px;`),
   ...Object.entries(LAYOUT.gap).map(([k, v]) => `  --mu-layout-gap-${k}: var(--mu-space-${v});`),
@@ -1038,6 +1043,11 @@ ${Object.entries(LAYOUT.gap).map(([k, v]) => `    public static let ${camel(`gap
     public static let columnMin: Double = ${num(LAYOUT['column-min'])}
 }
 
+/// Waiting policy, in seconds. Fast work has no wait face; shown waits retain a minimum.
+public enum MetalWaiting {
+${Object.entries(WAITING).map(([k, v]) => `    public static let ${camel(k)}: Double = ${num(v / 1000)}`).join('\n')}
+}
+
 /// Control heights in points.
 public enum MetalHeight {
     public static let steps: [Double] = [${F.height.map(num).join(', ')}]
@@ -1069,6 +1079,7 @@ ${Object.entries(F.type).map(role).join('\n')}
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalFoundations.generated.swift', foundationsSwift);
+emit('packages/metalui/src/motion/waiting.generated.ts', `// Generated from tokens/tokens.json foundations.waiting. Do not edit.\nexport const WAITING_TIMING = ${JSON.stringify(Object.fromEntries(Object.entries(WAITING).map(([k, v]) => [camel(k), v])), null, 2)} as const;\n`);
 
 // ---------- Lamp gestures for SwiftUI (status.gestures) ----------
 const allGestures = Object.entries(T.status.gestures).filter(([k]) => !k.startsWith('$') && k !== 'dim');

@@ -43,6 +43,13 @@ public enum MetalLayout {
     public static let columnMin: Double = 240.0
 }
 
+/// Waiting policy, in seconds. Fast work has no wait face; shown waits retain a minimum.
+public enum MetalWaiting {
+    public static let showDelay: Double = 0.4
+    public static let minimumVisible: Double = 0.3
+    public static let longAfter: Double = 10.0
+}
+
 /// Control heights in points.
 public enum MetalHeight {
     public static let steps: [Double] = [20.0, 24.0, 28.0, 32.0, 36.0, 40.0, 44.0]

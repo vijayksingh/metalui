@@ -34,7 +34,7 @@
       "name": "motion",
       "type": "registry:lib",
       "title": "MetalUI motion",
-      "description": "Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.",
+      "description": "Springs, swap, indicator, refuse, waiting, awake and haptic helpers that MetalUI components use.",
       "registryDependencies": [],
       "files": [
         {
@@ -86,6 +86,16 @@
           "path": "packages/metalui/src/motion/swap.tsx",
           "type": "registry:ui",
           "target": "components/metalui/motion/swap.tsx"
+        },
+        {
+          "path": "packages/metalui/src/motion/waiting.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/waiting.ts"
+        },
+        {
+          "path": "packages/metalui/src/motion/waiting.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/waiting.generated.ts"
         }
       ]
     },
