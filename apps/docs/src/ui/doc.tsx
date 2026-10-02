@@ -27,11 +27,11 @@ export function PageHeader({ title, lede, kicker, tags, children }: { title: str
   return (
     <header id="head" className="page-head">
       <span className="eng">{auto || 'MetalUI · Soft Hardware'}</span>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
-        <h1>{title}</h1>
+      <div className="mu-cluster items-start justify-between gap-mu-space-16">
+        <h1 className="type-doc-title">{title}</h1>
         <CopyPageButton />
       </div>
-      <p>{lede}</p>
+      <p className="type-doc-lede">{lede}</p>
       {tags && (
         <div className="status-row">
           {tags.map((t) => {

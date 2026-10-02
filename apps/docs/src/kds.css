@@ -231,8 +231,8 @@ main { min-width: 0; padding-top: 40px; }
 
 .page-head { margin: 0 0 40px; max-width: 760px; }
 .page-head .eng { display: block; margin-bottom: 12px; }
-.page-head h1 { margin: 0 0 12px; font: 600 32px/38px var(--sans); letter-spacing: -.032em; text-wrap: balance; }
-.page-head p { margin: 0; font: 400 16px/26px var(--sans); color: var(--ink2); letter-spacing: -.012em; text-wrap: pretty; }
+.page-head h1 { margin: 0 0 var(--mu-space-12); text-wrap: balance; }
+.page-head p { margin: 0; color: var(--ink2); text-wrap: pretty; }
 .status-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 
 section.sec { margin: 0 0 72px; }
@@ -422,8 +422,6 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   .side { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; height: auto; align-self: stretch; z-index: 35; padding: 16px 16px 48px; background: var(--frost-strong); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); display: none; }
   .nav-open .side { display: block; animation: rise var(--spring-surface-d) var(--spring-surface) both; }
   main { padding-top: 28px; }
-  .page-head h1 { font-size: 26px; line-height: 32px; }
-  .page-head p { font-size: 15px; line-height: 24px; }
   .spec { grid-template-columns: 1fr; }
   .pair { grid-template-columns: 1fr; }
   .stage { padding: 36px 16px 76px; gap: 24px; border-radius: 24px; }
