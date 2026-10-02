@@ -49,16 +49,18 @@ private struct MetalButtonBody: View {
     @Environment(\.metalButtonGroupWidth) private var groupWidth
     @State private var segmentID = UUID()
     @Environment(\.metalButtonHolding) private var holding
+    @Environment(\.metalButtonKeyboardPressed) private var keyboardPressed
     @Environment(\.metalButtonWaiting) private var waiting
     @Environment(\.metalButtonIconOnly) private var iconOnly
     @Environment(\.metalButtonHoldEnabled) private var holdEnabled
     @Environment(\.isFocused) private var isFocused
+    @Environment(\.metalButtonFocused) private var focused
     @Environment(\.metalColorway) private var colorway
     @State private var hovering = false
 
     var body: some View {
-        let pressing = isEnabled && configuration.isPressed
-        let isDown = toggleTravel ? (pressing || latched) : isEnabled && (configuration.isPressed || holding || waiting || latched)
+        let pressing = isEnabled && (configuration.isPressed || keyboardPressed)
+        let isDown = toggleTravel ? (pressing || latched) : isEnabled && (pressing || holding || waiting || latched)
         let depth = toggleTravel ? (pressing ? MetalRecipes.toggle.points("self.catch") : latched ? MetalRecipes.toggle.points("self.latch") : .zero) : isDown ? MetalRecipes.button.points("self.travel") : .zero
         let travel: Animation? = toggleTravel && pressing ? .linear(duration: MetalRecipes.toggle.durationSeconds("self.press")) : MetalMotion.resolve(toggleTravel && latched ? .part : .release, reduceMotion: reduceMotion).animation
         let recipe = MetalRecipes.button
@@ -99,7 +101,7 @@ private struct MetalButtonBody: View {
                 .animation(.easeInOut(duration: Measurement(value: MetalButtonMetrics.fadeMs, unit: UnitDuration.milliseconds).converted(to: .seconds).value), value: isDown)
             }
             .overlay {
-                if isFocused && isEnabled {
+                if (isFocused || focused) && isEnabled {
                     shape
                         .inset(by: group != nil ? recipe.points("self.focus-width") / 2 : -(recipe.points("self.focus-offset") + recipe.points("self.focus-width") / 2))
                         .stroke(MetalShared.focus.color, lineWidth: recipe.points("self.focus-width"))
@@ -144,6 +146,8 @@ public struct MetalButton<Icon: View>: View {
     @MetalMotionPreference private var reduceMotion
     @State private var holding = false
     @State private var keyboardHold: Task<Void, Never>?
+    @State private var keyboardPressed = false
+    @State private var holdConfirmed = false
     @FocusState private var focused: Bool
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.metalButtonGroup) private var group
@@ -200,7 +204,10 @@ public struct MetalButton<Icon: View>: View {
                         Text(errorLabel).hidden()
                         Text(faceLabel).id(faceLabel)
                             .transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
-                    }.clipped().metalAnimation(.settle, value: faceLabel) }
+                    }.id(reduceMotion).clipped().metalAnimation(.settle, value: faceLabel)
+                        .transaction { transaction in
+                            if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+                        } }
                 } else {
                     if let icon { icon.frame(width: glyph, height: glyph) }
                     if !iconOnly { Text(title) }
@@ -210,45 +217,79 @@ public struct MetalButton<Icon: View>: View {
         .buttonStyle(MetalButtonStyle(cap: cap, size: size))
         .environment(\.metalButtonFace, face)
         .environment(\.metalButtonHolding, holding)
+        .environment(\.metalButtonKeyboardPressed, keyboardPressed)
+        .environment(\.metalButtonFocused, focused)
         .environment(\.metalButtonWaiting, face == .waiting)
         .environment(\.metalButtonIconOnly, iconOnly)
         .environment(\.metalButtonHoldEnabled, needsHold)
         .modifier(MetalButtonLongPress(enabled: needsHold && isEnabled && !blocked,
             duration: recipe.durationSeconds("hold.duration"), distance: recipe.points("self.height"),
-            pressing: { holding = $0 }, perform: {
-                guard scenePhase == .active && !blocked else { return }
+            pressing: { pressed in
+                guard keyboardHold == nil else { return }
+                if pressed { holdConfirmed = false }
+                holding = pressed
+            }, perform: {
+                guard scenePhase == .active && !blocked && keyboardHold == nil && !holdConfirmed else { return }
+                holdConfirmed = true
                 holding = false
                 action()
             }))
+        .focusable(isEnabled)
         .focused($focused)
-        .onChange(of: focused) { _, focused in if !focused { keyboardHold?.cancel(); holding = false } }
-        .onChange(of: isEnabled) { _, enabled in if !enabled { keyboardHold?.cancel(); holding = false } }
-        .onChange(of: scenePhase) { _, phase in if phase != .active { keyboardHold?.cancel(); holding = false } }
+        .onChange(of: focused) { _, focused in if !focused { cancelPress() } }
+        .onChange(of: isEnabled) { _, enabled in if !enabled { cancelPress() } }
+        .onChange(of: scenePhase) { _, phase in if phase != .active { cancelPress() } }
         .onKeyPress(keys: [.space, .return], phases: [.down, .repeat, .up]) { key in
-            guard needsHold && isEnabled && !blocked else { return .ignored }
+            guard isEnabled && !blocked else { cancelPress(); return .handled }
+            if !needsHold {
+                if key.phase == .down { keyboardPressed = true }
+                else if key.phase == .up {
+                    let activate = keyboardPressed
+                    keyboardPressed = false
+                    if activate { action() }
+                }
+                return .handled
+            }
             if key.phase == .down {
+                guard !holding else { return .handled }
+                holdConfirmed = false
                 holding = true
                 keyboardHold?.cancel()
                 keyboardHold = Task { @MainActor in
                     try? await Task.sleep(for: .seconds(recipe.durationSeconds("hold.duration")))
-                    guard !Task.isCancelled else { return }
+                    guard !Task.isCancelled && !holdConfirmed else { return }
+                    holdConfirmed = true
                     holding = false
                     action()
                 }
-            } else if key.phase == .up {
+            } else if key.phase == .up, keyboardHold != nil {
                 keyboardHold?.cancel()
+                keyboardHold = nil
                 holding = false
+                holdConfirmed = true
             }
             return .handled
         }
-        .onDisappear { keyboardHold?.cancel() }
+        .onKeyPress(.escape) {
+            cancelPress()
+            return .ignored
+        }
+        .onDisappear { cancelPress() }
         .focusEffectDisabled()
         .accessibilityLabel(faceLabel)
         .accessibilityValue(state == .waiting ? waitingLabel : "")
         .task(id: state) { await updateFace() }
-        .onChange(of: state) { _, _ in if blocked { keyboardHold?.cancel(); holding = false } }
+        .onChange(of: state) { _, _ in if blocked { cancelPress() } }
         .accessibilityHint(needsHold ? "Hold to confirm" : "")
-        .accessibilityAction(named: "Confirm") { if needsHold && isEnabled && !blocked { action() } }
+        .accessibilityAction(named: "Confirm") { if needsHold && isEnabled && !blocked { cancelPress(); action() } }
+    }
+
+    private func cancelPress() {
+        keyboardHold?.cancel()
+        keyboardHold = nil
+        keyboardPressed = false
+        holding = false
+        holdConfirmed = true
     }
 
     private var blocked: Bool { state == .waiting || state == .done || face == .waiting }
@@ -361,5 +402,21 @@ extension EnvironmentValues {
     var metalButtonFace: MetalButtonState {
         get { self[MetalButtonFaceKey.self] }
         set { self[MetalButtonFaceKey.self] = newValue }
+    }
+}
+
+private struct MetalButtonKeyboardPressedKey: EnvironmentKey { static let defaultValue = false }
+private extension EnvironmentValues {
+    var metalButtonKeyboardPressed: Bool {
+        get { self[MetalButtonKeyboardPressedKey.self] }
+        set { self[MetalButtonKeyboardPressedKey.self] = newValue }
+    }
+}
+
+private struct MetalButtonFocusedKey: EnvironmentKey { static let defaultValue = false }
+private extension EnvironmentValues {
+    var metalButtonFocused: Bool {
+        get { self[MetalButtonFocusedKey.self] }
+        set { self[MetalButtonFocusedKey.self] = newValue }
     }
 }
