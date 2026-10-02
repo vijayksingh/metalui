@@ -711,6 +711,7 @@
       "description": "A place that receives files, by drop or by picking: a sunk tray whose edge lights while files are dragged in the window, sinks and says 'Let go to attach' with files over it, refuses a file it won't take with a shake, and comes back up on the object spring when they land.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

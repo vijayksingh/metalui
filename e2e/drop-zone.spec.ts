@@ -38,7 +38,7 @@ for (const colorway of COLORWAYS) {
     await input.focus();
     await expect(input).toBeFocused();
     await input.setInputFiles({ name: 'Lisbon.png', mimeType: 'image/png', buffer: Buffer.alloc(10) });
-    await expect(receiver.getByRole('status')).toHaveText('1 files chosen');
+    await expect(receiver.getByRole('status').filter({ hasText: 'files chosen' })).toHaveText('1 files chosen');
     await receiver.screenshot({ path: capture(`drop-zone-compact-${colorway}`) });
   });
 
@@ -92,3 +92,31 @@ test('reduced motion: the edge lights, nothing sinks', async ({ page }) => {
   expect(Number(await zone(page).evaluate((el) => getComputedStyle(el).scale))).toBe(1);
   expect(await zone(page).evaluate((el) => getComputedStyle(el, '::before').boxShadow)).not.toContain('rgba(0, 0, 0, 0)');
 });
+
+for (const colorway of COLORWAYS) {
+  test(`receiving glyph morphs through success, refusal and the next drop in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/drop-zone', colorway);
+    const mark = zone(page).locator('.mu-morph-icon');
+    await expect(mark).toHaveAttribute('data-glyph', 'document');
+    await drag(page, 'drop', 'zone', [pdf]);
+    await expect(mark).toHaveAttribute('data-glyph', 'check');
+    await expect(zone(page).getByRole('status')).toHaveText('1 file attached');
+    await expect.poll(() => mark.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+    await zone(page).screenshot({ path: capture(`drop-zone-accepted-${colorway}`) });
+    await expect(mark).toHaveAttribute('data-glyph', 'document', { timeout: 3000 });
+    await drag(page, 'dragover', 'zone', [{ name: 'wrong.txt', type: 'text/plain' }]);
+    await expect(mark).toHaveAttribute('data-glyph', 'close');
+    await drag(page, 'drop', 'zone', [{ name: 'wrong.txt', type: 'text/plain' }]);
+    await expect(zone(page).getByRole('status')).toHaveText('0 files attached; 1 not attached');
+    await expect(zone(page)).toHaveAttribute('data-refused', '');
+    await zone(page).screenshot({ path: capture(`drop-zone-refused-${colorway}`) });
+    await drag(page, 'dragover', 'zone', [pdf]);
+    await expect(mark).toHaveAttribute('data-glyph', 'document');
+    await drag(page, 'drop', 'zone', [pdf]);
+    await expect(mark).toHaveAttribute('data-glyph', 'check');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect.poll(() => mark.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+    await zone(page).screenshot({ path: capture(`drop-zone-result-${colorway}-reduced`) });
+    await expect(mark).toHaveAttribute('data-glyph', 'document', { timeout: 3000 });
+  });
+}

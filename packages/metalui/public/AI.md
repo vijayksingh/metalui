@@ -1374,7 +1374,7 @@ Keys: P pen, N pencil, M marker, L line, A arrow, R rectangle, O ellipse, E eras
 
 # Drop zone
 
-A place that receives files, by drop or by picking. React: `DropZone` from `@unlocalhosted/metalui`. SwiftUI: `MetalDropZone` (work in progress; `dropDestination(for:)` and `fileImporter` are the system's). A place: it receives files and holds none itself; the files it took are the caller's `Attachment`s, below it. The tray is a `well`; the `drop-zone` recipe adds the edge, the sink and the motion.
+A place that receives files, by drop or by picking. React: `DropZone` from `@unlocalhosted/metalui`. SwiftUI: `MetalDropZone` (`dropDestination(for:)` and `fileImporter` are the system's). A place: it receives files and holds none itself; the files it took are the caller's `Attachment`s, below it. The tray is a `well`; the `drop-zone` recipe adds the edge, the sink and the motion.
 
 ## Use it for
 
@@ -1412,8 +1412,8 @@ Reduce Motion: edge and line change at once; nothing sinks, rises or shakes.
 | React | SwiftUI |
 |---|---|
 | `onFiles(files, refused)` (refused: `{ file, reason: 'type' \| 'size' \| 'count' }[]`) | `onFiles: ([URL]) -> Void` |
-| `accept` (the input's accept: `"image/*,.pdf"`), `maxSize` (bytes), `multiple` (true) | `accept: [UTType]` |
-| `title`, `description`, `overTitle`, `refusedTitle`, `chooseLabel`, `icon` | `title`, `description`, `systemImage` |
+| `accept` (the input's accept: `"image/*,.pdf"`), `maxSize` (bytes), `multiple` (true) | `accept: [UTType]`, `maxSize:`, `multiple:` |
+| `title`, `description`, `overTitle`, `refusedTitle`, `chooseLabel`, `glyph`, `icon` | `title`, `description`, `icon`, `systemImage` |
 | `compact`, `disabled` | `compact:`, `.disabled()` |
 
 While dragging, only the MIME type is known, so an extension pattern (`.pdf`) is checked on drop; size too.
@@ -1430,6 +1430,12 @@ While dragging, only the MIME type is known, so an extension pattern (`.pdf`) is
 - Name what it takes and the largest size in `description`.
 - Show what it took right away, as attachments that land below it.
 - A drop that misses the zone is swallowed while it is on the page, so the browser never opens the file.
+
+## Result glyph and acceptance
+
+`glyph` selects canonical geometry (default `document`, or `image` for an image receiver). It stays mounted as one `MorphIcon`: successful receipt morphs to `check`; refusal morphs to `close`, with a live count of accepted and refused files. A new drag interrupts from the current shape; the result returns to the receiver glyph after `result.pause` (1.6s). Reduced motion lands the whole meaning immediately. Existing `icon` custom artwork remains an escape hatch; use `glyph` for the shared result morph.
+
+Native `MetalDropZone` uses the same well/surface recipes and 20pt `MetalMorphIcon`, with `icon:`, `maxSize:`, `multiple:` and `onRefused:`. Type, size and count are checked before callbacks for both picker and URL drops. `onFiles` receives accepted URLs; `onRefused` receives `MetalDropRefusal` with `.type`, `.size` or `.count`. The caller starts security-scoped access when reading a returned URL. The system’s URL drop destination cannot inspect item types until delivery, so native refusal appears after dropping; target lighting starts when the tray is targeted. Custom `systemImage:` callers retain their artwork. Neither custom artwork escape hatch invents a cross-shape animation.
 
 ---
 

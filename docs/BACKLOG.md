@@ -94,7 +94,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - **Sidebar Toggle** (collapse ↔ expand) and **Split pane** collapse: a `layout` glyph whose panel part slides; today the caller passes a static icon.
 - **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
 - [x] **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
-- **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
+- [x] **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
 - **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
 - **Theme switch** (Bone ↔ Graphite) and the **Motion** switch in the docs header, if they get glyphs (see D).
 - **Table sort**: `arrow` up ↔ down as a morph instead of the rotated hand-drawn arrow.

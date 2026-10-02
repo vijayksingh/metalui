@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
+import { MorphIcon } from '../../icons/MorphIcon';
+import type { MorphIconName } from '../../icons/morph.generated';
 
 /* ─────────────────────────────────────────────────────────
  * DROP ZONE, a place that receives files
@@ -53,7 +55,9 @@ export interface DropZoneProps {
   refusedTitle?: string;
   /** The words that say it can be clicked. */
   chooseLabel?: string;
-  /** A glyph from the icon set, in the well. */
+  /** A canonical glyph in the well; it morphs to a result. Defaults to document. */
+  glyph?: MorphIconName;
+  /** Custom artwork escape hatch. Supply glyph for the shared result morph. */
   icon?: React.ReactNode;
   /** One row, for a composer. */
   compact?: boolean;
@@ -81,7 +85,7 @@ function hasFiles(e: DragEvent | React.DragEvent) {
 
 /** A place that receives files, by drop or by picking. */
 export function DropZone({
-  onFiles, accept, maxSize, multiple = true, disabled, compact, icon, className,
+  onFiles, accept, maxSize, multiple = true, disabled, compact, icon, glyph = 'document', className,
   title = 'Drop files here', description, overTitle = 'Let go to attach', refusedTitle = 'This file isn’t taken here', chooseLabel = 'or choose files',
 }: DropZoneProps) {
   const root = React.useRef<HTMLLabelElement>(null);
@@ -89,6 +93,15 @@ export function DropZone({
   const [armed, setArmed] = React.useState(false);
   const [over, setOver] = React.useState(false);
   const [refused, setRefused] = React.useState(false);
+  const [result, setResult] = React.useState<'accepted' | 'refused' | null>(null);
+  const [announcement, setAnnouncement] = React.useState('');
+  const pause = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearResult = React.useCallback(() => {
+    if (pause.current) clearTimeout(pause.current);
+    setResult(null);
+  }, []);
+  React.useEffect(() => () => { if (pause.current) clearTimeout(pause.current); }, []);
+  React.useEffect(() => { if (disabled) { clearResult(); setOver(false); setRefused(false); setArmed(false); } }, [disabled, clearResult]);
   const descId = React.useId();
   const list = React.useMemo(() => patterns(accept), [accept]);
 
@@ -102,13 +115,13 @@ export function DropZone({
       if (!root.current?.contains(e.target as Node)) { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'none'; }
       setArmed(true);
       window.clearTimeout(quiet);
-      quiet = window.setTimeout(() => { setArmed(false); setOver(false); }, 150);
+      quiet = window.setTimeout(() => { setArmed(false); setOver(false); setRefused(false); }, 150);
     };
     const onDrop = (e: DragEvent) => {
       if (!hasFiles(e)) return;
       if (!root.current?.contains(e.target as Node)) e.preventDefault();
       window.clearTimeout(quiet);
-      setArmed(false);
+      setArmed(false); setOver(false); setRefused(false);
     };
     window.addEventListener('dragover', onOver);
     window.addEventListener('drop', onDrop);
@@ -124,8 +137,14 @@ export function DropZone({
       else if (!multiple && files.length > 0) no.push({ file, reason: 'count' });
       else files.push(file);
     }
+    if (!all.length || disabled) return;
     if (no.length > 0) refuse(root.current);
-    if (all.length > 0) onFiles(files, no);
+    onFiles(files, no);
+    clearResult();
+    setResult(no.length ? 'refused' : 'accepted');
+    setAnnouncement(`${files.length} ${files.length === 1 ? 'file' : 'files'} attached${no.length ? `; ${no.length} not attached` : ''}`);
+    const duration = parseFloat(getComputedStyle(root.current!).getPropertyValue('--mu-r-drop-zone-result-pause'));
+    pause.current = setTimeout(() => setResult(null), duration);
   };
 
   const onDragOver = (e: React.DragEvent) => {
@@ -134,6 +153,7 @@ export function DropZone({
     const items = Array.from(e.dataTransfer.items).filter((i) => i.kind === 'file');
     const no = items.some((i) => !fits(list, i.type)) || (!multiple && items.length > 1);
     e.dataTransfer.dropEffect = no ? 'none' : 'copy';
+    clearResult();
     setOver(true);
     setRefused(no);
   };
@@ -155,14 +175,14 @@ export function DropZone({
     e.target.value = '';
   };
 
-  const line = refused ? refusedTitle : over ? overTitle : title;
+  const line = refused || result === 'refused' ? refusedTitle : over ? overTitle : title;
   const base = compact ? COMPACT : ROOT;
   return (
     <label
       ref={root}
       data-armed={armed && !disabled ? '' : undefined}
       data-over={over ? '' : undefined}
-      data-refused={refused ? '' : undefined}
+      data-refused={refused || result === 'refused' ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
       className={className ? `${base} ${className}` : base}
       onDragOver={onDragOver}
@@ -180,7 +200,8 @@ export function DropZone({
         aria-describedby={description ? descId : undefined}
         onChange={onChange}
       />
-      {icon && <span aria-hidden className={WELL}>{icon}</span>}
+      <span aria-hidden className={WELL}>{icon ?? <MorphIcon name={refused || result === 'refused' ? 'close' : result === 'accepted' ? 'check' : glyph} />}</span>
+      <span className="sr-only" role="status">{announcement}</span>
       <span className={compact ? `${WORDS} flex-1 overflow-hidden` : WORDS}>
         <span aria-hidden className={compact ? `${TITLE} block min-w-0 truncate` : TITLE}><SwapText value={line} className={compact ? 'max-w-full [&>.mu-swap-layer]:block [&>.mu-swap-layer]:max-w-full [&>.mu-swap-layer]:truncate' : undefined} /></span>
         {description && <span id={descId} className={LINE}>{description}</span>}

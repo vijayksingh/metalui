@@ -1750,6 +1750,10 @@
 @utility drop-zone-disabled {
   &[data-disabled] { opacity: var(--mu-r-drop-zone-self-disabled); cursor: not-allowed; }
 }
+@utility duration-drop-zone-result-pause {
+  --tw-duration: var(--mu-r-drop-zone-result-pause);
+  transition-duration: var(--mu-r-drop-zone-result-pause);
+}
 @utility opacity-drop-zone-sink {
   opacity: var(--mu-r-drop-zone-self-sink);
 }

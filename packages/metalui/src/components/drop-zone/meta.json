@@ -14,7 +14,7 @@
   "swift": {
     "symbol": "MetalDropZone",
     "file": "swift/Sources/MetalUI/Components/MetalDropZone.swift",
-    "status": "wip"
+    "status": "alpha"
   },
   "agent": "drop-zone.agent.md",
   "page": "/components/drop-zone"

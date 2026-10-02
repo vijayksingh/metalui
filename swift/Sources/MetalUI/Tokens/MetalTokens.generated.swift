@@ -1249,6 +1249,7 @@ public enum MetalRecipes {
 
         ],
         props: [
+            "result.pause": .text("1600ms"),
             "self.pad": .number(24.0),
             "self.gap": .number(8.0),
             "self.radius": .number(20.0),

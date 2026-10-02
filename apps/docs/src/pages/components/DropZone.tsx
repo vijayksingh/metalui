@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Attachment, DropZone, formatBytes, type DropRefusal } from '@unlocalhosted/metalui';
-import { DocumentIcon, ImageIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/drop-zone/drop-zone.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalDropZone.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/components/drop-zone/drop-zone.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -27,7 +27,7 @@ function Region({ label }: { label: string }) {
   return (
     <div role="region" aria-label={label} className="grid w-full max-w-[400px] gap-12">
       <DropZone
-        icon={<DocumentIcon size={20} />}
+        glyph="document"
         accept="application/pdf,image/*"
         maxSize={MAX}
         description={`PDFs and images, up to ${formatBytes(MAX)}`}
@@ -58,7 +58,7 @@ function CompactReceiver() {
   const d = useDialKit('Compact receiver', { width: [240, 180, 480] });
   const [count, setCount] = React.useState(0);
   return <div role="region" aria-label="Compact receiver" className="mu-stack max-w-full" style={{ width: d.width }}>
-    <DropZone compact icon={<ImageIcon size={20} />} title="Add images for the Lisbon travel journal" onFiles={(files) => setCount(files.length)} />
+    <DropZone compact glyph="image" title="Add images for the Lisbon travel journal" onFiles={(files) => setCount(files.length)} />
     <span role="status" className="type-meta text-ink2">{count} files chosen</span>
   </div>;
 }
@@ -72,10 +72,10 @@ export default function DropZonePage() {
         <div className="grid w-full justify-items-center gap-32">
           <Region label="Region files" />
           <div className="w-full max-w-[400px]">
-            <DropZone compact icon={<ImageIcon size={20} />} accept="image/*" title="Add images" description="or drop them here" onFiles={() => {}} />
+            <DropZone compact glyph="image" accept="image/*" title="Add images" description="or drop them here" onFiles={() => {}} />
           </div>
           <div className="w-full max-w-[400px]">
-            <DropZone disabled icon={<DocumentIcon size={20} />} title="Uploads are paused" description="Reconnect to attach files" onFiles={() => {}} />
+            <DropZone disabled glyph="document" title="Uploads are paused" description="Reconnect to attach files" onFiles={() => {}} />
           </div>
         </div>
       ) }}
@@ -83,7 +83,7 @@ export default function DropZonePage() {
       usage={`const [files, setFiles] = React.useState<File[]>([]);
 
 <DropZone
-  icon={<DocumentIcon size={20} />}
+  glyph="document"
   accept="application/pdf,image/*"
   maxSize={10_000_000}
   description="PDFs and images, up to 10 MB"
@@ -96,6 +96,7 @@ export default function DropZonePage() {
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

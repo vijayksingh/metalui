@@ -1232,6 +1232,7 @@
   --mu-r-sidebar-section-gap: 2px;
   --mu-r-sidebar-section-title-pad: 10px;
   /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
+  --mu-r-drop-zone-result-pause: 1600ms;
   --mu-r-drop-zone-self-pad: 24px;
   --mu-r-drop-zone-self-gap: 8px;
   --mu-r-drop-zone-self-radius: 20px;
