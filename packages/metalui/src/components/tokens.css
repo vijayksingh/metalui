@@ -55,7 +55,7 @@
   --mu-spring-settle-half: 83ms;
   --mu-spring-settle-near: 214ms;
   /* chrome: k=640 c=50.6 ζ=1 · controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot */
-  --mu-spring-chrome: linear(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1);
+  --mu-spring-chrome: linear(0, 0.0099, 0.0359, 0.0734, 0.1187, 0.1691, 0.2222, 0.2764, 0.3303, 0.3831, 0.434, 0.4825, 0.5284, 0.5714, 0.6115, 0.6487, 0.683, 0.7145, 0.7433, 0.7696, 0.7935, 0.8151, 0.8348, 0.8525, 0.8684, 0.8828, 0.8957, 0.9072, 0.9176, 0.9269, 0.9351, 0.9425, 0.9491, 0.9549, 0.9601, 0.9648, 0.9689, 0.9725, 0.9757, 0.9786, 0.9811, 0.9834, 0.9854, 0.9871, 0.9886, 0.99, 0.9912, 0.9923, 1);
   --mu-spring-chrome-d: 0.28s;
   --mu-spring-chrome-half: 66ms;
   --mu-spring-chrome-near: 187ms;

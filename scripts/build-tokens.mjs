@@ -20,11 +20,21 @@ const decl = (obj, prefix = '') =>
 
 // A damped spring (mass 1) sampled as a CSS linear() curve over its settle time.
 function springCurve(k, c, duration, n = 48) {
-  const w0 = Math.sqrt(k), z = c / (2 * Math.sqrt(k)), wd = w0 * Math.sqrt(1 - z * z);
+  const w0 = Math.sqrt(k), z = c / (2 * Math.sqrt(k));
+  const displacement = t => {
+    if (Math.abs(z - 1) < 1e-7) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);
+    if (z > 1) {
+      const root = Math.sqrt(z * z - 1);
+      const r1 = -w0 * (z - root), r2 = -w0 * (z + root);
+      return 1 + (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r1 - r2);
+    }
+    const wd = w0 * Math.sqrt(1 - z * z);
+    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));
+  };
   const pts = [];
   for (let i = 0; i <= n; i++) {
     const t = (i / n) * duration;
-    const x = i === n ? 1 : 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));
+    const x = i === n ? 1 : displacement(t);
     pts.push(+x.toFixed(4));
   }
   return `linear(${pts.join(', ')})`;
