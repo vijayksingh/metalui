@@ -3767,6 +3767,10 @@ Reduce Motion: the thumb moves at once; the colour still fades.
 - A switch acts at once. If the change needs confirming, it is not a switch.
 - The label says what is on, not "Enable …": "Sync this canvas".
 
+## Visible labels
+
+`label` renders words beside the switch in a native associated label: clicking either toggles it, keyboard focus stays on the switch, and disabled words do not change the setting. Keep `aria-label` or `aria-labelledby` only when the accessible name should differ. The `ref`, `id` and `className` stay on the control. Swift `MetalSwitch` offers `showsLabel: true` for the same visible hit area.
+
 ---
 
 # Switcher

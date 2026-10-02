@@ -322,7 +322,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **DropZone compact** doesn't truncate its title: at narrow widths it runs into "or choose files".
 - [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.
 - [ ] **A shared row-leave helper**: the release-spring leave lives only inside Attachment (with its own reduced-motion check); lists of people, files and rows need it too. Note the release travel stays full under Reduce Motion by the token; decide whether that's right.
-- [ ] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
+- [x] **Switch**: optional visible `label` uses a native associated hit area. Blocks use associated labels instead of manual toggle handlers. Swift `showsLabel` keeps labels operable too; disabled and keyboard behavior covered.
 - [x] **Calendar adjacent-month pointer selection**: focus leaves the day mounted until click; selection turns the month and keeps focus. Removed the availability picker's mouse-down workaround; both colorways and reduced motion covered by e2e.
 - [x] **Calendar follows a changed controlled `value` into another month** unless the host controls `month`. Recreating the same day preserves browsing; removed the availability picker remount workaround.
 - [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.

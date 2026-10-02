@@ -21,6 +21,8 @@ import { Switch as BaseSwitch } from '@base-ui/react/switch';
 
 export interface SwitchProps extends Omit<BaseSwitch.Root.Props, 'className' | 'render'> {
   size?: 'regular' | 'small';
+  /** Visible, clickable label. The control still accepts an explicit accessible name. */
+  label?: React.ReactNode;
   /** Its accessible name, when no visible label names it. */
   'aria-label'?: string;
   className?: string;
@@ -38,10 +40,17 @@ const THUMB = {
 };
 
 /** A setting that is on or off, taking effect at once. */
-export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(function Switch({ size = 'regular', className, ...props }, ref) {
-  return (
-    <BaseSwitch.Root ref={ref} data-size={size} className={[ROOT, SIZE[size], className].filter(Boolean).join(' ')} {...props}>
+export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(function Switch({ size = 'regular', label, id, className, ...props }, ref) {
+  const generatedId = React.useId();
+  const controlId = id ?? generatedId;
+  const control = (
+    <BaseSwitch.Root ref={ref} id={controlId} data-size={size} className={[ROOT, SIZE[size], className].filter(Boolean).join(' ')} {...props}>
       <BaseSwitch.Thumb className={`${THUMB_BASE} ${THUMB[size]}`} />
     </BaseSwitch.Root>
+  );
+  return label == null ? control : (
+    <label htmlFor={controlId} className="mu-switch-label mu-cluster gap-mu-space-8 type-ui text-ink cursor-pointer has-data-disabled:cursor-default">
+      {control}<span>{label}</span>
+    </label>
   );
 });

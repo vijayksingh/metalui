@@ -160,10 +160,10 @@ function SwitchRow({ id, title, about, checked, onChange, small }: {
   return (
     <div className="flex items-center justify-between gap-16">
       <span className="grid min-w-0 gap-2">
-        <span id={`${id}-t`} className="cursor-pointer select-none type-ui text-ink" onClick={() => onChange(!checked)}>{title}</span>
+        <label htmlFor={id} id={`${id}-t`} className="cursor-pointer select-none type-ui text-ink">{title}</label>
         <span id={`${id}-d`} className="type-meta text-ink3">{about}</span>
       </span>
-      <Switch size={small ? 'small' : 'regular'} checked={checked} onCheckedChange={onChange} aria-labelledby={`${id}-t`} aria-describedby={`${id}-d`} />
+      <Switch id={id} size={small ? 'small' : 'regular'} checked={checked} onCheckedChange={onChange} aria-labelledby={`${id}-t`} aria-describedby={`${id}-d`} />
     </div>
   );
 }

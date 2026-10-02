@@ -9,38 +9,45 @@ public struct MetalSwitch: View {
     private let label: String
     @Binding private var isOn: Bool
     private let size: MetalSwitchSize
+    private let showsLabel: Bool
 
-    public init(_ label: String, isOn: Binding<Bool>, size: MetalSwitchSize = .regular) {
+    public init(_ label: String, isOn: Binding<Bool>, size: MetalSwitchSize = .regular, showsLabel: Bool = false) {
         self.label = label
         self._isOn = isOn
         self.size = size
+        self.showsLabel = showsLabel
     }
 
     public var body: some View {
         Toggle(label, isOn: $isOn)
-            .toggleStyle(MetalSwitchStyle(size: size))
+            .toggleStyle(MetalSwitchStyle(size: size, showsLabel: showsLabel))
             .accessibilityLabel(label)
     }
 }
 
 public struct MetalSwitchStyle: ToggleStyle {
     public let size: MetalSwitchSize
+    public let showsLabel: Bool
 
-    public init(size: MetalSwitchSize = .regular) { self.size = size }
+    public init(size: MetalSwitchSize = .regular, showsLabel: Bool = false) { self.size = size; self.showsLabel = showsLabel }
 
     public func makeBody(configuration: Configuration) -> some View {
         Button { configuration.isOn.toggle() } label: { configuration.label }
-        .buttonStyle(MetalSwitchButtonStyle(isOn: configuration.isOn, size: size))
-        .focusEffectDisabled()
+            .buttonStyle(MetalSwitchButtonStyle(isOn: configuration.isOn, size: size, showsLabel: showsLabel))
+            .focusEffectDisabled()
     }
 }
 
 private struct MetalSwitchButtonStyle: ButtonStyle {
     let isOn: Bool
     let size: MetalSwitchSize
+    let showsLabel: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        MetalSwitchBody(isOn: isOn, size: size, pressed: configuration.isPressed)
+        HStack(spacing: MetalSpace.s8) {
+            MetalSwitchBody(isOn: isOn, size: size, pressed: configuration.isPressed)
+            if showsLabel { configuration.label.font(.metal(MetalType.ui)) }
+        }
     }
 }
 

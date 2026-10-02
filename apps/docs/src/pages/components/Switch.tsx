@@ -19,6 +19,12 @@ export default function SwitchPage() {
           <Switch aria-label="Disabled" disabled defaultChecked />
         </div>
       ) }}
+      more={[{ id: 'labels', title: 'A label you can press', lede: 'The words and the switch are one hit area. Disabled labels preserve the setting.', node: (
+        <div className="mu-stack items-start">
+          <Switch label="Sync this canvas" defaultChecked />
+          <Switch label="Share automatically" disabled />
+        </div>
+      ) }]}
       xray={<SwitchXray />}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
