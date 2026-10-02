@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { BoardIcon, DocumentIcon, DownloadIcon, LayoutIcon, RedoIcon, SelectIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
 import { Menubar, MenuItem, MenuSeparator } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/menubar/menubar.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMenubar.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/components/menubar/menubar.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -20,19 +22,19 @@ function Bar({ onDid, label }: { onDid: (s: string) => void; label: string }) {
   return (
     <Menubar aria-label={label}>
       <Menubar.Menu label="File">
-        <MenuItem shortcut="⌘N" onSelect={() => onDid('New canvas')}>New canvas</MenuItem>
-        <MenuItem shortcut="⌘O" onSelect={() => onDid('Open…')}>Open…</MenuItem>
+        <MenuItem icon={<BoardIcon size={14} />} shortcut="⌘N" onSelect={() => onDid('New canvas')}>New canvas</MenuItem>
+        <MenuItem icon={<DocumentIcon size={14} />} shortcut="⌘O" onSelect={() => onDid('Open…')}>Open…</MenuItem>
         <MenuSeparator />
-        <MenuItem shortcut="⇧⌘E" onSelect={() => onDid('Export…')}>Export…</MenuItem>
+        <MenuItem icon={<DownloadIcon size={14} />} shortcut="⇧⌘E" onSelect={() => onDid('Export…')}>Export…</MenuItem>
       </Menubar.Menu>
       <Menubar.Menu label="Edit">
-        <MenuItem shortcut="⌘Z" onSelect={() => onDid('Undo')}>Undo</MenuItem>
-        <MenuItem shortcut="⇧⌘Z" onSelect={() => onDid('Redo')}>Redo</MenuItem>
+        <MenuItem icon={<UndoIcon size={14} />} shortcut="⌘Z" onSelect={() => onDid('Undo')}>Undo</MenuItem>
+        <MenuItem icon={<RedoIcon size={14} />} shortcut="⇧⌘Z" onSelect={() => onDid('Redo')}>Redo</MenuItem>
         <MenuSeparator />
-        <MenuItem shortcut="⌘A" onSelect={() => onDid('Select all')}>Select all</MenuItem>
+        <MenuItem icon={<SelectIcon size={14} />} shortcut="⌘A" onSelect={() => onDid('Select all')}>Select all</MenuItem>
       </Menubar.Menu>
       <Menubar.Menu label="View">
-        <MenuItem shortcut="⌘'" onSelect={() => onDid('Show the grid')}>Show the grid</MenuItem>
+        <MenuItem icon={<LayoutIcon size={14} />} shortcut="⌘'" onSelect={() => onDid('Show the grid')}>Show the grid</MenuItem>
         <MenuItem shortcut="⌘0" onSelect={() => onDid('Actual size')}>Actual size</MenuItem>
       </Menubar.Menu>
       <Menubar.Menu label="Arrange" disabled>
@@ -61,17 +63,18 @@ export default function MenubarPage() {
       more={[{ id: 'glide', title: 'Tune the glide', lede: 'The Menubar glide panel swaps the highlight\'s spring and stretches time.', node: <GlideTuner /> }]}
       usage={`<Menubar aria-label="App">
   <Menubar.Menu label="File">
-    <MenuItem shortcut="⌘N" onSelect={newCanvas}>New canvas</MenuItem>
+    <MenuItem icon={<BoardIcon size={14} />} shortcut="⌘N" onSelect={newCanvas}>New canvas</MenuItem>
     <MenuSeparator />
-    <MenuItem shortcut="⇧⌘E" onSelect={exportAs}>Export…</MenuItem>
+    <MenuItem icon={<DownloadIcon size={14} />} shortcut="⇧⌘E" onSelect={exportAs}>Export…</MenuItem>
   </Menubar.Menu>
   <Menubar.Menu label="Edit">
-    <MenuItem shortcut="⌘Z" onSelect={undo}>Undo</MenuItem>
+    <MenuItem icon={<UndoIcon size={14} />} shortcut="⌘Z" onSelect={undo}>Undo</MenuItem>
   </Menubar.Menu>
 </Menubar>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

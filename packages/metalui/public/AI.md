@@ -2371,6 +2371,8 @@ Reduce Motion: the highlight moves at once.
 - Few words, most used first: File, Edit, View.
 - Every command also has a shortcut or a place elsewhere; the bar is where people look them up.
 
+The category words File/Edit/View stay words. Their commands use the set at14px: New canvas `board`, Open document `document`, Export `download`, Undo `undo`, Redo `redo`, Select all `select`, Show grid `layout`. Actual size stays its precise word: `fit` would promise a different operation. A menu command's glyph shares its row trigger and never becomes another focus stop. Native system Menu/Commands hosts use the same custom symbol, e.g. `Label { Text("Export…") } icon: { MetalIcon(.download, size: 14) }`; the MetalMenubar body remains WIP. Existing word keys contain no drawn chevron to replace or rotate.
+
 ---
 
 # Meter
