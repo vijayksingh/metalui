@@ -55,6 +55,7 @@ for (const colorway of COLORWAYS) {
     await open(page, '/components/past-banner', colorway);
     const banner = page.getByRole('status').filter({ hasText: 'Back to Now' });
     await expect(banner).toBeVisible();
+    await expect(banner.getByRole('button', { name: /Back to Now/ }).locator('svg.mu-ic-clock')).toHaveCount(1);
     await expect(banner).toContainText(/MEMORY/i);
     await page.locator('section', { hasText: 'With the scrubber' }).first().screenshot({ path: capture(`past-banner-${colorway}`) });
     await banner.getByRole('button', { name: /Back to Now/ }).click();
@@ -64,6 +65,8 @@ for (const colorway of COLORWAYS) {
     // An hour back from now is inside the snap to now; a day back is the past.
     await page.keyboard.press('Shift+ArrowLeft');
     await expect(page.getByRole('status').filter({ hasText: 'Back to Now' })).toBeVisible();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.locator('section', { hasText: 'With the scrubber' }).first().screenshot({ path: capture(`past-banner-${colorway}-reduced`) });
     await page.keyboard.press('Escape');
     await expect(page.getByRole('status').filter({ hasText: 'Back to Now' })).toHaveCount(0);
   });

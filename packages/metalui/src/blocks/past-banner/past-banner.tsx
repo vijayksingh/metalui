@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon } from '../../icons/Icon';
 import { Surface } from '../../components/surface/surface';
 import { Label } from '../../components/label/label';
 import { Button } from '../../components/button/button';
@@ -32,7 +33,7 @@ export function PastBanner({ moment, onBack, className }: PastBannerProps) {
     <Surface material="graphite-plain" radius="pill" role="status" className={className ? `${BANNER} ${className}` : BANNER}>
       <Label variant="dark">MEMORY</Label>
       <Label variant="on-graphite">{moment}</Label>
-      <Button cap="graphite" className={BACK} onClick={onBack} aria-keyshortcuts="Escape">
+      <Button cap="graphite" icon={<Icon name="clock" />} className={BACK} onClick={onBack} aria-keyshortcuts="Escape">
         Back to Now <Kbd aria-hidden>⎋</Kbd>
       </Button>
     </Surface>

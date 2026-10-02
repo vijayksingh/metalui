@@ -23,6 +23,8 @@ public struct MetalPastBanner: View {
                 MetalLabel(moment, style: .onGraphite)
                 Button(action: onBack) {
                     HStack(spacing: MetalPastBannerMetrics.keyGap) {
+                        MetalIcon(.clock, size: MetalRecipes.button.points("compact.glyph"))
+                            .foregroundStyle(MetalRecipes.label.color("on-graphite.color", colorway: .bone)?.color ?? .white)
                         MetalLabel("Back to Now", style: .onGraphite)
                         MetalKbd("⎋", size: .small, surface: .strip)
                     }

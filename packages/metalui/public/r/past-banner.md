@@ -35,7 +35,7 @@ Says the canvas is showing the past, and brings it back. A composition block. Re
 
 ## Accessibility
 
-- A `status` region, so arriving in the past is announced. Back to Now is a real button with its shortcut (`aria-keyshortcuts="Escape"`).
+- A `status` region, so arriving in the past is announced. Back to Now is a real button with the canonical `clock` action glyph in React and Swift, and its shortcut (`aria-keyshortcuts="Escape"`).
 
 ## Tokens
 

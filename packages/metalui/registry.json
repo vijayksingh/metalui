@@ -1344,6 +1344,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/surface.json",
