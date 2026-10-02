@@ -86,3 +86,7 @@ Run `python3 e2e/native/run-attachment-result-proof.py`. The real public `MetalA
 # Native Accordion chevron
 
 Run `python3 e2e/native/run-accordion-chevron-proof.py`. Default-action Return opens the actual public `MetalAccordion` header, then closes under scoped reduction and refuses while disabled. Its shared chevron morph uses down/right quarter turns; header/panel material remains explicitly WIP. Actual-window captures show the glyph at rest and during change in both colorways.
+
+# Native Select chevron
+
+Run `python3 e2e/native/run-select-chevron-proof.py`. Default-action Return opens the public `MetalSelect`, Down/Return chooses SVG, and Escape closes after a live scoped reduction change. Disabled refuses reopening. The shared chevron morph follows the real popover state; actual-window captures cover open, selected and reduced closed orientations in both colorways.

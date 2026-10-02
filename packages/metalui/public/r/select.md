@@ -46,3 +46,5 @@ Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses;
 The list portals to the document body and copies the trigger’s nearest `data-mu-colorway` onto its positioner. Open lists follow ancestor colorway changes. No local override retains document inheritance; clipped hosts never clip the list. Native `MetalSelect` carries its colorway through the SwiftUI environment.
 
 The state chevron uses `MorphIcon` on settle; SwiftUI uses `MetalIcon(.chevron)` on the same class. Selected marks use shared `TickGlyph` / `MetalTickGlyph`, keeping the checkbox corner dwell, sprung tail and withdrawal. Reduced motion changes direction and marks in place.
+
+The native trigger uses `MetalMorphIcon(.chevron, turn: open ? .up : .down)`, sharing the exact planner with the React `MorphIcon` rather than rotating a static shape. A changed OS or scoped reduction settles its full orientation immediately.

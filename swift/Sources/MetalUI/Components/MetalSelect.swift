@@ -83,9 +83,7 @@ public struct MetalSelect<Value: Hashable>: View {
                     .foregroundColor((selectedOption == nil ? colorway.tokens.ink3 : colorway.tokens.ink).color)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                MetalIcon(.chevron, size: recipe.points("chevron.size"))
-                    .rotationEffect(.degrees(open ? 180 : 0))
-                    .metalAnimation(.settle, value: open)
+                MetalMorphIcon(.chevron, size: recipe.points("chevron.size"), turn: open ? .up : .down)
                     .foregroundColor((open ? colorway.tokens.ink : hovering ? colorway.tokens.ink2 :
                         recipe.color("chevron.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink3).color)
                     .accessibilityHidden(true)
