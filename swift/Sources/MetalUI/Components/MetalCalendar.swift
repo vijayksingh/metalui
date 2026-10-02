@@ -15,6 +15,7 @@ public struct MetalCalendar: View {
     private let limits: ClosedRange<Date>?
     private var monthBinding: Binding<Date>?
     private var locale: Locale = .current
+    private var timeZone: TimeZone = .current
     private var weekStartsOn: Int?
     private var weekNumbers = false
     private var months = 1
@@ -57,11 +58,17 @@ public struct MetalCalendar: View {
     public func calendarReadOnly(_ value: Bool = true) -> Self { var view = self; view.readOnly = value; return view }
 
     private var calendar: Foundation.Calendar {
-        var value = Foundation.Calendar(identifier: .gregorian); value.locale = locale
+        var value = Foundation.Calendar(identifier: .gregorian); value.locale = locale; value.timeZone = timeZone
         if let weekStartsOn { value.firstWeekday = (weekStartsOn % 7 + 7) % 7 + 1 }
         return value
     }
-    private var month: Date { Self.monthStart(monthBinding?.wrappedValue ?? ownMonth) }
+    private var month: Date { monthStart(monthBinding?.wrappedValue ?? ownMonth) }
+    private func monthStart(_ date: Date) -> Date { calendar.date(from: calendar.dateComponents([.year, .month], from: date))! }
+    public func calendarTimeZone(_ zone: TimeZone) -> Self {
+        var view = self; view.timeZone = zone
+        view._ownMonth = State(initialValue: view.monthStart(monthBinding?.wrappedValue ?? firstChosen ?? Date()))
+        return view
+    }
     private static func monthStart(_ date: Date) -> Date { Foundation.Calendar.current.date(from: Foundation.Calendar.current.dateComponents([.year, .month], from: date))! }
     private func addDays(_ date: Date, _ count: Int) -> Date { calendar.date(byAdding: .day, value: count, to: date)! }
     private func addMonths(_ date: Date, _ count: Int) -> Date { calendar.date(byAdding: .month, value: count, to: date)! }
@@ -107,7 +114,7 @@ public struct MetalCalendar: View {
         preview = nil; moveFocus(date)
     }
     private func show(_ date: Date) {
-        let target = Self.monthStart(date); guard target != month else { return }; later = target > month
+        let target = monthStart(date); guard target != month else { return }; later = target > month
         withMetalAnimation(.settle, reduceMotion: reduceMotion) { if let monthBinding { monthBinding.wrappedValue = target } else { ownMonth = target } }
     }
     private func moveFocus(_ date: Date) {
@@ -116,25 +123,25 @@ public struct MetalCalendar: View {
         if currentRange?.start != nil && currentRange?.end == nil { preview = target }
     }
     private func formatted(_ date: Date, _ template: String) -> String {
-        let formatter = DateFormatter(); formatter.locale = locale; formatter.setLocalizedDateFormatFromTemplate(template); return formatter.string(from: date)
+        let formatter = DateFormatter(); formatter.locale = locale; formatter.timeZone = timeZone; formatter.setLocalizedDateFormatFromTemplate(template); return formatter.string(from: date)
     }
     public var body: some View {
         let recipe = MetalRecipes.calendar
         VStack(spacing: recipe.points("head.gap")) {
             HStack(spacing: recipe.points("head.gap")) {
-                Button { show(addMonths(month, -1)) } label: { Image(systemName: "chevron.left").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Previous month").disabled(limits.map { month <= Self.monthStart($0.lowerBound) } ?? false)
+                Button { show(addMonths(month, -1)) } label: { Image(systemName: "chevron.left").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Previous month").disabled(limits.map { month <= monthStart($0.lowerBound) } ?? false)
                 Spacer(minLength: .zero)
                 Button { jump = true } label: { Text(formatted(month, "MMMM yyyy")).font(.metal(MetalType.title)).contentTransition(.numericText(countsDown: !later)) }.buttonStyle(.plain).accessibilityLabel("Choose month and year: \(formatted(month, "MMMM yyyy"))").popover(isPresented: $jump) {
                     VStack(spacing: MetalLayout.gapRelated) {
                         Stepper("Year \(calendar.component(.year, from: month))", value: Binding(get: { calendar.component(.year, from: month) }, set: { year in if let date = calendar.date(from: DateComponents(year: year, month: calendar.component(.month, from: month), day: 1)) { show(date) } }), in: (limits.map { calendar.component(.year, from: $0.lowerBound) } ?? 1)...(limits.map { calendar.component(.year, from: $0.upperBound) } ?? 9999))
                         ForEach(1...12, id: \.self) { number in
                             let date = calendar.date(from: DateComponents(year: calendar.component(.year, from: month), month: number, day: 1))!
-                            Button(formatted(date, "MMMM")) { show(date); jump = false }.buttonStyle(MetalButtonStyle(size: .compact)).disabled(limits.map { date < Self.monthStart($0.lowerBound) || date > Self.monthStart($0.upperBound) } ?? false)
+                            Button(formatted(date, "MMMM")) { show(date); jump = false }.buttonStyle(MetalButtonStyle(size: .compact)).disabled(limits.map { date < monthStart($0.lowerBound) || date > monthStart($0.upperBound) } ?? false)
                         }
                     }.padding(MetalLayout.gapRelated)
                 }
                 Spacer(minLength: .zero)
-                Button { show(addMonths(month, 1)) } label: { Image(systemName: "chevron.right").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Next month").disabled(limits.map { addMonths(month, months - 1) >= Self.monthStart($0.upperBound) } ?? false)
+                Button { show(addMonths(month, 1)) } label: { Image(systemName: "chevron.right").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Next month").disabled(limits.map { addMonths(month, months - 1) >= monthStart($0.upperBound) } ?? false)
             }.frame(height: recipe.points("head.height"))
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .top, spacing: MetalLayout.gapGroup) { panels }
@@ -218,5 +225,160 @@ public struct MetalCalendar: View {
         .accessibilityLabel(full + (blocked ? ", \(unavailableLabel)" : "") + (mark.map { ", \($0)" } ?? ""))
         .accessibilityAddTraits(on ? [.isSelected] : [])
         .accessibilityHint(readOnly ? "Read only" : blocked ? unavailableLabel : calendar.isDateInToday(date) ? "Today" : "")
+    }
+}
+
+public struct MetalDatePreset {
+    public let label: String
+    public let range: MetalDateRange
+    public init(_ label: String, start: Date, end: Date? = nil) { self.label = label; range = MetalDateRange(start: start, end: end ?? start) }
+}
+
+/// A field well with native localized date segments and the shared MetalUI calendar.
+/// A selected date with time is an instant; changing its time zone preserves that instant.
+public struct MetalDatePicker: View {
+    private enum Selection { case single(Binding<Date?>), range(Binding<MetalDateRange>), multiple(Binding<Set<Date>>) }
+    private let label: String
+    private let selection: Selection
+    private let limits: ClosedRange<Date>?
+    private let required: Bool
+    private let readOnly: Bool
+    private let name: String?
+    private let showTime: Bool
+    private let zoneBinding: Binding<TimeZone>?
+    private let zones: [TimeZone]
+    private let presets: [MetalDatePreset]
+    private let minDays: Int
+    private let maxDays: Int?
+    private let unavailable: (Date) -> Bool
+    private let unavailableLabel: String
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.locale) private var locale
+    @Environment(\.isEnabled) private var isEnabled
+    @State private var open = false
+    @State private var error: String?
+
+    public init(_ label: String, selection: Binding<Date?>, in limits: ClosedRange<Date>? = nil, required: Bool = false, readOnly: Bool = false, name: String? = nil, showTime: Bool = false, timeZone: Binding<TimeZone>? = nil, timeZones: [TimeZone] = [], presets: [MetalDatePreset] = [], unavailableLabel: String = "Unavailable", isDateUnavailable: @escaping (Date) -> Bool = { _ in false }) {
+        self.label = label; self.selection = .single(selection); self.limits = limits; self.required = required; self.readOnly = readOnly; self.name = name; self.showTime = showTime; zoneBinding = timeZone; zones = timeZones; self.presets = presets; minDays = 1; maxDays = nil; unavailable = isDateUnavailable; self.unavailableLabel = unavailableLabel
+    }
+    public init(_ label: String, range: Binding<MetalDateRange>, in limits: ClosedRange<Date>? = nil, minDays: Int = 1, maxDays: Int? = nil, required: Bool = false, readOnly: Bool = false, name: String? = nil, presets: [MetalDatePreset] = [], unavailableLabel: String = "Unavailable", isDateUnavailable: @escaping (Date) -> Bool = { _ in false }) {
+        self.label = label; selection = .range(range); self.limits = limits; self.minDays = max(1, minDays); self.maxDays = maxDays; self.required = required; self.readOnly = readOnly; self.name = name; self.presets = presets; showTime = false; zoneBinding = nil; zones = []; unavailable = isDateUnavailable; self.unavailableLabel = unavailableLabel
+    }
+    public init(_ label: String, dates: Binding<Set<Date>>, in limits: ClosedRange<Date>? = nil, required: Bool = false, readOnly: Bool = false, name: String? = nil, unavailableLabel: String = "Unavailable", isDateUnavailable: @escaping (Date) -> Bool = { _ in false }) {
+        self.label = label; selection = .multiple(dates); self.limits = limits; self.required = required; self.readOnly = readOnly; self.name = name; minDays = 1; maxDays = nil; presets = []; showTime = false; zoneBinding = nil; zones = []; unavailable = isDateUnavailable; self.unavailableLabel = unavailableLabel
+    }
+    private var zone: TimeZone { zoneBinding?.wrappedValue ?? .current }
+    private var calendar: Foundation.Calendar { var value = Foundation.Calendar(identifier: .gregorian); value.timeZone = zone; value.locale = locale; return value }
+    private var chosen: Date? { switch selection { case .single(let binding): binding.wrappedValue; case .range(let binding): binding.wrappedValue.start; case .multiple(let binding): binding.wrappedValue.sorted().first } }
+    private var end: Date? { if case .range(let binding) = selection { return binding.wrappedValue.end }; return nil }
+    private var isRange: Bool { if case .range = selection { return true }; return false }
+    private var isMultiple: Bool { if case .multiple = selection { return true }; return false }
+    private func eligible(_ date: Date) -> Bool {
+        if let limits, date < limits.lowerBound || date > limits.upperBound { error = "Date is outside the allowed range"; return false }
+        if unavailable(date) { error = unavailableLabel; return false }; error = nil; return true
+    }
+    private func valid(_ range: MetalDateRange) -> Bool {
+        guard let start = range.start else { if range.end != nil { error = "Choose the start date first"; return false }; return true }
+        guard eligible(start) else { return false }; guard let end = range.end else { return true }
+        let length = (calendar.dateComponents([.day], from: calendar.startOfDay(for: start), to: calendar.startOfDay(for: end)).day ?? .zero) + 1
+        guard length >= minDays, maxDays.map({ length <= $0 }) ?? true else { error = "Choose an allowed date range"; return false }
+        for offset in 0..<length { guard let date = calendar.date(byAdding: .day, value: offset, to: start), eligible(date) else { return false } }
+        return true
+    }
+    private func set(_ date: Date, end: Bool = false) {
+        guard isEnabled, !readOnly, eligible(date) else { return }
+        switch selection {
+        case .single(let binding): binding.wrappedValue = date
+        case .multiple(let binding): binding.wrappedValue.insert(calendar.startOfDay(for: date))
+        case .range(let binding):
+            let candidate = end ? MetalDateRange(start: binding.wrappedValue.start, end: date) : MetalDateRange(start: date, end: binding.wrappedValue.end)
+            if valid(candidate) { binding.wrappedValue = candidate }
+        }
+    }
+    private func clear() {
+        guard isEnabled, !readOnly else { return }
+        switch selection { case .single(let binding): binding.wrappedValue = nil; case .range(let binding): binding.wrappedValue = MetalDateRange(); case .multiple(let binding): binding.wrappedValue = [] }; error = nil
+    }
+    public var body: some View {
+        VStack(alignment: .leading, spacing: MetalRecipes.calendar.points("head.gap")) {
+            entryWell
+            if showTime, let zoneBinding { zoneSelect(zoneBinding) }
+            if let error { Text(error).font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.invalid.color).accessibilityLabel(error) }
+        }
+        .environment(\.timeZone, zone)
+        .accessibilityElement(children: .contain).accessibilityLabel(label + (required ? ", required" : ""))
+    }
+    private var entryWell: some View {
+        let recipe = MetalRecipes.field
+        let shape = RoundedRectangle(cornerRadius: recipe.points("regular.radius"), style: .continuous)
+        let disabledOpacity: Double = isEnabled ? .one : recipe.scalar("state.disabled")
+        return HStack(spacing: recipe.points("regular.gap")) {
+            nativeEntry(end: false)
+            if isRange { Text("–"); nativeEntry(end: true) }
+            Button { open = true } label: { Image(systemName: "calendar").font(.system(size: recipe.points("regular.glyph"))) }.buttonStyle(.plain).accessibilityLabel("Choose \(label)").disabled(readOnly)
+            if chosen != nil && !readOnly { Button { clear() } label: { Image(systemName: "xmark").font(.system(size: recipe.points("regular.glyph"))) }.buttonStyle(.plain).accessibilityLabel("Clear \(label)") }
+        }
+        .padding(.leading, recipe.points("regular.pad-left")).padding(.trailing, recipe.points("regular.pad-right"))
+        .frame(minHeight: recipe.points("regular.height"))
+        .metalObjectRecipe(MetalRecipes.well, part: "field", in: shape)
+        .opacity(disabledOpacity)
+        .accessibilityIdentifier(name ?? label)
+        .popover(isPresented: $open) { pickerContent.padding(MetalRecipes.calendar.points("self.pad")) }
+    }
+    private func zoneSelect(_ binding: Binding<TimeZone>) -> some View {
+        let selection = Binding<TimeZone?>(get: { binding.wrappedValue }, set: { if let next = $0 { binding.wrappedValue = next } })
+        let choices: [TimeZone] = zones.isEmpty ? [zone, TimeZone(secondsFromGMT: .zero)!] : zones
+        let options: [MetalSelectOption<TimeZone>] = choices.map { MetalSelectOption($0, label: $0.identifier.replacingOccurrences(of: "_", with: " ")) }
+        return MetalSelect("\(label) time zone", selection: selection, options: options, size: .compact).disabled(readOnly)
+    }
+    @ViewBuilder private func nativeEntry(end: Bool) -> some View {
+        let binding = Binding<Date>(get: { (end ? self.end : chosen) ?? calendar.startOfDay(for: Date()) }, set: { set($0, end: end) })
+        Group {
+            if let limits { DatePicker(end ? "\(label) end" : label, selection: binding, in: limits, displayedComponents: showTime ? [.date, .hourAndMinute] : .date) }
+            else { DatePicker(end ? "\(label) end" : label, selection: binding, displayedComponents: showTime ? [.date, .hourAndMinute] : .date) }
+        }
+        .labelsHidden().disabled(readOnly)
+        .font(.metal(MetalType.ui))
+        .accessibilityValue((end ? self.end : chosen) == nil ? "No date chosen" : (end ? self.end : chosen)!.formatted(date: .abbreviated, time: showTime ? .shortened : .omitted))
+        #if os(macOS)
+        .datePickerStyle(.field)
+        #else
+        .datePickerStyle(.compact)
+        #endif
+    }
+    @ViewBuilder private var pickerContent: some View {
+        VStack(spacing: MetalRecipes.calendar.points("head.gap")) {
+            calendarControl
+            HStack(spacing: MetalRecipes.calendar.points("head.gap")) {
+                Button("Today") { selectToday() }.buttonStyle(MetalButtonStyle(size: .compact)).disabled(readOnly || unavailable(Date()) || limits.map { !calendar.isDate(Date(), inSameDayAs: $0.lowerBound) && Date() < $0.lowerBound || !calendar.isDate(Date(), inSameDayAs: $0.upperBound) && Date() > $0.upperBound } == true)
+                ForEach(presets.indices, id: \.self) { index in
+                    let preset = presets[index]
+                    Button(preset.label) {
+                        if isRange, case .range(let binding) = selection { if valid(preset.range) { binding.wrappedValue = preset.range; open = false } }
+                        else if let date = preset.range.start { set(date); open = false }
+                    }.buttonStyle(MetalButtonStyle(size: .compact)).disabled(readOnly)
+                }
+                if isMultiple { Button("Done") { open = false }.buttonStyle(MetalButtonStyle(size: .compact)) }
+            }
+        }
+    }
+    @ViewBuilder private var calendarControl: some View {
+        switch selection {
+        case .single(let binding):
+            MetalCalendar(label, selection: Binding(get: { binding.wrappedValue ?? Date() }, set: { date in
+                if showTime {
+                    let time = calendar.dateComponents([.hour, .minute], from: binding.wrappedValue ?? calendar.startOfDay(for: Date()))
+                    if let combined = calendar.date(bySettingHour: time.hour ?? .zero, minute: time.minute ?? .zero, second: .zero, of: date, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .forward), calendar.isDate(combined, inSameDayAs: date) { set(combined); open = false } else { error = "This local time does not exist in the selected time zone" }
+                } else { set(date); open = false }
+            }), in: limits).calendarLocale(locale).calendarTimeZone(zone).calendarUnavailable(unavailableLabel, predicate: unavailable)
+        case .range(let binding):
+            MetalCalendar(label, range: Binding(get: { binding.wrappedValue }, set: { candidate in if valid(candidate) { binding.wrappedValue = candidate; if candidate.end != nil { open = false } } }), in: limits, minDays: minDays, maxDays: maxDays).calendarMonths(2).calendarLocale(locale).calendarTimeZone(zone).calendarUnavailable(unavailableLabel, predicate: unavailable)
+        case .multiple(let binding): MetalCalendar(label, dates: binding, in: limits).calendarLocale(locale).calendarTimeZone(zone).calendarUnavailable(unavailableLabel, predicate: unavailable)
+        }
+    }
+    private func selectToday() {
+        let today = calendar.startOfDay(for: Date())
+        if case .range(let binding) = selection { let candidate = MetalDateRange(start: today, end: minDays > 1 ? nil : today); if valid(candidate) { binding.wrappedValue = candidate; if candidate.end != nil { open = false } } }
+        else { set(showTime ? Date() : today); if !isMultiple { open = false } }
     }
 }

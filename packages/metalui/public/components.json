@@ -158,7 +158,7 @@
       "name": "calendar",
       "title": "Calendar",
       "status": "alpha",
-      "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+      "description": "A calendar for single dates, inclusive ranges and independent dates. Localized segmented date entry, eligibility and form validation share the same selection; date and time can be displayed in an IANA time zone.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Calendar, DatePicker",
@@ -166,7 +166,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalCalendar"
+        "symbol": "MetalCalendar, MetalDatePicker"
       },
       "registry": "https://metalui.dev/r/calendar.json",
       "agent": "https://metalui.dev/r/calendar.md"

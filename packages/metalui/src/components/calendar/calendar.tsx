@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+import { Field as BaseField } from '@base-ui/react/field';
+import { Select } from '../select/select';
 import { SwapText } from '../../motion/swap';
 import { buttonClasses } from '../button/button';
 import { Popover } from '../popover/popover';
@@ -23,13 +25,15 @@ import { Popover } from '../popover/popover';
  * Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
  * ───────────────────────────────────────────────────────── */
 
-const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
-const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const localDate = (year: number, month: number, day: number) => { const date = new Date(0); date.setFullYear(year, month, day); date.setHours(0, 0, 0, 0); return date; };
+const utcStamp = (year: number, month: number, day: number, hour = 0, minute = 0, second = 0) => { const date = new Date(0); date.setUTCFullYear(year, month, day); date.setUTCHours(hour, minute, second, 0); return date.getTime(); };
+const startOfDay = (d: Date) => localDate(d.getFullYear(), d.getMonth(), d.getDate());
+const startOfMonth = (d: Date) => localDate(d.getFullYear(), d.getMonth(), 1);
+const addDays = (d: Date, n: number) => localDate(d.getFullYear(), d.getMonth(), d.getDate() + n);
 const addMonths = (d: Date, n: number) => {
-  const target = new Date(d.getFullYear(), d.getMonth() + n, 1);
-  const last = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
-  return new Date(target.getFullYear(), target.getMonth(), Math.min(d.getDate(), last));
+  const target = localDate(d.getFullYear(), d.getMonth() + n, 1);
+  const last = localDate(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+  return localDate(target.getFullYear(), target.getMonth(), Math.min(d.getDate(), last));
 };
 const sameDay = (a: Date | null | undefined, b: Date | null | undefined) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 const monthKey = (d: Date) => d.getFullYear() * 12 + d.getMonth();
@@ -83,6 +87,8 @@ export interface CalendarProps<M extends CalendarMode = 'single'> {
   /** A description also announced with the day; true uses “Has events”. */
   markedDays?: (date: Date) => string | boolean;
   readOnly?: boolean;
+  /** Override the current civil day when the host displays a different time zone. */
+  today?: Date;
   autoFocus?: boolean;
   'aria-label'?: string;
   className?: string;
@@ -92,22 +98,22 @@ function firstChosen(value: Date | Date[] | DateRange | null | undefined): Date 
   return value instanceof Date ? value : Array.isArray(value) ? value[0] ?? null : value?.start ?? null;
 }
 const dayKey = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-const dayCount = (start: Date, end: Date) => Math.round((Date.UTC(end.getFullYear(), end.getMonth(), end.getDate()) - Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())) / 86400000) + 1;
+const dayCount = (start: Date, end: Date) => Math.round((utcStamp(end.getFullYear(), end.getMonth(), end.getDate()) - utcStamp(start.getFullYear(), start.getMonth(), start.getDate())) / 86400000) + 1;
 function orderedRange(start: Date, end: Date): DateRange { return start <= end ? { start, end } : { start: end, end: start }; }
 function isoWeek(date: Date) {
-  const thursday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const thursday = new Date(utcStamp(date.getFullYear(), date.getMonth(), date.getDate()));
   thursday.setUTCDate(thursday.getUTCDate() + 4 - (thursday.getUTCDay() || 7));
-  return Math.ceil((((thursday.getTime() - Date.UTC(thursday.getUTCFullYear(), 0, 1)) / 86400000) + 1) / 7);
+  return Math.ceil((((thursday.getTime() - utcStamp(thursday.getUTCFullYear(), 0, 1)) / 86400000) + 1) / 7);
 }
 
 /** A calendar control for a single day, an inclusive range, or several independent days. */
-export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as M, value, defaultValue, onValueChange, month: controlledMonth, onMonthChange, defaultMonth, min, max, isDateUnavailable, unavailableLabel = 'Unavailable', minDays = 1, maxDays, locale, weekStartsOn, weekNumbers = false, months = 1, markedDays, readOnly = false, autoFocus, className, ...aria }: CalendarProps<M>) {
+export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as M, value, defaultValue, onValueChange, month: controlledMonth, onMonthChange, defaultMonth, min, max, isDateUnavailable, unavailableLabel = 'Unavailable', minDays = 1, maxDays, locale, weekStartsOn, weekNumbers = false, months = 1, markedDays, readOnly = false, today: todayOverride, autoFocus, className, ...aria }: CalendarProps<M>) {
   const empty = mode === 'multiple' ? [] : mode === 'range' ? { start: null, end: null } : null;
   const [own, setOwn] = React.useState<CalendarValue<M>>((defaultValue ?? empty) as CalendarValue<M>);
   const chosen = value !== undefined ? value : own;
   const chosenDay = firstChosen(chosen);
   const range = mode === 'range' ? chosen as DateRange : null;
-  const today = startOfDay(new Date());
+  const today = startOfDay(todayOverride ?? new Date());
   const count = Math.max(1, Math.trunc(months));
   const [ownMonth, setOwnMonth] = React.useState(() => startOfMonth(controlledMonth ?? defaultMonth ?? chosenDay ?? today));
   const month = startOfMonth(controlledMonth ?? ownMonth);
@@ -162,7 +168,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
   };
   const stepMonth = (step: number) => {
     const target = addMonths(month, step);
-    target.setDate(Math.min((active ?? focused).getDate(), new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate()));
+    target.setDate(Math.min((active ?? focused).getDate(), localDate(target.getFullYear(), target.getMonth() + 1, 0).getDate()));
     moved.current = false;
     setFocused(target);
     setPreview(null);
@@ -226,8 +232,8 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
       <Popover open={jump} onOpenChange={setJump}>
         <Popover.Trigger><button type="button" aria-label={`Choose month and year: ${titleFormat.format(month)}`} className="border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring"><span id={titleId} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={titleFormat.format(month)} /></span></button></Popover.Trigger>
         <Popover.Content><div className="mu-stack p-mu-space-12">
-          <label className="mu-cluster type-ui text-ink">Year <input aria-label="Calendar year" type="number" value={month.getFullYear()} min={min?.getFullYear() ?? 1} max={max?.getFullYear() ?? 9999} className="recipe-well-field rounded-field-regular-radius h-field-regular-height p-mu-space-8 type-ui text-ink" onChange={(e) => { const year = Number(e.currentTarget.value); if (year >= (min?.getFullYear() ?? 1) && year <= (max?.getFullYear() ?? 9999)) showMonth(new Date(year, month.getMonth(), 1)); }} /></label>
-          <div className="mu-auto-grid gap-mu-space-4">{Array.from({ length: 12 }, (_, i) => { const d = new Date(month.getFullYear(), i, 1); return <button type="button" className={buttonClasses('standard', 'compact')} key={i} disabled={!!min && monthKey(d) < monthKey(min) || !!max && monthKey(d) > monthKey(max)} onClick={() => { showMonth(d); setFocused(d); setJump(false); }}>{new Intl.DateTimeFormat(locale, { month: 'long' }).format(d)}</button>; })}</div>
+          <label className="mu-cluster type-ui text-ink">Year <input aria-label="Calendar year" type="number" value={month.getFullYear()} min={min?.getFullYear() ?? 1} max={max?.getFullYear() ?? 9999} className="recipe-well-field rounded-field-regular-radius h-field-regular-height p-mu-space-8 type-ui text-ink" onChange={(e) => { const year = Number(e.currentTarget.value); if (year >= (min?.getFullYear() ?? 1) && year <= (max?.getFullYear() ?? 9999)) showMonth(localDate(year, month.getMonth(), 1)); }} /></label>
+          <div className="mu-auto-grid gap-mu-space-4">{Array.from({ length: 12 }, (_, i) => { const d = localDate(month.getFullYear(), i, 1); return <button type="button" className={buttonClasses('standard', 'compact')} key={i} disabled={!!min && monthKey(d) < monthKey(min) || !!max && monthKey(d) > monthKey(max)} onClick={() => { showMonth(d); setFocused(d); setJump(false); }}>{new Intl.DateTimeFormat(locale, { month: 'long' }).format(d)}</button>; })}</div>
         </div></Popover.Content>
       </Popover>
       <button type="button" className={STEP} aria-label="Next month" onClick={() => stepMonth(1)} disabled={max != null && monthKey(month) + count - 1 >= monthKey(max)}><svg aria-hidden viewBox="0 0 10 10" className="size-calendar-step-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 2 6.75 5l-3 3" /></svg></button>
@@ -258,48 +264,171 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
   </div>;
 }
 
-const PICKER = 'mu-date-picker relative inline-flex items-center gap-field-regular-gap h-field-regular-height min-w-calendar-picker-min-width pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius box-border border-0 recipe-well-field type-ui text-field-field-ink text-left cursor-pointer outline-none focus-visible:focus-ring-flush data-popup-open:focus-ring-flush disabled:opacity-field-state-disabled disabled:cursor-default data-invalid:invalid-ring';
+const PICKER = 'mu-date-picker relative inline-flex items-center gap-field-regular-gap min-h-field-regular-height min-w-calendar-picker-min-width pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius box-border border-0 recipe-well-field type-ui text-field-field-ink text-left focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
+const ENTRY = 'mu-date-picker-entry min-w-0 flex-1 p-0 h-field-regular-height border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret date-picker-entry';
+const PICKER_KEY = 'inline-grid place-items-center h-field-regular-height w-field-regular-height border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring disabled:cursor-default';
 
-export interface DatePickerProps extends Omit<CalendarProps, 'autoFocus' | 'aria-label'> {
-  /** Shown when no day is chosen. */
+function PickerEntry({ fieldDisabled, onDisabledChange, ...props }: React.ComponentPropsWithRef<'input'> & { fieldDisabled: boolean; onDisabledChange: (disabled: boolean) => void }) {
+  React.useLayoutEffect(() => { onDisabledChange(fieldDisabled); }, [fieldDisabled, onDisabledChange]);
+  return <input {...props} name={undefined} />;
+}
+
+export interface DatePickerPreset<M extends CalendarMode = 'single'> { label: string; value: CalendarValue<M> | (() => CalendarValue<M>) }
+export interface DatePickerProps<M extends CalendarMode = 'single'> extends Omit<CalendarProps<M>, 'autoFocus' | 'aria-label' | 'onValueChange'> {
+  onValueChange?: (value: CalendarValue<M>) => void;
   placeholder?: string;
-  /** Names the field for assistive tech. */
   'aria-label': string;
   invalid?: boolean;
   disabled?: boolean;
-  /** How the chosen day is written in the field. */
+  required?: boolean;
+  /** Hidden form value: ISO day, start/end, or comma-separated days. */
+  name?: string;
+  /** Native date segments use the browser's language and calendar order. */
+  editable?: boolean;
   format?: Intl.DateTimeFormatOptions;
+  presets?: DatePickerPreset<M>[];
+  /** Single-date mode only. Date values then represent instants in the displayed zone. */
+  showTime?: boolean;
+  timeZone?: string;
+  defaultTimeZone?: string;
+  onTimeZoneChange?: (timeZone: string) => void;
+  timeZones?: string[];
 }
 
-/** A form field that opens a calendar. */
-export function DatePicker({ value, defaultValue, onValueChange, placeholder = 'Choose a day', invalid, disabled, format = { day: 'numeric', month: 'short', year: 'numeric' }, locale, className, ...rest }: DatePickerProps) {
-  const [own, setOwn] = React.useState<Date | null>(defaultValue ?? null);
+function parseDay(text: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (!match) return null;
+  const date = new Date(0); date.setFullYear(Number(match[1]), Number(match[2]) - 1, Number(match[3])); date.setHours(0, 0, 0, 0);
+  return dayKey(date) === text ? date : null;
+}
+function zonedParts(date: Date, timeZone: string) {
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(date);
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)!.value;
+  return { day: `${get('year')}-${get('month')}-${get('day')}`, time: `${get('hour')}:${get('minute')}`, seconds: Number(get('second')) };
+}
+/** Resolve a wall-clock value using offsets around that day; reject DST gaps, choose the earlier overlap. */
+function zonedDate(day: string, time: string, zone: string): Date | null {
+  const date = parseDay(day), match = /^(\d{2}):(\d{2})$/.exec(time);
+  if (!date || !match || Number(match[1]) > 23 || Number(match[2]) > 59) return null;
+  const nominal = utcStamp(date.getFullYear(), date.getMonth(), date.getDate(), Number(match[1]), Number(match[2]));
+  const candidates: Date[] = [];
+  for (const step of [-1, 0, 1]) {
+    const probe = new Date(nominal + step * 86400000), parts = zonedParts(probe, zone), at = parseDay(parts.day)!;
+    const [hour, minute] = parts.time.split(':').map(Number);
+    const offset = utcStamp(at.getFullYear(), at.getMonth(), at.getDate(), hour, minute, parts.seconds) - probe.getTime();
+    const candidate = new Date(nominal - offset), resolved = zonedParts(candidate, zone);
+    if (resolved.day === day && resolved.time === time) candidates.push(candidate);
+  }
+  return candidates.sort((a, b) => a.getTime() - b.getTime())[0] ?? null;
+}
+
+/** Locale-aware segmented entry and a MetalUI calendar share one form value. */
+export function DatePicker<M extends CalendarMode = 'single'>({ mode = 'single' as M, value, defaultValue, onValueChange, placeholder = 'Choose a day', invalid, disabled, required, name, readOnly = false, editable = true, format = { day: 'numeric', month: 'short', year: 'numeric' }, presets = [], showTime = false, timeZone: controlledZone, defaultTimeZone, onTimeZoneChange, timeZones, locale, className, ...rest }: DatePickerProps<M>) {
+  const empty = (mode === 'multiple' ? [] : mode === 'range' ? { start: null, end: null } : null) as CalendarValue<M>;
+  const [own, setOwn] = React.useState<CalendarValue<M>>(defaultValue ?? empty);
   const chosen = value !== undefined ? value : own;
+  const [ownZone, setOwnZone] = React.useState(defaultTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const zone = controlledZone ?? ownZone;
+  const timed = showTime && mode === 'single';
+  const actual = firstChosen(chosen);
+  const civil = actual && timed ? parseDay(zonedParts(actual, zone).day) : actual;
+  const chosenRange = mode === 'range' ? chosen as DateRange : null;
+  const chosenDates = mode === 'multiple' ? chosen as Date[] : null;
+  const calendarValue = timed ? civil : chosen;
+  const chosenKey = timed && actual ? actual.toISOString() : mode === 'range' ? chosenRange?.start || chosenRange?.end ? `${chosenRange?.start ? dayKey(chosenRange.start) : ''}/${chosenRange?.end ? dayKey(chosenRange.end) : ''}` : '' : mode === 'multiple' ? chosenDates!.map(dayKey).join(',') : actual ? dayKey(actual) : '';
+  const [draft, setDraft] = React.useState(() => [civil ? dayKey(civil) : '', chosenRange?.end ? dayKey(chosenRange.end) : '']);
+  const [time, setTime] = React.useState(actual && timed ? zonedParts(actual, zone).time : '00:00');
+  const [error, setError] = React.useState('');
+  const input = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const text = chosen ? new Intl.DateTimeFormat(locale, format).format(chosen) : placeholder;
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <Popover.Trigger>
-        <button type="button" disabled={disabled} aria-label={`${rest['aria-label']}: ${chosen ? text : 'none chosen'}`} aria-invalid={invalid || undefined} data-invalid={invalid ? '' : undefined} className={className ? `${PICKER} ${className}` : PICKER}>
-          <svg aria-hidden viewBox="0 0 14 14" className="size-field-regular-glyph flex-none text-ink2" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round"><rect x="2" y="3" width="10" height="9" rx="2" /><path d="M2 6h10M5 1.5v3M9 1.5v3" /></svg>
-          <span className={chosen ? 'flex-1' : 'flex-1 text-field-field-hint'}><SwapText value={text} /></span>
-        </button>
-      </Popover.Trigger>
+  const [fieldDisabled, setFieldDisabled] = React.useState(false);
+  React.useEffect(() => {
+    setDraft([civil ? dayKey(civil) : '', chosenRange?.end ? dayKey(chosenRange.end) : '']);
+    if (actual && timed) setTime(zonedParts(actual, zone).time);
+    setError('');
+  }, [chosenKey, zone]);
+  React.useEffect(() => { input.current?.setCustomValidity(error || (required && mode === 'range' && draft[0] && !draft[1] ? 'Choose the end date' : '')); }, [error, required, mode, draft]);
+  const dateFormat = new Intl.DateTimeFormat(locale, { ...format, ...(timed ? { timeZone: zone, hour: 'numeric', minute: '2-digit' } : {}) });
+  const text = mode === 'range' ? `${chosenRange?.start ? dateFormat.format(chosenRange.start) : placeholder} – ${chosenRange?.end ? dateFormat.format(chosenRange.end) : 'End date'}` : mode === 'multiple' ? chosenDates!.length ? `${chosenDates!.length} days chosen` : placeholder : actual ? dateFormat.format(actual) : placeholder;
+  const hasValue = !!actual;
+  const low = rest.min && timed ? parseDay(zonedParts(rest.min, zone).day)! : rest.min;
+  const high = rest.max && timed ? parseDay(zonedParts(rest.max, zone).day)! : rest.max;
+  const eligibilityError = (candidate: CalendarValue<M>): string => {
+    const range = mode === 'range' ? candidate as DateRange : null;
+    const dates = mode === 'multiple' ? candidate as Date[] : range ? [range.start, range.end].filter((d): d is Date => !!d) : candidate instanceof Date ? [candidate] : [];
+    for (const d of dates) {
+      const day = timed ? parseDay(zonedParts(d, zone).day)! : d;
+      if (rest.min && d < (timed ? rest.min : startOfDay(rest.min))) return 'Date is before the earliest allowed date';
+      if (rest.max && d > (timed ? rest.max : startOfDay(rest.max))) return 'Date is after the latest allowed date';
+      if (rest.isDateUnavailable?.(day)) return rest.unavailableLabel ?? 'Date is unavailable';
+    }
+    if (range?.end && !range.start) return 'Choose the start date first';
+    if (range?.start && range.end) {
+      if (range.end < range.start) return 'End date must follow the start date';
+      const length = dayCount(range.start, range.end);
+      if (length < Math.max(1, rest.minDays ?? 1) || rest.maxDays != null && length > rest.maxDays) return `Choose ${rest.minDays ?? 1}${rest.maxDays ? `–${rest.maxDays}` : ' or more'} days`;
+      for (let d = range.start; d <= range.end; d = addDays(d, 1)) if (rest.isDateUnavailable?.(d)) return rest.unavailableLabel ?? 'Range includes an unavailable date';
+    }
+    return '';
+  };
+  const apply = (next: CalendarValue<M>, close = true) => {
+    if (disabled || fieldDisabled || readOnly) return;
+    const problem = eligibilityError(next); setError(problem); if (problem) return;
+    if (value === undefined) setOwn(next);
+    onValueChange?.(next);
+    if (close) setOpen(false);
+  };
+  const enterDate = (raw: string, index: number) => {
+    const nextDraft = [...draft]; nextDraft[index] = raw; setDraft(nextDraft);
+    if (!raw) { apply(mode === 'range' ? { start: parseDay(nextDraft[0]), end: parseDay(nextDraft[1]) } as CalendarValue<M> : empty, false); return; }
+    const date = parseDay(raw); if (!date) { setError('Enter a valid date'); return; }
+    let next: CalendarValue<M>;
+    if (timed) { const instant = zonedDate(raw, time, zone); if (!instant) { setError('This local time does not exist in the selected time zone'); return; } next = instant as CalendarValue<M>; }
+    else if (mode === 'range') next = { start: parseDay(nextDraft[0]), end: parseDay(nextDraft[1]) } as CalendarValue<M>;
+    else if (mode === 'multiple') next = [...chosenDates!.filter((d) => !sameDay(d, date)), date].sort((a, b) => a.getTime() - b.getTime()) as CalendarValue<M>;
+    else next = date as CalendarValue<M>;
+    apply(next, false);
+  };
+  const choose = (next: CalendarValue<M>) => {
+    if (timed && next instanceof Date) {
+      const instant = zonedDate(dayKey(next), time, zone);
+      if (!instant) { setError('This local time does not exist in the selected time zone'); return; }
+      apply(instant as CalendarValue<M>);
+    } else apply(next, mode === 'single' || mode === 'range' && !!(next as DateRange).end);
+  };
+  const today = timed ? parseDay(zonedParts(new Date(), zone).day)! : startOfDay(new Date());
+  const todayValue = (mode === 'range' ? { start: today, end: (rest.minDays ?? 1) > 1 ? null : today } : mode === 'multiple' ? [...chosenDates!.filter((d) => !sameDay(d, today)), today] : timed ? zonedDate(dayKey(today), time, zone) : today) as CalendarValue<M>;
+  const disabledToday = timed && !todayValue || !!eligibilityError(todayValue);
+  const label = rest['aria-label'];
+  const trigger = <Popover.Trigger><button type="button" disabled={disabled || fieldDisabled || readOnly} aria-label={`${label}: ${hasValue ? text : 'none chosen'}`} aria-invalid={invalid || !!error || undefined} className={editable ? PICKER_KEY : 'inline-flex items-center gap-field-regular-gap h-field-regular-height border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring'}>
+    <svg aria-hidden viewBox="0 0 14 14" className="size-field-regular-glyph flex-none text-ink2" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round"><rect x="2" y="3" width="10" height="9" rx="2" /><path d="M2 6h10M5 1.5v3M9 1.5v3" /></svg>
+    {!editable && <span><SwapText value={text} /></span>}
+  </button></Popover.Trigger>;
+  return <div className="mu-stack gap-mu-space-8">
+    <Popover open={open} onOpenChange={(next) => { if (!readOnly && !disabled && !fieldDisabled) setOpen(next); }}>
+      <div data-disabled={disabled || fieldDisabled ? '' : undefined} data-invalid={invalid || error ? '' : undefined} className={className ? `${PICKER} ${className}` : PICKER}>
+        {editable ? <BaseField.Control ref={input} name={name} type="date" lang={locale} aria-label={mode === 'range' ? `${label} start` : label} required={required} disabled={disabled} readOnly={readOnly} min={low && dayKey(low)} max={high && dayKey(high)} value={draft[0]} onValueChange={(raw) => enterDate(raw, 0)} className={ENTRY} render={(props, state) => <PickerEntry {...props} aria-labelledby={mode === 'range' ? undefined : props['aria-labelledby']} fieldDisabled={state.disabled} onDisabledChange={setFieldDisabled} data-invalid={invalid || error ? '' : undefined} />} /> : <BaseField.Control ref={input} value={chosenKey} required={required} readOnly disabled={disabled} aria-label={label} className="sr-only" name={name} render={(props, state) => <PickerEntry {...props} fieldDisabled={state.disabled} onDisabledChange={setFieldDisabled} />} />}
+        {mode === 'range' && editable && <><span aria-hidden>–</span><input type="date" lang={locale} aria-label={`${label} end`} required={required} disabled={disabled || fieldDisabled} readOnly={readOnly} min={draft[0] || low && dayKey(low)} max={high && dayKey(high)} value={draft[1]} onChange={(e) => enterDate(e.currentTarget.value, 1)} className={ENTRY} /></>}
+        {trigger}
+        {hasValue && !readOnly && <button type="button" className={PICKER_KEY} aria-label={`Clear ${label}`} disabled={disabled || fieldDisabled} onClick={() => { setDraft(['', '']); apply(empty, false); input.current?.focus(); }}>×</button>}
+        {name && <input type="hidden" name={name} value={chosenKey} disabled={disabled || fieldDisabled} />}
+      </div>
       <Popover.Content align="start">
-        <Calendar
-          {...rest}
-          locale={locale}
-          value={chosen}
-          autoFocus
-          aria-label={rest['aria-label']}
-          onValueChange={(d) => {
-            if (value === undefined) setOwn(d);
-            onValueChange?.(d);
-            setOpen(false);
-          }}
-        />
+        <div className="mu-stack gap-mu-space-8">
+          <Calendar {...rest} mode={mode} min={low} max={high} readOnly={readOnly} locale={locale} value={calendarValue as CalendarValue<M>} today={timed ? today : rest.today} autoFocus aria-label={label} onValueChange={(next) => choose(next as CalendarValue<M>)} />
+          <div className="mu-cluster gap-mu-space-8">
+            <button type="button" className={buttonClasses('standard', 'compact')} disabled={disabledToday || readOnly} onClick={() => choose(todayValue)}>Today</button>
+            {presets.map((preset) => { const next = typeof preset.value === 'function' ? preset.value() : preset.value; return <button type="button" className={buttonClasses('standard', 'compact')} key={preset.label} disabled={!!eligibilityError(next) || readOnly} onClick={() => choose(next)}>{preset.label}</button>; })}
+            {mode === 'multiple' && <button type="button" className={buttonClasses('standard', 'compact')} onClick={() => setOpen(false)}>Done</button>}
+          </div>
+        </div>
       </Popover.Content>
     </Popover>
-  );
+    {timed && <div className="mu-cluster gap-mu-space-8">
+      <input type="time" aria-label={`${label} time`} disabled={disabled || fieldDisabled} readOnly={readOnly} value={time} className={`${ENTRY} recipe-well-field rounded-field-regular-radius p-mu-space-8`} onChange={(e) => { const next = e.currentTarget.value; setTime(next); if (draft[0]) { const instant = zonedDate(draft[0], next, zone); if (instant) apply(instant as CalendarValue<M>, false); else setError('This local time does not exist in the selected time zone'); } }} />
+      <BaseField.Root><Select aria-label={`${label} time zone`} size="compact" value={zone} disabled={disabled || fieldDisabled || readOnly} onValueChange={(next) => { if (controlledZone === undefined) setOwnZone(next); onTimeZoneChange?.(next); }} options={(timeZones ?? [...new Set([zone, 'UTC'])]).map((value) => ({ value, label: value.replaceAll('_', ' ') }))} /></BaseField.Root>
+      {name && <input type="hidden" name={`${name}.timeZone`} value={zone} disabled={disabled || fieldDisabled} />}
+    </div>}
+    {error && <span role="alert" className="type-meta text-form-field-error-ink">{error}</span>}
+  </div>;
 }
-

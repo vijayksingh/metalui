@@ -306,12 +306,13 @@
       "name": "calendar",
       "type": "registry:ui",
       "title": "Calendar",
-      "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+      "description": "A calendar for single dates, inclusive ranges and independent dates. Localized segmented date entry, eligibility and form validation share the same selection; date and time can be displayed in an IANA time zone.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/select.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -321,7 +322,7 @@
           "target": "components/metalui/components/calendar/calendar.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar, MetalDatePicker in the MetalUI Swift package."
     },
     {
       "name": "card",

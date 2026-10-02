@@ -1,6 +1,6 @@
 # Calendar and date picker
 
-A month to choose a day from, and a field that opens one. React: `Calendar` and `DatePicker` from `@unlocalhosted/metalui` (a table grid following the ARIA date-grid pattern; the picker opens in the library's `Popover`). SwiftUI: `MetalCalendar`. The chosen day takes the `switcher` thumb look and hovered days its track, the title turns on the swap drum; the `calendar` recipe adds the grid, today's lamp and the month's arrival.
+A calendar for one day, a range or independent days, and a segmented field that opens it. React: `Calendar` and `DatePicker` from `@unlocalhosted/metalui` (a table grid following the ARIA date-grid pattern; the picker opens in the library's `Popover`). SwiftUI: `MetalCalendar`. The chosen day takes the `switcher` thumb look and hovered days its track, the title turns on the swap drum; the `calendar` recipe adds the grid, today's lamp and the month's arrival.
 
 ## Use it for
 
@@ -9,7 +9,7 @@ A month to choose a day from, and a field that opens one. React: `Calendar` and 
 
 ## Don't use it for
 
-- A birth date or a far date people know by heart (three fields or a typed date are faster), or a time.
+- A scheduling grid across people: use the availability picker composition. Calendar-only entry is slow for known far dates; use DatePicker’s native typed segments.
 
 ## Anatomy
 
@@ -36,12 +36,12 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 | React | SwiftUI |
 |---|---|
 | `Calendar` `value`, `defaultValue`, `onValueChange`, `defaultMonth`, `month`, `onMonthChange`, `min`, `max`, `locale` | `selection:`, `in:` |
-| `DatePicker` the same, plus `placeholder`, `format`, `invalid`, `disabled`, `aria-label` | `DatePicker` |
+| `DatePicker` same selection and eligibility props, plus `name`, `required`, `readOnly`, `presets`, `showTime`, `timeZone`, `timeZones` | `MetalDatePicker` `selection:`, `range:`, `dates:`, `required:`, `readOnly:`, `showTime:`, `timeZone:` |
 
 ## Keyboard and accessibility
 
 - A `grid` named by its month. One day is in the tab order; arrows move by day and week, Page Up / Down by month (with Shift, by year), Home / End to the week's ends, Enter or Space chooses. Days are named in full ("Wednesday, 30 September 2026"); today says `aria-current="date"`; the chosen day is `aria-selected`.
-- The picker is a button naming the field and its day; the calendar opens with focus on the chosen day (or today) and Esc returns to the field.
+- The picker combines a Base UI Field control, native date segments, and a calendar key naming the field and selection. FormField labels, descriptions, errors and disabled state reach the segmented entry; time-zone Select owns its own nested Field context so it cannot steal the date label or ID. The calendar opens focused on the chosen day (or today); Escape and selection return focus to its key.
 
 ## Rules
 
@@ -66,3 +66,18 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 - The title opens a month and year picker; limits apply there too. `markedDays(date)` returns a description or true for “Has events”; the lamp and full date label carry this information. Marks do not change eligibility.
 - `readOnly` preserves navigation and inspection but prevents selection changes.
 - Swift: use `selection:`, `range:` (`Binding<MetalDateRange>`), or `dates:` (`Binding<Set<Date>>`). `.calendarMonths`, `.calendarLocale(..., weekStartsOn:, weekNumbers:)`, `.calendarUnavailable`, `.calendarMarks`, and `.calendarReadOnly` provide the same presentation and eligibility contracts.
+
+## Typed dates and forms
+
+- DatePicker’s date inputs are native `type="date"` segments. Their text order and editing keys follow the browser language; `lang={locale}` is provided where the browser supports it. Calendar month and day names follow `locale`. Native semantics own segment focus, keyboard editing and required/min/max validation; MetalUI adds unavailable-day and range validation through custom validity.
+- Invalid typed dates remain visible for correction and never emit an accepted value. Range endpoints must be ordered, fit the inclusive `minDays`/`maxDays`, and contain no unavailable day. Keyboard focus and the inline alert explain a rejected value.
+- `name` submits one hidden canonical value: `YYYY-MM-DD` for a single day, `start/end` for a range, and comma-separated ISO days for multiple selection. No visible input repeats the submitted name. Use `DatePicker name` even inside a named FormField. For canonical ranges and instants, read `new FormData(event.currentTarget)` in `Form onSubmit`; Base UI’s `onFormSubmit` reads its registered primary native date segment. `required` validates visible native date controls; `readOnly` keeps the value submitted and prevents editing, opening or clearing; disabled values are omitted from the form.
+- Clear emits null for single mode, `{ start: null, end: null }` for range, and `[]` for multiple. Today respects eligibility; for a range longer than one day it starts a pending range. `presets` are `{ label, value }`, where value may be a function evaluated when the picker renders. A complete range closes the popup; multiple selection keeps it open until Done.
+- Native localized segments are also used by Swift `MetalDatePicker`, surrounded by the generated field well; its calendar is the custom MetalUI grid. Optional selection, clear, Today, ranges, multiple dates, unavailable predicates, required naming, read-only state and presets use the same contracts. Swift `name` is an accessibility identifier; form serialization belongs to the app.
+
+## Date, time and time zones
+
+- `showTime` adds a time field and an IANA time-zone Select in single mode. `value` then denotes an instant, and `name` submits `Date.toISOString()` plus `name.timeZone`. Without `showTime`, values are calendar dates in the host’s local calendar and serialize without a time zone.
+- `timeZone` controls the display zone; `defaultTimeZone` starts an uncontrolled zone; `onTimeZoneChange` reports its change. Zone changes preserve the chosen instant and only reinterpret its date/time display. `timeZones` specifies the selectable IANA identifiers; default choices are the current zone and UTC.
+- Typing or selecting changes the wall-clock day/time in that zone. Nonexistent DST-gap values are refused with a visible and native validity error. Repeated times resolve to the first occurrence. Date limits and unavailable predicates apply to the displayed civil day; exact instant limits still apply to accepted date/time values. The Today action and current-day lamp also follow the displayed zone (`Calendar today` supplies the civil-day override). No background clock runs.
+- Swift’s native date/time segments inherit the selected TimeZone. The shared calendar also receives it; calendar day selection preserves the existing wall-clock hour/minute with strict DST matching and the first overlap occurrence. A zone change changes the display, preserving its Date instant.

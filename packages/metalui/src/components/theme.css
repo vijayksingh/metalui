@@ -1621,6 +1621,9 @@
 @utility stroke-width-preview-card-width {
   stroke-width: var(--mu-r-preview-card-self-width);
 }
+@utility date-picker-entry {
+  &::-webkit-calendar-picker-indicator { display: none; }
+}
 @utility calendar-grid {
   border-collapse: separate; border-spacing: var(--mu-r-calendar-day-gap); & th, & td { border: 0; background: none; padding: 0; } & tr { background: none; }
 }

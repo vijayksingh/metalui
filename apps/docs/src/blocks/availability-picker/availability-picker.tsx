@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
-import { Avatar, Button, Calendar, EmptyState, Led, Select, SwapText, Switcher } from '@unlocalhosted/metalui';
+import { Avatar, Button, Calendar, useReducedMotion, EmptyState, Led, Select, SwapText, Switcher } from '@unlocalhosted/metalui';
 import { ClockIcon, LinkIcon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
@@ -168,18 +168,6 @@ function spring(el: Element, name: 'settle' | 'part') {
   return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
 }
 
-function usePrefersReduced() {
-  const [reduced, setReduced] = React.useState(false);
-  React.useEffect(() => {
-    const q = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(q.matches);
-    const on = () => setReduced(q.matches);
-    q.addEventListener('change', on);
-    return () => q.removeEventListener('change', on);
-  }, []);
-  return reduced;
-}
-
 /** A value that follows another after a delay: labels turn one after another, top to bottom. */
 function useLater<T>(value: T, ms: number) {
   const [later, setLater] = React.useState(value);
@@ -269,7 +257,8 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const [zone, setZone] = React.useState(host.zone);
   const [time, setTime] = React.useState<number | null>(null);
   const [phase, setPhase] = React.useState<Phase>('choosing');
-  const reduced = usePrefersReduced();
+  const [root, setRoot] = React.useState<HTMLElement | null>(null);
+  const reduced = useReducedMotion(root);
   const list = React.useRef<HTMLDivElement>(null);
   const confirmKey = React.useRef<HTMLElement>(null);
   const headingId = React.useId();
@@ -312,7 +301,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const zoneOptions = ZONES.map((z) => ({ value: z.value, label: `${z.city} (${offsetName(z.value, starts[0] ?? now)})` }));
 
   return (
-    <section aria-label={`Book a call with ${host.name}`} className={`@container grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
+    <section ref={setRoot} aria-label={`Book a call with ${host.name}`} className={`@container grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
       <div
         inert={booked}
         className={`grid gap-24 p-20 transition-opacity duration-settle ease-settle reduced-motion:transition-none @xl:grid-cols-[auto_minmax(0,1fr)] @4xl:grid-cols-[minmax(0,17rem)_auto_12rem] @4xl:justify-between ${booked ? 'opacity-60' : ''}`}

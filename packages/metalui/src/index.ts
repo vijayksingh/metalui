@@ -13,7 +13,7 @@ export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type Fi
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { FormField, Fieldset, Form, type FormFieldRootProps, type FormProps } from './components/form-field/form-field';
 export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
-export { Calendar, DatePicker, type CalendarProps, type DatePickerProps, type DateRange, type CalendarMode, type CalendarValue } from './components/calendar/calendar';
+export { Calendar, DatePicker, type CalendarProps, type DatePickerProps, type DatePickerPreset, type DateRange, type CalendarMode, type CalendarValue } from './components/calendar/calendar';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
 export { Card, type CardRootProps, type CardTitleProps } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps } from './components/attachment/attachment';

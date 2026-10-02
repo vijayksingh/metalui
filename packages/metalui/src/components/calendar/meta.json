@@ -3,7 +3,7 @@
   "title": "Calendar",
   "status": "alpha",
   "layer": "component",
-  "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+  "description": "A calendar for single dates, inclusive ranges and independent dates. Localized segmented date entry, eligibility and form validation share the same selection; date and time can be displayed in an IANA time zone.",
   "base": "table role=grid (the ARIA date grid pattern); Popover",
   "react": {
     "export": "Calendar, DatePicker",
@@ -12,7 +12,7 @@
     ]
   },
   "swift": {
-    "symbol": "MetalCalendar",
+    "symbol": "MetalCalendar, MetalDatePicker",
     "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift"
   },
   "agent": "calendar.agent.md",

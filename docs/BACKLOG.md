@@ -15,8 +15,8 @@ Owner: "no select date range; add option for min legit date, option for max legi
 - [x] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
 - [x] **Controlled month**: `month` / `onMonthChange` keep displayed month separate from selection and focus. Uncontrolled calendars reveal changed values; controlled hosts can accept, defer or reject month requests without losing keyboard access.
 - [x] **Marked days**: a dot or LED for days with something on them (events).
-- [ ] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
-- [ ] **Time** (later): date and time together, and time zones.
+- [x] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
+- [x] **Date and time**: single DatePicker adds localized time and an IANA zone. Zone changes preserve the instant; DST gaps refuse typed/selected values and overlaps use the first occurrence. Swift MetalDatePicker mirrors date/time entry and zone display.
 - [ ] Check on the Calendar page: a pill-shaped plate cut off at the left edge of the viewport, level with the playground (seen in the owner's screenshot); find what it is.
 
 ## Checkbox (and Checkbox group)
