@@ -5,6 +5,7 @@ import { COLORWAYS, capture, open } from './helpers';
 // week read their values, every tile draws its own sky, and reduced motion holds one frame.
 for (const colorway of COLORWAYS) {
   test(`weather widget in ${colorway}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1800, height: 900 }); // Both fixed 400px slabs fit the docs' two-column showcase.
     await open(page, '/components/weather', colorway);
     const widget = page.getByTestId(`weather-${colorway}`).locator('section.mu-weather');
     await expect(widget).toHaveAttribute('aria-label', 'Weather in Lisbon');
@@ -34,10 +35,36 @@ test('night brings the moon', async ({ page }) => {
 });
 
 test('reduced motion holds one frame', async ({ page }) => {
+  await page.setViewportSize({ width: 1800, height: 900 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page, '/components/weather', 'bone');
   const rain = page.getByTestId('weather-tiles-bone').locator('section.mu-weather-tile').nth(4).locator('path[data-layer="rain"]');
   const first = await rain.getAttribute('d');
   await page.waitForTimeout(700);
   expect(await rain.getAttribute('d')).toBe(first);
+  for (const colorway of COLORWAYS) {
+    await page.getByTestId(`weather-${colorway}`).screenshot({ path: capture(`weather-${colorway}-reduced`) });
+  }
+});
+
+// The hosted day keeps its advertised rate while sharing the visible dot-frame cadence.
+test('the Weather day keeps its rate and sleeps off screen', async ({ page }) => {
+  await open(page, '/components/weather', 'bone');
+  const clock = page.getByTestId('weather-bone').locator('header .type-readout');
+  const minutes = async () => {
+    const [hours, minutes] = (await clock.innerText()).split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  const started = await minutes();
+  await page.waitForTimeout(1200);
+  const advance = ((await minutes()) - started + 1440) % 1440;
+  expect(advance).toBeGreaterThanOrEqual(25);
+  expect(advance).toBeLessThanOrEqual(45); // 30 minutes per real second: one day in 48 seconds.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await page.waitForTimeout(400);
+  const held = await clock.innerText();
+  await page.waitForTimeout(700);
+  expect(await clock.innerText()).toBe(held);
+  await page.getByTestId('weather-bone').scrollIntoViewIfNeeded();
+  await expect.poll(async () => clock.innerText()).not.toBe(held);
 });

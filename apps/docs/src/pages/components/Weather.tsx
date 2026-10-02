@@ -57,7 +57,17 @@ function useClock(runs: boolean, dayLength: number, start: number) {
   React.useEffect(() => setHour(start), [start]);
   React.useEffect(() => {
     if (!runs) return;
-    const id = window.setInterval(() => setHour((h) => (h + 24 / (dayLength * 10)) % 24), 100);
+    // The day and its stepped sky share the authored frame cadence. Interleaving a faster
+    // day clock with the dot frames invalidates the same scene between visible frames.
+    const duration = getComputedStyle(document.documentElement).getPropertyValue('--mu-r-weather-dot-frame').trim();
+    const frame = parseFloat(duration) * (duration.endsWith('ms') ? 1 : 1000);
+    if (!Number.isFinite(frame) || frame <= 0) return;
+    let previous = performance.now();
+    const id = window.setInterval(() => {
+      const now = performance.now();
+      const elapsed = now - previous; previous = now;
+      setHour((h) => (h + (24 * elapsed) / (dayLength * 1000)) % 24);
+    }, frame);
     return () => window.clearInterval(id);
   }, [runs, dayLength]);
   return hour;
