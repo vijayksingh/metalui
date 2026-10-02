@@ -1583,6 +1583,8 @@ A folder on the canvas: the closed state of a container. React: `Folder` from `@
 
 From the Soft Hardware sheet's stack folder, 220 × 204: a translucent paper back panel (150 tall, radius 26, tapering 10 per side toward the bottom) with a tab rising 16; up to three cards (114 × 148, radius 16) with a 62-tall picture and three lines; a frosted glass flap (106 tall, tapering 12 per side: a clipped blur layer under a see-through fill) with the name (title), `Folder · N blocks` (engraved) and the count chip.
 
+The inline SVG draws the paper and flap edges, light and clipping. These are the object’s physical geometry, not action glyphs; preserve them when adopting the shared icon set.
+
 ## States and motion
 
 Up to six cards peek, each posed by its place in the pile (t: 0 back → 1 front); the fan widens a little with the count. At three cards the poses are the sheet's exactly.

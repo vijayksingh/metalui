@@ -111,7 +111,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] table
 - [x] breadcrumbs
 - [ ] button-group (split chevron)
-- [ ] folder
+- [x] folder: audited; its SVG paths draw the paper/flap edges and clipping, so stay as object geometry.
 - [x] number-field (shared minus and plus)
 - [ ] fan (‹ as text)
 - [ ] link (↗ as text)
