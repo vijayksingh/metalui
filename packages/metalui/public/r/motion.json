@@ -37,6 +37,12 @@
       "content": "import * as React from 'react';\n\n/** useLayoutEffect in the browser, useEffect on the server: React 18 warns when a layout effect renders on the server. */\nexport const useIsoLayoutEffect = typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;\n"
     },
     {
+      "path": "packages/metalui/src/motion/reduced.ts",
+      "type": "registry:ui",
+      "target": "components/metalui/motion/reduced.ts",
+      "content": "'use client';\n\nimport * as React from 'react';\n\nconst QUERY = '(prefers-reduced-motion: reduce)';\n\n/** Read the OS preference and MetalUI's motion switch at an element. Safe during SSR. */\nexport function motionReduced(element?: Element | null): boolean {\n  if (typeof window === 'undefined' || typeof document === 'undefined') return false;\n  return window.matchMedia(QUERY).matches\n    || !!(element ?? document.documentElement).closest('.rm, [data-mu-motion=\"reduce\"]');\n}\n\n/** Subscribe to both motion switches, including live changes on a scoped ancestor. */\nexport function useReducedMotion(element?: Element | null): boolean {\n  const subscribe = React.useCallback((notify: () => void) => {\n    const media = window.matchMedia(QUERY);\n    const observer = new MutationObserver(notify);\n    media.addEventListener('change', notify);\n    for (let ancestor: Element | null = element ?? document.documentElement; ancestor; ancestor = ancestor.parentElement) {\n      observer.observe(ancestor, { attributes: true, attributeFilter: ['class', 'data-mu-motion'] });\n    }\n    return () => {\n      media.removeEventListener('change', notify);\n      observer.disconnect();\n    };\n  }, [element]);\n  const snapshot = React.useCallback(() => motionReduced(element), [element]);\n  return React.useSyncExternalStore(subscribe, snapshot, () => false);\n}\n"
+    },
+    {
       "path": "packages/metalui/src/motion/refuse.ts",
       "type": "registry:ui",
       "target": "components/metalui/motion/refuse.ts",

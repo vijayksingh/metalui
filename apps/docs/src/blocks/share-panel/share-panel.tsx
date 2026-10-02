@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced as reduced } from '@unlocalhosted/metalui';
 import {
   Attachment, Avatar, Button, DropZone, Field, FormField, IconButton, Select, SwapText, Switch, Tooltip, TooltipProvider,
   type DropRefusal,
@@ -91,9 +92,7 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 
 /* ── Motion helpers ────────────────────────────────────────── */
 
-function reduced(el: Element) {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!el.closest('[data-mu-motion="reduce"]');
-}
+
 
 /** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
 function spring(el: Element, name: 'settle' | 'object' | 'release') {

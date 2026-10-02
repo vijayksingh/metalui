@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button } from '@unlocalhosted/metalui';
+import { Button, useReducedMotion } from '@unlocalhosted/metalui';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 import { HopDemo } from '../../ui/HopDemo';
@@ -80,9 +80,10 @@ function ReducedMotionBench() {
     setPhase('from');
     requestAnimationFrame(() => requestAnimationFrame(() => setPhase('to')));
   };
-  const active = reduce || system;
+  const [scope, setScope] = React.useState<HTMLDivElement | null>(null);
+  const active = useReducedMotion(scope);
   return (
-    <div className="flex w-full flex-col gap-16" data-mu-motion={reduce ? 'reduce' : undefined}>
+    <div className="flex w-full flex-col gap-16" ref={setScope} data-testid="motion-preference" data-mu-motion={reduce ? 'reduce' : undefined}>
       <div className="flex flex-wrap items-center justify-between gap-12">
         <div className="flex items-center gap-8">
           <Button onClick={replay}>Replay</Button>
@@ -95,7 +96,7 @@ function ReducedMotionBench() {
             Reduce motion
           </button>
         </div>
-        <span className="type-readout text-ink2">{system ? 'system: reduce' : 'system: full'} · {active ? 'reduced' : 'full motion'}</span>
+        <output aria-label="Effective motion" className="type-readout text-ink2">{system ? 'system: reduce' : 'system: full'} · {active ? 'reduced' : 'full motion'}</output>
       </div>
       <div className="flex flex-col">
         {(Object.entries(S) as [string, { reduced: Reduced }][]).map(([k, s]) => (
@@ -181,7 +182,8 @@ export default function Motion() {
         <TokenTable head={['Class', 'Spring', 'Timing', 'Moves']} rows={massRows} mono={[0, 1, 2]} />
       </Section>
 
-      <Section title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion.">
+      <Section id="reduce-motion" title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion.">
+        <p className="type-doc-prose">Use <code>motionReduced(element)</code> for event-time decisions and <code>useReducedMotion(element)</code> for rendering. Both combine the OS preference with the site or nearest ancestor motion switch; the hook updates when either changes. They are safe during server rendering.</p>
         <Bench caption="Each class arrives from one step away · Replay, then turn Reduce motion on and replay">
           <ReducedMotionBench />
         </Bench>

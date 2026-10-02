@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced as reduced } from '@unlocalhosted/metalui';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import {
   AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Menu, MenuItem, Row, Rule, Surface,
@@ -129,9 +130,7 @@ const short = (s: string, n = 32) => (s.length > n ? `${s.slice(0, n - 1).trimEn
 
 /* ── Motion helpers ────────────────────────────────────────── */
 
-function reduced(el: Element) {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!el.closest('[data-mu-motion="reduce"]');
-}
+
 
 /** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
 function spring(el: Element, name: 'settle' | 'object' | 'release') {
