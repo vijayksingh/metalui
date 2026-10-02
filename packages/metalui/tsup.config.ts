@@ -6,10 +6,15 @@ import { defineConfig } from 'tsup';
 const PURE = [/(?<![\w.])(React\d*\.(?:forwardRef|createContext|memo|lazy)\()/g, /(= )(Object\.assign\()/g];
 const markPure = (code: string) => code.replace(PURE[0], '/* @__PURE__ */ $1').replace(PURE[1], '$1/* @__PURE__ */ $2');
 
+const PUBLIC_ENTRIES = ['src/index.ts', 'src/icons.ts', 'src/icons-life.ts', 'src/sound.ts'];
+
 export default defineConfig({
-  entry: ['src/index.ts', 'src/icons.ts', 'src/icons-life.ts', 'src/sound.ts'],
+  // Preserve component entry boundaries so an unused control's computed recipes
+  // cannot keep its data in a consumer that imports another control. Internal entry
+  // wrappers and duplicate CSS are pruned by the build; public exports use shared chunks.
+  entry: [...PUBLIC_ENTRIES, 'src/components/*/*.tsx'],
   format: ['esm'],
-  dts: true,
+  dts: { entry: PUBLIC_ENTRIES },
   clean: true,
   external: ['react', 'react-dom', '@base-ui/react'],
   // Components use hooks and events; keep them client components under RSC.

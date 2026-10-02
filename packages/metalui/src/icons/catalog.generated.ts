@@ -1744,4 +1744,4 @@ export const ICON_CATALOG = {
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
-export const ICON_NAMES = Object.keys(ICON_CATALOG) as IconName[];
+export const ICON_NAMES = /* @__PURE__ */ Object.keys(ICON_CATALOG) as IconName[];

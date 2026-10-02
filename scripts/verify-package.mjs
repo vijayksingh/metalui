@@ -5,6 +5,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const registry = process.argv.includes('--registry');
@@ -51,7 +52,8 @@ for (const [Control, props, marker] of cues) {
   const rendered = renderToStaticMarkup(createElement(TooltipProvider, null, createElement(Control, props)));
   if (!rendered.includes(marker) || !rendered.includes(props.label)) throw new Error('Installed cue render failed: ' + props.label);
 }
-if (!SendAwayIcon || !LifeIcon) throw new Error('Icon subpath failed');
+const namedGlyph = renderToStaticMarkup(createElement(SendAwayIcon, { title: 'Send away', animate: false, size: 16 }));
+if (!namedGlyph.includes('mu-ic-send-away') || !namedGlyph.includes('<path') || !namedGlyph.includes('<title>Send away</title>') || !LifeIcon) throw new Error('Icon subpath render failed');
 if (!Object.keys(Sound).length) throw new Error('Sound subpath failed');
 const css = readFileSync(new URL('./node_modules/@unlocalhosted/metalui/dist/styles.css', import.meta.url), 'utf8');
 if (!css.includes('.recipe-button-primary') || !css.includes('.recipe-surface-raise') || !css.includes('--mu-page')) throw new Error('Component CSS missing');
@@ -62,6 +64,14 @@ if (css.includes('button,input,optgroup')) throw new Error('Global reset leaked 
   const script = join(temp, 'smoke.mjs');
   writeFileSync(script, smoke);
   execFileSync('node', [script], { cwd: temp, stdio: 'inherit' });
+  // Exercise the same installed package after a real consumer bundles and tree-shakes it.
+  const bundled = join(temp, 'bundled-smoke.mjs');
+  await build({ entryPoints: [script], outfile: bundled, bundle: true, format: 'esm',
+    platform: 'node', target: 'node22', treeShaking: true, logLevel: 'error',
+    // Base UI's bundled CommonJS shim loads external React through Node's ESM bridge.
+    banner: { js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);" },
+    external: ['react', 'react/*', 'react-dom', 'react-dom/*', 'node:*'], loader: { '.css': 'empty' } });
+  execFileSync('node', [bundled], { cwd: temp, stdio: 'inherit' });
   console.log(`Package consumer: ${pkg.name}@${pkg.version} from ${registry ? 'registry' : 'local tarball'}, controlled cues, React render and CSS passed`);
 } finally {
   rmSync(temp, { recursive: true, force: true });

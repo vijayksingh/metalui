@@ -63,7 +63,7 @@
     "./icons-life.json": "./public/icons-life.json"
   },
   "scripts": {
-    "build": "tsup && rm -f dist/index.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",
+    "build": "tsup && rm -rf dist/components && rm -f dist/index.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

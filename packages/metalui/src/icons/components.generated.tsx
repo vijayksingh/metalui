@@ -2,160 +2,160 @@
 import { createIcon } from './Icon';
 
 /** Select. Hover: The pointer draws back, clicks its tip down, and a ring opens where it lands.. Press: plays the same act. */
-export const SelectIcon = createIcon("select", "SelectIcon");
+export const SelectIcon = /* @__PURE__ */ createIcon("select", "SelectIcon");
 /** Text. Hover: The T is lifted, struck down onto its foot like a piece of type, and the caret appears after it.. Press: plays the same act. */
-export const TextIcon = createIcon("text", "TextIcon");
+export const TextIcon = /* @__PURE__ */ createIcon("text", "TextIcon");
 /** Note. Hover: The corner peels open, the lines are written fresh, and the corner is pressed back down.. Press: plays the same act. */
-export const NoteIcon = createIcon("note", "NoteIcon");
+export const NoteIcon = /* @__PURE__ */ createIcon("note", "NoteIcon");
 /** Image. Hover: The sun dips behind the ridge, climbs into the sky with a flare of rays, and sets again.. Press: plays the same act. */
-export const ImageIcon = createIcon("image", "ImageIcon");
+export const ImageIcon = /* @__PURE__ */ createIcon("image", "ImageIcon");
 /** Link. Hover: The two links are pulled apart on their bar, then snap back into each other and a spark squeezes out at the join.. Press: plays the same act. */
-export const LinkIcon = createIcon("link", "LinkIcon");
+export const LinkIcon = /* @__PURE__ */ createIcon("link", "LinkIcon");
 /** Draw. Hover: The pencil lifts back, comes down on its point and pulls a stroke across the page, then goes back to its place.. Press: plays the same act. */
-export const DrawIcon = createIcon("draw", "DrawIcon");
+export const DrawIcon = /* @__PURE__ */ createIcon("draw", "DrawIcon");
 /** Pen. Hover: The nib writes a wave of ink, presses at the end of the line, and a drop of ink blooms and soaks in.. Press: plays the same act. */
-export const PenIcon = createIcon("pen", "PenIcon");
+export const PenIcon = /* @__PURE__ */ createIcon("pen", "PenIcon");
 /** Marker. Hover: The marker plants its chisel flat and sweeps right, laying a see-through band as far as it goes.. Press: plays the same act. */
-export const MarkerIcon = createIcon("marker", "MarkerIcon");
+export const MarkerIcon = /* @__PURE__ */ createIcon("marker", "MarkerIcon");
 /** Line. Hover: The end handle is picked up and dragged back, the pen presses the start, and the line is drawn out to snap onto its end.. Press: plays the same act. */
-export const LineIcon = createIcon("line", "LineIcon");
+export const LineIcon = /* @__PURE__ */ createIcon("line", "LineIcon");
 /** Arrow. Hover: The arrow is drawn back from its held tail and thrust at its mark; the head strikes, compresses into its tip, and rebounds.. Press: plays the same act. */
-export const ArrowIcon = createIcon("arrow", "ArrowIcon");
+export const ArrowIcon = /* @__PURE__ */ createIcon("arrow", "ArrowIcon");
 /** Rectangle. Hover: A handle grabs the far corner and drags the box in toward its pinned corner, then out past its size; let go, it springs back.. Press: plays the same act. */
-export const RectangleIcon = createIcon("rectangle", "RectangleIcon");
+export const RectangleIcon = /* @__PURE__ */ createIcon("rectangle", "RectangleIcon");
 /** Ellipse. Hover: A pen comes down on the ellipse and draws it again all the way round; the loop closes where it began.. Press: plays the same act. */
-export const EllipseIcon = createIcon("ellipse", "EllipseIcon");
+export const EllipseIcon = /* @__PURE__ */ createIcon("ellipse", "EllipseIcon");
 /** Eraser. Hover: The eraser is pressed onto a scribble and rubbed left, right and left; the scribble goes a pass at a time and crumbs flick away.. Press: plays the same act. */
-export const EraserIcon = createIcon("eraser", "EraserIcon");
+export const EraserIcon = /* @__PURE__ */ createIcon("eraser", "EraserIcon");
 /** Layout. Hover: The panes are drawn apart, snap back onto the grid, and the gutter rule flashes where they seat.. Press: plays the same act. */
-export const LayoutIcon = createIcon("layout", "LayoutIcon");
+export const LayoutIcon = /* @__PURE__ */ createIcon("layout", "LayoutIcon");
 /** Tidy. Hover: The loose pills are knocked square against the guide, and registration ticks flash where they sit flush.. Press: plays the same act. */
-export const TidyIcon = createIcon("tidy", "TidyIcon");
+export const TidyIcon = /* @__PURE__ */ createIcon("tidy", "TidyIcon");
 /** Search. Hover: The lens is swept across the field and stops; the focus closes in and a glint crosses the glass.. Press: plays the same act. */
-export const SearchIcon = createIcon("search", "SearchIcon");
+export const SearchIcon = /* @__PURE__ */ createIcon("search", "SearchIcon");
 /** Zoom In. Hover: The lens is pushed in along its handle and the plus under it is magnified.. Press: plays the same act. */
-export const ZoomInIcon = createIcon("zoom-in", "ZoomInIcon");
+export const ZoomInIcon = /* @__PURE__ */ createIcon("zoom-in", "ZoomInIcon");
 /** Zoom Out. Hover: The lens is drawn back along its handle; the minus recedes and the old view closes in.. Press: plays the same act. */
-export const ZoomOutIcon = createIcon("zoom-out", "ZoomOutIcon");
+export const ZoomOutIcon = /* @__PURE__ */ createIcon("zoom-out", "ZoomOutIcon");
 /** Fit. Hover: The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut.. Press: plays the same act. */
-export const FitIcon = createIcon("fit", "FitIcon");
+export const FitIcon = /* @__PURE__ */ createIcon("fit", "FitIcon");
 /** Duplicate. Hover: The copy slides back onto the original, presses to take its impression, and is peeled off into place.. Press: plays the same act. */
-export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
+export const DuplicateIcon = /* @__PURE__ */ createIcon("duplicate", "DuplicateIcon");
 /** Copy. Hover: The front sheet takes an impression from its fixed source and peels off as a paper copy.. Press: plays the same act. */
-export const CopyIcon = createIcon("copy", "CopyIcon");
+export const CopyIcon = /* @__PURE__ */ createIcon("copy", "CopyIcon");
 /** Save. Hover: The write window seats into the storage case, records the document, then releases.. Press: plays the same act. */
-export const SaveIcon = createIcon("save", "SaveIcon");
+export const SaveIcon = /* @__PURE__ */ createIcon("save", "SaveIcon");
 /** Download. Hover: The arrow descends into the receiving tray; the tray takes its weight and releases.. Press: plays the same act. */
-export const DownloadIcon = createIcon("download", "DownloadIcon");
+export const DownloadIcon = /* @__PURE__ */ createIcon("download", "DownloadIcon");
 /** Upload. Hover: The arrow rises to the upper boundary; the boundary receives it and releases.. Press: plays the same act. */
-export const UploadIcon = createIcon("upload", "UploadIcon");
+export const UploadIcon = /* @__PURE__ */ createIcon("upload", "UploadIcon");
 /** Send. Hover: The folded message draws back, leaves along its pointed tip, and the next message is ready.. Press: plays the same act. */
-export const SendIcon = createIcon("send", "SendIcon");
+export const SendIcon = /* @__PURE__ */ createIcon("send", "SendIcon");
 /** Open externally. Hover: The arrow reaches through the open window corner into the external context, then returns ready.. Press: plays the same act. */
-export const ExternalIcon = createIcon("external", "ExternalIcon");
+export const ExternalIcon = /* @__PURE__ */ createIcon("external", "ExternalIcon");
 /** Settings. Hover: Three adjustment knobs reach their rail stops in order and seat back into their settings.. Press: plays the same act. */
-export const SettingsIcon = createIcon("settings", "SettingsIcon");
+export const SettingsIcon = /* @__PURE__ */ createIcon("settings", "SettingsIcon");
 /** Filter. Hover: The throat seats in the fixed funnel and narrows the result stream.. Press: plays the same act. */
-export const FilterIcon = createIcon("filter", "FilterIcon");
+export const FilterIcon = /* @__PURE__ */ createIcon("filter", "FilterIcon");
 /** Sort. Hover: The ordering shaft presses its terminal and returns; the ordered rows stay fixed.. Press: plays the same act. */
-export const SortIcon = createIcon("sort", "SortIcon");
+export const SortIcon = /* @__PURE__ */ createIcon("sort", "SortIcon");
 /** Show value. Hover: The iris inspects through the fixed lens and returns to centre.. Press: plays the same act. */
-export const EyeIcon = createIcon("eye", "EyeIcon");
+export const EyeIcon = /* @__PURE__ */ createIcon("eye", "EyeIcon");
 /** Hide value. Hover: The visibility shutter seats across the fixed lens, then returns to its concealed position.. Press: plays the same act. */
-export const EyeOffIcon = createIcon("eye-off", "EyeOffIcon");
+export const EyeOffIcon = /* @__PURE__ */ createIcon("eye-off", "EyeOffIcon");
 /** Locked. Hover: The closed shackle seats in its catches; the secure body stays fixed.. Press: plays the same act. */
-export const LockIcon = createIcon("lock", "LockIcon");
+export const LockIcon = /* @__PURE__ */ createIcon("lock", "LockIcon");
 /** Stop. Hover: The square stop pad contacts its seat once and releases inside the fixed case.. Press: plays the same act. */
-export const StopIcon = createIcon("stop", "StopIcon");
+export const StopIcon = /* @__PURE__ */ createIcon("stop", "StopIcon");
 /** Attach. Hover: The inner paperclip jaw catches against its fixed outer loop and seats back.. Press: plays the same act. */
-export const AttachIcon = createIcon("attach", "AttachIcon");
+export const AttachIcon = /* @__PURE__ */ createIcon("attach", "AttachIcon");
 /** Try again. Hover: The return arrow pulls toward its fixed route and seats for one more attempt.. Press: plays the same act. */
-export const RetryIcon = createIcon("retry", "RetryIcon");
+export const RetryIcon = /* @__PURE__ */ createIcon("retry", "RetryIcon");
 /** Person. Hover: The portrait head seats above its fixed shoulders and returns to its place.. Press: plays the same act. */
-export const PersonIcon = createIcon("person", "PersonIcon");
+export const PersonIcon = /* @__PURE__ */ createIcon("person", "PersonIcon");
 /** Notification. Hover: The striker swings once into the bell rim; the rim receives the contact and both seat.. Press: plays the same act. */
-export const BellIcon = createIcon("bell", "BellIcon");
+export const BellIcon = /* @__PURE__ */ createIcon("bell", "BellIcon");
 /** Palette. Hover: A paint well seats in the fixed palette while its thumb hole stays open.. Press: plays the same act. */
-export const PaletteIcon = createIcon("palette", "PaletteIcon");
+export const PaletteIcon = /* @__PURE__ */ createIcon("palette", "PaletteIcon");
 /** Volume. Hover: The outer sound front reaches outward from the fixed speaker and seats back.. Press: plays the same act. */
-export const VolumeIcon = createIcon("volume", "VolumeIcon");
+export const VolumeIcon = /* @__PURE__ */ createIcon("volume", "VolumeIcon");
 /** Brightness. Hover: The level shade opens inside the fixed lamp and seats back at its half-lit position.. Press: plays the same act. */
-export const BrightnessIcon = createIcon("brightness", "BrightnessIcon");
+export const BrightnessIcon = /* @__PURE__ */ createIcon("brightness", "BrightnessIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
-export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
+export const SendAwayIcon = /* @__PURE__ */ createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */
-export const TrashIcon = createIcon("trash", "TrashIcon");
+export const TrashIcon = /* @__PURE__ */ createIcon("trash", "TrashIcon");
 /** Group · Stack. Hover: The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing.. Press: plays the same act. */
-export const GroupIcon = createIcon("group", "GroupIcon");
+export const GroupIcon = /* @__PURE__ */ createIcon("group", "GroupIcon");
 /** Ungroup. Hover: The two cards are pressed together into the tray, then let go: they spring up and apart and a crack of light opens down the seam.. Press: plays the same act. */
-export const UngroupIcon = createIcon("ungroup", "UngroupIcon");
+export const UngroupIcon = /* @__PURE__ */ createIcon("ungroup", "UngroupIcon");
 /** Pin. Hover: The pin is drawn up rocking on its point, then driven straight down; its shadow spreads and a shock runs out along the board where it lands.. Press: plays the same act. */
-export const PinIcon = createIcon("pin", "PinIcon");
+export const PinIcon = /* @__PURE__ */ createIcon("pin", "PinIcon");
 /** Board. Hover: The ribbon is lifted and let drop; its top edge catches it, the tail runs on and springs back.. Press: plays the same act. */
-export const BoardIcon = createIcon("board", "BoardIcon");
+export const BoardIcon = /* @__PURE__ */ createIcon("board", "BoardIcon");
 /** Share · Export. Hover: The arrow crouches into the tray, pushes off and leaves; the next one rises in its place.. Press: plays the same act. */
-export const ShareIcon = createIcon("share", "ShareIcon");
+export const ShareIcon = /* @__PURE__ */ createIcon("share", "ShareIcon");
 /** Undo. Hover: The hook winds forward, whips back about its centre and reels its tail in; the head's echo carries on, a step back.. Press: plays the same act. */
-export const UndoIcon = createIcon("undo", "UndoIcon");
+export const UndoIcon = /* @__PURE__ */ createIcon("undo", "UndoIcon");
 /** Redo. Hover: The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on.. Press: plays the same act. */
-export const RedoIcon = createIcon("redo", "RedoIcon");
+export const RedoIcon = /* @__PURE__ */ createIcon("redo", "RedoIcon");
 /** More. Hover: The first dot is struck into the row; the knock runs through and kicks the last one out: there is more.. Press: plays the same act. */
-export const MoreIcon = createIcon("more", "MoreIcon");
+export const MoreIcon = /* @__PURE__ */ createIcon("more", "MoreIcon");
 /** Close. Hover: A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.. Press: plays the same act. */
-export const CloseIcon = createIcon("close", "CloseIcon");
+export const CloseIcon = /* @__PURE__ */ createIcon("close", "CloseIcon");
 /** Play · Resume. Hover: The transport key advances one step and returns ready to resume.. Press: plays the same act. */
-export const PlayIcon = createIcon("play", "PlayIcon");
+export const PlayIcon = /* @__PURE__ */ createIcon("play", "PlayIcon");
 /** Pause. Hover: The two transport stops catch together and release to their ready gap.. Press: plays the same act. */
-export const PauseIcon = createIcon("pause", "PauseIcon");
+export const PauseIcon = /* @__PURE__ */ createIcon("pause", "PauseIcon");
 /** Check. Hover: A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.. Press: plays the same act. */
-export const CheckIcon = createIcon("check", "CheckIcon");
+export const CheckIcon = /* @__PURE__ */ createIcon("check", "CheckIcon");
 /** Information. Hover: The information stem seats in its fixed circular window and releases.. Press: plays the same act. */
-export const InfoIcon = createIcon("info", "InfoIcon");
+export const InfoIcon = /* @__PURE__ */ createIcon("info", "InfoIcon");
 /** Warning. Hover: The alert stem seats inside a fixed warning triangle; its dot remains visible.. Press: plays the same act. */
-export const WarningIcon = createIcon("warning", "WarningIcon");
+export const WarningIcon = /* @__PURE__ */ createIcon("warning", "WarningIcon");
 /** Daylight. Hover: One daylight beam opens from the fixed sun and seats back at its source.. Press: plays the same act. */
-export const SunIcon = createIcon("sun", "SunIcon");
+export const SunIcon = /* @__PURE__ */ createIcon("sun", "SunIcon");
 /** Night. Hover: The inset night shade seats against a fixed crescent and returns to its quiet position.. Press: plays the same act. */
-export const MoonIcon = createIcon("moon", "MoonIcon");
+export const MoonIcon = /* @__PURE__ */ createIcon("moon", "MoonIcon");
 /** Sidebar. Hover: The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.. Press: plays the same act. */
-export const SidebarIcon = createIcon("sidebar", "SidebarIcon");
+export const SidebarIcon = /* @__PURE__ */ createIcon("sidebar", "SidebarIcon");
 /** Sidebar rail. Hover: The narrow sidebar rail seats once inside its fixed window and returns to its stop.. Press: plays the same act. */
-export const SidebarCollapsedIcon = createIcon("sidebar-collapsed", "SidebarCollapsedIcon");
+export const SidebarCollapsedIcon = /* @__PURE__ */ createIcon("sidebar-collapsed", "SidebarCollapsedIcon");
 /** Synced. Hover: The satellite winds back, laps the core once and clicks home into its slot.. Press: plays the same act. */
-export const SyncedIcon = createIcon("synced", "SyncedIcon");
+export const SyncedIcon = /* @__PURE__ */ createIcon("synced", "SyncedIcon");
 /** Offline. Hover: The lost satellite swings back toward its slot, falls a unit short and is thrown back out.. Press: plays the same act. */
-export const OfflineIcon = createIcon("offline", "OfflineIcon");
+export const OfflineIcon = /* @__PURE__ */ createIcon("offline", "OfflineIcon");
 /** Sync Error. Hover: The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts.. Press: plays the same act. */
-export const SyncErrorIcon = createIcon("sync-error", "SyncErrorIcon");
+export const SyncErrorIcon = /* @__PURE__ */ createIcon("sync-error", "SyncErrorIcon");
 /** Capture. Hover: The corners close in and hunt for focus, lock, and the shutter blinks over the aperture.. Press: plays the same act. */
-export const CaptureIcon = createIcon("capture", "CaptureIcon");
+export const CaptureIcon = /* @__PURE__ */ createIcon("capture", "CaptureIcon");
 /** Paste. Hover: The clip levers open, the content drops onto the board, and the clip clamps it down.. Press: plays the same act. */
-export const PasteIcon = createIcon("paste", "PasteIcon");
+export const PasteIcon = /* @__PURE__ */ createIcon("paste", "PasteIcon");
 /** Keeper. Hover: The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod.. Press: plays the same act. */
-export const KeeperIcon = createIcon("keeper", "KeeperIcon");
+export const KeeperIcon = /* @__PURE__ */ createIcon("keeper", "KeeperIcon");
 /** New. Hover: The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.. Press: plays the same act. */
-export const PlusIcon = createIcon("plus", "PlusIcon");
+export const PlusIcon = /* @__PURE__ */ createIcon("plus", "PlusIcon");
 /** Remove · Less. Hover: The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.. Press: plays the same act. */
-export const MinusIcon = createIcon("minus", "MinusIcon");
+export const MinusIcon = /* @__PURE__ */ createIcon("minus", "MinusIcon");
 /** Chevron · Open. Hover: The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.. Press: plays the same act. */
-export const ChevronIcon = createIcon("chevron", "ChevronIcon");
+export const ChevronIcon = /* @__PURE__ */ createIcon("chevron", "ChevronIcon");
 /** Region. Hover: The frame is set down on the canvas, and its name writes into the head behind a caret.. Press: plays the same act. */
-export const RegionIcon = createIcon("region", "RegionIcon");
+export const RegionIcon = /* @__PURE__ */ createIcon("region", "RegionIcon");
 /** Task. Hover: The box is pressed down; while it is held the tick is written, and released it springs back up with a click.. Press: plays the same act. */
-export const TaskIcon = createIcon("task", "TaskIcon");
+export const TaskIcon = /* @__PURE__ */ createIcon("task", "TaskIcon");
 /** Tag. Hover: The cord tugs the tag by its eyelet, and it swings there and comes to hang still.. Press: plays the same act. */
-export const TagIcon = createIcon("tag", "TagIcon");
+export const TagIcon = /* @__PURE__ */ createIcon("tag", "TagIcon");
 /** Calendar. Hover: Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left.. Press: plays the same act. */
-export const CalendarIcon = createIcon("calendar", "CalendarIcon");
+export const CalendarIcon = /* @__PURE__ */ createIcon("calendar", "CalendarIcon");
 /** Document. Hover: A thumb folds the corner down, the page turns, and the next page's lines write in.. Press: plays the same act. */
-export const DocumentIcon = createIcon("document", "DocumentIcon");
+export const DocumentIcon = /* @__PURE__ */ createIcon("document", "DocumentIcon");
 /** Confirmed edit. Hover: The committed edit makes one contact, then its four-point receipt opens to rest.. Press: plays the same act. */
-export const SparkIcon = createIcon("spark", "SparkIcon");
+export const SparkIcon = /* @__PURE__ */ createIcon("spark", "SparkIcon");
 /** Coin · Amount. Hover: The minted coin tilts to its edge once and returns to its stamped face.. Press: plays the same act. */
-export const CoinIcon = createIcon("coin", "CoinIcon");
+export const CoinIcon = /* @__PURE__ */ createIcon("coin", "CoinIcon");
 /** Time. Hover: An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.. Press: plays the same act. */
-export const ClockIcon = createIcon("clock", "ClockIcon");
+export const ClockIcon = /* @__PURE__ */ createIcon("clock", "ClockIcon");
 /** Me. Hover: Today's point runs back along your days and climbs to today again, drawing the trend behind it.. Press: plays the same act. */
-export const MeIcon = createIcon("me", "MeIcon");
+export const MeIcon = /* @__PURE__ */ createIcon("me", "MeIcon");
 /** Seed sample. Hover: The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.. Press: plays the same act. */
-export const SeedIcon = createIcon("seed", "SeedIcon");
+export const SeedIcon = /* @__PURE__ */ createIcon("seed", "SeedIcon");
