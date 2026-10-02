@@ -1689,6 +1689,12 @@ Reduce Motion: the error's row snaps; the fade stays.
 - An error says what to do, not only what is wrong: "Give the region a name", not "Invalid".
 - Show errors after the person has had a chance (on blur or on submit), not on the first keystroke.
 
+## Save region host
+
+The docs form saves the validated values from Base UI Form as one request. The host captures its previous document, locks its controls while pending, drives Button state waiting/done/error, and reserves the result beat before unlocking. Its region glyph becomes check on success or sync-error on failure; the drum says Saved / Try again. Failed storage retains the draft and remains retryable; it does not mark otherwise-valid field values invalid. Undo restores the captured document snapshot, never a later read of current storage. Existing form validation still owns focus placement.
+
+The executable native composition is swift/Examples/MetalSaveRegionExample.swift in the non-product MetalUIExamples target; it uses the same storage callback, request lock, presentation timing and captured-original Undo. Component fidelity limits remain those of the individual alpha controls.
+
 ---
 
 # Glass face

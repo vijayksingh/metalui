@@ -3,9 +3,9 @@ import * as React from 'react';
 import type { ButtonState } from '../button/button';
 
 /** Internal request lifecycle shared by small edit recipes; not a public form framework. */
-export function useEditRequest(options: {
-  onCommit: (value: string) => void | Promise<void>;
-  onCommitted?: (value: string, original: string) => void;
+export function useEditRequest<Value, Original = Value>(options: {
+  onCommit: (value: Value) => void | Promise<void>;
+  onCommitted?: (value: Value, original: Original) => void;
   onPendingChange?: (pending: boolean) => void;
 }) {
   const [state, setState] = React.useState<ButtonState>('idle');
@@ -14,7 +14,7 @@ export function useEditRequest(options: {
   const generation = React.useRef(0);
   const callbacks = React.useRef(options); callbacks.current = options;
   React.useEffect(() => () => { generation.current++; callbacks.current.onPendingChange?.(false); }, []);
-  const commit = async (value: string, original: string) => {
+  const commit = async (value: Value, original: Original) => {
     if (running.current) return;
     running.current = true; const request = ++generation.current;
     callbacks.current.onPendingChange?.(true); setFailure(null); setState('waiting');
