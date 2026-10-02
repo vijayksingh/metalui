@@ -2267,7 +2267,7 @@
   display: inline-block; width: var(--mu-cue-swatch); height: var(--mu-cue-swatch); border-radius: var(--mu-cue-swatch-radius); transform: translateY(1px); background: var(--mu-cue-hex); box-shadow: var(--mu-r-mark-swatch-shadow);
 }
 @utility mark-chip {
-  &[data-chip]:hover::after, &[data-chip]:focus-visible::after, &[data-chip][data-reveal]:not([data-raw])::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: 30; font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; }
+  &[data-chip]:hover::after, &[data-chip]:focus-visible::after, &[data-chip][data-reveal]:not([data-raw])::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: 30; font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; } &:has(> .mu-mark-meaning)::after { bottom: calc(100% + var(--mu-r-button-compact-glyph) + var(--mu-space-2) + var(--mu-cue-chip-gap)); }
 }
 @utility mark-url {
   display: inline-flex; align-items: center; gap: var(--mu-cue-url-gap); height: var(--mu-cue-url-height); padding: 0 var(--mu-cue-url-pad-end) 0 var(--mu-cue-url-pad-start); border-radius: var(--mu-radius-pill); vertical-align: 1px; color: var(--mu-cue-url-ink); text-decoration: none; background: var(--mu-r-mark-url-background); box-shadow: var(--mu-r-mark-url-shadow); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); &:hover { background: var(--mu-r-mark-url-hover-background); } & > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
@@ -2297,7 +2297,7 @@
   width: var(--mu-r-button-compact-glyph); height: var(--mu-r-button-compact-glyph); font: var(--mu-type-badge);
 }
 @utility mark-recognised {
-  & > .mu-mark-meaning { animation: mu-mark-pop var(--mu-spring-object-d) var(--mu-spring-object) both; } @media (prefers-reduced-motion: reduce) { & > .mu-mark-meaning { animation: none; } } :is([data-mu-motion=reduce], .rm) & > .mu-mark-meaning { animation: none; }
+  & > .mu-mark-meaning { animation: mu-mark-pop var(--mu-spring-object-d) var(--mu-spring-object) both; } @media (prefers-reduced-motion: reduce) { & > .mu-mark-meaning { animation: none; } } :is([data-mu-motion=reduce], .rm) & > .mu-mark-meaning { animation: none; } &[data-kind=derived-tag]:not([data-inferred]) > .mu-mark-tab { animation: mu-mark-stamp var(--mu-spring-part-d) var(--mu-spring-part) both; } @media (prefers-reduced-motion: reduce) { & > .mu-mark-tab { animation: none; } } :is([data-mu-motion=reduce], .rm) & > .mu-mark-tab { animation: none; }
 }
 @utility mark-recognition-line {
   position: absolute; left: 0; right: 0; bottom: calc(var(--mu-zero-length) - var(--mu-cue-underline-offset)); height: var(--mu-cue-quiet-thickness); background: currentColor; opacity: 0; transform-origin: 0 50%; pointer-events: none; animation: mu-mark-draw var(--mu-spring-settle-d) var(--mu-spring-settle) both; [data-raw] > & { opacity: 0; } @media (prefers-reduced-motion: reduce) { animation: none; } :is([data-mu-motion=reduce], .rm) & { animation: none; }
@@ -3236,6 +3236,9 @@
 }
 @keyframes mu-mark-draw {
   from { opacity: 1; transform: scaleX(0); } 90% { opacity: 1; } to { opacity: 0; transform: scaleX(1); }
+}
+@keyframes mu-mark-stamp {
+  50% { transform: translateY(var(--mu-r-button-self-travel)); }
 }
 @keyframes mu-toast-bump-a {
   from { scale: calc(1 - (1 - var(--mu-r-toast-deck-press)) * var(--mu-travel-part)); } to { scale: 1; }

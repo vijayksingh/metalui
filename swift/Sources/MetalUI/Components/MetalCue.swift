@@ -225,6 +225,8 @@ public struct MetalCueInferred: View {
     @Environment(\.metalColorway) private var colorway
     @FocusState private var focused: Bool
     @State private var act = 0
+    @State private var stamped = false
+    @MetalMotionPreference private var reduceMotion
 
     public init(_ text: String, confirmed: Bool = false, onConfirm: (() -> Void)? = nil) {
         self.text = text; self.confirmed = confirmed; self.onConfirm = onConfirm
@@ -240,7 +242,7 @@ public struct MetalCueInferred: View {
                 Capsule().stroke(colorway.tokens.ink2.color, style: StrokeStyle(lineWidth: MetalCue.quietThickness, dash: confirmed ? [] : [MetalSpace.s2, MetalSpace.s2]))
             }
             .overlay(alignment: .topTrailing) {
-                if confirmed { MetalIcon(.check, size: MetalRecipes.button.points("compact.glyph"), act: act).offset(y: -MetalCue.inferredHeight).accessibilityHidden(true) }
+                if confirmed { MetalIcon(.spark, size: MetalRecipes.button.points("compact.glyph"), act: act).offset(y: -MetalCue.inferredHeight).accessibilityHidden(true) }
             }
     }
     public var body: some View {
@@ -250,6 +252,15 @@ public struct MetalCueInferred: View {
                     .onChange(of: focused) { _, isFocused in if isFocused && !confirmed { onConfirm() } }
             } else { face }
         }
+        .offset(y: stamped && !reduceMotion ? MetalRecipes.button.points("self.travel") : .zero)
+        .task(id: act) {
+            guard act > 0, !reduceMotion else { return }
+            withMetalAnimation(.part, reduceMotion: reduceMotion) { stamped = true }
+            try? await Task.sleep(for: .seconds(MetalSprings.part.duration))
+            guard !Task.isCancelled else { return }
+            withMetalAnimation(.release, reduceMotion: reduceMotion) { stamped = false }
+        }
+        .onChange(of: reduceMotion) { _, reduced in if reduced { stamped = false } }
         .accessibilityLabel(confirmed ? text : "Suggestion, \(text)")
         .onChange(of: confirmed) { _, value in if value { act += 1 } }
     }
@@ -293,27 +304,34 @@ public struct MetalCueText: View {
     private let recognition: String?
     private let formatted: String?
     private let personGlyph: AnyView?
+    private let resolved: String?
     @Environment(\.metalColorway) private var colorway
     @MetalMotionPreference private var reduceMotion
     @State private var shown = false
     @State private var seen: String?
     @State private var act = 0
+    @State private var hovering = false
+    @State private var reveal = false
+    @State private var drawing = false
+    @State private var drawn = false
+    @State private var recognitionTask: Task<Void, Never>?
 
     public init(_ text: String, kind: MetalCueKind, meaning: MetalCueMeaning? = nil,
-                label: String? = nil, color: MetalRGBA? = nil, raw: Bool = false, recognition: String? = nil, formatted: String? = nil, personGlyph: AnyView? = nil) {
+                label: String? = nil, color: MetalRGBA? = nil, raw: Bool = false, recognition: String? = nil, formatted: String? = nil, personGlyph: AnyView? = nil, resolved: String? = nil) {
         self.text = text; self.kind = kind; self.meaning = meaning; self.label = label
-        self.color = color; self.raw = raw; self.recognition = recognition; self.formatted = formatted; self.personGlyph = personGlyph
+        self.color = color; self.raw = raw; self.recognition = recognition; self.formatted = formatted; self.personGlyph = personGlyph; self.resolved = resolved
     }
     private var side: Double { MetalRecipes.button.points("compact.glyph") }
     private var clearance: Double { side + MetalSpace.s2 }
-    public var body: some View {
+    private var textFace: some View {
         Group {
             if kind == .tag || kind == .derivedTag {
                 MetalCueTag(text, derived: kind == .derivedTag).opacity(raw ? .zero : .one)
                     .overlay { if raw { Text(text).font(.metal(MetalType.content)) } }
             } else if let formatted {
                 ZStack(alignment: .leading) {
-                    Text(text.count > formatted.count ? text : formatted).hidden().accessibilityHidden(true)
+                    Text(text).hidden().accessibilityHidden(true)
+                    Text(formatted).hidden().accessibilityHidden(true)
                     Text(raw ? text : formatted)
                         .contentTransition(reduceMotion ? .opacity : .numericText())
                         .metalAnimation(.settle, value: raw)
@@ -324,6 +342,9 @@ public struct MetalCueText: View {
                     .monospacedDigit()
             }
         }
+    }
+    public var body: some View {
+        textFace
         .foregroundStyle(colorway.tokens.ink.color)
         .overlay(alignment: .topLeading) {
             if let meaning {
@@ -344,20 +365,64 @@ public struct MetalCueText: View {
                 .accessibilityHidden(true)
             }
         }
+        .overlay(alignment: .bottomLeading) {
+            if drawing && !raw && kind != .tag && kind != .derivedTag {
+                colorway.tokens.ink.color.frame(height: MetalCue.quietThickness)
+                    .scaleEffect(x: drawn ? CGFloat(Double.one) : .zero, anchor: .leading)
+                    .offset(y: MetalCue.underlineOffset)
+                    .allowsHitTesting(false).accessibilityHidden(true)
+            }
+        }
+        .overlay(alignment: .top) {
+            if let resolved, !raw && (hovering || reveal) {
+                Text(resolved.uppercased())
+                    .font(MetalRecipes.mark.font("chip.font"))
+                    .tracking(MetalRecipes.mark.tracking("chip.tracking", size: MetalRecipes.mark.fontSize("chip.font")))
+                    .foregroundStyle(MetalCue.chipInk.color)
+                    .padding(.horizontal, MetalCue.chipPadX).padding(.vertical, MetalCue.chipPadY)
+                    .fixedSize().metalFrost(.graphite, in: Capsule())
+                    .offset(y: -(MetalRecipes.mark.fontSize("chip.font") + MetalCue.chipPadY * 2 + MetalCue.chipGap + (meaning == nil ? .zero : clearance)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: MetalCue.chipRise)))
+                    .allowsHitTesting(false).accessibilityHidden(true)
+            }
+        }
+        .onHover { value in withMetalAnimation(.part, reduceMotion: reduceMotion) { hovering = value } }
         .padding(.top, clearance)
         .help(label ?? text)
         .accessibilityLabel(text)
         .onAppear { recognise() }
         .onChange(of: recognition) { _, _ in recognise() }
         .onChange(of: raw) { _, _ in recognise() }
+        .onChange(of: reduceMotion) { _, reduced in
+            if reduced { recognitionTask?.cancel(); drawing = false; drawn = true; reveal = false }
+        }
+        .onDisappear { recognitionTask?.cancel() }
         .metalAnimation(.settle, value: raw)
+        .transaction { transaction in
+            if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+        }
     }
     private func recognise() {
         guard !raw else { return }
         guard let recognition, recognition != seen else { shown = true; return }
         seen = recognition
+        recognitionTask?.cancel()
         act += 1
         withMetalAnimation(.object, reduceMotion: reduceMotion) { shown = true }
+        drawn = false
+        drawing = !reduceMotion
+        withMetalAnimation(.part, reduceMotion: reduceMotion) { reveal = kind == .date && resolved != nil }
+        recognitionTask = Task { @MainActor in
+            await Task.yield()
+            guard !Task.isCancelled else { return }
+            withMetalAnimation(.settle, reduceMotion: reduceMotion) { drawn = true }
+            try? await Task.sleep(for: .seconds(MetalSprings.settle.duration))
+            guard !Task.isCancelled else { return }
+            drawing = false
+            try? await Task.sleep(for: .seconds(MetalSprings.part.duration))
+            guard !Task.isCancelled else { return }
+            withMetalAnimation(.settle, reduceMotion: reduceMotion) { reveal = false }
+        }
     }
 }
 

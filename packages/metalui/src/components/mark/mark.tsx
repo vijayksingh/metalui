@@ -97,17 +97,17 @@ export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({
       data-semantic-tag={tag || undefined} data-tag-identity={tag ? tagIdentity(text) : undefined}
       className={`mu-cue relative mark-chip mark-semantic ${KINDS[kind]}${act > 0 ? ' mark-recognised' : ''}${className ? ` ${className}` : ''}`}
       style={variables} {...props}>
-      {tag && <span aria-hidden className="mu-mark-tab mark-semantic-tag" />}
-      {(meaning || (kind === 'derived-tag' && !inferred && recognition)) && <span aria-hidden title={meaningLabel ?? meaning} className="mu-mark-meaning mark-semantic-glyph">
-        {kind === 'derived-tag' && !inferred && recognition && <Icon name="check" size={MARK_GLYPH_SIZE} act={act} />}
+      {tag && <span key={`tab-${act}`} aria-hidden className="mu-mark-tab mark-semantic-tag" />}
+      {(meaning || (kind === 'derived-tag' && !inferred && recognition)) && <span key={`meaning-${act}`} aria-hidden title={meaningLabel ?? meaning} className="mu-mark-meaning mark-semantic-glyph">
+        {kind === 'derived-tag' && !inferred && recognition && <Icon name="spark" size={MARK_GLYPH_SIZE} act={act} />}
         {glyph && <Icon name={glyph} size={MARK_GLYPH_SIZE} act={act} />}
         {meaning === 'steps' && <LifeIcon name="steps" size={MARK_GLYPH_SIZE} />}
         {meaning === 'colour' && <i className="mark-swatch" />}
         {meaningGlyph}
       </span>}
       {kind === 'hex' && swatch && !meaning && <i aria-hidden className="mu-cue-swatch mark-swatch" />}
-      <span className="mu-mark-words">{tag && text.startsWith('#') ? <><span className="mu-mark-hash">#</span>{text.slice(1)}</> : formatted ? <span className="mark-format"><span aria-hidden className="mark-reserve">{text.length > formatted.length ? text : formatted}</span><span className="mark-face"><SwapText value={raw ? text : formatted} /></span></span> : children}</span>
-      {act > 0 && !tag && <span aria-hidden className="mu-mark-underline mark-recognition-line" />}
+      <span className="mu-mark-words">{tag && text.startsWith('#') ? <><span className="mu-mark-hash">#</span>{text.slice(1)}</> : formatted ? <span className="mark-format"><span aria-hidden className="mark-reserve">{text}</span><span aria-hidden className="mark-reserve">{formatted}</span><span className="mark-face"><SwapText value={raw ? text : formatted} /></span></span> : children}</span>
+      {act > 0 && !tag && <span key={`line-${act}`} aria-hidden className="mu-mark-underline mark-recognition-line" />}
     </span>
   );
 });

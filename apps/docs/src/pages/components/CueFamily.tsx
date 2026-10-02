@@ -39,6 +39,8 @@ export default function CueFamilyPage() {
     doing: false,
     urgent: true,
     writing: false,
+    recognitionMotion: true,
+    formattedAmounts: true,
   });
   const code = TABS.find((t) => t.id === tab)!;
 
@@ -51,7 +53,7 @@ export default function CueFamilyPage() {
 
       <Section id="recognition" title="Meaning in the words" lede="Clock for time, coin for money, moon for sleep, steps for a count, the actual colour and the known person's avatar. The glyph belongs to its own words; glyph clearance stays reserved on every wrapped line. Tags have a raised tab and a punched hole, with stable identity colour and full text ink.">
         <Bench caption="One grammar · hover each glyph for its meaning"><CueLegend /></Bench>
-        <Bench caption="Live recognition · source remains yours"><CueRecognition /></Bench>
+        <Bench caption="Live recognition · source remains yours"><CueRecognition motion={d.recognitionMotion} formatAmounts={d.formattedAmounts} /></Bench>
       </Section>
 
       <Section title="On a block" lede="Hover a cue to see the value it resolved to. Tick the dimple. Turn writing on in the dial panel: the display-only cues (the URL pill, the inferred pill, the life glyph, the margin objects) step aside and the raw text shows, while the in-flow cues stay exactly where they were.">
@@ -108,9 +110,10 @@ export default function CueFamilyPage() {
         </Bench>
       </Section>
 
-      <Section title="SwiftUI" lede="MetalDimple, Text.metalCue, MetalCueTag, MetalCueURLPill, MetalCueInferred, MetalCueUrgency and MetalCueLife from the same tokens. In a TextKit editor the host draws the in-flow cues itself from MetalCue.">
+      <Section title="SwiftUI" lede="MetalDimple, Text.metalCue, MetalCueText, MetalCueTag, MetalCueURLPill, MetalCueInferred, MetalCueUrgency and MetalCueLife from the same tokens. In a TextKit editor the host draws the in-flow cues itself from MetalCue.">
         <SwiftCapture name="cue" />
         <SwiftCapture name="cue-grammar" />
+        <SwiftCapture name="cue-recognition-rest" />
       </Section>
 
       <Section title="Source" lede="The family three ways, plus the guide your coding agent reads.">
@@ -131,7 +134,7 @@ export default function CueFamilyPage() {
         <TokenTable
           head={['Component', 'Props', 'Notes']}
           rows={[
-            ['Cue', "kind, resolved?, color?, swatch?", 'date · duration · amount · measurement · tag · derived-tag · hex. Metric-neutral.'],
+            ['Cue / Mark', "kind, meaning?, meaningLabel?, meaningGlyph?, resolved?, color?, raw?, recognition?, formatted?, inferred?", 'Display attributes preserve source. MarkLine reserves glyph clearance across wraps; formatting reserves both faces.'],
             ['CueUrl', 'host, glyph, href', 'At rest only; while writing show the raw URL.'],
             ['CueInferred', 'resolved?', 'A value read by the model that is not in the text.'],
             ['Dimple', 'checked, onCheckedChange, doing?, ghost?, disabled?', 'Base UI Checkbox. The host writes [x] into the text on tick.'],

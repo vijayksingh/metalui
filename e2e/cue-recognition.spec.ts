@@ -33,6 +33,7 @@ for (const colorway of COLORWAYS) {
     await demo.getByTestId('inferred-cue').focus();
     await expect(demo.getByRole('status')).toHaveText('Confirmed Friday');
     await expect(demo.getByTestId('inferred-cue').locator('[data-inferred]')).toHaveCount(0);
+    await expect(demo.getByTestId('inferred-cue').locator('.mu-ic-spark')).toHaveCount(1);
     await page.setViewportSize({ width: 560, height: 900 });
     const clearance = await line.evaluate(el => {
       const glyphs = [...el.querySelectorAll('.mu-mark-meaning')].map(g => g.getBoundingClientRect());
@@ -55,3 +56,23 @@ test('reduced cue recognition lands, adds no display tab stops, and never replay
   await page.getByTestId('recognition-demo').getByRole('button', { name: 'Raw text' }).click();
   expect(await line.locator('.mu-mark-meaning').evaluateAll(els => els.flatMap(el => el.getAnimations({ subtree: true }).filter(a => a instanceof CSSAnimation).map(a => a.playState)))).toEqual([]);
 });
+
+for (const colorway of COLORWAYS) {
+  test(`date recognition chip settles once in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/cue#recognition', colorway);
+    const demo = page.getByTestId('recognition-demo');
+    const source = demo.getByRole('textbox', { name: 'Cue source text' });
+    await source.fill('tomorrow');
+    const date = demo.locator('[data-kind=date]');
+    await expect(date).toHaveAttribute('data-raw', 'true');
+    await demo.getByRole('button', { name: 'Raw text' }).focus();
+    await expect(date).toHaveAttribute('data-reveal', 'true');
+    expect(await date.evaluate(el => parseFloat(getComputedStyle(el, '::after').bottom))).toBeGreaterThanOrEqual(22);
+    await expect(date).not.toHaveAttribute('data-reveal', { timeout: 2000 });
+    const act = await date.getAttribute('data-act');
+    await demo.getByRole('button', { name: 'Raw text' }).click();
+    await demo.getByRole('button', { name: 'Raw text' }).click();
+    expect(await date.getAttribute('data-act')).toBe(act);
+    await expect(date).not.toHaveAttribute('data-reveal');
+  });
+}

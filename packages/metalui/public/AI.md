@@ -2193,6 +2193,8 @@ Tag hue uses shared blue/orange/gold/green-deep at the existing Status tint; red
 
 SwiftUI display surfaces use `MetalCueText` and `MetalCueTag`; `MetalCueInferred(confirmed:onConfirm:)` supports an explicitly controlled suggestion. Native `Text.metalCue` remains a rendering attribute, and TextKit hosts own caret/selection/history. The avatar renderer keeps its existing native WIP status; this does not claim a full native Avatar port.
 
+`resolved` on native `MetalCueText` uses the same graphite chip and finite part-plus-settle recognition pause. Semantic chips clear the reserved glyph as well as the words; their overlays never take layout space. Confirmation uses the existing Button travel for its finite stamp and Spark for one acknowledgment. OS or scoped Reduce Motion ends current travel immediately. The Cue page DialKit controls recognition motion and display amount formatting without changing source.
+
 ---
 
 # Menu and correction popover

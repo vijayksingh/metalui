@@ -19,7 +19,7 @@ function candidates(source: string): Candidate[] {
   });
 }
 
-export function CueRecognition() {
+export function CueRecognition({ motion = true, formatAmounts = true }: { motion?: boolean; formatAmounts?: boolean }) {
   const [source, setSource] = React.useState('Send #poster tomorrow 4pm for $40, slept 6h, walked 8000 steps in #FF6B3D with Sam.');
   const [selection, setSelection] = React.useState<number | null>(null);
   const [composing, setComposing] = React.useState(false);
@@ -35,12 +35,12 @@ export function CueRecognition() {
     const id = `${cue.start}:${source.slice(cue.start, cue.end)}`;
     parts.push(<Mark key={cue.start} kind={cue.kind} meaning={cue.meaning} meaningLabel={cue.label}
       meaningGlyph={cue.meaning === 'person' ? <Avatar name={cue.label} aria-label="" size="small" className="mark-person" /> : undefined}
-      color={cue.color} resolved={cue.resolved} formatted={cue.formatted}
+      color={cue.color} resolved={cue.resolved} formatted={formatAmounts ? cue.formatted : undefined}
       raw={raw || !recognised} recognition={recognised ? id : undefined}>{source.slice(cue.start, cue.end)}</Mark>);
     end = cue.end;
   }
   parts.push(<span key={`plain-${end}`}>{source.slice(end)}</span>);
-  return <div className="mu-stack gap-mu-group w-full" data-testid="recognition-demo">
+  return <div className="mu-stack gap-mu-group w-full" data-testid="recognition-demo" data-mu-motion={motion ? undefined : "reduce"}>
     <label className="mu-stack gap-mu-related type-label text-ink2">Your source text
       <textarea aria-label="Cue source text" data-testid="cue-source" value={source}
         className="type-content material-well rounded-field p-mu-space-12 w-full text-ink min-h-80"
