@@ -62,6 +62,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case sun = "sun"
     case moon = "moon"
     case sidebar = "sidebar"
+    case sidebarCollapsed = "sidebar-collapsed"
     case synced = "synced"
     case offline = "offline"
     case syncError = "sync-error"
@@ -145,6 +146,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return "Daylight"
         case .moon: return "Night"
         case .sidebar: return "Sidebar"
+        case .sidebarCollapsed: return "Sidebar rail"
         case .synced: return "Synced"
         case .offline: return "Offline"
         case .syncError: return "Sync Error"
@@ -228,6 +230,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return .status
         case .moon: return .status
         case .sidebar: return .tools
+        case .sidebarCollapsed: return .tools
         case .synced: return .status
         case .offline: return .status
         case .syncError: return .status
@@ -312,6 +315,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return 0.1
         case .moon: return 0.1
         case .sidebar: return 0.08
+        case .sidebarCollapsed: return 0.08
         case .synced: return nil
         case .offline: return nil
         case .syncError: return nil
@@ -396,6 +400,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return nil
         case .moon: return nil
         case .sidebar: return nil
+        case .sidebarCollapsed: return nil
         case .synced: return nil
         case .offline: return 0.55
         case .syncError: return nil
@@ -480,6 +485,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return false
         case .moon: return false
         case .sidebar: return false
+        case .sidebarCollapsed: return false
         case .synced: return false
         case .offline: return false
         case .syncError: return false
@@ -564,6 +570,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .sun: return 1.85
         case .moon: return 1.85
         case .sidebar: return 1.85
+        case .sidebarCollapsed: return 1.85
         case .synced: return 1.85
         case .offline: return 1.85
         case .syncError: return 1.85

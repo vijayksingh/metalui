@@ -68,3 +68,7 @@ Run `python3 e2e/native/run-drop-zone-proof.py` on macOS. The real SwiftUI windo
 # Native committed-edit receipt
 
 Run `python3 e2e/native/run-spark-proof.py` on macOS. A real default-action Return commits the host edit before requesting Spark's one contact/open act. The fixture captures contact and settled14/16/24px glyphs, then commits again under scoped reduction. The complete receipt remains visible. Set `METALUI_COLORWAY` and `METALUI_NATIVE_CAPTURE` for both colorways. This proves the authored receipt and host commit ordering, not general keyboard navigation.
+
+# Native navigation panel glyph
+
+Run `python3 e2e/native/run-sidebar-glyph-proof.py` on macOS. A real default-action Return toggles the host's navigation state, and the same shell morphs its panel boundary between Sidebar and Sidebar Rail at14/16/24px. Captures cover the transition, settled rail and reduced expanded panel. Set `METALUI_COLORWAY` and `METALUI_NATIVE_CAPTURE` for both colorways.

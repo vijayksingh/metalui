@@ -4627,7 +4627,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 78 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 79 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4709,6 +4709,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `SunIcon` | `sun` | Status | One daylight beam opens from the fixed sun and seats back at its source. | plays the same act |
 | `MoonIcon` | `moon` | Status | The inset night shade seats against a fixed crescent and returns to its quiet position. | plays the same act |
 | `SidebarIcon` | `sidebar` | Tools | The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed. | plays the same act |
+| `SidebarCollapsedIcon` | `sidebar-collapsed` | Tools | The narrow sidebar rail seats once inside its fixed window and returns to its stop. | plays the same act |
 | `SyncedIcon` | `synced` | Status | The satellite winds back, laps the core once and clicks home into its slot. | plays the same act |
 | `OfflineIcon` | `offline` | Status | The lost satellite swings back toward its slot, falls a unit short and is thrown back out. | plays the same act |
 | `SyncErrorIcon` | `sync-error` | Status | The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts. | plays the same act |

@@ -3121,6 +3121,28 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .sidebarCollapsed: MetalIconAct(
+            duration: 0.505,
+            caption: "The narrow sidebar rail seats once inside its fixed window and returns to its stop.",
+            parts: [
+            MetalIconActPart(
+                name: "rail", origin: CGPoint(x: 7.2, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2772, x: -0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.396, x: -0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M5.8 4.8L18.2 4.8C19.3046 4.8 20.2 5.6954 20.2 6.8L20.2 17.2C20.2 18.3046 19.3046 19.2 18.2 19.2L5.8 19.2C4.6954 19.2 3.8 18.3046 3.8 17.2L3.8 6.8C3.8 5.6954 4.6954 4.8 5.8 4.8Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0),
+            MetalIconActInk(d: "M7.2 5.5L7.2 18.5", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .synced: MetalIconAct(
             duration: 1.1,
             caption: "The satellite winds back, laps the core once and clicks home into its slot.",

@@ -44,6 +44,7 @@ const LEVELS = [
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
+  const [rail, setRail] = React.useState(false);
   const [sequence, setSequence] = React.useState(0);
   const [picked, setPicked] = React.useState<IconName>('send-away');
   const d = useDialKit('Icons', {
@@ -156,6 +157,12 @@ export default function Icons() {
               </span>
             </button>
           ))}
+        </div>
+      </Section>
+      <Section id="sidebar-panels" title="A panel becomes a rail" lede="The window keeps its shell while the navigation boundary moves inward. Word marks withdraw when collapsed. Mirroring the physical side is a separate choice.">
+        <div data-testid="sidebar-glyph-family" className="mu-stack gap-mu-space-16">
+          <span className="mu-cluster gap-mu-space-16 text-icon" aria-hidden>{(['sidebar', 'sidebar-collapsed'] as const).map((name) => <span key={name} className="mu-cluster gap-mu-space-8">{[14, 16, 24].map((size) => <Icon key={size} name={name} size={size} />)}</span>)}</span>
+          <Button aria-label={rail ? 'Expand navigation panel' : 'Collapse navigation panel'} aria-expanded={!rail} onClick={() => setRail((v) => !v)} icon={<MorphIcon name={rail ? 'sidebar-collapsed' : 'sidebar'} size={16} />}>{rail ? 'Expand' : 'Collapse'}</Button>
         </div>
       </Section>
       <Section id="confirmation" title="A committed edit" lede="Spark acknowledges an edit only after its host commits the value. One contact opens its four-point receipt; it keeps the whole shape at rest and with reduced motion.">

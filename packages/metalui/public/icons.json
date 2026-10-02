@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 78,
+  "count": 79,
   "icons": [
     {
       "name": "select",
@@ -1181,6 +1181,26 @@
       },
       "tuned16": false,
       "construction": "Fixed rounded window with a left rail panel and three small rail marks. The rail travels1.8 toward its frame. Turn180 for a right rail without changing its construction."
+    },
+    {
+      "name": "sidebar-collapsed",
+      "component": "SidebarCollapsedIcon",
+      "label": "Sidebar rail",
+      "category": "Tools",
+      "hover": "The narrow sidebar rail seats once inside its fixed window and returns to its stop.",
+      "press": "plays the same act",
+      "pressMs": 505,
+      "motion": {
+        "caption": "The narrow sidebar rail seats once inside its fixed window and returns to its stop.",
+        "durationMs": 505,
+        "stages": [
+          "Rail",
+          "Seat",
+          "Ready"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Sidebar’s exact rounded enclosure and duotone fill; its left boundary shifts9.2 to7.2. Word marks withdraw when collapsed. The shared1.85 compact stroke preserves a visible gap between rail and frame at14px and16px. Morph with Sidebar to collapse or expand; turn180 only mirrors the physical side."
     },
     {
       "name": "synced",

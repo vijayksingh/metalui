@@ -1300,6 +1300,26 @@ export const ICON_CATALOG = {
     motion: {"duration":830,"caption":"The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.","stages":["Collapse rail","Seat","Ready"],"tracks":[{"part":"rail","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(-1.8px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(-1.8px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0.1567px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * SIDEBAR RAIL · Tools · one act, 505ms
+   *
+   * Rail → Seat → Ready
+   *          The narrow sidebar rail seats once inside its fixed window and returns to its stop.
+   *  rail       0 → 140 → 200 → 505ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "sidebar-collapsed": {
+    label: "Sidebar rail",
+    category: "Tools",
+    hover: "The narrow sidebar rail seats once inside its fixed window and returns to its stop.",
+    press: "plays the same act",
+    pressMs: 505,
+    defs: "",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"3.8\" y=\"4.8\" width=\"16.4\" height=\"14.4\" rx=\"2\"/><path data-part=\"rail\" d=\"M7.2 5.5v13\"/>",
+    sw16: 1.85,
+    motion: {"duration":505,"caption":"The narrow sidebar rail seats once inside its fixed window and returns to its stop.","stages":["Rail","Seat","Ready"],"tracks":[{"part":"rail","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27723,"transform":"translate(-0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.39604,"transform":"translate(-0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * SYNCED · Status · one act, 1100ms
    *
    * Wind back → Lap → Click home

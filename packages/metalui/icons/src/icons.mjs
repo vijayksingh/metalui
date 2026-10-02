@@ -65,6 +65,7 @@ export const ICONS = [
   { name: 'sun', cat: 'Status', label: 'Daylight' },
   { name: 'moon', cat: 'Status', label: 'Night' },
   { name: 'sidebar', cat: 'Tools', label: 'Sidebar' },
+  { name: 'sidebar-collapsed', cat: 'Tools', label: 'Sidebar rail' },
   { name: 'synced', cat: 'Status', label: 'Synced' },
   { name: 'offline', cat: 'Status', label: 'Offline' },
   { name: 'sync-error', cat: 'Status', label: 'Sync Error' },

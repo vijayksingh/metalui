@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "spark", "coin", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "sidebar-collapsed", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "spark", "coin", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -319,6 +319,10 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M6 9L6.8 9", 1.7, 0, 0, 1],
     ["M6 12L6.8 12", 1.7, 0, 0, 1],
     ["M6 15L6.8 15", 1.7, 0, 0, 1],
+  ],
+  "sidebar-collapsed": [
+    ["M5.8 4.8L18.2 4.8C19.3 4.8 20.2 5.7 20.2 6.8L20.2 17.2C20.2 18.3 19.3 19.2 18.2 19.2L5.8 19.2C4.7 19.2 3.8 18.3 3.8 17.2L3.8 6.8C3.8 5.7 4.7 4.8 5.8 4.8Z", 1.7, 0.08, 0, 1],
+    ["M7.2 5.5L7.2 18.5", 1.7, 0, 0, 1],
   ],
   "synced": [
     ["M12 12", 4.2, 0, 0, 1],

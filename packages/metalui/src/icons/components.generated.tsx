@@ -119,6 +119,8 @@ export const SunIcon = createIcon("sun", "SunIcon");
 export const MoonIcon = createIcon("moon", "MoonIcon");
 /** Sidebar. Hover: The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.. Press: plays the same act. */
 export const SidebarIcon = createIcon("sidebar", "SidebarIcon");
+/** Sidebar rail. Hover: The narrow sidebar rail seats once inside its fixed window and returns to its stop.. Press: plays the same act. */
+export const SidebarCollapsedIcon = createIcon("sidebar-collapsed", "SidebarCollapsedIcon");
 /** Synced. Hover: The satellite winds back, laps the core once and clicks home into its slot.. Press: plays the same act. */
 export const SyncedIcon = createIcon("synced", "SyncedIcon");
 /** Offline. Hover: The lost satellite swings back toward its slot, falls a unit short and is thrown back out.. Press: plays the same act. */

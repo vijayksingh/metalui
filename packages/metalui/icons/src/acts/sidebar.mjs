@@ -4,7 +4,7 @@ import { actor, ease, end, motion, pose, spring, T } from '../motion.mjs';
  * Verb/object: toggle a sidebar. The window frame and content area stay fixed.
  * Receiver: the rail slides toward the left stop1.8 at160ms, releases at220ms.
  * Neighbours: Layout divides content; Sidebar specifically holds a navigation rail.
- * Opposite side: turn180 places this same rail on the right; state callers morph the turn.
+ * Opposite side: turn180 places this same rail on the right; collapse uses Sidebar Rail.
  * Forbidden: translating the complete window or using an unrelated hamburger.
  * Motion-off: the complete rest geometry remains visible at16.
  */
