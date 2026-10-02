@@ -48,7 +48,7 @@ public struct MetalColourCue: View {
 
             }.fixedSize().padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
         }
-        .buttonStyle(.plain).focused($focused)
+        .buttonStyle(.plain).disabled(readOnly).focusable(isEnabled).focused($focused)
         .overlay {
             if focused && isEnabled {
                 RoundedRectangle(cornerRadius: MetalRecipes.well.points("radius.field"))

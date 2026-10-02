@@ -1079,6 +1079,8 @@ React: `ColourCue({value, label, onChange?, onSourceChange?, onBegin?, onCommit?
 
 ColourCue forwards its actual Base UI trigger ref and common trigger props. Host events compose with the popup trigger; an enclosing ProvenanceTooltip reaches the operable colour word and its source description joins the keyboard instructions. The shared popup remains anchored to that same button and returns focus there. Native view modifiers likewise compose `.metalProvenance("You", detail: ["Authored colour words"])` on `MetalColourCue`; the host still owns accepted source writes, cancellation and history.
 
+Native read-only state disables the inner Button action while its outer focus target remains available. Changing read-only on the same control refuses Return/default-action shortcuts and popup presentation; unlocking restores the same mutable control. The popup’s disabled contents never serve as the trigger’s guard.
+
 ---
 
 # Combobox

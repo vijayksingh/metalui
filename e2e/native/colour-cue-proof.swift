@@ -12,6 +12,7 @@ import MetalUI
     func checkEqual<T: Equatable>(_ a: T, _ b: T) { checks.append(a == b) }
     func checkEqual(_ a: CGFloat, _ b: CGFloat, accuracy: CGFloat) { checks.append(abs(a-b) <= accuracy) }
     private let original = "🎨 Paint #ff6b3d with Sam."
+    private final class Gate: ObservableObject { @Published var readOnly = false }
     private final class Measure { var width: CGFloat = .zero }
     private struct Width: PreferenceKey {
         static var defaultValue: CGFloat = .zero
@@ -19,6 +20,7 @@ import MetalUI
     }
     private struct Host: View {
         @ObservedObject var document: MetalCueDocument
+        @ObservedObject var gate: Gate
         let colorway: MetalColorway
         let measure: Measure
         private var range: NSRange { (document.source as NSString).range(of: "#[0-9A-Fa-f]{6}", options: .regularExpression) }
@@ -27,7 +29,7 @@ import MetalUI
             VStack(alignment: .leading, spacing: MetalSpace.s24) {
                 HStack(alignment: .firstTextBaseline, spacing: MetalSpace.s8) {
                     Text("Paint")
-                    MetalColourCue("Paint colour", value: Binding(get: { value }, set: { _ in }),
+                    MetalColourCue("Paint colour", value: Binding(get: { value }, set: { _ in }), readOnly: gate.readOnly,
                         onBegin: { document.begin(range) }, onSourceChange: document.replace,
                         onCommit: document.commit, onCancel: { if $0 != "external" { document.cancel() } })
                         .metalProvenance("You", detail: ["Authored colour words"])
@@ -58,12 +60,17 @@ import MetalUI
         _ = NSApplication.shared
         NSApp.setActivationPolicy(.regular)
         for colorway in MetalColorway.allCases {
-            let document = MetalCueDocument(original, selection: .init(start: 2, end: 2)), measure = Measure()
-            let host = NSHostingView(rootView: Host(document: document, colorway: colorway, measure: measure))
+            let document = MetalCueDocument(original, selection: .init(start: 2, end: 2)), measure = Measure(), gate = Gate()
+            let host = NSHostingView(rootView: Host(document: document, gate: gate, colorway: colorway, measure: measure))
             let window = NSWindow(contentRect: NSRect(origin: .zero, size: host.fittingSize), styleMask: [.titled], backing: .buffered, defer: false)
             window.isReleasedWhenClosed = false; window.contentView = host; window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
             defer { window.close() }
             try await Task.sleep(for: .milliseconds(300)); let width = measure.width; checkGreaterThan(width, 0)
+            gate.readOnly = true; try await Task.sleep(for: .milliseconds(200))
+            try key("\r", code: 36, window: window); try await Task.sleep(for: .milliseconds(150))
+            checkFalse(NSApp.windows.contains { $0 !== window && $0.isVisible && String(describing: type(of: $0)).contains("Popover") })
+            checkEqual(document.source, original); checkFalse(document.canUndo)
+            gate.readOnly = false; try await Task.sleep(for: .milliseconds(200))
             try key("\r", code: 36, window: window); try await Task.sleep(for: .milliseconds(500))
             let popup = try unwrap(NSApp.windows.first { $0 !== window && $0.isVisible && String(describing: type(of: $0)).contains("Popover") })
             popup.makeKeyAndOrderFront(nil); popup.makeFirstResponder(popup.contentView)
