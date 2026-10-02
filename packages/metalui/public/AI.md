@@ -261,7 +261,7 @@ Sections that open in place. React: `Accordion` from `@unlocalhosted/metalui`, o
 | focus | the green ring on the header | – |
 | disabled | 40 % | – |
 
-Reduce Motion: the height snaps, the content crossfades, the shared glyph changes in place. React uses `MorphIcon`; SwiftUI uses `MetalIcon(.chevron)` on the same settle class. No separate SVG or CSS rotation. SwiftUI panel/header material remains work in progress.
+Reduce Motion: the height snaps, the content crossfades, the shared glyph changes in place. React uses `MorphIcon`; SwiftUI uses `MetalMorphIcon(.chevron, turn:)` on the same shared planner and settle class. No separate SVG or CSS rotation. SwiftUI panel/header material remains work in progress.
 
 ## API
 

@@ -33,10 +33,9 @@ private struct MetalAccordionDisclosureStyle: DisclosureGroupStyle {
                 HStack {
                     configuration.label
                     Spacer()
-                    MetalIcon(.chevron, size: MetalRecipes.accordion.points("chevron.size"))
-                        .rotationEffect(.degrees(configuration.isExpanded ? 0 : -90))
-                        .foregroundColor(colorway.tokens.ink2.color)
-                        .metalAnimation(.settle, value: configuration.isExpanded)
+                    MetalMorphIcon(.chevron, size: MetalRecipes.accordion.points("chevron.size"),
+                                   turn: configuration.isExpanded ? .down : .right)
+                        .foregroundStyle(colorway.tokens.ink2.color)
                 }
                 .contentShape(Rectangle())
             }

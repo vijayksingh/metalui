@@ -82,3 +82,7 @@ NumericCue public host: `python3 e2e/native/run-numeric-cue-proof.py` verifies r
 # Native attachment upload receipt
 
 Run `python3 e2e/native/run-attachment-result-proof.py`. The real public `MetalAttachment` receives a host-supplied default-action Return on its retry key. It requests upload at 100 % without claiming delivery; the host explicitly commits completion. Legacy progress clearing stays idle. Captures cover idle, failure, pending, complete and scoped reduction in both colorways; disabled retry refuses the key. Error/completion use Apple’s [multiplatform announcement API](https://developer.apple.com/documentation/accessibility/accessibilitynotification/announcement). The fixture verifies event delivery, host callback counts and rendered receipts; spoken VoiceOver output is not measured.
+
+# Native Accordion chevron
+
+Run `python3 e2e/native/run-accordion-chevron-proof.py`. Default-action Return opens the actual public `MetalAccordion` header, then closes under scoped reduction and refuses while disabled. Its shared chevron morph uses down/right quarter turns; header/panel material remains explicitly WIP. Actual-window captures show the glyph at rest and during change in both colorways.
