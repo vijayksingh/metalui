@@ -26,19 +26,19 @@ function Examples({ onDid }: { onDid: (s: string) => void }) {
         <Button icon={<Icon name="undo" />} onClick={() => onDid('Undid')}>Undo</Button>
         <Button icon={<Icon name="redo" />} onClick={() => onDid('Redid')}>Redo</Button>
       </ButtonGroup>
-      <ButtonGroup aria-label="History rocker" rocker><Button onClick={() => onDid('Undid rocker')}>Undo</Button><Button onClick={() => onDid('Redid rocker')}>Redo</Button></ButtonGroup>
+      <ButtonGroup aria-label="History rocker" rocker><Button icon={<Icon name="undo" />} onClick={() => onDid('Undid rocker')}>Undo</Button><Button icon={<Icon name="redo" />} onClick={() => onDid('Redid rocker')}>Redo</Button></ButtonGroup>
       <ButtonGroup aria-label="Zoom">
-        <Button disabled={zoom === 25} onClick={() => setZoom((z) => Math.max(25, z - 25))} aria-label="Zoom out">−</Button>
+        <Button iconOnly icon={<Icon name="zoom-out" />} disabled={zoom === 25} onClick={() => setZoom((z) => Math.max(25, z - 25))} aria-label="Zoom out" />
         <ButtonGroupReadout aria-label="Zoom level" value={`${zoom} %`} />
-        <Button disabled={zoom === 400} onClick={() => setZoom((z) => Math.min(400, z + 25))} aria-label="Zoom in">+</Button>
+        <Button iconOnly icon={<Icon name="zoom-in" />} disabled={zoom === 400} onClick={() => setZoom((z) => Math.min(400, z + 25))} aria-label="Zoom in" />
       </ButtonGroup>
       <ToggleGroup joined multiple value={grid} onValueChange={setGrid} aria-label="Canvas aids">
         <Toggle value="snap">Snap</Toggle><Toggle value="grid">Grid</Toggle>
       </ToggleGroup>
       <ButtonGroup aria-label="Compact history" size="compact">
-        <Button onClick={() => onDid('Undid compact')}>Undo</Button><Button disabled>Redo</Button>
+        <Button icon={<Icon name="undo" />} onClick={() => onDid('Undid compact')}>Undo</Button><Button icon={<Icon name="redo" />} disabled>Redo</Button>
       </ButtonGroup>
-      <ButtonGroup aria-label="Unavailable history" disabled><Button>Undo</Button><Button>Redo</Button></ButtonGroup>
+      <ButtonGroup aria-label="Unavailable history" disabled><Button icon={<Icon name="undo" />}>Undo</Button><Button icon={<Icon name="redo" />}>Redo</Button></ButtonGroup>
       <SplitButton
         menuLabel="More export options"
         heading="EXPORT AS"
@@ -46,11 +46,11 @@ function Examples({ onDid }: { onDid: (s: string) => void }) {
           <>
             <MenuItem onSelect={() => onDid('Exported PNG')}>PNG</MenuItem>
             <MenuItem onSelect={() => onDid('Exported SVG')}>SVG</MenuItem>
-            <MenuItem onSelect={() => onDid('Copied the link')}>Copy link</MenuItem>
+            <MenuItem icon={<Icon name="copy" size={14} />} onSelect={() => { void navigator.clipboard.writeText(window.location.href).then(() => onDid('Copied the link'), () => onDid('Copy failed')); }}>Copy link</MenuItem>
           </>
         )}
       >
-        <Button cap="primary" onClick={() => onDid('Exported PDF')}>Export PDF</Button>
+        <Button cap="primary" icon={<Icon name="download" />} onClick={() => onDid('Exported PDF')}>Export PDF</Button>
       </SplitButton>
     </div>
   );
@@ -84,7 +84,7 @@ export default function ButtonGroupPage() {
     <MenuItem onSelect={exportSvg}>SVG</MenuItem>
   </>
 }>
-  <Button cap="primary" onClick={exportPdf}>Export PDF</Button>
+  <Button cap="primary" icon={<Icon name="download" />} onClick={exportPdf}>Export PDF</Button>
 </SplitButton>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

@@ -24,6 +24,8 @@ extension EnvironmentValues {
 }
 
 /// Related operations cut from one cap. Use MetalButton children, or the group's latching key.
+/// Related actions carry their canonical glyphs, e.g. MetalButton("Export PDF", icon: .download).
+/// Use separately named .zoomIn/.zoomOut glyph-only keys for a bounded zoom readout.
 public struct MetalButtonGroup<Content: View>: View {
     private let label: String
     private let content: Content

@@ -746,9 +746,9 @@ SplitButton infers cap and size from its main Button. Both halves inherit one ma
 
 ```tsx
 <ButtonGroup aria-label="Zoom">
-  <Button aria-label="Zoom out" onClick={out}>−</Button>
+  <Button iconOnly icon={<Icon name="zoom-out" />} aria-label="Zoom out" onClick={out} />
   <ButtonGroupReadout aria-label="Zoom level" value={`${zoom} %`} />
-  <Button aria-label="Zoom in" onClick={in}>+</Button>
+  <Button iconOnly icon={<Icon name="zoom-in" />} aria-label="Zoom in" onClick={in} />
 </ButtonGroup>
 ```
 
@@ -759,11 +759,13 @@ MetalButtonGroup("History", rocker: true) {
 }
 MetalSplitButton("More export options", cap: .primary,
     menu: [MetalMenuItem("PNG") { exportPNG() }, MetalMenuItem("SVG") { exportSVG() }]) {
-    MetalButton("Export PDF") { exportPDF() }
+    MetalButton("Export PDF", icon: .download) { exportPDF() }
 }
 ```
 
 Swift resolves actual key bounds once layout settles to place fixed seams. The shared MetalButtonStyle handles segment presses and group latches; disabled and focus remain native controls. Swift SplitButton uses the existing MetalMenuPanel in a native popover, tracks the presentation binding, holds its key until the menu closes and restores focus when the panel closes. The host owns the result and request state of its main action.
+
+Every repeated action carries the same glyph in regular, compact, rocker and disabled groups: Undo `undo`, Redo `redo`, Export `download`, Copy link `copy`. Zoom uses separately named `zoom-out` and `zoom-in` glyph keys with `iconOnly`, and disables the appropriate end of its range rather than changing one key's meaning at the limit. Swift uses `MetalButton("Zoom out", icon: .zoomOut, iconOnly: true)` and the corresponding `.zoomIn` key. Format choices such as PNG/SVG remain plain words.
 
 ---
 

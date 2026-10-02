@@ -75,6 +75,8 @@ for (const colorway of COLORWAYS) {
     expect(await readout.evaluate((el) => el.tagName)).toBe('OUTPUT');
     await zoom.getByRole('button', { name: 'Zoom out' }).click();
     await expect(readout).toContainText('75 %');
+    await expect(zoom.getByRole('button', { name: 'Zoom out' }).locator('svg.mu-ic-zoom-out')).toHaveCount(1);
+    await expect(zoom.getByRole('button', { name: 'Zoom in' }).locator('svg.mu-ic-zoom-in')).toHaveCount(1);
     await zoom.getByRole('button', { name: 'Zoom out' }).focus();
     await page.keyboard.press('Tab');
     await expect(zoom.getByRole('button', { name: 'Zoom in' })).toBeFocused();
@@ -143,4 +145,16 @@ test('split glyph cancels into its orientation when the scope reduces during ope
   await expect(key).toBeFocused();
   await expect.poll(() => direction(key)).toBe('down');
   await play(page).screenshot({ path: capture('button-group-reduced') });
+});
+
+test('the export menu copies its actual page link before acknowledging it', async ({ page }) => {
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  await open(page, '/components/button-group', 'bone');
+  const expected = page.url();
+  await page.locator('section', { hasText: 'Playground' }).first().getByRole('button', { name: 'More export options' }).click();
+  const copy = page.getByRole('menuitem', { name: 'Copy link' });
+  await expect(copy.locator('svg.mu-ic-copy')).toHaveCount(1);
+  await copy.click();
+  await expect(page.getByText('Copied the link', { exact: false })).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
 });
