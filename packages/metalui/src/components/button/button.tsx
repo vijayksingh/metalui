@@ -208,7 +208,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
       </> : content}
     </BaseButton>
     {state !== undefined && <span className="sr-only" aria-live="polite">{state === 'waiting' ? waitingLabel : state === 'done' ? doneLabel : state === 'error' ? errorLabel : ''}</span>}
-    {holdEnabled && <span id={hintId} className={hint ? 'basis-full type-doc-caption text-ink2' : 'sr-only'} role="status">Hold to confirm</span>}
+    {holdEnabled && <span id={hintId} className={hint && !iconOnly ? 'basis-full type-doc-caption text-ink2' : 'sr-only'} role="status">Hold to confirm</span>}
     </>
   );
 });
