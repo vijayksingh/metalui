@@ -2,54 +2,38 @@
 
 import * as React from 'react';
 import { useAwake } from '../../motion/awake';
-
-/* LED (the reference design's .led-*): a tiny lamp lit from the top left that says one state by colour.
- * A part: it never stands alone, it sits beside words (a status badge, a readout, an engraving).
- * Styled with the theme's utilities (the status recipe). */
+import { useReducedMotion } from '../../motion/reduced';
 
 export type LedKind = 'live' | 'waiting' | 'failed' | 'link' | 'off';
-/** How the lamp behaves over time (tokens status.gestures). */
 export type LedGesture = 'steady' | 'flicker' | 'breathe' | 'blink2' | 'rise';
-
 export interface LedProps extends React.HTMLAttributes<HTMLSpanElement> {
   kind: LedKind;
-  /** 5 (default) or 4 (small). */
+  /** Lens diameter 8 (default) or 6 (small), plus a 1px socket on each side. */
   size?: 'default' | 'small';
-  /**
-   * How it behaves over time: steady (default); flicker, a burst of activity that settles on;
-   * breathe, a loop while something is in progress; blink2, two flashes for a failure; rise, coming
-   * on slowly. Changing the gesture plays it again. Reduced motion holds the lamp steady.
-   */
+  /** Defaults to waiting=breathe, failed=blink2, otherwise steady. Off always stays dark. */
   gesture?: LedGesture;
 }
-
-const LED = 'mu-led inline-block flex-none rounded-round';
-const LED_SIZES = {
-  default: 'size-status-led-size',
-  small: 'size-status-led-size-small',
+const GESTURES: Record<LedGesture, string> = {
+  steady: '', flicker: 'animate-led-flicker', breathe: 'animate-led-breathe',
+  blink2: 'animate-led-blink2', rise: 'animate-led-rise',
 };
-const LED_KINDS: Record<LedKind, string> = {
-  live: 'recipe-status-led-live',
-  waiting: 'recipe-status-led recipe-status-led-waiting',
-  failed: 'recipe-status-led recipe-status-led-failed',
-  link: 'recipe-status-led recipe-status-led-link',
-  off: 'recipe-status-led-off',
-};
+const SIZES = { default: 'size-status-lamp-size', small: 'size-status-lamp-size-small' };
 
-const LED_GESTURES: Record<LedGesture, string> = {
-  steady: '',
-  flicker: 'animate-led-flicker',
-  breathe: 'animate-led-breathe',
-  blink2: 'animate-led-blink2',
-  rise: 'animate-led-rise',
-};
-
-/** A tiny lamp, lit from the top left. Decorative: pair it with words. */
-export function Led({ kind, size = 'default', gesture = 'steady', className, style, ...props }: LedProps) {
-  // A breathing lamp loops forever, so it holds still while the tab is hidden or the lamp is scrolled away.
+/** Decorative lens inside an opaque socket. Words beside it carry the state. */
+export function Led({ kind, size = 'default', gesture, className, style, ...props }: LedProps) {
+  const [element, setElement] = React.useState<HTMLSpanElement | null>(null);
+  const reduced = useReducedMotion(element);
   const [watch, awake] = useAwake();
-  const own = `${LED} ${LED_SIZES[size]} ${LED_KINDS[kind]} ${LED_GESTURES[gesture]} reduced-motion:animate-none`;
-  // A new gesture (or a new state with the same gesture) remounts the lamp so the gesture plays again.
-  const looping = gesture === 'breathe';
-  return <span key={`${kind}-${gesture}`} ref={looping ? watch : undefined} aria-hidden data-kind={kind} data-size={size} data-gesture={gesture} className={className ? `${own} ${className}` : own} style={looping && !awake ? { ...style, animationPlayState: 'paused' } : style} {...props} />;
+  const motion = kind === 'off' ? 'steady' : gesture ?? (kind === 'waiting' ? 'breathe' : kind === 'failed' ? 'blink2' : 'steady');
+  const ref = React.useCallback((node: HTMLSpanElement | null) => { setElement(node); watch(node); }, [watch]);
+  const ink = `var(--mu-r-status-ink-${kind})`;
+  return (
+    <span ref={ref} data-mu-self="" aria-hidden data-kind={kind} data-size={size} data-gesture={motion}
+      className={`mu-led inline-flex flex-none rounded-round p-status-lamp-bezel recipe-status-socket ${className ?? ''}`}
+      style={{ '--mu-self': 'var(--mu-r-status-ink-off)', ...style } as React.CSSProperties} {...props}>
+      <span key={`${kind}-${motion}-${reduced}`} data-lamp data-mu-self=""
+        className={`inline-block flex-none rounded-round ${SIZES[size]} ${kind === 'off' ? 'recipe-status-lamp-off' : 'recipe-status-lamp'} ${reduced ? '' : GESTURES[motion]}`}
+        style={{ '--mu-self': ink, animationPlayState: awake ? 'running' : 'paused' } as React.CSSProperties} />
+    </span>
+  );
 }

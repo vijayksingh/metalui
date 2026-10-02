@@ -25,22 +25,25 @@ public struct MetalLED: View {
     public enum Size: Sendable { case `default`, small }
     let kind: MetalLEDKind
     let size: Size
+    /// Optional outer diameter, including the socket, for a host-specific footprint.
     let diameter: CGFloat?
-    let gesture: MetalLampGesture
-    /// A fixed point in the gesture (0–1), for captures; nil plays it in time.
+    let gesture: MetalLampGesture?
     let phase: Double?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.metalColorway) private var colorway
     @State private var start = Date()
+    @State private var finished = false
+    @State private var visible = false
 
-    public init(_ kind: MetalLEDKind, size: Size = .default, diameter: CGFloat? = nil, gesture: MetalLampGesture = .steady, phase: Double? = nil) {
-        self.kind = kind
-        self.size = size
-        self.diameter = diameter
-        self.gesture = gesture
-        self.phase = phase
+    public init(_ kind: MetalLEDKind, size: Size = .default, diameter: CGFloat? = nil, gesture: MetalLampGesture? = nil, phase: Double? = nil) {
+        self.kind = kind; self.size = size; self.diameter = diameter
+        self.gesture = gesture; self.phase = phase
     }
-
-    /// The lamp's level (0 dark lens … 1 lit) at a point in the gesture.
+    private var motion: MetalLampGesture {
+        if kind == .off { return .steady }
+        return gesture ?? (kind == .waiting ? .breathe : kind == .failed ? .blink2 : .steady)
+    }
     static func level(_ gesture: MetalLampGesture, at progress: Double) -> Double {
         let keys = gesture.keys, p = min(1, max(0, progress))
         guard let hi = keys.firstIndex(where: { $0.0 >= p }), hi > 0 else { return keys.first?.1 ?? 1 }
@@ -49,32 +52,41 @@ public struct MetalLED: View {
         if gesture.eased { f = f * f * (3 - 2 * f) }
         return l0 + (l1 - l0) * f
     }
-
-    /// A dimmed lamp's saturation, and the shade over it: the web's brightness() and saturate() at this level.
     static func saturation(at level: Double) -> Double { MetalLampDim.saturate + (1 - MetalLampDim.saturate) * level }
     static func shade(at level: Double) -> Double { (1 - MetalLampDim.brightness) * (1 - level) }
 
     public var body: some View {
         let recipe = MetalRecipes.status
-        let d = diameter ?? recipe.points(size == .small ? "led.size-small" : "led.size")
-        let still = gesture.duration == 0 || reduceMotion
-        TimelineView(.animation(paused: still || phase != nil)) { context in
+        let bezel = recipe.points("lamp.bezel")
+        let d = diameter ?? recipe.points(size == .small ? "lamp.size-small" : "lamp.size") + bezel * 2
+        let lensSize = max(CGFloat.zero, d - bezel * 2)
+        let ink = recipe.color("ink.\(kind.recipeState)", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink
+        let still = motion.duration == 0 || reduceMotion || finished
+        TimelineView(.animation(paused: still || phase != nil || !visible || scenePhase != .active)) { context in
             let progress: Double = {
+                if reduceMotion { return 1 }
                 if let phase { return phase }
                 if still { return 1 }
-                let t = context.date.timeIntervalSince(start) / gesture.duration
-                return gesture.loops ? t.truncatingRemainder(dividingBy: 1) : min(1, t)
+                let t = context.date.timeIntervalSince(start) / motion.duration
+                return motion.loops ? t.truncatingRemainder(dividingBy: 1) : min(1, t)
             }()
-            let level = Self.level(gesture, at: progress)
+            let opacity = MetalLampDim.brightness + (1 - MetalLampDim.brightness) * Self.level(motion, at: progress)
             Color.clear
-                .frame(width: d, height: d)
-                .metalObjectRecipe(recipe, part: "led", state: kind.recipeState, in: Circle())
-                .saturation(Self.saturation(at: level))
-                .overlay(Circle().fill(Color.black.opacity(Self.shade(at: level))))
+                .frame(width: lensSize, height: lensSize)
+                .background {
+                    if kind == .off { Circle().fill(ink.color) }
+                    else { Color.clear.metalObjectRecipe(recipe, part: "lamp", in: Circle(), self: ink).opacity(opacity) }
+                }
+                .padding(bezel)
+                .metalObjectRecipe(recipe, part: "socket", in: Circle(), self: recipe.color("ink.off", colorway: MetalRecipeColorway(colorway)))
         }
-        .id("\(kind.recipeState)-\(gesture.rawValue)")
-        .onChange(of: gesture) { start = Date() }
-        .onChange(of: kind.recipeState) { start = Date() }
+        .onAppear { visible = true }
+        .onDisappear { visible = false }
+        .task(id: "\(kind.recipeState)-\(motion.rawValue)-\(reduceMotion)") {
+            start = Date(); finished = false
+            guard motion.duration > 0, !motion.loops, !reduceMotion, phase == nil else { return }
+            do { try await Task.sleep(for: .seconds(motion.duration)); finished = true } catch { }
+        }
         .accessibilityHidden(true)
     }
 }

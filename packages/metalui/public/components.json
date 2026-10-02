@@ -633,7 +633,7 @@
       "name": "led",
       "title": "LED",
       "status": "alpha",
-      "description": "A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Five gestures say how it behaves over time: steady, flicker, breathe, blink2, rise. Never alone; it sits beside words.",
+      "description": "An 8pt lens in an opaque 1pt socket, beside words. Five shared inks; waiting breathes, failure blinks twice once, off stays dark. Reduced motion holds steady.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Led",

@@ -6,7 +6,7 @@ import { COLORWAYS, capture, open } from './helpers';
 const cell = (page: import('@playwright/test').Page, kind: string, gesture: string) =>
   page.locator(`[data-cell="${kind}-${gesture}"] [data-gesture]`);
 const timing = (loc: import('@playwright/test').Locator) =>
-  loc.evaluate((el) => el.getAnimations().map((a) => {
+  loc.evaluate((el) => el.getAnimations({ subtree: true }).map((a) => {
     const t = (a.effect as KeyframeEffect).getTiming();
     return { duration: t.duration, iterations: t.iterations, name: (a as CSSAnimation).animationName };
   }));
@@ -27,9 +27,9 @@ test('Play runs a finished gesture again', async ({ page }) => {
   await open(page, '/components/led', 'graphite');
   const flicker = cell(page, 'live', 'flicker');
   await page.waitForTimeout(900);
-  expect(await flicker.evaluate((el) => el.getAnimations()[0]?.playState)).toBe('finished');
+  expect(await flicker.evaluate((el) => el.getAnimations({ subtree: true })[0]?.playState)).toBe('finished');
   await page.getByTestId('led-play').click();
-  expect(await cell(page, 'live', 'flicker').evaluate((el) => el.getAnimations()[0]?.playState)).toBe('running');
+  expect(await cell(page, 'live', 'flicker').evaluate((el) => el.getAnimations({ subtree: true })[0]?.playState)).toBe('running');
 });
 
 test('reduced motion holds every lamp steady and keeps its kind', async ({ page }) => {
@@ -46,3 +46,19 @@ for (const colorway of COLORWAYS) {
     await page.getByTestId('led-gestures').screenshot({ path: capture(`led-gestures-${colorway}`) });
   });
 }
+
+test('socket stays opaque while only the lens dims, including scoped reduction', async ({ page }) => {
+  await open(page, '/components/led', 'bone');
+  const lamp = cell(page, 'waiting', 'breathe');
+  const layers = await lamp.evaluate(el => ({
+    width: el.getBoundingClientRect().width,
+    socket: (() => { const c = document.createElement('canvas').getContext('2d')!; c.fillStyle = getComputedStyle(el).backgroundColor; c.fillRect(0, 0, 1, 1); return [...c.getImageData(0, 0, 1, 1).data]; })(),
+    lens: el.querySelector('[data-lamp]')!.getBoundingClientRect().width,
+    filter: getComputedStyle(el.querySelector('[data-lamp]')!).filter,
+  }));
+  expect(layers).toEqual({ width: 10, socket: [36, 36, 39, 255], lens: 8, filter: 'none' });
+  await page.getByTestId('led-gestures').evaluate(el => el.setAttribute('data-mu-motion', 'reduce'));
+  await expect.poll(() => timing(lamp)).toEqual([]);
+  await expect(lamp.locator('[data-lamp]')).toHaveCSS('opacity', '1');
+  await expect(cell(page, 'off', 'steady').locator('[data-lamp]')).toHaveCSS('box-shadow', 'none');
+});
