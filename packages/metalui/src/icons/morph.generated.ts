@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "coin", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "spark", "coin", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -384,6 +384,9 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M7.2 3.5L13.6 3.5L18.6 8.5L18.6 18.5C18.6 19.6 17.7 20.5 16.6 20.5L7.2 20.5C6.1 20.5 5.2 19.6 5.2 18.5L5.2 5.5C5.2 4.4 6.1 3.5 7.2 3.5Z", 1.7, 0.1, 0, 1],
     ["M8.6 12.4L15.4 12.4", 1.7, 0, 0, 1],
     ["M8.6 15.8L12.6 15.8", 1.7, 0, 0, 1],
+  ],
+  "spark": [
+    ["M12 4.5C13 9.5 14.5 11 19.5 12C14.5 13 13 14.5 12 19.5C11 14.5 9.5 13 4.5 12C9.5 11 11 9.5 12 4.5Z", 1.7, 0.16, 0, 1],
   ],
   "coin": [
     ["M20.2 12C20.2 16.53 16.53 20.2 12 20.2C7.47 20.2 3.8 16.53 3.8 12C3.8 7.47 7.47 3.8 12 3.8C16.53 3.8 20.2 7.47 20.2 12Z", 1.7, 0.16, 0, 1],

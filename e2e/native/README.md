@@ -64,3 +64,7 @@ Run `python3 e2e/native/run-slider-proof.py`. The real Mac SwiftUI form tabs thr
 # Native DropZone receiving
 
 Run `python3 e2e/native/run-drop-zone-proof.py` on macOS. The real SwiftUI window receives public AppKit file-drag payloads at its registered destination. Temporary PDF/text files prove accepted receipt, type/size/count filtering, a reduced-motion retry and disabled refusal. No component callback is called by the fixture: the platform drop receiver delivers each URL. Set `METALUI_NATIVE_CAPTURE` for [accepted](../../docs/captures/swift/drop-zone-accepted-bone.png), [refused](../../docs/captures/swift/drop-zone-refused-bone.png) and [reduced](../../docs/captures/swift/drop-zone-reduced-bone.png) results. Native preflight knows the target, not every file’s type until delivery; detailed refusal remains the host’s `onRefused` presentation.
+
+# Native committed-edit receipt
+
+Run `python3 e2e/native/run-spark-proof.py` on macOS. A real default-action Return commits the host edit before requesting Spark's one contact/open act. The fixture captures contact and settled14/16/24px glyphs, then commits again under scoped reduction. The complete receipt remains visible. Set `METALUI_COLORWAY` and `METALUI_NATIVE_CAPTURE` for both colorways. This proves the authored receipt and host commit ordering, not general keyboard navigation.

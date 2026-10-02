@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 77,
+  "count": 78,
   "icons": [
     {
       "name": "select",
@@ -1461,6 +1461,26 @@
       },
       "tuned16": false,
       "construction": "Page 13.4 × 17 with a 5-unit cut corner, tinted .1; lines 6.8 and 4 on the 12.4 and 15.8 lines. Motion (study): a corner flap (accent, tinted .2) folds about the cut diagonal onto the page, holds the crease, flicks back out past the edge and lies flat; meanwhile the lines erase and write back in, first then second: the page has turned."
+    },
+    {
+      "name": "spark",
+      "component": "SparkIcon",
+      "label": "Confirmed edit",
+      "category": "Status",
+      "hover": "The committed edit makes one contact, then its four-point receipt opens to rest.",
+      "press": "plays the same act",
+      "pressMs": 790,
+      "motion": {
+        "caption": "The committed edit makes one contact, then its four-point receipt opens to rest.",
+        "durationMs": 790,
+        "stages": [
+          "Receipt",
+          "Contact",
+          "Open"
+        ]
+      },
+      "tuned16": false,
+      "construction": "One closed four-point glint with concave cubic shoulders, cardinal reach7.5u and enclosed waist. Full-ink contour with .16 duotone centre. Compact cut keeps the same open waist and uses shared1.85 stroke;14px,16px and24px retain all four points."
     },
     {
       "name": "coin",

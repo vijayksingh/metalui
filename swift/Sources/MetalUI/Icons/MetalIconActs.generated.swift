@@ -4087,6 +4087,28 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .spark: MetalIconAct(
+            duration: 0.79,
+            caption: "The committed edit makes one contact, then its four-point receipt opens to rest.",
+            parts: [
+            MetalIconActPart(
+                name: "glint", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1266, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.68, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2278, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 0.68, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6139, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0279, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M12 4.5C13 9.5 14.5 11 19.5 12C14.5 13 13 14.5 12 19.5C11 14.5 9.5 13 4.5 12C9.5 11 11 9.5 12 4.5Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .coin: MetalIconAct(
             duration: 1.309,
             caption: "The minted coin tilts to its edge once and returns to its stamped face.",

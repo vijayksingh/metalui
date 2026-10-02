@@ -145,3 +145,5 @@ Every icon's entry opens with its card, as a comment above it (see `select`):
 
 
 Coin is the amount glyph: a currency-neutral minted rim and stamp. Its one quarter tilt returns on the object spring. Two closed rims and one stamped route remain distinct from Info and Target in the tuned16 cut; the complete face stays static under either motion reduction setting. The cue grammar uses the same coin, never a local SVG.
+
+Spark is a committed-edit receipt: a closed four-point concave glint, with one finite contact and release on the existing part spring. The host must commit before showing it. Its compact cut uses the shared1.85 stroke without removing any shoulder;14px/16px/24px keep the enclosed centre. Reduced motion retains the complete contour, and no act runs at rest. Unlike Link's localized two-ray contact accent, this standalone receipt remains visible.

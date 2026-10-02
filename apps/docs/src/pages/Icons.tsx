@@ -158,6 +158,12 @@ export default function Icons() {
           ))}
         </div>
       </Section>
+      <Section id="confirmation" title="A committed edit" lede="Spark acknowledges an edit only after its host commits the value. One contact opens its four-point receipt; it keeps the whole shape at rest and with reduced motion.">
+        <button type="button" data-testid="confirmation-glyph" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 rounded-plate hover:material-well" aria-label="Spark: committed edit">
+          <span className="mu-cluster gap-mu-space-12 text-icon" aria-hidden>{[14, 16, 24].map((size) => <Icon key={size} name="spark" size={size} />)}</span>
+          <span className="type-meta text-ink2">14px / 16px / 24px</span>
+        </button>
+      </Section>
       <Section id="amount" title="Amount" lede="The coin names a monetary amount without assuming its currency. Two minted rims enclose a stamp; one short tilt reveals its edge and restores the face.">
         <button type="button" data-testid="amount-glyph" aria-label="Coin: monetary amount" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 rounded-plate hover:material-well">
           <Icon name="coin" size={16} /><Icon name="coin" size={24} /><span className="type-ui text-ink">$40 · €36</span>

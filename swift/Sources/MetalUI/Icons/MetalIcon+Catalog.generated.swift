@@ -76,6 +76,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case tag = "tag"
     case calendar = "calendar"
     case document = "document"
+    case spark = "spark"
     case coin = "coin"
     case clock = "clock"
     case me = "me"
@@ -158,6 +159,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return "Tag"
         case .calendar: return "Calendar"
         case .document: return "Document"
+        case .spark: return "Confirmed edit"
         case .coin: return "Coin · Amount"
         case .clock: return "Time"
         case .me: return "Me"
@@ -240,6 +242,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return .tools
         case .calendar: return .tools
         case .document: return .tools
+        case .spark: return .status
         case .coin: return .status
         case .clock: return .status
         case .me: return .tools
@@ -323,6 +326,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return 0.12
         case .calendar: return 0.08
         case .document: return 0.1
+        case .spark: return 0.16
         case .coin: return 0.16
         case .clock: return 0.08
         case .me: return 0.08
@@ -406,6 +410,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return nil
         case .calendar: return nil
         case .document: return nil
+        case .spark: return nil
         case .coin: return nil
         case .clock: return nil
         case .me: return nil
@@ -489,6 +494,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return false
         case .calendar: return false
         case .document: return false
+        case .spark: return false
         case .coin: return true
         case .clock: return false
         case .me: return false
@@ -572,6 +578,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .tag: return 1.85
         case .calendar: return 1.85
         case .document: return 1.85
+        case .spark: return 1.85
         case .coin: return 1.85
         case .clock: return 1.85
         case .me: return 1.85
