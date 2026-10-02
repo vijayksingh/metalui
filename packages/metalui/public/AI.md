@@ -2773,6 +2773,8 @@ Click, Enter or Space opens the shared names plate. Arrows, Home/End and typeahe
 
 At rest the Mark quiet underline and small host avatar identify the name. `raw` fades decoration, retaining the same source and footprint. The existing SwapText drum changes confirmed words; reduced motion uses its crossfade and the plate's donor fade. Native uses the same content type, Mark, menu plate/rows, highlight, pen and settle transition. No material, dimensions, recurring timer or rest animation are introduced. This is a SwiftUI source surface; a TextKit host still owns caret/IME and attributes, rather than pretending these views are an editor.
 
+Live native motion reduction rebuilds only the selected word face and disables its inherited animation transaction. The actual button, focus, picker and source snapshot keep their identities. The public macOS feature receipt switches scope during a confirmed name swap and compares rendered words with a fresh reduced-motion control, as well as checking source history and cancellation.
+
 ---
 
 # Popover

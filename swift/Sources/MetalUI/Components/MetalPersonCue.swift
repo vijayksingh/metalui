@@ -64,8 +64,12 @@ public struct MetalPersonCue: View {
                 MetalCueText(value, kind: .duration, meaning: .person, label: value, raw: raw, personGlyph: avatar(current))
                     .id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
             }
+            .id(reduceMotion)
             .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
             .fixedSize().metalAnimation(.settle, value: value)
+            .transaction { transaction in
+                if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+            }
             .overlay(alignment: .bottomLeading) {
                 if hovering && mutable && !raw { colorway.tokens.cueQuiet.color.frame(height: MetalRecipes.mark.points("match.thickness")).offset(y: MetalCue.underlineOffset) }
             }
