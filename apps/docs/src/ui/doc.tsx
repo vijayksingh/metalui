@@ -4,6 +4,7 @@ import { PARTS } from '../app/parts';
 import { Button, Surface, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
+import { useCopyFeedback } from '../lib/useCopyFeedback';
 import { highlight, langOf, type Lang } from '../lib/highlight';
 
 /* ─────────────────────────────────────────────────────────
@@ -204,61 +205,29 @@ export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'], mono =
 }
 export const Table = TokenTable;
 
-const COPIED_MS = 1400;
-
-function useCopied(ms: number) {
-  const [copied, setCopied] = React.useState(false);
-  React.useEffect(() => {
-    if (!copied) return;
-    const t = setTimeout(() => setCopied(false), ms);
-    return () => clearTimeout(t);
-  }, [copied, ms]);
-  return [copied, setCopied] as const;
-}
-
 export function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) {
-  const [copied, setCopied] = useCopied(COPIED_MS);
+  const { state, copy } = useCopyFeedback(text);
+  const word = state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : label;
   return (
-    <Button
-      size="compact"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(text);
-          setCopied(true);
-        } catch {}
-      }}
-    >
-      <MorphIcon name={copied ? 'check' : 'paste'} size={12} />
-      <span aria-live="polite"><SwapText value={copied ? 'Copied' : label} /></span>
+    <Button size="compact" icon={<MorphIcon name={state === 'copied' ? 'check' : 'copy'} />} onClick={() => copy(() => navigator.clipboard.writeText(text))}>
+      <span aria-live="polite"><SwapText value={word} /></span>
     </Button>
   );
 }
 
-const COPIED_PAGE_MS = 1600;
-
-/**
- * Copies the whole page as Markdown for coding agents: headings, prose, rules,
- * tables, code and specimen captions, with dial values as currently tuned.
- */
+/** Copies this page as Markdown, including the current dial values. */
 export function CopyPageButton() {
   const { pathname } = useLocation();
-  const [copied, setCopied] = useCopied(COPIED_PAGE_MS);
+  const { state, copy } = useCopyFeedback(pathname);
+  const word = state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : 'Copy page';
+  const name = state === 'copied' ? 'Copied page as Markdown for agents' : state === 'failed' ? 'Copy page failed; try again' : 'Copy page as Markdown for agents';
   return (
-    <Button
-      size="compact"
-      className="mt-4 shrink-0"
-      aria-label={copied ? 'Copied page as Markdown for agents' : 'Copy page as Markdown for agents'}
-      onClick={async () => {
-        const main = document.querySelector('main');
-        if (!main) return;
-        try {
-          await navigator.clipboard.writeText(pageMarkdown(main, pathname));
-          setCopied(true);
-        } catch {}
-      }}
-    >
-      <MorphIcon name={copied ? 'check' : 'paste'} size={12} />
-      <span aria-live="polite"><SwapText value={copied ? 'Copied' : 'Copy page'} /></span>
+    <Button size="compact" className="mt-4 shrink-0" aria-label={name} icon={<MorphIcon name={state === 'copied' ? 'check' : 'copy'} />} onClick={() => copy(async () => {
+      const main = document.querySelector('main');
+      if (!main) throw new Error('Page unavailable');
+      await navigator.clipboard.writeText(pageMarkdown(main, pathname));
+    })}>
+      <span aria-live="polite"><SwapText value={word} /></span>
     </Button>
   );
 }

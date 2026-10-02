@@ -87,7 +87,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 
 ### B. State changes that should morph (A → B)
 
-- **Copy → Copied** (`paste` → `check`, back after the pause): the docs' Copy page and code blocks, and a documented copy-button pattern.
+- [x] **Copy → Copied** (`copy` → `check`, back after the pause): the docs' Copy page and code blocks, and a documented copy-button pattern.
 - **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`).
 - **Save** (idle → saving (Spinner) → saved `check`): the Button's "saving" demo.
 - **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.

@@ -11,6 +11,7 @@ import { SwiftCapture } from '../../ui/SwiftCapture';
 import { ButtonXray, BUTTON_XRAY_INITIAL, type ButtonXrayModel } from '../../ui/xray/ButtonXray';
 import { ButtonSmartControls } from './ButtonSmartControls';
 import { useColorway } from '../../app/colorway';
+import { useCopyFeedback } from '../../lib/useCopyFeedback';
 import { tokens } from '../../lib/tokens';
 import './button-workbench.css';
 
@@ -376,16 +377,17 @@ function PressIsPhysics() {
 
 function LabelTurns() {
   const [slow, setSlow] = React.useState(false);
-  const [a, setA] = React.useState(false);
-  const [b, setB] = React.useState(false);
-  const flip = (set: (v: boolean) => void) => { set(true); window.setTimeout(() => set(false), slow ? 4800 : 1600); };
+  const text = 'Soft Hardware: a changing label turns.';
+  const a = useCopyFeedback(text, slow ? 4800 : 1600);
+  const b = useCopyFeedback(text, slow ? 4800 : 1600);
+  const word = (state: string) => state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : 'Copy';
   const settle = React.useMemo(() => springCurve(SETTLE.stiffness, SETTLE.damping), []);
   const step = React.useMemo(() => settle.map(([t]) => [t, t < 8 ? 0 : 1] as [number, number]), [settle]);
   return (
     <Beat
       id="label-turns"
       title="A changing label turns"
-      setup="Copy becoming Copied is one step on a drum, its glyph morphs from paste into check, and the cap's width follows on the settle spring."
+      setup="Copy becoming Copied is one step on a drum, its glyph morphs from copy into check after the clipboard write succeeds, and the cap's width follows on the settle spring."
       slow={slow}
       bar={<SlowSwitch slow={slow} onChange={setSlow} />}
       caption="Press both buttons and watch the glyph and the width. Ours becomes the tick and grows smoothly to fit the new word. The other one swaps its glyph and jumps."
@@ -393,8 +395,8 @@ function LabelTurns() {
     >
       <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-cols-2 sm:divide-x sm:divide-rule">
         {[
-          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => flip(setA)} icon={<MorphIcon name={a ? 'check' : 'paste'} />}><SwapText value={a ? 'Copied' : 'Copy'} /></Button> },
-          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => flip(setB)} icon={<Icon name={b ? 'check' : 'paste'} />}>{b ? 'Copied' : 'Copy'}</Button> },
+          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => a.copy(() => navigator.clipboard.writeText(text))} icon={<MorphIcon name={a.state === 'copied' ? 'check' : 'copy'} />}><span aria-live="polite"><SwapText value={word(a.state)} /></span></Button> },
+          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => b.copy(() => navigator.clipboard.writeText(text))} icon={<Icon name={b.state === 'copied' ? 'check' : 'copy'} />}><span aria-live="polite">{word(b.state)}</span></Button> },
         ].map((v) => (
           <div key={v.tag} className="flex flex-col items-center gap-16 px-16">
             <Tag tone={v.lit ? 'lit' : 'quiet'}>{v.tag}</Tag>

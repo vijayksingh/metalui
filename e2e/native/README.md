@@ -51,3 +51,7 @@ Thread CPU on the debug iOS17.5 simulator host: initial copy/check planning39.9m
 # Native Menu checkbox rows
 
 Run `python3 e2e/native/run-menu-check-proof.py` on macOS. A real SwiftUI window sends arrow, Return, Space and Escape events to `MetalMenuPanel`. A setting toggles while the panel stays open; a mixed parent becomes fully selected; subsequent host updates preserve the highlighted row; disabled rows cannot run; Escape dismisses. State comes through public `MetalMenuItem` callbacks. Set `METALUI_NATIVE_CAPTURE` to an absolute directory to capture the selected settings.
+
+# Native Copy result
+
+Run `python3 e2e/native/run-copy-proof.py` on macOS. A real SwiftUI app gives the public Copy button a default Return shortcut, writes the system clipboard, morphs `copy` to `check` through `MetalMorphIcon`, turns the Button result face to “Copied”, and returns to idle after the host’s pause. The proof checks the actual pasteboard content and the host’s reset. This proves that copy pattern and default-action activation, not general Tab navigation. Set `METALUI_NATIVE_CAPTURE` to an absolute directory for a result still. [Native result](../../docs/captures/swift/copy-native.png).

@@ -657,7 +657,7 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 - Pass the glyph as `icon`, not as a child, and don't give it a size: the cap sets it (16, compact 14). Children still take a glyph for compatibility, but `icon` is the documented slot. The button is the icon's trigger: it plays its act when the button is hovered, focused from the keyboard or clicked, so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
-- **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'paste'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
+- **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'copy'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
 
 ## Accessibility
 
@@ -695,6 +695,25 @@ Swift dense strips may use `cap: .strip` / `.stripDanger`; the danger strip acce
 React `iconOnly` also makes the key square at its cap height and keeps the waiting/result glyph in that slot without a label footprint. Provide its verb as `aria-label` (or text children for an automatic spoken label), and use Tooltip for discovery. Button waiting labels still announce the request and result.
 
 The start/result status is a visually hidden sibling outside the busy key, with polite atomic reading. Keep it outside any additional busy wrapper when composing a host; reserve busy for the action or item itself. This span never changes text or glyph-key geometry.
+
+
+## Copy a result
+
+Copy uses `copy`; Paste uses `paste`. Keep one `MorphIcon` mounted in the `icon` slot and turn the label with `SwapText`. Set Copied only after the clipboard write resolves; on refusal keep `copy`, announce “Copy failed”, and permit another attempt. Clear the acknowledgement after a short pause; a second successful copy starts a new pause. A page or code-tab change clears feedback belonging to the previous content. Clean up the timer and ignore stale promises on unmount. The docs’ page-copy, code-copy and Button example implement this pattern with real clipboard writes.
+
+```tsx
+<Button icon={<MorphIcon name={copied ? 'check' : 'copy'} />} onClick={copy}>
+  <span aria-live="polite"><SwapText value={copied ? 'Copied' : 'Copy'} /></span>
+</Button>
+```
+
+In SwiftUI, keep the native glyph mounted in the icon builder and use the Button result face for its drum. The host writes through `UIPasteboard.general.string` on iOS or checks the Boolean result of `NSPasteboard.general.setString(_:forType:)` on macOS, then updates `copied`. Reset that host state after the acknowledgement pause. `MetalMorphIcon` supplies the same shared geometry and settle motion; reduced motion lands the full result immediately.
+
+```swift
+MetalButton("Copy", state: copied ? .done : .idle, doneLabel: "Copied", action: copy) {
+    MetalMorphIcon(copied ? .check : .copy)
+}
+```
 
 ---
 
