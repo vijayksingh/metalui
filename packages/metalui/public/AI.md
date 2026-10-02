@@ -889,6 +889,7 @@ The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/m
 - A task's checkbox in the margin of a line of text; a row's checkbox in a list of tasks.
 - `ghost`: a task that was inferred, not written (a hollow ring hanging in the margin).
 - `doing`: in progress (a half-filled green square, announced as mixed).
+- `mixed`: a parent with some children checked (the shared dash on a dark key). Use this for select-all; `checked` takes precedence. SwiftUI already exposes `mixed:`.
 
 ## States and motion
 

@@ -46,6 +46,8 @@ import { TickGlyph } from '../../icons/TickGlyph';
 export interface CheckboxProps extends Omit<BaseCheckbox.Root.Props, 'className' | 'indeterminate'> {
   /** The task is in progress: a half-filled green square (announced as mixed). */
   doing?: boolean;
+  /** A select-all or parent with some children checked: the shared dash on the dark key. */
+  mixed?: boolean;
   /** A task the recognizer inferred and nobody wrote: the hollow ghost dimple, hanging in the margin. */
   ghost?: boolean;
   /** margin (16, the default) beside a block; row (14) at the start of a list row. */
@@ -69,7 +71,7 @@ const TICK_CLASS = 'mu-dimple-tick checkbox-tick';
  * A task's checkbox: a 16 pt well in the margin. Checked, it turns dark and a pen draws the tick on.
  * Ticking it is a person's action: the host writes `[x]` into the text, with Undo.
  */
-export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(function Checkbox({ doing, ghost, size, className, ...props }, ref) {
+export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(function Checkbox({ doing, mixed, ghost, size, className, ...props }, ref) {
   // The slot carries placement (the margin at −25): Base UI renders a hidden form input beside the
   // checkbox, and the slot keeps both out of the line's flow.
   const look = ghost ? LOOKS.ghost : LOOKS[size === 'row' ? 'row' : 'margin'];
@@ -77,7 +79,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(funct
   const [inked, setInked] = React.useState(false);
   return (
     <span className={className ? `${SLOT} ${className}` : SLOT}>
-      <BaseCheckbox.Root ref={ref} indeterminate={doing && !props.checked ? true : undefined} data-ghost={ghost ? '' : undefined} data-doing={doing && !props.checked ? '' : undefined} data-inked={inked ? '' : undefined} data-size={size === 'row' ? 'row' : undefined} className={`${WELL} ${look}`} {...props}>
+      <BaseCheckbox.Root ref={ref} indeterminate={(mixed || doing) && !props.checked ? true : undefined} data-ghost={ghost ? '' : undefined} data-doing={doing && !props.checked ? '' : undefined} data-inked={inked ? '' : undefined} data-size={size === 'row' ? 'row' : undefined} className={`${WELL} ${look}`} {...props}>
         <BaseCheckbox.Indicator keepMounted render={(p, state) => (
           <TickGlyph {...(p as unknown as React.SVGProps<SVGSVGElement>)} className={TICK_CLASS} mark={state.checked ? 'tick' : state.indeterminate && !doing ? 'dash' : null} onInk={setInked} />
         )} />

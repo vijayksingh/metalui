@@ -28,8 +28,8 @@ test('a copied registry Checkbox installs its shared pen and compiles', async ({
     await install('checkbox');
     symlinkSync(resolve('node_modules'), join(consumer, 'node_modules'), 'dir');
     writeFileSync(join(consumer, 'index.tsx'), `import { Checkbox } from './components/metalui/components/checkbox/checkbox';
-export function Task({ done }: { done: boolean }) {
-  return <Checkbox checked={done} aria-label="Prepare proof" />;
+export function Task({ done, partial }: { done: boolean; partial: boolean }) {
+  return <Checkbox checked={done} mixed={partial} aria-label="Prepare proof" />;
 }
 `);
     const require = createRequire(import.meta.url);
