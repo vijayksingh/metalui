@@ -17,3 +17,7 @@ Use `onBegin` to capture a source range, `onChange(words)` to preview it, `onCom
 - One shared detent haptic per changed landed state. The browser reports no fabricated feedback when native haptics are unavailable.
 
 The existing drum presents a changed word; reduced motion keeps its crossfade and removes travel. The complete value is in the accessible button name. Native adds an adjustable accessibility action with the same finite choices. At rest, no instrument or timer runs.
+
+## Enclosing provenance
+
+EnumCue forwards its actual Base UI trigger ref and common trigger props, merging host events with its own gestures. An enclosing ProvenanceTooltip reaches the operable words, its source description joins gesture instructions, and Space still writes one source-history step. Set `hint={false}` to let that enclosing tooltip own the visual help. Native `hint: false` likewise suppresses the gesture help when `.metalProvenance(…)` supplies provenance. This changes no material, footprint or motion.

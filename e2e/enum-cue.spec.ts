@@ -69,3 +69,17 @@ test('external document typing ends the old source range without erasing new wor
   await host.getByRole('button', { name: 'Undo enum edit' }).click(); await expect(source).toHaveValue('🧠 Task #doing, send the poster.');
   await host.getByRole('button', { name: 'Undo enum edit' }).click(); await expect(source).toHaveValue('🧠 Task #todo, send the poster.');
 });
+
+
+test('operable words retain the provenance trigger and help through source edits', async ({ page }) => {
+  await open(page, '/components/enum-cue', 'bone');
+  const host = page.getByTestId('enum-document'); const cue = host.locator('.mu-enum-cue');
+  await cue.focus();
+  await expect(cue).toHaveAttribute('aria-description', /You, Declared task states/);
+  await expect(page.locator('.mu-provenance')).toHaveText('You · Declared task states');
+  await page.keyboard.press('Space');
+  await expect(host.getByRole('textbox', { name: 'Enum document source' })).toHaveValue('🧠 Task #doing, send the poster.');
+  await expect(cue).toBeFocused();
+  await host.getByRole('button', { name: 'Undo enum edit', exact: true }).click();
+  await expect(host.getByRole('textbox', { name: 'Enum document source' })).toHaveValue('🧠 Task #todo, send the poster.');
+});

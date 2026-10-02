@@ -25,9 +25,10 @@ final class MetalEnumCueFeature: XCTestCase {
                     .init("#doing", label: "Doing", glyph: .clock, tint: MetalShared.orange),
                     .init("#done", label: "Done", glyph: .check, tint: MetalShared.greenDeep),
                     .init("#dropped", label: "Dropped", glyph: .close, tint: colorway.tokens.ink3)
-                ], label: "Task state", editing: document.editing,
+                ], label: "Task state", editing: document.editing, hint: false,
                 onBegin: { document.begin((document.source as NSString).range(of: value)) },
                 onChange: { _ = document.replace($0) }, onCommit: document.commit, onCancel: document.cancel)
+                    .metalProvenance("You", detail: ["Declared task states"])
                     .keyboardShortcut(.defaultAction)
                     .background(GeometryReader { proxy in Color.clear.preference(key: WidthKey.self, value: proxy.frame(in: .named("enum-proof"))) })
                     .onPreferenceChange(WidthKey.self) { measurement.rect = $0 }

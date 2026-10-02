@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, EnumCue, MarkLine, useCueDocument, type EnumCueChoice } from '@unlocalhosted/metalui';
+import { ProvenanceProvider, ProvenanceTooltip, Button, EnumCue, MarkLine, useCueDocument, type EnumCueChoice } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/enum-cue/enum-cue.tsx?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalEnumCue.swift?raw';
 import cssSource from '../../../../../packages/metalui/src/components/enum-cue/enum-cue.css?raw';
@@ -13,7 +13,7 @@ const STATES: readonly EnumCueChoice[] = [
   { value: '#done', label: 'Done', glyph: 'check', tint: 'var(--mu-green-deep)' },
   { value: '#dropped', label: 'Dropped', glyph: 'close', tint: 'var(--mu-ink3)' },
 ];
-export function EnumCueDocument() {
+export function EnumCueDocument({ provenance = false }: { provenance?: boolean }) {
   const d = useDialKit('Enum source', { raw: false, readOnly: false, disabled: false, mounted: true });
   const doc = useCueDocument('🧠 Task #todo, send the poster.', { start: 30, end: 30 });
   const editor = React.useRef<HTMLTextAreaElement>(null);
@@ -24,9 +24,10 @@ export function EnumCueDocument() {
     if (editor.current && document.activeElement === editor.current) editor.current.setSelectionRange(doc.selection.start, doc.selection.end, doc.selection.direction);
   }, [doc.source, doc.selection]);
   function retain(event: React.SyntheticEvent<HTMLTextAreaElement>) { doc.setSelection({ start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd, direction: event.currentTarget.selectionDirection }); }
+  const cue = match && d.mounted ? <EnumCue value={match[0]} choices={STATES} label="Task state" raw={d.raw} readOnly={d.readOnly} disabled={d.disabled} editing={doc.editing} hint={!provenance}
+      onBegin={() => doc.begin({ start: match.index, end: match.index + match[0].length })} onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} /> : null;
   return <div className="mu-stack gap-mu-related w-full" data-testid="enum-document" data-editing={doc.editing || undefined}>
-    <MarkLine data-testid="enum-line"><span>{before}</span>{match && d.mounted ? <EnumCue value={match[0]} choices={STATES} label="Task state" raw={d.raw} readOnly={d.readOnly} disabled={d.disabled} editing={doc.editing}
-      onBegin={() => doc.begin({ start: match.index, end: match.index + match[0].length })} onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} /> : match?.[0]}<span data-enum-tail>{after}</span></MarkLine>
+    <MarkLine data-testid="enum-line"><span>{before}</span>{cue ? provenance ? <ProvenanceTooltip source="You" detail={['Declared task states']}>{cue}</ProvenanceTooltip> : cue : match?.[0]}<span data-enum-tail>{after}</span></MarkLine>
     <label className="mu-stack gap-mu-related type-label text-ink2">Editable document source
       <textarea ref={editor} aria-label="Enum document source" className="type-content material-well rounded-field p-mu-space-12 w-full text-ink" value={doc.source}
         onChange={event => doc.setSource(event.target.value, { start: event.target.selectionStart, end: event.target.selectionEnd, direction: event.target.selectionDirection })}
@@ -39,7 +40,7 @@ export function EnumCueDocument() {
 }
 export default function EnumCuePage() {
   return <ComponentPage title="Enum cue" lede="A finite state in your own words. Its tab stays in the line while you turn through the states the document permits."
-    play={{ lede: 'Click or Space cycles; Up/Down steps. Focus the state to scroll, or hold and drag vertically. Escape restores a held edit. Each finished gesture is one Undo, and the neighbouring words stay in place. The Enum source panel switches raw, read-only, disabled and mounted states.', caption: 'source words · one gesture · one history entry', node: <EnumCueDocument /> }}
+    play={{ lede: 'Click or Space cycles; Up/Down steps. Focus the state to scroll, or hold and drag vertically. Escape restores a held edit. Each finished gesture is one Undo, and the neighbouring words stay in place. The Enum source panel switches raw, read-only, disabled and mounted states.', caption: 'source words · one gesture · one history entry', node: <ProvenanceProvider><EnumCueDocument provenance /></ProvenanceProvider> }}
     usage={`<EnumCue value={state} choices={states} label="Task state"
   editing={doc.editing} onBegin={() => doc.begin(range)}
   onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} />`}

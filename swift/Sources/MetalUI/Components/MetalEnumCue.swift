@@ -21,6 +21,7 @@ public struct MetalEnumCue: View {
     private let label: String
     private let readOnly: Bool
     private let raw: Bool
+    private let hint: Bool
     private let editing: Bool?
     private let onBegin: () -> Bool
     private let onChange: (String) -> Void
@@ -42,10 +43,10 @@ public struct MetalEnumCue: View {
         var moved = false
         var wheel: Double = .zero
     }
-    public init(_ value: String, choices: [MetalEnumCueChoice], label: String, readOnly: Bool = false, raw: Bool = false, editing: Bool? = nil,
+    public init(_ value: String, choices: [MetalEnumCueChoice], label: String, readOnly: Bool = false, raw: Bool = false, editing: Bool? = nil, hint: Bool = true,
                 onBegin: @escaping () -> Bool = { true }, onChange: @escaping (String) -> Void,
                 onCommit: @escaping () -> Void = {}, onCancel: (() -> Void)? = nil) {
-        self.value = value; self.choices = choices; self.label = label; self.readOnly = readOnly; self.raw = raw; self.editing = editing
+        self.value = value; self.choices = choices; self.label = label; self.readOnly = readOnly; self.raw = raw; self.editing = editing; self.hint = hint
         self.onBegin = onBegin; self.onChange = onChange; self.onCommit = onCommit; self.onCancel = onCancel
     }
     private var index: Int? { choices.firstIndex(where: { $0.value == value }) }
@@ -97,7 +98,7 @@ public struct MetalEnumCue: View {
             else if begin(.keyboard) { step(key.key == .upArrow ? -1 : 1) }
             return .handled
         }
-        .help("Space cycles · Up/Down steps · Focus to scroll · Hold and drag")
+        .help(hint ? "Space cycles · Up/Down steps · Focus to scroll · Hold and drag" : "")
         .accessibilityLabel(label).accessibilityValue(name)
         .accessibilityHint(readOnly ? "Read only" : "Space cycles. Up and Down step. Hold and drag vertically; focus to scroll. Escape cancels a held edit.")
         .accessibilityAdjustableAction { direction in

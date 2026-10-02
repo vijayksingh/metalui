@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import { mergeProps } from '@base-ui/react/merge-props';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { Icon } from '../../icons/Icon';
 import type { IconName } from '../../icons/catalog.generated';
@@ -19,7 +20,7 @@ export interface EnumCueChoice {
   /** Explicit state tint; defaults to neutral ink. Identity hashing never chooses enum state colour. */
   tint?: string;
 }
-export interface EnumCueProps {
+export interface EnumCueProps extends Omit<React.ComponentPropsWithoutRef<typeof BaseButton>, 'children' | 'value' | 'onChange' | 'render' | 'nativeButton'> {
   value: string;
   choices: readonly EnumCueChoice[];
   label: string;
@@ -29,6 +30,8 @@ export interface EnumCueProps {
   /** Optional host transaction flag; closing it invalidates a gesture after unrelated source typing. */
   editing?: boolean;
   className?: string;
+  /** Keep the gesture hint off when an enclosing provenance tooltip owns help. */
+  hint?: boolean;
   onBegin?: () => boolean | void;
   onChange: (words: string) => boolean | void;
   onCommit?: () => void;
@@ -45,9 +48,10 @@ type Gesture = { kind: 'pointer' | 'keyboard' | 'wheel'; original: string; curre
  * cancel  Escape, lost capture or unmount restores the host snapshot
  * Reduced motion uses the drum's existing crossfade; no travelling instrument or spin.
  */
-export function EnumCue(props: EnumCueProps) {
-  const { value, choices, label, disabled = false, readOnly = false, raw = false, className } = props;
+export const EnumCue = React.forwardRef<HTMLElement, EnumCueProps>(function EnumCue(props, forwardedRef) {
+  const { value, choices, label, disabled = false, readOnly = false, raw = false, hint = true, className, editing: _editing, onBegin: _begin, onChange: _change, onCommit: _commit, onCancel: _cancel, ...triggerProps } = props;
   const root = React.useRef<HTMLElement>(null);
+  React.useImperativeHandle(forwardedRef, () => root.current!, []);
   const callbacks = React.useRef(props); callbacks.current = props;
   const gesture = React.useRef<Gesture | null>(null);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -104,34 +108,39 @@ export function EnumCue(props: EnumCueProps) {
   const current = choice ?? { value };
   const own = 'mu-enum-cue relative inline-grid align-baseline border-0 bg-transparent p-0 type-content text-ink select-none touch-none cursor-ns-resize focus-visible:focus-ring data-disabled:opacity-field-state-disabled data-disabled:cursor-default';
   const name = current.label && current.label !== current.value ? `${current.label} (${current.value})` : current.value;
-  const control = <BaseButton ref={root} disabled={disabled || readOnly || !choice || !validChoices} focusableWhenDisabled={readOnly} data-readonly={readOnly || undefined} data-held={held || undefined} data-value={value}
-    aria-label={`${label}: ${name}`} aria-description="Click or Space cycles. Up and Down step. Focus to scroll, or hold and drag vertically. Escape cancels a held edit."
-    className={className ? `${own} ${className}` : own}
-    onClick={event => { if (ignoreClick.current && event.detail > 0) { ignoreClick.current = false; return; } ignoreClick.current = false; if (begin('keyboard')) { step(1); commit(); } }}
-    onPointerDown={event => {
+  const controlProps: React.ComponentPropsWithoutRef<typeof BaseButton> & Record<`data-${string}`, unknown> = {
+    disabled: disabled || readOnly || !choice || !validChoices, focusableWhenDisabled: readOnly,
+    'data-readonly': readOnly || undefined, 'data-held': held || undefined, 'data-value': value,
+    'aria-label': `${label}: ${name}`,
+    'aria-description': ['Click or Space cycles. Up and Down step. Focus to scroll, or hold and drag vertically. Escape cancels a held edit.', triggerProps['aria-description']].filter(Boolean).join(' '),
+    className: className ? `${own} ${className}` : own,
+    onClick: event => { if (ignoreClick.current && event.detail > 0) { ignoreClick.current = false; return; } ignoreClick.current = false; if (begin('keyboard')) { step(1); commit(); } },
+    onPointerDown: event => {
       if (event.button !== 0 || !mutable || !begin('pointer', event.clientY, event.pointerId)) return;
       ignoreClick.current = false; event.preventDefault(); event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId);
-    }}
-    onPointerMove={event => {
+    },
+    onPointerMove: event => {
       const g = gesture.current; if (!g || g.kind !== 'pointer' || g.pointer !== event.pointerId) return;
       const stops = Math.round((g.y - event.clientY) / ENUM_CUE_STOP);
       if (stops) g.moved = true;
       land(g.index + stops);
-    }}
-    onPointerUp={event => {
+    },
+    onPointerUp: event => {
       const g = gesture.current; if (!g || g.kind !== 'pointer' || g.pointer !== event.pointerId) return;
       if (!g.moved) step(1);
       ignoreClick.current = true; commit(); event.currentTarget.releasePointerCapture(event.pointerId);
-    }}
-    onPointerCancel={() => { ignoreClick.current = true; cancel(); }}
-    onLostPointerCapture={() => { if (gesture.current?.kind === 'pointer') ignoreClick.current = true; cancel(); }}
-    onBlur={() => { if (gesture.current?.kind === 'pointer') ignoreClick.current = true; cancel(); }}
-    onKeyDown={event => {
+    },
+    onPointerCancel: () => { ignoreClick.current = true; cancel(); },
+    onLostPointerCapture: () => { if (gesture.current?.kind === 'pointer') ignoreClick.current = true; cancel(); },
+    onBlur: () => { if (gesture.current?.kind === 'pointer') ignoreClick.current = true; cancel(); },
+    onKeyDown: event => {
       if (event.key === 'Escape' && gesture.current) { event.preventDefault(); ignoreClick.current = gesture.current.kind === 'pointer'; cancel(); return; }
       if (!mutable || ![' ', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
       event.preventDefault(); if (begin('keyboard')) step(event.key === 'ArrowUp' ? -1 : 1);
-    }}
-    onKeyUp={event => { if ([' ', 'ArrowUp', 'ArrowDown'].includes(event.key) && gesture.current?.kind === 'keyboard') { event.preventDefault(); commit(); } }}>
+    },
+    onKeyUp: event => { if ([' ', 'ArrowUp', 'ArrowDown'].includes(event.key) && gesture.current?.kind === 'keyboard') { event.preventDefault(); commit(); } },
+  };
+  const control = <BaseButton {...mergeProps(triggerProps, controlProps)} ref={root}>
     {choices.map(item => <span key={item.value} aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">{item.value}</span>)}
     <span className="col-start-1 row-start-1 justify-self-start"><Mark kind="tag" raw={raw} style={{ '--mu-cue-identity': current.tint ?? 'var(--mu-ink3)' } as React.CSSProperties}>{value.startsWith('#') ? <><span className="mu-mark-hash">#</span><SwapText value={value.slice(1)} /></> : <SwapText value={value} />}</Mark></span>
     {!raw && !held && current.glyph && <span aria-hidden className="mark-semantic-glyph"><Icon name={current.glyph} size={MARK_GLYPH_SIZE} /></span>}
@@ -140,5 +149,5 @@ export function EnumCue(props: EnumCueProps) {
       <span className="absolute left-0 top-full mt-mu-space-8">{choices[(index + 1) % choices.length]?.label ?? choices[(index + 1) % choices.length]?.value}</span>
     </span>}
   </BaseButton>;
-  return <Tooltip label="Space cycles · Up/Down steps · Focus to scroll · Hold and drag" disabled={held || !mutable} wrap>{control}</Tooltip>;
-}
+  return <Tooltip label="Space cycles · Up/Down steps · Focus to scroll · Hold and drag" disabled={!hint || held || !mutable} wrap>{control}</Tooltip>;
+});
