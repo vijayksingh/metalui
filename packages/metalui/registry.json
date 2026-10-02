@@ -1371,6 +1371,37 @@
       "docs": "Agent guide: https://metalui.dev/r/region.md. SwiftUI: MetalRegion, MetalRegionRow in the MetalUI Swift package."
     },
     {
+      "name": "rename-editor",
+      "type": "registry:ui",
+      "title": "Rename editor",
+      "description": "A name field and one async rename confirm: basename selection, host validation, pending lock, glyph/drum result and captured-original Undo callback.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/morph-icons.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/rename-editor/rename-editor.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/rename-editor/rename-editor.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/rename-editor/edit-request.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/components/rename-editor/edit-request.ts"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/rename-editor.md. SwiftUI: MetalRenameEditor in the MetalUI Swift package."
+    },
+    {
       "name": "row",
       "type": "registry:ui",
       "title": "Row",

@@ -122,3 +122,5 @@ export {
 export { Day, DayTile, DAY_LINES, type DayLine, type DayProps, type DayRootProps, type DayPageProps, type DayLineProps, type DayTileProps } from './blocks/day/day';
 
 export { useWaiting, type WaitingState, type WaitingTiming } from './motion/waiting';
+
+export { RenameEditor, type RenameEditorProps } from './components/rename-editor/rename-editor';

@@ -72,6 +72,7 @@
 - [Provenance tooltip](https://metalui.dev/r/provenance-tooltip.md): One hover away from every cue: a wrapped Tooltip that says where the cue came from (Rule · date parser, Recognizer · 0.82, You), the detail in Tooltip.Dim, with the number whenever the app guessed.
 - [Radio group](https://metalui.dev/r/radio.md): One choice from a short list: round wells beside their labels; pressing darkens the well, releasing latches a pip in on the part spring while the old choice's pip drops out (the preset-button interlock).
 - [Region](https://metalui.dev/r/region.md): A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.
+- [Rename editor](https://metalui.dev/r/rename-editor.md): A name field and one async rename confirm: basename selection, host validation, pending lock, glyph/drum result and captured-original Undo callback.
 - [Row](https://metalui.dev/r/row.md): A list, panel or option row; selection raises its plate, opened detail marks its rail, and completion strikes its text.
 - [Rule](https://metalui.dev/r/rule.md): An engraved groove between groups; graphite on dark chrome.
 - [Scroll area](https://metalui.dev/r/scroll-area.md): A region that scrolls with the system's own scrollbar: a slim thumb that fades in while scrolling and widens when reached for, and edge fades that show there is more.

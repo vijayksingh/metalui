@@ -1,0 +1,21 @@
+{
+  "name": "rename-editor",
+  "title": "Rename editor",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A name field and one async rename confirm: basename selection, host validation, pending lock, glyph/drum result and captured-original Undo callback.",
+  "base": "@base-ui/react/form + field (composed with Button)",
+  "react": {
+    "export": "RenameEditor",
+    "files": [
+      "rename-editor.tsx",
+      "edit-request.ts"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalRenameEditor",
+    "file": "swift/Sources/MetalUI/Components/MetalRenameEditor.swift"
+  },
+  "agent": "rename-editor.agent.md",
+  "page": "/components/rename-editor"
+}

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, Field, Popover } from '@unlocalhosted/metalui';
+import { Button, Popover } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/popover/popover.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/popover/popover.agent.md?raw';
+import { RenameDemo } from '../../ui/rename/RenameDemo';
 import { ComponentPage } from '../../ui/ComponentPage';
 
 /* ─────────────────────────────────────────────────────────
@@ -18,26 +19,7 @@ import { ComponentPage } from '../../ui/ComponentPage';
 
 const SIDES = ['bottom', 'top', 'right', 'left'] as const;
 
-function Rename({ label }: { label: string }) {
-  return (
-    <>
-      <Popover.Title>Rename region</Popover.Title>
-      <Popover.Description>The name shows on its edge and in search.</Popover.Description>
-      <Popover.Body className="grid gap-10">
-        <Field style={{ height: 36 }}>
-          <Field.Input aria-label={label} defaultValue="Trip to Lisbon" />
-        </Field>
-        <div className="flex justify-end gap-8">
-          <Popover.Close render={<Button>Cancel</Button>} />
-          <Popover.Close render={<Button cap="primary">Rename</Button>} />
-        </div>
-      </Popover.Body>
-    </>
-  );
-}
-
 function RiseTuner() {
-  const [open, setOpen] = React.useState(false);
   const d = useDialKit('Popover rise', {
     open: { type: 'select', options: SPRING_NAMES, default: 'surface' },
     close: { type: 'select', options: SPRING_NAMES, default: 'release' },
@@ -45,9 +27,6 @@ function RiseTuner() {
     reach: [6, 0, 24],
     scale: [0.97, 0.8, 1],
     slow: [1, 1, 10],
-    toggle: { type: 'action', label: 'Open / close' },
-  }, {
-    onAction: (action) => { if (action === 'toggle') setOpen((o) => !o); },
   });
   const o = d.open as SpringName;
   const c = d.close as SpringName;
@@ -59,12 +38,7 @@ function RiseTuner() {
   } as React.CSSProperties;
   return (
     <div data-testid="popover-rise-tuner" className="flex min-h-[260px] items-center justify-center">
-      <Popover open={open} onOpenChange={setOpen}>
-        <Popover.Trigger><Button>Rename…</Button></Popover.Trigger>
-        <Popover.Content side={d.side as (typeof SIDES)[number]} style={vars}>
-          <Rename label="Tuned region name" />
-        </Popover.Content>
-      </Popover>
+      <RenameDemo label="Tuned region name" panelStyle={vars} side={d.side as (typeof SIDES)[number]} testId="rename-tuned" />
     </div>
   );
 }
@@ -91,14 +65,9 @@ export default function PopoverPage() {
     <ComponentPage
       title="Popover"
       lede="A small panel that comes out of its trigger. It rises one nest from the trigger's side on the surface spring and fades in; closing, it fades where it is and does not travel back."
-      play={{ lede: 'Open it, rename, or press Esc.', caption: 'from a button · title · description · fields · actions', node: (
+      play={{ lede: 'Open it, rename, or press Esc. Try Taken to see validation.', caption: 'selected name · pen confirm · waiting · check result · Undo', node: (
         <div className="flex min-h-[240px] items-start justify-center pt-24">
-          <Popover>
-            <Popover.Trigger><Button>Rename…</Button></Popover.Trigger>
-            <Popover.Content>
-              <Rename label="Region name" />
-            </Popover.Content>
-          </Popover>
+          <RenameDemo />
         </div>
       ) }}
       more={[{ id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }, { id: 'portal', title: 'A scoped host', lede: 'A panel keeps the active trigger’s nearest colorway and follows live changes. It stays outside clipped parents. Native popovers inherit their SwiftUI environment.', node: <ScopedPopover /> }]}

@@ -953,6 +953,23 @@
       "agent": "https://metalui.dev/r/region.md"
     },
     {
+      "name": "rename-editor",
+      "title": "Rename editor",
+      "status": "alpha",
+      "description": "A name field and one async rename confirm: basename selection, host validation, pending lock, glyph/drum result and captured-original Undo callback.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "RenameEditor",
+        "base": "@base-ui/react/form + field (composed with Button)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRenameEditor"
+      },
+      "registry": "https://metalui.dev/r/rename-editor.json",
+      "agent": "https://metalui.dev/r/rename-editor.md"
+    },
+    {
       "name": "row",
       "title": "Row",
       "status": "alpha",

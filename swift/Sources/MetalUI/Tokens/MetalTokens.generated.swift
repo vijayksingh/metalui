@@ -3033,6 +3033,17 @@ public enum MetalRecipes {
             "ink.fall-opacity": .text("0.35"),
         ]
     )
+
+    /// A name field and one confirm operation. It composes the FormField words, regular Field well and primary Button; owns no separate material or dimension. Request presentation and result beat use the shared waiting policy. (recipes.form-field; recipes.field.regular; recipes.button.primary; layout.gap-related; waiting)
+    public static let renameEditor = MetalObjectRecipe(
+        name: "rename-editor",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

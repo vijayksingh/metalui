@@ -208,6 +208,7 @@ public struct MetalButton<Icon: View>: View {
             }
         }
         .buttonStyle(MetalButtonStyle(cap: cap, size: size))
+        .environment(\.metalButtonFace, face)
         .environment(\.metalButtonHolding, holding)
         .environment(\.metalButtonWaiting, face == .waiting)
         .environment(\.metalButtonIconOnly, iconOnly)
@@ -352,5 +353,13 @@ private extension EnvironmentValues {
     var metalButtonIconOnly: Bool {
         get { self[MetalButtonIconOnlyKey.self] }
         set { self[MetalButtonIconOnlyKey.self] = newValue }
+    }
+}
+
+private struct MetalButtonFaceKey: EnvironmentKey { static let defaultValue = MetalButtonState.idle }
+extension EnvironmentValues {
+    var metalButtonFace: MetalButtonState {
+        get { self[MetalButtonFaceKey.self] }
+        set { self[MetalButtonFaceKey.self] = newValue }
     }
 }
