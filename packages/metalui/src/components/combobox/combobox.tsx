@@ -67,6 +67,11 @@ export interface ComboboxProps<Item extends string = string> {
   /** Names the field for assistive tech when there is no visible label. */
   'aria-label'?: string;
   disabled?: boolean;
+  /** Open and focus a captured inline completion. Omitted for ordinary fields. */
+  defaultOpen?: boolean;
+  autoFocus?: boolean;
+  /** Present a choice with its existing semantic face; the exact item remains the value. */
+  renderItem?: (item: Item) => React.ReactNode;
   /** The field's form sizes: regular (32, the default) or compact (28). */
   size?: 'regular' | 'compact';
   /** The value will not be accepted: the invalid ring, and aria-invalid on the input. */
@@ -77,12 +82,12 @@ export interface ComboboxProps<Item extends string = string> {
 }
 
 /** Type to find one of many. */
-export function Combobox<Item extends string = string>({ items, value, defaultValue, onValueChange, placeholder, disabled, size = 'regular', invalid, emptyText = 'No matches', className, ...aria }: ComboboxProps<Item>) {
+export function Combobox<Item extends string = string>({ items, value, defaultValue, onValueChange, placeholder, disabled, defaultOpen, autoFocus, renderItem, size = 'regular', invalid, emptyText = 'No matches', className, ...aria }: ComboboxProps<Item>) {
   const group = `${GROUP} ${SIZE[size]}`;
   return (
-    <BaseCombobox.Root<Item> items={items} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as Item | null)} disabled={disabled}>
+    <BaseCombobox.Root<Item> items={items} defaultOpen={defaultOpen} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as Item | null)} disabled={disabled}>
       <BaseCombobox.InputGroup data-invalid={invalid ? '' : undefined} className={className ? `${group} ${className}` : group}>
-        <BaseCombobox.Input className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} aria-invalid={invalid || undefined} />
+        <BaseCombobox.Input autoFocus={autoFocus} className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} aria-invalid={invalid || undefined} />
         <BaseCombobox.Clear className={CLEAR} aria-label="Clear">
           <Icon name="close" className="size-combobox-clear-glyph" />
         </BaseCombobox.Clear>
@@ -96,7 +101,7 @@ export function Combobox<Item extends string = string>({ items, value, defaultVa
               <BaseCombobox.List className={LIST} style={{ maxHeight: 'calc(var(--mu-r-combobox-self-max-rows) * var(--mu-r-menu-row-height))' }}>
                 {(item: Item) => (
                   <BaseCombobox.Item key={item} value={item} className={menuParts.LIVE_ROW}>
-                    <span className={menuParts.LABEL}>{item}</span>
+                    <span className={menuParts.LABEL}>{renderItem ? renderItem(item) : item}</span>
                   </BaseCombobox.Item>
                 )}
               </BaseCombobox.List>

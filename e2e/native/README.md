@@ -90,3 +90,7 @@ Run `python3 e2e/native/run-accordion-chevron-proof.py`. Default-action Return o
 # Native Select chevron
 
 Run `python3 e2e/native/run-select-chevron-proof.py`. Default-action Return opens the public `MetalSelect`, Down/Return chooses SVG, and Escape closes after a live scoped reduction change. Disabled refuses reopening. The shared chevron morph follows the real popover state; actual-window captures cover open, selected and reduced closed orientations in both colorways.
+
+# Native recent tags
+
+`python3 e2e/native/run-tag-cue-proof.py` launches a real source input and public TagCue/TagCuePicker. Default-action cycling keeps the widest footprint and one Undo, live read-only/disabled states refuse, typing a hash opens recent tags, Down/Return writes one exact choice and Undo restores the typed hash. Set `METALUI_COLORWAY=graphite` for scoped reduction and `METALUI_NATIVE_CAPTURE` for the visible native window.

@@ -1429,6 +1429,23 @@
       "agent": "https://metalui.dev/r/tabs.md"
     },
     {
+      "name": "tag-cue",
+      "title": "Tag cue",
+      "status": "alpha",
+      "description": "Recent source tags cycle with canonical identity colour; a shared autocomplete chooses tags for a captured unfinished hash range.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "TagCue",
+        "base": "@base-ui/react/button + combobox"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTagCue, MetalTagCuePicker"
+      },
+      "registry": "https://metalui.dev/r/tag-cue.json",
+      "agent": "https://metalui.dev/r/tag-cue.md"
+    },
+    {
       "name": "textarea",
       "title": "Textarea",
       "status": "alpha",

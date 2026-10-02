@@ -103,6 +103,7 @@ export const routes: RouteObject[] = [
       { path: 'components/colour-cue', lazy: lazy(() => import('../pages/components/ColourCue')) },
       { path: 'components/date-cue', lazy: lazy(() => import('../pages/components/DateCue')) },
       { path: 'components/numeric-cue', lazy: lazy(() => import('../pages/components/NumericCue')) },
+      { path: 'components/tag-cue', lazy: lazy(() => import('../pages/components/TagCue')) },
       { path: 'components/cue', lazy: lazy(() => import('../pages/components/CueFamily')) },
       { path: 'components/selection-frame', lazy: lazy(() => import('../pages/components/SelectionFrame')) },
       { path: 'components/snap-guides', lazy: lazy(() => import('../pages/components/SnapGuides')) },

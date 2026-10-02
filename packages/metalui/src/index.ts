@@ -131,3 +131,5 @@ export { ColourCue, type ColourCueProps } from './components/colour-cue/colour-c
 export { NumericCue, type NumericCueProps, type NumericCueValue, type NumericCueUnit } from './components/numeric-cue/numeric-cue';
 export { EnumCue, type EnumCueProps, type EnumCueChoice } from './components/enum-cue/enum-cue';
 export { DateCue, relativeDateWords, type DateCueProps } from './components/date-cue/date-cue';
+
+export { TagCue, type TagCueProps, type TagPickerProps } from './components/tag-cue/tag-cue';

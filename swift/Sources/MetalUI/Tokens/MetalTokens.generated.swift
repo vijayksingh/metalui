@@ -3089,6 +3089,17 @@ public enum MetalRecipes {
             :
         ]
     )
+
+    /// Recent exact source tags compose EnumCue gesture/history, Mark identity palette, Combobox autocomplete and shared Well/strip choices. No separate material, type, dimension or motion. (recipes.enum-cue; recipes.mark; cue identity palette; recipes.combobox; recipes.field; recipes.well.field; recipes.button.strip)
+    public static let tagCue = MetalObjectRecipe(
+        name: "tag-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

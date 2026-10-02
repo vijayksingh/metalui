@@ -2160,6 +2160,7 @@
   /* enum-cue: cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent */
   /* numeric-cue: docs/CUE-EDITING.md; recipes.mark; recipes.tooltip; motion/swap; foundations.space */
   /* date-cue: docs/CUE-EDITING.md; recipes.numeric-cue; recipes.mark; recipes.calendar; recipes.popover */
+  /* tag-cue: recipes.enum-cue; recipes.mark; cue identity palette; recipes.combobox; recipes.field; recipes.well.field; recipes.button.strip */
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

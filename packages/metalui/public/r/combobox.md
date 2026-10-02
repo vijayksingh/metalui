@@ -48,3 +48,5 @@ Reduce Motion: the height snaps; the fades stay, and the glyph remains complete 
 
 - Filter as people type; never make them press a button to search.
 - The plate grows and shrinks with the matches; it never jumps.
+
+Inline completion hosts may opt into `defaultOpen` and `autoFocus` for a newly captured source range. `renderItem(item)` supplies its existing semantic face; the complete string stays the Base UI value and accessible choice. Ordinary fields keep their defaults. Searching does not commit source; the host handles selection and dismissal.

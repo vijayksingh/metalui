@@ -1,0 +1,8 @@
+{
+  "name": "tag-cue", "title": "Tag cue", "status": "alpha", "layer": "component",
+  "description": "Recent source tags cycle with canonical identity colour; a shared autocomplete chooses tags for a captured unfinished hash range.",
+  "base": "@base-ui/react/button + combobox",
+  "react": { "export": "TagCue", "files": ["tag-cue.tsx"] },
+  "swift": { "symbol": "MetalTagCue, MetalTagCuePicker", "file": "swift/Sources/MetalUI/Components/MetalTagCue.swift" },
+  "agent": "tag-cue.agent.md", "page": "/components/tag-cue"
+}

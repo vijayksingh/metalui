@@ -1132,6 +1132,8 @@ Reduce Motion: the height snaps; the fades stay, and the glyph remains complete 
 - Filter as people type; never make them press a button to search.
 - The plate grows and shrinks with the matches; it never jumps.
 
+Inline completion hosts may opt into `defaultOpen` and `autoFocus` for a newly captured source range. `renderItem(item)` supplies its existing semantic face; the complete string stays the Base UI value and accessible choice. Ordinary fields keep their defaults. Searching does not commit source; the host handles selection and dismissal.
+
 ---
 
 # Command palette
@@ -1565,6 +1567,8 @@ The existing drum presents a changed word; reduced motion keeps its crossfade an
 ## Enclosing provenance
 
 EnumCue forwards its actual Base UI trigger ref and common trigger props, merging host events with its own gestures. An enclosing ProvenanceTooltip reaches the operable words, its source description joins gesture instructions, and Space still writes one source-history step. Set `hint={false}` to let that enclosing tooltip own the visual help. Native `hint: false` likewise suppresses the gesture help when `.metalProvenance(…)` supplies provenance. This changes no material, footprint or motion.
+
+Native mutability disables the inner action button while preserving the outer read-only focus target and description. Dynamic read-only changes refuse default Return shortcuts as well as pointer, wheel and adjustable actions; returning to editable state re-enables the same control without changing its footprint.
 
 ---
 
@@ -4224,6 +4228,18 @@ Keys: ← → move and choose, Home / End jump, Tab goes into the panel. Reduce 
 Vertical tabs use Up/Down, Home/End and the same Base UI focus rules; Left/Right belong to horizontal tabs. The panel drifts along the selected axis. Track radius is derived from the row height plus its nest, with no new dimensions. Swift MetalTabs `orientation: .vertical` uses the same track material and native tab accessibility. Each item may describe a held or dirty state with `aria-describedby`.
 
 Base UI keeps disabled tabs arrow-reachable while refusing activation; give them `aria-describedby` when a reason helps. Native tab controls follow platform keyboard behavior. Never reinterpret a disabled tab as a panel switch.
+
+---
+
+# Tag cue
+
+A Component you operate in source text. `TagCue` composes EnumCue with the Mark tag's existing canonical identity colour. A tag remains the same raised tab with a punched hole everywhere; no new material or timing. Unlike enum state tint, its colour hashes its exact NFC identity through the generated palette.
+
+Supply exact full `#tag` words as `recentTags`; invalid entries are ignored and exact duplicates removed. If the current tag is absent it joins the permitted words, without rewriting source. Case and accents stay authored. The widest supplied tag reserves the footprint. Focus then scroll, drag vertically, click or Space to cycle; arrows step. One completed gesture is one source Undo. Escape cancels, and unrelated source changes invalidate the captured range. Read-only and disabled never edit or tick. EnumCue owns all gestures, haptics, help and reduced motion.
+
+`TagCue.Picker({recentTags,label,onChoose,disabled?})` is the shared Base UI Combobox, opened on creation with its real input focused. Search does not write source. Arrows/Enter select; empty results say No recent tags. A host detects an unfinished hash at its retained caret, captures that exact UTF16 range, and opens Popover directly anchored to its existing source input. Begin a document edit only when choosing: replace that range once, commit, close and restore editor focus/selection. Escape dismisses without losing the typed hash. Never infer a tag or replace another hash elsewhere in the source.
+
+Native `MetalTagCue` composes MetalEnumCue and the same generated tag palette. `MetalTagCuePicker` composes a shared field Well and tag-faced choice keys, with search, Up/Down highlight and Return selection; the current filtered option is named. It owns no popup material: a native host may use MetalPopover (whose material port remains WIP). Source history and caret belong to the host on both platforms. The iOS wheel path is not claimed as a hardware scroll gesture; all choices remain keyboard and pointer reachable.
 
 ---
 

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tag-cue",
+  "type": "registry:ui",
+  "title": "Tag cue",
+  "description": "Recent source tags cycle with canonical identity colour; a shared autocomplete chooses tags for a captured unfinished hash range.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/combobox.json",
+    "https://metalui.dev/r/enum-cue.json",
+    "https://metalui.dev/r/mark.json",
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/tag-cue/tag-cue.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/components/tag-cue/tag-cue.tsx",
+      "content": "'use client';\nimport * as React from 'react';\nimport { EnumCue, type EnumCueProps } from '../enum-cue/enum-cue';\nimport { Combobox } from '../combobox/combobox';\nimport { Mark } from '../mark/mark';\nimport { tagColor } from '../mark/identity.generated';\n\nconst valid = (tag: string) => /^#[\\p{L}\\p{N}_-]+$/u.test(tag);\nconst recent = (tags: readonly string[]) => [...new Set(tags.filter(valid))];\nexport interface TagCueProps extends Omit<EnumCueProps, 'choices'> { recentTags: readonly string[] }\n/** Recent source tags reuse the finite-state control; their colour remains their canonical identity. */\nconst Root = React.forwardRef<HTMLElement, TagCueProps>(function TagCueRoot({ value, recentTags, ...props }, ref) {\n  const tags = recent(recentTags);\n  if (valid(value) && !tags.includes(value)) tags.unshift(value);\n  return <EnumCue {...props} ref={ref} value={value} choices={tags.map(tag => ({ value: tag, tint: tagColor(tag) }))} />;\n});\nexport interface TagPickerProps {\n  recentTags: readonly string[];\n  label: string;\n  onChoose: (tag: string) => void;\n  disabled?: boolean;\n}\n/** Open after the host captures its unfinished # range. Choosing, rather than searching, edits source. */\nfunction Picker({ recentTags, label, onChoose, disabled }: TagPickerProps) {\n  return <Combobox items={recent(recentTags)} value={null} onValueChange={tag => { if (tag) onChoose(tag); }}\n    aria-label={label} placeholder=\"Find a recent tag\" emptyText=\"No recent tags\" disabled={disabled} defaultOpen autoFocus renderItem={tag => <Mark kind=\"tag\">{tag}</Mark>} />;\n}\nexport const TagCue = Object.assign(Root, { Picker });\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/tag-cue.md. SwiftUI: MetalTagCue, MetalTagCuePicker in the MetalUI Swift package."
+}
