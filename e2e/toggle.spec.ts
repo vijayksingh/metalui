@@ -70,3 +70,37 @@ test('Reduce Motion: the latch snaps to its depth', async ({ page }) => {
   })).toBeCloseTo(1, 1);
   await expect(snap.locator('.mu-led')).toHaveAttribute('data-kind', 'live');
 });
+
+for (const colorway of COLORWAYS) {
+  test(`radio keys retain one form choice and skip taken times in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/toggle', colorway);
+    const form = page.getByRole('form', { name: 'Choose a time' });
+    const group = form.getByRole('radiogroup', { name: 'Appointment time' });
+    const first = group.getByRole('radio', { name: '10:00' });
+    const last = group.getByRole('radio', { name: '12:00' });
+    await first.click();
+    await expect(first).toBeChecked();
+    await expect.poll(() => depth(first)).toBeCloseTo(1, 1);
+    await page.keyboard.press('ArrowRight');
+    await expect(last).toBeFocused();
+    await expect(last).toBeChecked();
+    await expect(first).not.toBeChecked();
+    await expect(group.getByRole('radio', { name: '11:00 · taken' })).toBeDisabled();
+    await last.click();
+    await expect(last).toBeChecked();
+    await page.keyboard.press('Tab');
+    await expect(form.getByRole('button', { name: 'Confirm time' })).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(form.getByRole('status')).toHaveText('Time submitted: 12:00');
+    const city = form.getByRole('radiogroup', { name: 'Host city' });
+    await city.getByRole('radio', { name: 'Berlin' }).click();
+    await expect(city.getByRole('radio', { name: 'Lisbon' })).toBeChecked();
+    await page.keyboard.press('ArrowRight');
+    await expect(city.getByRole('radio', { name: 'Lisbon' })).toBeChecked();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await first.click();
+    await expect(first).toBeChecked();
+    await expect.poll(() => depth(first)).toBeCloseTo(1, 1);
+    await form.screenshot({ path: capture(`radio-keys-${colorway}-reduced`) });
+  });
+}

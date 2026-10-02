@@ -6,7 +6,7 @@
   "description": "A latching push button: the button cap with a lamp; pressing sinks it past the catch, releasing into on settles it at the latch on the part spring with the lamp lit. Toggle group puts the keys in a row.",
   "base": "@base-ui/react/toggle",
   "react": {
-    "export": "Toggle, ToggleGroup",
+    "export": "Toggle, ToggleGroup, RadioKeys",
     "files": [
       "toggle.tsx"
     ]
@@ -14,7 +14,7 @@
   "swift": {
     "symbol": "MetalToggle",
     "file": "swift/Sources/MetalUI/Components/MetalToggle.swift",
-    "status": "wip"
+    "status": "alpha"
   },
   "agent": "toggle.agent.md",
   "page": "/components/toggle"

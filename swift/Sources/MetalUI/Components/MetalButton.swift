@@ -44,6 +44,8 @@ private struct MetalButtonBody: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.metalButtonGroup) private var group
     @Environment(\.metalButtonGroupLatched) private var latched
+    @Environment(\.metalToggleTravel) private var toggleTravel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.metalButtonGroupWidth) private var groupWidth
     @State private var segmentID = UUID()
     @Environment(\.metalButtonHolding) private var holding
@@ -55,7 +57,10 @@ private struct MetalButtonBody: View {
     @State private var hovering = false
 
     var body: some View {
-        let isDown = isEnabled && (configuration.isPressed || holding || waiting || latched)
+        let pressing = isEnabled && configuration.isPressed
+        let isDown = toggleTravel ? (pressing || latched) : isEnabled && (configuration.isPressed || holding || waiting || latched)
+        let depth = toggleTravel ? (pressing ? MetalRecipes.toggle.points("self.catch") : latched ? MetalRecipes.toggle.points("self.latch") : .zero) : isDown ? MetalRecipes.button.points("self.travel") : .zero
+        let travel: Animation? = toggleTravel && pressing ? .linear(duration: MetalRecipes.toggle.durationSeconds("self.press")) : MetalMotion.resolve(toggleTravel && latched ? .part : .release, reduceMotion: reduceMotion).animation
         let recipe = MetalRecipes.button
         let strip = cap == .strip || cap == .stripDanger
         let compact = size == .compact && !strip
@@ -100,9 +105,9 @@ private struct MetalButtonBody: View {
                         .stroke(MetalShared.focus.color, lineWidth: recipe.points("self.focus-width"))
                 }
             }
-            .offset(y: isDown ? recipe.points("self.travel") : 0)
-            // The press rides release, which Reduce Motion keeps unchanged (MetalMotion).
-            .metalAnimation(.release, value: isDown)
+            .offset(y: depth)
+            // Latching caps share this material, but travel past the catch before resting on it.
+            .animation(travel, value: depth)
             .opacity(isEnabled ? Double.one : recipe.scalar("self.disabled"))
             .anchorPreference(key: MetalButtonGroupAnchors.self, value: .bounds) { group == nil ? [:] : [segmentID: $0] }
             .onChange(of: isDown) { _, down in group?.pressed(segmentID, down) }

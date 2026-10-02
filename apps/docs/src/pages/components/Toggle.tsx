@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Toggle, ToggleGroup } from '@unlocalhosted/metalui';
+import { Toggle, ToggleGroup, RadioKeys, Button } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/toggle/toggle.tsx?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToggle.swift?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/toggle/toggle.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
@@ -38,6 +39,26 @@ function LatchTuner() {
   );
 }
 
+function TimeChoice() {
+  const [submitted, setSubmitted] = React.useState('');
+  return <form className="mu-stack gap-mu-related items-center" aria-label="Choose a time" onSubmit={(event) => {
+    event.preventDefault();
+    setSubmitted(String(new FormData(event.currentTarget).get('time')));
+  }}>
+    <RadioKeys name="time" defaultValue="10:00" required aria-label="Appointment time">
+      <RadioKeys.Key value="10:00">10:00</RadioKeys.Key>
+      <RadioKeys.Key value="11:00" disabled>11:00 · taken</RadioKeys.Key>
+      <RadioKeys.Key value="12:00">12:00</RadioKeys.Key>
+    </RadioKeys>
+    <Button type="submit" size="compact">Confirm time</Button>
+    <output aria-live="polite">{submitted ? `Time submitted: ${submitted}` : 'One chosen key stays latched.'}</output>
+    <RadioKeys value="Lisbon" readOnly aria-label="Host city">
+      <RadioKeys.Key value="Lisbon">Lisbon</RadioKeys.Key>
+      <RadioKeys.Key value="Berlin">Berlin</RadioKeys.Key>
+    </RadioKeys>
+  </form>;
+}
+
 export default function TogglePage() {
   const [grid, setGrid] = React.useState(true);
   const [marks, setMarks] = React.useState<string[]>(['bold']);
@@ -59,16 +80,22 @@ export default function TogglePage() {
           </ToggleGroup>
         </div>
       ) }}
-      more={[{ id: 'latch', title: 'Tune the latch', lede: 'The Toggle latch panel sets how far past the catch a press goes, where an on key rests, and the springs it rises on.', node: <LatchTuner /> }]}
+      more={[{ id: 'one-choice', title: 'One form choice', lede: 'A time slot stays chosen when pressed again. Arrows select the next free time; Tab leaves the group. The native form receives one value. Host city is read-only.', node: <TimeChoice /> }, { id: 'latch', title: 'Tune the latch', lede: 'The Toggle latch panel sets how far past the catch a press goes, where an on key rests, and the springs it rises on.', node: <LatchTuner /> }]}
       usage={`<Toggle pressed={grid} onPressedChange={setGrid}>Grid</Toggle>
 
 <ToggleGroup multiple value={marks} onValueChange={setMarks} aria-label="Text marks">
   <Toggle value="bold">Bold</Toggle>
   <Toggle value="italic">Italic</Toggle>
-</ToggleGroup>`}
+</ToggleGroup>
+
+<RadioKeys name="time" value={time} onValueChange={setTime} aria-label="Free times">
+  <RadioKeys.Key value="10:00">10:00</RadioKeys.Key>
+  <RadioKeys.Key value="12:00">12:00</RadioKeys.Key>
+</RadioKeys>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

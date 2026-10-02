@@ -493,6 +493,21 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Latching caps and a single form choice use the same button material and LED socket.
+    func testRadioKeys() {
+        for colorway in MetalColorway.allCases {
+            capture("radio-keys-\(colorway.rawValue)", VStack(spacing: MetalRecipes.toggle.points("self.gap")) {
+                MetalToggle("Grid", isOn: .constant(true))
+                MetalRadioKeys("Appointment time", selection: .constant("10:00"), options: [
+                    .init("10:00", "10:00"), .init("11:00", "11:00 · taken", disabled: true), .init("12:00", "12:00")
+                ])
+            }
+            .padding(MetalRecipes.button.points("self.pad"))
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway))
+        }
+    }
+
     func testRowStates() {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: MetalSpace.s8) {

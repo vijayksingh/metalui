@@ -1,9 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Radio as BaseRadio } from '@base-ui/react/radio';
-import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
-import { Avatar, Button, Calendar, useReducedMotion, EmptyState, Led, Select, SwapText, Switcher } from '@unlocalhosted/metalui';
+import { Avatar, Button, Calendar, useReducedMotion, EmptyState, RadioKeys, Select, SwapText, Switcher } from '@unlocalhosted/metalui';
 import { ClockIcon, LinkIcon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
@@ -208,17 +206,12 @@ function useArrival(list: React.RefObject<HTMLElement | null>, day: number, leng
 
 /* ── Time keys ─────────────────────────────────────────────── */
 
-// The Toggle's latching key (the button cap, toggle-travel), as a radio: Base UI's Radio gives the
-// group its arrows and roving focus; data-pressed gives the key its latch.
-const KEY = 'mu-toggle box-border inline-flex items-center justify-center gap-button-gap h-button-height px-button-pad rounded-pill m-0 border-0 whitespace-nowrap cursor-pointer select-none antialiased tap-highlight-none type-ui tabular-nums text-ink recipe-button transition-button toggle-travel data-pressed:recipe-button-pressed not-data-disabled:active:recipe-button-pressed outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep';
-
-function TimeKey({ at, zone, chosen, delay }: { at: number; zone: string; chosen: boolean; delay: number }) {
+function TimeKey({ at, zone, delay }: { at: number; zone: string; delay: number }) {
   const label = useLater(clock(zone).format(at), delay);
   return (
-    <BaseRadio.Root value={String(at)} data-arrive="" data-pressed={chosen ? '' : undefined} className={KEY} aria-label={clock(zone).format(at)}>
-      <Led kind={chosen ? 'live' : 'off'} size="small" />
+    <RadioKeys.Key value={String(at)} data-arrive="" aria-label={clock(zone).format(at)}>
       <SwapText value={label} />
-    </BaseRadio.Root>
+    </RadioKeys.Key>
   );
 }
 
@@ -345,16 +338,16 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
           <Select size="compact" aria-label="Time zone" value={zone} onValueChange={setZone} options={zoneOptions} className="w-full" />
           <div ref={list} className="-m-4 min-h-0 flex-1 overflow-y-auto p-4">
             {starts.length ? (
-              <BaseRadioGroup
+              <RadioKeys
                 aria-label={`Free times, ${longDay.format(day)}`}
                 value={time == null ? null : String(time)}
                 onValueChange={(v) => setTime(v == null ? null : Number(v))}
                 className="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-8 @4xl/block:grid-cols-1"
               >
                 {starts.map((at, i) => (
-                  <TimeKey key={at} at={at} zone={zone} chosen={at === time} delay={reduced ? 0 : i * TIMING.relabelStagger} />
+                  <TimeKey key={at} at={at} zone={zone} delay={reduced ? 0 : i * TIMING.relabelStagger} />
                 ))}
-              </BaseRadioGroup>
+              </RadioKeys>
             ) : (
               <EmptyState
                 compact

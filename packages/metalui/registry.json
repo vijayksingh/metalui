@@ -2014,7 +2014,6 @@
       "title": "Availability picker",
       "description": "A booking block: a host, a call length, a calendar of the next six weeks, the day's free times re-labelled by time zone, and Confirm to Booked.",
       "dependencies": [
-        "@base-ui/react@^1.8.0",
         "@unlocalhosted/metalui@^0.3.0"
       ],
       "registryDependencies": [

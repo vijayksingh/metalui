@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
+import { Radio as BaseRadio } from '@base-ui/react/radio';
+import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import { buttonParts } from '../button/button';
 import { Led } from '../led/led';
 
@@ -60,3 +62,33 @@ export function ToggleGroup({ className, joined = false, children, ...props }: T
     {joined ? <span className="inline-flex items-stretch rounded-pill overflow-hidden">{React.Children.toArray(children).map((child, index) => <span key={index} className="inline-flex button-group-seam">{child}</span>)}</span> : children}
   </BaseToggleGroup>;
 }
+
+
+export interface RadioKeysProps<Value = string> extends Omit<BaseRadioGroup.Props<Value>, 'className'> {
+  className?: string;
+}
+
+export interface RadioKeyProps<Value = string> extends Omit<BaseRadio.Root.Props<Value>, 'className'> {
+  lamp?: boolean;
+  className?: string;
+}
+
+/** One form value in latching caps. Choosing the current key never clears it. */
+function RadioKeysRoot<Value = string>({ className, ...props }: RadioKeysProps<Value>) {
+  return <BaseRadioGroup className={className ? `${GROUP} ${className}` : GROUP} {...props} />;
+}
+
+/** Base UI owns the hidden form input, arrow selection, and roving keyboard stop. */
+function RadioKey<Value = string>({ lamp = true, className, children, ...props }: RadioKeyProps<Value>) {
+  return <BaseRadio.Root
+    nativeButton
+    className={className ? `${KEY} ${className}` : KEY}
+    render={(p, state) => <button {...p} data-pressed={state.checked ? '' : undefined}>
+      {lamp && <Led kind={state.checked ? 'live' : 'off'} size="small" />}
+      {children}
+    </button>}
+    {...props}
+  />;
+}
+
+export const RadioKeys = Object.assign(RadioKeysRoot, { Key: RadioKey });

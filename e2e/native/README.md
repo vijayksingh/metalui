@@ -12,3 +12,7 @@ Observed on iPhone 15 / iOS 17.5: [active](../../docs/captures/swift/icon-disabl
 Run `python3 e2e/native/run-toast-focus-proof.py` on macOS with Xcode. It builds the local package, opens a temporary native SwiftUI app, sends real Tab events through its window, and measures the public hit regions. Focus fans the deck out; both undoable cards survive beyond their timeout while focused; leaving focus folds it. A subsequent plain result leaves ⌘Z bound to the latest undoable card behind it, and the key dismisses that card after running its callback. The app closes and the temporary bundle is removed.
 
 Set `METALUI_NATIVE_CAPTURE` to an absolute directory to save the focused deck. Proof capture: [focused Toast deck](../../docs/captures/swift/toast-keyboard-focus-bone.png). This feature fixture uses a real window; ImageRenderer stills cannot prove keyboard focus.
+
+# Native RadioKeys keyboard form
+
+Run `python3 e2e/native/run-radio-keys-proof.py` on macOS. A real SwiftUI window starts with 10:00 chosen, focuses a cap using Tab, and sends arrow and Space events. Arrows skip the disabled 11:00 option; pressing the chosen key keeps it chosen; the reverse arrow returns to 10:00. It exercises public selection bindings and native focus, without inspecting animation internals.

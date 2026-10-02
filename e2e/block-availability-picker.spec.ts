@@ -10,7 +10,7 @@ test.use({ timezoneId: 'Europe/Lisbon' });
 const NOW = new Date('2026-09-30T10:00:00+01:00'); // a Wednesday morning in Lisbon
 const block = (page: Page) => page.getByRole('region', { name: 'Book a call with Ana Rocha' });
 const times = (page: Page) => block(page).getByRole('radiogroup', { name: /^Free times/ });
-const day = (page: Page, name: string) => block(page).getByRole('button', { name, exact: true });
+const day = (page: Page, name: string) => block(page).getByRole('button', { name: new RegExp(`^${name}(?:, No available times)?$`) });
 
 async function visit(page: Page, colorway: 'bone' | 'graphite' = 'bone') {
   await page.clock.setFixedTime(NOW);
@@ -30,16 +30,14 @@ test('the month runs from today to six weeks out', async ({ page }) => {
   await expect(block(page).getByRole('button', { name: 'Next month' })).toBeDisabled();
 });
 
-test('a weekend has no times; the next free day does', async ({ page }) => {
+test('unavailable weekends announce their reason and keep the chosen free day', async ({ page }) => {
   await visit(page);
+  const b = block(page);
+  const weekend = day(page, 'Saturday, 3 October 2026');
+  await expect(weekend).toBeDisabled();
+  await expect(weekend).toHaveAccessibleName('Saturday, 3 October 2026, No available times');
   await expect(times(page).getByRole('radio').first()).toBeVisible();
-  await day(page, 'Saturday, 3 October 2026').click();
-  await expect(block(page)).toContainText('No times this day');
-  await expect(times(page)).toHaveCount(0);
-  await block(page).screenshot({ path: capture('block-availability-picker-empty-day') });
-  await block(page).getByRole('button', { name: /^Next free day/ }).click();
-  await expect(times(page).getByRole('radio').first()).toBeFocused();
-  await expect(block(page).getByRole('heading', { level: 3 })).not.toContainText('Saturday');
+  await expect(b.getByRole('heading', { level: 3 })).toContainText('Wednesday 30 September');
 });
 
 test('the time zone re-labels the times', async ({ page }) => {

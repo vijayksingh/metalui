@@ -82,7 +82,7 @@ export { SizeReadout, type SizeReadoutProps } from './components/size-readout/si
 export { SnapGuides, type SnapGuide, type SnapGuidesProps } from './components/snap-guides/snap-guides';
 export { Lasso, type LassoProps, type LassoRect } from './components/lasso/lasso';
 export { Switch, type SwitchProps } from './components/switch/switch';
-export { Toggle, ToggleGroup, type ToggleProps, type ToggleGroupProps } from './components/toggle/toggle';
+export { Toggle, ToggleGroup, RadioKeys, type ToggleProps, type ToggleGroupProps, type RadioKeysProps, type RadioKeyProps } from './components/toggle/toggle';
 export { BrushCursor, type BrushCursorProps, type BrushMode } from './components/brush-cursor/brush-cursor';
 export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from './components/block-silhouette/block-silhouette';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
