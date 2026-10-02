@@ -223,6 +223,10 @@ Lism CSS prompted this foundation work. We borrow concepts through Tailwind and 
 
 We do not install Lism, adopt its class notation or React wrappers, replace Tailwind, substitute its numeric scale for the approved sheet, or perform a broad component migration. Future agents should build on the shared contracts above, one foundation or component slice at a time.
 
+## Copied blocks and nested containers
+
+Every copied block names its root `@container/block`. Breakpoints that describe the whole block must use that name (`@md/block:`, `@max-md/block:`, or `@min-[34rem]/block:`). Nested sublayouts use a distinct name when their own available width matters: Settings uses `@container/panel` and `@md/panel:` for its fields. An unnamed `@md:` asks the nearest container, so adding a ScrollArea or a contained panel can silently change a deeper layout. Keep viewport breakpoints only for viewport behavior, not block sizing. Each block instance resolves the closest ancestor named `block`, so nesting copied blocks remains local.
+
 ---
 
 ## Components
