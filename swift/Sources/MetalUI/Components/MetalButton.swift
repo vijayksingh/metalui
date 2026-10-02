@@ -200,7 +200,7 @@ public struct MetalButton<Icon: View>: View {
                         Text(errorLabel).hidden()
                         Text(faceLabel).id(faceLabel)
                             .transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
-                    }.metalAnimation(.settle, value: faceLabel) }
+                    }.clipped().metalAnimation(.settle, value: faceLabel) }
                 } else {
                     if let icon { icon.frame(width: glyph, height: glyph) }
                     if !iconOnly { Text(title) }
