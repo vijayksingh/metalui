@@ -1856,6 +1856,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/tokens.json"
       ],

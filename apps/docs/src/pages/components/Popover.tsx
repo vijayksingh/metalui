@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, Popover } from '@unlocalhosted/metalui';
+import { Button, Field, Popover } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/popover/popover.tsx?raw';
