@@ -6,6 +6,7 @@ import XCTest
 @MainActor
 final class MetalEnumCueFeature: XCTestCase {
     private let original = "🧠 Task #todo, send the poster."
+    private final class Gate: ObservableObject { @Published var readOnly = false }
     private final class Measurement { var rect: CGRect = .zero; var width: CGFloat { rect.width } }
     private struct WidthKey: PreferenceKey {
         static var defaultValue: CGRect = .zero
@@ -13,6 +14,7 @@ final class MetalEnumCueFeature: XCTestCase {
     }
     private struct Host: View {
         @ObservedObject var document: MetalCueDocument
+        @ObservedObject var gate: Gate
         let colorway: MetalColorway
         let reduced: Bool
         let measurement: Measurement
@@ -25,7 +27,7 @@ final class MetalEnumCueFeature: XCTestCase {
                     .init("#doing", label: "Doing", glyph: .clock, tint: MetalShared.orange),
                     .init("#done", label: "Done", glyph: .check, tint: MetalShared.greenDeep),
                     .init("#dropped", label: "Dropped", glyph: .close, tint: colorway.tokens.ink3)
-                ], label: "Task state", editing: document.editing, hint: false,
+                ], label: "Task state", readOnly: gate.readOnly, editing: document.editing, hint: false,
                 onBegin: { document.begin((document.source as NSString).range(of: value)) },
                 onChange: { _ = document.replace($0) }, onCommit: document.commit, onCancel: document.cancel)
                     .metalProvenance("You", detail: ["Declared task states"])
@@ -33,6 +35,7 @@ final class MetalEnumCueFeature: XCTestCase {
                     .background(GeometryReader { proxy in Color.clear.preference(key: WidthKey.self, value: proxy.frame(in: .named("enum-proof"))) })
                     .onPreferenceChange(WidthKey.self) { measurement.rect = $0 }
                 Text(document.source).font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
+                MetalButton("Toggle read only") { gate.readOnly.toggle() }.keyboardShortcut("l", modifiers: .command)
                 MetalButton("Undo state", action: document.undo).keyboardShortcut("z", modifiers: .command)
                 Text("UTF16 \(document.selection.start)–\(document.selection.end)").font(.metal(MetalType.readout))
             }.padding(MetalSpace.s24).frame(width: MetalRecipes.dialog.points("self.width")).background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color).metalColorway(colorway).metalReduceMotion(reduced).coordinateSpace(name: "enum-proof")
@@ -40,7 +43,7 @@ final class MetalEnumCueFeature: XCTestCase {
     }
     private func press(_ text: String, _ window: NSWindow, modifiers: NSEvent.ModifierFlags = []) throws {
         let event = try XCTUnwrap(NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: modifiers, timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: window.windowNumber, context: nil, characters: text, charactersIgnoringModifiers: text, isARepeat: false, keyCode: text == "\r" ? 36 : 6))
-        XCTAssertTrue(window.performKeyEquivalent(with: event))
+        _ = window.performKeyEquivalent(with: event)
     }
     private func capture(_ name: String, _ host: NSView) throws {
         guard let directory = ProcessInfo.processInfo.environment["METALUI_CAPTURES"], let bitmap = host.bitmapImageRepForCachingDisplay(in: host.bounds) else { return }
@@ -54,7 +57,7 @@ final class MetalEnumCueFeature: XCTestCase {
         for colorway in MetalColorway.allCases {
             let document = MetalCueDocument(original, selection: .init(start: 30, end: 30))
             let measurement = Measurement()
-            let host = NSHostingView(rootView: Host(document: document, colorway: colorway, reduced: colorway == .graphite, measurement: measurement))
+            let host = NSHostingView(rootView: Host(document: document, gate: Gate(), colorway: colorway, reduced: colorway == .graphite, measurement: measurement))
             let window = NSWindow(contentRect: NSRect(origin: .zero, size: host.fittingSize), styleMask: [.titled], backing: .buffered, defer: false)
             window.isReleasedWhenClosed = false; window.contentView = host; window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
             defer { window.close() }
@@ -67,6 +70,13 @@ final class MetalEnumCueFeature: XCTestCase {
             try capture("enum-native-\(colorway.rawValue)", host)
             try press("z", window, modifiers: .command); try await Task.sleep(for: .seconds(0.1)); XCTAssertEqual(document.source, "🧠 Task #doing, send the poster.")
             try press("z", window, modifiers: .command); try await Task.sleep(for: .seconds(0.1)); XCTAssertEqual(document.source, original); XCTAssertEqual(document.selection.start, 30); XCTAssertFalse(document.canUndo)
+            try press("l", window, modifiers: .command); try await Task.sleep(for: .seconds(0.2))
+            try press("\r", window); try await Task.sleep(for: .seconds(0.15))
+            XCTAssertEqual(document.source, original); XCTAssertFalse(document.canUndo)
+            try press("l", window, modifiers: .command); try await Task.sleep(for: .seconds(0.2))
+            try press("\r", window); try await Task.sleep(for: .seconds(0.15))
+            XCTAssertEqual(document.source, "🧠 Task #doing, send the poster.")
+            try press("z", window, modifiers: .command); try await Task.sleep(for: .seconds(0.1)); XCTAssertEqual(document.source, original)
             let center = host.convert(NSPoint(x: measurement.rect.midX, y: measurement.rect.midY), to: nil)
             for (type, location) in [(NSEvent.EventType.leftMouseDown, center), (.leftMouseDragged, NSPoint(x: center.x, y: center.y + 48)), (.leftMouseUp, NSPoint(x: center.x, y: center.y + 48))] {
                 let event = try XCTUnwrap(NSEvent.mouseEvent(with: type, location: location, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: window.windowNumber, context: nil, eventNumber: 1, clickCount: 1, pressure: type == .leftMouseUp ? 0 : 1))

@@ -79,7 +79,7 @@ public struct MetalEnumCue: View {
                     .font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).offset(y: MetalSpace.s24).accessibilityHidden(true) }
             }
         }
-        .buttonStyle(.plain).focusable().focused($focused).focusEffectDisabled()
+        .buttonStyle(.plain).disabled(!mutable).focusable(enabled).focused($focused).focusEffectDisabled()
         .overlay { if focused { Rectangle().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth) } }
         .opacity(enabled ? Double.one : MetalRecipes.field.scalar("state.disabled"))
         .highPriorityGesture(DragGesture(minimumDistance: .zero).onChanged { drag in

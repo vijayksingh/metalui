@@ -21,3 +21,5 @@ The existing drum presents a changed word; reduced motion keeps its crossfade an
 ## Enclosing provenance
 
 EnumCue forwards its actual Base UI trigger ref and common trigger props, merging host events with its own gestures. An enclosing ProvenanceTooltip reaches the operable words, its source description joins gesture instructions, and Space still writes one source-history step. Set `hint={false}` to let that enclosing tooltip own the visual help. Native `hint: false` likewise suppresses the gesture help when `.metalProvenance(…)` supplies provenance. This changes no material, footprint or motion.
+
+Native mutability disables the inner action button while preserving the outer read-only focus target and description. Dynamic read-only changes refuse default Return shortcuts as well as pointer, wheel and adjustable actions; returning to editable state re-enables the same control without changing its footprint.
