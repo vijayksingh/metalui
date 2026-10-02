@@ -1081,6 +1081,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

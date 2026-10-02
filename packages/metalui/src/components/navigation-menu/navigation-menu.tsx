@@ -1,13 +1,14 @@
 'use client';
 
 import * as React from 'react';
+import { MorphIcon } from '../../icons/MorphIcon';
 import { NavigationMenu as BaseNav } from '@base-ui/react/navigation-menu';
 
 /* ─────────────────────────────────────────────────────────
  * NAVIGATION MENU, a site's sections across the top, with panels of links
  *
  *   keys      the menubar's quiet keys; a key with a panel carries a chevron that turns over on the
- *             part spring while its panel is open; a plain link is a key too
+ *             settle spring while its panel is open; a plain link is a key too
  *   open      the panel, the menu's frosted plate, rises one nest into place on the surface spring
  *   across    moving to the next key: the plate slides under it and takes the new panel's size on
  *             the settle spring, while the content moves two grid steps the way you went and
@@ -21,7 +22,7 @@ import { NavigationMenu as BaseNav } from '@base-ui/react/navigation-menu';
 const ROOT = 'mu-navigation-menu relative';
 const LIST = 'm-0 p-menubar-pad list-none flex items-center gap-menubar-gap';
 const KEY = 'mu-navigation-key inline-flex items-center gap-menubar-gap h-menubar-key-height px-menubar-key-pad-x rounded-menubar-key-radius border-0 bg-transparent type-ui text-ink no-underline cursor-default outline-none select-none hover:recipe-row-list-hover data-popup-open:recipe-row-list-hover focus-visible:focus-ring';
-const CHEVRON = 'size-navigation-menu-chevron-size text-ink2 navigation-menu-chevron reduced-motion:transition-none';
+const CHEVRON = 'size-navigation-menu-chevron-size text-ink2';
 const POSITIONER = 'mu-navigation-positioner z-menu-z navigation-menu-positioner';
 // The menu plate's look (frost, radius) without its fade: this plate moves and resizes its own way.
 const POPUP = 'mu-navigation-popup relative overflow-hidden rounded-menu-radius outline-none recipe-menu backdrop-menu-blur reduce-transparency:opaque-frost navigation-menu-popup';
@@ -65,10 +66,12 @@ export interface NavigationMenuItemProps {
 function Item({ label, children }: NavigationMenuItemProps) {
   return (
     <BaseNav.Item>
-      <BaseNav.Trigger className={KEY}>
-        {label}
-        <svg aria-hidden viewBox="0 0 10 10" className={CHEVRON} fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 3.75 5 6.25l2.5-2.5" /></svg>
-      </BaseNav.Trigger>
+      <BaseNav.Trigger className={KEY} render={(props, state) => (
+        <button {...props}>
+          {label}
+          <MorphIcon name="chevron" turn={state.open ? 180 : 0} className={CHEVRON} />
+        </button>
+      )} />
       <BaseNav.Content className={CONTENT}>{children}</BaseNav.Content>
     </BaseNav.Item>
   );

@@ -81,6 +81,7 @@ export default function NavigationMenuPage() {
       rules={[
         { id: 'NM1', title: 'One plate travels', body: 'Moving between sections, the same plate slides and resizes; it never closes and reopens.', origin: 'Ours' },
         { id: 'NM2', title: 'The content says which way', body: 'Links move two grid steps the way you went as they crossfade.', origin: 'Ours' },
+        { id: 'NM4', title: 'The direction is state', body: 'The shared chevron morphs from down to up with the panel state on the settle spring. Reduced motion changes the complete glyph at once.', origin: 'The icon grammar' },
         { id: 'NM3', title: 'Describe the destination', body: 'Each link carries a line saying what is there.', origin: 'Ours' },
       ]}
     />

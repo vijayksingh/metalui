@@ -103,7 +103,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 
 - [x] pagination: shared quarter-turned chevrons in React and Swift, end keys disabled and reduced motion still.
 - [ ] calendar (3)
-- [ ] navigation-menu
+- [x] navigation-menu: shared chevron morph follows Base UI open state; CSS rotation removed.
 - [ ] accordion
 - [ ] attachment
 - [ ] combobox

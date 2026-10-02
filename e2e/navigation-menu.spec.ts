@@ -48,3 +48,23 @@ test('the same plate slides and resizes between keys; the content comes in from 
   expect(sampled.some((s) => s.w > narrow + 5 && s.w < wide - 5)).toBe(true);
   expect(sampled.some((s) => s.dir === 'right')).toBe(true);
 });
+
+
+test('the shared direction follows keyboard disclosure and reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/navigation-menu', 'graphite');
+  const key = nav(page).getByRole('button', { name: 'Foundations' });
+  const glyph = key.locator('svg');
+  await expect(glyph).toHaveAttribute('data-glyph', 'chevron');
+  await key.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(key).toHaveAttribute('aria-expanded', 'true');
+  await expect(glyph).toHaveAttribute('data-turn', '180');
+  const path = await glyph.locator('path').first().getAttribute('d');
+  await page.waitForTimeout(200);
+  await expect(glyph.locator('path').first()).toHaveAttribute('d', path!);
+  await page.keyboard.press('Escape');
+  await expect(key).toHaveAttribute('aria-expanded', 'false');
+  await expect(glyph).not.toHaveAttribute('data-turn');
+  await nav(page).screenshot({ path: capture('navigation-menu-reduced') });
+});

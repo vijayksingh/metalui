@@ -1623,9 +1623,6 @@
 @utility navigation-menu-content {
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), translate var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style], &[data-ending-style] { opacity: 0; } &[data-starting-style][data-activation-direction=left] { translate: calc(var(--mu-motion-content) * -1 * var(--mu-travel-settle)) 0; } &[data-starting-style][data-activation-direction=right] { translate: calc(var(--mu-motion-content) * var(--mu-travel-settle)) 0; } &[data-ending-style][data-activation-direction=left] { translate: calc(var(--mu-motion-content) * var(--mu-travel-settle)) 0; } &[data-ending-style][data-activation-direction=right] { translate: calc(var(--mu-motion-content) * -1 * var(--mu-travel-settle)) 0; }
 }
-@utility navigation-menu-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; }
-}
 @utility stroke-width-preview-card-width {
   stroke-width: var(--mu-r-preview-card-self-width);
 }
