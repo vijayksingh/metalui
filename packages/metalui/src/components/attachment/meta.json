@@ -14,7 +14,7 @@
   "swift": {
     "symbol": "MetalAttachment",
     "file": "swift/Sources/MetalUI/Components/MetalAttachment.swift",
-    "status": "wip"
+    "status": "alpha"
   },
   "agent": "attachment.agent.md",
   "page": "/components/attachment"

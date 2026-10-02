@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
+import { Icon } from '../../icons/Icon';
+import { leaveRow } from '../../motion/leave';
 
 /* ─────────────────────────────────────────────────────────
  * ATTACHMENT, a file someone attached, as a small raised plate
@@ -20,7 +22,7 @@ import { Button } from '../button/button';
  * An object: it stands for a person's file. It uses the raised surface, the well and the progress fill.
  * ───────────────────────────────────────────────────────── */
 
-const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width max-w-attachment-max-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land data-leaving:attachment-leave reduced-motion:animate-none';
+const PLATE = 'mu-attachment relative flex w-full min-w-0 items-center gap-attachment-gap min-h-attachment-height p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land reduced-motion:animate-none';
 const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachment-type-size rounded-attachment-type-radius recipe-well-field type-label text-ink2 uppercase';
 const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
@@ -47,13 +49,17 @@ export interface AttachmentProps {
   onRetry?: () => void;
   /** Shows the remove key; called after the file has left. */
   onRemove?: () => void;
+  /** Capture neighboring row bounds before the leave starts; called once, including under Reduce Motion. */
+  onLeaveStart?: () => void;
   className?: string;
 }
 
 /** A file someone attached. (Named Attachment so it never shadows the browser's File.) */
-export function Attachment({ name, size, progress, error, onRetry, onRemove, className }: AttachmentProps) {
+export function Attachment({ name, size, progress, error, onRetry, onRemove, onLeaveStart, className }: AttachmentProps) {
   const [leaving, setLeaving] = React.useState(false);
   const plate = React.useRef<HTMLDivElement>(null);
+  const cancelLeave = React.useRef<(() => void) | undefined>(undefined);
+  React.useEffect(() => () => cancelLeave.current?.(), []);
   const dot = name.lastIndexOf('.');
   const base = dot > 0 ? name.slice(0, dot) : name;
   const ext = dot > 0 ? name.slice(dot) : '';
@@ -62,12 +68,9 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, cla
   const meta = error ? error : uploading ? `Uploading · ${Math.round(progress)} %` : size != null ? formatBytes(size) : '';
 
   const remove = () => {
-    const el = plate.current;
-    const ms = el ? parseFloat(getComputedStyle(el).getPropertyValue('--mu-spring-release-d')) * 1000 : 0;
-    const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!ms || reduced) return onRemove?.();
-    setLeaving(true);
-    window.setTimeout(() => onRemove?.(), ms);
+    cancelLeave.current = leaveRow(plate.current, () => onRemove?.(), {
+      onStart: () => { setLeaving(true); onLeaveStart?.(); },
+    });
   };
 
   return (
@@ -81,14 +84,15 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, cla
           </BaseProgress.Root>
         )}
         <span className={META} data-failed={error ? '' : undefined} role={error ? 'alert' : undefined}>{meta}</span>
+        {error && onRetry && <Button size="compact" className="justify-self-start mt-mu-space-4" disabled={leaving} onClick={onRetry}>Try again</Button>}
       </span>
-      {error && onRetry && <Button size="compact" onClick={onRetry}>Try again</Button>}
       {onRemove && (
         <IconButton
           variant="mini"
           label={`Remove ${name}`}
+          disabled={leaving}
           onClick={remove}
-          icon={<svg aria-hidden viewBox="0 0 10 10" className="size-attachment-remove-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5" /></svg>}
+          icon={<Icon name="close" className="size-attachment-remove-glyph" />}
         />
       )}
     </div>

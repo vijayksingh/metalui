@@ -1,6 +1,6 @@
 # Attachment
 
-A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (named so it never shadows the browser's `File`). SwiftUI: `MetalAttachment` (work in progress). An object: the plate is the raised `surface`, the type sits in a `well`, the upload uses the progress fill; the `attachment` recipe adds the layout and the land and leave.
+A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (named so it never shadows the browser's `File`). SwiftUI: `MetalAttachment`. An object: the plate is the raised `surface`, the type sits in a `well`, the upload uses the progress fill; the `attachment` recipe adds the layout and the land and leave.
 
 ## Use it for
 
@@ -12,7 +12,7 @@ A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (name
 
 ## Anatomy
 
-- Plate: raised, 52 tall, filling its column from 240 to 360 wide (a list shares one width), radius 14, padding 8.
+- Plate: raised, at least 52 tall, filling its host's column without an intrinsic min/max width. The host chooses a narrow composer or a full-width list. Radius 14, padding 8; errors expand the plate with Try again below their own line.
 - Type: a 36 sunk well with the extension engraved (PDF, PNG).
 - Name: ui type; a long name keeps its extension and cuts the middle.
 - Line: meta type, ink3: the size, "Uploading · 40 %", or the error in red.
@@ -38,10 +38,12 @@ Reduce Motion: it appears and goes at once; the fill still moves.
 | `progress` (0–100 while uploading) | `progress:` |
 | `error`, `onRetry` | `error:`, `retry:` |
 | `onRemove` (called after it has left) | `remove:` |
+| `onLeaveStart` (capture neighbors before leaving) | `onLeaveStart:` |
 
 ## Keyboard and accessibility
 
 - A `group` named by the file name. The progress is a named `progressbar`; a failure is an `alert`. Remove is a button named "Remove report.pdf"; move focus to a neighbour after removing.
+- `onLeaveStart` fires once before motion, including immediate removal under Reduce Motion. Capture neighboring bounds there, then close the list after `onRemove`. `leaveRow` handles interruption, repeated calls and cleanup; the remove and retry keys stay disabled while leaving.
 
 ## Rules
 

@@ -25,16 +25,19 @@ function Tray({ label }: { label: string }) {
     { id: 2, name: 'Hotel booking.pdf', size: 31_000_000, error: 'Too large, 25 MB at most' },
   ]);
   const next = React.useRef(3);
+  const [leaveStarts, setLeaveStarts] = React.useState(0);
+  const uploading = items.some((item) => item.progress != null);
   React.useEffect(() => {
+    if (!uploading) return;
     const t = setInterval(() => setItems((all) => all.map((f) => (f.progress == null || f.progress >= 100 ? { ...f, progress: undefined } : { ...f, progress: Math.min(100, f.progress + 20) }))), 400);
     return () => clearInterval(t);
-  }, []);
+  }, [uploading]);
   const add = () => {
     const id = next.current++;
     setItems((all) => [...all, { id, name: NAMES[id % NAMES.length], size: 400_000 + id * 180_000, progress: 0 }]);
   };
   return (
-    <div className="grid w-full max-w-[360px] gap-12" aria-label={label} role="region">
+    <div className="grid w-full min-w-0 gap-12" aria-label={label} role="region">
       {items.map((f) => (
         <Attachment
           key={f.id}
@@ -44,9 +47,11 @@ function Tray({ label }: { label: string }) {
           error={f.error}
           onRetry={() => setItems((all) => all.map((x) => (x.id === f.id ? { ...x, error: undefined, size: 18_000_000, progress: 0 } : x)))}
           onRemove={() => setItems((all) => all.filter((x) => x.id !== f.id))}
+          onLeaveStart={() => setLeaveStarts((n) => n + 1)}
         />
       ))}
       <Button className="justify-self-start" onClick={add}>Attach a file</Button>
+      <span role="status" className="type-meta text-ink3">{items.length} files · {leaveStarts} leave starts</span>
     </div>
   );
 }
@@ -67,8 +72,8 @@ export default function AttachmentPage() {
     <ComponentPage
       title="Attachment"
       lede="A file someone attached, as a small raised plate. A new one lands into place, its track fills while it uploads, a failed one says why and offers to try again, and a removed one steps down and fades before it goes."
-      play={{ lede: 'Attach a file, try the failed one again, or remove one.', caption: 'a long name · a failed upload · new ones uploading', node: <div className="flex w-full justify-center"><Tray label="Attachments" /></div> }}
-      more={[{ id: 'land', title: 'Tune the land', lede: 'The Attachment land panel swaps the springs a file lands and leaves on, sets how far above it lands from, and stretches time.', node: <LandTuner /> }]}
+      play={{ lede: 'Attach a file, try the failed one again, or remove one.', caption: 'a long name · a failed upload · new ones uploading', node: <div className="flex w-full max-w-attachment-max-width justify-center"><Tray label="Attachments" /></div> }}
+      more={[{ id: 'land', title: 'Tune the land', lede: 'The Attachment land panel swaps the springs a file lands and leaves on, sets how far above it lands from, and stretches time.', node: <LandTuner /> }, { id: 'width', title: 'The list chooses its width', lede: 'The same plate fills a full-width list or a narrow composer. Errors keep their own line, with Try again below; the extension and remove key stay in view.', node: <div className="mu-stack"><div className="w-full"><Tray label="Wide attachments" /></div><div className="w-full max-w-attachment-min-width"><Tray label="Narrow attachments" /></div></div> }]}
       usage={`{files.map((f) => (
   <Attachment
     key={f.id}
