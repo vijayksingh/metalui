@@ -34,7 +34,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14) | – |
-| `hold` | `hold:` | boolean, or custom milliseconds (React); destructive cap only | `false` |
+| `hold` | `hold:` | boolean, or custom milliseconds (React); destructive or strip-danger cap | `false` |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |
@@ -94,3 +94,14 @@ The darker red fill scales from the leading edge with linear time; release drain
 Use hold only for permanent loss, inside a question naming the consequence. Undoable deletion stays a plain press. Hosts must offer `hold={false}` for pointers that cannot hold; the Alert dialog page demonstrates that setting. Swift offers the same timing and fill through `MetalButton(..., hold: true)`, long press and held Space/Return, plus an accessible Confirm action.
 
 A custom rendered element must forward Button's ref and input events. Without loaded tokens an unspecified hold refuses activation rather than firing immediately. An async host owns completion/error reporting; holding is confirmation, not evidence of success.
+
+
+## Async action
+
+Use `state="idle" | "waiting" | "done" | "error"` for the host's request. Set waiting before starting the request and done only after committing its result; catch failures and set error. Waiting and done refuse repeat presses while preserving focus, and error accepts a retry. The host resets to idle when there is a new action. Pass a stable `MorphIcon` whose name becomes `check` or `sync-error`; Button owns the arc and label, the host owns the result's meaning. Do not import another spinner or hold the cap down by hand.
+
+The key reserves its glyph slot and the widest of the initial text and configured labels, before any request. Use text children and `waitingLabel`, `doneLabel`, `errorLabel` for this face. With an explicit host width, the key stays that width. `showDelay` defaults to 400ms; `minVisible` defaults to 300ms once the wait appears. A quick result skips the arc. A newer request cancels a deferred old result. `aria-busy` follows the actual host request; a polite status announces start/result once. The visible wait's retained minimum also refuses another action. The arc inherits cap ink; only mounted waiting arcs run, hidden/offscreen arcs pause. Reduce Motion removes rotation, retaining the arc's opacity breath and semantic result.
+
+Swift: `MetalButton("Save", state: state, waitingLabel: "Saving…", doneLabel: "Saved", errorLabel: "Try again") { save() } icon: { MetalIcon(state == .done ? .check : state == .error ? .syncError : .document) }`. The glyph clock pauses when absent, when the scene is inactive and under Reduce Motion (a still arc). The same shared delay/minimum, width reservation, refusal and host-owned result apply.
+
+Swift dense strips may use `cap: .strip` / `.stripDanger`; the danger strip accepts hold. `iconOnly: true` preserves the spoken title and makes the cap square at its recipe height, for use behind a tooltip in ToolStrip. Group styling and tooltip remain the host’s responsibility.

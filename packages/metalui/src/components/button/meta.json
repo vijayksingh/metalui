@@ -2,7 +2,7 @@
   "name": "button",
   "title": "Button",
   "status": "alpha",
-  "description": "A press-in pill button with compact signal caps, sized icon slots and opt-in irreversible hold confirmation. Tailwind v4 utilities from the theme; React on Base UI and SwiftUI.",
+  "description": "A press-in pill button with compact caps, async waiting/result faces and opt-in irreversible hold confirmation. React on Base UI and SwiftUI share recipes and timing.",
   "base": "@base-ui/react/button",
   "react": {
     "export": "Button",

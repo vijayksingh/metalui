@@ -8,7 +8,12 @@ public enum MetalButtonCap: Sendable {
     case standard
     case primary
     case destructive
+    case strip
+    case stripDanger
 }
+
+/// The host owns the request. Done refuses another press; error permits a retry.
+public enum MetalButtonState: Sendable { case idle, waiting, done, error }
 
 /// Press-in pill cap for any `Button`.
 public struct MetalButtonStyle: ButtonStyle {
@@ -38,36 +43,41 @@ private struct MetalButtonBody: View {
 
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.metalButtonHolding) private var holding
+    @Environment(\.metalButtonWaiting) private var waiting
+    @Environment(\.metalButtonIconOnly) private var iconOnly
     @Environment(\.metalButtonHoldEnabled) private var holdEnabled
     @Environment(\.isFocused) private var isFocused
     @Environment(\.metalColorway) private var colorway
     @State private var hovering = false
 
     var body: some View {
-        let isDown = isEnabled && (configuration.isPressed || holding)
-        let shape = Capsule(style: .continuous)
+        let isDown = isEnabled && (configuration.isPressed || holding || waiting)
         let recipe = MetalRecipes.button
-        let compact = size == .compact
-        let part = compact && cap == .standard ? "compact" : cap == .standard ? "self" : cap == .primary ? "primary" : "destructive"
+        let strip = cap == .strip || cap == .stripDanger
+        let compact = size == .compact && !strip
+        let height = recipe.points(strip ? "strip.height" : compact ? "compact.height" : "self.height")
+        let shape = RoundedRectangle(cornerRadius: strip ? recipe.points("strip.radius") : height / 2, style: .continuous)
+        let part = strip ? "strip" : compact && cap == .standard ? "compact" : cap == .standard ? "self" : cap == .primary ? "primary" : "destructive"
 
         configuration.label
             // The button is its icons' trigger: a MetalIcon inside plays its hover pose and press.
-            .metalIconInteraction(MetalIconInteraction(isHovered: !holdEnabled && hovering && isEnabled, isPressed: !holdEnabled && isDown, holdDuration: holding ? recipe.durationSeconds("hold.duration") : nil))
-            .font(compact ? recipe.font("compact.font") : .metal(MetalType.ui))
+            .metalIconInteraction(MetalIconInteraction(isHovered: !holdEnabled && !waiting && hovering && isEnabled, isPressed: !holdEnabled && !waiting && isDown, holdDuration: holding ? recipe.durationSeconds("hold.duration") : nil))
+            .font(strip ? recipe.font("strip.font") : compact ? recipe.font("compact.font") : .metal(MetalType.ui))
             .tracking(compact ? recipe.tracking("compact.tracking", size: recipe.fontSize("compact.font")) : MetalType.ui.trackingPoints)
             .lineLimit(1)
             // A button is as wide as its label: it never truncates it.
             .fixedSize(horizontal: true, vertical: false)
             .foregroundStyle(foreground(colorway.tokens))
-            .padding(.horizontal, recipe.points(compact ? "compact.pad" : "self.pad"))
-            .frame(height: recipe.points(compact ? "compact.height" : "self.height"))
+            .padding(.horizontal, iconOnly ? .zero : recipe.points(strip ? "strip.pad" : compact ? "compact.pad" : "self.pad"))
+            .frame(width: iconOnly ? height : nil)
+            .frame(height: height)
             .contentShape(shape)
             .onHover { hovering = $0 }
             .background {
                 ZStack {
-                    Color.clear.metalObjectRecipe(recipe, part: part, in: shape).opacity(isDown ? Double.zero : .one)
+                    Color.clear.metalObjectRecipe(recipe, part: part, state: strip && hovering ? "hover" : nil, in: shape).opacity(isDown ? Double.zero : .one)
                     Color.clear.metalObjectRecipe(recipe, part: part, state: "pressed", in: shape).opacity(isDown ? Double.one : .zero)
-                    if cap == .destructive {
+                    if cap == .destructive || cap == .stripDanger {
                         Color.clear.metalObjectRecipe(recipe, part: "hold", in: shape)
                             .scaleEffect(x: holding ? Double.one : .zero, anchor: .leading)
                             .clipShape(shape)
@@ -94,6 +104,8 @@ private struct MetalButtonBody: View {
         switch cap {
         case .standard: return (size == .compact && !hovering ? tokens.ink2 : tokens.ink).color
         case .primary: return (MetalRecipes.button.color("primary.ink", colorway: MetalRecipeColorway(colorway)) ?? MetalCaps.primary.ink).color
+        case .strip: return (MetalRecipes.button.color(hovering ? "strip.ink-hover" : "strip.ink") ?? tokens.ink).color
+        case .stripDanger: return (MetalRecipes.button.color("strip-danger.ink") ?? MetalCaps.destructive.ink).color
         case .destructive: return (MetalRecipes.button.color("destructive.ink") ?? MetalCaps.destructive.ink).color
         }
     }
@@ -109,6 +121,14 @@ public struct MetalButton<Icon: View>: View {
     private let size: MetalButtonSize
     private let icon: Icon?
     private let hold: Bool
+    private let iconOnly: Bool
+    private let state: MetalButtonState?
+    private let waitingLabel: String
+    private let doneLabel: String
+    private let errorLabel: String
+    @State private var face: MetalButtonState = .idle
+    @State private var visibleAt: ContinuousClock.Instant?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var holding = false
     @State private var keyboardHold: Task<Void, Never>?
     @FocusState private var focused: Bool
@@ -116,43 +136,70 @@ public struct MetalButton<Icon: View>: View {
     @Environment(\.isEnabled) private var isEnabled
     private let action: () -> Void
 
-    public init(_ title: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, action: @escaping () -> Void) where Icon == EmptyView {
+    public init(_ title: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, iconOnly: Bool = false, state: MetalButtonState? = nil, waitingLabel: String = "Working…", doneLabel: String = "Done", errorLabel: String = "Try again", action: @escaping () -> Void) where Icon == EmptyView {
         self.title = title
         self.cap = cap
         self.size = size
         self.hold = hold
+        self.iconOnly = iconOnly
+        self.state = state
+        self.waitingLabel = waitingLabel
+        self.doneLabel = doneLabel
+        self.errorLabel = errorLabel
         self.icon = nil
         self.action = action
     }
 
     /// A button with a leading icon (16 pt; 14 compact), such as a MetalUI glyph or an SF Symbol.
-    public init(_ title: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, action: @escaping () -> Void, @ViewBuilder icon: () -> Icon) {
+    public init(_ title: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, iconOnly: Bool = false, state: MetalButtonState? = nil, waitingLabel: String = "Working…", doneLabel: String = "Done", errorLabel: String = "Try again", action: @escaping () -> Void, @ViewBuilder icon: () -> Icon) {
         self.title = title
         self.cap = cap
         self.size = size
         self.hold = hold
+        self.iconOnly = iconOnly
+        self.state = state
+        self.waitingLabel = waitingLabel
+        self.doneLabel = doneLabel
+        self.errorLabel = errorLabel
         self.icon = icon()
         self.action = action
     }
 
     public var body: some View {
-        let compact = size == .compact
+        let compact = size == .compact || cap == .strip || cap == .stripDanger
         let recipe = MetalRecipes.button
         let glyph = recipe.points(compact ? "compact.glyph" : "self.glyph")
-        let needsHold = hold && cap == .destructive
-        Button(action: { if !needsHold { action() } }) {
+        let needsHold = hold && (cap == .destructive || cap == .stripDanger)
+        Button(action: { if !needsHold && !blocked { action() } }) {
             HStack(spacing: recipe.points(compact ? "compact.gap" : "self.gap")) {
-                if let icon { icon.frame(width: glyph, height: glyph) }
-                Text(title)
+                if state != nil {
+                    ZStack {
+                        if let icon { icon.opacity(face == .waiting ? Double.zero : .one) }
+                        if face == .waiting { MetalButtonWaitArc() }
+                    }.frame(width: glyph, height: glyph)
+                    if !iconOnly { ZStack {
+                        Text(title).hidden()
+                        Text(waitingLabel).hidden()
+                        Text(doneLabel).hidden()
+                        Text(errorLabel).hidden()
+                        Text(faceLabel).id(faceLabel)
+                            .transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
+                    }.metalAnimation(.settle, value: faceLabel) }
+                } else {
+                    if let icon { icon.frame(width: glyph, height: glyph) }
+                    if !iconOnly { Text(title) }
+                }
             }
         }
         .buttonStyle(MetalButtonStyle(cap: cap, size: size))
         .environment(\.metalButtonHolding, holding)
+        .environment(\.metalButtonWaiting, face == .waiting)
+        .environment(\.metalButtonIconOnly, iconOnly)
         .environment(\.metalButtonHoldEnabled, needsHold)
-        .modifier(MetalButtonLongPress(enabled: needsHold && isEnabled,
+        .modifier(MetalButtonLongPress(enabled: needsHold && isEnabled && !blocked,
             duration: recipe.durationSeconds("hold.duration"), distance: recipe.points("self.height"),
             pressing: { holding = $0 }, perform: {
-                guard scenePhase == .active else { return }
+                guard scenePhase == .active && !blocked else { return }
                 holding = false
                 action()
             }))
@@ -161,7 +208,7 @@ public struct MetalButton<Icon: View>: View {
         .onChange(of: isEnabled) { _, enabled in if !enabled { keyboardHold?.cancel(); holding = false } }
         .onChange(of: scenePhase) { _, phase in if phase != .active { keyboardHold?.cancel(); holding = false } }
         .onKeyPress(keys: [.space, .return], phases: [.down, .repeat, .up]) { key in
-            guard needsHold && isEnabled else { return .ignored }
+            guard needsHold && isEnabled && !blocked else { return .ignored }
             if key.phase == .down {
                 holding = true
                 keyboardHold?.cancel()
@@ -179,9 +226,36 @@ public struct MetalButton<Icon: View>: View {
         }
         .onDisappear { keyboardHold?.cancel() }
         .focusEffectDisabled()
-        .accessibilityLabel(title)
+        .accessibilityLabel(faceLabel)
+        .accessibilityValue(state == .waiting ? waitingLabel : "")
+        .task(id: state) { await updateFace() }
+        .onChange(of: state) { _, _ in if blocked { keyboardHold?.cancel(); holding = false } }
         .accessibilityHint(needsHold ? "Hold to confirm" : "")
-        .accessibilityAction(named: "Confirm") { if needsHold && isEnabled { action() } }
+        .accessibilityAction(named: "Confirm") { if needsHold && isEnabled && !blocked { action() } }
+    }
+
+    private var blocked: Bool { state == .waiting || state == .done || face == .waiting }
+    private var faceLabel: String { face == .waiting ? waitingLabel : face == .done ? doneLabel : face == .error ? errorLabel : title }
+
+    @MainActor private func updateFace() async {
+        let recipe = MetalRecipes.button
+        if state == .waiting {
+            guard visibleAt == nil else { return }
+            face = .idle
+            try? await Task.sleep(for: .seconds(recipe.durationSeconds("waiting.delay")))
+            guard !Task.isCancelled else { return }
+            visibleAt = .now
+            face = .waiting
+        } else {
+            if state != .idle && state != nil, let visibleAt {
+                let minimum = Duration.seconds(recipe.durationSeconds("waiting.minimum"))
+                let elapsed = visibleAt.duration(to: .now)
+                if elapsed < minimum { try? await Task.sleep(for: minimum - elapsed) }
+            }
+            guard !Task.isCancelled else { return }
+            visibleAt = nil
+            face = state ?? .idle
+        }
     }
 }
 
@@ -190,9 +264,9 @@ extension MetalButton where Icon == MetalIcon {
     /// sized by the cap (16 pt; 14 compact), and plays its act when the button is hovered or pressed.
     ///
     ///     MetalButton("Share", icon: .share) { share() }
-    public init(_ title: String, icon: MetalIconName, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, action: @escaping () -> Void) {
-        let glyph = MetalRecipes.button.points(size == .compact ? "compact.glyph" : "self.glyph")
-        self.init(title, cap: cap, size: size, hold: hold, action: action) { MetalIcon(icon, size: glyph) }
+    public init(_ title: String, icon: MetalIconName, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, hold: Bool = false, iconOnly: Bool = false, state: MetalButtonState? = nil, waitingLabel: String = "Working…", doneLabel: String = "Done", errorLabel: String = "Try again", action: @escaping () -> Void) {
+        let glyph = MetalRecipes.button.points(size == .compact || cap == .strip || cap == .stripDanger ? "compact.glyph" : "self.glyph")
+        self.init(title, cap: cap, size: size, hold: hold, iconOnly: iconOnly, state: state, waitingLabel: waitingLabel, doneLabel: doneLabel, errorLabel: errorLabel, action: action) { MetalIcon(icon, size: glyph) }
     }
 }
 
@@ -225,5 +299,43 @@ private struct MetalButtonLongPress: ViewModifier {
         } else {
             content
         }
+    }
+}
+
+
+private struct MetalButtonWaitingKey: EnvironmentKey { static let defaultValue = false }
+private extension EnvironmentValues {
+    var metalButtonWaiting: Bool {
+        get { self[MetalButtonWaitingKey.self] }
+        set { self[MetalButtonWaitingKey.self] = newValue }
+    }
+}
+
+// This clock exists only in a visible waiting glyph slot. Reduce Motion uses a still arc.
+private struct MetalButtonWaitArc: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var visible = false
+    private let started = Date()
+    var body: some View {
+        let recipe = MetalRecipes.spinner
+        let inset = recipe.points("self.ring") / 2
+        TimelineView(.animation(paused: reduceMotion || scenePhase != .active || !visible)) { context in
+            Circle().trim(from: 1 - recipe.scalar("self.tail"), to: 1)
+                .stroke(style: StrokeStyle(lineWidth: recipe.points("self.ring"), lineCap: .butt))
+                .rotationEffect(.degrees(reduceMotion ? 0 : context.date.timeIntervalSince(started) / recipe.durationSeconds("self.turn") * 360))
+                .padding(inset)
+        }
+        .accessibilityHidden(true)
+        .onAppear { visible = true }
+        .onDisappear { visible = false }
+    }
+}
+
+private struct MetalButtonIconOnlyKey: EnvironmentKey { static let defaultValue = false }
+private extension EnvironmentValues {
+    var metalButtonIconOnly: Bool {
+        get { self[MetalButtonIconOnlyKey.self] }
+        set { self[MetalButtonIconOnlyKey.self] = newValue }
     }
 }

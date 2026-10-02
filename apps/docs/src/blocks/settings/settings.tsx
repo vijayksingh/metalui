@@ -487,14 +487,12 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
               <Button
                 cap="primary"
                 onClick={() => void save()}
-                aria-disabled={phase !== 'editing' || undefined}
-                aria-busy={busy || undefined}
-                data-held={phase !== 'editing' ? '' : undefined}
+                state={phase === 'saving' ? 'waiting' : phase === 'saved' ? 'done' : 'idle'}
+                waitingLabel="Saving…" doneLabel="Saved"
                 aria-keyshortcuts="Meta+S Control+S"
-                className="data-held:translate-y-button-travel data-held:recipe-button-primary-pressed data-held:cursor-default"
                 icon={<MorphIcon name={saying.phase === 'saved' ? 'check' : saying.phase === 'saving' ? 'clock' : 'document'} />}
               >
-                <SwapText value={saying.phase === 'saved' ? 'Saved' : saying.phase === 'saving' ? 'Saving…' : 'Save'} />
+                Save
               </Button>
             </span>
           </div>

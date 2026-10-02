@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DialRoot, useDialKitController } from 'dialkit';
-import { Button, Kbd, Slider, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
+import { Button, Kbd, Slider, SwapText, type ButtonCap, type ButtonState } from '@unlocalhosted/metalui';
 import { DuplicateIcon, Icon, MorphIcon, PenIcon, PlusIcon, ShareIcon, TrashIcon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/button/button.agent.md?raw';
@@ -76,6 +76,7 @@ export default function ButtonPage() {
           <OneLine />
         </div>
       </Section>
+      <Waiting />
       <States />
       <Variants />
       <Colorways />
@@ -625,6 +626,9 @@ function Api() {
           ['cap', "'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger'", "'standard'", 'At most one primary or destructive per group. link, graphite and strip caps set their own size.'],
           ['size', "'default' | 'compact'", "'default'", 'default is 32 tall; compact is 26 (the canvas pill).'],
           ['icon', 'ReactNode', '–', 'The action’s glyph, before the label, sized by the cap (16, compact 14). A MorphIcon here morphs when the control changes meaning. Plain choices have none.'],
+          ['state', 'idle | waiting | done | error', '–', 'Host owns async work. Reserves label and glyph width; waiting and done refuse repeated actions.'],
+          ['waitingLabel / doneLabel / errorLabel', 'string', 'Working… / Done / Try again', 'Labels turn on the drum. Pass MorphIcon for semantic result glyphs.'],
+          ['showDelay / minVisible', 'number (ms)', '400 / 300', 'Fast work skips the wait face. Once shown, the arc stays at least 300ms.'],
           ['hold', 'boolean | number', 'false', 'Destructive cap only: hold pointer, Space or Enter for 800ms (or custom milliseconds). Release, blur or Escape cancels. Use false for a single press; irreversible loss belongs inside AlertDialog.'],
           ['disabled', 'boolean', 'false', 'Renders at 40% and skips icon motion. From Base UI.'],
           ['focusableWhenDisabled', 'boolean', 'false', 'Keeps a disabled button in the tab order. From Base UI.'],
@@ -659,4 +663,50 @@ function Tokens() {
       />
     </Section>
   );
+}
+
+
+/* WAITING STORYBOARD
+ * 0ms: the host starts one request, busy/refusal immediately; cap keeps its original face.
+ * 400ms: glyph slot becomes a current-ink arc, label drum turns, cap stays sunk.
+ * result: host commits its data; visible wait completes its 300ms minimum, then result lands.
+ * error: Try again and sync-error retain the same footprint and permit a fresh request.
+ * reduced: still semantic result + opacity drum; the arc breathes without rotation.
+ */
+function Waiting() {
+  const controller = useDialKitController('Button · waiting', {
+    duration: [900, 100, 3000],
+    showDelay: [400, 0, 1000],
+    minVisible: [300, 0, 1000],
+    fail: false as boolean,
+  });
+  const dial = controller.values;
+  const [state, setState] = React.useState<ButtonState>('idle');
+  const [requests, setRequests] = React.useState(0);
+  const task = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  React.useEffect(() => () => clearTimeout(task.current), []);
+  const save = () => {
+    setRequests((n) => n + 1);
+    setState('waiting');
+    task.current = setTimeout(() => setState(dial.fail ? 'error' : 'done'), dial.duration);
+  };
+  return <Section id="waiting" title="The wait lives in the key" lede="The host starts the request and tells the key when it lands. Fast work goes straight to the result; a longer wait uses the same glyph slot and keeps the key sunk.">
+    <Stage>
+      <div className="mu-stack items-center gap-mu-related">
+        <Button cap="primary" state={state} waitingLabel="Saving…" doneLabel="Saved" errorLabel="Try again" showDelay={dial.showDelay} minVisible={dial.minVisible} onClick={save}
+          icon={<MorphIcon name={state === 'done' ? 'check' : state === 'error' ? 'sync-error' : 'document'} />}>Save</Button>
+        <p className="type-doc-caption text-ink2" data-testid="save-requests">{requests} {requests === 1 ? 'request' : 'requests'}</p>
+        <div className="mu-cluster gap-mu-related" aria-label="Request examples">
+          {[['Quick save', 100, false], ['Slow save', 1800, false], ['Failed save', 900, true], ['Brief wait', 500, false]].map(([name, duration, fail]) => <Button key={String(name)} size="compact" onClick={() => { clearTimeout(task.current); setState('idle'); controller.setValues({ duration: Number(duration), fail: Boolean(fail) }); }}>{String(name)}</Button>)}
+        </div>
+        <Button size="compact" onClick={() => { clearTimeout(task.current); setState('idle'); }}>Reset example</Button>
+      </div>
+    </Stage>
+    <CodeScreen tabs={[{ id: 'react', label: 'React', lang: 'tsx', file: 'save.tsx', code: `<Button state={state} cap="primary"
+  waitingLabel="Saving…" doneLabel="Saved"
+  icon={<MorphIcon name={state === 'done' ? 'check' :
+    state === 'error' ? 'sync-error' : 'document'} />}
+  onClick={save}>Save</Button>` }]} />
+    <p className="type-doc-caption text-ink2">Waiting and done refuse another press and keep focus. An error accepts a retry. The label and glyph reserve their widest configured footprint; give this key its final host width from the start. The host must commit the real result before setting done and must reset to idle for a new action. Hidden and offscreen arcs pause; reduced motion keeps a breathing arc. Tune the timing and failure in DialKit.</p>
+  </Section>;
 }

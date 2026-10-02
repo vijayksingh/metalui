@@ -191,7 +191,7 @@ Now: a sunk ring with a green arc, in two sizes, floating on its own above two w
 
 Rethink it as one waiting language, placed where the wait is (research first: how Apple, Linear, Vercel and Teenage Engineering show waiting; storyboard each placement):
 
-- [ ] **On an action (a button, a key)**: the glyph itself becomes the wait (the icon morphs into a small arc, or its act loops quietly) while the label turns on the drum ("Save" → "Saving…" → "Saved" with `check`); the key keeps its width and stays pressed-looking; a second press is refused. Short waits under the show delay show nothing, then just the result.
+- [x] **On an action (a button, a key)**: the glyph itself becomes the wait (the icon morphs into a small arc, or its act loops quietly) while the label turns on the drum ("Save" → "Saving…" → "Saved" with `check`); the key keeps its width and stays pressed-looking; a second press is refused. Short waits under the show delay show nothing, then just the result.
 - [ ] **On a small item (a row, a chip, an attachment, an avatar)**: a small ring in the item's glyph slot or at its trailing edge, sized to the text; the item dims a little and can't be acted on; done → the ring morphs to `check` and fades.
 - [ ] **On a large item (a card, an image, a panel, a region)**: not a spinner in the middle: the item's own shape waits (a skeleton or a slow sheen across its surface, or a lit edge that travels around its border), with the words of what's happening ("Lifting the subject…"); progress when it's known.
 - [ ] **In a field** (search, combobox, validation): a small ring in the trailing slot, replacing the clear key while it works.
@@ -327,7 +327,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Calendar follows a changed controlled `value` into another month** unless the host controls `month`. Recreating the same day preserves browsing; removed the availability picker remount workaround.
 - [x] **Calendar unavailable predicate**: `isDateUnavailable` announces its reason and refuses selection. Availability picker uses it for days without free times; scoped aria-label CSS removed.
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
-- [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
+- [x] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
 - [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
 - [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.

@@ -1443,7 +1443,7 @@
   opacity: var(--mu-r-progress-segment-dim);
 }
 @utility spinner-arc {
-  position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-self-tail)) * 360deg), var(--mu-green-deep)); mask: radial-gradient(farthest-side, rgba(0,0,0,0) calc(100% - var(--mu-r-spinner-self-ring)), #000 calc(100% - var(--mu-r-spinner-self-ring) + 0.5px)); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; @media (prefers-reduced-motion: reduce) { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+  position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-self-tail)) * 360deg), var(--mu-spinner-ink, var(--mu-green-deep))); mask: radial-gradient(farthest-side, rgba(0,0,0,0) calc(100% - var(--mu-r-spinner-self-ring)), #000 calc(100% - var(--mu-r-spinner-self-ring) + 0.5px)); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; @media (prefers-reduced-motion: reduce) { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } .rm & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
 }
 @utility spinner-arrive {
   animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both;
@@ -1984,6 +1984,14 @@
 @utility duration-button-hold-duration {
   --tw-duration: var(--mu-r-button-hold-duration);
   transition-duration: var(--mu-r-button-hold-duration);
+}
+@utility duration-button-waiting-delay {
+  --tw-duration: var(--mu-r-button-waiting-delay);
+  transition-duration: var(--mu-r-button-waiting-delay);
+}
+@utility duration-button-waiting-minimum {
+  --tw-duration: var(--mu-r-button-waiting-minimum);
+  transition-duration: var(--mu-r-button-waiting-minimum);
 }
 @utility recipe-kbd {
   background: var(--mu-r-kbd-self-background);

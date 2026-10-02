@@ -42,7 +42,7 @@ export { Menubar, type MenubarProps, type MenubarMenuProps } from './components/
 export { NavigationMenu, type NavigationMenuProps, type NavigationMenuItemProps, type NavigationMenuLinkProps } from './components/navigation-menu/navigation-menu';
 export { Meter, type MeterProps } from './components/meter/meter';
 export { ScrollArea, type ScrollAreaProps } from './components/scroll-area/scroll-area';
-export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
+export { Button, type ButtonProps, type ButtonCap, type ButtonState } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';
 export { Tooltip, TooltipProvider, type TooltipProps } from './components/tooltip/tooltip';

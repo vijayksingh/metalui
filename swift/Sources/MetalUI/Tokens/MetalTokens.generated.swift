@@ -1561,6 +1561,8 @@ public enum MetalRecipes {
             "primary.ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
             "destructive.ink": .text("#FFFFFF"),
             "hold.duration": .text("800ms"),
+            "waiting.delay": .text("400ms"),
+            "waiting.minimum": .text("300ms"),
         ]
     )
 

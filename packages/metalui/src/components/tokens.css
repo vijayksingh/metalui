@@ -1401,6 +1401,8 @@
   --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-destructive-ink: #FFFFFF;
   --mu-r-button-hold-duration: 800ms;
+  --mu-r-button-waiting-delay: 400ms;
+  --mu-r-button-waiting-minimum: 300ms;
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */
   --mu-r-kbd-strip-background:
     /* mu-recipe:kbd:12 */ linear-gradient(#303033, #262628);

@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+import { SwapText } from '../../motion/swap';
+import { useAwake } from '../../motion/awake';
 import { motionReduced } from '../../motion/reduced';
 import { Button as BaseButton } from '@base-ui/react/button';
 
@@ -11,6 +13,8 @@ import { Button as BaseButton } from '@base-ui/react/button';
  * and `strip-danger` set their own size.
  */
 export type ButtonCap = 'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger';
+
+export type ButtonState = 'idle' | 'waiting' | 'done' | 'error';
 
 export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
@@ -24,8 +28,16 @@ export interface ButtonProps extends BaseButton.Props {
    * with `SwapText`. The button is the icon's trigger, so it plays its act on hover and press.
    */
   icon?: React.ReactNode;
-  /** Irreversible destructive actions only. Hold Space, Enter or pointer for 800ms; false restores ordinary activation. */
+  /** Irreversible destructive and strip-danger actions only. Hold Space, Enter or pointer for 800ms; false restores ordinary activation. */
   hold?: boolean | number;
+  /** The host owns the request and result. Idle and error accept another press; waiting and done refuse it. */
+  state?: ButtonState;
+  waitingLabel?: string;
+  doneLabel?: string;
+  errorLabel?: string;
+  /** Override the shared 400ms delay / 300ms minimum visible wait, in milliseconds. */
+  showDelay?: number;
+  minVisible?: number;
 }
 
 /* Styled with the theme's utilities: the button recipe's sizes, type and layered looks
@@ -65,11 +77,13 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
  * MetalUI icons inside it play their act from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', size = 'default', icon, hold = false, className, children, ...props },
+  { cap = 'standard', size = 'default', icon, hold = false, state, waitingLabel = 'Working…', doneLabel = 'Done', errorLabel = 'Try again', showDelay, minVisible, className, children, ...props },
   ref,
 ) {
   const element = React.useRef<HTMLElement>(null);
   React.useImperativeHandle(ref, () => element.current!);
+  const face = useButtonFace(state, element, showDelay, minVisible);
+  const blocked = state === 'waiting' || state === 'done' || face === 'waiting';
   const fill = React.useRef<HTMLSpanElement>(null);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const animation = React.useRef<Animation | undefined>(undefined);
@@ -79,7 +93,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
   const [hint, setHint] = React.useState(false);
   const hintId = React.useId();
   // One clock drives the informational fill and icon gesture. No frame loop or layout reads.
-  const holdEnabled = Boolean(hold) && cap === 'destructive';
+  const holdEnabled = Boolean(hold) && (cap === 'destructive' || cap === 'strip-danger');
   const notifyIcon = (phase: 'start' | 'cancel' | 'complete', duration?: number) => {
     element.current?.dispatchEvent(new CustomEvent('mu-hold', { detail: { phase, duration } }));
   };
@@ -103,7 +117,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
     notifyIcon('cancel');
   }, []);
   const start = () => {
-    if (!holdEnabled || props.disabled || started.current) return;
+    if (!holdEnabled || props.disabled || blocked || started.current) return;
     confirmed.current = false;
     started.current = true;
     setHolding(true);
@@ -131,14 +145,27 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
     document.addEventListener('visibilitychange', onHidden);
     return () => { clearTimeout(timer.current); animation.current?.cancel(); document.removeEventListener('visibilitychange', onHidden); };
   }, [cancel]);
-  React.useEffect(() => { if (props.disabled || !holdEnabled) cancel(); }, [props.disabled, holdEnabled, cancel]);
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${holdEnabled ? 'relative overflow-hidden data-holding:translate-y-button-travel data-holding:recipe-button-destructive-pressed data-holding:duration-button-press data-holding:ease-linear' : ''}`;
+  React.useEffect(() => { if (props.disabled || blocked || !holdEnabled) cancel(); }, [props.disabled, blocked, holdEnabled, cancel]);
+  const pressed = face === 'waiting' ? cap === 'standard' ? size === 'compact' ? 'recipe-button-compact-pressed' : 'recipe-button-pressed' : cap === 'primary' ? 'recipe-button-primary-pressed' : cap === 'destructive' ? 'recipe-button-destructive-pressed' : '' : '';
+  const label = face === 'waiting' ? waitingLabel : face === 'done' ? doneLabel : face === 'error' ? errorLabel : typeof children === 'string' ? children : '';
+  const content = state === undefined ? <>{icon}{children}</> : <>
+    <span className={`relative inline-grid flex-none place-items-center ${size === 'compact' || ['link', 'graphite', 'strip', 'strip-danger'].includes(cap) ? 'size-button-compact-glyph [&_svg]:size-button-compact-glyph' : 'size-button-glyph [&_svg]:size-button-glyph'}`}>
+      <span className={`col-start-1 row-start-1 inline-flex ${face === 'waiting' ? 'opacity-0' : 'opacity-100'}`}>{icon}</span>
+      {face === 'waiting' && <ButtonWaitArc />}
+    </span>
+    <span className="inline-grid place-items-center">
+      {[children, waitingLabel, doneLabel, errorLabel].map((value, i) => <span key={i} className="col-start-1 row-start-1 invisible pointer-events-none" aria-hidden>{value}</span>)}
+      <span className="col-start-1 row-start-1">{label ? <SwapText value={label} /> : children}</span>
+    </span>
+  </>;
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${pressed} ${face === 'waiting' ? 'translate-y-button-travel cursor-default' : ''} ${holdEnabled ? `relative overflow-hidden data-holding:translate-y-button-travel ${cap === 'strip-danger' ? 'data-holding:recipe-button-strip-pressed' : 'data-holding:recipe-button-destructive-pressed'} data-holding:duration-button-press data-holding:ease-linear` : ''}`;
   return (
     <>
     <BaseButton
       ref={element}
       data-cap={cap}
       data-size={size}
+      data-state={face}
       data-hold={holdEnabled ? '' : undefined}
       data-holding={holding ? '' : undefined}
       className={(state) => {
@@ -146,8 +173,11 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
         return extra ? `${own} ${extra}` : own;
       }}
       {...props}
+      aria-busy={state === 'waiting' || props['aria-busy']}
+      aria-disabled={blocked || props['aria-disabled']}
       aria-describedby={holdEnabled ? [props['aria-describedby'], hintId].filter(Boolean).join(' ') : props['aria-describedby']}
       onClick={(event) => {
+        if (blocked) { event.preventDefault(); return; }
         if (holdEnabled && !confirmed.current) { event.preventDefault(); setHint(true); return; }
         confirmed.current = false;
         props.onClick?.(event);
@@ -159,6 +189,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
       onBlur={(event) => { props.onBlur?.(event); cancel(); }}
       onKeyDown={(event) => {
         props.onKeyDown?.(event);
+        if (blocked && (event.key === ' ' || event.key === 'Enter')) { event.preventDefault(); return; }
         if (holdEnabled && !event.defaultPrevented && (event.key === ' ' || event.key === 'Enter')) { event.preventDefault(); if (!event.repeat) start(); }
         if (event.key === 'Escape') cancel();
       }}
@@ -169,10 +200,40 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
     >
       {holdEnabled ? <>
         <span ref={fill} aria-hidden style={{ transform: 'scaleX(0)' }} className="absolute inset-0 rounded-pill recipe-button-hold origin-left pointer-events-none" />
-        <span className={size === 'compact' ? 'relative inline-flex items-center gap-button-compact-gap [&>svg]:size-button-compact-glyph' : 'relative inline-flex items-center gap-button-gap [&>svg]:size-button-glyph'}>{icon}{children}</span>
-      </> : <>{icon}{children}</>}
+        <span className={size === 'compact' ? 'relative inline-flex items-center gap-button-compact-gap [&>svg]:size-button-compact-glyph' : 'relative inline-flex items-center gap-button-gap [&>svg]:size-button-glyph'}>{content}</span>
+      </> : content}
     </BaseButton>
+    {state !== undefined && <span className="sr-only" aria-live="polite">{state === 'waiting' ? waitingLabel : state === 'done' ? doneLabel : state === 'error' ? errorLabel : ''}</span>}
     {holdEnabled && <span id={hintId} className={hint ? 'basis-full type-doc-caption text-ink2' : 'sr-only'} role="status">Hold to confirm</span>}
     </>
   );
 });
+
+
+// State changes own one delayed clock. A newer request cancels the old result timer.
+function useButtonFace(state: ButtonState | undefined, root: React.RefObject<HTMLElement | null>, delay?: number, minimum?: number) {
+  const [face, setFace] = React.useState<ButtonState>(state === 'waiting' ? 'idle' : state ?? 'idle');
+  const visibleAt = React.useRef<number | undefined>(undefined);
+  React.useEffect(() => {
+    const css = root.current ? getComputedStyle(root.current) : undefined;
+    const timing = (override: number | undefined, key: string, fallback: number) => Math.max(0, override ?? (parseFloat(css?.getPropertyValue(key) ?? '') || fallback));
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (state === 'waiting') {
+      if (visibleAt.current === undefined) {
+        setFace('idle');
+        timer = setTimeout(() => { visibleAt.current = performance.now(); setFace('waiting'); }, timing(delay, '--mu-r-button-waiting-delay', 400));
+      }
+    } else {
+      const remaining = state === 'idle' || state === undefined || visibleAt.current === undefined ? 0 : timing(minimum, '--mu-r-button-waiting-minimum', 300) - (performance.now() - visibleAt.current);
+      const finish = () => { visibleAt.current = undefined; setFace(state ?? 'idle'); };
+      if (remaining > 0) timer = setTimeout(finish, remaining); else finish();
+    }
+    return () => clearTimeout(timer);
+  }, [state, root, delay, minimum]);
+  return face;
+}
+
+function ButtonWaitArc() {
+  const [ref, awake] = useAwake();
+  return <span ref={ref} aria-hidden className="absolute inset-0 spinner-arc" style={{ '--mu-spinner-ink': 'currentColor', animationPlayState: awake ? 'running' : 'paused' } as React.CSSProperties} />;
+}
