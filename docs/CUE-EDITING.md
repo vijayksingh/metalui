@@ -51,3 +51,9 @@ Native counterparts consume the same recipes and `@MetalMotionPreference`, provi
 3. Finish numbers first, including amounts, durations and unit conversions.
 4. Finish enum, relative date/time, colour, then tag/person/link controls as individual slices.
 5. Wire document history and the provenance text example; exercise pointer and keyboard edits, cancellation, one-step undo, fixed footprints and reduced motion in both colorways.
+
+## Reviewed display foundation
+
+The identity palette is the existing blue, orange, gold and green-deep, in that order. Red remains destructive. The shared Status tint sets the tab's quiet fill; full ink carries the entire name. Hash the NFC-normalised Unicode scalars with wrapping UInt32 `hash = hash * 31 XOR scalar`, then take the palette count. No currency, confidence or state is inferred from that colour.
+
+Semantic hosts reserve the existing compact Button glyph plus space-2 above each content line. Raw mode retains this clearance. A background-only clipped tab and a space-2 punched hole never clip the name or its copied hash. Plain Mark callers keep the original text advance and leading. These recipes reuse the approved tag elevation and existing settle/object springs.

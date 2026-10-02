@@ -3159,6 +3159,12 @@ public enum MetalPresence {
 
 /// Recognition made visible: a cue is a rendering attribute on the text, never a change to it. Every in-flow cue is metric-neutral (the same advance as the plain text it marks), so a cue appearing mid-word, or entering and leaving writing, never moves a letter. Values are the reference design (the reference design style.css); colorway-dependent ones live in the colorways as cue-*.
 public enum MetalCue {
+    public static let identityPalette: [MetalRGBA] = [MetalShared.blue, MetalShared.orange, MetalShared.gold, MetalShared.greenDeep]
+    public static func tagIdentity(_ text: String) -> Int {
+        let hash = text.precomposedStringWithCanonicalMapping.unicodeScalars.reduce(UInt32.zero) { ($0 &* 31) ^ $1.value }
+        return Int(hash % UInt32(identityPalette.count))
+    }
+    public static func tagColor(_ text: String) -> MetalRGBA { identityPalette[tagIdentity(text)] }
     public static let gutter: Double = 25.0
     public static let dimple: Double = 16.0
     public static let dimpleTop: Double = 2.5

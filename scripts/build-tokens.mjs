@@ -267,6 +267,7 @@ const paletteVars = PL_KEYS.map((k) => `  --mu-palette-${k}: ${typeof PL[k] === 
 const typeVars = Object.entries(F.type).map(([role, r]) => [
   `  --mu-type-${role}: ${r.weight} ${r.size}px/${r.line}px ${FAMILY[r.family]};`,
   `  --mu-type-${role}-tracking: ${r.tracking};`,
+  `  --mu-type-${role}-line: ${r.line}px;`,
 ].join('\n')).join('\n');
 
 const typeClasses = Object.keys(F.type)
@@ -646,6 +647,17 @@ ${Object.entries(T.springs).map(([k, s]) => `  ${k}: { stiffness: ${s.stiffness}
 export type SpringName = keyof typeof SPRINGS;
 `);
 
+// Shared tag identity: NFC Unicode scalars, UInt32 wraparound on both platforms.
+const cuePalette = CU['$identity-palette'];
+emit('packages/metalui/src/components/mark/identity.generated.ts', `// Generated from tokens/tokens.json. Do not edit.
+export const TAG_PALETTE = ${JSON.stringify(cuePalette.map(k => `var(--mu-${k})`))} as const;
+export function tagIdentity(text: string): number {
+  let hash = 0;
+  for (const scalar of text.normalize('NFC')) hash = (Math.imul(hash, 31) ^ scalar.codePointAt(0)!) >>> 0;
+  return hash % TAG_PALETTE.length;
+}
+export function tagColor(text: string): string { return TAG_PALETTE[tagIdentity(text)]; }
+`);
 // ---------- CSS value parsing (for Swift) ----------
 function splitTop(s, sep = ',') {
   const out = []; let depth = 0, cur = '';
@@ -893,6 +905,12 @@ ${Object.keys(PR).filter((k) => !k.startsWith('$')).map((k) => {
 const swiftCue = `
 /// ${CU.$use}
 public enum MetalCue {
+    public static let identityPalette: [MetalRGBA] = [${cuePalette.map(k => `MetalShared.${camel(k)}`).join(', ')}]
+    public static func tagIdentity(_ text: String) -> Int {
+        let hash = text.precomposedStringWithCanonicalMapping.unicodeScalars.reduce(UInt32.zero) { ($0 &* 31) ^ $1.value }
+        return Int(hash % UInt32(identityPalette.count))
+    }
+    public static func tagColor(_ text: String) -> MetalRGBA { identityPalette[tagIdentity(text)] }
 ${CU_KEYS.map((k) => {
   const v = CU[k];
   if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`;

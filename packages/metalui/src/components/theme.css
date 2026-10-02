@@ -2277,6 +2277,18 @@
 @utility mark-life {
   white-space: nowrap; & > .mu-cue-md { color: var(--mu-ink3); margin: 0 var(--mu-cue-life-gap-after) 0 var(--mu-cue-life-gap-before); } & > .mu-cue-lg { display: inline-block; vertical-align: var(--mu-cue-life-drop); color: var(--mu-ink3); transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); animation: mu-cue-life var(--mu-cue-life-ms) var(--mu-ease-slide) both; } & > .mu-cue-lg > svg { display: block; } .mu-icon-trigger:hover & > .mu-cue-lg:not(:has([class*="mu-tint-"])) { color: var(--mu-ink2); }
 }
+@utility mark-semantic-line {
+  display: block; padding-top: calc(var(--mu-r-button-compact-glyph) + var(--mu-space-2)); font: var(--mu-type-content); line-height: calc(var(--mu-type-content-line) + var(--mu-r-button-compact-glyph) + var(--mu-space-2)); color: var(--mu-ink);
+}
+@utility mark-semantic-glyph {
+  position: absolute; left: 0; bottom: calc(100% + var(--mu-space-2)); width: var(--mu-r-button-compact-glyph); height: var(--mu-r-button-compact-glyph); display: inline-flex; color: var(--mu-ink); pointer-events: none; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
+}
+@utility mark-semantic-tag {
+  position: absolute; inset: calc(var(--mu-zero-length) - var(--mu-cue-tag-pad-y)) calc(var(--mu-zero-length) - var(--mu-cue-tag-pad-x)); pointer-events: none; background: color-mix(in srgb, var(--mu-cue-identity) calc(var(--mu-r-status-badge-tint) * 100%), transparent); box-shadow: var(--mu-r-mark-tag-shadow); clip-path: polygon(0 0, calc(100% - var(--mu-cue-tag-pad-x)) 0, 100% 50%, calc(100% - var(--mu-cue-tag-pad-x)) 100%, 0 100%); mask: radial-gradient(circle at calc(100% - var(--mu-cue-tag-pad-x)) 50%, transparent var(--mu-space-2), black calc(var(--mu-space-2) + var(--mu-cue-quiet-thickness)));
+}
+@utility mark-semantic {
+  &[data-raw] { text-decoration-color: transparent; background: transparent; box-shadow: none; } &[data-raw] > :is(.mu-mark-meaning, .mu-mark-tab) { opacity: 0; } &[data-semantic-tag] { background: transparent; box-shadow: none; border-radius: 0; color: var(--mu-ink); } &[data-inferred] { text-decoration: underline dashed var(--mu-ink2); } & .mu-mark-hash { color: var(--mu-ink2); }
+}
 @utility weight-mark-match-weight {
   font-weight: var(--mu-r-mark-match-weight);
 }
