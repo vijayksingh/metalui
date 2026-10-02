@@ -1,0 +1,13 @@
+{
+  "name": "numeric-cue",
+  "title": "Numeric cue",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A bounded canonical quantity operated inline: vertical detent scrub, typed spinbutton and horizontal unit conversion. Explicit font footprint and one source transaction per gesture.",
+  "base": "@base-ui/react/number-field",
+  "react": { "export": "NumericCue", "files": ["numeric-cue.tsx", "numeric-cue.css"] },
+  "swift": { "symbol": "MetalNumericCue", "file": "swift/Sources/MetalUI/Components/MetalNumericCue.swift", "status": "alpha" },
+  "agent": "numeric-cue.agent.md",
+  "page": "/components/numeric-cue",
+  "dependsOn": ["mark", "tooltip"]
+}

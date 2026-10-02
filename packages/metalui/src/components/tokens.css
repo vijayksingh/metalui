@@ -2158,6 +2158,7 @@
   /* rename-editor: recipes.form-field; recipes.field.regular; recipes.button.primary; layout.gap-related; waiting */
   /* colour-cue: recipes.mark; recipes.well.field; recipes.slider; recipes.popover; type.readout; cue source transaction; haptic detent */
   /* enum-cue: cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent */
+  /* numeric-cue: docs/CUE-EDITING.md; recipes.mark; recipes.tooltip; motion/swap; foundations.space */
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

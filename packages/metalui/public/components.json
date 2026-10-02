@@ -817,6 +817,23 @@
       "agent": "https://metalui.dev/r/number-field.md"
     },
     {
+      "name": "numeric-cue",
+      "title": "Numeric cue",
+      "status": "alpha",
+      "description": "A bounded canonical quantity operated inline: vertical detent scrub, typed spinbutton and horizontal unit conversion. Explicit font footprint and one source transaction per gesture.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "NumericCue",
+        "base": "@base-ui/react/number-field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalNumericCue"
+      },
+      "registry": "https://metalui.dev/r/numeric-cue.json",
+      "agent": "https://metalui.dev/r/numeric-cue.md"
+    },
+    {
       "name": "pagination",
       "title": "Pagination",
       "status": "alpha",

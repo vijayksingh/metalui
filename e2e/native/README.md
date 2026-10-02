@@ -76,3 +76,5 @@ Run `python3 e2e/native/run-sidebar-glyph-proof.py` on macOS. A real default-act
 # Native sidebar collapse key
 
 Run `python3 e2e/native/run-sidebar-toggle-proof.py` on macOS. The real public `MetalSidebarToggle(collapsed:)` key receives the default-action Return. Its binding collapses, expands under scoped reduction, and refuses a third press while disabled. Captures show the shared16px panel/rail glyph and its label. The native List's material and collapse layout remain WIP; this proof covers the operable key.
+
+NumericCue public host: `python3 e2e/native/run-numeric-cue-proof.py` verifies real macOS amount steps, modifiers, unit conversion, Escape, disabled and source history.

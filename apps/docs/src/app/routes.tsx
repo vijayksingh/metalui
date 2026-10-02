@@ -100,6 +100,7 @@ export const routes: RouteObject[] = [
       { path: 'components/hover-engraving', lazy: lazy(() => import('../pages/components/HoverEngraving')) },
       { path: 'components/suggestion-chip', lazy: lazy(() => import('../pages/components/SuggestionChip')) },
       { path: 'components/colour-cue', lazy: lazy(() => import('../pages/components/ColourCue')) },
+      { path: 'components/numeric-cue', lazy: lazy(() => import('../pages/components/NumericCue')) },
       { path: 'components/cue', lazy: lazy(() => import('../pages/components/CueFamily')) },
       { path: 'components/selection-frame', lazy: lazy(() => import('../pages/components/SelectionFrame')) },
       { path: 'components/snap-guides', lazy: lazy(() => import('../pages/components/SnapGuides')) },

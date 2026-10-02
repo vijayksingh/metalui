@@ -128,3 +128,4 @@ export { RenameEditor, type RenameEditorProps } from './components/rename-editor
 export { CueDocument, useCueDocument, type CueSelection, type CueSourceRange, type CueDocumentSnapshot } from './text/cue-document';
 
 export { ColourCue, type ColourCueProps } from './components/colour-cue/colour-cue';
+export { NumericCue, type NumericCueProps, type NumericCueValue, type NumericCueUnit } from './components/numeric-cue/numeric-cue';

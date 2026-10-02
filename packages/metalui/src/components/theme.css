@@ -3174,6 +3174,9 @@
 @utility opacity-day-ink-fall-opacity {
   opacity: var(--mu-r-day-ink-fall-opacity);
 }
+@utility numeric-cue {
+  font: inherit; & .mu-numeric-cue-input { font: inherit; opacity: 0; pointer-events: none; } &[data-typing] .mu-numeric-cue-input { opacity: 1; pointer-events: auto; } &[data-typing] .mu-numeric-cue-face { visibility: hidden; } &[data-disabled] .mu-numeric-cue-face, &[data-readonly] .mu-numeric-cue-face { cursor: default; } & .mu-numeric-cue-face .mu-cue { text-decoration-thickness: var(--mu-cue-quiet-thickness); } & .mu-numeric-cue-face:hover .mu-cue { text-decoration-thickness: var(--mu-r-mark-match-thickness); } & .mu-numeric-cue-scale { pointer-events: none; z-index: var(--mu-tooltip-z); }
+}
 @keyframes mu-textarea-refuse {
   from { translate: calc(var(--mu-motion-nest) * var(--mu-travel-refusal)) 0; } to { translate: 0 0; }
 }

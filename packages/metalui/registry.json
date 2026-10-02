@@ -1223,6 +1223,34 @@
       "docs": "Agent guide: https://metalui.dev/r/number-field.md. SwiftUI: MetalNumberField in the MetalUI Swift package."
     },
     {
+      "name": "numeric-cue",
+      "type": "registry:ui",
+      "title": "Numeric cue",
+      "description": "A bounded canonical quantity operated inline: vertical detent scrub, typed spinbutton and horizontal unit conversion. Explicit font footprint and one source transaction per gesture.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/numeric-cue/numeric-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/numeric-cue/numeric-cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/numeric-cue/numeric-cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/numeric-cue/numeric-cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/numeric-cue.md. SwiftUI: MetalNumericCue in the MetalUI Swift package."
+    },
+    {
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",

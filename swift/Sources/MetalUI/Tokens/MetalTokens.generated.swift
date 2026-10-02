@@ -3067,6 +3067,17 @@ public enum MetalRecipes {
             :
         ]
     )
+
+    /// Inline canonical quantity: composes the Mark face/underline/meaning glyph, tooltip held scale and shared numeric drum. Explicit host footprint uses inherited font metrics; no additional material or dimensions. (docs/CUE-EDITING.md; recipes.mark; recipes.tooltip; motion/swap; foundations.space)
+    public static let numericCue = MetalObjectRecipe(
+        name: "numeric-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.
