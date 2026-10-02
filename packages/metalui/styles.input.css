@@ -4,4 +4,7 @@
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @import "./src/components/tokens.css";
 @import "./src/components/theme.css";
+/* Public layout utilities also work in a host without a Tailwind build. Generated candidates
+   live only in this package build; theme.css does not force them into a source consumer. */
+@import "./styles.layout.generated.css";
 @source "./src";

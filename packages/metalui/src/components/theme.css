@@ -16,6 +16,23 @@
 @theme inline {
   --radius-round: var(--mu-round);
   --spacing-press: var(--mu-motion-press);
+  --spacing-mu-space-0: var(--mu-space-0);
+  --spacing-mu-space-2: var(--mu-space-2);
+  --spacing-mu-space-4: var(--mu-space-4);
+  --spacing-mu-space-6: var(--mu-space-6);
+  --spacing-mu-space-8: var(--mu-space-8);
+  --spacing-mu-space-12: var(--mu-space-12);
+  --spacing-mu-space-16: var(--mu-space-16);
+  --spacing-mu-space-20: var(--mu-space-20);
+  --spacing-mu-space-24: var(--mu-space-24);
+  --spacing-mu-space-32: var(--mu-space-32);
+  --spacing-mu-space-40: var(--mu-space-40);
+  --spacing-mu-space-48: var(--mu-space-48);
+  --spacing-mu-space-64: var(--mu-space-64);
+  --spacing-mu-space-80: var(--mu-space-80);
+  --spacing-mu-related: var(--mu-layout-gap-related);
+  --spacing-mu-group: var(--mu-layout-gap-group);
+  --spacing-mu-section: var(--mu-layout-gap-section);
   --color-ink: var(--mu-ink);
   --color-ink2: var(--mu-ink2);
   --color-ink3: var(--mu-ink3);
@@ -167,6 +184,29 @@
   font: 400 12px/19px var(--mu-mono);
   letter-spacing: 0;
   font-stretch: var(--mu-mono-code-stretch);
+}
+
+/* Layout rules arrange content only. Gaps remain separate single-property utilities so callers
+   can override them without depending on HTML class order. Intrinsic grids fit their parent,
+   including a parent narrower than one track; DOM order remains the reading/focus order. */
+@utility mu-stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--mu-layout-gap-related);
+}
+@utility mu-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
+  gap: var(--mu-layout-gap-related);
+}
+@utility mu-auto-grid {
+  display: grid;
+  min-width: 0;
+  gap: var(--mu-layout-gap-group);
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--mu-layout-column-min), 100%), 1fr));
 }
 
 /* Materials: a fill and its shadow stack, as one utility (FOUNDATIONS §8). */

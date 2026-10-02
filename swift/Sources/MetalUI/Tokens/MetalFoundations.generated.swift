@@ -33,6 +33,16 @@ public enum MetalSpace {
     public static let s80: Double = 80.0
 }
 
+/// Content layout relationships. Controls continue to use their own recipe dimensions.
+/// Use gapRelated with VStack/HStack, gapGroup between groups, and gapSection between sections.
+/// Adaptive GridItem tracks should clamp columnMin to the available width of their parent.
+public enum MetalLayout {
+    public static let gapRelated: Double = MetalSpace.s12
+    public static let gapGroup: Double = MetalSpace.s24
+    public static let gapSection: Double = MetalSpace.s48
+    public static let columnMin: Double = 240.0
+}
+
 /// Control heights in points.
 public enum MetalHeight {
     public static let steps: [Double] = [20.0, 24.0, 28.0, 32.0, 36.0, 40.0, 44.0]

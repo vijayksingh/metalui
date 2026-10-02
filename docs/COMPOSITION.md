@@ -30,6 +30,10 @@ Two lines people cross:
 - spring classes (`k`, `c`);
 - recipes: layered fills, gradients, inset and outer shadow stacks, lips and per-state deltas.
 
+Shared spacing relationships and the opt-in Tailwind layout utilities are foundation rules,
+not a new UI layer. Read [CSS_SYSTEM.md](CSS_SYSTEM.md) for their generation, usage,
+container sizing, typography, cascade, and host-safety contracts.
+
 The generators emit CSS custom properties and classes, and Swift `MetalTokens` / `MetalRecipes`. No UI code contains a value that doesn't come from here.
 
 ## 2. Where every part lives

@@ -6,6 +6,7 @@
 - [Component manifest](https://metalui.dev/components.json)
 - [Icon manifest](https://metalui.dev/icons.json)
 - [Changelog](https://metalui.dev/changelog)
+- [Spacing and layout foundations](https://metalui.dev/foundations/spacing): shared Tailwind layout rules; full extension contract in the agent guide.
 
 ## Install
 

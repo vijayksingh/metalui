@@ -6,6 +6,9 @@ import { components } from './lib/components.mjs';
 const ORIGIN = 'https://metalui.dev';
 const list = components();
 const icons = JSON.parse(readFileSync(root('packages/metalui/public/icons.json'), 'utf8'));
+// Repository and public agents read the same CSS contract; do not maintain a second summary.
+const cssSystem = readFileSync(root('docs/CSS_SYSTEM.md'), 'utf8').trim()
+  .replace(/\]\((COMPOSITION|PERFORMANCE)\.md\)/g, (_, name) => `](https://github.com/vijayksingh/metalui/blob/main/docs/${name}.md)`);
 
 const intro = `# MetalUI: agent integration guide
 
@@ -38,6 +41,12 @@ SwiftUI: add the package \`https://github.com/vijayksingh/metalui\` and \`import
 - **Motion:** it comes from the component, and reduced motion is built in. Don't add your own transitions on top. Under Reduce Motion each spring class resolves one way (\`tokens.json\` \`springs.*.reduced\`): part, object, hinge and refusal apply at once; surface and settle lose travel and fade in place; release (the press) plays as authored. Lift is two motions (T5): a hover lift rides \`settle\` (one step, no overshoot, still by the time the pointer leaves); a land (a drop into place) rides \`object\`, a stop, and rare. Web: ride \`--mu-spring-<class>-d\` and multiply enter or exit offsets by \`--mu-travel-<class>\`; \`data-mu-motion=\"reduce\"\` on any ancestor forces the policy. SwiftUI: \`.metalAnimation(.settle, value:)\` or \`MetalMotion.resolve(_:reduceMotion:)\`, never \`accessibilityReduceMotion\` directly.
 - **Choose by component name.** Only use exports listed in \`components.json\` and \`icons.json\`. Never invent names.
 - **Show real outcomes.** An animation never stands in for a real result such as a save, delete or sync.
+
+---
+
+${cssSystem}
+
+---
 
 ## Components
 `;
@@ -79,6 +88,7 @@ emit('packages/metalui/public/llms.txt', `# MetalUI
 - [Component manifest](${ORIGIN}/components.json)
 - [Icon manifest](${ORIGIN}/icons.json)
 - [Changelog](${ORIGIN}/changelog)
+- [Spacing and layout foundations](${ORIGIN}/foundations/spacing): shared Tailwind layout rules; full extension contract in the agent guide.
 
 ## Install
 

@@ -59,6 +59,7 @@ macOS 14+. iOS 17 is planned but does not build yet: eight files use AppKit ([do
 ## For agents
 
 - [`AI.md`](packages/metalui/public/AI.md): the full integration guide
+- [`docs/CSS_SYSTEM.md`](docs/CSS_SYSTEM.md): Tailwind layout utilities, semantic spacing, responsive composition, typography rhythm, cascade rules, and safe extension boundaries
 - [`components.json`](packages/metalui/public/components.json) and [`icons.json`](packages/metalui/public/icons.json): exact export names
 - `packages/metalui/src/components/<name>/<name>.agent.md`: one guide per component, also served at `metalui.dev/r/<name>.md`
 
