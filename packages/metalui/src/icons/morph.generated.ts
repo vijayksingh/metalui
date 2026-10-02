@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "attach", "retry", "person", "bell", "palette", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -181,6 +181,32 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M8.5 11L8.5 7.3C8.5 5.37 10.07 3.8 12 3.8C13.93 3.8 15.5 5.37 15.5 7.3L15.5 11", 1.7, 0, 0, 1],
     ["M8.5 11L15.5 11C16.6 11 17.5 11.9 17.5 13L17.5 18.2C17.5 19.3 16.6 20.2 15.5 20.2L8.5 20.2C7.4 20.2 6.5 19.3 6.5 18.2L6.5 13C6.5 11.9 7.4 11 8.5 11Z", 1.7, 0.12, 0, 1],
     ["M12 14.6L12 17", 1.7, 0, 0, 1],
+  ],
+  "attach": [
+    ["M8 8.5L8 7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7L16 16.5C16 19.54 13.54 22 10.5 22C7.46 22 5 19.54 5 16.5L5 9", 1.7, 0, 0, 1],
+    ["M8 8.5L8 16.2C8 17.53 9.07 18.6 10.4 18.6C11.73 18.6 12.8 17.53 12.8 16.2L12.8 8.5", 1.7, 0, 0, 1],
+  ],
+  "retry": [
+    ["M19.2 11.8C19.24 15.11 17.02 18.02 13.81 18.86C10.61 19.69 7.25 18.23 5.67 15.32C4.09 12.41 4.7 8.8 7.15 6.57C9.59 4.34 13.25 4.06 16 5.9", 1.7, 0, 0, 1],
+    ["M16 3.8L16 8.6L11.2 8.6", 1.7, 0, 0, 1],
+  ],
+  "person": [
+    ["M5 20L5 19C5 16.24 8.13 14 12 14C15.87 14 19 16.24 19 19L19 20Z", 1.7, 0.1, 0, 1],
+    ["M15.3 7.6C15.3 9.42 13.82 10.9 12 10.9C10.18 10.9 8.7 9.42 8.7 7.6C8.7 5.78 10.18 4.3 12 4.3C13.82 4.3 15.3 5.78 15.3 7.6Z", 1.7, 0.1, 0, 1],
+  ],
+  "bell": [
+    ["M6 17.5L6 10.8C6 7.49 8.69 4.8 12 4.8C15.31 4.8 18 7.49 18 10.8L18 17.5", 1.7, 0.1, 0, 1],
+    ["M12 3L12 4.8", 1.7, 0, 0, 1],
+    ["M4.5 17.5L19.5 17.5", 1.7, 0, 0, 1],
+    ["M13.2 20C13.2 20.66 12.66 21.2 12 21.2C11.34 21.2 10.8 20.66 10.8 20C10.8 19.34 11.34 18.8 12 18.8C12.66 18.8 13.2 19.34 13.2 20Z", 1.7, 0.16, 0, 1],
+  ],
+  "palette": [
+    ["M20.2 12.2C20.2 6.9 16.9 3.8 12 3.8C7.47 3.8 3.8 7.47 3.8 12C3.8 16.53 7.47 20.2 12 20.2L13.4 20.2C14.6 20.2 15.1 19.4 14.7 18.4L14.1 17.2C13.7 16.4 14.2 15.6 15.1 15.6L17 15.6C18.9 15.6 20.2 14.1 20.2 12.2Z", 1.7, 0.08, 0, 1],
+    ["M18.1 12C18.1 12.72 17.52 13.3 16.8 13.3C16.08 13.3 15.5 12.72 15.5 12C15.5 11.28 16.08 10.7 16.8 10.7C17.52 10.7 18.1 11.28 18.1 12Z", 1.7, 0, 0, 1],
+    ["M8 8", 1.8, 0, 0, 1],
+    ["M12 6.8", 1.8, 0, 0, 1],
+    ["M16 8", 1.8, 0, 0, 1],
+    ["M7.5 12.8", 2.3, 0, 0, 1],
   ],
   "send-away": [
     ["M12.06 13.05L11.89 13.19L11.69 13.3L11.46 13.36L11.2 13.37L10.94 13.34L10.67 13.25L10.4 13.11L10.15 12.92L9.93 12.68L9.74 12.39L9.59 12.07L9.5 11.7L9.46 11.31L9.48 10.91L9.57 10.5L9.73 10.09L9.96 9.7L10.25 9.34L10.61 9.01L11.03 8.74L11.5 8.53L12.01 8.38L12.55 8.31L13.1 8.33L13.67 8.43L14.23 8.62L14.76 8.9L15.26 9.27L15.72 9.72L16.1 10.24L16.42 10.82L16.64 11.46L16.78 12.14L16.81 12.85L16.73 13.57L16.55 14.29L16.25 14.98L15.85 15.64L15.34 16.24L14.75 16.77L14.06 17.21L13.31 17.55L12.5 17.79L11.65 17.9L10.78 17.89L9.9 17.74L9.05 17.47L8.23 17.06L7.46 16.53L6.77 15.89L6.17 15.14L5.69 14.29L5.32 13.37L5.09 12.4L5.01 11.38L5.08 10.36L5.29 9.33L5.67 8.34L6.18 7.4L6.84 6.53L7.63 5.76L8.54 5.11L9.54 4.58L10.63 4.21L11.77 3.99L12.94 3.95L14.12 4.07L15.29 4.38L16.41 4.85L17.46 5.49", 1.7, 0, 0, 1],

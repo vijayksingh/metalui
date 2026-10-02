@@ -724,6 +724,127 @@ export const ICON_CATALOG = {
     motion: {"duration":840,"caption":"The closed shackle seats in its catches; the secure body stays fixed.","stages":["Secure","Catch","Seat"],"tracks":[{"part":"shackle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20238,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27381,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.1132px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * STOP · Actions · one act, 514ms
+   *
+   * Stop → Contact → Release
+   *          The square stop pad contacts its seat once and releases inside the fixed case.
+   *  pad        0 → 140 → 200 → 514ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "stop": {
+    label: "Stop",
+    category: "Actions",
+    hover: "The square stop pad contacts its seat once and releases inside the fixed case.",
+    press: "plays the same act",
+    pressMs: 514,
+    defs: "",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"2.2\"/><rect class=\"s\" data-part=\"pad\" x=\"8\" y=\"8\" width=\"8\" height=\"8\" rx=\".65\"/>",
+    sw16: 1.85,
+    motion: {"duration":514,"caption":"The square stop pad contacts its seat once and releases inside the fixed case.","stages":["Stop","Contact","Release"],"tracks":[{"part":"pad","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27237,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.38911,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * ATTACH · Actions · one act, 830ms
+   *
+   * Attach → Catch jaw → Seat
+   *          The inner paperclip jaw catches against its fixed outer loop and seats back.
+   *  jaw        0 → 160 → 220 → 525 → 830ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "attach": {
+    label: "Attach",
+    category: "Actions",
+    hover: "The inner paperclip jaw catches against its fixed outer loop and seats back.",
+    press: "plays the same act",
+    pressMs: 830,
+    defs: "",
+    body: "<path d=\"M8 8.5V7a4 4 0 0 1 8 0v9.5a5.5 5.5 0 0 1-11 0V9\"/><path data-part=\"jaw\" d=\"M8 8.5v7.7a2.4 2.4 0 0 0 4.8 0V8.5\"/>",
+    sw16: 1.85,
+    motion: {"duration":830,"caption":"The inner paperclip jaw catches against its fixed outer loop and seats back.","stages":["Attach","Catch jaw","Seat"],"tracks":[{"part":"jaw","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(0px,-1.2px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(0px,-1.2px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0px,0.1045px) rotate(0deg) scale(1,1.0052)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * TRY AGAIN · Actions · one act, 840ms
+   *
+   * Retry → Reach route → Seat
+   *          The return arrow pulls toward its fixed route and seats for one more attempt.
+   *  return     0 → 170 → 230 → 535 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "retry": {
+    label: "Try again",
+    category: "Actions",
+    hover: "The return arrow pulls toward its fixed route and seats for one more attempt.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<path d=\"M19.2 11.8a7.2 7.2 0 1 1-3.2-5.9\"/><path data-part=\"return\" d=\"M16 3.8v4.8h-4.8\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The return arrow pulls toward its fixed route and seats for one more attempt.","stages":["Retry","Reach route","Seat"],"tracks":[{"part":"return","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20238,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27381,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0.1045px,-0.1045px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * PERSON · Tools · one act, 820ms
+   *
+   * Recognize → Seat portrait → Rest
+   *          The portrait head seats above its fixed shoulders and returns to its place.
+   *  head       0 → 150 → 210 → 515 → 820ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "person": {
+    label: "Person",
+    category: "Tools",
+    hover: "The portrait head seats above its fixed shoulders and returns to its place.",
+    press: "plays the same act",
+    pressMs: 820,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M5 20v-1a7 5 0 0 1 14 0v1Z\"/><circle class=\"f\" style=\"--duo:.1\" data-part=\"head\" cx=\"12\" cy=\"7.6\" r=\"3.3\"/>",
+    sw16: 1.85,
+    motion: {"duration":820,"caption":"The portrait head seats above its fixed shoulders and returns to its place.","stages":["Recognize","Seat portrait","Rest"],"tracks":[{"part":"head","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18293,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2561,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62805,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * NOTIFICATION · Status · one act, 1155ms
+   *
+   * Swing striker → Ring contact → Seat
+   *          The striker swings once into the bell rim; the rim receives the contact and both seat.
+   *  striker    0 → 180 → 240 → 545 → 850 → 1155ms
+   *  rim        0 → 205 → 260 → 565 → 1155ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "bell": {
+    label: "Notification",
+    category: "Status",
+    hover: "The striker swings once into the bell rim; the rim receives the contact and both seat.",
+    press: "plays the same act",
+    pressMs: 1155,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M6 17.5v-6.7a6 6 0 0 1 12 0v6.7\"/><path d=\"M12 3v1.8\"/><path data-part=\"rim\" d=\"M4.5 17.5h15\"/><circle class=\"f\" style=\"--duo:.16\" data-part=\"striker\" cx=\"12\" cy=\"20\" r=\"1.2\"/>",
+    sw16: 1.85,
+    motion: {"duration":1155,"caption":"The striker swings once into the bell rim; the rim receives the contact and both seat.","stages":["Swing striker","Ring contact","Seat"],"tracks":[{"part":"striker","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.15584,"transform":"translate(0px,0px) rotate(32deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.20779,"transform":"translate(0px,0px) rotate(32deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.47186,"transform":"translate(0px,0px) rotate(-2.7861deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.73593,"transform":"translate(0px,0px) rotate(0.2426deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"rim","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17749,"transform":"translate(0px,0.8px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22511,"transform":"translate(0px,0.8px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.48918,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * PALETTE · Tools · one act, 830ms
+   *
+   * Choose paint → Seat well → Release
+   *          A paint well seats in the fixed palette while its thumb hole stays open.
+   *  well       0 → 160 → 220 → 525 → 830ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "palette": {
+    label: "Palette",
+    category: "Tools",
+    hover: "A paint well seats in the fixed palette while its thumb hole stays open.",
+    press: "plays the same act",
+    pressMs: 830,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M20.2 12.2c0-5.3-3.3-8.4-8.2-8.4a8.2 8.2 0 1 0 0 16.4h1.4c1.2 0 1.7-.8 1.3-1.8l-.6-1.2c-.4-.8.1-1.6 1-1.6H17c1.9 0 3.2-1.5 3.2-3.4Z\"/><circle cx=\"16.8\" cy=\"12\" r=\"1.3\"/><circle class=\"s\" cx=\"8\" cy=\"8\" r=\".9\"/><circle class=\"s\" cx=\"12\" cy=\"6.8\" r=\".9\"/><circle class=\"s\" cx=\"16\" cy=\"8\" r=\".9\"/><circle class=\"s\" data-part=\"well\" cx=\"7.5\" cy=\"12.8\" r=\"1.15\"/>",
+    sw16: 1.85,
+    motion: {"duration":830,"caption":"A paint well seats in the fixed palette while its thumb hole stays open.","stages":["Choose paint","Seat well","Release"],"tracks":[{"part":"well","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * DELETE · SEND AWAY · Actions · one act, 1245ms
    *
    * Wind up → Draw in → Rise again

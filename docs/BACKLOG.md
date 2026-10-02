@@ -110,6 +110,8 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 - [x] `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`: fixed enclosures, authored part acts and 16/24px reference family.
 - [x] `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle): fixed silhouettes with inset-part acts, native symbols and 16/24px reference family.
 
+- [x] Block actions: `stop`, `attach`, `retry`, `person`, `bell`, `palette`: authored single-contact acts, semantic 16/24px references and native symbols.
+
 Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` → C (component by component) → B's morphs (copy first, it's everywhere) → A in the docs pages.
 
 ## Fan (the canvas tool bar)

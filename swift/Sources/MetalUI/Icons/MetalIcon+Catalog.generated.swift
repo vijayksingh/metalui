@@ -35,6 +35,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case eye = "eye"
     case eyeOff = "eye-off"
     case lock = "lock"
+    case stop = "stop"
+    case attach = "attach"
+    case retry = "retry"
+    case person = "person"
+    case bell = "bell"
+    case palette = "palette"
     case sendAway = "send-away"
     case trash = "trash"
     case group = "group"
@@ -106,6 +112,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return "Show value"
         case .eyeOff: return "Hide value"
         case .lock: return "Locked"
+        case .stop: return "Stop"
+        case .attach: return "Attach"
+        case .retry: return "Try again"
+        case .person: return "Person"
+        case .bell: return "Notification"
+        case .palette: return "Palette"
         case .sendAway: return "Delete · Send away"
         case .trash: return "Delete · Trash"
         case .group: return "Group · Stack"
@@ -177,6 +189,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return .actions
         case .eyeOff: return .actions
         case .lock: return .status
+        case .stop: return .actions
+        case .attach: return .actions
+        case .retry: return .actions
+        case .person: return .tools
+        case .bell: return .status
+        case .palette: return .tools
         case .sendAway: return .actions
         case .trash: return .actions
         case .group: return .actions
@@ -249,6 +267,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return 0.092
         case .eyeOff: return 0.08
         case .lock: return 0.12
+        case .stop: return 0.08
+        case .attach: return nil
+        case .retry: return nil
+        case .person: return 0.1
+        case .bell: return 0.102
+        case .palette: return 0.08
         case .sendAway: return nil
         case .trash: return 0.12
         case .group: return 0.156
@@ -321,6 +345,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return nil
         case .eyeOff: return nil
         case .lock: return nil
+        case .stop: return nil
+        case .attach: return nil
+        case .retry: return nil
+        case .person: return nil
+        case .bell: return nil
+        case .palette: return nil
         case .sendAway: return nil
         case .trash: return nil
         case .group: return nil
@@ -393,6 +423,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return false
         case .eyeOff: return false
         case .lock: return false
+        case .stop: return false
+        case .attach: return false
+        case .retry: return false
+        case .person: return false
+        case .bell: return false
+        case .palette: return false
         case .sendAway: return true
         case .trash: return false
         case .group: return true
@@ -465,6 +501,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return 1.85
         case .eyeOff: return 1.85
         case .lock: return 1.85
+        case .stop: return 1.85
+        case .attach: return 1.85
+        case .retry: return 1.85
+        case .person: return 1.85
+        case .bell: return 1.85
+        case .palette: return 1.85
         case .sendAway: return 1.9
         case .trash: return 1.85
         case .group: return 1.9

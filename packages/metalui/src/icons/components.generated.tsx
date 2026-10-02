@@ -65,6 +65,18 @@ export const EyeIcon = createIcon("eye", "EyeIcon");
 export const EyeOffIcon = createIcon("eye-off", "EyeOffIcon");
 /** Locked. Hover: The closed shackle seats in its catches; the secure body stays fixed.. Press: plays the same act. */
 export const LockIcon = createIcon("lock", "LockIcon");
+/** Stop. Hover: The square stop pad contacts its seat once and releases inside the fixed case.. Press: plays the same act. */
+export const StopIcon = createIcon("stop", "StopIcon");
+/** Attach. Hover: The inner paperclip jaw catches against its fixed outer loop and seats back.. Press: plays the same act. */
+export const AttachIcon = createIcon("attach", "AttachIcon");
+/** Try again. Hover: The return arrow pulls toward its fixed route and seats for one more attempt.. Press: plays the same act. */
+export const RetryIcon = createIcon("retry", "RetryIcon");
+/** Person. Hover: The portrait head seats above its fixed shoulders and returns to its place.. Press: plays the same act. */
+export const PersonIcon = createIcon("person", "PersonIcon");
+/** Notification. Hover: The striker swings once into the bell rim; the rim receives the contact and both seat.. Press: plays the same act. */
+export const BellIcon = createIcon("bell", "BellIcon");
+/** Palette. Hover: A paint well seats in the fixed palette while its thumb hole stays open.. Press: plays the same act. */
+export const PaletteIcon = createIcon("palette", "PaletteIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */

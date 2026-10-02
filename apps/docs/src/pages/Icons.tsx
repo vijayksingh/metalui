@@ -29,6 +29,14 @@ const ENVIRONMENT = [
   ['moon', 'Show night with a shaded crescent.'],
   ['sidebar', 'Toggle the navigation rail in its window.'],
 ] as const;
+const IDENTITY = [
+  ['stop', 'Stop the current operation at its pad.'],
+  ['attach', 'Catch a file in the paperclip jaw.'],
+  ['retry', 'Try the operation again along its return route.'],
+  ['person', 'Identify a profile or assignee by its portrait.'],
+  ['bell', 'Signal a notification with one bell contact.'],
+  ['palette', 'Choose the paint or appearance family.'],
+] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
@@ -100,6 +108,23 @@ export default function Icons() {
           {ENVIRONMENT.map(([name, meaning]) => (
             <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
               aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-environment={name}>
+              <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
+                <Icon name={name} size={16} />
+                <Icon name={name} size={24} />
+              </span>
+              <span className="mu-stack gap-mu-space-2">
+                <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+                <span className="type-meta text-ink2">{meaning}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Section>
+      <Section id="action-identity" title="Actions and identity" lede="Stop ends an operation; Retry makes another attempt. Attach catches a file. Person names a profile, Bell a notification, and Palette a paint family. Their moving parts describe a single contact and rest.">
+        <div className="mu-auto-grid" data-testid="identity-family">
+          {IDENTITY.map(([name, meaning]) => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-identity={name}>
               <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
                 <Icon name={name} size={16} />
                 <Icon name={name} size={24} />

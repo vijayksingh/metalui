@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 66,
+  "count": 72,
   "icons": [
     {
       "name": "select",
@@ -641,6 +641,126 @@
       },
       "tuned16": false,
       "construction": "Closed3.5-radius shackle over an11-wide secure body with a central key slot. Only the shackle presses into its catches and returns on the part spring."
+    },
+    {
+      "name": "stop",
+      "component": "StopIcon",
+      "label": "Stop",
+      "category": "Actions",
+      "hover": "The square stop pad contacts its seat once and releases inside the fixed case.",
+      "press": "plays the same act",
+      "pressMs": 514,
+      "motion": {
+        "caption": "The square stop pad contacts its seat once and releases inside the fixed case.",
+        "durationMs": 514,
+        "stages": [
+          "Stop",
+          "Contact",
+          "Release"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed rounded stop case with a solid inset square pad. The pad presses1.2 into its seat once on the release spring; the square stays a square."
+    },
+    {
+      "name": "attach",
+      "component": "AttachIcon",
+      "label": "Attach",
+      "category": "Actions",
+      "hover": "The inner paperclip jaw catches against its fixed outer loop and seats back.",
+      "press": "plays the same act",
+      "pressMs": 830,
+      "motion": {
+        "caption": "The inner paperclip jaw catches against its fixed outer loop and seats back.",
+        "durationMs": 830,
+        "stages": [
+          "Attach",
+          "Catch jaw",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Open paperclip outer loop and inset catching jaw. The jaw inserts1.2 into the outer loop on the shared part spring. Distinct from an upright lock shackle."
+    },
+    {
+      "name": "retry",
+      "component": "RetryIcon",
+      "label": "Try again",
+      "category": "Actions",
+      "hover": "The return arrow pulls toward its fixed route and seats for one more attempt.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The return arrow pulls toward its fixed route and seats for one more attempt.",
+        "durationMs": 840,
+        "stages": [
+          "Retry",
+          "Reach route",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed nearly circular return route with an inset return elbow. Only the elbow reaches the route and seats; no full rotation. Retry concerns another attempt, Redo an editor operation."
+    },
+    {
+      "name": "person",
+      "component": "PersonIcon",
+      "label": "Person",
+      "category": "Tools",
+      "hover": "The portrait head seats above its fixed shoulders and returns to its place.",
+      "press": "plays the same act",
+      "pressMs": 820,
+      "motion": {
+        "caption": "The portrait head seats above its fixed shoulders and returns to its place.",
+        "durationMs": 820,
+        "stages": [
+          "Recognize",
+          "Seat portrait",
+          "Rest"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Round3.3 portrait head above fixed shoulder enclosure. The head seats1.2 once; there are no rows, chart axes or counters."
+    },
+    {
+      "name": "bell",
+      "component": "BellIcon",
+      "label": "Notification",
+      "category": "Status",
+      "hover": "The striker swings once into the bell rim; the rim receives the contact and both seat.",
+      "press": "plays the same act",
+      "pressMs": 1155,
+      "motion": {
+        "caption": "The striker swings once into the bell rim; the rim receives the contact and both seat.",
+        "durationMs": 1155,
+        "stages": [
+          "Swing striker",
+          "Ring contact",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed bell shell and suspension with a separate rim and visible striker. The striker swings32 degrees about its suspension into the rim; the rim yields. One contact and no idle ringing."
+    },
+    {
+      "name": "palette",
+      "component": "PaletteIcon",
+      "label": "Palette",
+      "category": "Tools",
+      "hover": "A paint well seats in the fixed palette while its thumb hole stays open.",
+      "press": "plays the same act",
+      "pressMs": 830,
+      "motion": {
+        "caption": "A paint well seats in the fixed palette while its thumb hole stays open.",
+        "durationMs": 830,
+        "stages": [
+          "Choose paint",
+          "Seat well",
+          "Release"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Rounded physical palette with open thumb hole and four paint wells. Only the lower well seats1.2; colours are optional because the contour names the palette."
     },
     {
       "name": "send-away",
