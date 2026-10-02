@@ -66,3 +66,99 @@ test('the date picker opens on today, chooses and closes', async ({ page }) => {
   await expect(page.getByRole('button', { name: /^Due date: 1 Oct 2026$/ })).toBeFocused();
   await expect(page.getByRole('grid', { name: /October 2026/ })).toHaveCount(0);
 });
+
+for (const colorway of COLORWAYS) {
+  for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+    test(`adjacent-month pointer selection stays mounted in ${colorway}, ${reducedMotion}`, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion });
+      await open(page, '/components/calendar', colorway);
+      for (const [day, before, after] of [
+        [/^Thursday,? 1 October 2026$/, 'September 2026', 'October 2026'],
+        [/^Monday,? 28 September 2026$/, 'October 2026', 'September 2026'],
+      ] as const) {
+        const button = cal(page).getByRole('button', { name: day });
+        await button.scrollIntoViewIfNeeded();
+        const box = (await button.boundingBox())!;
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+        await page.mouse.down();
+        // Focusing the neighbouring day must not remove it before pointer release.
+        await expect(cal(page).getByRole('grid', { name: before })).toBeVisible();
+        await expect(button).toBeFocused();
+        await page.mouse.up();
+        await expect(cal(page).getByRole('grid', { name: after })).toBeVisible();
+        await expect(cal(page).locator('[data-selected]')).toHaveAttribute('aria-label', day);
+        await expect(cal(page).getByRole('button', { name: day })).toBeFocused();
+      }
+      if (reducedMotion === 'reduce') {
+        const grid = cal(page).getByRole('grid');
+        await expect(grid).toHaveCSS('--mu-travel-settle', '0');
+        await expect(grid).toHaveCSS('translate', /^(none|0px(?: 0px)?)$/);
+      }
+      await cal(page).evaluate(async (el) => {
+        await Promise.all(el.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => {})));
+      });
+      await cal(page).screenshot({ path: capture(`calendar-adjacent-${colorway}-${reducedMotion}`) });
+    });
+  }
+}
+
+test('external day changes reveal their month without resetting an unchanged day', async ({ page }) => {
+  await open(page, '/components/calendar', 'bone');
+  const following = page.getByRole('group', { name: 'Following calendar', exact: true });
+  const controlled = page.getByRole('group', { name: 'Controlled calendar', exact: true });
+  await page.getByRole('button', { name: 'Choose 15 October', exact: true }).click();
+  await expect(following.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(following.locator('[data-selected]')).toHaveAttribute('aria-label', /15 October 2026/);
+  await expect(controlled.getByRole('grid', { name: 'September 2026' })).toBeVisible();
+  await expect(controlled.locator('button[tabindex="0"]:enabled')).toHaveCount(1);
+  await expect(page.getByText('Month requests: 0', { exact: true })).toBeVisible();
+  await following.getByRole('button', { name: 'Next month', exact: true }).click();
+  await page.getByRole('button', { name: 'Refresh chosen day', exact: true }).click();
+  await expect(following.getByRole('grid', { name: 'November 2026' })).toBeVisible();
+  await page.getByRole('button', { name: 'Show October', exact: true }).click();
+  await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(page.getByText('Month requests: 0', { exact: true })).toBeVisible();
+});
+
+test('controlled month requests can be accepted or held without losing keyboard access', async ({ page }) => {
+  await open(page, '/components/calendar', 'graphite');
+  const controlled = page.getByRole('group', { name: 'Controlled calendar', exact: true });
+  await controlled.getByRole('button', { name: 'Next month', exact: true }).click();
+  await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(page.getByText('Month requests: 1', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Keep month fixed', exact: true }).click();
+  await controlled.getByRole('button', { name: 'Next month', exact: true }).click();
+  await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(page.getByText('Month requests: 2', { exact: true })).toBeVisible();
+  await controlled.getByRole('button', { name: 'Next month', exact: true }).click();
+  await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(page.getByText('Month requests: 3', { exact: true })).toBeVisible();
+  const entry = controlled.locator('button[tabindex="0"]:enabled');
+  await expect(entry).toHaveCount(1);
+  await entry.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(controlled.getByRole('grid', { name: 'October 2026' }).locator(':focus')).toHaveCount(1);
+});
+
+
+test('month keys step from the displayed month after an adjacent day receives focus', async ({ page }) => {
+  await open(page, '/components/calendar', 'bone');
+  await cal(page).getByRole('button', { name: /^Thursday,? 1 October 2026$/ }).focus();
+  await cal(page).getByRole('button', { name: 'Next month', exact: true }).click();
+  await expect(cal(page).getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await cal(page).getByRole('button', { name: /^Wednesday,? 30 September 2026$/ }).focus();
+  await cal(page).getByRole('button', { name: 'Previous month', exact: true }).click();
+  await expect(cal(page).getByRole('grid', { name: 'September 2026' })).toBeVisible();
+});
+
+
+test('delayed controlled month acceptance keeps keyboard focus on the requested day', async ({ page }) => {
+  await open(page, '/components/calendar', 'bone');
+  const controlled = page.getByRole('group', { name: 'Controlled calendar', exact: true });
+  await page.getByRole('button', { name: 'Defer month change', exact: true }).click();
+  await controlled.getByRole('button', { name: /^Wednesday,? 30 September 2026$/ }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
+  await expect(controlled.getByRole('button', { name: /^Thursday,? 1 October 2026$/ })).toBeFocused();
+  await expect(page.getByText('Month requests: 1', { exact: true })).toBeVisible();
+});

@@ -13,7 +13,7 @@ Owner: "no select date range; add option for min legit date, option for max legi
 - [ ] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
 - [ ] **More than one month** side by side (`months={2}`, for ranges).
 - [ ] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
-- [ ] **Controlled month**: `month` / `onMonthChange`.
+- [x] **Controlled month**: `month` / `onMonthChange` keep displayed month separate from selection and focus. Uncontrolled calendars reveal changed values; controlled hosts can accept, defer or reject month requests without losing keyboard access.
 - [ ] **Marked days**: a dot or LED for days with something on them (events).
 - [ ] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
 - [ ] **Time** (later): date and time together, and time zones.
@@ -323,8 +323,8 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.
 - [ ] **A shared row-leave helper**: the release-spring leave lives only inside Attachment (with its own reduced-motion check); lists of people, files and rows need it too. Note the release travel stays full under Reduce Motion by the token; decide whether that's right.
 - [ ] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
-- [ ] **Calendar bug: a day from the next or previous month can't be chosen with the pointer.** Pressing it focuses it first, which turns the month and removes the button before the click lands. The availability picker stops the focus on mouse-down as a workaround. Fix in the Calendar and test it.
-- [ ] **Calendar doesn't follow a controlled `value` into another month** (it keeps showing the old month); the availability picker remounts it. Add `month` / `onMonthChange` (also in the Calendar entry) and follow `value`.
+- [x] **Calendar adjacent-month pointer selection**: focus leaves the day mounted until click; selection turns the month and keeps focus. Removed the availability picker's mouse-down workaround; both colorways and reduced motion covered by e2e.
+- [x] **Calendar follows a changed controlled `value` into another month** unless the host controls `month`. Recreating the same day preserves browsing; removed the availability picker remount workaround.
 - [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.

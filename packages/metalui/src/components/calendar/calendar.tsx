@@ -59,6 +59,9 @@ export interface CalendarProps {
   value?: Date | null;
   defaultValue?: Date | null;
   onValueChange?: (value: Date) => void;
+  /** The displayed month, controlled independently of the chosen day. */
+  month?: Date;
+  onMonthChange?: (month: Date) => void;
   /** The month shown first (the value's, or today's). */
   defaultMonth?: Date;
   /** The earliest and latest days that can be chosen. */
@@ -73,18 +76,20 @@ export interface CalendarProps {
 }
 
 /** A month to choose a day from. */
-export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min, max, locale, autoFocus, className, ...aria }: CalendarProps) {
+export function Calendar({ value, defaultValue, onValueChange, month: controlledMonth, onMonthChange, defaultMonth, min, max, locale, autoFocus, className, ...aria }: CalendarProps) {
   const [own, setOwn] = React.useState<Date | null>(defaultValue ?? null);
   const chosen = value !== undefined ? value : own;
   const today = startOfDay(new Date());
+  const [ownMonth, setOwnMonth] = React.useState(() => startOfMonth(controlledMonth ?? defaultMonth ?? chosen ?? today));
+  const month = startOfMonth(controlledMonth ?? ownMonth);
   const [focused, setFocused] = React.useState<Date>(() => startOfDay(chosen ?? defaultMonth ?? today));
   const [dir, setDir] = React.useState<'later' | 'earlier' | null>(null);
   const moved = React.useRef(autoFocus ?? false);
   const grid = React.useRef<HTMLTableElement>(null);
+  const gridFocused = React.useRef(false);
   const titleId = React.useId();
 
   const first = weekStartOf(locale);
-  const month = startOfMonth(focused);
   const lead = (month.getDay() - first + 7) % 7;
   const days = Array.from({ length: 42 }, (_, i) => addDays(month, i - lead));
   const weekdays = days.slice(0, 7).map((d) => ({ short: new Intl.DateTimeFormat(locale, { weekday: 'narrow' }).format(d), long: new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(d) }));
@@ -92,43 +97,82 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
   const full = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const out = (d: Date) => (min != null && d < startOfDay(min)) || (max != null && d > startOfDay(max));
 
+  // Selection, displayed month and roving focus are separate: focusing an adjacent day
+  // must leave its button mounted until the pointer click selects it.
   const go = (next: Date, byKey: boolean) => {
     const clamped = min && next < startOfDay(min) ? startOfDay(min) : max && next > startOfDay(max) ? startOfDay(max) : next;
-    if (monthKey(clamped) !== monthKey(focused)) setDir(monthKey(clamped) > monthKey(focused) ? 'later' : 'earlier');
+    if (monthKey(clamped) !== monthKey(month)) {
+      if (controlledMonth === undefined) setOwnMonth(startOfMonth(clamped));
+      onMonthChange?.(startOfMonth(clamped));
+    }
     moved.current = byKey;
     setFocused(clamped);
+  };
+  const stepMonth = (step: number) => {
+    const target = addMonths(month, step);
+    const last = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+    target.setDate(Math.min((active ?? focused).getDate(), last));
+    go(target, false);
   };
   const choose = (d: Date) => {
     if (out(d)) return;
     if (value === undefined) setOwn(d);
-    if (monthKey(d) !== monthKey(focused)) go(d, false); else setFocused(d);
+    go(d, true);
     onValueChange?.(d);
   };
 
+  const valueDay = value ? startOfDay(value).getTime() : null;
+  const seenValue = React.useRef(valueDay);
+  const visibleMonth = monthKey(month);
+  const seenMonth = React.useRef(visibleMonth);
+  // External value changes reveal the chosen day unless the host controls the month.
+  React.useLayoutEffect(() => {
+    if (seenValue.current !== valueDay) {
+      seenValue.current = valueDay;
+      if (value) {
+        if (!sameDay(value, focused)) setFocused(startOfDay(value));
+        if (controlledMonth === undefined && monthKey(value) !== visibleMonth) {
+          setOwnMonth(startOfMonth(value));
+        }
+      }
+    }
+    if (seenMonth.current !== visibleMonth) {
+      setDir(visibleMonth > seenMonth.current ? 'later' : 'earlier');
+      seenMonth.current = visibleMonth;
+    }
+  });
+
+  // Even when the host keeps a controlled month fixed, its grid retains one tab stop.
+  const active = days.find((d) => sameDay(d, focused) && !out(d))
+    ?? days.find((d) => sameDay(d, chosen) && !out(d))
+    ?? days.find((d) => d.getMonth() === month.getMonth() && !out(d))
+    ?? days.find((d) => !out(d));
+
   // Keyboard moves carry focus with them.
   React.useEffect(() => {
-    if (!moved.current) return;
+    if (!moved.current && !gridFocused.current) return;
     grid.current?.querySelector<HTMLButtonElement>('button[tabindex="0"]')?.focus();
     moved.current = false;
-  }, [focused]);
+  }, [focused, visibleMonth]);
 
   const onKey = (e: React.KeyboardEvent) => {
+    if (!active) return;
     const map: Record<string, () => Date> = {
-      ArrowLeft: () => addDays(focused, -1),
-      ArrowRight: () => addDays(focused, 1),
-      ArrowUp: () => addDays(focused, -7),
-      ArrowDown: () => addDays(focused, 7),
-      PageUp: () => addMonths(focused, e.shiftKey ? -12 : -1),
-      PageDown: () => addMonths(focused, e.shiftKey ? 12 : 1),
-      Home: () => addDays(focused, -((focused.getDay() - first + 7) % 7)),
-      End: () => addDays(focused, 6 - ((focused.getDay() - first + 7) % 7)),
+      ArrowLeft: () => addDays(active, -1),
+      ArrowRight: () => addDays(active, 1),
+      ArrowUp: () => addDays(active, -7),
+      ArrowDown: () => addDays(active, 7),
+      PageUp: () => addMonths(active, e.shiftKey ? -12 : -1),
+      PageDown: () => addMonths(active, e.shiftKey ? 12 : 1),
+      Home: () => addDays(active, -((active.getDay() - first + 7) % 7)),
+      End: () => addDays(active, 6 - ((active.getDay() - first + 7) % 7)),
     };
     if (map[e.key]) {
       e.preventDefault();
       go(map[e.key](), true);
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      choose(focused);
+      choose(active);
     }
   };
 
@@ -136,16 +180,19 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
   return (
     <div className={className ? `${ROOT} ${className}` : ROOT} aria-label={aria['aria-label']} role="group">
       <div className={HEAD}>
-        <button type="button" className={STEP} aria-label="Previous month" onClick={() => go(addMonths(focused, -1), false)} disabled={min != null && startOfMonth(focused) <= startOfMonth(min)}>
+        <button type="button" className={STEP} aria-label="Previous month" onClick={() => stepMonth(-1)} disabled={min != null && month <= startOfMonth(min)}>
           <svg aria-hidden viewBox="0 0 10 10" className="size-calendar-step-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M6.25 2 3.25 5l3 3" /></svg>
         </button>
         <span id={titleId} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={title} /></span>
-        <button type="button" className={STEP} aria-label="Next month" onClick={() => go(addMonths(focused, 1), false)} disabled={max != null && startOfMonth(focused) >= startOfMonth(max)}>
+        <button type="button" className={STEP} aria-label="Next month" onClick={() => stepMonth(1)} disabled={max != null && month >= startOfMonth(max)}>
           <svg aria-hidden viewBox="0 0 10 10" className="size-calendar-step-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 2 6.75 5l-3 3" /></svg>
         </button>
       </div>
       <div className={GRID_WRAP}>
-        <table ref={grid} key={monthKey(month)} role="grid" aria-labelledby={titleId} className={`${TABLE} ${arrive}`} onKeyDown={onKey}>
+        <table ref={grid} key={monthKey(month)} role="grid" aria-labelledby={titleId} className={`${TABLE} ${arrive}`} onKeyDown={onKey}
+          onFocusCapture={() => { gridFocused.current = true; }}
+          onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) gridFocused.current = false; }}
+        >
           <thead>
             <tr>{weekdays.map((w, i) => <th key={i} scope="col" abbr={w.long} className={WEEKDAY}>{w.short}</th>)}</tr>
           </thead>
@@ -158,7 +205,7 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
                     <td key={d.getTime()} role="gridcell" aria-selected={selected} className={CELL}>
                       <button
                         type="button"
-                        tabIndex={sameDay(d, focused) ? 0 : -1}
+                        tabIndex={sameDay(d, active) ? 0 : -1}
                         className={DAY}
                         aria-label={full.format(d)}
                         aria-current={sameDay(d, today) ? 'date' : undefined}

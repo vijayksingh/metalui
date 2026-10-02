@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Calendar, DatePicker, FormField } from '@unlocalhosted/metalui';
+import { Button, Calendar, DatePicker, FormField } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/calendar/calendar.tsx?raw';
@@ -17,11 +17,11 @@ import { ComponentPage } from '../../ui/ComponentPage';
 
 const SEP_30 = new Date(2026, 8, 30);
 
-function Month({ label }: { label: string }) {
+function Month({ label, min, max = new Date(2027, 11, 31) }: { label: string; min?: Date; max?: Date }) {
   const [day, setDay] = React.useState<Date | null>(SEP_30);
   return (
     <div className="grid justify-items-center gap-8">
-      <Calendar aria-label={label} value={day} onValueChange={setDay} defaultMonth={SEP_30} locale="en-GB" max={new Date(2027, 11, 31)} />
+      <Calendar aria-label={label} value={day} onValueChange={setDay} defaultMonth={SEP_30} locale="en-GB" min={min} max={max} />
       <span className="type-meta text-ink3">{day ? new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(day) : 'No day chosen'}</span>
     </div>
   );
@@ -32,9 +32,42 @@ function MonthTuner() {
     spring: { type: 'select', options: SPRING_NAMES, default: 'settle' },
     travel: [8, 0, 32],
     slow: [1, 1, 10],
+    earliestDay: [1, 1, 30, 1],
+    latestDay: [30, 1, 30, 1],
   });
   const vars = { ...springVars('settle', d.spring as SpringName, d.slow), '--mu-motion-content': `${d.travel}px` } as React.CSSProperties;
-  return <div data-testid="calendar-month-tuner" className="flex justify-center" style={vars}><Month label="Tuned calendar" /></div>;
+  return <div data-testid="calendar-month-tuner" className="flex justify-center" style={vars}><Month label="Tuned calendar" min={new Date(2026, 8, Math.min(d.earliestDay, d.latestDay))} max={new Date(2026, 8, Math.max(d.earliestDay, d.latestDay))} /></div>;
+}
+
+function ControlledMonth() {
+  const [day, setDay] = React.useState<Date | null>(SEP_30);
+  const [month, setMonth] = React.useState(SEP_30);
+  const [fixed, setFixed] = React.useState(false);
+  const [requests, setRequests] = React.useState(0);
+  const [delayed, setDelayed] = React.useState(false);
+  const pending = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  React.useEffect(() => () => clearTimeout(pending.current), []);
+  return (
+    <div className="mu-stack items-center">
+      <div className="mu-cluster justify-center">
+        <Button onClick={() => setDay(new Date(2026, 9, 15))}>Choose 15 October</Button>
+        <Button onClick={() => setDay(day ? new Date(day) : null)}>Refresh chosen day</Button>
+        <Button onClick={() => setMonth(new Date(2026, 9, 1))}>Show October</Button>
+        <Button aria-pressed={delayed} onClick={() => setDelayed(!delayed)}>Defer month change</Button>
+        <Button aria-pressed={fixed} onClick={() => setFixed(!fixed)}>Keep month fixed</Button>
+      </div>
+      <Calendar aria-label="Controlled calendar" value={day} onValueChange={setDay} month={month} onMonthChange={(next) => {
+        setRequests((n) => n + 1);
+        clearTimeout(pending.current);
+        if (!fixed) {
+          if (delayed) pending.current = setTimeout(() => setMonth(next), 150);
+          else setMonth(next);
+        }
+      }} locale="en-GB" />
+      <output className="type-meta text-ink2">Month requests: {requests}</output>
+      <Calendar aria-label="Following calendar" value={day} onValueChange={setDay} locale="en-GB" />
+    </div>
+  );
 }
 
 export default function CalendarPage() {
@@ -54,7 +87,7 @@ export default function CalendarPage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, and stretches time.', node: <MonthTuner /> }]}
+      more={[{ id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, stretches time, and sets the first and last eligible September days.', node: <MonthTuner /> }, { id: 'controlled-month', title: 'Control the month', lede: 'Choose a day elsewhere: the following calendar reveals it. The controlled calendar keeps its own displayed month. Its host can accept a month request or keep the month fixed.', node: <ControlledMonth /> }]}
       usage={`const [day, setDay] = React.useState<Date | null>(null);
 
 <Calendar aria-label="Trip day" value={day} onValueChange={setDay} min={new Date()} />

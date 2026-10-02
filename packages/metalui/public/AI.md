@@ -745,7 +745,7 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 
 | React | SwiftUI |
 |---|---|
-| `Calendar` `value`, `defaultValue`, `onValueChange`, `defaultMonth`, `min`, `max`, `locale` | `selection:`, `in:` |
+| `Calendar` `value`, `defaultValue`, `onValueChange`, `defaultMonth`, `month`, `onMonthChange`, `min`, `max`, `locale` | `selection:`, `in:` |
 | `DatePicker` the same, plus `placeholder`, `format`, `invalid`, `disabled`, `aria-label` | `DatePicker` |
 
 ## Keyboard and accessibility
@@ -757,6 +757,15 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 
 - The week starts where the reader's locale starts it.
 - Say the range: disable days that cannot be chosen rather than refusing them after.
+
+## Displayed month and selection
+
+- `month` controls the displayed month; `onMonthChange` requests a new month as its first day. Only navigation or choosing a day in another month emits this callback; receiving a new prop does not.
+- Without `month`, a changed controlled `value` reveals its month. Recreating a Date for the same calendar day preserves the browsed month. `defaultMonth` takes precedence for the initial display; otherwise it starts at the chosen day or today.
+- With `month`, the host decides whether to accept navigation. A value in another month never overrides that decision. The visible grid retains one enabled day in the Tab order.
+- Pointer focus on a neighbouring month's day does not replace its button; choosing it turns the month and keeps keyboard focus on the chosen day.
+- `DatePicker` forwards the same display and eligibility props, including `min` and `max`.
+- SwiftUI remains a system graphical DatePicker placeholder. Its selection and range are supported; controlled displayed month and MetalUI motion are not yet implemented.
 
 ---
 
