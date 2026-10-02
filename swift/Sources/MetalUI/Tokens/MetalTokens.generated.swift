@@ -778,7 +778,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// How far a task has come: the switch's sunk track with the switch's green on look as the fill, a label and the value above it. The fill's width follows the value on the settle spring (no overshoot: progress never claims more than is done). Unknown amount: a short lit segment sweeps across the track and loops, ease-in-out. Reduce Motion: the width snaps and the segment breathes in place instead of sweeping. The look is the switch recipe (one recipe per look); this recipe adds the size, the text and the motion. (the switch track and on fill (recipe switch); the settle spring; Base UI Progress)
+    /// Task amount and explicit end states. Known bars follow reported amounts by transform on settle, reset drains on release, and values turn on the drum. Rings, known steps and buffering share the same amount. Unknown waits run only while active and visible; reduced motion breathes in place. Compact size reuses space4; material remains the switch recipe. (the switch track and on fill (recipe switch); the settle spring; Base UI Progress)
     public static let progress = MetalObjectRecipe(
         name: "progress",
         layers: [
@@ -792,6 +792,7 @@ public enum MetalRecipes {
             "segment.sweep": .text("1400ms"),
             "segment.breathe": .text("1600ms"),
             "segment.dim": .text("0.35"),
+            "compact.height": .text("var(--mu-space-4)"),
         ]
     )
 

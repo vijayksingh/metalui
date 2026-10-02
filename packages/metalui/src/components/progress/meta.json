@@ -3,7 +3,7 @@
   "title": "Progress",
   "status": "alpha",
   "layer": "component",
-  "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+  "description": "Task amount and explicit idle, running, paused, failed, cancelled and complete states. Bars, slim bars, rings, segmented steps and buffered tracks share one contract; Reset drains on release and values turn on the drum.",
   "base": "@base-ui/react/progress",
   "react": {
     "export": "Progress",
@@ -14,10 +14,15 @@
   "swift": {
     "symbol": "MetalProgress",
     "file": "swift/Sources/MetalUI/Components/MetalProgress.swift",
-    "status": "wip"
+    "status": "alpha"
   },
   "slots": {
-    "Progress": ["Root", "Label", "Value", "Track"]
+    "Progress": [
+      "Root",
+      "Label",
+      "Value",
+      "Track"
+    ]
   },
   "agent": "progress.agent.md",
   "page": "/components/progress"

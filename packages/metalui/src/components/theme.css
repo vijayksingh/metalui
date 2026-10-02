@@ -1432,10 +1432,19 @@
   margin: calc(var(--mu-r-alert-dialog-self-text-gap) - var(--mu-r-dialog-self-gap)) 0 0;
 }
 @utility transition-progress-fill {
-  transition: width calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
+  transform-origin: left; transition: transform calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); &[data-draining] { transition: transform calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release); }
 }
 @utility progress-segment {
-  position: absolute; inset-block: 0; left: 0; width: calc(var(--mu-r-progress-segment-ratio) * 100%); animation: mu-progress-sweep var(--mu-r-progress-segment-sweep) ease-in-out infinite; @media (prefers-reduced-motion: reduce) { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+  position: absolute; inset-block: 0; left: 0; width: calc(var(--mu-r-progress-segment-ratio) * 100%); animation: mu-progress-sweep var(--mu-r-progress-segment-sweep) ease-in-out infinite; @media (prefers-reduced-motion: reduce) { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } &[data-reduced] { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } &[data-paused] { animation: none; animation-play-state: paused; left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); translate: 0 0; }
+}
+@utility progress-state {
+  &[data-state=failed] { --mu-r-switch-self-on-background: var(--mu-invalid); } &[data-state=paused] .mu-progress-fill { opacity: var(--mu-r-progress-segment-dim); } &[data-size=compact] { --mu-r-progress-self-height: var(--mu-r-progress-compact-height); }
+}
+@utility progress-ring {
+  display: block; flex: none; width: var(--mu-r-icon-button-tool-size); height: var(--mu-r-icon-button-tool-size); --mu-progress-ring-stroke: calc(var(--mu-r-progress-self-height) / 2); &[data-size=compact] { width: var(--mu-r-icon-button-ghost-size); height: var(--mu-r-icon-button-ghost-size); }
+}
+@utility progress-ring-wait {
+  transform-origin: center; animation: mu-progress-ring-turn var(--mu-r-progress-segment-sweep) linear infinite; &[data-reduced] { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } &[data-paused] { animation: none; animation-play-state: paused; }
 }
 @utility opacity-progress-segment-ratio {
   opacity: var(--mu-r-progress-segment-ratio);
@@ -3152,6 +3161,9 @@
 }
 @keyframes mu-progress-breathe {
   from { opacity: var(--mu-r-progress-segment-dim); } to { opacity: 1; }
+}
+@keyframes mu-progress-ring-turn {
+  from { transform: rotate(0deg); } to { transform: rotate(360deg); }
 }
 @keyframes mu-spinner-turn {
   to { rotate: 1turn; }

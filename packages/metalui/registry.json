@@ -1248,11 +1248,13 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
-      "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+      "description": "Task amount and explicit idle, running, paused, failed, cancelled and complete states. Bars, slim bars, rings, segmented steps and buffered tracks share one contract; Reset drains on release and values turn on the drum.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/morph-icons.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

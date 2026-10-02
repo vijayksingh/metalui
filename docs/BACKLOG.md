@@ -174,12 +174,12 @@ Owner, on the Popover page's "Rename" button: "same, add better semantic action.
 
 Owner, on the Progress page: "few more variations for reset." (2026-09-30) The page shows one known bar, one unknown bar, and worded "Run export" / "Reset" buttons.
 
-- [ ] **Reset reads as reset**: the key leads with `undo` (or a new `reset` glyph); the fill drains back to empty on the release spring, not a jump; the value turns back to 0 % on the drum. "Run export" leads with its glyph, and while running it becomes "Cancel" (the glyph morphs to `close`).
-- [ ] **End states**: complete (the fill finishes, then the head morphs to `check` and says "Exported"), failed (the fill stops where it was in the invalid ink, `sync-error`, Try again), paused (the fill holds and dims; Resume), cancelled (drains back).
-- [ ] **Shapes**: a slim bar with no head (under a toolbar or a card's edge), a ring (circular, for a key or an avatar), a segmented bar for known steps ("Step 2 of 4"), and a buffered bar (a lighter second fill ahead, for media).
-- [ ] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
-- [ ] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
-- [ ] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
+- [x] **Reset reads as reset**: the key leads with `undo` (or a new `reset` glyph); the fill drains back to empty on the release spring, not a jump; the value turns back to 0 % on the drum. "Run export" leads with its glyph, and while running it becomes "Cancel" (the glyph morphs to `close`).
+- [x] **End states**: complete (the fill finishes, then the head morphs to `check` and says "Exported"), failed (the fill stops where it was in the invalid ink, `sync-error`, Try again), paused (the fill holds and dims; Resume), cancelled (drains back).
+- [x] **Shapes**: a slim bar with no head (under a toolbar or a card's edge), a ring (circular, for a key or an avatar), a segmented bar for known steps ("Step 2 of 4"), and a buffered bar (a lighter second fill ahead, for media).
+- [x] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
+- [x] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
+- [x] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
 
 ## Slider: redesign
 
