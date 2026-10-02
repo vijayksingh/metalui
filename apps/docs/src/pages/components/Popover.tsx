@@ -69,6 +69,23 @@ function RiseTuner() {
   );
 }
 
+function ScopedPopover() {
+  const [colorway, setColorway] = React.useState<'bone' | 'graphite'>('graphite');
+  return <div data-testid="scoped-popover" data-mu-colorway={colorway} className="mu-stack gap-mu-related p-mu-space-4 rounded-mu-space-3 recipe-surface overflow-hidden">
+    <Popover>
+      <Popover.Trigger><Button>Scoped panel</Button></Popover.Trigger>
+      <div data-mu-colorway="bone"><Popover.Trigger><Button>Nested bone panel</Button></Popover.Trigger></div>
+      <Popover.Content>
+        <Popover.Title>Host colorway</Popover.Title>
+        <Popover.Description>The active trigger supplies this panel’s colorway.</Popover.Description>
+        <Popover.Body>
+          <Button onClick={() => setColorway(colorway === 'graphite' ? 'bone' : 'graphite')}>Change host colorway</Button>
+        </Popover.Body>
+      </Popover.Content>
+    </Popover>
+  </div>;
+}
+
 export default function PopoverPage() {
   return (
     <ComponentPage
@@ -84,7 +101,7 @@ export default function PopoverPage() {
           </Popover>
         </div>
       ) }}
-      more={[{ id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }]}
+      more={[{ id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }, { id: 'portal', title: 'A scoped host', lede: 'A panel keeps the active trigger’s nearest colorway and follows live changes. It stays outside clipped parents. Native popovers inherit their SwiftUI environment.', node: <ScopedPopover /> }]}
       usage={`<Popover>
   <Popover.Trigger><Button>Rename…</Button></Popover.Trigger>
   <Popover.Content>

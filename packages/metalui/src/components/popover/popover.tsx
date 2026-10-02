@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Popover as BasePopover } from '@base-ui/react/popover';
+import { usePortalColorway } from '../../theme/portal-colorway';
 
 /* ─────────────────────────────────────────────────────────
  * POPOVER, a small panel that comes out of its trigger, on Base UI Popover
@@ -37,8 +38,24 @@ function offset() {
 
 export type PopoverRootProps = BasePopover.Root.Props;
 
-function Root(props: PopoverRootProps) {
-  return <BasePopover.Root {...props} />;
+const AnchorContext = React.createContext<{
+  anchor: Element | null;
+  setAnchor: (element: Element | null) => void;
+} | null>(null);
+
+function Root({ onOpenChange, ...props }: PopoverRootProps) {
+  const [anchor, setAnchor] = React.useState<Element | null>(null);
+  const registerAnchor = React.useCallback((element: Element | null) => {
+    if (element) setAnchor(current => current ?? element);
+  }, []);
+  const context = React.useMemo(() => ({ anchor, setAnchor: registerAnchor }), [anchor, registerAnchor]);
+  return <AnchorContext.Provider value={context}>
+    <BasePopover.Root {...props} onOpenChange={(open, details) => {
+      // Base UI identifies the active trigger, including roots with several triggers.
+      if (open && details.trigger) setAnchor(details.trigger);
+      onOpenChange?.(open, details);
+    }} />
+  </AnchorContext.Provider>;
 }
 
 export interface PopoverTriggerProps extends Omit<BasePopover.Trigger.Props, 'render'> {
@@ -46,9 +63,17 @@ export interface PopoverTriggerProps extends Omit<BasePopover.Trigger.Props, 're
   children: React.ReactElement;
 }
 
-function Trigger({ children, ...props }: PopoverTriggerProps) {
-  return <BasePopover.Trigger render={children} {...props} />;
-}
+const Trigger = React.forwardRef<HTMLElement, PopoverTriggerProps>(function PopoverTrigger({ children, ...props }, forwardedRef) {
+  const context = React.useContext(AnchorContext);
+  const inner = React.useRef<HTMLElement | null>(null);
+  const setAnchor = context?.setAnchor;
+  const ref = React.useCallback((element: HTMLElement | null) => {
+    inner.current = element;
+    if (element) setAnchor?.(element);
+  }, [setAnchor]);
+  React.useImperativeHandle(forwardedRef, () => inner.current!);
+  return <BasePopover.Trigger render={children} {...props} ref={ref} />;
+});
 
 export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'className'> {
   side?: 'bottom' | 'top' | 'left' | 'right';
@@ -58,9 +83,11 @@ export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'clas
 
 /** The plate: portalled and placed beside its trigger. */
 const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', className, ...props }, ref) {
+  const context = React.useContext(AnchorContext);
+  const colorway = usePortalColorway(context?.anchor);
   return (
     <BasePopover.Portal>
-      <BasePopover.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+      <BasePopover.Positioner data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
         <BasePopover.Popup ref={ref} className={className ? `${PLATE} ${className}` : PLATE} {...props} />
       </BasePopover.Positioner>
     </BasePopover.Portal>

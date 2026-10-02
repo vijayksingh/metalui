@@ -47,3 +47,7 @@ Reduce Motion: a crossfade.
 - It comes from its trigger and goes back to nothing: open on the side with room, never centred on the page.
 - Keep it small. If it needs scrolling or more than a few controls, it is a dialog.
 - One popover at a time.
+
+## Scoped colorways
+
+The positioner copies the active trigger’s nearest `data-mu-colorway`, including live ancestor changes. Multiple triggers use Base UI’s active trigger; composed Trigger and Content refs still reach their DOM controls. Popups remain outside clipped hosts. No override retains document inheritance. SwiftUI popovers carry the native colorway environment.
