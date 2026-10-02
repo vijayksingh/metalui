@@ -33,6 +33,7 @@ public struct MetalEnumCue: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.isEnabled) private var enabled
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @MetalMotionPreference private var reduceMotion
     private enum Kind { case pointer, keyboard, wheel }
     private struct Gesture {
@@ -56,9 +57,18 @@ public struct MetalEnumCue: View {
     public var body: some View {
         Button(action: cycle) {
             ZStack(alignment: .leading) {
-                ForEach(choices, id: \.value) { choice in Text(choice.value).hidden() }
-                Group {
-                    if raw { Text(value) }
+                if presentation == .surface || gesture != nil {
+                    ForEach(choices, id: \.value) { choice in
+                        Text(choice.value).hidden().accessibilityHidden(true)
+                            .padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero)
+                            .padding(.leading, presentation == .documentLine && choice.glyph != nil ? MetalRecipes.button.points("compact.glyph") + MetalCue.urlGap : .zero)
+                    }
+                }
+                HStack(alignment: .firstTextBaseline, spacing: presentation == .documentLine ? MetalCue.urlGap : .zero) {
+                    if presentation == .documentLine, let glyph = current.glyph {
+                        MetalCueInlineGlyph(side: MetalRecipes.button.points("compact.glyph")) { MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph")) }.opacity(raw ? .zero : .one)
+                    }
+                    if raw { Text(value).padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero) }
                     else { MetalCueTag(value, tint: current.tint ?? colorway.tokens.ink3) }
                 }.id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
             }
@@ -69,7 +79,7 @@ public struct MetalEnumCue: View {
                 if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
             }
             .overlay(alignment: .topLeading) {
-                if !raw, gesture == nil, let glyph = current.glyph {
+                if presentation == .surface, !raw, gesture == nil, let glyph = current.glyph {
                     MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
                         .offset(y: -(MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)).accessibilityHidden(true)
                 }

@@ -13,6 +13,7 @@ public struct MetalColourCue: View {
     private let onCancel: ((String) -> Void)?
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @MetalMotionPreference private var reduceMotion
     @FocusState private var focused: Bool
     @State private var presented = false
@@ -30,23 +31,34 @@ public struct MetalColourCue: View {
     }
     private static let footprint = "#" + String(repeating: "F", count: 6)
     private var basis: ColourChannels { ColourChannels(value) }
+    @ViewBuilder private var wordsFace: some View {
+        (raw ? Text(value) : Text(value).metalCue(.hex, colorway: colorway, hex: MetalRGBA(hex: value)))
+            .font(.metal(presentation == .documentLine ? MetalType.content : MetalType.readout)).monospacedDigit()
+            .contentTransition(reduceMotion ? .opacity : .numericText())
+            .metalAnimation(.settle, value: value)
+    }
+    private var swatch: some View {
+        RoundedRectangle(cornerRadius: MetalCue.swatchRadius)
+            .fill((MetalRGBA(hex: value) ?? colorway.tokens.ink).color)
+            .frame(width: MetalRecipes.button.points("compact.glyph"), height: MetalRecipes.button.points("compact.glyph"))
+            .accessibilityHidden(true)
+    }
     private var trigger: some View {
         Button { if !readOnly && isEnabled { presented.toggle() } } label: {
-            ZStack(alignment: .leading) {
-                Text(Self.footprint).font(.metal(MetalType.readout)).hidden().accessibilityHidden(true)
-                (raw ? Text(value) : Text(value).metalCue(.hex, colorway: colorway, hex: MetalRGBA(hex: value)))
-                    .font(.metal(MetalType.readout)).monospacedDigit()
-                    .contentTransition(reduceMotion ? .opacity : .numericText())
-                    .metalAnimation(.settle, value: value)
-                    .overlay(alignment: .topLeading) {
-                        RoundedRectangle(cornerRadius: MetalCue.swatchRadius)
-                            .fill((MetalRGBA(hex: value) ?? colorway.tokens.ink).color)
-                            .frame(width: MetalRecipes.button.points("compact.glyph"), height: MetalRecipes.button.points("compact.glyph"))
-                            .offset(y: -(MetalRecipes.button.points("compact.glyph") + MetalSpace.s2))
-                            .opacity(raw ? .zero : .one).accessibilityHidden(true)
+            if presentation == .documentLine {
+                HStack(alignment: .firstTextBaseline, spacing: MetalCue.urlGap) {
+                    MetalCueInlineGlyph(side: MetalRecipes.button.points("compact.glyph")) { swatch }.opacity(raw ? .zero : .one)
+                    wordsFace
+                }.fixedSize()
+            } else {
+                ZStack(alignment: .leading) {
+                    Text(Self.footprint).font(.metal(MetalType.readout)).hidden().accessibilityHidden(true)
+                    wordsFace.overlay(alignment: .topLeading) {
+                        swatch.offset(y: -(MetalRecipes.button.points("compact.glyph") + MetalSpace.s2))
+                            .opacity(raw ? .zero : .one)
                     }
-
-            }.fixedSize().padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
+                }.fixedSize().padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
+            }
         }
         .buttonStyle(.plain).disabled(readOnly).focusable(isEnabled).focused($focused)
         .overlay {
@@ -79,6 +91,7 @@ public struct MetalColourCue: View {
             }
             .onKeyPress(.escape) { cancel(); presented = false; return .handled }
             .disabled(readOnly || !isEnabled)
+            .metalCuePresentation(.surface)
         }
         .onChange(of: value) { _, next in
             if let held, next != held.last { self.held = nil; staleDrag = dragging; onCancel?("external") }

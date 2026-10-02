@@ -35,6 +35,7 @@ public struct MetalCueTag: View {
     let derived: Bool
     let tint: MetalRGBA?
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
 
     public init(_ text: String, derived: Bool = false, tint: MetalRGBA? = nil) {
         self.text = text
@@ -59,7 +60,7 @@ public struct MetalCueTag: View {
                     .mask(shape.fill(style: FillStyle(eoFill: true)))
                     .overlay { if derived { shape.stroke(colorway.tokens.ink2.color, style: StrokeStyle(lineWidth: MetalCue.quietThickness, dash: [MetalSpace.s2, MetalSpace.s2])) } }
             }
-            .padding(.horizontal, -MetalCue.tagPadX)
+            .padding(.horizontal, presentation == .documentLine ? .zero : -MetalCue.tagPadX)
             .accessibilityLabel(text)
     }
 }
@@ -308,6 +309,7 @@ public struct MetalCueText: View {
     private let personGlyph: AnyView?
     private let resolved: String?
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @MetalMotionPreference private var reduceMotion
     @State private var shown = false
     @State private var seen: String?
@@ -332,8 +334,10 @@ public struct MetalCueText: View {
                     .overlay { if raw { Text(text).font(.metal(MetalType.content)) } }
             } else if let formatted {
                 ZStack(alignment: .leading) {
-                    Text(text).hidden().accessibilityHidden(true)
-                    Text(formatted).hidden().accessibilityHidden(true)
+                    if presentation == .surface {
+                        Text(text).hidden().accessibilityHidden(true)
+                        Text(formatted).hidden().accessibilityHidden(true)
+                    }
                     Text(raw ? text : formatted)
                         .contentTransition(reduceMotion ? .opacity : .numericText())
                         .metalAnimation(.settle, value: raw)
@@ -345,21 +349,31 @@ public struct MetalCueText: View {
             }
         }
     }
+    @ViewBuilder private var meaningFace: some View {
+        switch meaning {
+        case .time: MetalIcon(.clock, size: side, act: act)
+        case .money: MetalIcon(.coin, size: side, act: act)
+        case .sleep: MetalIcon(.moon, size: side, act: act)
+        case .steps: MetalLifeIcon(.steps, size: side)
+        case .colour: RoundedRectangle(cornerRadius: MetalCue.swatchRadius).fill((color ?? colorway.tokens.ink).color)
+        case .person: if let personGlyph { personGlyph }
+        case nil: EmptyView()
+        }
+    }
+    @ViewBuilder private var presentedFace: some View {
+        if presentation == .documentLine {
+            HStack(alignment: .firstTextBaseline, spacing: MetalCue.urlGap) {
+                if meaning != nil { MetalCueInlineGlyph(side: side) { meaningFace }.opacity(raw ? .zero : .one) }
+                textFace
+            }.fixedSize(horizontal: true, vertical: false)
+        } else { textFace }
+    }
     public var body: some View {
-        textFace
+        presentedFace
         .foregroundStyle(colorway.tokens.ink.color)
         .overlay(alignment: .topLeading) {
-            if let meaning {
-                Group {
-                    switch meaning {
-                    case .time: MetalIcon(.clock, size: side, act: act)
-                    case .money: MetalIcon(.coin, size: side, act: act)
-                    case .sleep: MetalIcon(.moon, size: side, act: act)
-                    case .steps: MetalLifeIcon(.steps, size: side)
-                    case .colour: RoundedRectangle(cornerRadius: MetalCue.swatchRadius).fill((color ?? colorway.tokens.ink).color)
-                    case .person: if let personGlyph { personGlyph }
-                    }
-                }
+            if presentation == .surface, meaning != nil {
+                meaningFace
                 .frame(width: side, height: side)
                 .offset(y: -(side + MetalSpace.s2))
                 .opacity(raw ? .zero : .one)
@@ -389,7 +403,7 @@ public struct MetalCueText: View {
             }
         }
         .onHover { value in withMetalAnimation(.part, reduceMotion: reduceMotion) { hovering = value } }
-        .padding(.top, clearance)
+        .padding(.top, presentation == .documentLine ? .zero : clearance)
         .help(label ?? text)
         .accessibilityLabel(text)
         .onAppear { recognise() }

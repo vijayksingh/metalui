@@ -37,6 +37,7 @@ public struct MetalPersonCue: View {
     @FocusState private var focused: Bool
     @FocusState private var listFocused: Bool
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @Environment(\.isEnabled) private var enabled
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.scenePhase) private var scenePhase
@@ -60,7 +61,7 @@ public struct MetalPersonCue: View {
     public var body: some View {
         Button(action: begin) {
             ZStack(alignment: .leading) {
-                ForEach(names, id: \.self) { Text($0).hidden().accessibilityHidden(true) }
+                if presentation == .surface { ForEach(names, id: \.self) { Text($0).hidden().accessibilityHidden(true) } }
                 MetalCueText(value, kind: .duration, meaning: .person, label: value, raw: raw, personGlyph: avatar(current))
                     .id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
             }
@@ -82,7 +83,7 @@ public struct MetalPersonCue: View {
         .accessibilityLabel(label).accessibilityValue(value)
         .accessibilityHint(readOnly ? "Read only" : "Opens known people. Arrows or type a name, Return chooses, Escape cancels.")
         .help(hint ? (readOnly ? "Read only" : "Choose a known person") : "")
-        .popover(isPresented: $open, arrowEdge: .bottom) { list }
+        .popover(isPresented: $open, arrowEdge: .bottom) { list.metalCuePresentation(.surface) }
         .onChange(of: open) { _, next in if !next { cancel() } }
         .onChange(of: value) { _, next in if let original, next != original { cancel() } }
         .onChange(of: vocabulary) { _, _ in cancel() }

@@ -14,7 +14,6 @@ struct MetalProvenanceSourceEditor: View {
     var body: some View {
         MetalWell(.field) {
             MetalProvenanceTextEditor(document: document, onTyping: onTyping)
-                .frame(height: MetalType.content.line * 3)
                 .padding(MetalSpace.s12)
         }.accessibilityLabel("Provenance document source")
     }
@@ -29,10 +28,21 @@ private struct MetalProvenanceTextEditor: NSViewRepresentable {
         let scroll = NSScrollView(), text = MetalProvenanceTextView()
         text.document = document; text.isRichText = false; text.allowsUndo = false
         text.drawsBackground = false; scroll.drawsBackground = false
-        text.font = MetalFonts.ctFont(MetalType.content, size: MetalType.content.size) as NSFont
         text.delegate = context.coordinator; text.string = document.source
+        text.font = MetalFonts.ctFont(MetalType.content, size: MetalType.content.size) as NSFont
+        text.isVerticallyResizable = true; text.isHorizontallyResizable = false
+        text.autoresizingMask = .width
+        text.textContainer?.widthTracksTextView = true
         text.setAccessibilityLabel("Provenance document source")
         scroll.documentView = text; return scroll
+    }
+    func sizeThatFits(_ proposal: ProposedViewSize, nsView scroll: NSScrollView, context: Context) -> CGSize? {
+        guard let width = proposal.width, let text = scroll.documentView as? NSTextView else { return nil }
+        let inset = text.textContainerInset
+        let padding = text.textContainer?.lineFragmentPadding ?? .zero
+        let words = NSAttributedString(string: document.source, attributes: [.font: MetalFonts.ctFont(MetalType.content, size: MetalType.content.size)])
+        let measured = words.boundingRect(with: NSSize(width: max(1, width - inset.width * 2 - padding * 2), height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading])
+        return CGSize(width: width, height: max(MetalType.content.line * 3, ceil(measured.height) + inset.height * 2))
     }
     func updateNSView(_ scroll: NSScrollView, context: Context) {
         guard let text = scroll.documentView as? NSTextView else { return }
@@ -89,6 +99,11 @@ private struct MetalProvenanceTextEditor: UIViewRepresentable {
         text.font = MetalFonts.ctFont(MetalType.content, size: MetalType.content.size) as UIFont
         text.delegate = context.coordinator; text.text = document.source
         text.accessibilityLabel = "Provenance document source"; return text
+    }
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView text: UITextView, context: Context) -> CGSize? {
+        guard let width = proposal.width else { return nil }
+        let height = text.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude)).height
+        return CGSize(width: width, height: max(MetalType.content.line * 3, height))
     }
     func updateUIView(_ text: UITextView, context: Context) {
         context.coordinator.document = document; context.coordinator.onTyping = onTyping

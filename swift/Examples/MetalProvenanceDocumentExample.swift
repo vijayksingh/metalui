@@ -68,6 +68,17 @@ public struct MetalProvenanceDocumentExample: View {
             return Token(id: token.id, kind: token.kind, words: source.substring(with: range), range: range)
         }
     }
+    private static let readingExpression = try? NSRegularExpression(pattern: #"\S+\s*|\s+"#)
+    private func readingRuns(_ row: Int) -> [Token] {
+        rowTokens(row).flatMap { token in
+            guard token.kind == .plain else { return [token] }
+            let words = token.words as NSString
+            guard let expression = Self.readingExpression else { return [token] }
+            return expression.matches(in: token.words, range: NSRange(location: 0, length: words.length)).map { match in
+                Token(id: "\(token.id)-\(match.range.location)", kind: .plain, words: words.substring(with: match.range), range: NSRange(location: token.range.location + match.range.location, length: match.range.length))
+            }
+        }
+    }
     private func captureHash() {
         guard enabled, !readOnly else { return }
         let source = document.source as NSString, prefix = source.substring(to: document.selection.start) as NSString
@@ -125,7 +136,7 @@ public struct MetalProvenanceDocumentExample: View {
                 units: clock ? [MetalNumericCueUnit(id: "clock", label: "time of day", factor: 1, step: 15, smallStep: 1, largeStep: 60, format: Self.clock, source: Self.clock)] : Self.sleepUnits,
                 in: 0...(clock ? 1439 : 1440), footprint: clock ? ["12:59pm"] : ["1440min", "23h59", "24h"],
                 kind: clock ? .date : .duration, meaning: clock ? .time : .sleep, raw: raw, readOnly: readOnly, allowTyping: false, hint: false,
-                onBegin: { _ = begin(token) }, onSourceChange: { document.replace($0) }, onCommit: document.commit, onCancel: cancel)
+                onBegin: { () -> Bool in begin(token) }, onSourceChange: { document.replace($0) }, onCommit: document.commit, onCancel: cancel)
                 .metalProvenance("You", detail: [clock ? "Written clock time" : "Written sleep quantity", instructions(token.kind)], enabled: !document.editing)
         case .state:
             MetalEnumCue(token.words, choices: [
@@ -142,7 +153,7 @@ public struct MetalProvenanceDocumentExample: View {
                 .metalProvenance("You", detail: ["Explicit source words", instructions(token.kind)], enabled: !document.editing)
         case .date:
             MetalDateCue("Send date", value: Binding(get: { Self.dateWords[token.words]! }, set: { _ in }), today: Self.today, in: Self.dates.first!...Self.dates.last!, footprint: Array(Self.dateWords.keys) + ["Wed 30 Sept"], raw: raw, hint: false, readOnly: readOnly,
-                onBegin: { _ = begin(token) }, onSourceChange: { document.replace($0) }, onCommit: document.commit, onCancel: cancel)
+                onBegin: { () -> Bool in begin(token) }, onSourceChange: { document.replace($0) }, onCommit: document.commit, onCancel: cancel)
                 .metalProvenance("You", detail: ["Explicit source words", instructions(token.kind)], enabled: !document.editing)
         case .colour:
             MetalColourCue("Paint colour", value: Binding(get: { token.words }, set: { _ in }), readOnly: readOnly, raw: raw,
@@ -171,19 +182,66 @@ public struct MetalProvenanceDocumentExample: View {
             } content: {
                 MetalTagCuePicker("Find a source tag", recentTags: Self.recent, onChoose: chooseTag)
             }
-            HStack(alignment: .firstTextBaseline, spacing: .zero) { ForEach(rowTokens(0)) { measuredFace($0) } }
-                .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
-            HStack(alignment: .firstTextBaseline, spacing: .zero) { ForEach(rowTokens(1)) { measuredFace($0) } }
-                .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
+            VStack(alignment: .leading, spacing: MetalSpace.s8) {
+                ForEach(0..<2, id: \.self) { row in
+                    MetalProvenanceReadingLayout {
+                        ForEach(readingRuns(row)) { token in
+                            measuredFace(token).layoutValue(key: MetalProvenanceWhitespace.self, value: token.kind == .plain && token.words.allSatisfy(\.isWhitespace))
+                        }
+                    }
+                    .transformAnchorPreference(key: MetalProvenanceCueAnchors.self, value: .bounds) { values, anchor in values["reading\(row)"] = anchor }
+                }
+            }
+            .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
+            .metalCuePresentation(.documentLine)
             HStack(spacing: MetalSpace.s8) {
-                MetalButton("Undo source edit", icon: .undo, size: .compact, action: document.undo).disabled(!document.canUndo && !document.editing)
-                MetalButton("Redo source edit", icon: .redo, size: .compact, action: document.redo).disabled(!document.canRedo || document.editing)
-                MetalButton("Cancel source gesture", icon: .close, size: .compact, action: document.cancel).disabled(!document.editing)
+                MetalButton("Undo", icon: .undo, size: .compact, action: document.undo).accessibilityLabel("Undo source edit").disabled(!document.canUndo && !document.editing)
+                MetalButton("Redo", icon: .redo, size: .compact, action: document.redo).accessibilityLabel("Redo source edit").disabled(!document.canRedo || document.editing)
+                MetalButton("Cancel edit", icon: .close, size: .compact, action: document.cancel).accessibilityLabel("Cancel source gesture").disabled(!document.editing)
             }
             Text("UTF16 \(document.selection.start)–\(document.selection.end) · \(document.editing ? "preview" : "committed")").font(.metal(MetalType.readout))
         }
         .onChange(of: Array(document.source.utf16)) { _, source in if let hash, !hash.source.utf16.elementsEqual(source) { self.hash = nil } }
         .onChange(of: readOnly) { _, next in if next { hash = nil } }
         .onChange(of: enabled) { _, next in if !next { hash = nil } }
+    }
+}
+
+private struct MetalProvenanceWhitespace: LayoutValueKey { static let defaultValue = false }
+
+/// Host-only word flow. Controls retain their own jobs, focus, source range and intrinsic metrics.
+private struct MetalProvenanceReadingLayout: Layout {
+    private struct Placement { let index: Int; let point: CGPoint; let size: CGSize }
+    private struct Plan { let size: CGSize; let placements: [Placement] }
+    private func plan(width: CGFloat, subviews: Subviews) -> Plan {
+        var placements: [Placement] = [], row: [(Int, CGSize, CGFloat, CGFloat)] = []
+        var x: CGFloat = .zero, y: CGFloat = .zero, widest: CGFloat = .zero
+        func finishRow() {
+            guard !row.isEmpty else { return }
+            let baseline = row.map { $0.2 }.max() ?? .zero
+            let below = row.map { $0.1.height - $0.2 }.max() ?? .zero
+            for item in row { placements.append(.init(index: item.0, point: .init(x: item.3, y: y + baseline - item.2), size: item.1)) }
+            widest = max(widest, x); y += max(MetalType.content.line, baseline + below); x = .zero; row = []
+        }
+        for index in subviews.indices {
+            let view = subviews[index]
+            let ideal = view.sizeThatFits(.unspecified)
+            let proposal = ProposedViewSize(width: ideal.width > width ? width : ideal.width, height: nil)
+            let dimensions = view.dimensions(in: proposal)
+            let size = CGSize(width: dimensions.width, height: dimensions.height)
+            if x > .zero && x + size.width > width { finishRow() }
+            if x == .zero && view[MetalProvenanceWhitespace.self] { continue }
+            row.append((index, size, dimensions[.firstTextBaseline], x)); x += size.width
+        }
+        finishRow()
+        return Plan(size: CGSize(width: widest, height: y), placements: placements)
+    }
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        plan(width: proposal.width ?? .infinity, subviews: subviews).size
+    }
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        for item in plan(width: bounds.width, subviews: subviews).placements {
+            subviews[item.index].place(at: CGPoint(x: bounds.minX + item.point.x, y: bounds.minY + item.point.y), anchor: .topLeading, proposal: ProposedViewSize(item.size))
+        }
     }
 }

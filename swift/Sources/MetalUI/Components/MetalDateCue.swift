@@ -39,7 +39,7 @@ public struct MetalDateCue: View {
     private let readOnly: Bool
     private let format: ((String) -> String)?
     private let source: ((String) -> String)?
-    private let onBegin: () -> Void
+    private let onBegin: () -> Bool
     private let onSourceChange: (String) -> Void
     private let onCommit: () -> Void
     private let onCancel: (MetalNumericCueCancelReason) -> Void
@@ -51,6 +51,19 @@ public struct MetalDateCue: View {
                 locale: Locale = Locale(identifier: "en_GB"), raw: Bool = false, hint: Bool = true, readOnly: Bool = false,
                 format: ((String) -> String)? = nil, source: ((String) -> String)? = nil,
                 onBegin: @escaping () -> Void = {}, onSourceChange: @escaping (String) -> Void = { _ in },
+                onCommit: @escaping () -> Void = {}, onCancel: @escaping (MetalNumericCueCancelReason) -> Void = { _ in }) {
+        _ = MetalCivilDay.date(value.wrappedValue); _ = MetalCivilDay.date(today)
+        _ = MetalCivilDay.date(bounds.lowerBound); _ = MetalCivilDay.date(bounds.upperBound)
+        self.label = label; _value = value; self.today = today; self.bounds = bounds; self.footprint = footprint
+        self.locale = locale; self.raw = raw; self.hint = hint; self.readOnly = readOnly; self.format = format; self.source = source
+        self.onBegin = { onBegin(); return true }; self.onSourceChange = onSourceChange; self.onCommit = onCommit; self.onCancel = onCancel
+    }
+
+    /// Source-backed hosts may refuse ownership before any value or source changes.
+    public init(_ label: String, value: Binding<String>, today: String, in bounds: ClosedRange<String>, footprint: [String],
+                locale: Locale = Locale(identifier: "en_GB"), raw: Bool = false, hint: Bool = true, readOnly: Bool = false,
+                format: ((String) -> String)? = nil, source: ((String) -> String)? = nil,
+                onBegin: @escaping () -> Bool, onSourceChange: @escaping (String) -> Void = { _ in },
                 onCommit: @escaping () -> Void = {}, onCancel: @escaping (MetalNumericCueCancelReason) -> Void = { _ in }) {
         _ = MetalCivilDay.date(value.wrappedValue); _ = MetalCivilDay.date(today)
         _ = MetalCivilDay.date(bounds.lowerBound); _ = MetalCivilDay.date(bounds.upperBound)
@@ -80,7 +93,7 @@ public struct MetalDateCue: View {
         Binding(get: { MetalCivilDay.date(value) }, set: { date in
             guard enabled && !readOnly else { return }
             let day = MetalCivilDay.civil(date)
-            if day != value { onBegin(); value = day; onSourceChange(words(day)); onCommit(); MetalHaptic.detent.perform() }
+            if day != value { guard onBegin() else { return }; value = day; onSourceChange(words(day)); onCommit(); MetalHaptic.detent.perform() }
             open = false
         })
     }
@@ -92,9 +105,9 @@ public struct MetalDateCue: View {
                 in: MetalCivilDay.ordinal(bounds.lowerBound)...MetalCivilDay.ordinal(bounds.upperBound), footprint: footprint,
                 kind: .date, meaning: .time, raw: raw, readOnly: readOnly, allowTyping: false, locale: locale, resolved: resolved, hint: hint,
                 onOpenPicker: { if enabled && !readOnly { open = true } },
-                onBegin: { changed = false }, onSourceChange: { words in
-                    if !changed { changed = true; onBegin() }; onSourceChange(words)
-                }, onCommit: { if changed { onCommit() }; changed = false },
+                onBegin: { () -> Bool in
+                    guard onBegin() else { return false }; changed = true; return true
+                }, onSourceChange: { words in onSourceChange(words) }, onCommit: { if changed { onCommit() }; changed = false },
                 onCancel: { reason in if changed { onCancel(reason) }; changed = false })
                 .highPriorityGesture(LongPressGesture(minimumDuration: MetalRecipes.button.durationSeconds("hold.duration"), maximumDistance: MetalSpace.s2).onEnded { _ in
                     if enabled && !readOnly { open = true }

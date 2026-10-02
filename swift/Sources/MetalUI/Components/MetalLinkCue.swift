@@ -24,6 +24,7 @@ public struct MetalLinkCue: View {
     @FocusState private var editFocused: Bool
     @FocusState private var fieldFocused: Bool
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @Environment(\.isEnabled) private var enabled
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
@@ -43,6 +44,8 @@ public struct MetalLinkCue: View {
     }
     private var destination: URL? { Self.destination(value) }
     private var mutable: Bool { enabled && !readOnly && !footprint.isEmpty }
+    private var meaningSide: Double { presentation == .documentLine ? MetalRecipes.button.points("compact.glyph") : MetalCue.urlGlyph }
+    private var chipRole: MetalTypeRole { presentation == .documentLine ? MetalType.content : MetalType.ui }
     private var glyph: Double { MetalRecipes.button.points("compact.glyph") }
     /// Source and chip fonts are donor type roles. This runs on input/state changes, never a frame clock.
     private func width(_ words: String, role: MetalTypeRole = MetalType.content) -> Double {
@@ -53,17 +56,25 @@ public struct MetalLinkCue: View {
     private var reserved: Double {
         footprint.map { words in
             let host = Self.destination(words)?.host ?? words
-            let chip = width(host, role: MetalType.ui) + MetalCue.urlGlyph + MetalCue.urlGap + MetalCue.urlPadStart + MetalCue.urlPadEnd
+            let chip = width(host, role: chipRole) + meaningSide + MetalCue.urlGap + MetalCue.urlPadStart + MetalCue.urlPadEnd
             return max(width(words), chip)
         }.max() ?? .zero
     }
     private var destinationLabel: some View {
         Group {
-            if raw { Text(value).font(.metal(MetalType.content)).underline() }
+            if raw {
+                if presentation == .documentLine {
+                    HStack(alignment: .firstTextBaseline, spacing: MetalCue.urlGap) {
+                        MetalCueInlineGlyph(side: meaningSide) { MetalIcon(.link, size: meaningSide) }.opacity(.zero)
+                        Text(value).font(.metal(MetalType.content)).underline()
+                    }
+                } else { Text(value).font(.metal(MetalType.content)).underline() }
+            }
             else {
-                HStack(spacing: MetalCue.urlGap) {
-                    MetalIcon(.link, size: MetalCue.urlGlyph)
-                    Text(destination?.host ?? value).font(.metal(MetalType.ui))
+                HStack(alignment: presentation == .documentLine ? .firstTextBaseline : .center, spacing: MetalCue.urlGap) {
+                    if presentation == .documentLine { MetalCueInlineGlyph(side: meaningSide) { MetalIcon(.link, size: meaningSide) } }
+                    else { MetalIcon(.link, size: MetalCue.urlGlyph) }
+                    Text(destination?.host ?? value).font(.metal(chipRole))
                 }
                 .foregroundStyle(colorway.tokens.cueUrlInk.color)
                 .padding(.leading, MetalCue.urlPadStart).padding(.trailing, MetalCue.urlPadEnd)
@@ -72,7 +83,7 @@ public struct MetalLinkCue: View {
             }
         }
     }
-    public var body: some View {
+    private var navigation: some View {
         Group {
             if let destination {
                 SwiftUI.Link(destination: destination) { destinationLabel }
@@ -81,24 +92,35 @@ public struct MetalLinkCue: View {
                     .overlay { if navigationFocused { Capsule().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth).padding(-MetalButtonMetrics.focusOffset) } }
             } else { destinationLabel.accessibilityAddTraits(.isLink) }
         }
-        .frame(width: reserved, alignment: .leading)
         .foregroundStyle(colorway.tokens.ink.color)
         .accessibilityLabel(label).accessibilityValue(value)
         .accessibilityHint("Enter follows this destination. The separate edit key changes its exact URL.")
         .help(value)
-        .onHover { hovering = $0 }
-        .overlay(alignment: .topTrailing) {
+    }
+    private var editKey: some View {
             Button(action: begin) { MetalIcon(.pen, size: glyph) }
                 .buttonStyle(.plain).disabled(!mutable).focusable(enabled).focused($editFocused).focusEffectDisabled()
                 .onKeyPress(.return) { guard mutable else { return .ignored }; begin(); return .handled }
                 .foregroundStyle((hovering || editFocused ? colorway.tokens.ink2 : colorway.tokens.ink3).color)
-                .opacity(hovering || navigationFocused || editFocused || presented ? .one : .zero)
+                .opacity(presentation == .documentLine || hovering || navigationFocused || editFocused || presented ? .one : .zero)
                 .overlay { if editFocused { Rectangle().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth) } }
-                .offset(y: -(glyph + MetalSpace.s2))
                 .accessibilityLabel("Edit \(label) URL").accessibilityHint("Enter opens the URL field. Enter applies; Escape cancels.")
                 .help("Edit URL")
-                .popover(isPresented: $presented, arrowEdge: .bottom) { editor }
+                .popover(isPresented: $presented, arrowEdge: .bottom) { editor.metalCuePresentation(.surface) }
+    }
+    @ViewBuilder private var presentedFace: some View {
+        if presentation == .documentLine {
+            HStack(alignment: .firstTextBaseline, spacing: MetalCue.urlGap) {
+                navigation
+                editKey.modifier(MetalCueGlyphBaseline(side: glyph))
+            }.fixedSize(horizontal: true, vertical: false)
+        } else {
+            navigation.frame(width: reserved, alignment: .leading)
+                .overlay(alignment: .topTrailing) { editKey.offset(y: -(glyph + MetalSpace.s2)) }
         }
+    }
+    public var body: some View {
+        presentedFace.onHover { hovering = $0 }
         .onChange(of: presented) { _, next in if !next { cancel() } }
         .onChange(of: value) { _, next in if let original, next != original { cancel() } }
         .onChange(of: footprint) { _, _ in cancel() }
@@ -156,7 +178,7 @@ public struct MetalLinkCue: View {
     private func apply() {
         guard original != nil, mutable else { return }
         guard let nextDestination = Self.destination(draft) else { error = "Enter an absolute HTTP or HTTPS URL."; return }
-        let chipWidth = width(nextDestination.host ?? draft, role: MetalType.ui) + MetalCue.urlGlyph + MetalCue.urlGap + MetalCue.urlPadStart + MetalCue.urlPadEnd
+        let chipWidth = width(nextDestination.host ?? draft, role: chipRole) + meaningSide + MetalCue.urlGap + MetalCue.urlPadStart + MetalCue.urlPadEnd
         guard ceil(max(width(draft), chipWidth)) <= ceil(reserved) else { error = "This URL exceeds the source footprint allowed by the document."; return }
         if let refused = validate(draft) { error = refused; return }
         if draft != value && !onChange(draft) { cancel(); return }

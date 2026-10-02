@@ -48,12 +48,13 @@ public struct MetalNumericCue: View {
     private let resolved: String?
     private let onOpenPicker: (() -> Void)?
     private let locale: Locale
-    private let onBegin: () -> Void
+    private let onBegin: () -> Bool
     private let onSourceChange: (String) -> Void
     private let onCommit: () -> Void
     private let onCancel: (MetalNumericCueCancelReason) -> Void
     @Environment(\.isEnabled) private var enabled
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalCuePresentation) private var presentation
     @MetalMotionPreference private var reduceMotion
     @FocusState private var focused: Bool
     @State private var typing = false
@@ -75,6 +76,19 @@ public struct MetalNumericCue: View {
         precondition(!units.isEmpty && !footprint.isEmpty && bounds.lowerBound.isFinite && bounds.upperBound.isFinite)
         self.label = label; _value = value; self.units = units; self.bounds = bounds; self.footprint = footprint
         self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.allowTyping = allowTyping; self.locale = locale; self.resolved = resolved; self.hint = hint; self.onOpenPicker = onOpenPicker
+        self.onBegin = { onBegin(); return true }; self.onSourceChange = onSourceChange; self.onCommit = onCommit; self.onCancel = onCancel
+    }
+
+    /// Source-backed hosts may refuse ownership before any value or source changes.
+    public init(_ label: String, value: Binding<MetalNumericCueValue>, units: [MetalNumericCueUnit],
+                in bounds: ClosedRange<Double>, footprint: [String], kind: MetalCueKind = .measurement,
+                meaning: MetalCueMeaning? = nil, raw: Bool = false, readOnly: Bool = false, allowTyping: Bool = true,
+                locale: Locale = .current, resolved: String? = nil, hint: Bool = true, onOpenPicker: (() -> Void)? = nil, onBegin: @escaping () -> Bool,
+                onSourceChange: @escaping (String) -> Void = { _ in }, onCommit: @escaping () -> Void = {},
+                onCancel: @escaping (MetalNumericCueCancelReason) -> Void = { _ in }) {
+        precondition(!units.isEmpty && !footprint.isEmpty && bounds.lowerBound.isFinite && bounds.upperBound.isFinite)
+        self.label = label; _value = value; self.units = units; self.bounds = bounds; self.footprint = footprint
+        self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.allowTyping = allowTyping; self.locale = locale; self.resolved = resolved; self.hint = hint; self.onOpenPicker = onOpenPicker
         self.onBegin = onBegin; self.onSourceChange = onSourceChange; self.onCommit = onCommit; self.onCancel = onCancel
     }
     private var unit: MetalNumericCueUnit { units.first { $0.id == value.unit } ?? units[0] }
@@ -90,12 +104,16 @@ public struct MetalNumericCue: View {
     public var body: some View {
         ZStack(alignment: .leading) {
             // Real font metrics establish the maximum once per layout; no per-frame geometry reads.
+            if presentation == .surface || initial != nil {
             ForEach(Array(footprint.enumerated()), id: \.offset) { _, words in
                 Text(words).font(.metal(MetalType.content)).monospacedDigit().hidden().accessibilityHidden(true)
-                    .padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
+                    .padding(.leading, presentation == .documentLine && meaning != nil ? MetalRecipes.button.points("compact.glyph") + MetalCue.urlGap : .zero)
+                    .padding(.top, presentation == .documentLine ? .zero : MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
+            }
             }
             MetalCueText(raw ? words : formatted, kind: kind, meaning: meaning, label: hint ? label : "", raw: raw || !mutable)
                 .opacity(typing ? .zero : .one)
+                .contentShape(Rectangle())
                 .contentTransition(reduceMotion ? .opacity : .numericText(value: displayed))
                 .metalAnimation(.settle, value: value)
                 .onTapGesture { startTyping() }
@@ -104,6 +122,7 @@ public struct MetalNumericCue: View {
                     .onEnded { _ in if !blockedDrag { commit() }; blockedDrag = false })
             if typing { editor }
         }
+        .fixedSize(horizontal: presentation == .documentLine, vertical: false)
         .foregroundStyle(colorway.tokens.ink.color)
         .overlay(alignment: .topLeading) {
             if held {
@@ -120,7 +139,7 @@ public struct MetalNumericCue: View {
         .accessibilityHint("Up and down change the value. Option left and right convert units. Escape cancels.")
         .accessibilityAdjustableAction { direction in
             guard mutable else { return }
-            begin(); step(direction == .increment ? 1 : -1, amount: unit.step); commit()
+            guard begin() else { return }; step(direction == .increment ? 1 : -1, amount: unit.step); commit()
         }
         .help(hint ? "Drag vertically to change, horizontally to convert. Shift steps more; Option steps less. Escape cancels." : "")
         .onChange(of: value) { previous, next in
@@ -134,7 +153,7 @@ public struct MetalNumericCue: View {
     private var editor: some View {
         TextField(label, text: $draft).textFieldStyle(.plain)
             .font(.metal(MetalType.content)).monospacedDigit()
-            .padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
+            .padding(.top, presentation == .documentLine ? .zero : MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
             .focused($focused)
             .onChange(of: draft) { _, next in
                 guard mutable, let number = numberFormatter.number(from: next)?.doubleValue else { return }
@@ -142,15 +161,18 @@ public struct MetalNumericCue: View {
             }
             .onSubmit { typing = false; focused = false; commit() }
     }
-    private func begin() {
-        guard mutable, initial == nil else { return }
-        initial = value; initialSource = words; expected = value; onBegin()
+    @discardableResult private func begin() -> Bool {
+        guard mutable else { return false }
+        if initial != nil { return true }
+        guard onBegin() else { return false }
+        initial = value; initialSource = words; expected = value
+        return true
     }
     private func publish(_ next: MetalNumericCueValue, detent: Bool = false) {
         guard mutable, !blockedDrag, next.value.isFinite, let selected = units.first(where: { $0.id == next.unit }) else { return }
         let accepted = MetalNumericCueValue(value: min(bounds.upperBound, max(bounds.lowerBound, next.value)), unit: next.unit)
         guard accepted != value else { return }
-        begin(); expected = accepted; value = accepted
+        guard begin() else { return }; expected = accepted; value = accepted
         onSourceChange(selected.source(accepted.value / selected.factor))
         if detent { MetalHaptic.detent.perform() }
     }
@@ -172,7 +194,7 @@ public struct MetalNumericCue: View {
     }
     private func startTyping() {
         guard mutable, allowTyping else { return }
-        blockedDrag = false; begin(); draft = numberFormatter.string(from: NSNumber(value: displayed)) ?? String(displayed)
+        blockedDrag = false; guard begin() else { return }; draft = numberFormatter.string(from: NSNumber(value: displayed)) ?? String(displayed)
         typing = true; focused = true
     }
     private func step(_ direction: Double, amount: Double) {
@@ -185,7 +207,7 @@ public struct MetalNumericCue: View {
     }
     private func drag(_ gesture: DragGesture.Value) {
         guard mutable, !blockedDrag else { return }
-        begin(); held = true; typing = false
+        guard begin() else { blockedDrag = true; return }; held = true; typing = false
         let x = gesture.translation.width, y = gesture.translation.height
         if axis == nil { axis = abs(x) > abs(y) ? .horizontal : .vertical }
         let stops: Int
@@ -208,10 +230,10 @@ public struct MetalNumericCue: View {
         if !allowTyping, let onOpenPicker, press.key == .return || press.key == .space || (press.key == .downArrow && press.modifiers.contains(.option)) { onOpenPicker(); return .handled }
         if press.key == .escape { cancel(.escape); return .handled }
         if press.modifiers.contains(.option) && (press.key == .leftArrow || press.key == .rightArrow) {
-            blockedDrag = false; begin(); convert(press.key == .leftArrow ? -1 : 1); commit(); return .handled
+            blockedDrag = false; guard begin() else { return .handled }; convert(press.key == .leftArrow ? -1 : 1); commit(); return .handled
         }
         if press.key == .upArrow || press.key == .downArrow {
-            blockedDrag = false; begin()
+            blockedDrag = false; guard begin() else { return .handled }
             step(press.key == .upArrow ? 1 : -1, amount: press.modifiers.contains(.shift) ? unit.largeStep : press.modifiers.contains(.option) ? unit.smallStep : unit.step)
             commit(); return .handled
         }
