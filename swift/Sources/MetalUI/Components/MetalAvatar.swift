@@ -8,10 +8,13 @@ import SwiftUI
 public struct MetalAvatar: View {
     private let name: String
     private let image: Image?
+    private let label: String
 
-    public init(name: String, image: Image? = nil) {
+    /// `name` gives the initials. The optional label names the disc independently; "" makes it decorative.
+    public init(name: String, image: Image? = nil, accessibilityLabel: String? = nil) {
         self.name = name
         self.image = image
+        self.label = accessibilityLabel ?? name
     }
 
     private var initials: String {
@@ -28,6 +31,7 @@ public struct MetalAvatar: View {
         }
         .frame(width: size, height: size)
         .accessibilityElement()
-        .accessibilityLabel(name)
+        .accessibilityLabel(label)
+        .accessibilityHidden(label.isEmpty)
     }
 }

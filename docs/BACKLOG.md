@@ -334,7 +334,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
 - [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
 - [ ] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
-- [ ] **Avatar**: no accessible label separate from the name its initials come from.
+- [x] **Avatar**: accessible label independent of initials (`aria-label`, also per group member; Swift `accessibilityLabel`). An empty label makes the disc decorative.
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
 - [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.

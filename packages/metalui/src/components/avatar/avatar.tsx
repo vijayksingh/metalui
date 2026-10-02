@@ -37,8 +37,10 @@ export function initialsOf(name: string) {
 }
 
 export interface AvatarProps {
-  /** The person's name: it names the avatar and gives the initials. */
+  /** The name used for initials and, by default, the accessible label. */
   name: string;
+  /** Complete accessible label, independent of initials. Include presence when relevant; "" makes the disc decorative. */
+  'aria-label'?: string;
   /** Their photo. */
   src?: string;
   size?: AvatarSize;
@@ -48,11 +50,12 @@ export interface AvatarProps {
 }
 
 /** A person as a small raised disc: a photo, or their initials. */
-export function Avatar({ name, src, size = 'regular', presence, className }: AvatarProps) {
+export function Avatar({ name, 'aria-label': accessibleLabel, src, size = 'regular', presence, className }: AvatarProps) {
   const own = `${DISC} ${SIZE[size]}`;
-  const label = presence ? `${name}, ${presence === 'live' ? 'here' : presence === 'waiting' ? 'away' : 'offline'}` : name;
+  const decorative = accessibleLabel === '';
+  const label = accessibleLabel ?? (presence ? `${name}, ${presence === 'live' ? 'here' : presence === 'waiting' ? 'away' : 'offline'}` : name);
   return (
-    <BaseAvatar.Root role="img" aria-label={label} className={className ? `${own} ${className}` : own}>
+    <BaseAvatar.Root role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : label} aria-hidden={decorative || undefined} className={className ? `${own} ${className}` : own}>
       <BaseAvatar.Fallback className={INITIALS}>{initialsOf(name)}</BaseAvatar.Fallback>
       {src && <BaseAvatar.Image src={src} alt="" className={PHOTO} />}
       {presence && <span className={PRESENCE}><Led kind={presence} size={size === 'large' ? 'default' : 'small'} /></span>}
@@ -62,7 +65,7 @@ export function Avatar({ name, src, size = 'regular', presence, className }: Ava
 
 export interface AvatarGroupProps {
   /** People, in order. */
-  people: { name: string; src?: string; presence?: AvatarProps['presence'] }[];
+  people: Pick<AvatarProps, 'name' | 'src' | 'presence' | 'aria-label'>[];
   /** How many discs before a +N disc counts the rest (4). */
   max?: number;
   size?: AvatarSize;

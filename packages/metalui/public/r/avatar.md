@@ -34,14 +34,16 @@ Reduce Motion: the photo appears at once; the group does not spread.
 
 | React | SwiftUI |
 |---|---|
-| `Avatar` `name`, `src`, `size` (`small`, `regular`, `large`), `presence` (`live`, `waiting`, `off`) | `MetalAvatar(name:image:)` |
+| `Avatar` `name`, `aria-label`, `src`, `size` (`small`, `regular`, `large`), `presence` (`live`, `waiting`, `off`) | `MetalAvatar(name:image:accessibilityLabel:)` |
 | `AvatarGroup` `people`, `max` (4), `size`, `aria-label` | – |
 
 ## Keyboard and accessibility
 
-- An avatar is an image named by the person's name (and presence: "Ana Rocha, here"). A group is a named `group`; the +N disc says "3 more". Avatars take no focus; wrap one in a link or button when it goes somewhere.
+- By default, an avatar is an image named by the person's name (and presence: "Ana Rocha, here"). React `aria-label` and SwiftUI `accessibilityLabel` name it independently from the initials source. React's explicit label replaces the complete default label, so include presence in it when relevant: `<Avatar name="A Rocha" aria-label="Ana Rocha, host, here" presence="live" />` displays AR and announces "Ana Rocha, host, here". Each `AvatarGroup.people` entry accepts the same `aria-label` override.
+- An explicit empty label (`aria-label=""` or `accessibilityLabel: ""`) hides the disc from assistive technology. Use this when adjacent text or the containing control already conveys the person's identity and presence.
+- A group is a named `group`; the +N disc says "3 more". Avatars take no focus; wrap one in a link or button when it goes somewhere.
 
 ## Rules
 
-- Always give the name; the initials and the label come from it.
-- Colour never carries presence alone: the label says it too.
+- Always give the name for initials. Omit the optional accessible label to use the name and presence by default.
+- Colour never carries presence alone: include it in a custom label or adjacent text, too.

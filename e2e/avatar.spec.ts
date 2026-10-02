@@ -18,6 +18,29 @@ for (const colorway of COLORWAYS) {
     await page.waitForTimeout(500);
     await play(page).screenshot({ path: capture(`avatar-${colorway}`) });
   });
+
+  test(`accessible identity is independent from initials in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/avatar', colorway);
+    const identity = page.locator('#identity');
+    const host = identity.getByRole('img', { name: 'Ana Rocha, host, here', exact: true });
+    await expect(host).toContainText('AR');
+    await expect(identity.getByRole('img', { name: 'A Rocha, here', exact: true })).toHaveCount(0);
+
+    const group = identity.getByRole('group', { name: 'Meeting hosts' });
+    const groupHost = group.getByRole('img', { name: 'Ana Rocha, host', exact: true });
+    await expect(groupHost).toContainText('AR');
+    await expect(groupHost.locator('img')).toHaveCount(0);
+    await expect(group.getByRole('img', { name: 'Ben Okafor, co-host', exact: true })).toContainText('BO');
+
+    const decorative = identity.getByTestId('avatar-decorative-example');
+    await expect(decorative.getByText('Ben Okafor', { exact: true })).toBeVisible();
+    await expect(decorative.getByRole('img')).toHaveCount(0);
+    await expect(decorative.locator('[aria-hidden="true"]').first()).toContainText('BO');
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(host).toHaveAccessibleName('Ana Rocha, host, here');
+    await expect(groupHost).toHaveAccessibleName('Ana Rocha, host');
+  });
 }
 
 test('the group spreads on hover and settles back', async ({ page }) => {
