@@ -112,3 +112,12 @@ Run `python3 e2e/native/run-toast-label-proof.py`. A single public toast keeps i
 # Native provenance source document
 
 `python3 e2e/native/run-provenance-document-proof.py` compiles the docs' actual example against the published MetalUI library and launches it as a macOS app. The real TextKit editor and public inline controls share one source/history writer. Thirty-six receipts cover held state preview/Escape, 6h→360min pointer conversion, fixed footprints, UTF16 caret shifts, focus preservation, local Undo/Redo and read-only refusal in both colorways, with scoped reduction in Graphite. An actual encoding-form Enum replaces NFC é with NFD e + combining accent while the caret stays zero; real TextKit typing verifies exact source and pre-edit selection snapshots through Undo/Redo. View anchors resolve visible control bounds into host coordinates, avoiding title-safe-area offsets. Set `METALUI_NATIVE_CAPTURE` for docs captures. App fixtures run serially; these receipts do not claim spoken VoiceOver output or physical haptics.
+
+
+# Native Button focus and words
+
+Run `python3 e2e/native/run-button-words-proof.py`. The genuine SwiftUI app operates the actual public Button with pointer, Space, Return, repeat, Escape and Tab events. Sixteen receipts cover focused cap depth, the rendered focus ring, one Tab stop, blocked states, held confirmation and cancellation, mixed pointer/key ownership, full-motion words and live reduced-motion settlement against a fresh reduced reference. Captures use the app's own visible window in both colorways. This verifies the cap's keyboard interaction and rendered result; it does not measure spoken VoiceOver output.
+
+# Native Sidebar live reduced words
+
+Run `python3 e2e/native/run-sidebar-words-proof.py`. Both colorways verify the existing SidebarToggle binding, disabled refusal and full/reduced words. A live scope change 15 ms into the transition lands the actual window's words within 50 ms, matching both the settled result and a freshly mounted reduced reference. The existing runtime passes without a Sidebar implementation change; its native List material and collapse layout remain WIP. Run native app fixtures serially to preserve the active scene.
