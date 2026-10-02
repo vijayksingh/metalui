@@ -72,7 +72,8 @@ function Examples() {
     <p className="type-meta text-ink2">Money conversion uses the explicit example host factor: 1 EUR = 0.9 USD. This is a demonstration factor, not a market rate.</p>
     <MarkLine>Work for <NumericCue label="Duration" kind="duration" meaning="time" value={duration} onValueChange={setDuration} units={hours} min={0} max={1440} footprint={reservations} /> then pause.</MarkLine>
     <MarkLine>Measure <NumericCue label="Length" value={distance} onValueChange={setDistance} units={length} min={0} max={1200} footprint={reservations} /> from the edge.</MarkLine>
-    <MarkLine>Meet at <NumericCue label="Time" kind="date" meaning="time" value={at} onValueChange={setAt} units={time} min={0} max={1439} footprint={reservations} /> for coffee.</MarkLine>
+    <MarkLine>Meet at <NumericCue label="Time" allowTyping={false} inputAria={{ 'aria-describedby': 'time-numeric-hint' }} kind="date" meaning="time" value={at} onValueChange={setAt} units={time} min={0} max={1439} footprint={reservations} /> for coffee.</MarkLine>
+    <p id="time-numeric-hint" className="type-meta text-ink2">Time keeps its clock words while focused; arrows change quarter-hour stops.</p>
     <MarkLine>Locked <NumericCue label="Read only amount" value={distance} onValueChange={setDistance} units={length} min={0} max={1200} footprint={reservations} readOnly />; unavailable <NumericCue label="Disabled amount" value={distance} onValueChange={setDistance} units={length} min={0} max={1200} footprint={reservations} disabled />.</MarkLine>
   </div>;
 }

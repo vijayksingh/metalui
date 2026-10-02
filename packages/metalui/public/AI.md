@@ -2530,6 +2530,8 @@ Use existing Mark underline/glyph, shared SwapText drum and tooltip chip recipes
 
 Swift `MetalNumericCueValue`, `MetalNumericCueUnit` and `MetalNumericCue` match canonical and source semantics. The native inline face uses `MetalCueText`, a plain editing TextField, real keyboard/VoiceOver adjustments and a fixed hidden-text maximum footprint. macOS and iOS hosts control source/history; a preview alone is not TextKit caret proof.
 
+`allowTyping={false}` retains formatted words and Base UI numeric arrows/scrub, blocks text insertion/paste and leaves Root mutable. Use for civil date/time controls whose typed numeric ordinal would be meaningless. `inputAria` is limited to popup/help relations on the actual spinbutton. Escape restores the exact source spelling captured on begin, even if a host formatter changes. Swift supplies the same `allowTyping` policy.
+
 ---
 
 # Pagination

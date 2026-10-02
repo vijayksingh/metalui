@@ -13,6 +13,7 @@ private let units = [
 ]
 struct Proof: View {
     @State private var value = MetalNumericCueValue(value: 360, unit: "h")
+    @State private var time = MetalNumericCueValue(value: 960, unit: "clock")
     @State private var enabled = true
     @StateObject private var document = MetalCueDocument("slept 6h")
     @State private var begins = 0
@@ -32,6 +33,9 @@ struct Proof: View {
                     .disabled(!enabled)
                 Text("after work")
             }
+            MetalNumericCue("Time", value: $time, units: [MetalNumericCueUnit(id: "clock", label: "Time of day", factor: 1, step: 15,
+                format: { "\(Int($0) / 60):\(Int($0) % 60)" }, source: { "\(Int($0))min" })],
+                in: 0...1439, footprint: ["12:59pm"], kind: .date, meaning: .time, allowTyping: false)
             Text(document.source)
             Text("\(begins) begins, \(commits) commits, \(cancels) cancels")
         }.padding(MetalSpace.s24).font(.metal(MetalType.content)).frame(width: 600, height: 220)
@@ -63,10 +67,14 @@ struct Proof: View {
                 try? await Task.sleep(for: .milliseconds(150))
                 await key("\u{F700}", 126)
                 let disabled = value.value == 424 && commits == before
+                await key("\t", 48)
+                await key("9", 25)
+                await key("\u{F700}", 126)
+                let clock = time.value == 975
                 document.undo()
                 let undo = document.source != "slept 424min"
-                let passed = stepped && shifted && fine && converted && cancelled && disabled && undo
-                let report = "trace=\(trace) step=\(stepped) shift=\(shifted) fine=\(fine) conversion=\(converted) cancel=\(cancelled) disabled=\(disabled) undo=\(undo) passed=\(passed)"
+                let passed = stepped && shifted && fine && converted && cancelled && disabled && undo && clock
+                let report = "trace=\(trace) step=\(stepped) shift=\(shifted) fine=\(fine) conversion=\(converted) cancel=\(cancelled) disabled=\(disabled) undo=\(undo) clock=\(clock) passed=\(passed)"
                 try? report.write(toFile: ProcessInfo.processInfo.environment["METALUI_NATIVE_REPORT"]!, atomically: true, encoding: .utf8)
                 NSApp.terminate(nil)
             }

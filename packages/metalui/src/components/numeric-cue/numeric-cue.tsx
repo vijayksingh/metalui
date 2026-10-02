@@ -38,6 +38,9 @@ export interface NumericCueProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
   raw?: boolean;
   locale?: string;
   numberFormat?: Intl.NumberFormatOptions;
+  /** Keep formatted words while focused; numeric keys/scrub remain operable, text insertion is blocked. */
+  allowTyping?: boolean;
+  inputAria?: Pick<React.AriaAttributes, 'aria-haspopup' | 'aria-expanded' | 'aria-controls' | 'aria-describedby'>;
   disabled?: boolean;
   readOnly?: boolean;
   name?: string;
@@ -47,13 +50,13 @@ export interface NumericCueProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
   /** External controlled changes invalidate a gesture without restoring its obsolete value. */
   onCancel?: (reason: 'escape' | 'external' | 'pointer') => void;
 }
-interface Gesture { initial: NumericCueValue; expected: NumericCueValue; x: number; y: number; unitSteps: number; axis?: 'value' | 'unit'; cancelled?: boolean }
+interface Gesture { initial: NumericCueValue; source: string; expected: NumericCueValue; x: number; y: number; unitSteps: number; axis?: 'value' | 'unit'; cancelled?: boolean }
 const same = (a: NumericCueValue, b: NumericCueValue) => a.unit === b.unit && a.value === b.value;
 
 /** An inline, host-controlled numeric cue. Base UI owns the spinbutton, typing and vertical scrub. */
 export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(function NumericCue({
   value, units, onValueChange, label, footprint, min, max, kind = 'measurement', meaning,
-  raw = false, locale, numberFormat, disabled = false, readOnly = false, name,
+  raw = false, locale, numberFormat, allowTyping = true, inputAria, disabled = false, readOnly = false, name,
   onBegin, onSourceChange, onCommit, onCancel, className, style, ...props
 }, forwardedRef) {
   const root = React.useRef<HTMLSpanElement>(null);
@@ -74,7 +77,8 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
   }
   const begin = () => {
     if (disabled || readOnly || gesture.current) return;
-    gesture.current = { initial: { ...current.current }, expected: { ...current.current }, x: 0, y: 0, unitSteps: 0 };
+    const selected = units.find(u => u.id === current.current.unit)!;
+    gesture.current = { initial: { ...current.current }, source: selected.source(current.current.value / selected.factor), expected: { ...current.current }, x: 0, y: 0, unitSteps: 0 };
     callbacks.current.onBegin?.();
   };
   const finish = () => {
@@ -104,8 +108,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     if (reason !== 'external') {
       current.current = active.initial;
       callbacks.current.onValueChange(active.initial);
-      const selected = units.find(u => u.id === active.initial.unit)!;
-      callbacks.current.onSourceChange?.(selected.source(active.initial.value / selected.factor));
+      callbacks.current.onSourceChange?.(active.source);
     }
     callbacks.current.onCancel?.(reason);
     setHeld(false);
@@ -178,10 +181,10 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
   return <BaseNumberField.Root render={<span />} ref={node => { root.current = node; if (typeof forwardedRef === 'function') forwardedRef(node); else if (forwardedRef) forwardedRef.current = node; }}
     value={value.value / unit.factor} min={min / unit.factor} max={max / unit.factor} step={unit.step ?? 1} smallStep={unit.smallStep ?? .1} largeStep={unit.largeStep ?? 10}
     disabled={disabled} readOnly={readOnly} name={name} locale={locale} format={numberFormat}
-    className={`mu-numeric-cue numeric-cue relative inline-block align-baseline${className ? ` ${className}` : ''}`}
+    className={`mu-numeric-cue numeric-cue relative inline-block has-[input:focus-visible]:focus-ring align-baseline${className ? ` ${className}` : ''}`}
     style={{ ...style, width }} data-held={held || undefined} data-typing={typing || undefined} data-reduced={reduced || undefined} data-unit={unit.id}
     onValueChange={(amount, details) => {
-      if (amount === null) return;
+      if (amount === null || (!allowTyping && details.reason !== 'keyboard' && details.reason !== 'scrub')) return;
       if (details.reason === 'scrub') {
         const event = details.event as PointerEvent;
         const active = gesture.current;
@@ -193,20 +196,22 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     <TooltipProvider><Tooltip label={help} disabled={disabled} wrap><BaseNumberField.ScrubArea direction="vertical"
       className="mu-numeric-cue-face block cursor-ns-resize"
       onPointerDownCapture={() => { if (!disabled && !readOnly) { cancelledInput.current = false; begin(); setHeld(true); } }}
-      onDoubleClick={() => { setTyping(true); input.current?.focus(); }}>
+      onDoubleClick={() => { if (allowTyping && !readOnly && !disabled) { setTyping(true); input.current?.focus(); } }}>
       <Mark kind={kind} meaning={meaning} meaningLabel={`${label}, ${formatted}`} raw={raw || disabled || readOnly} className="block">
         <SwapText value={raw ? words : formatted} />
       </Mark>
     </BaseNumberField.ScrubArea></Tooltip></TooltipProvider>
-    <BaseNumberField.Input ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={`${formatted}, ${unit.label}`} title={help}
+    <BaseNumberField.Input {...inputAria} ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={`${formatted}, ${unit.label}`} title={help}
       className="mu-numeric-cue-input absolute inset-0 w-full bg-transparent p-0 border-0 rounded-none text-inherit font-inherit focus-visible:focus-ring"
-      onFocus={() => { if (!held) { cancelledInput.current = false; setTyping(true); begin(); } }} onBlur={() => { setTyping(false); finish(); }}
+      onFocus={() => { if (!held) { cancelledInput.current = false; setTyping(allowTyping); begin(); } }} onBlur={() => { setTyping(false); finish(); }}
 
+      onBeforeInput={event => { if (!allowTyping) event.preventDefault(); }} onPaste={event => { if (!allowTyping) event.preventDefault(); }}
       onKeyDown={event => {
         if (disabled || readOnly) return;
         if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); cancel('escape'); input.current?.blur(); }
         else if (event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) { event.preventDefault(); cancelledInput.current = false; convert(event.key === 'ArrowLeft' ? -1 : 1); finish(); }
         else if (event.key === 'Enter') { event.preventDefault(); setTyping(false); finish(); input.current?.blur(); }
+        else if (!allowTyping && event.key.length === 1 && !event.ctrlKey && !event.metaKey) event.preventDefault();
         else { cancelledInput.current = false; begin(); }
       }} />
     {held && <span aria-hidden className="mu-numeric-cue-scale absolute left-0 bottom-full mb-mu-space-2 rounded-tooltip-radius px-tooltip-pad-x py-tooltip-pad-y recipe-tooltip text-tooltip-ink type-tooltip whitespace-nowrap">

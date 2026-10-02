@@ -111,3 +111,14 @@ for (const caret of [2, 17]) test(`UTF16 source caret ${caret} survives a numeri
   await expect(source).toHaveValue('🧠 slept 6h. after');
   expect(await source.evaluate((element: HTMLTextAreaElement) => element.selectionStart)).toBe(caret);
 });
+
+test('non-typing time retains words, mutable ARIA and numeric keyboard detents', async ({ page }) => {
+  const time = page.getByRole('spinbutton', { name: 'Time', exact: true });
+  await time.focus();
+  await expect(time).not.toHaveAttribute('readonly');
+  await expect(time).toHaveAttribute('aria-describedby', 'time-numeric-hint');
+  await expect(time.locator('..')).not.toHaveAttribute('data-typing');
+  await time.press('9'); await time.press('ArrowUp');
+  await expect(time).toHaveAttribute('aria-valuetext', '4:15pm, time of day');
+  await expect(time.locator('..')).not.toHaveAttribute('data-typing');
+});

@@ -43,6 +43,7 @@ public struct MetalNumericCue: View {
     private let meaning: MetalCueMeaning?
     private let raw: Bool
     private let readOnly: Bool
+    private let allowTyping: Bool
     private let locale: Locale
     private let onBegin: () -> Void
     private let onSourceChange: (String) -> Void
@@ -56,6 +57,7 @@ public struct MetalNumericCue: View {
     @State private var held = false
     @State private var draft = ""
     @State private var initial: MetalNumericCueValue?
+    @State private var initialSource: String?
     @State private var expected: MetalNumericCueValue?
     @State private var axis: Axis?
     @State private var lastStop = 0
@@ -63,13 +65,13 @@ public struct MetalNumericCue: View {
 
     public init(_ label: String, value: Binding<MetalNumericCueValue>, units: [MetalNumericCueUnit],
                 in bounds: ClosedRange<Double>, footprint: [String], kind: MetalCueKind = .measurement,
-                meaning: MetalCueMeaning? = nil, raw: Bool = false, readOnly: Bool = false,
+                meaning: MetalCueMeaning? = nil, raw: Bool = false, readOnly: Bool = false, allowTyping: Bool = true,
                 locale: Locale = .current, onBegin: @escaping () -> Void = {},
                 onSourceChange: @escaping (String) -> Void = { _ in }, onCommit: @escaping () -> Void = {},
                 onCancel: @escaping (MetalNumericCueCancelReason) -> Void = { _ in }) {
         precondition(!units.isEmpty && !footprint.isEmpty && bounds.lowerBound.isFinite && bounds.upperBound.isFinite)
         self.label = label; _value = value; self.units = units; self.bounds = bounds; self.footprint = footprint
-        self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.locale = locale
+        self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.allowTyping = allowTyping; self.locale = locale
         self.onBegin = onBegin; self.onSourceChange = onSourceChange; self.onCommit = onCommit; self.onCancel = onCancel
     }
     private var unit: MetalNumericCueUnit { units.first { $0.id == value.unit } ?? units[0] }
@@ -139,7 +141,7 @@ public struct MetalNumericCue: View {
     }
     private func begin() {
         guard mutable, initial == nil else { return }
-        initial = value; expected = value; onBegin()
+        initial = value; initialSource = words; expected = value; onBegin()
     }
     private func publish(_ next: MetalNumericCueValue, detent: Bool = false) {
         guard mutable, !blockedDrag, next.value.isFinite, let selected = units.first(where: { $0.id == next.unit }) else { return }
@@ -151,21 +153,22 @@ public struct MetalNumericCue: View {
     }
     private func commit() {
         let active = initial != nil
-        initial = nil; expected = nil; held = false; axis = nil; lastStop = 0
+        initial = nil; initialSource = nil; expected = nil; held = false; axis = nil; lastStop = 0
         if active { onCommit() }
     }
     private func cancel(_ reason: MetalNumericCueCancelReason) {
         guard let original = initial else { return }
+        let originalSource = initialSource
         let wasHeld = held
-        initial = nil; expected = nil; held = false; typing = false; focused = false; axis = nil; lastStop = 0
+        initial = nil; initialSource = nil; expected = nil; held = false; typing = false; focused = false; axis = nil; lastStop = 0
         if reason != .external {
             value = original
-            if let selected = units.first(where: { $0.id == original.unit }) { onSourceChange(selected.source(original.value / selected.factor)) }
+            if let originalSource { onSourceChange(originalSource) }
         }
         blockedDrag = wasHeld; onCancel(reason)
     }
     private func startTyping() {
-        guard mutable else { return }
+        guard mutable, allowTyping else { return }
         blockedDrag = false; begin(); draft = numberFormatter.string(from: NSNumber(value: displayed)) ?? String(displayed)
         typing = true; focused = true
     }
@@ -208,7 +211,7 @@ public struct MetalNumericCue: View {
             step(press.key == .upArrow ? 1 : -1, amount: press.modifiers.contains(.shift) ? unit.largeStep : press.modifiers.contains(.option) ? unit.smallStep : unit.step)
             commit(); return .handled
         }
-        if !typing && (press.key == .return || press.key == .space) { startTyping(); return .handled }
+        if allowTyping && !typing && (press.key == .return || press.key == .space) { startTyping(); return .handled }
         return .ignored
     }
 }
