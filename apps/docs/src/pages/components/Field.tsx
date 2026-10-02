@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Field, Kbd, SearchField } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
+import { TagDemo } from '../../ui/tag/TagDemo';
+import swiftExample from '../../../../../swift/Examples/MetalTagExample.swift?raw';
 import { FieldXray } from '../../ui/xray/FieldXray';
 import reactSource from '../../../../../packages/metalui/src/components/field/field.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -24,16 +26,17 @@ export default function FieldPage() {
           </div>
         ) }}
       xray={<FieldXray />}
-      more={[{ id: 'form', title: 'Form sizes and states', lede: 'In a form, the field comes in the select\'s sizes and shows the focus ring. Invalid draws the one invalid ring every form control shares; disabled dims it.', node: (
+      more={[{ id: 'form', title: 'Form sizes and states', lede: 'In a form, the field comes in the select\'s sizes and shows the focus ring. Invalid draws the one invalid ring every form control shares; disabled dims it. Tag commits one attachment: Enter submits, Escape cancels, storage failures keep the draft and Undo restores the prior tag list. The Tag request panel controls latency and first-request failure.', node: (
         <div className="grid w-full max-w-[320px] gap-12">
           <Field size="regular"><Field.Input placeholder="Region name" aria-label="Region name" /></Field>
-          <Field size="compact"><Field.Input placeholder="Tag" aria-label="Tag" /></Field>
+          <TagDemo />
           <Field size="regular" invalid><Field.Input defaultValue="Trip to" aria-label="Invalid region name" /></Field>
           <Field size="regular" disabled><Field.Input defaultValue="Locked" aria-label="Locked region name" /></Field>
         </div>
       ) }]}
       sources={[
         { id: 'react', label: "React", code: reactSource },
+        { id: 'swift', label: 'SwiftUI tag host', code: swiftExample },
         { id: 'css', label: "CSS", code: cssSource },
         { id: 'agent', label: "Agent guide", code: agentSource },
       ]}

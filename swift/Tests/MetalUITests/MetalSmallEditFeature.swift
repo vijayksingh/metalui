@@ -56,4 +56,37 @@ final class MetalSmallEditFeature: XCTestCase {
             XCTAssertTrue(input.isEnabled); XCTAssertEqual(storage.requests, 1)
         }
     }
+    private final class TagStorage: ObservableObject {
+        @Published var tags = ["travel"]
+        var requests = 0
+    }
+    private struct TagHost: View {
+        @ObservedObject var storage: TagStorage
+        let colorway: MetalColorway
+        var body: some View {
+            MetalTagExample(tags: $storage.tags, onAttach: { _ in
+                storage.requests += 1; try await Task.sleep(for: .seconds(0.8))
+            }).padding(MetalSpace.s20).background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color).metalColorway(colorway)
+        }
+    }
+    func testTagHost() async throws {
+        _ = NSApplication.shared
+        for colorway in MetalColorway.allCases {
+            let storage = TagStorage()
+            let host = NSHostingView(rootView: TagHost(storage: storage, colorway: colorway))
+            let window = NSWindow(contentRect: NSRect(origin: .zero, size: host.fittingSize), styleMask: [.titled], backing: .buffered, defer: false)
+            window.isReleasedWhenClosed = false; window.contentView = host; window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
+            defer { window.close() }
+            try await Task.sleep(for: .seconds(0.25))
+            let input = try XCTUnwrap(fields(host).first(where: { $0.placeholderString == "Add a tag" }))
+            window.makeFirstResponder(input)
+            let editor = try XCTUnwrap(input.currentEditor() as? NSTextView)
+            editor.insertText("Lisbon", replacementRange: editor.selectedRange()); editor.doCommand(by: #selector(NSResponder.insertNewline(_:)))
+            try await Task.sleep(for: .seconds(0.1)); XCTAssertEqual(storage.requests, 1); XCTAssertFalse(input.isEnabled)
+            try await Task.sleep(for: .seconds(1.2)); XCTAssertEqual(storage.tags, ["travel", "Lisbon"])
+            capture("tag-result-\(colorway.rawValue)", host)
+            try await Task.sleep(for: .seconds(0.8)); XCTAssertTrue(input.isEnabled); XCTAssertEqual(input.stringValue, "")
+        }
+    }
+
 }

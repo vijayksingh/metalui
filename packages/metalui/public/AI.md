@@ -1540,6 +1540,10 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trai
 
 - Field: the input takes focus. At the large size (a palette, where the field always has focus) the caret is the focus; the form sizes show the flush green ring. Name the input with a visible label or `aria-label`; say why a value is invalid in text near it. Search field: a button with `aria-keyshortcuts`, the green ring on focus.
 
+## Tag attachment host
+
+The docs' compact Tag field commits one attachment. It normalizes a leading hash, rejects an existing tag or a name over 32 characters, and keeps failures separate from value validation so retry submits the same draft. Enter submits; Escape or Cancel clears only an unlocked draft. Tag's authored glyph becomes check while the label turns Tagged, then the field clears after the shared result beat. Undo restores the tag list captured before that request. The native executable composition is `swift/Examples/MetalTagExample.swift`; it uses the shared compact well recipe rather than claiming the alpha `MetalField` renders compact fields.
+
 ---
 
 # Filter bar
