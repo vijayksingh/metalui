@@ -54,7 +54,7 @@ public struct MetalSaveRegionExample: View {
                     MetalCheckboxGroup(options: [("notes", "Notes"), ("photos", "Photos")], selection: $draft.include)
                 }.disabled(pending)
                 MetalButton("Save region", cap: .primary, state: state, waitingLabel: "Saving…", doneLabel: "Saved", errorLabel: "Try again", action: submit) {
-                    MetalMorphIcon(phase == .done ? .check : phase == .error ? .syncError : .region)
+                    MetalMorphIcon(phase == .done ? .check : phase == .error ? .syncError : .save)
                 }.keyboardShortcut(.defaultAction)
                 if let failure { Text(failure).metalType(MetalType.meta).foregroundStyle(colorway.tokens.invalid.color) }
                 Text(saved.map { "Stored: \($0.name)" } ?? "No saved region.").metalType(MetalType.meta).foregroundStyle(colorway.tokens.ink2.color)

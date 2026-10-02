@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, CheckboxGroup, Combobox, Field, Fieldset, Form, FormField, NumberField, Radio, RadioGroup, Textarea, ToastProvider, useToast, useWaiting } from '@unlocalhosted/metalui';
-import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
+import { SaveGlyph } from '../../ui/async/SaveGlyph';
 import { useEditRequest } from '../../../../../packages/metalui/src/components/rename-editor/edit-request';
 import { SPRINGS } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { WAITING_TIMING } from '../../../../../packages/metalui/src/motion/waiting.generated';
@@ -107,7 +107,7 @@ function RegionFormBody() {
       </Fieldset>
       <div className="flex items-center gap-12">
         <Button cap="primary" type="submit" state={request.state} waitingLabel="Saving…" doneLabel="Saved" errorLabel="Try again"
-          icon={<span className="relative inline-flex"><MorphIcon name={phase === 'done' ? 'check' : phase === 'error' ? 'sync-error' : 'region'} className={phase === 'idle' ? 'invisible' : undefined} /><Icon name="region" className={phase === 'idle' ? 'absolute inset-0' : 'hidden'} /></span>}>Save region</Button>
+          icon={<SaveGlyph state={phase} />}>Save region</Button>
         {sent && <span className="type-meta text-ink2">Saved.</span>}
       </div>
       {request.failure && <p className="m-0 type-meta text-form-field-error-ink" role="alert">{request.failure}</p>}
@@ -125,14 +125,16 @@ export default function FormFieldPage() {
       lede="A control with its words: a label, a hint, and an error that says why a value is not accepted. The error comes out from under the control, so the form moves instead of jumping. Fieldsets group fields under a legend."
       play={{ lede: 'Type two letters in the name and move on, or save with the name empty. Saving validates the whole form, locks only that request, then offers Undo.', caption: 'label · description · error · fieldset', node: <RegionForm /> }}
       more={[{ id: 'save', title: 'Commit a small edit', lede: 'Save region captures all validated fields for one storage request. A failure keeps the draft for retry; a success settles region into check and Save region into Saved, then unlocks the form. Undo restores the snapshot captured before that request. The Save region request panel controls latency and first-request failure.', node: <p className="m-0 type-content text-ink2">The native example below composes the same existing controls. Native Combobox, NumberField and CheckboxGroup remain at their documented alpha fidelity; request lock, validation, result and Undo are executable.</p> }, { id: 'error', title: 'Tune the error', lede: 'The Form error panel swaps the springs the error opens and closes on, and stretches time. Flip it invalid and valid.', node: <ErrorTuner /> }]}
-      usage={`<Form onFormSubmit={save}>
+      usage={`import { Icon } from '@unlocalhosted/metalui/icons';
+
+<Form onFormSubmit={save}>
   <FormField name="name">
     <FormField.Label>Region name</FormField.Label>
     <Field size="regular"><Field.Input required /></Field>
     <FormField.Description>Shown on its edge and in search.</FormField.Description>
     <FormField.Error match="valueMissing">Give the region a name.</FormField.Error>
   </FormField>
-  <Button cap="primary" type="submit">Save</Button>
+  <Button cap="primary" type="submit" icon={<Icon name="save" />}>Save</Button>
 </Form>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

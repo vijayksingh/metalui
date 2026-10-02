@@ -5,6 +5,7 @@ for (const colorway of COLORWAYS) {
   test(`Save region commits validated fields once, locks only the form, settles a result and captures Undo in ${colorway}`, async ({ page }) => {
     await open(page, '/components/form-field', colorway);
     const form = page.getByTestId('save-region');
+    await expect(form.getByRole('button', { name: 'Save region', exact: true }).locator('svg.mu-ic-save').filter({ visible: true })).toHaveCount(1);
     const name = form.getByRole('textbox', { name: 'Region name' });
     await name.fill('Lisbon'); await form.getByRole('textbox', { name: 'Notes' }).fill('Bring the tram map.');
     await form.getByRole('button', { name: 'Save region', exact: true }).click();
