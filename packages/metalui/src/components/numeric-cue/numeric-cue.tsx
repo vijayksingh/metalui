@@ -48,8 +48,8 @@ export interface NumericCueProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
   disabled?: boolean;
   readOnly?: boolean;
   name?: string;
-  onBegin?: () => boolean | void;
-  onSourceChange?: (words: string) => boolean | void;
+  onBegin?: (() => void) | (() => boolean);
+  onSourceChange?: ((words: string) => void) | ((words: string) => boolean);
   onCommit?: () => void;
   /** External controlled changes invalidate a gesture without restoring its obsolete value. */
   onCancel?: (reason: 'escape' | 'external' | 'pointer') => void;

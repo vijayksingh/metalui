@@ -22,11 +22,49 @@ try {
   }
   execFileSync('npm', [
     'install', '--prefix', temp, '--ignore-scripts', '--no-audit', '--no-fund', '--no-save',
-    registry ? `${pkg.name}@${pkg.version}` : join(temp, packed.filename), 'react@^19', 'react-dom@^19',
+    registry ? `${pkg.name}@${pkg.version}` : join(temp, packed.filename), 'react@^19', 'react-dom@^19', '@types/react@^19',
   ], { cwd: root, stdio: 'pipe' });
   if (registry) for (const path of required) {
     if (!existsSync(join(temp, 'node_modules', '@unlocalhosted', 'metalui', path))) throw new Error(`Registry package missing ${path}`);
   }
+  // Compile a real installed-package source host: legacy void handlers may infer
+  // an arbitrary return, while explicit false still refuses source ownership.
+  const typedConsumer = join(temp, 'source-host.tsx');
+  writeFileSync(typedConsumer, `
+import { NumericCue, DateCue } from '@unlocalhosted/metalui';
+const writes: string[] = [];
+const captures = new Set<string>();
+const voidBegin: () => void = () => {};
+const voidWrite: (words: string) => void = () => {};
+export function SourceHost() {
+  return <>
+    <NumericCue label="Sleep" value={{ value: 6, unit: 'h' }}
+      units={[{ id: 'h', label: 'hours', factor: 1, format: String, source: String }]}
+      min={0} max={24} footprint={['24']} onValueChange={() => {}}
+      onBegin={() => captures.add('sleep')} onSourceChange={words => writes.push(words)} />
+    <DateCue label="Delivery" value="2026-10-04" today="2026-10-03"
+      min="2026-10-01" max="2026-10-31" footprint={['2026-10-31']} onValueChange={() => {}}
+      onBegin={() => captures.add('date')} onSourceChange={words => writes.push(words)} />
+    <NumericCue label="Refused quantity" value={{ value: 6, unit: 'h' }}
+      units={[{ id: 'h', label: 'hours', factor: 1, format: String, source: String }]}
+      min={0} max={24} footprint={['24']} onValueChange={() => {}}
+      onBegin={() => false} onSourceChange={() => false} />
+    <DateCue label="Refused date" value="2026-10-04" today="2026-10-03"
+      min="2026-10-01" max="2026-10-31" footprint={['2026-10-31']} onValueChange={() => {}}
+      onBegin={() => false} onSourceChange={() => false} />
+    <NumericCue label="Void quantity" value={{ value: 6, unit: 'h' }}
+      units={[{ id: 'h', label: 'hours', factor: 1, format: String, source: String }]}
+      min={0} max={24} footprint={['24']} onValueChange={() => {}}
+      onBegin={voidBegin} onSourceChange={voidWrite} />
+    <DateCue label="Void date" value="2026-10-04" today="2026-10-03"
+      min="2026-10-01" max="2026-10-31" footprint={['2026-10-31']} onValueChange={() => {}}
+      onBegin={voidBegin} onSourceChange={voidWrite} />
+  </>;
+}
+`);
+  execFileSync('node', [join(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck',
+    '--target', 'ES2022', '--module', 'ESNext', '--moduleResolution', 'Bundler', '--jsx', 'react-jsx', typedConsumer],
+  { cwd: temp, stdio: 'inherit' });
   const smoke = `
 import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
@@ -72,7 +110,7 @@ if (css.includes('button,input,optgroup')) throw new Error('Global reset leaked 
     banner: { js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);" },
     external: ['react', 'react/*', 'react-dom', 'react-dom/*', 'node:*'], loader: { '.css': 'empty' } });
   execFileSync('node', [bundled], { cwd: temp, stdio: 'inherit' });
-  console.log(`Package consumer: ${pkg.name}@${pkg.version} from ${registry ? 'registry' : 'local tarball'}, controlled cues, React render and CSS passed`);
+  console.log(`Package consumer: ${pkg.name}@${pkg.version} from ${registry ? 'registry' : 'local tarball'}, source-host types, controlled cues, React render and CSS passed`);
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

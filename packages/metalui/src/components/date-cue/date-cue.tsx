@@ -47,8 +47,8 @@ export interface DateCueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
   inputAria?: NumericCueProps['inputAria'];
   disabled?: boolean;
   readOnly?: boolean;
-  onBegin?: () => boolean | void;
-  onSourceChange?: (words: string) => boolean | void;
+  onBegin?: (() => void) | (() => boolean);
+  onSourceChange?: ((words: string) => void) | ((words: string) => boolean);
   onCommit?: () => void;
   onCancel?: NumericCueProps['onCancel'];
 }
