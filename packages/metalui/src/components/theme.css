@@ -1615,9 +1615,6 @@
 @utility recipe-button-group-key-hover {
   background: var(--mu-r-button-group-key-hover-background);
 }
-@utility button-group-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] & { rotate: var(--mu-r-button-group-chevron-turn); }
-}
 @utility button-group-bar {
   position: relative; --mu-group-pressed-background: var(--mu-r-button-self-pressed-background); --mu-group-pressed-shadow: var(--mu-r-button-self-pressed-shadow); &[data-cap=primary] { --mu-group-pressed-background: var(--mu-r-button-primary-pressed-background); --mu-group-pressed-shadow: var(--mu-r-button-primary-pressed-shadow); color: var(--mu-r-button-primary-ink); } & :is(.mu-button, .mu-toggle) { position: relative; background: transparent; box-shadow: none; border-radius: 0; color: inherit; outline-offset: calc(-1 * var(--mu-r-button-self-focus-width)); } & :is(.mu-button, .mu-toggle):not([data-disabled]):not(:disabled):is(:active, [data-pressed], [data-popup-open], [data-state=waiting]) { background: var(--mu-group-pressed-background); box-shadow: var(--mu-group-pressed-shadow); } & .mu-button[data-popup-open] { translate: 0 var(--mu-r-button-self-travel); } & :is(.mu-button, .mu-toggle):not([data-disabled]):not(:disabled):not(:active):not([data-pressed]):not([data-popup-open]):not([data-state=waiting]):hover { background: var(--mu-r-button-group-key-hover-background); } &[data-size=compact][data-cap=standard] { --mu-group-pressed-background: var(--mu-r-button-compact-background); --mu-group-pressed-shadow: var(--mu-r-button-compact-pressed-shadow); } & :is(.mu-button, .mu-toggle):focus-visible { outline-offset: calc(-1 * var(--mu-r-button-self-focus-width)); }
 }

@@ -714,7 +714,7 @@ One Button recipe draws the whole bar. Padding and gaps are zero; only the outer
 
 A `ButtonGroupReadout` is an output window in the field well recipe. Its figures turn with SwapText (Swift numericText), are tabular, and never become a keyboard stop. Reset requires a separately named action rather than an invisible click on the number.
 
-SplitButton infers cap and size from its main Button. Both halves inherit one material and ink. Its chevron is behind a seam, width30/glyph12, and stays sunk while the Base UI menu is open. Escape/outside close returns focus; choosing an alternative closes the menu. Waiting/done/disabled on the main key also disables alternatives. Use a primary cap on the main Button when this is the group's signal operation.
+SplitButton infers cap and size from its main Button. Both halves inherit one material and ink. Its chevron is behind a seam, width30/glyph12, and stays sunk while the Base UI menu is open. The shared chevron morphs down ↔ up on the glyph settle in React and Swift; no second CSS rotation runs. Reduced motion lands immediately. Escape/outside close returns focus; choosing an alternative closes the menu. Waiting/done/disabled on the main key also disables alternatives. Use a primary cap on the main Button when this is the group's signal operation.
 
 ## API
 

@@ -6,6 +6,11 @@ import { COLORWAYS, capture, open } from './helpers';
 const play = (page: import('@playwright/test').Page) => page.locator('section', { hasText: 'Playground' }).first();
 const lift = (el: import('@playwright/test').Locator) => el.evaluate((e) => { const t = getComputedStyle(e).translate; return t === 'none' ? 0 : parseFloat(t.split(' ')[1] ?? '0'); });
 
+const direction = (el: import('@playwright/test').Locator) => el.locator('.mu-morph-icon > path').first().evaluate((node) => {
+  const path = node as SVGPathElement, end = path.getPointAtLength(0), corner = path.getPointAtLength(path.getTotalLength());
+  return corner.y < end.y ? 'up' : 'down';
+});
+
 for (const colorway of COLORWAYS) {
   test(`keys press alone; the split chevron opens the other ways, in ${colorway}`, async ({ page }) => {
     await open(page, '/components/button-group', colorway);
@@ -28,12 +33,13 @@ for (const colorway of COLORWAYS) {
     await chevron.click();
     const menu = page.getByRole('menu');
     await expect(menu).toBeVisible();
-    await expect.poll(() => chevron.locator('svg').evaluate((s) => getComputedStyle(s).rotate)).toBe('180deg');
+    await expect(chevron.locator('svg')).toHaveClass(/mu-morph-icon/);
+    await expect.poll(() => direction(chevron)).toBe('up');
     await page.waitForTimeout(400);
     await page.screenshot({ path: capture(`button-group-${colorway}`), clip: { ...(await play(page).boundingBox())! } });
     await menu.getByRole('menuitem', { name: 'SVG' }).click();
     await expect(play(page)).toContainText('Exported SVG');
-    await expect.poll(() => chevron.locator('svg').evaluate((s) => getComputedStyle(s).rotate)).toMatch(/^(0deg|none)$/);
+    await expect.poll(() => direction(chevron)).toBe('down');
   });
 }
 
@@ -117,4 +123,24 @@ test('latched bar retains lamps and Base UI arrows; rocker has no reduced tilt',
   await page.keyboard.up('Space');
   await page.mouse.move(0, 0);
   await page.screenshot({ path: capture('button-group-reduced'), clip: (await demo.boundingBox())! });
+});
+
+
+test('split glyph cancels into its orientation when the scope reduces during opening', async ({ page }) => {
+  await open(page, '/components/button-group', 'bone');
+  const key = play(page).getByRole('button', { name: 'More export options' });
+  const group = play(page).getByRole('group', { name: 'More export options', exact: true });
+  await key.press('ArrowDown');
+  await expect(page.getByRole('menu')).toBeVisible();
+  await group.evaluate(el => el.setAttribute('data-mu-motion', 'reduce'));
+  await expect.poll(() => direction(key)).toBe('up');
+  const glyph = key.locator('svg');
+  expect(await glyph.evaluate(el => getComputedStyle(el).rotate)).toBe('none');
+  const landed = await glyph.innerHTML();
+  await page.waitForTimeout(150);
+  expect(await glyph.innerHTML()).toBe(landed);
+  await page.keyboard.press('Escape');
+  await expect(key).toBeFocused();
+  await expect.poll(() => direction(key)).toBe('down');
+  await play(page).screenshot({ path: capture('button-group-reduced') });
 });

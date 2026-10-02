@@ -14,7 +14,7 @@ import { ComponentPage } from '../../ui/ComponentPage';
  * CLUSTER TUNER: the page's DialKit panel
  *
  *   rocker   optional one-degree tilt toward the operated key
- *   chevron  the spring the chevron turns on
+ *   rocker   the spring the optional bar tips on
  * ───────────────────────────────────────────────────────── */
 
 function Examples({ onDid }: { onDid: (s: string) => void }) {
@@ -59,9 +59,9 @@ function Examples({ onDid }: { onDid: (s: string) => void }) {
 function ClusterTuner() {
   const d = useDialKit('Button cluster', {
     rockerAngle: [1, 0, 2],
-    chevron: { type: 'select', options: SPRING_NAMES, default: 'part' },
+    rockerSpring: { type: 'select', options: SPRING_NAMES, default: 'part' },
   });
-  const vars = { ...springVars('part', d.chevron as SpringName), '--mu-r-button-group-rocker-angle': `${d.rockerAngle}deg` } as React.CSSProperties;
+  const vars = { ...springVars('part', d.rockerSpring as SpringName), '--mu-r-button-group-rocker-angle': `${d.rockerAngle}deg` } as React.CSSProperties;
   return <div data-testid="button-cluster-tuner" style={vars}><Examples onDid={() => {}} /></div>;
 }
 
@@ -72,7 +72,7 @@ export default function ButtonGroupPage() {
       title="Button group"
       lede="Related actions cut from one raised bar, with engraved seams and square interior faces. Each key presses inside its segment. A split button keeps the main action and its alternatives in the same material."
       play={{ lede: 'Press the keys, or open the export chevron.', caption: did ?? 'history · zoom · split export', node: <Examples onDid={setDid} /> }}
-      more={[{ id: 'cluster', title: 'Tune the cluster', lede: 'Tune the optional rocker angle and chevron spring. The bar keeps zero gaps and square interior edges.', node: <ClusterTuner /> }]}
+      more={[{ id: 'cluster', title: 'Tune the cluster', lede: 'Tune the optional rocker angle and its spring. The bar keeps zero gaps and square interior edges.', node: <ClusterTuner /> }]}
       usage={`<ButtonGroup aria-label="History">
   <Button onClick={undo}>Undo</Button>
   <Button onClick={redo}>Redo</Button>
@@ -95,7 +95,7 @@ export default function ButtonGroupPage() {
       rules={[
         { id: 'BG1', title: 'One machined bar', body: 'Only the outer ends round. Seams stay fixed while each face sinks. A readout is a window with no click or tab stop.', origin: 'Ours' },
         { id: 'BG2', title: 'A latch says it stays', body: 'ToggleGroup joined uses the same bar, with Base UI arrow navigation and a lamp on each latched segment. ButtonGroup actions keep separate tab stops.', origin: 'Ours' },
-        { id: 'BG3', title: 'The main action first', body: 'A split button leads with what most people want; the chevron holds the rest.', origin: 'Ours' },
+        { id: 'BG3', title: 'The main action first', body: 'A split button leads with what most people want; the shared chevron morphs down to up while its alternatives are open, on the glyph settle spring.', origin: 'Ours' },
       ]}
     />
   );

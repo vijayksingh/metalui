@@ -1106,7 +1106,6 @@
   --mu-r-button-group-key-radius: 0px;
   --mu-r-button-group-chevron-width: 30px;
   --mu-r-button-group-chevron-glyph: 12px;
-  --mu-r-button-group-chevron-turn: 180deg;
   --mu-r-button-group-rocker-angle: 1deg;
   --mu-r-button-group-seam-inset: var(--mu-nest);
   --mu-r-button-group-seam-width: var(--mu-r-rule-self-thickness);

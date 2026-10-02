@@ -134,14 +134,10 @@ public struct MetalSplitButton<Primary: View>: View {
     }
     public var body: some View {
         let recipe = MetalRecipes.buttonGroup
-        let turn = Double(recipe.text("chevron.turn")?.replacingOccurrences(of: "deg", with: "") ?? "") ?? .zero
         MetalButtonGroup(label, cap: cap, size: size) {
             primary
             Button { open.toggle() } label: {
-                Image(systemName: "chevron.down")
-                    .font(MetalRecipes.button.font("compact.font"))
-                    .rotationEffect(.degrees(open ? turn : .zero))
-                    .metalAnimation(.part, value: open)
+                MetalMorphIcon(.chevron, size: recipe.points("chevron.glyph"), turn: open ? .up : .down)
             }
             .buttonStyle(MetalButtonStyle(cap: cap, size: size))
             .environment(\.metalButtonGroupLatched, open)

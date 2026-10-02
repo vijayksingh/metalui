@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Menu } from '../menu/menu';
 import { Button, type ButtonProps } from '../button/button';
+import { MorphIcon } from '../../icons/MorphIcon';
 import { SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
@@ -10,7 +11,7 @@ import { SwapText } from '../../motion/swap';
  *       rest   one raised bar; fixed engraved seams; square interior faces
  *        0ms   one key sinks 1px in press50; neighbours and seams stay still
  *     release  key returns on release spring; optional rocker returns on part
- *       open   split chevron stays sunk; turns180 on part while menu exists
+ *       open   split chevron stays sunk; morphs down → up on settle while menu exists
  *       value  noninteractive display turns its digits on settle, no tab stop
  *       latch  Toggle keeps its own lamp and sunk face inside the same bar
  * Reduced: no rocker tilt; chevron snaps; readout crossfades.
@@ -19,7 +20,7 @@ import { SwapText } from '../../motion/swap';
 const BAR = 'mu-button-group inline-flex items-stretch rounded-pill recipe-button button-group-bar text-ink';
 const SEGMENT = 'inline-flex button-group-seam';
 const CLIP = 'inline-flex items-stretch overflow-hidden rounded-pill';
-const CHEVRON = 'size-button-group-chevron-glyph button-group-chevron reduced-motion:transition-none';
+const CHEVRON = 'size-button-group-chevron-glyph';
 
 export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   'aria-label': string;
@@ -87,7 +88,7 @@ export function SplitButton({ children, menu, menuLabel, heading, disabled }: Sp
     {children}
     <Menu heading={heading} align="end" open={open} onOpenChange={setOpen}
       trigger={<Button cap={cap} size={size} disabled={unavailable} aria-label={menuLabel} className="w-button-group-chevron-width px-0!">
-        <span className="inline-flex"><svg aria-hidden viewBox="0 0 12 12" className={CHEVRON} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 4.5 6 7.5l3-3" /></svg></span>
+        <span className="inline-flex"><MorphIcon name="chevron" turn={open ? 180 : 0} className={CHEVRON} /></span>
       </Button>}>
       {menu}
     </Menu>

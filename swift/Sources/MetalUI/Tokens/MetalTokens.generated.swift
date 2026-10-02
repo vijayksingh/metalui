@@ -998,7 +998,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// One raised machined bar of related keys, outer pill radius only, fixed engraved seams and square interior edges. Keys sink alone; a noninteractive window carries readouts. Split keeps one cap material and its chevron held while open. Optional two-key rocker tips one degree on the part spring; Reduce Motion has no tilt. (button raised and pressed recipes; rule engraved seam; field well window; part spring; existing cap dimensions)
+    /// One raised machined bar of related keys, outer pill radius only, fixed engraved seams and square interior edges. Keys sink alone; a noninteractive window carries readouts. Split keeps one cap material and its menu segment held while open; the shared chevron morphs down to up on the glyph settle. Optional two-key rocker tips one degree on the part spring; Reduce Motion has no tilt. (button raised and pressed recipes; rule engraved seam; field well window; part spring; existing cap dimensions)
     public static let buttonGroup = MetalObjectRecipe(
         name: "button-group",
         layers: [
@@ -1010,7 +1010,6 @@ public enum MetalRecipes {
             "key.radius": .number(0.0),
             "chevron.width": .number(30.0),
             "chevron.glyph": .number(12.0),
-            "chevron.turn": .text("180deg"),
             "rocker.angle": .text("1deg"),
             "seam.inset": .text("var(--mu-nest)"),
             "seam.width": .text("var(--mu-r-rule-self-thickness)"),

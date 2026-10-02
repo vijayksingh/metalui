@@ -110,7 +110,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] select
 - [x] table
 - [x] breadcrumbs
-- [ ] button-group (split chevron)
+- [x] button-group (shared split chevron morph in React and Swift)
 - [x] folder: audited; its SVG paths draw the paper/flap edges and clipping, so stay as object geometry.
 - [x] number-field (shared minus and plus)
 - [ ] fan (‹ as text)
