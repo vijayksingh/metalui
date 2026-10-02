@@ -101,3 +101,6 @@ Run `python3 e2e/native/run-person-cue-proof.py`. A real public `MetalPersonCue`
 # Native Status live reduction
 
 Run `python3 e2e/native/run-status-label-proof.py`. The actual badge changes synced/offline in both colorways, then changes after enabling a reduced scope. Own-window pixels cover full travel and reduced immediate label settlement; the trailing text crop excludes the glyph's separate result act. The full window must settle at rest. Set `METALUI_NATIVE_CAPTURE` to save moving and settled views.
+# Native Enum label motion policy
+
+`python3 e2e/native/run-enum-label-proof.py` captures the actual public Enum words before, during and after a controlled state change in both colorways and scoped motion modes. Full motion travels; reduced words land immediately and remain still; switching reduction during a transition removes retained offset travel. The same renderer backs TagCue. Words-only comparison excludes the independently allowed meaning-glyph act, and the identity reset stays inside the label so the operable Button keeps its focus.

@@ -62,8 +62,12 @@ public struct MetalEnumCue: View {
                     else { MetalCueTag(value, tint: current.tint ?? colorway.tokens.ink3) }
                 }.id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
             }
+            .id(reduceMotion)
             .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
             .fixedSize().metalAnimation(.settle, value: value)
+            .transaction { transaction in
+                if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+            }
             .overlay(alignment: .topLeading) {
                 if !raw, gesture == nil, let glyph = current.glyph {
                     MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
