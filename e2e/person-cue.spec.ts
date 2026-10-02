@@ -28,7 +28,12 @@ for (const colorway of COLORWAYS) {
     await expect(source).toHaveValue('🧠 Ask Sam Patel about the poster.');
     await host.getByRole('button', { name: 'Undo person edit' }).click();
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await cue.click(); await page.keyboard.press('End'); await page.keyboard.press('Escape');
+    await cue.click();
+    await expect(page.getByRole('option', { name: 'Mira Chen', exact: true })).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(page.getByRole('option', { name: 'Sam Patel', exact: true })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('listbox', { name: 'Assigned person' })).toHaveCount(0);
     await expect(source).toHaveValue('🧠 Ask Mira Chen about the poster.');
     await expect(host).not.toHaveAttribute('data-editing', 'true');
     await expect(cue).toBeFocused();
