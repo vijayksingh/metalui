@@ -1,4 +1,5 @@
 // Generated from tokens/tokens.json. Do not edit.
+export const MARK_GLYPH_SIZE = 14;
 export const TAG_PALETTE = ["var(--mu-blue)","var(--mu-orange)","var(--mu-gold)","var(--mu-green-deep)"] as const;
 export function tagIdentity(text: string): number {
   let hash = 0;

@@ -9,6 +9,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/mark/mark
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCue.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { CueRecognition, CueLegend } from './CueRecognition';
 
 const TABS = [
   { id: 'react', label: 'React', code: reactSource },
@@ -46,6 +47,11 @@ export default function CueFamilyPage() {
         title="Cue family"
         lede="Recognition made visible. A cue is a rendering attribute on the text, never a change to it: dates, durations, amounts, measurements, tags and colours are marked in place with the same advance as the plain words, so a cue appearing mid-word never moves a letter. Around the text: the dimple for a task, the ghost dimple for a task the model inferred, the urgency LED, the URL host pill, the inferred pill and the one trailing life glyph."
       />
+
+      <Section id="recognition" title="Meaning in the words" lede="Clock for time, coin for money, moon for sleep, steps for a count, the actual colour and the known person's avatar. The glyph belongs to its own words; glyph clearance stays reserved on every wrapped line. Tags have a raised tab and a punched hole, with stable identity colour and full text ink.">
+        <Bench caption="One grammar · hover each glyph for its meaning"><CueLegend /></Bench>
+        <Bench caption="Live recognition · source remains yours"><CueRecognition /></Bench>
+      </Section>
 
       <Section title="On a block" lede="Hover a cue to see the value it resolved to. Tick the dimple. Turn writing on in the dial panel: the display-only cues (the URL pill, the inferred pill, the life glyph, the margin objects) step aside and the raw text shows, while the in-flow cues stay exactly where they were.">
         <Bench caption={`${d.writing ? 'writing' : 'at rest'} · cues ${d.cues ? 'on' : 'off'}`} className="min-h-[280px]">
@@ -99,6 +105,7 @@ export default function CueFamilyPage() {
 
       <Section title="SwiftUI" lede="MetalDimple, Text.metalCue, MetalCueTag, MetalCueURLPill, MetalCueInferred, MetalCueUrgency and MetalCueLife from the same tokens. In a TextKit editor the host draws the in-flow cues itself from MetalCue.">
         <SwiftCapture name="cue" />
+        <SwiftCapture name="cue-grammar" />
       </Section>
 
       <Section title="Source" lede="The family three ways, plus the guide your coding agent reads.">
@@ -134,7 +141,7 @@ export default function CueFamilyPage() {
           rules={[
             { id: 'Q1', title: 'A cue never moves a letter', body: 'Every in-flow cue has the same advance as the plain words (width delta 0.00 pt). A tag’s padding is paid back by an equal negative margin; underlines sit below the baseline.', origin: 'the brief, DS-31' },
             { id: 'Q2', title: 'Applying a cue never rewrites text', body: 'Text changes only when the person acts: ticking a dimple writes [x], accepting a chip, dropping into a region. Each is undoable.', origin: 'the brief' },
-            { id: 'Q3', title: 'Quiet', body: 'No toast, badge or sound for recognition. Tags are ink2, derived tags ink3; no hue for kinds.', origin: 'the brief' },
+            { id: 'Q3', title: 'Quiet', body: 'No toast, badge or sound for recognition. Tag hue identifies the name, never its state; suggestions remain dashed until confirmed.', origin: 'the brief' },
             { id: 'Q4', title: 'Hidden confidence is a bug', body: 'An inferred value says where it came from in its chip: RECOGNIZER 0.82, RULE, YOU.', origin: 'the brief' },
           ]}
         />

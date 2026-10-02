@@ -129,6 +129,37 @@
       ]
     },
     {
+      "name": "life-icons",
+      "type": "registry:lib",
+      "title": "MetalUI life glyph runtime",
+      "description": "Canonical life glyphs, tuned cuts and finite hover acts.",
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/life/LifeIcon.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/life/LifeIcon.tsx"
+        },
+        {
+          "path": "packages/metalui/src/icons/life/catalog.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/life/catalog.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/icons/life/icons-life.generated.css",
+          "type": "registry:file",
+          "target": "components/metalui/icons/life/icons-life.generated.css"
+        },
+        {
+          "path": "packages/metalui/src/icons/life/tints.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/life/tints.generated.ts"
+        }
+      ]
+    },
+    {
       "name": "tick-glyph",
       "type": "registry:lib",
       "title": "MetalUI selected mark",
@@ -1022,6 +1053,9 @@
       "description": "Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/life-icons.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1029,9 +1063,14 @@
           "path": "packages/metalui/src/components/mark/mark.tsx",
           "type": "registry:ui",
           "target": "components/metalui/components/mark/mark.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/mark/identity.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/components/mark/identity.generated.ts"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:) in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalCueText, MetalCueTag, MetalCueURLPill, MetalCueInferred, MetalCueUrgency, MetalCueLife, Text.metalCue(_:) in the MetalUI Swift package."
     },
     {
       "name": "menu",

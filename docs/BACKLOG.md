@@ -278,13 +278,13 @@ What's wrong now:
 - Recognising a chunk has no moment: marks are simply there.
 
 Direction:
-- [ ] **Glyphs say what they mean and sit where they belong**: a glyph attaches to the chunk it explains (a clock at "tomorrow 4pm", a coin at "$40", a moon at "slept 6h", a swatch of the actual colour at "#FF6B3D"), at full ink next to the words, with its name in a tooltip ("A meal · breakfast?"). The trailing "· glyph" pattern is for the whole line's kind only, and gets a label on hover.
-- [ ] **One grammar of kinds**: time (date, duration) → an engraved underline plus a clock glyph; money → a coin and tabular figures; body (sleep, steps) → a moon or a step; colour → a live swatch; link → the link chip; person → a small avatar. Each kind is one look, documented on the page as a legend.
+- [x] **Glyphs say what they mean and sit where they belong**: a glyph attaches to the chunk it explains (a clock at "tomorrow 4pm", a coin at "$40", a moon at "slept 6h", a swatch of the actual colour at "#FF6B3D"), at full ink next to the words, with its name in a tooltip ("A meal · breakfast?"). The trailing "· glyph" pattern is for the whole line's kind only, and gets a label on hover.
+- [x] **One grammar of kinds**: time (date, duration) → an engraved underline plus a clock glyph; money → a coin and tabular figures; body (sleep, steps) → a moon or a step; colour → a live swatch; link → the link chip; person → a small avatar. Each kind is one look, documented on the page as a legend.
 - [ ] **Tags as tags**: `#tag` becomes a small raised tab with a punched hole (a luggage tag), the hash kept as a quiet mark; the tag's colour is its own (stable hash to a palette); one look everywhere. Typing `#` shows the tags you've used.
 - [ ] **A moment of recognition (motion first)**: when a chunk is recognised as you type, its underline draws in from left to right (settle spring) and its glyph pops in beside it with a tiny overshoot (object spring); colour chunks bloom their swatch; money flips its figures on the drum into the formatted amount; dates show their resolved day as a chip that slides up and settles. Once, on recognition, never looping; nothing while the caret is still inside the word.
 - [ ] **Whimsy, with restraint**: a glyph's own act plays on first recognition (the cup steams once, the moon tilts, the coin spins a quarter turn); rare, short, and off under Reduce Motion; a tiny sparkle when an inferred cue is confirmed.
 - [ ] **Inferred vs confirmed**: inferred cues (the "FRI" chip at 0.82) read as a suggestion (dashed, ink2) until confirmed by a click or Tab; confirming stamps them solid with a small press.
-- [ ] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
+- [x] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
 - [ ] Redo the page with a legend of kinds, a live typing demo that shows recognition, and the DialKit for the motion; Swift in step.
 
 ## Lasso demo: buggy selection and an unreliable trigger

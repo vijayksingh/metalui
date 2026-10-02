@@ -40,23 +40,25 @@ public struct MetalCueTag: View {
         self.derived = derived
     }
 
+    private var tagText: Text {
+        if text.hasPrefix("#") { return Text("#").foregroundColor(colorway.tokens.ink2.color) + Text(String(text.dropFirst())).foregroundColor(colorway.tokens.ink.color) }
+        return Text(text).foregroundColor(colorway.tokens.ink.color)
+    }
+
     public var body: some View {
-        let t = colorway.tokens
-        Text(text)
+        tagText
             .font(.metal(MetalType.content))
-            .foregroundColor((derived ? t.ink3 : t.ink2).color)
             .padding(.horizontal, MetalCue.tagPadX)
             .padding(.vertical, MetalCue.tagPadY)
             .background {
-                let shape = Capsule(style: .continuous)
-                if derived {
-                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueDerivedSh), in: shape)
-                } else {
-                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(t.cueTagBg), shadows: t.cueTagSh), in: shape)
-                }
+                let shape = MetalCueTab()
+                MetalCue.tagColor(text).color.opacity(MetalRecipes.status.scalar("badge.tint"))
+                    .overlay { MetalInnerShadows(layers: colorway.tokens.cueTagSh, shape: shape) }
+                    .mask(shape.fill(style: FillStyle(eoFill: true)))
+                    .overlay { if derived { shape.stroke(colorway.tokens.ink2.color, style: StrokeStyle(lineWidth: MetalCue.quietThickness, dash: [MetalSpace.s2, MetalSpace.s2])) } }
             }
-            // The pill's padding is paid back, as on the web, so a row of text keeps its advance.
             .padding(.horizontal, -MetalCue.tagPadX)
+            .accessibilityLabel(text)
     }
 }
 
@@ -218,18 +220,38 @@ public struct MetalCueURLPill: View {
 /// A value the recognizer read that is not in the text: a hollow pill in the label role.
 public struct MetalCueInferred: View {
     let text: String
+    let confirmed: Bool
+    let onConfirm: (() -> Void)?
     @Environment(\.metalColorway) private var colorway
+    @FocusState private var focused: Bool
+    @State private var act = 0
 
-    public init(_ text: String) { self.text = text }
-
-    public var body: some View {
+    public init(_ text: String, confirmed: Bool = false, onConfirm: (() -> Void)? = nil) {
+        self.text = text; self.confirmed = confirmed; self.onConfirm = onConfirm
+    }
+    private var face: some View {
         Text(text.uppercased())
             .font(.metal(MetalType.readout))
             .tracking(MetalType.readout.trackingPoints)
-            .foregroundColor(colorway.tokens.ink2.color)
+            .foregroundColor((confirmed ? colorway.tokens.ink : colorway.tokens.ink2).color)
             .padding(.horizontal, MetalCue.inferredPad)
             .frame(height: MetalCue.inferredHeight)
-            .metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: MetalCue.inferredRing), in: Capsule(style: .continuous))
+            .background {
+                Capsule().stroke(colorway.tokens.ink2.color, style: StrokeStyle(lineWidth: MetalCue.quietThickness, dash: confirmed ? [] : [MetalSpace.s2, MetalSpace.s2]))
+            }
+            .overlay(alignment: .topTrailing) {
+                if confirmed { MetalIcon(.check, size: MetalRecipes.button.points("compact.glyph"), act: act).offset(y: -MetalCue.inferredHeight).accessibilityHidden(true) }
+            }
+    }
+    public var body: some View {
+        Group {
+            if let onConfirm {
+                Button(action: onConfirm) { face }.buttonStyle(.plain).focused($focused)
+                    .onChange(of: focused) { _, isFocused in if isFocused && !confirmed { onConfirm() } }
+            } else { face }
+        }
+        .accessibilityLabel(confirmed ? text : "Suggestion, \(text)")
+        .onChange(of: confirmed) { _, value in if value { act += 1 } }
     }
 }
 
@@ -255,5 +277,102 @@ public struct MetalCueLife: View {
         }
         .onHover { ownHover = $0 }
         .accessibilityLabel(icon.label)
+    }
+}
+
+/// The display grammar on a SwiftUI text surface. TextKit hosts draw these attributes themselves.
+public enum MetalCueMeaning: Sendable { case time, money, sleep, steps, colour, person }
+
+public struct MetalCueText: View {
+    private let text: String
+    private let kind: MetalCueKind
+    private let meaning: MetalCueMeaning?
+    private let label: String?
+    private let color: MetalRGBA?
+    private let raw: Bool
+    private let recognition: String?
+    private let formatted: String?
+    private let personGlyph: AnyView?
+    @Environment(\.metalColorway) private var colorway
+    @MetalMotionPreference private var reduceMotion
+    @State private var shown = false
+    @State private var seen: String?
+    @State private var act = 0
+
+    public init(_ text: String, kind: MetalCueKind, meaning: MetalCueMeaning? = nil,
+                label: String? = nil, color: MetalRGBA? = nil, raw: Bool = false, recognition: String? = nil, formatted: String? = nil, personGlyph: AnyView? = nil) {
+        self.text = text; self.kind = kind; self.meaning = meaning; self.label = label
+        self.color = color; self.raw = raw; self.recognition = recognition; self.formatted = formatted; self.personGlyph = personGlyph
+    }
+    private var side: Double { MetalRecipes.button.points("compact.glyph") }
+    private var clearance: Double { side + MetalSpace.s2 }
+    public var body: some View {
+        Group {
+            if kind == .tag || kind == .derivedTag {
+                MetalCueTag(text, derived: kind == .derivedTag).opacity(raw ? .zero : .one)
+                    .overlay { if raw { Text(text).font(.metal(MetalType.content)) } }
+            } else if let formatted {
+                ZStack(alignment: .leading) {
+                    Text(text.count > formatted.count ? text : formatted).hidden().accessibilityHidden(true)
+                    Text(raw ? text : formatted)
+                        .contentTransition(reduceMotion ? .opacity : .numericText())
+                        .metalAnimation(.settle, value: raw)
+                }.font(.metal(MetalType.content)).monospacedDigit()
+            } else {
+                (raw ? Text(text) : Text(text).metalCue(kind, colorway: colorway, hex: color))
+                    .font(.metal(MetalType.content))
+                    .monospacedDigit()
+            }
+        }
+        .foregroundStyle(colorway.tokens.ink.color)
+        .overlay(alignment: .topLeading) {
+            if let meaning {
+                Group {
+                    switch meaning {
+                    case .time: MetalIcon(.clock, size: side, act: act)
+                    case .money: MetalIcon(.coin, size: side, act: act)
+                    case .sleep: MetalIcon(.moon, size: side, act: act)
+                    case .steps: MetalLifeIcon(.steps, size: side)
+                    case .colour: RoundedRectangle(cornerRadius: MetalCue.swatchRadius).fill((color ?? colorway.tokens.ink).color)
+                    case .person: if let personGlyph { personGlyph }
+                    }
+                }
+                .frame(width: side, height: side)
+                .offset(y: -(side + MetalSpace.s2))
+                .opacity(raw ? .zero : .one)
+                .scaleEffect(shown || reduceMotion ? .one : MetalSuggestion.enterScale)
+                .accessibilityHidden(true)
+            }
+        }
+        .padding(.top, clearance)
+        .help(label ?? text)
+        .accessibilityLabel(text)
+        .onAppear { recognise() }
+        .onChange(of: recognition) { _, _ in recognise() }
+        .onChange(of: raw) { _, _ in recognise() }
+        .metalAnimation(.settle, value: raw)
+    }
+    private func recognise() {
+        guard !raw else { return }
+        guard let recognition, recognition != seen else { shown = true; return }
+        seen = recognition
+        act += 1
+        withMetalAnimation(.object, reduceMotion: reduceMotion) { shown = true }
+    }
+}
+
+private struct MetalCueTab: Shape {
+    func path(in rect: CGRect) -> Path {
+        let tip = MetalCue.tagPadX
+        var path = Path()
+        path.move(to: rect.origin)
+        path.addLine(to: CGPoint(x: rect.maxX - tip, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.maxX - tip, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
+        path.addEllipse(in: CGRect(x: rect.maxX - tip - MetalSpace.s2, y: rect.midY - MetalSpace.s2,
+                                  width: MetalSpace.s2 * 2, height: MetalSpace.s2 * 2))
+        return path
     }
 }

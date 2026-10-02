@@ -1,6 +1,12 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
+import { LifeIcon } from '../../icons/life/LifeIcon';
+import { SPRINGS } from '../../motion/springs.generated';
+import { SwapText } from '../../motion/swap';
+import { tagColor, tagIdentity, MARK_GLYPH_SIZE } from './identity.generated';
+export { tagColor, tagIdentity } from './identity.generated';
 
 /* ─────────────────────────────────────────────────────────
  * CUE FAMILY (the reference design)
@@ -21,8 +27,24 @@ import * as React from 'react';
 
 export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex' | 'match';
 
+export type MarkMeaning = 'time' | 'money' | 'sleep' | 'steps' | 'colour' | 'person';
+
 export interface MarkProps extends React.HTMLAttributes<HTMLSpanElement> {
   kind: MarkKind;
+  /** Opt into the semantic grammar inside MarkLine; plain Mark metrics stay unchanged. */
+  meaning?: MarkMeaning;
+  /** Meaning shown on hover. Person is the known person's name. */
+  meaningLabel?: string;
+  /** A host-provided person object or custom meaning glyph; the Part never constructs an Object. */
+  meaningGlyph?: React.ReactNode;
+  /** Reserve semantic slots and fade decoration while showing raw text. */
+  raw?: boolean;
+  /** Change once per recognizer identity, after the caret leaves and composition ends. */
+  recognition?: string;
+  /** Optional display formatting, without changing the saved source. */
+  formatted?: string;
+  /** Confirmed suggestions retain the same tab; the host owns confirmation. */
+  inferred?: boolean;
   /** The resolved value, shown on hover as a graphite chip: "TUE 30 SEP · 16:00", "1 H 30 · 90 MIN". */
   resolved?: string;
   /** For hex: the colour the text names. The underline and swatch take it. */
@@ -45,18 +67,47 @@ const KINDS: Record<MarkKind, string> = {
 };
 
 /** An in-flow cue on recognised text. Metric-neutral: the words keep their exact advance. */
-export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({ kind, resolved, color, swatch, className, style, children, ...props }, ref) {
+/** A semantic line reserves glyph clearance on every wrap, even in raw mode. */
+export function MarkLine({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  const own = 'mu-mark-line mark-semantic-line';
+  return <div className={className ? `${own} ${className}` : own} {...props} />;
+}
+
+/** In-flow display decoration. Recognition never writes the source string. */
+export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({ kind, meaning, meaningLabel, meaningGlyph, raw = false, recognition, formatted, inferred = kind === 'derived-tag', resolved, color, swatch, className, style, children, ...props }, ref) {
+  const [act, setAct] = React.useState(0);
+  const [reveal, setReveal] = React.useState(false);
+  const seen = React.useRef<string | undefined>(undefined);
+  React.useEffect(() => {
+    if (!recognition || seen.current === recognition || raw) return;
+    seen.current = recognition;
+    setAct(n => n + 1);
+    if (kind !== 'date' || !resolved) return;
+    setReveal(true);
+    const timer = setTimeout(() => setReveal(false), (SPRINGS.part.duration + SPRINGS.settle.duration) * 1000);
+    return () => { clearTimeout(timer); setReveal(false); };
+  }, [recognition, raw, kind, resolved]);
+  const tag = kind === 'tag' || kind === 'derived-tag';
+  const text = typeof children === 'string' ? children : '';
+  const variables = { ...(color ? { '--mu-cue-hex': color } : {}), ...(tag ? { '--mu-cue-identity': tagColor(text) } : {}), ...style } as React.CSSProperties;
+  const glyph = meaning === 'time' ? 'clock' : meaning === 'money' ? 'coin' : meaning === 'sleep' ? 'moon' : null;
   return (
-    <span
-      ref={ref}
-      data-kind={kind}
-      data-chip={resolved}
-      className={`mu-cue relative mark-chip ${KINDS[kind]}${className ? ` ${className}` : ''}`}
-      style={color ? ({ '--mu-cue-hex': color, ...style } as React.CSSProperties) : style}
-      {...props}
-    >
-      {kind === 'hex' && swatch && <i aria-hidden className="mu-cue-swatch mark-swatch" />}
-      {children}
+    <span ref={ref} title={meaningLabel} data-reveal={reveal || undefined} data-kind={kind} data-chip={resolved} data-raw={raw || undefined}
+      data-recognition={recognition} data-act={act} data-inferred={inferred || undefined}
+      data-semantic-tag={tag || undefined} data-tag-identity={tag ? tagIdentity(text) : undefined}
+      className={`mu-cue relative mark-chip mark-semantic ${KINDS[kind]}${act > 0 ? ' mark-recognised' : ''}${className ? ` ${className}` : ''}`}
+      style={variables} {...props}>
+      {tag && <span aria-hidden className="mu-mark-tab mark-semantic-tag" />}
+      {(meaning || (kind === 'derived-tag' && !inferred && recognition)) && <span aria-hidden title={meaningLabel ?? meaning} className="mu-mark-meaning mark-semantic-glyph">
+        {kind === 'derived-tag' && !inferred && recognition && <Icon name="check" size={MARK_GLYPH_SIZE} act={act} />}
+        {glyph && <Icon name={glyph} size={MARK_GLYPH_SIZE} act={act} />}
+        {meaning === 'steps' && <LifeIcon name="steps" size={MARK_GLYPH_SIZE} />}
+        {meaning === 'colour' && <i className="mark-swatch" />}
+        {meaningGlyph}
+      </span>}
+      {kind === 'hex' && swatch && !meaning && <i aria-hidden className="mu-cue-swatch mark-swatch" />}
+      <span className="mu-mark-words">{tag && text.startsWith('#') ? <><span className="mu-mark-hash">#</span>{text.slice(1)}</> : formatted ? <span className="mark-format"><span aria-hidden className="mark-reserve">{text.length > formatted.length ? text : formatted}</span><span className="mark-face"><SwapText value={raw ? text : formatted} /></span></span> : children}</span>
+      {act > 0 && !tag && <span aria-hidden className="mu-mark-underline mark-recognition-line" />}
     </span>
   );
 });
@@ -97,12 +148,14 @@ export function MarkUrgency({ className, ...props }: React.HTMLAttributes<HTMLSp
 export interface MarkLifeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** The glyph at 16, e.g. <LifeCoffeeIcon size={16} /> from @unlocalhosted/metalui/icons/life. */
   children: React.ReactNode;
+  /** Names the whole line's kind on hover and for assistive technology. */
+  label?: string;
 }
 
 /** The life glyph trailing a block: a middle dot, then the glyph. Display only: never while writing. */
-export function MarkLife({ children, className, ...props }: MarkLifeProps) {
+export function MarkLife({ children, label, className, ...props }: MarkLifeProps) {
   return (
-    <span className={className ? `mu-cue-life mark-life ${className}` : 'mu-cue-life mark-life'} {...props}>
+    <span title={label} aria-label={label} className={className ? `mu-cue-life mark-life ${className}` : 'mu-cue-life mark-life'} {...props}>
       <span aria-hidden className="mu-cue-md">·</span>
       <span className="mu-cue-lg">{children}</span>
     </span>

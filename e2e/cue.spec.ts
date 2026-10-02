@@ -12,7 +12,7 @@ for (const colorway of COLORWAYS) {
     // Each cue's words sit exactly where the plain words do (the text, not the pill's box).
     const perCue = await proof.evaluate((el) => {
       const [cued, plain] = [...el.querySelectorAll('[data-testid^="line-"]')] as HTMLElement[];
-      const textBox = (n: HTMLElement) => { const r = document.createRange(); r.selectNodeContents(n); const b = r.getBoundingClientRect(); return [b.left, b.right]; };
+      const textBox = (n: HTMLElement) => { const r = document.createRange(); r.selectNodeContents(n.querySelector('.mu-mark-words') ?? n); const b = r.getBoundingClientRect(); return [b.left, b.right]; };
       const a = [...cued.children] as HTMLElement[], b = [...plain.children] as HTMLElement[];
       return a.flatMap((c, i) => { const [x1, y1] = textBox(c), [x2, y2] = textBox(b[i]); return [Math.abs(x1 - x2), Math.abs(y1 - y2)]; });
     });

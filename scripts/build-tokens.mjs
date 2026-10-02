@@ -650,6 +650,7 @@ export type SpringName = keyof typeof SPRINGS;
 // Shared tag identity: NFC Unicode scalars, UInt32 wraparound on both platforms.
 const cuePalette = CU['$identity-palette'];
 emit('packages/metalui/src/components/mark/identity.generated.ts', `// Generated from tokens/tokens.json. Do not edit.
+export const MARK_GLYPH_SIZE = ${T.recipes.button.props.compact.glyph};
 export const TAG_PALETTE = ${JSON.stringify(cuePalette.map(k => `var(--mu-${k})`))} as const;
 export function tagIdentity(text: string): number {
   let hash = 0;

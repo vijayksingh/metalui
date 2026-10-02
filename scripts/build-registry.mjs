@@ -35,6 +35,12 @@ const shared = {
     dependsOn: [],
     files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
+  'life-icons': {
+    title: 'MetalUI life glyph runtime',
+    description: 'Canonical life glyphs, tuned cuts and finite hover acts.',
+    dependsOn: ['motion'],
+    files: ['icons/life/LifeIcon.tsx', 'icons/life/catalog.generated.ts', 'icons/life/icons-life.generated.css', 'icons/life/tints.generated.ts'],
+  },
   'tick-glyph': {
     title: 'MetalUI selected mark',
     description: 'The shared tick pen: draw, withdraw and dash-to-tick bend on the generated check route.',

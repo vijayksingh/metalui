@@ -1,6 +1,6 @@
 # Mark
 
-Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, `MarkUrgency`, `MarkLife` from `@unlocalhosted/metalui` (earlier `Cue`, `CueUrl`, `MarkInferred`, `CueUrgency`, `CueLife`); the checkbox is `Checkbox`. SwiftUI: `Text.metalMark(_:colorway:)`, `MetalMarkTag`, `MetalMarkURLPill`, `MetalMarkInferred`, `MetalMarkUrgency`, `MetalMarkLife`.
+Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, `MarkUrgency`, `MarkLife` from `@unlocalhosted/metalui` (earlier `Cue`, `CueUrl`, `MarkInferred`, `CueUrgency`, `CueLife`); the checkbox is `Checkbox`. SwiftUI: `Text.metalCue(_:colorway:)`, `MetalCueText`, `MetalCueTag`, `MetalCueURLPill`, `MetalCueInferred`, `MetalCueUrgency`, `MetalCueLife`.
 
 ## Use it for
 
@@ -10,7 +10,7 @@ Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, 
 
 ## Don't use it for
 
-- Changing the text. A cue never rewrites, reflows or recolours the words (tags are ink2, derived tags ink3, never a hue).
+- Changing the text. A cue never rewrites the saved words; full text ink carries tags, whose quiet colour identifies the name.
 - Anything the person did not write: a value the model read that is not in the text is a `MarkInferred` pill after the words, never an underline.
 - Status, errors or calls to action. Cues are quiet and have no toast, badge or sound.
 
@@ -21,8 +21,8 @@ Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, 
 | date | dotted underline green .7, 1.5 thick, offset 3.5; hover chip with the resolved date | same |
 | duration · amount | solid quiet underline 1, offset 3.5 (the text's own figures: tabular digits would change the advance) | same |
 | measurement | solid green .42 underline 1.5, offset 4 | same |
-| tag | soft pill: padding 1/4 paid back by margin 0/−4, ink2 | same |
-| derived tag | hollow pill (.5 ring), ink3 | same |
+| tag | raised tab with punched hole; padding 1/4 paid back by margin 0/−4; stable NFC identity tint and full ink | same |
+| derived tag | same tab, dashed suggestion until explicitly confirmed | same |
 | hex | 3 pt underline in the colour at 78 %, skip-ink off; the 11 pt swatch before it at rest | underline only |
 | match | a search's matched words in a result row: weight 650, a green .55 underline 1.5 thick, offset 2.5 (heavier, so result rows only, never writing) | never |
 | URL | a 20 tall host pill with the link glyph at 11 | the raw URL, plain |
@@ -76,3 +76,13 @@ Send the poster <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cu
 ## Tokens
 
 `--mu-cue-*`; per colorway `--mu-cue-quiet`, `--mu-cue-tag-bg`, `--mu-cue-tag-sh`, `--mu-cue-derived-sh`, `--mu-cue-ghost-sh`, `--mu-cue-url-ink`; `--mu-well*`, `--mu-led-amber`, `--mu-led-ring`, `--mu-frost-graphite-*`, `--mu-type-label`. Swift: `MetalCue`, `MetalTokens.<colorway>.cue*`.
+
+## Semantic display and recognition
+
+Use `MarkLine` around opt-in semantic marks. It reserves the compact Button glyph plus space-2 above **every wrapped line**, including raw mode. `meaning` is time, money, sleep, steps, colour or person; `meaningLabel` names the hover glyph. A person Object comes from the host through `meaningGlyph` (native `personGlyph`); the Mark Part never constructs an Avatar. Glyphs are decorative, add no Tab stop and never consume text advance. Plain Mark callers retain their original leading. `MarkLife label` describes the whole line only.
+
+The host supplies `recognition`, a stable identity **after** the caret leaves a candidate and IME composition commits. One identity reveals the underline on settle, the glyph on object, and one authored glyph act. Raw mode fades the same slots without remounting the source. `formatted` reserves the wider source/display face before the amount drum turns. Recognition never mutates the saved string. Editing controls own separate source-range callbacks.
+
+Tag hue uses shared blue/orange/gold/green-deep at the existing Status tint; red stays destructive. `tagIdentity` and `MetalCue.tagIdentity` hash NFC Unicode scalars with UInt32 wraparound. Full ink and the copied/accessibility name retain the hash. A background-only tip and hole never clip text. `inferred` stays dashed; a host confirms explicitly by click or keyboard. The docs confirmation hosts accept Tab focus, press the chip and acknowledge once with the authored spark. No sound or repeating clock.
+
+SwiftUI display surfaces use `MetalCueText` and `MetalCueTag`; `MetalCueInferred(confirmed:onConfirm:)` supports an explicitly controlled suggestion. Native `Text.metalCue` remains a rendering attribute, and TextKit hosts own caret/selection/history. The avatar renderer keeps its existing native WIP status; this does not claim a full native Avatar port.
