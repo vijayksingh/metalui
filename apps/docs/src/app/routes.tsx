@@ -99,6 +99,7 @@ export const routes: RouteObject[] = [
       { path: 'components/provenance-tooltip', lazy: lazy(() => import('../pages/components/ProvenanceTooltip')) },
       { path: 'components/hover-engraving', lazy: lazy(() => import('../pages/components/HoverEngraving')) },
       { path: 'components/suggestion-chip', lazy: lazy(() => import('../pages/components/SuggestionChip')) },
+      { path: 'components/colour-cue', lazy: lazy(() => import('../pages/components/ColourCue')) },
       { path: 'components/cue', lazy: lazy(() => import('../pages/components/CueFamily')) },
       { path: 'components/selection-frame', lazy: lazy(() => import('../pages/components/SelectionFrame')) },
       { path: 'components/snap-guides', lazy: lazy(() => import('../pages/components/SnapGuides')) },

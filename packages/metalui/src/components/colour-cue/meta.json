@@ -1,0 +1,8 @@
+{
+  "name": "colour-cue", "title": "Colour cue", "status": "alpha", "layer": "component",
+  "description": "A fixed-footprint six-digit colour word opens the shared hue well and rewrites source through one gesture transaction.",
+  "base": "@base-ui/react/button + popover + slider",
+  "react": { "export": "ColourCue", "files": ["colour-cue.tsx"] },
+  "swift": { "symbol": "MetalColourCue", "file": "swift/Sources/MetalUI/Components/MetalColourCue.swift" },
+  "agent": "colour-cue.agent.md", "page": "/components/colour-cue"
+}

@@ -311,7 +311,7 @@ Where it belongs: a recognised cue becomes a **component** (a control you operat
 - [ ] **Enums rotate**: "#done" turns through its states (todo → doing → done → dropped) like a drum or a rotary switch: scroll, drag, or Space to step; the next state peeks above and below while held; its colour and glyph follow the state.
 - [ ] **Relative dates slide**: "tomorrow" steps through yesterday / today / tomorrow / the weekdays, then real dates ("Fri 3 Oct"); the resolved date chip rides along; a long press opens the Calendar in a popover anchored to the words, and the chosen day writes back as words ("next Friday") when it can.
 - [ ] **Times and durations**: "4pm" scrubs in 15-minute detents (part spring clicks, the haptic tick on a trackpad); "1h30" in 5-minute steps.
-- [ ] **Colours**: "#FF6B3D" opens a swatch well; dragging on it shifts hue, with the text rewriting live.
+- [x] **Colours**: "#FF6B3D" opens a swatch well; dragging on it shifts hue, with the text rewriting live.
 - [ ] **Tags and people**: a tag cycles through your recent tags on scroll; a person's name opens a small picker.
 - [ ] **The text stays the source**: every change rewrites the words in place (undoable as one step per gesture), the caret and layout never jump, and the line keeps its width through the change (the drum's footprint rule).
 - [ ] **Affordance without clutter**: nothing shows at rest; on hover a cue's underline thickens and the cursor says it can move (ns-resize for numbers, a rotate cursor for enums); first-time hint in a tooltip ("Drag to change").

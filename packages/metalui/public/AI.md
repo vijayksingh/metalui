@@ -1058,6 +1058,20 @@ A fence tagged `diff` tints whole lines: added lines a faint green band with a g
 
 ---
 
+# Colour cue
+
+A **Component** you operate inline. Its Part is the existing hex Mark; the opened hue well composes Well, Popover and Slider. It creates no material, timing, physics or identity palette. Native `MetalColourCue` shares these donors; MetalPopover's native material remains documented WIP.
+
+Use a controlled, opaque full `#RRGGBB` source. The seven mono characters reserve the footprint before interaction. Opening never normalizes source casing or mutates text. A hue edit retains the initial gesture's saturation and lightness; preview writes a full uppercase hex. Achromatic colours have no hue and stay unchanged when hue alone is moved.
+
+The host supplies `onBegin`, `onSourceChange`, `onCommit`, `onCancel` and optionally `editing` from `useCueDocument`. Capture the current source range once, replace it during preview, commit once on release. Each accepted keyboard step is one edit. Return false from onBegin or the source callback to refuse a stale edit. An unrelated controlled source change invalidates the held pointer until release. Escape restores the exact original words and selection; outside closing commits. Unmount cancels a held edit.
+
+Base UI owns button, popup focus/return and slider pointer/keyboard semantics. Enter/Space opens; arrows and Home/End operate hue, Shift uses the Slider large step; Escape cancels held travel and closes. The hue control has a named numeric value; hex words and the real swatch identify colour independently. The inline read-only button stays focusable and explains its state, while disabled controls are inert. Both modes send no source edits or haptics. Accepted steps use the shared detent helper once. OS/scoped Reduce Motion suppresses drum travel and the native transaction stops ongoing interpolation.
+
+React: `ColourCue({value, label, onChange?, onSourceChange?, onBegin?, onCommit?, onCancel?, editing?, readOnly?, disabled?, raw?})`. Native: `MetalColourCue(label, value:, readOnly:, raw:, onBegin:, onSourceChange:, onCommit:, onCancel:)` with the native enabled environment. Native begin/source callbacks return Bool; cancellation reasons are escape/external/unmount. Callbacks own history and never steal editor focus. Apply retained selection only when that editor already has focus.
+
+---
+
 # Combobox
 
 Type to find one of many. React: `Combobox` from `@unlocalhosted/metalui`, on Base UI Combobox. SwiftUI: `MetalCombobox` (work in progress). The well is the field look; the plate and rows are the `menu` recipe (with its gliding highlight); the `combobox` recipe adds the size and the fit.

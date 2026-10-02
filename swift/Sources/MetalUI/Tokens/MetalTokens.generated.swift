@@ -3046,6 +3046,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A six-digit source colour opens a shared well and hue slider. The Mark colour swatch and readout type reserve a fixed seven-character footprint; Popover manages focus, Slider owns pointer and numeric keyboard. All fills, dimensions and motion remain donor recipes. Preserve saturation/lightness and exact original source on cancel. (recipes.mark; recipes.well.field; recipes.slider; recipes.popover; type.readout; cue source transaction; haptic detent)
+    public static let colourCue = MetalObjectRecipe(
+        name: "colour-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
+
     /// A finite source value operated in place. It composes the Mark tag tab, content type, focus ring and shared detent feedback; the held adjacent-choice instrument has no material of its own. Reserve every host choice before interaction. A wheel gesture ends on the existing release duration; a stop uses the named 24 spacing step. Explicit host tint carries finite-state meaning, never a hash identity palette. (cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent)
     public static let enumCue = MetalObjectRecipe(
         name: "enum-cue",

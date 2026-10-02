@@ -126,3 +126,5 @@ export { useWaiting, type WaitingState, type WaitingTiming } from './motion/wait
 export { RenameEditor, type RenameEditorProps } from './components/rename-editor/rename-editor';
 
 export { CueDocument, useCueDocument, type CueSelection, type CueSourceRange, type CueDocumentSnapshot } from './text/cue-document';
+
+export { ColourCue, type ColourCueProps } from './components/colour-cue/colour-cue';

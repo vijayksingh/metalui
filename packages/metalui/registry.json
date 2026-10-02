@@ -539,6 +539,31 @@
       "docs": "Agent guide: https://metalui.dev/r/code-card.md. SwiftUI: MetalCodeCard in the MetalUI Swift package."
     },
     {
+      "name": "colour-cue",
+      "type": "registry:ui",
+      "title": "Colour cue",
+      "description": "A fixed-footprint six-digit colour word opens the shared hue well and rewrites source through one gesture transaction.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/slider.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/colour-cue/colour-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/colour-cue/colour-cue.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/colour-cue.md. SwiftUI: MetalColourCue in the MetalUI Swift package."
+    },
+    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",

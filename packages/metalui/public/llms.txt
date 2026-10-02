@@ -31,6 +31,7 @@
 - [Checkbox group](https://metalui.dev/r/checkbox-group.md): Several independent choices in a form: row-size checkboxes with labels and an optional parent; ticking the parent ticks its rows in a cascade from the top, clearing clears them at once.
 - [Chip](https://metalui.dev/r/chip.md): A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.
 - [Code card](https://metalui.dev/r/code-card.md): Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.
+- [Colour cue](https://metalui.dev/r/colour-cue.md): A fixed-footprint six-digit colour word opens the shared hue well and rewrites source through one gesture transaction.
 - [Combobox](https://metalui.dev/r/combobox.md): Type to find one of many: a field well that opens the menu's frosted plate; rows filter at once while the plate's height settles to the new count, and the highlight glides row to row.
 - [Command palette](https://metalui.dev/r/command-palette.md): ⌘K: a 560 frost plate with a 44 field well, sections of 36 rows with matches marked, a raised selected row with a green bar, destructive rows in red, and a footer of keycaps. Hover moves the selection; ↩ runs, ⇧↩ pins. Built on Base UI Dialog and an inline Combobox.
 - [Connector](https://metalui.dev/r/connector.md): The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.
