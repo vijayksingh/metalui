@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, ColourCue, MarkLine, useCueDocument } from '@unlocalhosted/metalui';
+import { Button, ColourCue, MarkLine, ProvenanceProvider, ProvenanceTooltip, useCueDocument } from '@unlocalhosted/metalui';
 import { UndoIcon, RedoIcon } from '@unlocalhosted/metalui/icons';
 import { Bench, Code, PageHeader, Section, Rules } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
@@ -23,8 +23,8 @@ export function ColourCueDocument() {
         onChange={event => doc.setSource(event.target.value, { start: event.target.selectionStart, end: event.target.selectionEnd })}
         onSelect={event => doc.setSelection({ start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd })} onBlur={doc.commit} />
     </label>
-    <MarkLine><span>Paint </span><ColourCue label="Paint colour" value={match?.[0] ?? '#FF6B3D'} editing={doc.editing} onBegin={begin} onSourceChange={doc.replace}
-      onCommit={doc.commit} onCancel={reason => { if (reason !== 'external') doc.cancel(); }} readOnly={d.readOnly} disabled={d.disabled || !match} raw={d.raw} />{' '}<span data-testid="colour-neighbour">with Sam.</span></MarkLine>
+    <ProvenanceProvider><MarkLine><span>Paint </span><ProvenanceTooltip source="You" detail={['Authored colour words']}><ColourCue label="Paint colour" value={match?.[0] ?? '#FF6B3D'} editing={doc.editing} onBegin={begin} onSourceChange={doc.replace}
+      onCommit={doc.commit} onCancel={reason => { if (reason !== 'external') doc.cancel(); }} readOnly={d.readOnly} disabled={d.disabled || !match} raw={d.raw} /></ProvenanceTooltip>{' '}<span data-testid="colour-neighbour">with Sam.</span></MarkLine></ProvenanceProvider>
     <div className="mu-cluster gap-mu-related">
       <Button size="compact" icon={<UndoIcon />} disabled={!doc.canUndo && !doc.editing} onClick={doc.undo}>Undo colour edit</Button>
       <Button size="compact" icon={<RedoIcon />} disabled={!doc.canRedo || doc.editing} onClick={doc.redo}>Redo colour edit</Button>

@@ -22,6 +22,7 @@ for (const colorway of COLORWAYS) {
     await doc.getByRole('button', { name: 'Undo colour edit' }).click(); await expect(source).toHaveValue('🎨 Paint #FF6B3D with Sam.');
     await expect(doc.getByRole('status')).toContainText('selection 2–2');
     await doc.getByRole('button', { name: 'Redo colour edit' }).click(); await expect(source).toHaveValue(one);
+    await expect(doc.locator('.mu-colour-cue').first().locator('.mu-swap-layer')).toHaveCount(1);
     await doc.screenshot({ path: capture(`colour-cue-${colorway}`) });
   });
   test(`colour drag records one edit and Escape restores exact source in ${colorway}`, async ({ page }) => {
@@ -61,4 +62,19 @@ test('a scoped motion preference follows colour text into its portalled well', a
   await page.getByRole('button', { name: 'Paint colour, #FF6B3D', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveAttribute('data-mu-motion', 'reduce');
   await expect(page.getByRole('dialog').locator('..')).toHaveAttribute('data-mu-colorway', 'graphite');
+});
+
+test('colour provenance reaches its actual operable words and preserves popup focus', async ({ page }) => {
+  await open(page, '/components/colour-cue#source', 'bone');
+  const doc = page.getByTestId('colour-document');
+  const trigger = doc.getByRole('button', { name: 'Paint colour, #FF6B3D', exact: true });
+  await trigger.focus();
+  await expect(trigger).toHaveAttribute('aria-description', /arrow keys.*You, Authored colour words/);
+  await expect(page.locator('.mu-provenance')).toContainText('You · Authored colour words');
+  await trigger.press('Enter');
+  const hue = page.getByRole('slider', { name: 'Paint colour hue' });
+  await hue.focus(); await hue.press('ArrowRight'); await hue.press('Escape');
+  await expect(doc.locator('.mu-colour-cue').first()).toBeFocused();
+  await doc.getByRole('button', { name: 'Undo colour edit' }).click();
+  await expect(doc.getByRole('textbox', { name: 'Colour source' })).toHaveValue('🎨 Paint #FF6B3D with Sam.');
 });

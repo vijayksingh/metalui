@@ -30,6 +30,7 @@ import MetalUI
                     MetalColourCue("Paint colour", value: Binding(get: { value }, set: { _ in }),
                         onBegin: { document.begin(range) }, onSourceChange: document.replace,
                         onCommit: document.commit, onCancel: { if $0 != "external" { document.cancel() } })
+                        .metalProvenance("You", detail: ["Authored colour words"])
                         .keyboardShortcut(.defaultAction)
                         .background(GeometryReader { proxy in Color.clear.preference(key: Width.self, value: proxy.size.width) })
                         .onPreferenceChange(Width.self) { measure.width = $0 }

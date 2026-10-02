@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import { mergeProps } from '@base-ui/react/merge-props';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { Mark } from '../mark/mark';
 import { Popover } from '../popover/popover';
@@ -26,7 +27,7 @@ function hueHex(hue: number, saturation: number, lightness: number) {
   const rgb = h < 1 ? [c, x, 0] : h < 2 ? [x, c, 0] : h < 3 ? [0, c, x] : h < 4 ? [0, x, c] : h < 5 ? [x, 0, c] : [c, 0, x];
   return '#' + rgb.map(v => Math.round((v + m) * CHANNEL).toString(16).padStart(2, '0')).join('').toUpperCase();
 }
-export interface ColourCueProps {
+export interface ColourCueProps extends Omit<React.ComponentPropsWithoutRef<typeof BaseButton>, 'children' | 'value' | 'onChange' | 'render' | 'nativeButton'> {
   value: string;
   label: string;
   onChange?: (hex: string) => void;
@@ -44,10 +45,11 @@ export interface ColourCueProps {
 const ROOT = 'mu-colour-cue inline-grid relative align-baseline type-readout text-ink whitespace-nowrap p-0 bg-transparent border-none cursor-pointer focus-visible:focus-ring disabled:opacity-button-disabled';
 const CELL = 'col-start-1 row-start-1';
 /** A colour Component: the text opens the shared well and hue Slider; the source owns history. */
-export function ColourCue({ value, label, onChange, onSourceChange, onBegin, onCommit, onCancel, editing, readOnly = false, disabled = false, raw = false, className }: ColourCueProps) {
+export const ColourCue = React.forwardRef<HTMLElement, ColourCueProps>(function ColourCue({ value, label, onChange, onSourceChange, onBegin, onCommit, onCancel, editing, readOnly = false, disabled = false, raw = false, className, ...triggerProps }, forwardedRef) {
   const hsl = colourCueHSL(value);
   const [open, setOpen] = React.useState(false);
   const [anchor, setAnchor] = React.useState<HTMLElement | null>(null);
+  React.useImperativeHandle(forwardedRef, () => anchor!, [anchor]);
   const reduced = useReducedMotion(anchor);
   const active = React.useRef<{ before: string; last: string; saturation: number; lightness: number } | null>(null);
   const pointerHeld = React.useRef(false), stalePointer = React.useRef(false);
@@ -78,8 +80,14 @@ export function ColourCue({ value, label, onChange, onSourceChange, onBegin, onC
     haptic('detent');
     if (keyboard) commit();
   };
-  const face = <BaseButton ref={setAnchor} disabled={disabled} aria-disabled={readOnly || undefined} aria-label={`${label}, ${value}${readOnly ? ', read only' : ''}`}
-    title={readOnly ? 'Read only' : 'Open colour well; drag hue or use arrow keys'} className={className ? `${ROOT} ${className}` : ROOT}>
+  const instructions = readOnly ? 'Read only' : 'Open colour well; drag hue or use arrow keys';
+  const faceProps: React.ComponentPropsWithoutRef<typeof BaseButton> = {
+    disabled, 'aria-disabled': readOnly || undefined,
+    'aria-label': `${label}, ${value}${readOnly ? ', read only' : ''}`,
+    'aria-description': [instructions, triggerProps['aria-description']].filter(Boolean).join('. '),
+    className: className ? `${ROOT} ${className}` : ROOT,
+  };
+  const face = <BaseButton {...mergeProps(triggerProps, faceProps)} ref={setAnchor}>
     <span aria-hidden className={`invisible ${CELL}`}>{FOOTPRINT}</span>
     <Mark kind="hex" meaning="colour" meaningLabel={label} color={value} raw={raw} className={CELL}><SwapText value={value} /></Mark>
   </BaseButton>;
@@ -107,4 +115,4 @@ export function ColourCue({ value, label, onChange, onSourceChange, onBegin, onC
       </Popover.Body>
     </Popover.Content>
   </Popover>;
-}
+});
