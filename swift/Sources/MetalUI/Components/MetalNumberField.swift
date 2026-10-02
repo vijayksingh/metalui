@@ -23,33 +23,31 @@ public struct MetalNumberField: View {
     public var body: some View {
         HStack {
             Text("\(label): \(value)").monospacedDigit()
+                .accessibilityLabel(label)
+                .accessibilityValue(String(value))
+                .accessibilityAdjustableAction { direction in
+                    switch direction {
+                    case .increment: change(increasing: true)
+                    case .decrement: change(increasing: false)
+                    @unknown default: break
+                    }
+                }
             Spacer()
             Button { decreaseActs += 1; change(increasing: false) } label: {
                 MetalIcon(.minus, size: MetalRecipes.numberField.points("key.glyph"), act: decreaseActs)
             }
             .buttonRepeatBehavior(.enabled)
             .disabled(value <= range.lowerBound)
-            .accessibilityElement(children: .ignore)
             .accessibilityLabel("Decrease \(label)")
             Button { increaseActs += 1; change(increasing: true) } label: {
                 MetalIcon(.plus, size: MetalRecipes.numberField.points("key.glyph"), act: increaseActs)
             }
             .buttonRepeatBehavior(.enabled)
             .disabled(value >= range.upperBound)
-            .accessibilityElement(children: .ignore)
             .accessibilityLabel("Increase \(label)")
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(label)
-        .accessibilityValue(String(value))
-        .accessibilityAdjustableAction { direction in
-            switch direction {
-            case .increment: change(increasing: true)
-            case .decrement: change(increasing: false)
-            @unknown default: break
-            }
-        }
     }
 
     private func change(increasing: Bool) {

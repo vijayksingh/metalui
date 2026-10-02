@@ -43,6 +43,8 @@ with tempfile.TemporaryDirectory(prefix="metalui-native-proof-") as directory:
         for line in process.stdout:
             print(line, end="", flush=True)
             tag, delay = None, .15
+            if "MU_NUMBER_READY" in line:
+                tag = "number-field-rest"
             if "MU_POLICY_" in line and not "DONE" in line:
                 tag = "motion-policy-" + line.strip().split("MU_POLICY_")[-1].lower()
             if "MU_MORPH_COMPARE " in line:
@@ -54,7 +56,7 @@ with tempfile.TemporaryDirectory(prefix="metalui-native-proof-") as directory:
                 time.sleep(delay)
                 subprocess.run(["xcrun", "simctl", "io", args.simulator, "screenshot",
                                 str(args.captures / (tag + ".png"))], check=True)
-            if "MU_MORPH_DONE" in line or "MU_POLICY_DONE" in line:
+            if "MU_MORPH_DONE" in line or "MU_POLICY_DONE" in line or "MU_NUMBER_DONE" in line:
                 break
     finally:
         process.terminate()
