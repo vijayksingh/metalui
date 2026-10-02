@@ -126,14 +126,21 @@ public struct MetalToolStrip: View {
         .metalAnimation(.settle, value: items.map(\.id))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Tools for \(label)")
-        .onMoveCommand { direction in
-            let ids = visible.map(\.id) + (overflow.isEmpty ? [] : ["__more"]) + danger.map(\.id)
-            guard !ids.isEmpty else { return }
-            let current = focusedKey.flatMap { ids.firstIndex(of: $0) } ?? 0
-            let step = direction == .left ? -1 : direction == .right ? 1 : 0
-            if step != 0 { focusedKey = ids[(current + step + ids.count) % ids.count] }
+        #if os(macOS)
+        .onMoveCommand { direction in moveFocus(direction == .left ? -1 : direction == .right ? 1 : 0) }
+        #else
+        .onKeyPress(keys: [.leftArrow, .rightArrow]) { press in
+            moveFocus(press.key == .leftArrow ? -1 : 1)
+            return .handled
         }
+        #endif
         if let anchor, let viewport { strip.position(position(anchor, viewport)) } else { strip }
+    }
+    private func moveFocus(_ step: Int) {
+        let ids = visible.map(\.id) + (overflow.isEmpty ? [] : ["__more"]) + danger.map(\.id)
+        guard !ids.isEmpty, step != 0 else { return }
+        let current = focusedKey.flatMap { ids.firstIndex(of: $0) } ?? 0
+        focusedKey = ids[(current + step + ids.count) % ids.count]
     }
     private func key(_ item: MetalToolStripItem) -> some View {
         MetalToolStripKey(item: item).focused($focusedKey, equals: item.id).matchedGeometryEffect(id: item.id, in: keys, properties: .position).transition(.opacity)
