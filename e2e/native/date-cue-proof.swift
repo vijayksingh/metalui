@@ -5,6 +5,7 @@ import MetalUI
 struct Proof: View {
     @State private var day = "2026-03-08"
     @State private var enabled = true
+    @State private var readOnly = false
     @StateObject private var document = MetalCueDocument("meet tomorrow")
     @State private var begins = 0
     @State private var commits = 0
@@ -16,7 +17,7 @@ struct Proof: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("meet")
                 MetalDateCue("Meeting day", value: $day, today: "2026-03-07", in: "2026-03-01"..."2026-04-30",
-                    footprint: ["next Wednesday", "2026-03-16", "Wed, 30 Apr"],
+                    footprint: ["next Wednesday", "2026-03-16", "Wed, 30 Apr"], readOnly: readOnly,
                     onBegin: { document.begin(NSRange(location: 5, length: document.source.utf16.count - 5)); begins += 1 },
                     onSourceChange: { document.replace($0) }, onCommit: { document.commit(); commits += 1 },
                     onCancel: { reason in if reason == .external { document.commit() } else { document.cancel() }; cancels += 1 })
@@ -67,11 +68,17 @@ struct Proof: View {
             mouse(.leftMouseUp, NSPoint(x: point.x, y: point.y + 6))
             await key("\u{1b}", 53)
             let afterDrag = day, afterBegins = begins
+            readOnly = true; try? await Task.sleep(for: .milliseconds(150))
+            await key("\u{F700}", 126); await key("\u{F701}", 125, [.option]); await key("\r", 36)
+            let readonly = day == afterDrag && begins == afterBegins && !NSApp.windows.contains { $0.isVisible && $0.className == "_NSPopoverWindow" }
+            readOnly = false; try? await Task.sleep(for: .milliseconds(150)); await key("\u{F700}", 126)
+            let reenabled = day != afterDrag && begins == afterBegins + 1
+            let beforeDisabled = day, beforeDisabledBegins = begins
             enabled = false; try? await Task.sleep(for: .milliseconds(150)); window.makeFirstResponder(host)
             await key("\u{F700}", 126); await key("\r", 36)
-            let disabled = day == afterDrag && begins == afterBegins
-            let passed = step && week && undo && picker && accepted && disabled && hold && movement
-            let report = "step=\(step) week=\(week) undo=\(undo) picker=\(picker) accepted=\(accepted) disabled=\(disabled) day=\(day) begins=\(begins) hold=\(hold) movement=\(movement) passed=\(passed)"
+            let disabled = day == beforeDisabled && begins == beforeDisabledBegins
+            let passed = step && week && undo && picker && accepted && disabled && hold && movement && readonly && reenabled
+            let report = "step=\(step) week=\(week) undo=\(undo) picker=\(picker) accepted=\(accepted) disabled=\(disabled) day=\(day) begins=\(begins) hold=\(hold) movement=\(movement) readonly=\(readonly) reenabled=\(reenabled) passed=\(passed)"
             try? report.write(toFile: ProcessInfo.processInfo.environment["METALUI_NATIVE_REPORT"]!, atomically: true, encoding: .utf8)
             NSApp.terminate(nil)
         }
