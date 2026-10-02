@@ -512,6 +512,7 @@
   --spacing-breadcrumbs-gap: var(--mu-r-breadcrumbs-self-gap);
   --spacing-breadcrumbs-max: var(--mu-r-breadcrumbs-self-max);
   --spacing-breadcrumbs-sep-size: var(--mu-r-breadcrumbs-sep-size);
+  --spacing-breadcrumbs-fold-glyph: var(--mu-r-breadcrumbs-fold-glyph);
   --spacing-breadcrumbs-fold-height: var(--mu-r-breadcrumbs-fold-height);
   --spacing-breadcrumbs-fold-pad: var(--mu-r-breadcrumbs-fold-pad);
   --spacing-breadcrumbs-fold-radius: var(--mu-r-breadcrumbs-fold-radius);

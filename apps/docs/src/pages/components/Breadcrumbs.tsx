@@ -68,6 +68,7 @@ export default function BreadcrumbsPage() {
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
+        { id: 'BC4', title: 'A still path, one acting key', body: 'Shared right chevrons separate levels without playing. The shared more glyph belongs to the folded-level key.', origin: 'The icon set' },
         { id: 'BC1', title: 'You are the last crumb', body: 'The current level is plain text, never a link to itself.', origin: 'WAI breadcrumb pattern' },
         { id: 'BC2', title: 'Only changes move', body: 'A new level arrives from the right; the path is still on first view.', origin: 'Ours' },
         { id: 'BC3', title: 'Fold the middle', body: 'Keep where you started and where you are; the rest waits in a menu.', origin: 'Ours' },

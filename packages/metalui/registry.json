@@ -299,6 +299,7 @@
       "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],

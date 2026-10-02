@@ -21,7 +21,8 @@ public struct MetalBreadcrumbs: View {
                     Text(name).accessibilityAddTraits(.isHeader)
                 } else {
                     Button(name) { onSelect(i) }.buttonStyle(.plain).foregroundStyle(.secondary)
-                    Image(systemName: "chevron.right").imageScale(.small).foregroundStyle(.tertiary).accessibilityHidden(true)
+                    MetalIcon(.chevron, size: MetalRecipes.breadcrumbs.points("sep.size"), interaction: MetalIconInteraction())
+                        .rotationEffect(.degrees(270)).foregroundStyle(.tertiary)
                 }
             }
         }

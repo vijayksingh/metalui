@@ -1016,7 +1016,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Where you are, as a path you can climb: the levels above in ui type and ink2 (ink on hover), the current one in ink and not a link, parted by small engraved chevrons in ink3. Going deeper, the new crumb arrives one grid step from the right on the settle spring as it fades in; going back up, the path simply shortens. A long path keeps the first level and the last two, and folds the middle into a quiet key that opens a menu of the hidden levels. Reduce Motion: the new crumb fades in without travel. (the menu; the settle spring; the WAI breadcrumb pattern)
+    /// Where you are, as a path you can climb: the levels above in ui type and ink2 (ink on hover), the current one in ink and not a link, parted by small engraved chevrons in ink3. Going deeper, the new crumb arrives one grid step from the right on the settle spring as it fades in; going back up, the path simply shortens. A long path keeps the first level and the last two, and folds the middle into a quiet key that opens a menu of the hidden levels. Reduce Motion: the new crumb fades in without travel. (the menu; the shared chevron and more glyphs; the settle spring; the WAI breadcrumb pattern)
     public static let breadcrumbs = MetalObjectRecipe(
         name: "breadcrumbs",
         layers: [
@@ -1026,6 +1026,7 @@ public enum MetalRecipes {
             "self.gap": .number(6.0),
             "self.max": .number(4.0),
             "sep.size": .number(10.0),
+            "fold.glyph": .number(12.0),
             "fold.height": .number(22.0),
             "fold.pad": .number(6.0),
             "fold.radius": .number(6.0),

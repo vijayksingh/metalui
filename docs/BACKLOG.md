@@ -109,7 +109,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] combobox
 - [x] select
 - [x] table
-- [ ] breadcrumbs
+- [x] breadcrumbs
 - [ ] button-group (split chevron)
 - [ ] folder
 - [ ] number-field (− and + as text)

@@ -1109,10 +1109,11 @@
   --mu-r-button-group-rocker-angle: 1deg;
   --mu-r-button-group-seam-inset: var(--mu-nest);
   --mu-r-button-group-seam-width: var(--mu-r-rule-self-thickness);
-  /* breadcrumbs: the menu; the settle spring; the WAI breadcrumb pattern */
+  /* breadcrumbs: the menu; the shared chevron and more glyphs; the settle spring; the WAI breadcrumb pattern */
   --mu-r-breadcrumbs-self-gap: 6px;
   --mu-r-breadcrumbs-self-max: 4px;
   --mu-r-breadcrumbs-sep-size: 10px;
+  --mu-r-breadcrumbs-fold-glyph: 12px;
   --mu-r-breadcrumbs-fold-height: 22px;
   --mu-r-breadcrumbs-fold-pad: 6px;
   --mu-r-breadcrumbs-fold-radius: 6px;

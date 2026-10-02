@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { Menu, MenuItem } from '../menu/menu';
 
 /* ─────────────────────────────────────────────────────────
@@ -42,14 +43,10 @@ const ITEM = 'mu-breadcrumb inline-flex items-center gap-breadcrumbs-gap data-ar
 const LINK = 'mu-breadcrumb-link text-ink2 no-underline outline-none transition-colors duration-settle hover:text-ink focus-visible:focus-ring';
 const CURRENT = 'mu-breadcrumb-current text-ink';
 const SEP = 'mu-breadcrumb-sep size-breadcrumbs-sep-size flex-none text-ink3';
-const FOLD = 'mu-breadcrumb-fold inline-grid place-items-center h-breadcrumbs-fold-height px-breadcrumbs-fold-pad rounded-breadcrumbs-fold-radius border-0 bg-transparent text-ink2 cursor-pointer outline-none hover:recipe-row-list-hover hover:text-ink focus-visible:focus-ring data-popup-open:recipe-row-list-hover';
+const FOLD = 'mu-breadcrumb-fold mu-icon-trigger inline-grid place-items-center h-breadcrumbs-fold-height px-breadcrumbs-fold-pad rounded-breadcrumbs-fold-radius border-0 bg-transparent text-ink2 cursor-pointer outline-none hover:recipe-row-list-hover hover:text-ink focus-visible:focus-ring data-popup-open:recipe-row-list-hover';
 
 function Sep() {
-  return (
-    <svg aria-hidden viewBox="0 0 10 10" className={SEP} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3.75 2 6.75 5l-3 3" />
-    </svg>
-  );
+  return <Icon name="chevron" turn={270} size={16} animate={false} className={SEP} />;
 }
 
 /** Where you are, as a path you can climb. The last item is the current page. */
@@ -75,7 +72,7 @@ export function Breadcrumbs({ items, max = 4, renderLink, onNavigate, className,
           if (item == null) {
             return (
               <li key="fold" className={ITEM}>
-                <Menu trigger={<button type="button" aria-label={`${folded.length} more levels`} className={FOLD}>…</button>}>
+                <Menu trigger={<button type="button" aria-label={`${folded.length} more levels`} className={FOLD}><Icon name="more" className="size-breadcrumbs-fold-glyph" /></button>}>
                   {folded.map((f) => <MenuItem key={f.id} onSelect={() => onNavigate?.(f)}>{f.label}</MenuItem>)}
                 </Menu>
                 <Sep />

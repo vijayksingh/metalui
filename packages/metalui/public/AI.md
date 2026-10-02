@@ -508,8 +508,8 @@ Where you are, as a path you can climb. React: `Breadcrumbs` from `@unlocalhoste
 
 - `nav` named "Breadcrumb", an ordered list.
 - Levels above: links in ui type, ink2, ink on hover. The current level: ink, not a link.
-- Separators: 10 engraved chevrons in ink3, hidden from assistive tech.
-- Fold: past `max` (4) levels, the first stays, then a quiet "…" key (22 tall, radius 6) that opens a menu of the hidden levels, then the last two.
+- Separators: the shared `chevron` at 10, quarter-turned right and static in ink3, hidden from assistive tech.
+- Fold: past `max` (4) levels, the first stays, then a quiet shared `more` glyph key (glyph 12) (22 tall, radius 6) that opens a menu of the hidden levels, then the last two.
 
 ## States and motion
 
@@ -518,7 +518,7 @@ Where you are, as a path you can climb. React: `Breadcrumbs` from `@unlocalhoste
 | first render | the path | still |
 | deeper | a new last crumb | arrives one grid step from the right, fading in, on the settle spring |
 | up | fewer crumbs | the path shortens |
-| folded | "…" key | its menu opens on the menu's own motion |
+| folded | shared `more` key | its menu opens on the menu's own motion |
 | focus | the green ring on a link | – |
 
 Reduce Motion: the new crumb fades in without travel.
@@ -540,6 +540,8 @@ Reduce Motion: the new crumb fades in without travel.
 
 - The last crumb is where you are and is not a link.
 - Name levels as they are named where they live.
+
+The separators use `Icon` / `MetalIcon(.chevron)` from the set with animation disabled: they name a path, not an action. The fold key uses the shared `more` act and its accessible level count. Reduced motion keeps both glyphs complete and still.
 
 ---
 
