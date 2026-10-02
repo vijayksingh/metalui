@@ -431,9 +431,9 @@ function ActionNamesItself() {
         <div className="flex flex-wrap items-center justify-between gap-12 pb-14">
           <Tag tone="lit">actions</Tag>
           <div className="flex flex-wrap gap-8">
-            <Button icon={<PlusIcon />} onClick={act('New canvas')}>New Canvas</Button>
+            <Button icon={<Icon name="board" />} onClick={act('New canvas')}>New Canvas</Button>
             <Button icon={<ShareIcon />} onClick={act('Share')}>Share</Button>
-            <Button icon={<ShareIcon />} onClick={act('Export')}>Export</Button>
+            <Button icon={<Icon name="download" />} onClick={act('Export')}>Export</Button>
             <Button icon={<DuplicateIcon />} onClick={act('Duplicate')}>Duplicate</Button>
             <Button icon={<PenIcon />} onClick={act('Rename')}>Rename</Button>
           </div>

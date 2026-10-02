@@ -49,6 +49,8 @@ for (const colorway of COLORWAYS) {
       // leading: the glyph is the first thing after the cap's padding
       expect(Math.round(g.x - b.x)).toBe(Number(P.self.pad));
     }
+    await expect(beat.getByRole('button', { name: 'New Canvas', exact: true }).locator('.mu-ic-board')).toHaveCount(1);
+    await expect(beat.getByRole('button', { name: 'Export', exact: true }).locator('.mu-ic-download')).toHaveCount(1);
     await expect(beat.getByRole('button', { name: 'Cancel' }).locator('svg')).toHaveCount(0);
 
     // Hovering the button plays the glyph's act, and the act finishes at rest.
