@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { Field as BaseField } from '@base-ui/react/field';
 import { Select } from '../select/select';
 import { SwapText } from '../../motion/swap';
@@ -228,7 +229,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
   const arrive = dir === 'later' ? 'calendar-arrive-later' : dir === 'earlier' ? 'calendar-arrive-earlier' : '';
   return <div className={className ? `${ROOT} ${className}` : ROOT} aria-label={aria['aria-label']} role="group">
     <div className={HEAD}>
-      <button type="button" className={STEP} aria-label="Previous month" onClick={() => stepMonth(-1)} disabled={min != null && month <= startOfMonth(min)}><svg aria-hidden viewBox="0 0 10 10" className="size-calendar-step-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M6.25 2 3.25 5l3 3" /></svg></button>
+      <button type="button" className={STEP} aria-label="Previous month" onClick={() => stepMonth(-1)} disabled={min != null && month <= startOfMonth(min)}><Icon name="chevron" turn={90} className="size-calendar-step-glyph" /></button>
       <Popover open={jump} onOpenChange={setJump}>
         <Popover.Trigger><button type="button" aria-label={`Choose month and year: ${titleFormat.format(month)}`} className="border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring"><span id={titleId} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={titleFormat.format(month)} /></span></button></Popover.Trigger>
         <Popover.Content><div className="mu-stack p-mu-space-12">
@@ -236,7 +237,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
           <div className="mu-auto-grid gap-mu-space-4">{Array.from({ length: 12 }, (_, i) => { const d = localDate(month.getFullYear(), i, 1); return <button type="button" className={buttonClasses('standard', 'compact')} key={i} disabled={!!min && monthKey(d) < monthKey(min) || !!max && monthKey(d) > monthKey(max)} onClick={() => { showMonth(d); setFocused(d); setJump(false); }}>{new Intl.DateTimeFormat(locale, { month: 'long' }).format(d)}</button>; })}</div>
         </div></Popover.Content>
       </Popover>
-      <button type="button" className={STEP} aria-label="Next month" onClick={() => stepMonth(1)} disabled={max != null && monthKey(month) + count - 1 >= monthKey(max)}><svg aria-hidden viewBox="0 0 10 10" className="size-calendar-step-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 2 6.75 5l-3 3" /></svg></button>
+      <button type="button" className={STEP} aria-label="Next month" onClick={() => stepMonth(1)} disabled={max != null && monthKey(month) + count - 1 >= monthKey(max)}><Icon name="chevron" turn={270} className="size-calendar-step-glyph" /></button>
     </div>
     <div ref={grids} className="mu-cluster items-start gap-mu-group" onMouseLeave={() => setPreview(null)}>
       {panels.map(({ at, days }, index) => <div className={GRID_WRAP} key={monthKey(at)}>
@@ -401,7 +402,7 @@ export function DatePicker<M extends CalendarMode = 'single'>({ mode = 'single' 
   const disabledToday = timed && !todayValue || !!eligibilityError(todayValue);
   const label = rest['aria-label'];
   const trigger = <Popover.Trigger><button type="button" disabled={disabled || fieldDisabled || readOnly} aria-label={`${label}: ${hasValue ? text : 'none chosen'}`} aria-invalid={invalid || !!error || undefined} className={editable ? PICKER_KEY : 'inline-flex items-center gap-field-regular-gap h-field-regular-height border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring'}>
-    <svg aria-hidden viewBox="0 0 14 14" className="size-field-regular-glyph flex-none text-ink2" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round"><rect x="2" y="3" width="10" height="9" rx="2" /><path d="M2 6h10M5 1.5v3M9 1.5v3" /></svg>
+    <Icon name="calendar" className="size-field-regular-glyph flex-none text-ink2" />
     {!editable && <span><SwapText value={text} /></span>}
   </button></Popover.Trigger>;
   return <div className="mu-stack gap-mu-space-8">
@@ -410,7 +411,7 @@ export function DatePicker<M extends CalendarMode = 'single'>({ mode = 'single' 
         {editable ? <BaseField.Control ref={input} name={name} type="date" lang={locale} aria-label={mode === 'range' ? `${label} start` : label} required={required} disabled={disabled} readOnly={readOnly} min={low && dayKey(low)} max={high && dayKey(high)} value={draft[0]} onValueChange={(raw) => enterDate(raw, 0)} className={ENTRY} render={(props, state) => <PickerEntry {...props} aria-labelledby={mode === 'range' ? undefined : props['aria-labelledby']} fieldDisabled={state.disabled} onDisabledChange={setFieldDisabled} data-invalid={invalid || error ? '' : undefined} />} /> : <BaseField.Control ref={input} value={chosenKey} required={required} readOnly disabled={disabled} aria-label={label} className="sr-only" name={name} render={(props, state) => <PickerEntry {...props} fieldDisabled={state.disabled} onDisabledChange={setFieldDisabled} />} />}
         {mode === 'range' && editable && <><span aria-hidden>–</span><input type="date" lang={locale} aria-label={`${label} end`} required={required} disabled={disabled || fieldDisabled} readOnly={readOnly} min={draft[0] || low && dayKey(low)} max={high && dayKey(high)} value={draft[1]} onChange={(e) => enterDate(e.currentTarget.value, 1)} className={ENTRY} /></>}
         {trigger}
-        {hasValue && !readOnly && <button type="button" className={PICKER_KEY} aria-label={`Clear ${label}`} disabled={disabled || fieldDisabled} onClick={() => { setDraft(['', '']); apply(empty, false); input.current?.focus(); }}>×</button>}
+        {hasValue && !readOnly && <button type="button" className={PICKER_KEY} aria-label={`Clear ${label}`} disabled={disabled || fieldDisabled} onClick={() => { setDraft(['', '']); apply(empty, false); input.current?.focus(); }}><Icon name="close" className="size-field-regular-glyph" /></button>}
         {name && <input type="hidden" name={name} value={chosenKey} disabled={disabled || fieldDisabled} />}
       </div>
       <Popover.Content align="start">

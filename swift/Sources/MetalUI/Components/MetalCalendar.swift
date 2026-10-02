@@ -129,7 +129,7 @@ public struct MetalCalendar: View {
         let recipe = MetalRecipes.calendar
         VStack(spacing: recipe.points("head.gap")) {
             HStack(spacing: recipe.points("head.gap")) {
-                Button { show(addMonths(month, -1)) } label: { Image(systemName: "chevron.left").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Previous month").disabled(limits.map { month <= monthStart($0.lowerBound) } ?? false)
+                Button { show(addMonths(month, -1)) } label: { MetalMorphIcon(.chevron, size: recipe.points("step.glyph"), turn: .left) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Previous month").disabled(limits.map { month <= monthStart($0.lowerBound) } ?? false)
                 Spacer(minLength: .zero)
                 Button { jump = true } label: { Text(formatted(month, "MMMM yyyy")).font(.metal(MetalType.title)).contentTransition(.numericText(countsDown: !later)) }.buttonStyle(.plain).accessibilityLabel("Choose month and year: \(formatted(month, "MMMM yyyy"))").popover(isPresented: $jump) {
                     VStack(spacing: MetalLayout.gapRelated) {
@@ -141,7 +141,7 @@ public struct MetalCalendar: View {
                     }.padding(MetalLayout.gapRelated)
                 }
                 Spacer(minLength: .zero)
-                Button { show(addMonths(month, 1)) } label: { Image(systemName: "chevron.right").font(.system(size: recipe.points("step.glyph"))) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Next month").disabled(limits.map { addMonths(month, months - 1) >= monthStart($0.upperBound) } ?? false)
+                Button { show(addMonths(month, 1)) } label: { MetalMorphIcon(.chevron, size: recipe.points("step.glyph"), turn: .right) }.buttonStyle(MetalButtonStyle(size: .compact)).accessibilityLabel("Next month").disabled(limits.map { addMonths(month, months - 1) >= monthStart($0.upperBound) } ?? false)
             }.frame(height: recipe.points("head.height"))
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .top, spacing: MetalLayout.gapGroup) { panels }
@@ -315,8 +315,8 @@ public struct MetalDatePicker: View {
         return HStack(spacing: recipe.points("regular.gap")) {
             nativeEntry(end: false)
             if isRange { Text("–"); nativeEntry(end: true) }
-            Button { open = true } label: { Image(systemName: "calendar").font(.system(size: recipe.points("regular.glyph"))) }.buttonStyle(.plain).accessibilityLabel("Choose \(label)").disabled(readOnly)
-            if chosen != nil && !readOnly { Button { clear() } label: { Image(systemName: "xmark").font(.system(size: recipe.points("regular.glyph"))) }.buttonStyle(.plain).accessibilityLabel("Clear \(label)") }
+            Button { open = true } label: { MetalMorphIcon(.calendar, size: recipe.points("regular.glyph")) }.buttonStyle(.plain).accessibilityLabel("Choose \(label)").disabled(readOnly)
+            if chosen != nil && !readOnly { Button { clear() } label: { MetalMorphIcon(.close, size: recipe.points("regular.glyph")) }.buttonStyle(.plain).accessibilityLabel("Clear \(label)") }
         }
         .padding(.leading, recipe.points("regular.pad-left")).padding(.trailing, recipe.points("regular.pad-right"))
         .frame(minHeight: recipe.points("regular.height"))

@@ -93,3 +93,12 @@ for (const colorway of COLORWAYS) for (const width of [390, 1280]) {
     await page.screenshot({ path: capture(`calendar-page-left-edge-${colorway}-${width}`) });
   });
 }
+
+for (const colorway of COLORWAYS) test(`canonical navigation and picker glyphs in ${colorway}`, async ({ page }) => {
+  await open(page, '/components/calendar', colorway);
+  const calendar = page.getByRole('group', { name: 'Trip day', exact: true });
+  await expect(calendar.getByRole('button', { name: 'Previous month' }).locator('svg.mu-ic-chevron')).toHaveAttribute('data-turn', '90');
+  await expect(calendar.getByRole('button', { name: 'Next month' }).locator('svg.mu-ic-chevron')).toHaveAttribute('data-turn', '270');
+  await expect(page.locator('.mu-date-picker .mu-ic-calendar').first()).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Clear Appointment', exact: true }).locator('svg.mu-ic-close')).toBeVisible();
+});

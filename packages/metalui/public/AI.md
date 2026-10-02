@@ -851,6 +851,8 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 - Typing or selecting changes the wall-clock day/time in that zone. Nonexistent DST-gap values are refused with a visible and native validity error. Repeated times resolve to the first occurrence. Date limits and unavailable predicates apply to the displayed civil day; exact instant limits still apply to accepted date/time values. The Today action and current-day lamp also follow the displayed zone (`Calendar today` supplies the civil-day override). No background clock runs.
 - Swift’s native date/time segments inherit the selected TimeZone. The shared calendar also receives it; calendar day selection preserves the existing wall-clock hour/minute with strict DST matching and the first overlap occurrence. A zone change changes the display, preserving its Date instant.
 
+Navigation, picker and Clear use canonical Chevron (quarter turns), Calendar and Close glyphs on both platforms. Shared recipe dimensions remain unchanged.
+
 ---
 
 # Card
