@@ -85,3 +85,20 @@ test('under reduced motion an action glyph stays still', async ({ page }) => {
   await page.waitForTimeout(200);
   await expect(share.locator('svg')).not.toHaveAttribute('data-playing', '');
 });
+
+for (const colorway of COLORWAYS) {
+  test(`all signal caps honour compact and every cap sizes its icon in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/button', colorway);
+    const variants = page.locator('#variants');
+    for (const name of ['Keep', 'Delete']) {
+      const button = variants.getByRole('button', { name, exact: true });
+      expect((await button.boundingBox())!.height).toBe(Number(P.compact.height));
+      expect((await button.locator('svg').boundingBox())!.width).toBe(Number(P.compact.glyph));
+      expect(await button.evaluate(el => getComputedStyle(el).fontSize)).toBe('12px');
+    }
+    for (const name of ['READ ALL', 'Back to now', 'Summarise', 'Send away']) {
+      const button = variants.getByRole('button', { name, exact: true });
+      expect((await button.locator('svg').boundingBox())!.width).toBe(Number(P.compact.glyph));
+    }
+  });
+}

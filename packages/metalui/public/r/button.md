@@ -16,9 +16,9 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 ## Anatomy
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
-- The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap. The cap sizes it, so pass the glyph without a size.
+- The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap. Link, graphite and strip caps use the compact 14 glyph. The cap sizes it, so pass the glyph without a size.
 - The **label** is text: a verb, or a verb and its object.
-- **Compact** (`size="compact"`): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
+- **Compact** (`size="compact"`, including primary and destructive): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## Caps that set their own size

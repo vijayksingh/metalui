@@ -36,10 +36,10 @@ const CAPS: Record<ButtonCap, string> = {
   standard: `${REGULAR} text-ink recipe-button ${PRESS} not-data-disabled:active:recipe-button-pressed`,
   primary: `${REGULAR} text-button-primary-ink recipe-button-primary ${PRESS} not-data-disabled:active:recipe-button-primary-pressed`,
   destructive: `${REGULAR} text-button-destructive-ink recipe-button-destructive ${PRESS} not-data-disabled:active:recipe-button-destructive-pressed`,
-  link: 'h-auto p-0 rounded-none bg-transparent type-button-link text-button-link-ink transition-button',
-  graphite: `gap-button-gap h-button-graphite-height px-button-graphite-pad rounded-pill type-button-graphite text-button-graphite-ink recipe-button-graphite transition-button ${PRESS}`,
-  strip: `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button hover:text-button-strip-ink-hover hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
-  'strip-danger': `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
+  link: 'gap-button-gap [&>svg]:size-button-compact-glyph h-auto p-0 rounded-none bg-transparent type-button-link text-button-link-ink transition-button',
+  graphite: `[&>svg]:size-button-compact-glyph gap-button-gap h-button-graphite-height px-button-graphite-pad rounded-pill type-button-graphite text-button-graphite-ink recipe-button-graphite transition-button ${PRESS}`,
+  strip: `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button hover:text-button-strip-ink-hover hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
+  'strip-danger': `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
 };
 const COMPACT = `gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact text-ink2 hover:text-ink recipe-button-compact transition-button-compact [&>svg]:size-button-compact-glyph ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`;
 
@@ -48,7 +48,12 @@ export const buttonParts = { FRAME, REGULAR } as const;
 
 /** The utilities for a cap and size: the caps that set their own size ignore `size`. */
 export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'compact' = 'default') {
-  return `${FRAME} ${size === 'compact' && cap === 'standard' ? COMPACT : CAPS[cap]}`;
+  const compact = size === 'compact' && ['standard', 'primary', 'destructive'].includes(cap);
+  if (compact && cap !== 'standard') {
+    const dimensions = 'gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact [&>svg]:size-button-compact-glyph transition-button';
+    return `${FRAME} ${dimensions} ${cap === 'primary' ? 'text-button-primary-ink recipe-button-primary not-data-disabled:active:recipe-button-primary-pressed' : 'text-button-destructive-ink recipe-button-destructive not-data-disabled:active:recipe-button-destructive-pressed'} ${PRESS}`;
+  }
+  return `${FRAME} ${compact ? COMPACT : CAPS[cap]}`;
 }
 
 /**

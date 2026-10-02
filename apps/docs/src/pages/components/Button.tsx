@@ -546,16 +546,17 @@ function Variants() {
           <Button size="compact">seed a sample day</Button>
           <Button size="compact" icon={<ShareIcon />}>Share</Button>
           <Button size="compact">lenses <Kbd size="small">⌘K</Kbd></Button>
-          <Button size="compact" cap="primary">Keep</Button>
+          <Button size="compact" cap="primary" icon={<Icon name="pin" />}>Keep</Button>
+          <Button size="compact" cap="destructive" icon={<TrashIcon />}>Delete</Button>
           <Button size="compact" disabled>Share</Button>
         </div>
       </Stage>
       <Stage tone="dark" caption="Link, graphite, strip and strip-danger, each on the dark surface it belongs to.">
         <div className="flex flex-wrap items-center justify-center gap-14">
-          <Button cap="link">READ ALL</Button>
-          <Button cap="graphite">Back to now</Button>
-          <Button cap="strip">Summarise</Button>
-          <Button cap="strip-danger">Send away</Button>
+          <Button cap="link" icon={<Icon name="document" />}>READ ALL</Button>
+          <Button cap="graphite" icon={<Icon name="clock" />}>Back to now</Button>
+          <Button cap="strip" icon={<Icon name="tidy" />}>Summarise</Button>
+          <Button cap="strip-danger" icon={<Icon name="send-away" />}>Send away</Button>
         </div>
       </Stage>
       <SwiftCapture name="button" maxWidth={360} />

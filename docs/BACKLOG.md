@@ -314,7 +314,7 @@ Facts: browsers expose no trackpad haptics on a Mac, and iOS Safari has no vibra
 
 Building real screens shows what the components lack. Each was worked around inside the block; fix it in the library, then remove the workaround.
 
-- [ ] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
+- [x] **Button**: compact primary/destructive now share compact dimensions. Previously `cap="primary"` ignored `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
 - [x] **ScrollArea**: typed `viewportRef` / `onScroll` expose the Base UI viewport while preserving the root ref. The AI composer uses this API instead of a class query; docs demonstrate imperative, keyboard and wheel scrolling.
 - [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
 - [x] **Motion**: exported `motionReduced(element)` and reactive `useReducedMotion(element)` combine OS and scoped site preferences, update live, and are SSR safe. Blocks use the shared helper instead of token-reading copies.
@@ -330,7 +330,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
 - [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
-- [ ] **Button strip / graphite / link caps don't size an `icon`** (noted with the icon slot); blocks pass `size-16`.
+- [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.
 - [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
 - [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
 - [ ] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
