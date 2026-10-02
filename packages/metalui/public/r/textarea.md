@@ -36,6 +36,8 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 | React | SwiftUI |
 |---|---|
 | `value`, `defaultValue`, `onChange` | `text:` |
+| `size` (`large` content, `regular` / `compact` Field UI) | `size:` |
+| `counterThreshold` (0...1, local recipe default) | `counterThreshold:` |
 | `minRows`, `maxRows` | `minRows:`, `maxRows:` |
 | `maxLength` | `limit:` |
 | `invalid` | `invalid:` |
@@ -54,3 +56,5 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 - The well grows; the page never jumps. Growing is the settle spring, never a bounce.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
 - Show the counter only when it helps (near the limit).
+
+Regular and compact match Field’s 12.5px UI text. The default large size preserves 15px prose. Threshold 0 shows the counter from the start; 1 shows it at the limit. An omitted threshold reads the textarea’s scoped token, never the document root. The mirror uses exactly the input’s type so changing size also refits its rows. Swift carries size/count policy; its existing placeholder still lacks the full well/growth/refusal rendering.

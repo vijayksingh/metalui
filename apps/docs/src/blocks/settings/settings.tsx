@@ -406,11 +406,12 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
                   </FormField>
                 </div>
 
-                {/* The Textarea's counter shows from 80 % of the limit; here it always shows. */}
-                <FormField className="[&_.mu-textarea-count-row]:grid-rows-[1fr] [&_.mu-textarea-count-row]:opacity-100">
+                <FormField>
                   <FormField.Label>Bio</FormField.Label>
                   <FormField.Description>A line or two on your profile card.</FormField.Description>
                   <Textarea
+                    size={compact ? 'compact' : 'regular'}
+                    counterThreshold={0}
                     maxLength={LIMITS.bio}
                     minRows={compact ? 2 : 3}
                     value={draft.bio}

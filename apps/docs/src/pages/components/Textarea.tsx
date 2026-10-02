@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Textarea } from '@unlocalhosted/metalui';
+import { Field, Textarea } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/textarea/textarea.tsx?raw';
@@ -26,6 +26,8 @@ function GrowthTuner() {
     grow: { type: 'select', options: SPRING_NAMES, default: 'settle' },
     refusal: { type: 'select', options: SPRING_NAMES, default: 'refusal' },
     slow: [1, 1, 10],
+    size: { type: 'select', options: ['large', 'regular', 'compact'], default: 'large' },
+    counterThreshold: [0.8, 0, 1, 0.1],
     minRows: [3, 1, 6],
     maxRows: [8, 3, 14],
     limit: [160, 40, 400],
@@ -50,9 +52,21 @@ function GrowthTuner() {
   } as React.CSSProperties;
   return (
     <div data-testid="textarea-growth-tuner" className="w-full max-w-[420px]" style={vars}>
-      <Textarea ref={ref} aria-label="Tuned note" value={text} onChange={(e) => setText(e.target.value)} minRows={d.minRows} maxRows={d.maxRows} maxLength={d.limit} />
+      <Textarea ref={ref} size={d.size as 'large' | 'regular' | 'compact'} counterThreshold={d.counterThreshold} aria-label="Tuned note" value={text} onChange={(e) => setText(e.target.value)} minRows={d.minRows} maxRows={d.maxRows} maxLength={d.limit} />
     </div>
   );
+}
+
+function FormSizes() {
+  const [text, setText] = React.useState('');
+  return <div data-testid="textarea-sizes" className="mu-stack gap-mu-group">
+    <Field size="regular"><Field.Input aria-label="Profile name" defaultValue="Sam" /></Field>
+    <Textarea size="regular" aria-label="Profile bio" maxLength={40} counterThreshold={0} value={text} onChange={e => setText(e.target.value)} />
+    <div style={{ '--mu-r-textarea-count-show': 0.25 } as React.CSSProperties}>
+      <Textarea size="compact" aria-label="Scoped compact note" maxLength={40} />
+    </div>
+    <Textarea size="large" aria-label="Long prose" maxLength={40} counterThreshold={1} />
+  </div>;
 }
 
 export default function TextareaPage() {
@@ -68,7 +82,7 @@ export default function TextareaPage() {
           <Textarea aria-label="Disabled note" disabled defaultValue="Read only for now." minRows={2} />
         </div>
       ) }}
-      more={[{ id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
+      more={[{ id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }, { id: 'sizes', title: 'Form size and counting', lede: 'Regular and compact use Field’s UI type. Large keeps prose text. Each counter can show always, at the limit, or from a scoped fraction.', node: <FormSizes /> }]}
       usage={`<Textarea aria-label="Note" placeholder="Write a note…" maxLength={280} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

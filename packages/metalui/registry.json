@@ -1727,6 +1727,7 @@
       "description": "Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
