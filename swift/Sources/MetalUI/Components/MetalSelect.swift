@@ -83,9 +83,9 @@ public struct MetalSelect<Value: Hashable>: View {
                     .foregroundColor((selectedOption == nil ? colorway.tokens.ink3 : colorway.tokens.ink).color)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Image(systemName: "chevron.up.chevron.down")
-                    .resizable().scaledToFit()
-                    .frame(width: recipe.points("chevron.size"), height: recipe.points("chevron.size"))
+                MetalIcon(.chevron, size: recipe.points("chevron.size"))
+                    .rotationEffect(.degrees(open ? 180 : 0))
+                    .metalAnimation(.settle, value: open)
                     .foregroundColor((open ? colorway.tokens.ink : hovering ? colorway.tokens.ink2 :
                         recipe.color("chevron.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink3).color)
                     .accessibilityHidden(true)
@@ -201,11 +201,9 @@ public struct MetalSelect<Value: Hashable>: View {
             choose()
         } label: {
             HStack(spacing: recipe.points("row.gap")) {
-                Group {
-                    if selection == option.value { MetalLED(.live, diameter: select.points("led.size")) }
-                    else { Color.clear }
-                }
-                .frame(width: select.points("led.slot"))
+                MetalTickGlyph(mark: selection == option.value ? .tick : nil, side: select.points("mark.glyph"),
+                               color: colorway.tokens.ink.color)
+                    .frame(width: select.points("mark.slot"))
                 if let lead = option.lead { MetalIcon(lead, size: recipe.points("row.glyph")) }
                 Text(option.label).frame(maxWidth: .infinity, alignment: .leading)
             }

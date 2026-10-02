@@ -2865,7 +2865,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a raised cap like a button, because it is clicked, not typed into: the value and an up-down chevron. Hover lightens the cap a little; press sinks it, and it stays sunk while the list is out. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the green LED the system uses for latched. Two to four short options that fit side by side are a Switcher instead. (Soft Hardware materials (the button cap, the menu plate, the latched LED); Base UI Select; macOS pop-up button)
+    /// A control that holds one value chosen from a list of named options (an icon, a colour, a destination, a preset). The trigger is a raised cap like a button, because it is clicked, not typed into: the value and a shared down chevron that turns up while open. Hover lightens the cap a little; press sinks it, and it stays sunk while the list is out. The list is the menu's frosted plate, opening with the chosen row over the trigger (a Mac pop-up button) when there is room, else below; the chosen row carries the shared checkbox pen tick. Two to four short options that fit side by side are a Switcher instead. (Soft Hardware materials (the button cap, the menu plate, the shared icon set and checkbox pen); Base UI Select; macOS pop-up button)
     public static let select = MetalObjectRecipe(
         name: "select",
         layers: [
@@ -2889,8 +2889,8 @@ public enum MetalRecipes {
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
-            "led.size": .number(6.0),
-            "led.slot": .number(14.0),
+            "mark.glyph": .number(12.0),
+            "mark.slot": .number(14.0),
             "pop.scale": .text("0.97"),
             "pop.offset": .number(6.0),
         ]

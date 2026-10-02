@@ -1200,8 +1200,8 @@
   --spacing-select-chevron-size: var(--mu-r-select-chevron-size);
   --color-select-chevron-ink: var(--mu-r-select-chevron-ink);
   --color-select-veil-hover: var(--mu-r-select-veil-hover);
-  --spacing-select-led-size: var(--mu-r-select-led-size);
-  --spacing-select-led-slot: var(--mu-r-select-led-slot);
+  --spacing-select-mark-glyph: var(--mu-r-select-mark-glyph);
+  --spacing-select-mark-slot: var(--mu-r-select-mark-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
   --spacing-dot-display-pitch: var(--mu-r-dot-display-self-pitch);
@@ -3040,11 +3040,11 @@
 @utility select-pop {
   min-width: var(--anchor-width); max-height: var(--available-height); overflow-y: auto; transform-origin: var(--transform-origin); transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface); &[data-starting-style] { opacity: 0; transform: scale(var(--mu-r-select-pop-scale)); } &[data-ending-style] { opacity: 0; transition: opacity .12s ease; } @media (prefers-reduced-motion: reduce) { transition: opacity .12s ease; &[data-starting-style] { transform: none; } }
 }
-@utility select-led-slot {
-  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-led-slot);
+@utility select-mark-slot {
+  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-mark-slot);
 }
-@utility select-led {
-  display: block; width: var(--mu-r-select-led-size); height: var(--mu-r-select-led-size); border-radius: 50%; background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom);
+@utility select-mark {
+  display: block; width: var(--mu-r-select-mark-glyph); height: var(--mu-r-select-mark-glyph); overflow: visible; fill: none; stroke: var(--mu-ink); stroke-width: var(--mu-r-checkbox-tick-pen); stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
 }
 @utility type-select-regular {
   font: var(--mu-r-select-regular-font);

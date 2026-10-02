@@ -107,7 +107,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] accordion
 - [ ] attachment
 - [x] combobox
-- [ ] select
+- [x] select
 - [ ] table
 - [ ] breadcrumbs
 - [ ] button-group (split chevron)

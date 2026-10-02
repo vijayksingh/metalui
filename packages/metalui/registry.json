@@ -1386,6 +1386,8 @@
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/morph-icons.json",
+        "https://metalui.dev/r/tick-glyph.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

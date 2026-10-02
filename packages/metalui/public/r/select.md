@@ -15,7 +15,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Anatomy
 
-A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, an LED slot (14), an optional lead, the label; groups get an engraved heading and a separator.
+A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and the shared down chevron (up while open). The list is the menu's frosted plate: rows 30 tall, a selected-mark slot (14, shared tick at 12), an optional lead, the label; groups get an engraved heading and a separator.
 
 ## States and motion
 
@@ -31,7 +31,7 @@ A trigger that is a raised cap (the button cap, it is clicked): the value (with 
 | list opens | the chosen row over the trigger when there is room, else below | scale .97 → 1 and fade, surface spring |
 | list closes | – | fade .12 s |
 | highlight | one soft highlight shared by pointer and keys | glides row to row, settle spring, no bounce |
-| chosen row | green LED before the label | – |
+| chosen row | shared tick before the label | same pen draw/withdraw as Checkbox |
 
 Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses; ⎋ closes. Reduce Motion: fade only.
 
@@ -44,3 +44,5 @@ Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses;
 ## Scoped colorways
 
 The list portals to the document body and copies the trigger’s nearest `data-mu-colorway` onto its positioner. Open lists follow ancestor colorway changes. No local override retains document inheritance; clipped hosts never clip the list. Native `MetalSelect` carries its colorway through the SwiftUI environment.
+
+The state chevron uses `MorphIcon` on settle; SwiftUI uses `MetalIcon(.chevron)` on the same class. Selected marks use shared `TickGlyph` / `MetalTickGlyph`, keeping the checkbox corner dwell, sprung tail and withdrawal. Reduced motion changes direction and marks in place.

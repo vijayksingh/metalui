@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+import { MorphIcon } from '../../icons/MorphIcon';
+import { TickGlyph } from '../../icons/TickGlyph';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { menuParts, ListGlide } from '../menu/menu';
 import { usePortalColorway } from '../../theme/portal-colorway';
@@ -13,7 +15,7 @@ import { usePortalColorway } from '../../theme/portal-colorway';
  * search is a combobox; an action is a Menu.
  *
  *   trigger   a raised cap like a button (it is clicked, not typed into): the value, and an
- *             up-down chevron (it opens over itself, like a Mac pop-up button)
+ *             shared down chevron (it opens over itself, like a Mac pop-up button)
  *   rest      the cap; the placeholder in ink3 when nothing is chosen
  *   hover     the cap lightens a little; the chevron darkens
  *   open      the cap stays pressed in; the chevron is ink
@@ -26,7 +28,7 @@ import { usePortalColorway } from '../../theme/portal-colorway';
  *   rows      the menu's rows under one highlight that glides row to row on the settle spring;
  *             pointer and keys move it; ↑ ↓, Home, End,
  *             type-ahead; ↩ or a click chooses and closes; ⎋ closes without choosing
- *   chosen    the green LED the system uses for latched, in a slot before the label
+ *   chosen    the shared tick drawn by the checkbox pen, in a slot before the label
  * Two sizes: regular 32 (forms, settings rows), compact 28 (dense strips, toolbars).
  * Reduce Motion: the list fades only.
  * ───────────────────────────────────────────────────────── */
@@ -77,8 +79,8 @@ const POP = `${menuParts.PLATE} relative mu-select-pop select-pop`;
 const ROW = menuParts.LIVE_ROW;
 const HEADING = menuParts.HEADING;
 const SEP = menuParts.SEP;
-const SLOT = 'select-led-slot';
-const LED = 'mu-select-led select-led';
+const SLOT = 'select-mark-slot';
+const MARK = 'mu-select-mark select-mark';
 
 const isGroups = <V extends string>(o: SelectOption<V>[] | SelectGroup<V>[]): o is SelectGroup<V>[] => o.length > 0 && 'options' in o[0];
 
@@ -87,19 +89,12 @@ function offset() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-r-select-pop-offset')) || 6;
 }
 
-/** The up-down chevron: this list opens over its trigger. */
-function Chevron() {
-  return (
-    <svg aria-hidden viewBox="0 0 12 12" className={CHEVRON} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3.5 4.75 6 2.5l2.5 2.25M3.5 7.25 6 9.5l2.5-2.25" />
-    </svg>
-  );
-}
-
 function Row<V extends string>({ option }: { option: SelectOption<V> }) {
   return (
     <BaseSelect.Item value={option.value} disabled={option.disabled} className={ROW}>
-      <span className={SLOT}><BaseSelect.ItemIndicator className={LED}>{null}</BaseSelect.ItemIndicator></span>
+      <span className={SLOT}><BaseSelect.ItemIndicator keepMounted render={(props, state) => (
+        <TickGlyph {...(props as React.SVGProps<SVGSVGElement>)} className={MARK} mark={state.selected ? 'tick' : null} />
+      )} /></span>
       {option.lead && <span aria-hidden className={menuParts.GLYPH}>{option.lead}</span>}
       <BaseSelect.ItemText className={menuParts.LABEL}>{option.label}</BaseSelect.ItemText>
     </BaseSelect.Item>
@@ -128,6 +123,7 @@ export function Select<V extends string = string>({
         data-invalid={invalid ? '' : undefined}
         aria-invalid={invalid || undefined}
         className={className ? `${TRIGGER[size]} ${className}` : TRIGGER[size]}
+        render={(props, state) => <button {...props}>{props.children}<MorphIcon name="chevron" turn={state.open ? 180 : 0} className={CHEVRON} /></button>}
       >
         <BaseSelect.Value className={VALUE} placeholder={placeholder}>
           {(v: V | null) => {
@@ -136,7 +132,6 @@ export function Select<V extends string = string>({
             return <>{o.lead && <span aria-hidden className={menuParts.GLYPH}>{o.lead}</span>}{o.label}</>;
           }}
         </BaseSelect.Value>
-        <Chevron />
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
         <BaseSelect.Positioner data-mu-colorway={colorway} className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
