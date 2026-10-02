@@ -1,0 +1,68 @@
+{
+  "sourceCommit": "dbaa783f",
+  "delivery": "Playwright against running local docs, real public controls and source textarea",
+  "featureSlice": [
+    "e2e/provenance-document.spec.ts",
+    "e2e/provenance-focus.spec.ts"
+  ],
+  "passed": 26,
+  "failed": 0,
+  "durationSeconds": 45.2,
+  "cases": [
+    "e2e/provenance-document.spec.ts:5:3 \u203a pointer scrub after another focused cue keeps clock face and source together in bone (5.0s)",
+    "e2e/provenance-focus.spec.ts:8:5 \u203a focus transfers from numeric typing to Task state pointer source edit in bone (5.1s)",
+    "e2e/provenance-document.spec.ts:5:3 \u203a pointer scrub after another focused cue keeps clock face and source together in graphite (3.2s)",
+    "e2e/provenance-focus.spec.ts:8:5 \u203a focus transfers from numeric typing to Project tag pointer source edit in bone (3.5s)",
+    "e2e/provenance-focus.spec.ts:33:3 \u203a a closing person picker refuses overlapping numeric source capture in bone (2.5s)",
+    "e2e/provenance-document.spec.ts:38:3 \u203a one provenance source retains UTF16 history through clock, quantity and state in bone (3.7s)",
+    "e2e/provenance-focus.spec.ts:60:3 \u203a date handoff from a person picker edits only its own source range in bone (3.4s)",
+    "e2e/provenance-document.spec.ts:65:3 \u203a provenance hides during a held state and cancellation restores its source in bone (3.5s)",
+    "e2e/provenance-focus.spec.ts:8:5 \u203a focus transfers from numeric typing to Task state pointer source edit in graphite (2.7s)",
+    "e2e/provenance-document.spec.ts:38:3 \u203a one provenance source retains UTF16 history through clock, quantity and state in graphite (2.6s)",
+    "e2e/provenance-focus.spec.ts:8:5 \u203a focus transfers from numeric typing to Project tag pointer source edit in graphite (2.1s)",
+    "e2e/provenance-document.spec.ts:65:3 \u203a provenance hides during a held state and cancellation restores its source in graphite (2.6s)",
+    "e2e/provenance-focus.spec.ts:33:3 \u203a a closing person picker refuses overlapping numeric source capture in graphite (1.5s)",
+    "e2e/provenance-document.spec.ts:99:3 \u203a source provenance stays operable through a person picker and captured hash in bone (2.1s)",
+    "e2e/provenance-focus.spec.ts:60:3 \u203a date handoff from a person picker edits only its own source range in graphite (2.8s)",
+    "e2e/provenance-document.spec.ts:99:3 \u203a source provenance stays operable through a person picker and captured hash in graphite (1.6s)",
+    "e2e/provenance-document.spec.ts:123:3 \u203a the real link edits exact source and its adjacent punctuation follows the host in bone (1.2s)",
+    "e2e/provenance-document.spec.ts:123:3 \u203a the real link edits exact source and its adjacent punctuation follows the host in graphite (1.4s)",
+    "e2e/provenance-document.spec.ts:144:3 \u203a authored Unicode spellings retain exact source, selection and history in bone (4.2s)",
+    "e2e/provenance-document.spec.ts:144:3 \u203a authored Unicode spellings retain exact source, selection and history in graphite (3.1s)",
+    "e2e/provenance-document.spec.ts:166:3 \u203a the declared source host accepts exact minute quantities and leaves sub-minute words authored in bone (1.6s)",
+    "e2e/provenance-document.spec.ts:166:3 \u203a the declared source host accepts exact minute quantities and leaves sub-minute words authored in graphite (1.3s)",
+    "e2e/provenance-document.spec.ts:186:3 \u203a reading sentence keeps glyphs inline and words compact at 375 in bone (1.3s)",
+    "e2e/provenance-document.spec.ts:186:3 \u203a reading sentence keeps glyphs inline and words compact at 1280 in bone (1.4s)",
+    "e2e/provenance-document.spec.ts:186:3 \u203a reading sentence keeps glyphs inline and words compact at 375 in graphite (1.8s)",
+    "e2e/provenance-document.spec.ts:186:3 \u203a reading sentence keeps glyphs inline and words compact at 1280 in graphite (1.5s)"
+  ],
+  "scope": "final joint source/focus slice after tag padding and Date refusal changes",
+  "priorCoverage": {
+    "libraryRun": {
+      "cases": 812,
+      "passed": 793,
+      "failed": 19
+    },
+    "originalFailureRerun": {
+      "passed": 19,
+      "failed": 0,
+      "sourceCommit": "a88accc2"
+    },
+    "cueFamilyRun": {
+      "cases": 69,
+      "passed": 65,
+      "failed": 4,
+      "failure": "Capture cleanup counted six permanent documentation stills; four scoped assertion reruns pass"
+    }
+  },
+  "visualReview": [
+    "Bone and Graphite",
+    "375px and1280px reading captures",
+    "Reduced motion in running local site"
+  ],
+  "limits": [
+    "No second complete812-case run claimed",
+    "No spoken VoiceOver output measured",
+    "No physical haptic sensation measured"
+  ]
+}
