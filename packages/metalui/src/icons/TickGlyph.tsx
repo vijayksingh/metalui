@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { TICK } from './tick.generated';
 import { useIsoLayoutEffect } from '../motion/layout-effect';
+import { motionReduced, subscribeMotionPreference } from '../motion/reduced';
 
 // The one pen for Checkbox, selected rows and menu checks. Geometry and timing are unchanged.
 const ignoreInk = (_inked: boolean) => {};
@@ -185,7 +186,17 @@ export function TickGlyph({ mark, onInk = ignoreInk, className, style, ...props 
     else if (mark) draw(p, ROUTES[mark], t, mark);
     else withdraw(p, t, from ?? 'tick', () => onInk(false));
   }, [mark, initial, onInk]);
-  React.useEffect(() => () => pen.current?.stop(), []);
+  React.useEffect(() => {
+    const path = ref.current;
+    const unsubscribe = subscribeMotionPreference(path, () => {
+      const current = pen.current;
+      if (!current || !motionReduced(path)) return;
+      const mark = shown.current;
+      rest(current, ROUTES[mark ?? 'tick'], !!mark);
+      onInk(!!mark);
+    });
+    return () => { unsubscribe(); pen.current?.stop(); };
+  }, [onInk]);
 
   return (
     <svg {...props} className={className} viewBox={`0 0 ${GRID} ${GRID}`} aria-hidden style={{ transformOrigin: PIVOT, ...style }}>

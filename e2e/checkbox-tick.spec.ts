@@ -156,3 +156,25 @@ test('the tick tuner drives the pen, and its group goes from mixed to all', asyn
   await page.waitForTimeout(700);
   await tuner.screenshot({ path: capture('checkbox-tick-tuner') });
 });
+
+test('reducing a scope mid-stroke lands the selected mark and cancels its clock', async ({ page }) => {
+  await open(page, '/components/checkbox', 'bone');
+  const box = page.getByRole('checkbox', { name: 'Call the printer' });
+  const path = box.locator('.mu-dimple-tick path');
+  await box.click();
+  await expect.poll(() => path.evaluate(el => el.getAnimations().length)).toBeGreaterThan(0);
+  await box.evaluate(el => el.parentElement!.setAttribute('data-mu-motion', 'reduce'));
+  await expect(path).toHaveAttribute('visibility', 'visible');
+  await expect.poll(() => path.evaluate(el => el.getAnimations().length)).toBe(0);
+  await expect.poll(() => path.evaluate(el => el.style.strokeDasharray)).toBe('');
+  const resting = await path.getAttribute('d');
+  await box.evaluate(el => el.parentElement!.removeAttribute('data-mu-motion'));
+  await expect(path).toHaveAttribute('d', resting!);
+  await expect.poll(() => path.evaluate(el => el.getAnimations().length)).toBe(0);
+  await box.click();
+  await expect.poll(() => path.evaluate(el => el.getAnimations().length)).toBeGreaterThan(0);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(path).toHaveAttribute('visibility', 'hidden');
+  await expect.poll(() => path.evaluate(el => el.getAnimations().length)).toBe(0);
+  await expect(box).toHaveAttribute('aria-checked', 'false');
+});
