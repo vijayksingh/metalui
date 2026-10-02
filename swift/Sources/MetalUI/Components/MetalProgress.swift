@@ -45,10 +45,14 @@ public struct MetalProgress: View {
                     if label != nil {
                         HStack(spacing: MetalLayout.gapRelated) {
                             MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
-                            Text(displayLabel)
-                                .contentTransition(.numericText())
+                            ZStack {
+                                Text(displayLabel).id(displayLabel)
+                                    .transition(reduceMotion ? .opacity : .asymmetric(
+                                        insertion: .opacity.combined(with: .offset(y: MetalSpace.s4)),
+                                        removal: .opacity.combined(with: .offset(y: -MetalSpace.s4))))
+                            }.id(reduceMotion).clipped().metalAnimation(.settle, value: displayLabel)
+                                .transaction { if reduceMotion { $0.animation = nil; $0.disablesAnimations = true } }
                         }.font(.metal(MetalType.ui)).foregroundStyle(colorway.tokens.ink.color)
-                            .animation(reduceMotion ? nil : MetalSprings.settle.animation, value: settled)
                     }
                     Spacer(minLength: .zero)
                     if showValue, value != nil {

@@ -16,6 +16,7 @@ for (const colorway of COLORWAYS) for (const reduced of [false, true]) {
     await expect(bar).toHaveAttribute('aria-valuenow', '40');
     await task.getByRole('button', { name: 'Run export', exact: true }).click();
     await expect(bar).toHaveAttribute('aria-busy', 'true');
+    await expect(task.getByRole('button', { name: 'Cancel', exact: true }).locator('.mu-swap-text')).toContainText('Cancel');
     await expect.poll(() => bar.getAttribute('aria-valuenow')).not.toBe('0');
     await task.getByRole('button', { name: 'Pause', exact: true }).click();
     const held = await bar.getAttribute('aria-valuenow');
@@ -24,6 +25,7 @@ for (const colorway of COLORWAYS) for (const reduced of [false, true]) {
     await page.waitForTimeout(500);
     await expect(bar).toHaveAttribute('aria-valuenow', held!);
     await expect(task.getByRole('button', { name: 'Resume', exact: true }).locator('svg')).toHaveAttribute('data-glyph', 'play');
+    await expect(task.getByRole('button', { name: 'Resume', exact: true }).locator('.mu-swap-text')).toContainText('Resume');
     await task.getByRole('button', { name: 'Resume', exact: true }).click();
     await expect(bar).toHaveAttribute('aria-valuenow', '100', { timeout: 6000 });
     await expect(bar).toHaveAccessibleName('Exported');

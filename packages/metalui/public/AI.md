@@ -2893,6 +2893,8 @@ Only transform and opacity animate for bar fills and unknown waits. Known ring g
 
 React retains Base UI's `progressbar`, label association, clamped amount and missing numeric amount for unknown work. State and details appear in `aria-valuetext`; running and finishing set `aria-busy`. Swift supplies task label and amount/state/detail as one spoken value. A completion announcement belongs to the host, once, not every percentage update.
 
+The export action uses the Button icon slot and `SwapText` together when Run export becomes Cancel, Resume or Try again. Native state labels use the same clipped settle transition as Status, including changes before completion; scoped Reduce Motion applies words instantly and discards any outgoing full-motion face when the policy changes. `e2e/native/run-progress-label-proof.py` verifies the live public host settles and becomes still in both colorways.
+
 ---
 
 # Provenance tooltip

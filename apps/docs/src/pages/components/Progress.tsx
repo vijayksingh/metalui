@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, Progress, type ProgressState, type ProgressShape } from '@unlocalhosted/metalui';
+import { Button, Progress, SwapText, type ProgressState, type ProgressShape } from '@unlocalhosted/metalui';
 import { UndoIcon, CloseIcon, PauseIcon, MorphIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/progress/progress.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -21,11 +21,12 @@ function Export() {
   const reset = () => { setState('idle'); setValue(0); };
   const run = () => { setValue(0); setState('running'); };
   const active = state === 'running';
+  const action = active ? 'Cancel' : state === 'paused' ? 'Resume' : state === 'failed' ? 'Try again' : 'Run export';
   const label = state === 'failed' ? 'Export failed' : state === 'paused' ? 'Export paused' : state === 'cancelled' ? 'Export cancelled' : 'Exporting 12 photos';
   return <div className="mu-stack gap-mu-group w-full max-w-mu-measure" aria-label="Export progress" data-testid="export-progress">
     <Progress value={value} state={state} label={label} completeLabel="Exported" showValue detail={`${Math.round(value * 12 / 100)} of 12 · ${state === 'running' ? 'about 3 s' : state}`} />
     <div className="mu-cluster gap-mu-related">
-      <Button onClick={active ? () => { setState('cancelled'); setValue(0); } : state === 'paused' ? () => setState('running') : run}><span className="sr-only">{active ? 'Cancel' : state === 'paused' ? 'Resume' : state === 'failed' ? 'Try again' : 'Run export'}</span><MorphIcon name={active ? 'close' : state === 'paused' ? 'play' : state === 'failed' ? 'sync-error' : 'share'} className="size-button-self-glyph" /><span aria-hidden>{active ? 'Cancel' : state === 'paused' ? 'Resume' : state === 'failed' ? 'Try again' : 'Run export'}</span></Button>
+      <Button aria-label={action} icon={<MorphIcon name={active ? 'close' : state === 'paused' ? 'play' : state === 'failed' ? 'sync-error' : 'share'} />} onClick={active ? () => { setState('cancelled'); setValue(0); } : state === 'paused' ? () => setState('running') : run}><span aria-hidden><SwapText value={action} /></span></Button>
       <Button onClick={reset}><UndoIcon />Reset</Button>
       {active && <Button onClick={() => setState('paused')}><PauseIcon />Pause</Button>}
       {active && <Button onClick={() => setState('failed')}><CloseIcon />Simulate failure</Button>}
@@ -51,7 +52,7 @@ function Variations() {
 export default function ProgressPage() {
   return <ComponentPage title="Progress" lede="How far a task has come, with known amounts, honest unknown waits and explicit end states. Bars, rings, steps and buffering use one task contract."
     play={{ lede: 'Run an export. Pause and resume, fail and retry, or cancel. Reset drains to empty and turns the value back to zero.', node: <Export /> }}
-    more={[{ id: 'variations', title: 'Shapes, sizes and states', lede: 'The Progress panel scrubs the amount, changes size and flips state. Unknown work waits only while active and on screen.', node: <Variations /> }, { id: 'swift-states', title: 'SwiftUI states', node: <SwiftCapture name="progress" maxWidth={680} /> }]}
+    more={[{ id: 'variations', title: 'Shapes, sizes and states', lede: 'The Progress panel scrubs the amount, changes size and flips state. Unknown work waits only while active and on screen.', node: <Variations /> }, { id: 'swift-states', title: 'SwiftUI states', node: <div className="mu-stack gap-mu-group"><SwiftCapture name="progress" maxWidth={680} /><SwiftCapture name="progress-label" maxWidth={480} /></div> }]}
     sources={[{ id: 'react', label: 'React', code: reactSource }, { id: 'css', label: 'CSS', code: cssSource }, { id: 'swift', label: 'SwiftUI', code: swiftSource }, { id: 'agent', label: 'Agent guide', code: agentSource }]}
     rules={[{ id: 'PR1', title: 'The host reports the amount', body: 'Known fill follows the value and never predicts work. Reset and cancellation drain on release.', origin: 'Ours' }, { id: 'PR2', title: 'State names the consequence', body: 'Completion, failure and pause use words alongside their glyphs. Retry and Resume stay with the task.', origin: 'Ours' }, { id: 'PR3', title: 'Unknown is honest', body: 'Unknown work has no percentage; it waits only while active and visible, and breathes under reduced motion.', origin: 'Ours' }]}
   />;
