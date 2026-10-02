@@ -845,6 +845,46 @@ export const ICON_CATALOG = {
     motion: {"duration":830,"caption":"A paint well seats in the fixed palette while its thumb hole stays open.","stages":["Choose paint","Seat well","Release"],"tracks":[{"part":"well","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * VOLUME · Tools · one act, 820ms
+   *
+   * Sound → Reach front → Seat
+   *          The outer sound front reaches outward from the fixed speaker and seats back.
+   *  wave       0 → 150 → 210 → 515 → 820ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "volume": {
+    label: "Volume",
+    category: "Tools",
+    hover: "The outer sound front reaches outward from the fixed speaker and seats back.",
+    press: "plays the same act",
+    pressMs: 820,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M4 9.5h3.4L12 5.8v12.4l-4.6-3.7H4Z\"/><path d=\"M15 9a4.2 4.2 0 0 1 0 6\"/><path data-part=\"wave\" d=\"M17.5 6.4a7.8 7.8 0 0 1 0 11.2\"/>",
+    sw16: 1.85,
+    motion: {"duration":820,"caption":"The outer sound front reaches outward from the fixed speaker and seats back.","stages":["Sound","Reach front","Seat"],"tracks":[{"part":"wave","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18293,"transform":"translate(1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2561,"transform":"translate(1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62805,"transform":"translate(-0.1132px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * BRIGHTNESS · Tools · one act, 820ms
+   *
+   * Adjust light → Open level → Seat
+   *          The level shade opens inside the fixed lamp and seats back at its half-lit position.
+   *  shade      0 → 150 → 210 → 515 → 820ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "brightness": {
+    label: "Brightness",
+    category: "Tools",
+    hover: "The level shade opens inside the fixed lamp and seats back at its half-lit position.",
+    press: "plays the same act",
+    pressMs: 820,
+    defs: "<clipPath id=\"lamp\"><circle cx=\"12\" cy=\"12\" r=\"3.8\"/></clipPath>",
+    body: "<circle cx=\"12\" cy=\"12\" r=\"3.8\"/><g clip-path=\"url(#lamp)\"><path class=\"s\" data-part=\"shade\" d=\"M12 8.2a3.8 3.8 0 0 1 0 7.6Z\"/></g><path d=\"M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2\"/>",
+    sw16: 1.85,
+    motion: {"duration":820,"caption":"The level shade opens inside the fixed lamp and seats back at its half-lit position.","stages":["Adjust light","Open level","Seat"],"tracks":[{"part":"shade","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18293,"transform":"translate(-1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2561,"transform":"translate(-1.3px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62805,"transform":"translate(0.1132px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * DELETE · SEND AWAY · Actions · one act, 1245ms
    *
    * Wind up → Draw in → Rise again

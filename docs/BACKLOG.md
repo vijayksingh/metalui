@@ -112,6 +112,8 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 
 - [x] Block actions: `stop`, `attach`, `retry`, `person`, `bell`, `palette`: authored single-contact acts, semantic 16/24px references and native symbols.
 
+- [x] Signal levels: `volume`, `brightness`: fixed speaker/lamp enclosures, authored level parts and native symbols.
+
 Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` → C (component by component) → B's morphs (copy first, it's everywhere) → A in the docs pages.
 
 ## Fan (the canvas tool bar)

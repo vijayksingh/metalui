@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 72,
+  "count": 74,
   "icons": [
     {
       "name": "select",
@@ -761,6 +761,46 @@
       },
       "tuned16": false,
       "construction": "Rounded physical palette with open thumb hole and four paint wells. Only the lower well seats1.2; colours are optional because the contour names the palette."
+    },
+    {
+      "name": "volume",
+      "component": "VolumeIcon",
+      "label": "Volume",
+      "category": "Tools",
+      "hover": "The outer sound front reaches outward from the fixed speaker and seats back.",
+      "press": "plays the same act",
+      "pressMs": 820,
+      "motion": {
+        "caption": "The outer sound front reaches outward from the fixed speaker and seats back.",
+        "durationMs": 820,
+        "stages": [
+          "Sound",
+          "Reach front",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed speaker cone with two curved sound fronts. The outer front reaches1.3 outward once. The speaker and inner front remain fixed so volume reads as a sound level."
+    },
+    {
+      "name": "brightness",
+      "component": "BrightnessIcon",
+      "label": "Brightness",
+      "category": "Tools",
+      "hover": "The level shade opens inside the fixed lamp and seats back at its half-lit position.",
+      "press": "plays the same act",
+      "pressMs": 820,
+      "motion": {
+        "caption": "The level shade opens inside the fixed lamp and seats back at its half-lit position.",
+        "durationMs": 820,
+        "stages": [
+          "Adjust light",
+          "Open level",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Half-lit circular lamp with four cardinal rays. A clipped shade adjusts the lit area inside the fixed disc; the silhouette distinguishes brightness adjustment from the eight-ray daylight Sun."
     },
     {
       "name": "send-away",

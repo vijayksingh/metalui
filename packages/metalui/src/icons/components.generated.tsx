@@ -77,6 +77,10 @@ export const PersonIcon = createIcon("person", "PersonIcon");
 export const BellIcon = createIcon("bell", "BellIcon");
 /** Palette. Hover: A paint well seats in the fixed palette while its thumb hole stays open.. Press: plays the same act. */
 export const PaletteIcon = createIcon("palette", "PaletteIcon");
+/** Volume. Hover: The outer sound front reaches outward from the fixed speaker and seats back.. Press: plays the same act. */
+export const VolumeIcon = createIcon("volume", "VolumeIcon");
+/** Brightness. Hover: The level shade opens inside the fixed lamp and seats back at its half-lit position.. Press: plays the same act. */
+export const BrightnessIcon = createIcon("brightness", "BrightnessIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */

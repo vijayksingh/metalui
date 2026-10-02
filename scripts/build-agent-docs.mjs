@@ -68,6 +68,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 \`\`\`
 
+- **Signal levels:** \`volume\` names adjustable sound level; \`brightness\` names adjustable light level. Bell describes a notification event, while Sun/Moon describe daylight/night. Pair the level glyph with a real accessible control and its current value.
 - **Actions and identity:** \`stop\` ends an operation; \`retry\` attempts it again (\`redo\` is an editor operation). \`attach\` catches a file; \`person\` names a profile or assignee; \`bell\` names a notification; \`palette\` chooses a paint or appearance family. These glyph acts describe a contact and rest; they never imply a successful operation.
 - **Status and environment:** \`info\` names information; \`warning\` names a warning with its triangular enclosure. Morph \`sun\` ↔ \`moon\` when changing colorway. \`sidebar\` describes a rail in a fixed window; turn 180 for a rail on the right. Always retain a visible or accessible status label.
 - **Adjustment and visibility:** \`settings\` adjusts values; \`filter\` narrows results; \`sort\` orders rows (turn for the reverse order). Morph \`eye\` ↔ \`eye-off\` when the same key changes visibility; \`lock\` describes access. The eye enclosure stays recognizable behind its shutter.

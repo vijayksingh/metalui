@@ -4496,7 +4496,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 72 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 74 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4505,6 +4505,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 ```
 
+- **Signal levels:** `volume` names adjustable sound level; `brightness` names adjustable light level. Bell describes a notification event, while Sun/Moon describe daylight/night. Pair the level glyph with a real accessible control and its current value.
 - **Actions and identity:** `stop` ends an operation; `retry` attempts it again (`redo` is an editor operation). `attach` catches a file; `person` names a profile or assignee; `bell` names a notification; `palette` chooses a paint or appearance family. These glyph acts describe a contact and rest; they never imply a successful operation.
 - **Status and environment:** `info` names information; `warning` names a warning with its triangular enclosure. Morph `sun` ↔ `moon` when changing colorway. `sidebar` describes a rail in a fixed window; turn 180 for a rail on the right. Always retain a visible or accessible status label.
 - **Adjustment and visibility:** `settings` adjusts values; `filter` narrows results; `sort` orders rows (turn for the reverse order). Morph `eye` ↔ `eye-off` when the same key changes visibility; `lock` describes access. The eye enclosure stays recognizable behind its shutter.
@@ -4555,6 +4556,8 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PersonIcon` | `person` | Tools | The portrait head seats above its fixed shoulders and returns to its place. | plays the same act |
 | `BellIcon` | `bell` | Status | The striker swings once into the bell rim; the rim receives the contact and both seat. | plays the same act |
 | `PaletteIcon` | `palette` | Tools | A paint well seats in the fixed palette while its thumb hole stays open. | plays the same act |
+| `VolumeIcon` | `volume` | Tools | The outer sound front reaches outward from the fixed speaker and seats back. | plays the same act |
+| `BrightnessIcon` | `brightness` | Tools | The level shade opens inside the fixed lamp and seats back at its half-lit position. | plays the same act |
 | `SendAwayIcon` | `send-away` | Actions | The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim. | plays the same act |
 | `TrashIcon` | `trash` | Actions | The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge. | plays the same act |
 | `GroupIcon` | `group` | Actions | The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing. | plays the same act |

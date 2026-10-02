@@ -44,6 +44,8 @@ export const ICONS = [
   { name: 'person', cat: 'Tools', label: 'Person' },
   { name: 'bell', cat: 'Status', label: 'Notification' },
   { name: 'palette', cat: 'Tools', label: 'Palette' },
+  { name: 'volume', cat: 'Tools', label: 'Volume' },
+  { name: 'brightness', cat: 'Tools', label: 'Brightness' },
   { name: 'send-away', cat: 'Actions', label: 'Delete · Send away' },
   { name: 'trash', cat: 'Actions', label: 'Delete · Trash' },
   { name: 'group', cat: 'Actions', label: 'Group · Stack' },

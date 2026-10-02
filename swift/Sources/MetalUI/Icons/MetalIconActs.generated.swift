@@ -2046,6 +2046,57 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .volume: MetalIconAct(
+            duration: 0.82,
+            caption: "The outer sound front reaches outward from the fixed speaker and seats back.",
+            parts: [
+            MetalIconActPart(
+                name: "wave", origin: CGPoint(x: 17.5, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1829, x: 1.3, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2561, x: 1.3, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.628, x: -0.1132, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4 9.5L7.4 9.5L12 5.8L12 18.2L7.4 14.5L4 14.5Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M15 9C15.8063 9.79 16.2606 10.8712 16.2606 12C16.2606 13.1288 15.8063 14.21 15 15", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M17.5 6.4C19.0152 7.8691 19.8705 9.8895 19.8705 12C19.8705 14.1105 19.0152 16.1309 17.5 17.6", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .brightness: MetalIconAct(
+            duration: 0.82,
+            caption: "The level shade opens inside the fixed lamp and seats back at its half-lit position.",
+            parts: [
+            MetalIconActPart(
+                name: "shade", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1829, x: -1.3, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2561, x: -1.3, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.628, x: 0.1132, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M15.8 12C15.8 14.0987 14.0987 15.8 12 15.8C9.9013 15.8 8.2 14.0987 8.2 12C8.2 9.9013 9.9013 8.2 12 8.2C14.0987 8.2 15.8 9.9013 15.8 12Z", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 8.2C14.0987 8.2 15.8 9.9013 15.8 12C15.8 14.0987 14.0987 15.8 12 15.8Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0,
+                cuts: [
+                    MetalIconActCut(d: "M15.8 12C15.8 14.0987 14.0987 15.8 12 15.8C9.9013 15.8 8.2 14.0987 8.2 12C8.2 9.9013 9.9013 8.2 12 8.2C14.0987 8.2 15.8 9.9013 15.8 12Z", parts: [], fill: true, stroke: 0.0, keep: true),
+                ]),
+            MetalIconActInk(d: "M12 3.5L12 5.5M12 18.5L12 20.5M3.5 12L5.5 12M18.5 12L20.5 12", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .sendAway: MetalIconAct(
             duration: 1.245,
             caption: "The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.",

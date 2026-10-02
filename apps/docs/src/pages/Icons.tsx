@@ -37,6 +37,10 @@ const IDENTITY = [
   ['bell', 'Signal a notification with one bell contact.'],
   ['palette', 'Choose the paint or appearance family.'],
 ] as const;
+const LEVELS = [
+  ['volume', 'Adjust the sound level at its speaker.'],
+  ['brightness', 'Adjust the light level inside its lamp.'],
+] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
@@ -125,6 +129,23 @@ export default function Icons() {
           {IDENTITY.map(([name, meaning]) => (
             <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
               aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-identity={name}>
+              <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
+                <Icon name={name} size={16} />
+                <Icon name={name} size={24} />
+              </span>
+              <span className="mu-stack gap-mu-space-2">
+                <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+                <span className="type-meta text-ink2">{meaning}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Section>
+      <Section id="signal-levels" title="Signal levels" lede="A speaker names sound level; a half-lit lamp names light level. These are adjustments. Bell names a notification, while Sun and Moon name daylight and night.">
+        <div className="mu-auto-grid" data-testid="levels-family">
+          {LEVELS.map(([name, meaning]) => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-level={name}>
               <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
                 <Icon name={name} size={16} />
                 <Icon name={name} size={24} />

@@ -41,6 +41,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case person = "person"
     case bell = "bell"
     case palette = "palette"
+    case volume = "volume"
+    case brightness = "brightness"
     case sendAway = "send-away"
     case trash = "trash"
     case group = "group"
@@ -118,6 +120,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return "Person"
         case .bell: return "Notification"
         case .palette: return "Palette"
+        case .volume: return "Volume"
+        case .brightness: return "Brightness"
         case .sendAway: return "Delete · Send away"
         case .trash: return "Delete · Trash"
         case .group: return "Group · Stack"
@@ -195,6 +199,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return .tools
         case .bell: return .status
         case .palette: return .tools
+        case .volume: return .tools
+        case .brightness: return .tools
         case .sendAway: return .actions
         case .trash: return .actions
         case .group: return .actions
@@ -273,6 +279,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 0.1
         case .bell: return 0.102
         case .palette: return 0.08
+        case .volume: return 0.1
+        case .brightness: return nil
         case .sendAway: return nil
         case .trash: return 0.12
         case .group: return 0.156
@@ -351,6 +359,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return nil
         case .bell: return nil
         case .palette: return nil
+        case .volume: return nil
+        case .brightness: return nil
         case .sendAway: return nil
         case .trash: return nil
         case .group: return nil
@@ -429,6 +439,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return false
         case .bell: return false
         case .palette: return false
+        case .volume: return false
+        case .brightness: return false
         case .sendAway: return true
         case .trash: return false
         case .group: return true
@@ -507,6 +519,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 1.85
         case .bell: return 1.85
         case .palette: return 1.85
+        case .volume: return 1.85
+        case .brightness: return 1.85
         case .sendAway: return 1.9
         case .trash: return 1.85
         case .group: return 1.9
