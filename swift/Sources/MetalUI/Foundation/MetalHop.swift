@@ -145,7 +145,7 @@ private struct MetalHopModifier: ViewModifier {
     let to: CGPoint
     let side: MetalHop.Side
     let reach: MetalHop.Reach
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var progress: CGFloat = 1
     @State private var hopTask: Task<Void, Never>?
 

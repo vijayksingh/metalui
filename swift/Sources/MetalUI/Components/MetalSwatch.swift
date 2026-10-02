@@ -10,7 +10,7 @@ public struct MetalSwatch: View {
     let hex: String
     let label: String?
     let action: (() -> Void)?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hovering = false
 
     public init(hex: String, label: String? = nil, action: (() -> Void)? = nil) {

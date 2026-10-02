@@ -59,7 +59,7 @@ public struct MetalToolStrip: View {
     let anchor: CGRect?
     let viewport: CGRect?
     let entrance: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var arrived = false
     @State private var size: CGSize = .zero
     @State private var backingScale: CGFloat = 1

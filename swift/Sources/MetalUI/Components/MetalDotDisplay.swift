@@ -76,7 +76,7 @@ public struct MetalDotDisplay: View {
 public struct MetalDotClock<Content: View>: View {
     let running: Bool
     let content: (Int) -> Content
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @State private var origin = Date()
 

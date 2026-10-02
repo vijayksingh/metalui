@@ -12,7 +12,7 @@ public struct MetalSuggestionChip: View {
     let onDismiss: () -> Void
     let onHoverChange: (Bool) -> Void
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var arrived = false
     @State private var hovering = false
     private enum Action: Hashable { case accept, dismiss }

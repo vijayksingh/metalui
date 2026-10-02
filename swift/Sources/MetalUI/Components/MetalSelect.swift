@@ -38,7 +38,7 @@ public struct MetalSelect<Value: Hashable>: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var open = false
     @State private var hovering = false

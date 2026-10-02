@@ -7,7 +7,7 @@ public struct MetalDrawingIcon: View {
     let size: CGFloat
     let weight: Font.Weight
     @Environment(\.metalIconInteraction) private var hostInteraction
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
     @State private var ownHover = false
     @State private var hoverCount = 0

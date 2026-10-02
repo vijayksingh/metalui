@@ -40,7 +40,7 @@ private struct MetalTooltipModifier: ViewModifier {
     @State private var shown = false
     @State private var pending: Task<Void, Never>?
     @State private var id = UUID().uuidString
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalTooltipHosted) private var hosted
 
     func body(content: Content) -> some View {

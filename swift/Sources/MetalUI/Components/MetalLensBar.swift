@@ -39,7 +39,7 @@ public struct MetalLensBar: View {
     let onClose: () -> Void
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var arrived = false
 
     public init(query: String, count: Int? = nil, source: MetalLensSource? = nil, mode: Binding<MetalLensMode>, modes: [MetalLensMode] = MetalLensMode.allCases, onPin: (() -> Void)? = nil, onClose: @escaping () -> Void) {

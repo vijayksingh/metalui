@@ -32,7 +32,7 @@ public struct MetalSnapGuides: View {
     public let scale: CGFloat
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var lastGuides: [MetalSnapGuide] = []
     @State private var engaged: Set<EngagedLine> = []
     @State private var isLeaving = false

@@ -52,7 +52,7 @@ public struct MetalDialog<Popup: View, Actions: View>: View {
     private let popup: Popup
     private let actions: Actions
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var arrived = false
 
     public init(isPresented: Binding<Bool>, title: String,

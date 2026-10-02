@@ -211,7 +211,7 @@ public struct MetalFanPicker<Value: Hashable>: View {
     private let options: [MetalFanOption<Value>]
     private let direction: MetalFanDirection
     @EnvironmentObject private var state: MetalFanState
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalFanReduceMotionOverride) private var reduceMotionOverride
     @FocusState private var focusedOption: Int?
     @FocusState private var capFocused: Bool
@@ -301,7 +301,7 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
     private let icon: Icon
     private let content: Content
     @EnvironmentObject private var state: MetalFanState
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalFanReduceMotionOverride) private var reduceMotionOverride
     @FocusState private var capFocused: Bool
     @FocusState private var foldFocused: Bool

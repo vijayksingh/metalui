@@ -18,7 +18,7 @@ public struct MetalLink: View {
     private let action: (() -> Void)?
     @Environment(\.openURL) private var openURL
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hovering = false
     @State private var followed = false
     @State private var visible = false
@@ -82,7 +82,7 @@ public struct MetalLink: View {
 private struct MetalLinkPressStyle: ButtonStyle {
     let disabled: Bool
     @State private var hovering = false
-    @Environment(\.accessibilityReduceMotion) private var reduced
+    @MetalMotionPreference private var reduced
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .opacity(configuration.isPressed && !disabled ? MetalRecipes.link.scalar("self.pressed") : .one)

@@ -20,7 +20,7 @@ struct MetalSwitchTrack<Value: Hashable>: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Namespace private var thumb
     @State private var hovering: Value?
     @FocusState private var focused: Value?

@@ -10,7 +10,7 @@ public struct MetalAttachment: View {
     private let remove: (() -> Void)?
     private let onLeaveStart: (() -> Void)?
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var landed = false
     @State private var leaving = false
     @State private var leaveTask: Task<Void, Never>?

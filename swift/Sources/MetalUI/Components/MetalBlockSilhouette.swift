@@ -12,7 +12,7 @@ public struct MetalBlockSilhouette: View {
     public let lines: Int?
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     public init(_ kind: Kind, color: MetalRGBA? = nil, label: String? = nil, lines: Int? = nil) {
         self.kind = kind

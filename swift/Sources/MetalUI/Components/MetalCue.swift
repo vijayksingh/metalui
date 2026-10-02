@@ -91,7 +91,7 @@ public struct MetalDimple: View {
 
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.isFocused) private var isFocused
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hovering = false
     /// The key stays dark while the shared pen takes the tick away.
     @State private var inked: Bool

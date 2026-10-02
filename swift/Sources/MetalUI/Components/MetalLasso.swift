@@ -10,7 +10,7 @@ public struct MetalLasso: View {
     public let unit: (Int) -> String
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var last: Drawing?
     @State private var isLeaving = false
     @State private var clearTask: Task<Void, Never>?

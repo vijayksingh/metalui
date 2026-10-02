@@ -5,7 +5,7 @@ public struct MetalPastBanner: View {
     let moment: String
     let onBack: () -> Void
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @FocusState private var backFocused: Bool
     @State private var arrived = false
     @State private var hovering = false

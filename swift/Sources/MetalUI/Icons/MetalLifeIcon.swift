@@ -30,7 +30,7 @@ public struct MetalLifeIcon: View {
     var tint: MetalTint?
 
     @Environment(\.metalIconInteraction) private var hostInteraction
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
     @Environment(\.metalUntinted) private var untinted
     @Environment(\.colorSchemeContrast) private var contrast

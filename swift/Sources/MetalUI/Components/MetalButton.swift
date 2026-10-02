@@ -45,7 +45,7 @@ private struct MetalButtonBody: View {
     @Environment(\.metalButtonGroup) private var group
     @Environment(\.metalButtonGroupLatched) private var latched
     @Environment(\.metalToggleTravel) private var toggleTravel
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalButtonGroupWidth) private var groupWidth
     @State private var segmentID = UUID()
     @Environment(\.metalButtonHolding) private var holding
@@ -141,7 +141,7 @@ public struct MetalButton<Icon: View>: View {
     private let errorLabel: String
     @State private var face: MetalButtonState = .idle
     @State private var visibleAt: ContinuousClock.Instant?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var holding = false
     @State private var keyboardHold: Task<Void, Never>?
     @FocusState private var focused: Bool
@@ -328,7 +328,7 @@ private extension EnvironmentValues {
 
 // This clock exists only in a visible waiting glyph slot. Reduce Motion uses a still arc.
 private struct MetalButtonWaitArc: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @State private var visible = false
     private let started = Date()

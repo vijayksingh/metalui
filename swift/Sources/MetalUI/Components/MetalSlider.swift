@@ -87,7 +87,7 @@ public struct MetalSlider: View {
     let isExternallyDragging: Bool
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.isEnabled) private var isEnabled
     @FocusState private var focused: Bool
     /// Focus came from the keyboard (Tab, arrows): only then is the ring drawn, never after a press.

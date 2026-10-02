@@ -28,7 +28,7 @@ public struct MetalRegionView<Rows: View>: View {
     let rows: Rows
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var draft = ""
     @FocusState private var nameFocused: Bool

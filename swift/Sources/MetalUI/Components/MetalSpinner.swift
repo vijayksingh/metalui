@@ -79,7 +79,7 @@ public struct MetalSpinner: View {
 }
 
 private struct MetalWaitingArc: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @State private var appeared = false
     @State private var start = Date()

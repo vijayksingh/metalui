@@ -24,7 +24,7 @@ public struct MetalTabs<Value: Hashable, Panel: View>: View {
     let orientation: MetalTabsOrientation
     let panel: (Value) -> Panel
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hasAppeared = false
     @State private var direction: CGFloat = .zero
 

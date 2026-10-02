@@ -128,7 +128,7 @@ public struct MetalToast: View {
 private struct MetalToastHost: ViewModifier {
     @Binding var toast: MetalToastModel?
     @State private var hovering = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     func body(content: Content) -> some View {
         let travel = MetalMotion.resolve(.settle, reduceMotion: reduceMotion).allowsTravel
@@ -235,7 +235,7 @@ public struct MetalToastDeckView: View {
     let deck: MetalToastDeck
     let expanded: Bool
     @State private var drag: CGSize = .zero
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     public init(_ deck: MetalToastDeck, expanded: Bool = false) {
         self.deck = deck
@@ -337,7 +337,7 @@ private struct MetalToastDeckCard: View {
     let more: Int
     let onDismiss: () -> Void
     @State private var pressed = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
 
     var body: some View {
@@ -399,7 +399,7 @@ private struct MetalToastDeckHost: ViewModifier {
     let deck: MetalToastDeck
     @State private var hovering = false
     private var expanded: Bool { hovering || deck.focusedCard != nil }
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     func body(content: Content) -> some View {
         content.overlay(alignment: .bottom) {

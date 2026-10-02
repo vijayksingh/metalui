@@ -91,7 +91,7 @@ private struct MetalHoverEngravingModifier: ViewModifier {
     let engraving: MetalHoverEngraving
     let placement: MetalEngravingPlacement
     let isPresented: Bool?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hovering = false
     @State private var shown = false
     @State private var dwell: Task<Void, Never>?

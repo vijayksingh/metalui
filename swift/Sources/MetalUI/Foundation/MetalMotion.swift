@@ -34,10 +34,28 @@ public enum MetalMotion {
     }
 }
 
+private struct MetalReduceMotionKey: EnvironmentKey { static let defaultValue = false }
+
+extension EnvironmentValues {
+    var metalReduceMotion: Bool {
+        get { self[MetalReduceMotionKey.self] }
+        set { self[MetalReduceMotionKey.self] = newValue }
+    }
+}
+
+/// The effective policy for this scope: a local opt-out can only add to the OS preference.
+@propertyWrapper
+public struct MetalMotionPreference: DynamicProperty {
+    @Environment(\.accessibilityReduceMotion) private var system
+    @Environment(\.metalReduceMotion) private var scoped
+    public init() {}
+    public var wrappedValue: Bool { system || scoped }
+}
+
 private struct MetalAnimationModifier<Value: Equatable>: ViewModifier {
     let springClass: MetalSpringClass
     let value: Value
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     func body(content: Content) -> some View {
         content.animation(MetalMotion.resolve(springClass, reduceMotion: reduceMotion).animation, value: value)
@@ -45,6 +63,11 @@ private struct MetalAnimationModifier<Value: Equatable>: ViewModifier {
 }
 
 extension View {
+    /// Reduces motion in this subtree. `false` never overrides an ancestor or the OS accessibility preference.
+    public func metalReduceMotion(_ reduced: Bool = true) -> some View {
+        transformEnvironment(\.metalReduceMotion) { $0 = $0 || reduced }
+    }
+
     /// Animates changes to `value` on a spring class, resolved for Reduce Motion.
     public func metalAnimation<Value: Equatable>(_ springClass: MetalSpringClass, value: Value) -> some View {
         modifier(MetalAnimationModifier(springClass: springClass, value: value))

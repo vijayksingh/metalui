@@ -75,7 +75,7 @@ private struct MetalSelectionFrameModifier: ViewModifier {
     let onHandleDrag: ((MetalSelectionHandle, DragGesture.Value) -> Void)?
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var entered = false
 
     private var offset: CGFloat { MetalRing.selectOffset }

@@ -29,7 +29,7 @@ public struct MetalLED: View {
     let diameter: CGFloat?
     let gesture: MetalLampGesture?
     let phase: Double?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.metalColorway) private var colorway
     @State private var start = Date()

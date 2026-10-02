@@ -32,7 +32,7 @@ public struct MetalButtonGroup<Content: View>: View {
     private let rocker: Bool
     @State private var pressed: UUID?
     @State private var tilt: Double = .zero
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     public init(_ label: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, rocker: Bool = false, @ViewBuilder content: () -> Content) {
         self.label = label
@@ -128,7 +128,7 @@ public struct MetalSplitButton<Primary: View>: View {
     @State private var open = false
     @FocusState private var focused: Bool
     @Environment(\.isEnabled) private var enabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     public init(_ menuLabel: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, heading: String? = nil, menu: [MetalMenuItem], @ViewBuilder primary: () -> Primary) {
         self.label = menuLabel; self.cap = cap == .primary ? .primary : .standard; self.size = size; self.heading = heading; self.primary = primary(); self.alternatives = menu
     }

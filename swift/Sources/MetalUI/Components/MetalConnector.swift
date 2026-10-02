@@ -28,7 +28,7 @@ public struct MetalConnector: View {
     public let onHoverChange: (Bool) -> Void
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @SwiftUI.State private var middle = CGPoint.zero
 

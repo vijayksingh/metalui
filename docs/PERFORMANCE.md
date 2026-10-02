@@ -48,3 +48,9 @@ Numbers come from the benchmark harness, run on a separate machine, never a lapt
 | `bench/run.sh` | the web run, pinned to its own cores, with host load recorded; a busy host marks the run invalid |
 
 Counters (animations, layouts per second, style recalcs per second, bytes) hold on any machine. Durations (CPU milliseconds per second) hold only when `bench/results/env.json` says the run was valid. These are proxies for power: they measure work, not joules.
+
+### Native scope policy
+
+SwiftUI reads `@MetalMotionPreference` for the effective policy instead of reading the OS flag in each component. `.metalReduceMotion(true)` adds a reduced-motion scope, including the shared animation modifier, glyph acts, drawing glyphs and component interactions. The policy ORs the OS preference with every ancestor scope: an inner `false` cannot re-enable motion. A dynamic scope change cancels active glyph hold/act/cancel clocks; returning to full motion starts no new act until the next interaction. The default remains the OS preference.
+
+The real app fixture `e2e/native/motion-policy-proof.swift` compares an outside glyph with a scoped glyph receiving the same hold. It toggles reduction during the hold, checks an inner `false` stays reduced and restores the scope without resuming a cancelled clock.

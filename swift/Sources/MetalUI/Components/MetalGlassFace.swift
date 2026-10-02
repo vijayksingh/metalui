@@ -133,7 +133,7 @@ public struct MetalLinkFace: View {
     let openLabel: String
     let preview: MetalLinkPreview?
     let open: (() -> Void)?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
 
     public init(_ href: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,

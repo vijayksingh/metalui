@@ -11,7 +11,7 @@ public struct MetalTimeScrubber: View {
     let onScrubChange: ((Bool) -> Void)?
     let isScrubbing: Bool
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     public init(range: ClosedRange<Date>, selection: Binding<Date?>,
                 marks: [Date] = [],

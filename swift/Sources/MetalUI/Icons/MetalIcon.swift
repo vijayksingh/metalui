@@ -315,7 +315,7 @@ public struct MetalIcon: View {
 
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.metalIconInteraction) private var hostInteraction
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
     @State private var ownHover = false
     @State private var hoverCount = 0
@@ -383,6 +383,14 @@ public struct MetalIcon: View {
                 guard cancelStart != nil else { return }
                 try? await Task.sleep(for: .seconds(MetalSpringClass.release.spring.duration))
                 if !Task.isCancelled { cancelStart = nil }
+            }
+            .onChange(of: reduceMotion) { _, reduced in
+                guard reduced else { return }
+                actStart = nil
+                holdStart = nil
+                cancelStart = nil
+                cancelTime = 0
+                previousHoldDuration = 0
             }
             .onChange(of: isEnabled) { _, enabled in
                 guard !enabled else { return }

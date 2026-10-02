@@ -32,7 +32,7 @@ public struct MetalCalendar: View {
     @State private var later = true
     @FocusState private var focused: Date?
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     public init(_ label: String, selection: Binding<Date>, in range: ClosedRange<Date>? = nil, month: Binding<Date>? = nil) {
         self.label = label; self.selection = .single(selection); limits = range; monthBinding = month

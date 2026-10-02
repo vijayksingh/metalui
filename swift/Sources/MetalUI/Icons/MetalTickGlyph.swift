@@ -8,7 +8,7 @@ struct MetalTickGlyph: View {
     let side: CGFloat
     let color: Color
     let onInk: (Bool) -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var drawn: CGFloat
     @State private var bend: CGFloat
     @State private var stroke = 0
@@ -32,6 +32,9 @@ struct MetalTickGlyph: View {
             .allowsHitTesting(false)
             .accessibilityHidden(true)
             .onChange(of: mark) { old, new in pen(from: old, to: new) }
+            .onChange(of: reduceMotion) { _, reduced in
+                if reduced { pen(from: mark, to: mark) }
+            }
     }
 
     /// Runs the pen for a change of mark: draw, withdraw, or bend the dash and tick into each other.

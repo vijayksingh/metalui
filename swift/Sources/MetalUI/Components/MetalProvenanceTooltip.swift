@@ -34,7 +34,7 @@ private struct MetalProvenanceModifier: ViewModifier {
     let source: String
     let detail: [String]
     let clearsChip: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var shown = false
     @State private var dwell: Task<Void, Never>?
 

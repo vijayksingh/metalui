@@ -369,7 +369,7 @@ private struct MetalCommandPalettePresenter: ViewModifier {
     let status: String?
     let onRun: (MetalCommandPaletteItem, Bool) -> Void
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
 
     func body(content: Content) -> some View {
         let travel = MetalMotion.resolve(.surface, reduceMotion: reduceMotion).allowsTravel

@@ -26,7 +26,7 @@ public struct MetalPerfectPreview: View {
     public let onHeld: () -> Void
 
     @Environment(\.metalColorway) private var colorway
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var trace: CGFloat = 0
 
     public init(outline: Path, phase: Phase, tune: Tune? = nil, scale: CGFloat = 1,

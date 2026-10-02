@@ -16,3 +16,9 @@ Set `METALUI_NATIVE_CAPTURE` to an absolute directory to save the focused deck. 
 # Native RadioKeys keyboard form
 
 Run `python3 e2e/native/run-radio-keys-proof.py` on macOS. A real SwiftUI window starts with 10:00 chosen, focuses a cap using Tab, and sends arrow and Space events. Arrows skip the disabled 11:00 option; pressing the chosen key keeps it chosen; the reverse arrow returns to 10:00. It exercises public selection bindings and native focus, without inspecting animation internals.
+
+# Native scoped motion policy
+
+`motion-policy-proof.swift` is a public-API SwiftUI host. Two trash glyphs receive the same hold; one is inside a dynamically reduced subtree, with a nested `false` probe. The outside glyph continues while the scoped glyph cancels. The nested probe remains reduced; restoring the scope does not resume the cancelled clock. The OS accessibility preference is always ORed with the scope.
+
+Observed on iPhone 15 / iOS 17.5: [both holding](../../docs/captures/swift/motion-policy-active.png), [scope reduced](../../docs/captures/swift/motion-policy-reduced.png), [scope restored](../../docs/captures/swift/motion-policy-restored.png). The generic iOS Simulator package build and macOS `swift build -j 2` pass. Existing native readers and the shared animation modifier use `@MetalMotionPreference`.

@@ -102,7 +102,7 @@ private struct MetalDrawPickStyle: ButtonStyle {
     @Environment(\.metalColorway) private var colorway
     @Environment(\.metalToolbarVariant) private var graphiteStrip
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var hovering = false
 
     func makeBody(configuration: Configuration) -> some View {

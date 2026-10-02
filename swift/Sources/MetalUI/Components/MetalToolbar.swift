@@ -8,7 +8,7 @@ public struct MetalToolbar<Content: View>: View {
     let variant: Variant
     let label: String
     let content: Content
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @MetalMotionPreference private var reduceMotion
     @State private var arrived = false
 
     public init(_ label: String, variant: Variant = .frost, @ViewBuilder content: () -> Content) {
