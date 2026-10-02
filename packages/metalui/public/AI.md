@@ -1042,7 +1042,7 @@ Type to find one of many. React: `Combobox` from `@unlocalhosted/metalui`, on Ba
 
 ## Anatomy
 
-- Well: the form field's, `size` regular (32, the default) or compact (28), at least 220 wide; the text in ui type; a clear mark (24, a 10 cross) at the end once a value is chosen.
+- Well: the form field's, `size` regular (32, the default) or compact (28), at least 220 wide; the text in ui type; a clear key (24, the shared `close` glyph at 10) at the end once a value is chosen.
 - Plate: the menu's frosted plate, as wide as the well, 6 below it; at most 7 rows, then it scrolls.
 - Rows: the menu's rows under one gliding highlight. Nothing found: one quiet row in ink3.
 
@@ -1060,7 +1060,7 @@ Type to find one of many. React: `Combobox` from `@unlocalhosted/metalui`, on Ba
 | invalid | the foundation's invalid ring; aria-invalid | – |
 | disabled | 40 % | – |
 
-Reduce Motion: the height snaps; the fades stay.
+Reduce Motion: the height snaps; the fades stay, and the glyph remains complete and static. The clear key uses `Icon` / `MetalIcon(.close)` from the set; no inline drawing. It keeps the input's chosen value and clear behavior on Base UI. SwiftUI exposes the same clear action while its field/plate material remains WIP.
 
 ## API
 

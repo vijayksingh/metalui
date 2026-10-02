@@ -106,7 +106,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] navigation-menu: shared chevron morph follows Base UI open state; CSS rotation removed.
 - [x] accordion
 - [ ] attachment
-- [ ] combobox
+- [x] combobox
 - [ ] select
 - [ ] table
 - [ ] breadcrumbs

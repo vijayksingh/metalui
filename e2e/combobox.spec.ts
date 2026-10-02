@@ -26,6 +26,11 @@ for (const colorway of COLORWAYS) {
     await expect(input).toHaveValue('Bordeaux');
     await expect(page.getByText('trip to Bordeaux')).toBeVisible();
 
+    const clear = page.getByRole('button', { name: 'Clear' }).first();
+    await expect(clear.locator('svg')).toHaveClass(/mu-ic-close/);
+    await input.press('Escape');
+    await page.screenshot({ path: capture(`combobox-clear-${colorway}`), clip: { ...(await input.boundingBox())!, y: (await input.boundingBox())!.y - 16, x: (await input.boundingBox())!.x - 16, width: 252, height: 80 } });
+
     // A chosen value can be taken away with the clear mark.
     await page.getByRole('button', { name: 'Clear' }).first().click();
     await expect(input).toHaveValue('');
@@ -71,4 +76,24 @@ test('the form field\'s sizes and states', async ({ page }) => {
   await expect(page.getByRole('combobox', { name: 'Invalid city' })).toHaveAttribute('aria-invalid', 'true');
   expect(await well('Invalid city').evaluate((el) => getComputedStyle(el, '::before').boxShadow)).toContain('inset');
   await expect(page.getByRole('combobox', { name: 'Disabled city' })).toBeDisabled();
+});
+
+test('the shared clear key remains usable and static with reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/combobox', 'graphite');
+  const input = field(page);
+  await input.fill('Paris');
+  await input.press('ArrowDown');
+  await input.press('Enter');
+  await expect(input).toHaveValue('Paris');
+  const clear = page.getByRole('button', { name: 'Clear' }).first();
+  await expect(clear.locator('svg')).toHaveClass(/mu-ic-close/);
+  await clear.hover();
+  const rest = await clear.locator('svg').innerHTML();
+  await page.waitForTimeout(160);
+  expect(await clear.locator('svg').innerHTML()).toBe(rest);
+  await page.screenshot({ path: capture('combobox-clear-reduced'), clip: { ...(await input.boundingBox())!, y: (await input.boundingBox())!.y - 16, x: (await input.boundingBox())!.x - 16, width: 252, height: 80 } });
+  await clear.focus();
+  await page.keyboard.press('Enter');
+  await expect(input).toHaveValue('');
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import { menuParts, ListGlide } from '../menu/menu';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
@@ -28,7 +29,7 @@ const SIZE = {
   compact: 'gap-field-compact-gap h-field-compact-height pl-field-compact-pad-left pr-field-compact-pad-right rounded-field-compact-radius',
 };
 const INPUT = 'mu-combobox-input flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint';
-const CLEAR = 'mu-combobox-clear inline-grid place-items-center flex-none size-combobox-clear-size rounded-full border-0 bg-transparent text-ink3 hover:text-ink cursor-pointer transition-opacity duration-settle ease-settle data-starting-style:opacity-0 data-ending-style:opacity-0 focus-visible:focus-ring';
+const CLEAR = 'mu-combobox-clear mu-icon-trigger inline-grid place-items-center flex-none size-combobox-clear-size rounded-full border-0 bg-transparent text-ink3 hover:text-ink cursor-pointer transition-opacity duration-settle ease-settle data-starting-style:opacity-0 data-ending-style:opacity-0 focus-visible:focus-ring';
 const POSITIONER = 'mu-menu-positioner z-menu-z';
 const POP = `${menuParts.PLATE} relative mu-combobox-pop combobox-pop-width`;
 const FIT = 'mu-combobox-fit combobox-fit';
@@ -83,7 +84,7 @@ export function Combobox<Item extends string = string>({ items, value, defaultVa
       <BaseCombobox.InputGroup data-invalid={invalid ? '' : undefined} className={className ? `${group} ${className}` : group}>
         <BaseCombobox.Input className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} aria-invalid={invalid || undefined} />
         <BaseCombobox.Clear className={CLEAR} aria-label="Clear">
-          <svg aria-hidden viewBox="0 0 10 10" className="size-combobox-clear-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2 2l6 6M8 2 2 8" /></svg>
+          <Icon name="close" className="size-combobox-clear-glyph" />
         </BaseCombobox.Clear>
       </BaseCombobox.InputGroup>
       <BaseCombobox.Portal>

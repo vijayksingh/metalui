@@ -19,7 +19,17 @@ public struct MetalCombobox: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            TextField(prompt, text: $query)
+            HStack {
+                TextField(prompt, text: $query)
+                if selection != nil {
+                    Button { selection = nil; query = "" } label: {
+                        MetalIcon(.close, size: MetalRecipes.combobox.points("clear.glyph"))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Clear")
+                }
+            }
             if !query.isEmpty {
                 ForEach(items.filter { $0.localizedCaseInsensitiveContains(query) }, id: \.self) { item in
                     Button(item) { selection = item; query = item }.buttonStyle(.plain)

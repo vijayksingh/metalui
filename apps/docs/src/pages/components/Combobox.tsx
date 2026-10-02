@@ -60,6 +60,7 @@ export default function ComboboxPage() {
       rules={[
         { id: 'CB1', title: 'Rows never lag the fingers', body: 'Filtering is instant; only the plate\'s size moves, on the settle spring.', origin: 'Ours' },
         { id: 'CB2', title: 'One highlight', body: 'Pointer and keys share one highlight that glides between rows.', origin: 'The menu' },
+        { id: 'CB4', title: 'One clear glyph', body: 'The clear key uses the shared close glyph and keeps its accessible name; reduced motion leaves it complete and still.', origin: 'The icon set' },
         { id: 'CB3', title: 'Say when nothing matches', body: 'One quiet row, not an empty plate.', origin: 'Ours' },
       ]}
     />
