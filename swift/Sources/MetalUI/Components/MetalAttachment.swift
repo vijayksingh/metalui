@@ -39,6 +39,7 @@ public struct MetalAttachment: View {
         let failure = error.flatMap { $0.isEmpty ? nil : $0 } ?? "Upload failed"
         let metadata = state == .error ? failure : state == .uploading ? (amount.map { "Uploading · \(Int($0.rounded())) %" } ?? "Uploading") : state == .complete ? "Uploaded\(bytes.isEmpty ? "" : " · " + bytes)" : bytes
         let receipt = state == .error || state == .complete ? metadata : ""
+        let receiptInk = (state == .error ? colorway.tokens.invalid : colorway.tokens.ink3).color
         let glyph: MetalIconName = state == .error ? .syncError : state == .uploading ? .upload : state == .complete ? .check : .document
         HStack(spacing: recipe.points("self.gap")) {
             Text(ext.isEmpty ? "FILE" : String(ext.prefix(4)).uppercased())
@@ -65,12 +66,14 @@ public struct MetalAttachment: View {
                 }
                 HStack(alignment: .top, spacing: MetalSpace.s4) {
                     MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
-                    Text(metadata).id(metadata)
-                        .font(.metal(MetalType.meta))
-                        .fixedSize(horizontal: false, vertical: true)
-                        .transition(reduceMotion ? .identity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
+                    ZStack(alignment: .topLeading) {
+                        Text(metadata).id(metadata)
+                            .font(.metal(MetalType.meta))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .transition(reduceMotion ? .identity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
+                    }.foregroundStyle(receiptInk).id(reduceMotion).clipped()
                 }
-                .foregroundStyle((state == .error ? colorway.tokens.invalid : colorway.tokens.ink3).color)
+                .foregroundStyle(receiptInk)
                 .accessibilityElement(children: .ignore).accessibilityLabel(metadata)
                 .metalAnimation(.settle, value: metadata)
                 .transaction { if reduceMotion { $0.animation = nil; $0.disablesAnimations = true } }

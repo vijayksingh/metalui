@@ -52,3 +52,5 @@ Reduce Motion: it appears and goes at once; the fill still conveys progress, and
 - Success uses a polite web status; error keeps its alert. Native posts an `AccessibilityNotification.Announcement` when a completion/error receipt changes, and exposes the same words as its accessibility value.
 - Say why an upload failed in a few words ("Too large, 25 MB at most"), and offer to try again.
 - Keep the extension visible; cut the middle of long names.
+
+Native receipt words apply instantly under Reduce Motion and clear any retiring full-motion face when the scope changes mid-settle. Only the clipped words stack changes its policy identity; the file plate, result glyph and remove/retry controls stay mounted. `e2e/native/run-attachment-label-proof.py` verifies public error-to-complete receipts in both colorways and a live motion switch using own-window metadata pixels.
