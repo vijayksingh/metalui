@@ -33,11 +33,13 @@ extension Text {
 public struct MetalCueTag: View {
     let text: String
     let derived: Bool
+    let tint: MetalRGBA?
     @Environment(\.metalColorway) private var colorway
 
-    public init(_ text: String, derived: Bool = false) {
+    public init(_ text: String, derived: Bool = false, tint: MetalRGBA? = nil) {
         self.text = text
         self.derived = derived
+        self.tint = tint
     }
 
     private var tagText: Text {
@@ -52,7 +54,7 @@ public struct MetalCueTag: View {
             .padding(.vertical, MetalCue.tagPadY)
             .background {
                 let shape = MetalCueTab()
-                MetalCue.tagColor(text).color.opacity(MetalRecipes.status.scalar("badge.tint"))
+                (tint ?? MetalCue.tagColor(text)).color.opacity(MetalRecipes.status.scalar("badge.tint"))
                     .overlay { MetalInnerShadows(layers: colorway.tokens.cueTagSh, shape: shape) }
                     .mask(shape.fill(style: FillStyle(eoFill: true)))
                     .overlay { if derived { shape.stroke(colorway.tokens.ink2.color, style: StrokeStyle(lineWidth: MetalCue.quietThickness, dash: [MetalSpace.s2, MetalSpace.s2])) } }

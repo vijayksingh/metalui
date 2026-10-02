@@ -2156,6 +2156,7 @@
   --mu-r-day-tile-foot: 10px;
   --mu-r-day-ink-fall-opacity: 0.35;
   /* rename-editor: recipes.form-field; recipes.field.regular; recipes.button.primary; layout.gap-related; waiting */
+  /* enum-cue: cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent */
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

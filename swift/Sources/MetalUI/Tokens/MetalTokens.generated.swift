@@ -3045,6 +3045,17 @@ public enum MetalRecipes {
             :
         ]
     )
+
+    /// A finite source value operated in place. It composes the Mark tag tab, content type, focus ring and shared detent feedback; the held adjacent-choice instrument has no material of its own. Reserve every host choice before interaction. A wheel gesture ends on the existing release duration; a stop uses the named 24 spacing step. Explicit host tint carries finite-state meaning, never a hash identity palette. (cue tag grammar; foundations.space 24; springs.part/release; focus ring; motion haptic detent)
+    public static let enumCue = MetalObjectRecipe(
+        name: "enum-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.
