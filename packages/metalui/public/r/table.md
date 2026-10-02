@@ -22,7 +22,7 @@ Rows of a person's things, read across and compared down. React: `Table` from `@
 | State | Look | Motion |
 |---|---|---|
 | hover | the row sinks a touch | – |
-| sort | the arrow points the way; rows reorder | arrow on the part spring; each row travels from where it was on the settle spring |
+| sort | the arrow points the way; rows reorder | shared arrow morph on the settle spring; each row travels from where it was on the settle spring |
 | selected | a quiet green tint; head checkbox mixed or ticked | the checkbox's own |
 | empty | one quiet line | – |
 
@@ -46,3 +46,5 @@ Reduce Motion: rows jump to their places; the arrow turns at once.
 
 - Right-align numbers and use tabular figures.
 - Sort only columns where order means something.
+
+The sort indicator is the icon set's `arrow`, aligned vertically once; state changes use `MorphIcon`, with no CSS direction transition. Select-all uses `mixed`, the shared checkbox dash, while individual rows use the same tick pen. Native `MetalTable` owns rows and cells only; a caller's custom sortable header uses `MetalIcon(.arrow)` at the sort glyph token.

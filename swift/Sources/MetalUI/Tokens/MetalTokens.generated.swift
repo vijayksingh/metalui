@@ -1170,7 +1170,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Rows sink a touch on hover (the switcher's track look); selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint. Sorting by a column: its arrow turns on the part spring, and each row travels from where it was to where it now belongs on the settle spring, so you can follow it. No rows: one quiet line says so. Reduce Motion: rows jump to their places; the arrow turns at once. (the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs)
+    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Rows sink a touch on hover (the switcher's track look); selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint. Sorting by a column: its shared arrow morphs on the settle spring, and each row travels from where it was to where it now belongs on the settle spring, so you can follow it. No rows: one quiet line says so. Reduce Motion: rows jump to their places; the arrow turns at once. (the label's engraving; the rule; the switcher track; the checkbox (row size); the shared arrow glyph; the settle spring)
     public static let table = MetalObjectRecipe(
         name: "table",
         layers: [

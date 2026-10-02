@@ -108,7 +108,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [ ] attachment
 - [x] combobox
 - [x] select
-- [ ] table
+- [x] table
 - [ ] breadcrumbs
 - [ ] button-group (split chevron)
 - [ ] folder

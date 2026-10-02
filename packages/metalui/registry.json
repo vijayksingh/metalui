@@ -1751,6 +1751,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/checkbox.json",
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

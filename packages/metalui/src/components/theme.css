@@ -1699,7 +1699,7 @@
   font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit;
 }
 @utility table-sort-arrow {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); opacity: 0; [aria-sort=ascending] & { opacity: 1; rotate: 0deg; } [aria-sort=descending] & { opacity: 1; rotate: 180deg; } button:hover > & { opacity: .5; }
+  transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); opacity: 0; [aria-sort=ascending] & { opacity: 1; } [aria-sort=descending] & { opacity: 1; } button:hover > & { opacity: .5; }
 }
 @utility empty-state-arrive {
   animation: mu-empty-state-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;

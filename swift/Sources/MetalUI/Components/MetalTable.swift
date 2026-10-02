@@ -2,7 +2,8 @@ import SwiftUI
 
 // WIP: MetalTable is a placeholder that keeps the React API's shape (rows and columns). Use SwiftUI's
 // Table on macOS; this lists rows in a VStack with rules, not yet the engraved labels, the sort's travel
-// or the selection tint from table.agent.md. Web is the reference.
+// or the selection tint from table.agent.md. Web is the reference. This row container owns no sort header glyph; custom headers use
+// MetalIcon(.arrow) at table sort.glyph, aligned to the column direction.
 
 /// Rows of things. Work in progress: see table.agent.md.
 public struct MetalTable<Row: Identifiable, Cells: View>: View {

@@ -76,6 +76,7 @@ export default function TablePage() {
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[
+        { id: 'TB4', title: 'Shared selection and direction', body: 'Sort direction morphs the shared arrow on settle. Select-all draws the shared dash when some rows are chosen.', origin: 'The icon set' },
         { id: 'TB1', title: 'Rows travel when sorted', body: 'Each row moves from where it was to where it now belongs, so the eye can follow it.', origin: 'Ours' },
         { id: 'TB2', title: 'Numbers line up', body: 'Right-aligned with tabular figures.', origin: 'Ours' },
         { id: 'TB3', title: 'Say when it is empty', body: 'One quiet line saying what would be here and how to start.', origin: 'Ours' },

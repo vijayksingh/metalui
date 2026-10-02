@@ -1180,7 +1180,7 @@
   --mu-r-attachment-type-radius: 10px;
   --mu-r-attachment-track-height: 3px;
   --mu-r-attachment-remove-glyph: 10px;
-  /* table: the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs */
+  /* table: the label's engraving; the rule; the switcher track; the checkbox (row size); the shared arrow glyph; the settle spring */
   --mu-r-table-row-height: 40px;
   --mu-r-table-row-pad-x: 12px;
   --mu-r-table-head-height: 32px;

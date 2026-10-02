@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { MorphIcon } from '../../icons/MorphIcon';
 import { Checkbox } from '../checkbox/checkbox';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -9,7 +10,7 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *
  *   rest      engraved column labels over rows parted by engraved hairlines
  *   hover     a row sinks a touch (the switcher's track look)
- *   sort      a sortable label is a button; its arrow turns on the part spring, and every row
+ *   sort      a sortable label is a button; its shared arrow morphs on the settle spring, and every row
  *             travels from where it was to where it now belongs on the settle spring
  *   select    the row checkbox; select-all in the head is mixed when some are chosen; chosen rows
  *             carry a quiet green tint
@@ -54,7 +55,8 @@ const TABLE = 'mu-table w-full table-reset';
 const CAPTION = 'mu-table-caption caption-top text-left pb-table-caption-gap type-title text-ink';
 const TH = 'mu-table-th align-middle h-table-head-height px-table-row-pad-x type-label engraved text-left font-normal table-rule data-end:text-right';
 const SORT = 'mu-table-sort inline-flex items-center gap-table-sort-gap border-0 bg-transparent p-0 table-sort-button cursor-pointer outline-none focus-visible:focus-ring';
-const ARROW = 'mu-table-arrow size-table-sort-glyph table-sort-arrow reduced-motion:transition-none';
+// The authored arrow points north-east; a fixed -45 degree alignment puts its axis on the column.
+const ARROW = 'mu-table-arrow size-table-sort-glyph table-sort-arrow -rotate-45';
 const TR = 'mu-table-row transition-row hover:not-data-selected:recipe-switcher data-selected:bg-table-select-tint';
 const TD = 'mu-table-td align-middle h-table-row-height px-table-row-pad-x type-ui text-ink table-rule data-end:text-right data-end:tabular-nums';
 const EMPTY = 'mu-table-empty h-table-row-height px-table-row-pad-x type-body text-ink3 text-center';
@@ -123,7 +125,7 @@ export function Table<Row>({ columns, rows, rowKey, caption, captionHidden, sort
         <tr>
           {selectable && (
             <th scope="col" className={`${TH} ${CHECK}`}>
-              <Checkbox size="row" aria-label="Select all" checked={all} doing={some} onCheckedChange={(on) => setAll(!!on)} />
+              <Checkbox size="row" aria-label="Select all" checked={all} mixed={some} onCheckedChange={(on) => setAll(!!on)} />
             </th>
           )}
           {columns.map((c) => {
@@ -133,7 +135,7 @@ export function Table<Row>({ columns, rows, rowKey, caption, captionHidden, sort
                 {c.sortBy ? (
                   <button type="button" className={SORT} onClick={() => toggleSort(c.key)}>
                     {c.header}
-                    <svg aria-hidden viewBox="0 0 10 10" className={ARROW} fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"><path d="M5 8V2M2.5 4.5 5 2l2.5 2.5" /></svg>
+                    <MorphIcon name="arrow" turn={sorted === 'descending' ? 180 : 0} className={ARROW} />
                   </button>
                 ) : c.header}
               </th>
