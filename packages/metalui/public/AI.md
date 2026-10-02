@@ -4144,7 +4144,7 @@ The result of a person's own action, with Undo. React: `ToastProvider` + `useToa
 
 A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
 
-The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden. Three are drawn; the rest are counted above the back card (`+2`) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column.
+The deck: toasts stack in depth, newest in front. Folded cards share the front card’s measured width; expanded cards regain their own width. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden. Three are drawn; the rest are counted in the back card’s edge (`+2`) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column.
 
 ## States and motion
 
@@ -4192,7 +4192,7 @@ canvas.metalToast($toast)   // one at a time: toast: MetalToastModel? = .init("M
 
 ## Accessibility
 
-- Base UI Toast: one labelled region (Notifications), announced politely; a new card is always the front one, so only it is read out, and a repeat reads its new count. F6 moves focus into the deck and fans it out; Esc dismisses the focused toast. The Undo cap and the close key (Dismiss) are real buttons; ⌘Z does what Undo does (the host's shortcut). Cards not drawn are inert.
+- Base UI Toast: one labelled region (Notifications), announced politely; a new card is always the front one, so only it is read out, and a repeat reads its new count. F6 moves focus into the deck and fans it out; Esc dismisses the focused toast. The Undo cap and the close key (Dismiss) are real buttons; ⌘Z / Ctrl+Z undo the focused toast, otherwise the latest live undoable change, and dismiss it. Editable fields and prevented events keep their own Undo. Set `undoShortcut: false` when the host owns shortcuts; the toast then omits the keycap. Cards not drawn are inert. Swift folded cards hide and disable their actions; focusing a front action fans the deck out and pauses every timer. A separate native shortcut declaration targets the focused undoable card, otherwise the newest undoable card, even when that card is folded. `MetalToastModel(…, undoShortcut: false)` leaves the shortcut to the host.
 
 ## Tokens
 

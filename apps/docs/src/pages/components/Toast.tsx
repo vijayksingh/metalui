@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { Button, Field, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/toast/toast.tsx?raw';
@@ -79,6 +79,8 @@ function Triggers() {
         <Button onClick={() => toast.show({ title: 'Ticked', sub: 'wrote [x] into the text', undo: () => setLog('Unticked') })}>Tick a box</Button>
         <Button cap="destructive" onClick={() => toast.show({ title: 'Could not export', sub: 'the clipboard is locked', tone: 'error' })}>Fail an export</Button>
       </div>
+      <Field size="regular"><Field.Input aria-label="Draft with its own Undo" placeholder="Typing keeps its own Undo" /></Field>
+      <Button onClick={() => toast.show({ title: 'Host-owned change', undoShortcut: false, undo: () => setLog('Host-owned change undone') })}>Host handles Undo</Button>
       <span className="type-readout text-ink2" aria-live="polite">{log}</span>
     </div>
   );
@@ -88,7 +90,7 @@ export default function ToastPage() {
   const ownCss = useOwnCss(cssSource);
   return (
     <ToastProvider>
-      <PageHeader title="Toast" lede="The result of a person's own action, with Undo: a smoked pill at the bottom centre. Toasts stack as a deck in depth: the newest rises into the front on the object spring and the older ones step back behind it, smaller and dimmer. Point at the deck to fan it out and read it; swipe a card away. Toasts are for what you did, never for what the app recognised. Built on Base UI Toast." />
+      <PageHeader title="Toast" lede="The result of a person's own action, with Undo: a smoked pill at the bottom centre. Toasts stack as a deck in depth: the newest rises into the front on the object spring and the older ones step back behind it, smaller and dimmer. Point at or focus the deck to fan it out and read it; swipe a card away. Toasts are for what you did, never for what the app recognised. Built on Base UI Toast." />
       <Section title="Playground" lede="Each button does something and says so. Press a few in a row to build the deck; press the same one again and the front card counts instead of adding a card. Point at the deck (or F6 into it) to fan it out and pause the timers. Undoable toasts stay 5 seconds, plain ones 2.6; the error stays until you swipe it away or press its close key.">
         <Bench caption="a deck of 3 · bottom centre, 92 above the dock" className="min-h-[200px]">
           <Triggers />
@@ -115,7 +117,7 @@ export default function ToastPage() {
       <Section title="Rules">
         <Rules rules={[
           { id: 'O1', title: 'Your actions, never recognition', body: 'No toast, badge or sound when the surface recognises something.', origin: 'Reference design 03 §13' },
-          { id: 'O2', title: 'Undo whenever it can be undone', body: 'The Undo cap and ⌘Z do the same thing.', origin: 'Reference design 04 §12' },
+          { id: 'O2', title: 'Undo whenever it can be undone', body: '⌘Z or Ctrl+Z undoes the focused toast, otherwise the latest undoable change. Text editing keeps its own Undo; undoShortcut=false leaves shortcuts to the host.', origin: 'Reference design 04 §12' },
           { id: 'O3', title: 'A deck, newest in front', body: 'A new result rises into the front as the older ones step back behind it; three are drawn, the rest counted. The same result again counts (×2) instead of adding a card.', origin: 'Owner, 2026-09-30' },
           { id: 'O4', title: 'Success carries its check; errors stay', body: 'Never colour alone; an error waits until it is resolved.', origin: 'DS-34' },
         ]} />

@@ -13,15 +13,17 @@ public struct MetalToastModel: Identifiable, Equatable {
     public let undo: (() -> Void)?
     /// The action cap's label; only Undo carries ⌘Z.
     public let actionLabel: String
+    public let undoShortcut: Bool
     var isUndo: Bool { actionLabel == Self.undoLabel }
     static let undoLabel = "Undo"
 
-    public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil) {
+    public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil, undoShortcut: Bool = true) {
         self.title = title
         self.sub = sub
         self.tone = tone
         self.undo = undo
         self.actionLabel = Self.undoLabel
+        self.undoShortcut = undoShortcut
     }
 
     /// A toast whose action is not Undo ("Back to Now").
@@ -31,6 +33,7 @@ public struct MetalToastModel: Identifiable, Equatable {
         self.tone = tone
         self.undo = perform
         self.actionLabel = action
+        self.undoShortcut = false
     }
 
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
@@ -45,6 +48,10 @@ public struct MetalToast: View {
     let onClose: (() -> Void)?
     /// A card behind the front of a folded deck: the pill shows, its words don't.
     var concealed = false
+    var bindsUndoShortcut = true
+    var onFocusChange: ((Bool) -> Void)?
+    private enum FocusControl: Hashable { case undo, close }
+    @FocusState private var focusedControl: FocusControl?
     @Environment(\.metalColorway) private var colorway
 
     public init(_ model: MetalToastModel, count: Int = 1, onUndo: @escaping () -> Void = {}, onClose: (() -> Void)? = nil) {
@@ -59,8 +66,8 @@ public struct MetalToast: View {
         let cw = MetalRecipeColorway(colorway)
         return HStack(spacing: recipe.points("self.gap")) {
             HStack(spacing: recipe.points("text.gap")) {
-                if model.tone == .success { Text("✓").foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
-                if model.tone == .error { Text("!").foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
+                if model.tone == .success { MetalIcon(.check, size: 14).foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
+                if model.tone == .error { MetalIcon(.warning, size: 14).foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
                 Text(model.title)
                 if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
                 if count > 1 {
@@ -78,7 +85,7 @@ public struct MetalToast: View {
                 } label: {
                     HStack(spacing: recipe.points("undo.gap")) {
                         Text(model.actionLabel).font(recipe.font("undo.font"))
-                        if model.isUndo { MetalKbd("⌘Z", surface: .sunk) }
+                        if model.isUndo && model.undoShortcut { MetalKbd("⌘Z", surface: .sunk) }
                     }
                     .padding(.leading, recipe.points("undo.pad-left"))
                     .padding(.trailing, recipe.points("undo.pad-right"))
@@ -86,7 +93,9 @@ public struct MetalToast: View {
                     .metalObjectRecipe(recipe, part: "undo", in: Capsule(style: .continuous))
                 }
                 .buttonStyle(.plain)
-                .keyboardShortcut(model.isUndo ? KeyboardShortcut("z", modifiers: .command) : nil)
+                .keyboardShortcut(model.isUndo && model.undoShortcut && bindsUndoShortcut ? KeyboardShortcut("z", modifiers: .command) : nil)
+                .focusable()
+                .focused($focusedControl, equals: .undo)
             }
             if let onClose {
                 Button(action: onClose) {
@@ -97,6 +106,8 @@ public struct MetalToast: View {
                 .buttonStyle(.plain)
                 .foregroundColor((recipe.color("close.ink", colorway: cw) ?? colorway.tokens.ink2).color)
                 .accessibilityLabel("Dismiss")
+                .focusable()
+                .focused($focusedControl, equals: .close)
             }
         }
         .opacity(concealed ? Double.zero : .one)
@@ -104,10 +115,13 @@ public struct MetalToast: View {
         .padding(.leading, recipe.points("self.pad-left"))
         .padding(.trailing, model.undo != nil || onClose != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
         .frame(height: recipe.points("self.height"))
-        .fixedSize()
+        .fixedSize(horizontal: !concealed, vertical: true)
+        .frame(maxWidth: concealed ? .infinity : nil)
         .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
         .background(.ultraThinMaterial, in: Capsule(style: .continuous))
         .accessibilityElement(children: .contain)
+        .onChange(of: focusedControl) { onFocusChange?(focusedControl != nil) }
+        .onDisappear { onFocusChange?(false) }
     }
 }
 
@@ -196,6 +210,7 @@ public final class MetalToastDeck {
     public private(set) var cards: [Card] = []
     /// True while the deck is fanned out: every card's clock stops.
     var paused = false
+    var focusedCard: UUID?
 
     public init() {}
 
@@ -211,6 +226,7 @@ public final class MetalToastDeck {
 
     public func dismiss(_ id: UUID) {
         cards.removeAll { $0.id == id }
+        if focusedCard == id { focusedCard = nil }
     }
 }
 
@@ -237,7 +253,7 @@ public struct MetalToastDeckView: View {
         let area = expanded ? rows * height + (rows - 1) * recipe.points("deck.gap") : height + (rows - 1) * recipe.points("deck.peek")
         let travel = MetalMotion.resolve(.object, reduceMotion: reduceMotion).allowsTravel
         let rise = recipe.points("self.rise")
-        return ZStack(alignment: .bottom) {
+        return ToastDeckLayout(expanded: expanded, height: area) {
             ForEach(Array(drawn.enumerated()), id: \.element.id) { index, card in
                 MetalToastDeckCard(deck: deck, card: card, index: index, expanded: expanded,
                                    drag: index == 0 ? drag : .zero, travel: travel,
@@ -254,6 +270,20 @@ public struct MetalToastDeckView: View {
         .animation((MetalMotion.resolve(.object, reduceMotion: reduceMotion).animation) ?? MetalMotion.resolve(.settle, reduceMotion: reduceMotion).animation, value: deck.cards.map(\.id))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Notifications")
+        .background {
+            let undoable = deck.cards.filter { $0.model.undo != nil && $0.model.isUndo && $0.model.undoShortcut }
+            if let owner = undoable.first(where: { $0.id == deck.focusedCard }) ?? undoable.first {
+                // The shortcut remains available when its card is folded and disabled.
+                // EmptyView contributes no extra hit area or keyboard traversal stop.
+                Button {
+                    owner.model.undo?()
+                    dismiss(owner.id)
+                } label: { EmptyView() }
+                .keyboardShortcut("z", modifiers: .command)
+                .accessibilityHidden(true)
+                .allowsHitTesting(false)
+            }
+        }
     }
 
     private func swipe(_ id: UUID) -> some Gesture {
@@ -279,6 +309,23 @@ public struct MetalToastDeckView: View {
     }
 }
 
+// Measuring the front during layout also works in still captures: no deferred state or clock.
+private struct ToastDeckLayout: Layout {
+    let expanded: Bool
+    let height: CGFloat
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let widths = subviews.map { $0.sizeThatFits(.unspecified).width }
+        return CGSize(width: expanded ? (widths.max() ?? 0) : (widths.first ?? 0), height: height)
+    }
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let width = subviews.first?.sizeThatFits(.unspecified).width ?? 0
+        for (index, view) in subviews.enumerated() {
+            view.place(at: CGPoint(x: bounds.midX, y: bounds.maxY), anchor: .bottom,
+                       proposal: !expanded && index > 0 ? ProposedViewSize(width: width, height: nil) : .unspecified)
+        }
+    }
+}
+
 /// One card in the deck at its place: its step back (or its row when fanned out), its clock and its press.
 private struct MetalToastDeckCard: View {
     let deck: MetalToastDeck
@@ -300,7 +347,25 @@ private struct MetalToastDeckCard: View {
         let lift = expanded ? step * (recipe.points("self.height") + recipe.points("deck.gap")) : step * recipe.points("deck.peek")
         var toast = MetalToast(card.model, count: card.count, onUndo: onDismiss, onClose: onDismiss)
         toast.concealed = index > 0 && !expanded
+        toast.bindsUndoShortcut = false
+        toast.onFocusChange = { focused in
+            if focused { deck.focusedCard = card.id }
+            else if deck.focusedCard == card.id { deck.focusedCard = nil }
+        }
         return toast
+            .overlay(alignment: .topTrailing) {
+                if more > 0 {
+                    Text("+\(more)")
+                        .metalType(MetalType.meta)
+                        .foregroundColor((recipe.color("sub.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink2).color)
+                        .padding(.horizontal, recipe.points("text.gap"))
+                        .metalObjectRecipe(recipe, part: "undo", in: Capsule(style: .continuous))
+                        .fixedSize()
+                        .offset(x: -recipe.points("self.pad-left"), y: -MetalType.meta.line / 2)
+                        .accessibilityHidden(true)
+                }
+            }
+            .disabled(index > 0 && !expanded)
             .metalHitRegion(true)
             .scaleEffect(pressed && travel ? recipe.scalar("deck.press") : 1)
             .scaleEffect(scale, anchor: .top)
@@ -309,17 +374,6 @@ private struct MetalToastDeckCard: View {
             .animation(travel ? MetalSpringClass.object.spring.animation : nil, value: index)
             .animation(travel ? MetalSpringClass.surface.spring.animation : nil, value: expanded)
             .opacity(expanded ? Double.one : .one - recipe.scalar("deck.dim") * step)
-            .overlay(alignment: .top) {
-                if more > 0 {
-                    Text("+\(more)")
-                        .metalType(MetalType.readout)
-                        .foregroundColor((recipe.color("sub.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink2).color)
-                        .fixedSize()
-                        // Above the card where it is drawn (its offset moves the drawing, not its frame).
-                        .offset(y: -(MetalType.readout.line + recipe.points("deck.peek")) - lift)
-                        .accessibilityHidden(true)
-                }
-            }
             .accessibilityHidden(index > 0 && !expanded)
             .onChange(of: card.count) {
                 // A repeat: a small press, springing back on the part spring.
@@ -343,7 +397,8 @@ private struct MetalToastDeckCard: View {
 
 private struct MetalToastDeckHost: ViewModifier {
     let deck: MetalToastDeck
-    @State private var expanded = false
+    @State private var hovering = false
+    private var expanded: Bool { hovering || deck.focusedCard != nil }
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
@@ -351,9 +406,10 @@ private struct MetalToastDeckHost: ViewModifier {
             MetalToastDeckView(deck, expanded: expanded)
                 .contentShape(Rectangle())
                 .onHover { inside in
-                    withMetalAnimation(.surface, reduceMotion: reduceMotion) { expanded = inside }
-                    deck.paused = inside
+                    withMetalAnimation(.surface, reduceMotion: reduceMotion) { hovering = inside }
                 }
+                .onChange(of: expanded) { deck.paused = expanded }
+                .onDisappear { deck.paused = false; deck.focusedCard = nil }
                 .padding(.bottom, MetalRecipes.toast.points("self.bottom"))
         }
     }

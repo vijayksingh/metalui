@@ -142,3 +142,65 @@ test('the deck under Reduce Motion has no travel or scale', async ({ page }) => 
   expect(folded.map((s) => s.split(' ')[1])).toEqual(['×1.00', '×0.95', '×0.90']);
   expect(seen.filter((s) => !folded.includes(s) && !fanned.includes(s))).toEqual([]);
 });
+
+for (const colorway of COLORWAYS) {
+  test(`folded widths, edge count and error glyph in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/toast', colorway);
+    for (const name of ['Move 3 blocks', 'Pin a lens', 'Correct a cue', 'Fail an export', 'Tick a box']) await page.getByRole('button', { name, exact: true }).click();
+    await page.mouse.move(10, 10);
+    await settled(live(page));
+    const widths = await drawn(page).evaluateAll((cards) => cards.map((card) => (card as HTMLElement).offsetWidth));
+    expect(widths).toEqual([widths[0], widths[0], widths[0]]);
+    const edge = await page.locator('.mu-toast-more').evaluate((badge) => {
+      const card = badge.parentElement!.getBoundingClientRect(), box = badge.getBoundingClientRect();
+      return { top: box.top, bottom: box.bottom, edge: card.top, right: box.right, cardRight: card.right };
+    });
+    expect(edge.top).toBeLessThan(edge.edge);
+    expect(edge.bottom).toBeGreaterThan(edge.edge);
+    expect(edge.right).toBeLessThan(edge.cardRight);
+    await page.screenshot({ path: capture(`toast-fold-width-${colorway}`), clip: DECK_CLIP });
+    await drawn(page).first().hover();
+    await expect(drawn(page).first()).toHaveAttribute('data-expanded', '');
+    const error = live(page).filter({ hasText: 'Could not export' });
+    await expect(error.locator('svg.mu-toast-error')).toHaveCount(1);
+    expect(await error.locator('.mu-toast-error').evaluate((el) => getComputedStyle(el).color)).not.toBe(await error.locator('.mu-toast-text').evaluate((el) => getComputedStyle(el).color));
+    const ownWidths = await drawn(page).evaluateAll((cards) => cards.map((card) => (card as HTMLElement).offsetWidth));
+    expect(new Set(ownWidths).size).toBeGreaterThan(1);
+    await drawn(page).first().getByRole('button', { name: 'Dismiss' }).click();
+    await page.mouse.move(10, 10);
+    await page.getByRole('textbox', { name: 'Draft with its own Undo' }).click();
+    await expect(drawn(page).first()).not.toHaveAttribute('data-expanded', '');
+    await settled(live(page));
+    const nextWidths = await drawn(page).evaluateAll((cards) => cards.map((card) => (card as HTMLElement).offsetWidth));
+    expect(new Set(nextWidths).size).toBe(1);
+  });
+}
+
+test('Undo shortcuts target latest or focused card and respect text editing and host ownership', async ({ page }) => {
+  await open(page, '/components/toast', 'bone');
+  await page.getByRole('button', { name: 'Move 3 blocks', exact: true }).click();
+  await page.getByRole('button', { name: 'Pin a lens', exact: true }).click();
+  await page.keyboard.press('Meta+z');
+  await expect(page.getByText('Undone: moved 3 blocks back')).toBeVisible();
+  await expect(live(page).filter({ hasText: 'Moved 3 blocks' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Move 3 blocks', exact: true }).click();
+  await page.getByRole('button', { name: 'Correct a cue', exact: true }).click();
+  await page.keyboard.press('F6');
+  await expect(drawn(page).first()).toHaveAttribute('data-expanded', '');
+  const older = live(page).filter({ hasText: 'Moved 3 blocks' });
+  await older.getByRole('button', { name: /Undo/ }).focus();
+  await page.keyboard.press('Control+z');
+  await expect(page.getByText('Undone: moved 3 blocks back')).toBeVisible();
+  await expect(older).toHaveCount(0);
+  const field = page.getByRole('textbox', { name: 'Draft with its own Undo' });
+  await field.fill('A local edit');
+  await page.keyboard.press('Meta+z');
+  await expect(live(page).filter({ hasText: 'Correction remembered' })).toHaveCount(1);
+  await page.getByRole('button', { name: 'Host handles Undo' }).click();
+  const host = live(page).filter({ hasText: 'Host-owned change' });
+  await expect(host.locator('.mu-kbd')).toHaveCount(0);
+  await host.hover();
+  await host.getByRole('button', { name: 'Undo', exact: true }).click();
+  await expect(page.getByText('Host-owned change undone')).toBeVisible();
+});

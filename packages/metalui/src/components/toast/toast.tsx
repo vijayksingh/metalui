@@ -47,12 +47,14 @@ export interface ToastOptions {
   undo?: () => void;
   /** success carries its check; error stays until resolved. */
   tone?: ToastTone;
+  /** Let the host own Undo shortcuts instead. Default true; text editing always keeps its own Undo. */
+  undoShortcut?: boolean;
   /** Override how long it stays, in ms (0: until dismissed). */
   timeout?: number;
 }
 
 /** What a toast carries besides its words: how many times it has been said in a row. */
-interface ToastData { count: number }
+interface ToastData { count: number; undo?: () => void; undoShortcut: boolean }
 
 const cssValue = (name: string) => (typeof window === 'undefined' ? '' : getComputedStyle(document.documentElement).getPropertyValue(name).trim());
 const ms = (name: string, fallback: number) => {
@@ -69,7 +71,7 @@ export function useToast() {
   const toasts = React.useRef(manager.toasts);
   toasts.current = manager.toasts;
   return React.useMemo(() => ({
-    show({ title, sub, undo, tone = 'default', timeout }: ToastOptions) {
+    show({ title, sub, undo, tone = 'default', timeout, undoShortcut = true }: ToastOptions) {
       // The same result again merges into the front card: Base UI updates a toast added with its id in place
       // and starts its timer over.
       const front = toasts.current.find((t) => t.transitionStatus !== 'ending');
@@ -82,7 +84,7 @@ export function useToast() {
         type: tone,
         timeout: timeout ?? (tone === 'error' ? 0 : undo ? ms('--mu-toast-undo-ms', 5000) : ms('--mu-toast-plain-ms', 2600)),
         actionProps: undo ? { onClick: undo } : undefined,
-        data: { count: times },
+        data: { count: times, undo, undoShortcut },
       });
     },
     dismiss: (id: string) => manager.close(id),
@@ -99,16 +101,29 @@ const TEXT = 'mu-toast-text inline-flex items-center gap-toast-text-gap';
 const SUB = 'mu-toast-sub text-toast-sub-ink';
 const COUNT = 'mu-toast-count text-toast-sub-ink tabular-nums';
 const CHECK = 'mu-toast-check text-success';
+const ERROR = 'mu-toast-error text-red';
 const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer hover:recipe-toast-undo hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
-const MORE = 'mu-toast-more toast-more type-readout text-toast-sub-ink';
+const MORE = 'mu-toast-more toast-more type-meta text-toast-sub-ink recipe-toast-undo rounded-pill';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
 
 /** The toast's part classes, for stills of it outside the toast region (docs, previews). */
 export const toastParts = { TOAST, TEXT, SUB, UNDO, KEY } as const;
 
 /** The viewport, told when the deck folds: folding plays on the surface spring, like fanning out. */
-function DeckViewport({ expanded, ...props }: React.ComponentPropsWithRef<'div'> & { expanded: boolean }) {
+const DeckViewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'> & { expanded: boolean; frontId?: string }>(function DeckViewport({ expanded, frontId, ...props }, forwardedRef) {
+  const element = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(forwardedRef, () => element.current!, []);
+  useIsoLayoutEffect(() => {
+    const viewport = element.current;
+    const front = viewport?.querySelector<HTMLElement>('[data-front]');
+    if (!viewport || !front) return;
+    const measure = () => viewport.style.setProperty('--mu-toast-front-width', `${front.offsetWidth}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(front);
+    return () => observer.disconnect();
+  }, [frontId]);
   const [folding, setFolding] = React.useState(false);
   const was = React.useRef(expanded);
   // A layout effect, so data-folding lands in the same style change as the fold itself.
@@ -120,31 +135,49 @@ function DeckViewport({ expanded, ...props }: React.ComponentPropsWithRef<'div'>
     const t = window.setTimeout(() => setFolding(false), ms('--mu-spring-surface-d', 500));
     return () => window.clearTimeout(t);
   }, [expanded]);
-  return <div {...props} data-folding={folding ? '' : undefined} />;
-}
+  return <div {...props} ref={element} data-folding={folding ? '' : undefined} />;
+});
 
 function ToastList({ visible }: { visible: number }) {
-  const { toasts } = Toast.useToastManager();
+  const manager = Toast.useToastManager();
+  const { toasts } = manager;
   const live = toasts.filter((t) => t.transitionStatus !== 'ending');
+  React.useEffect(() => {
+    const undo = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key.toLowerCase() !== 'z' || !(event.metaKey || event.ctrlKey) || event.shiftKey || event.altKey) return;
+      const target = event.target;
+      if (target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]')) return;
+      const focused = target instanceof Element ? target.closest<HTMLElement>('[data-toast-id]')?.dataset.toastId : undefined;
+      const actionable = live.filter((toast) => { const data = toast.data as ToastData | undefined; return data?.undo && data.undoShortcut; });
+      const toast = actionable.find((toast) => toast.id === focused) ?? actionable[0];
+      if (!toast) return;
+      event.preventDefault();
+      (toast.data as ToastData).undo?.();
+      manager.close(toast.id);
+    };
+    window.addEventListener('keydown', undo);
+    return () => window.removeEventListener('keydown', undo);
+  }, [manager, toasts]);
   const more = Math.max(0, live.length - visible);
   const back = more > 0 ? live[visible - 1]?.id : undefined;
   return (
     <Toast.Portal>
-      <Toast.Viewport className={VIEWPORT} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} />}>
+      <Toast.Viewport className={VIEWPORT} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} frontId={live[0]?.id} />}>
         {toasts.map((t) => {
           const times = (t.data as ToastData | undefined)?.count ?? 1;
           return (
-            <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} data-type={t.type} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
+            <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} data-type={t.type} data-toast-id={t.id} data-front={t.id === live[0]?.id ? '' : undefined} data-behind={t.id !== live[0]?.id ? '' : undefined} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
               <Toast.Content className={CONTENT}>
                 <span className={TEXT}>
-                  {t.type === 'success' && <span aria-hidden className={CHECK}>✓</span>}
+                  {t.type === 'success' && <Icon name="check" size={14} animate={false} className={CHECK} />}
+                  {t.type === 'error' && <Icon name="warning" size={14} animate={false} className={ERROR} />}
                   <Toast.Title render={<span />}>{t.title}</Toast.Title>
                   {t.description && <Toast.Description render={<span className={SUB} />}>· {t.description}</Toast.Description>}
                   {times > 1 && <span className={COUNT}>×{times}</span>}
                 </span>
                 {t.actionProps && (
-                  <Toast.Action className={UNDO} aria-keyshortcuts="Meta+Z">
-                    Undo <Kbd surface="plain" className={KEY}>⌘Z</Kbd>
+                  <Toast.Action className={UNDO} aria-keyshortcuts={(t.data as ToastData | undefined)?.undoShortcut ? 'Meta+Z Control+Z' : undefined}>
+                    Undo {(t.data as ToastData | undefined)?.undoShortcut && <Kbd surface="plain" className={KEY}>⌘Z</Kbd>}
                   </Toast.Action>
                 )}
                 <Toast.Close className={CLOSE} aria-label="Dismiss">

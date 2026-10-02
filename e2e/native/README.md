@@ -5,3 +5,10 @@
 Capture after `MU_PROOF_ACTIVE` and again after `MU_PROOF_DISABLED`. The enabled lid opens in both captures, the disabled lid stays shut, and the third lid returns to rest when its environment disables it. This exercises the public view and inherited SwiftUI environment; it does not inspect animation internals.
 
 Observed on iPhone 15 / iOS 17.5: [active](../../docs/captures/swift/icon-disabled-active.png), [cancelled](../../docs/captures/swift/icon-disabled-cancelled.png). The generic iOS Simulator package build and macOS `swift build` also pass. An enabled decorative glyph still plays its result `act` request; a disabled ancestor suppresses that request.
+
+
+# Native Toast keyboard deck
+
+Run `python3 e2e/native/run-toast-focus-proof.py` on macOS with Xcode. It builds the local package, opens a temporary native SwiftUI app, sends real Tab events through its window, and measures the public hit regions. Focus fans the deck out; both undoable cards survive beyond their timeout while focused; leaving focus folds it. A subsequent plain result leaves ⌘Z bound to the latest undoable card behind it, and the key dismisses that card after running its callback. The app closes and the temporary bundle is removed.
+
+Set `METALUI_NATIVE_CAPTURE` to an absolute directory to save the focused deck. Proof capture: [focused Toast deck](../../docs/captures/swift/toast-keyboard-focus-bone.png). This feature fixture uses a real window; ImageRenderer stills cannot prove keyboard focus.

@@ -252,7 +252,7 @@ Owner, on the Toast page: "the stacking in toast is vertical; it should be 3D, i
 - [x] **Repeats merge**: the same message again doesn't add a card: the front toast bumps (a small press) and shows a count ("×5").
 - [x] **Reading and focus**: only the front card is read out (polite status); the deck is one landmark; F6 or a shortcut reaches it. Reduce Motion: cards cross-fade into place, no travel or scale.
 - [x] **Placement**: the deck grows toward the screen edge it sits on (bottom stack peeks upward, top stack downward); tokens for step scale, peek, depth and visible count; Swift in step.
-- [ ] **Follow-up: cards behind take the front card's width** (as Sonner does). Now a short front toast ("Gathered 4 notes") sits on wider cards that stick out on both sides. Also: the "+N" count floats detached above the deck; tuck it into the back card's edge. Swift fans out on hover only (add keyboard focus). The React error toast has no red mark while Swift has one.
+- [x] **Toast deck follow-ups**: folded cards share the front card’s measured width and recover their own width when expanded; +N is tucked into the back edge. React and Swift show shared success/error glyphs. Native Tab focus fans out and pauses timers, leaving folds it; real-window proof lives in `e2e/native/run-toast-focus-proof.py`.
 
 ## Tool strip: adapt to what was clicked
 
@@ -347,7 +347,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Calendar unavailable predicate**: `isDateUnavailable` announces its reason and refuses selection. Availability picker uses it for days without free times; scoped aria-label CSS removed.
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [x] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
-- [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
+- [x] **Toast Undo shortcut**: ⌘Z / Ctrl+Z targets the focused undoable toast or the latest live undoable change and dismisses it. Text editing and prevented events retain their own Undo; `undoShortcut: false` lets the host own it. Native bindings also reach folded cards, with keyboard integration proof.
 - [x] **ToolStrip** now accepts icons, menu children with controlled triggers and a leading count; the task inbox composes the shared strip. Selection intersections, anchored placement and overflow are covered in the Tool strip entry above.
 - [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.
 - [x] **Person / assign glyph available**: `person` reads as a portrait with a fixed shoulder enclosure and seated head, distinct from `me`. Assignment wiring remains part of the block migration below.
