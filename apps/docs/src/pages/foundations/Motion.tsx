@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Switch, leaveRow, useReducedMotion } from '@unlocalhosted/metalui';
+import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 import { HopDemo } from '../../ui/HopDemo';
@@ -141,11 +142,11 @@ function RowLeaveDemo() {
   return <div data-testid="row-leave-demo" data-mu-motion={reduced ? 'reduce' : undefined} className="mu-stack items-start">
     <Switch label="Reduce row motion" checked={reduced} onCheckedChange={setReduced} />
     {present && <div ref={row} role="group" aria-label="Lisbon export" className="mu-cluster recipe-surface-raise-sm rounded-card p-mu-space-12">
-      <span className="type-ui text-ink">Lisbon export</span><Button size="compact" onClick={remove}>Remove row</Button>
+      <span className="type-ui text-ink">Lisbon export</span><Button size="compact" icon={<Icon name="close" />} onClick={remove}>Remove row</Button>
     </div>}
     <div className="mu-cluster">
-      <Button size="compact" disabled={!leaving} onClick={() => { cancel.current?.(); setLeaving(false); }}>Keep row</Button>
-      <Button size="compact" disabled={present} onClick={() => setPresent(true)}>Restore row</Button>
+      <Button size="compact" icon={<Icon name="pin" />} disabled={!leaving} onClick={() => { cancel.current?.(); setLeaving(false); }}>Keep row</Button>
+      <Button size="compact" icon={<Icon name="undo" />} disabled={present} onClick={() => setPresent(true)}>Restore row</Button>
       <span role="status" className="type-meta text-ink2">{leaving ? 'Leaving' : present ? 'Row ready' : 'Row removed'} · {removed} removed</span>
     </div>
   </div>;

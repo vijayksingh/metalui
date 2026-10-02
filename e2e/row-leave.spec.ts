@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { COLORWAYS, open } from './helpers';
+import { COLORWAYS, capture, open } from './helpers';
 
 for (const colorway of COLORWAYS) {
   test(`row leaves once, cancels, and follows reduced motion in ${colorway}`, async ({ page }) => {
@@ -9,6 +9,10 @@ for (const colorway of COLORWAYS) {
     const demo = page.getByTestId('row-leave-demo');
     const row = demo.getByRole('group', { name: 'Lisbon export' });
     const remove = demo.getByRole('button', { name: 'Remove row' });
+    await expect(remove.locator('svg.mu-ic-close')).toHaveCount(1);
+    await expect(demo.getByRole('button', { name: 'Keep row' }).locator('svg.mu-ic-pin')).toHaveCount(1);
+    await expect(demo.getByRole('button', { name: 'Restore row' }).locator('svg.mu-ic-undo')).toHaveCount(1);
+    await demo.screenshot({ path: capture(`row-leave-actions-${colorway}`) });
     await remove.click();
     await expect(demo.getByRole('status')).toContainText('Leaving');
     await demo.getByRole('button', { name: 'Keep row' }).click();
@@ -31,5 +35,7 @@ for (const colorway of COLORWAYS) {
     await remove.click();
     await expect(row).toHaveCount(0);
     await expect(demo.getByRole('status')).toHaveText('Row removed · 3 removed');
+    await demo.getByRole('button', { name: 'Restore row' }).click();
+    await demo.screenshot({ path: capture(`row-leave-actions-${colorway}-reduced`) });
   });
 }
