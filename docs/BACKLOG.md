@@ -320,7 +320,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 - [x] **Button**: compact primary/destructive now share compact dimensions. Previously `cap="primary"` ignored `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
 - [x] **ScrollArea**: typed `viewportRef` / `onScroll` expose the Base UI viewport while preserving the root ref. The AI composer uses this API instead of a class query; docs demonstrate imperative, keyboard and wheel scrolling.
-- [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
+- [x] **Icons available**: `send`, `stop`, `attach`, `retry` now have authored acts, native symbols and 16/24px references. Composer wiring remains part of the block migration below.
 - [x] **Motion**: exported `motionReduced(element)` and reactive `useReducedMotion(element)` combine OS and scoped site preferences, update live, and are SSR safe. Blocks use the shared helper instead of token-reading copies.
 - [x] **Tooltip Escape**: use Base UI's `allowPropagation()` on its Escape close request, so surrounding panels dismiss on the first keypress. Share panel uses ordinary bubbling; nested popover focus-return e2e covers both colorways.
 - [x] **DropZone compact**: title and drum shrink and truncate before the choose-files text; full input name and picking remain accessible. Narrow-host docs, both colorways, reduced motion and Swift compact layout covered.
@@ -335,13 +335,13 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
 - [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
 - [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.
-- [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
+- [x] **Person / assign glyph available**: `person` reads as a portrait with a fixed shoulder enclosure and seated head, distinct from `me`. Assignment wiring remains part of the block migration below.
 - [x] **Icon: `act` sequence plays a glyph's act on demand in React and Swift** for results; the inbox no longer dispatches a synthetic click.
 - [x] **AlertDialog.Popup** forwards typed Base UI `initialFocus` / `finalFocus`.
 - [x] **Avatar**: accessible label independent of initials (`aria-label`, also per group member; Swift `accessibilityLabel`). An empty label makes the disc decorative.
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
-- [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.
+- [x] **Block glyph inventory available**: `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload` all ship with semantic authored acts, web/Swift/native outputs and 16/24px references. Replacing the settings/composer/assignment usages remains the block migration below.
 - [x] **Sidebar glyphs**: inert icon wrappers remove extra Chrome Tab stops in both expanded and collapsed rails; the enclosing link or toggle remains the icon trigger.
 - [ ] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root.
 - [x] **Portalled popup colorways**: Select, Menu/ContextMenu and Popover copy the active anchor’s nearest colorway, follow live ancestor changes, and remain outside clipped hosts. Shared `usePortalColorway` keeps the policy in one place. Keyboard selection, focus return, both colorways and reduced motion covered.
