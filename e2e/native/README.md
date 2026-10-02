@@ -104,3 +104,7 @@ Run `python3 e2e/native/run-status-label-proof.py`. The actual badge changes syn
 # Native Enum label motion policy
 
 `python3 e2e/native/run-enum-label-proof.py` captures the actual public Enum words before, during and after a controlled state change in both colorways and scoped motion modes. Full motion travels; reduced words land immediately and remain still; switching reduction during a transition removes retained offset travel. The same renderer backs TagCue. Words-only comparison excludes the independently allowed meaning-glyph act, and the identity reset stays inside the label so the operable Button keeps its focus.
+
+# Native retained Toast labels and actions
+
+Run `python3 e2e/native/run-toast-label-proof.py`. A single public toast keeps its id while synced/offline words change. Own-window captures compare full, reduced and mid-transition labels; a same-id/same-words replacement must also invoke its new Undo callback through Cmd-Z. This covers the native rendered update rather than model-array assertions alone.

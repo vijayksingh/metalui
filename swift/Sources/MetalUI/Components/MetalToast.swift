@@ -11,6 +11,8 @@ import UIKit
 public struct MetalToastModel: Identifiable, Equatable {
     public enum Tone: Sendable, Hashable { case `default`, success, error }
     public private(set) var id = UUID()
+    // Card identity survives an update; a new immutable model may contain new words or callbacks.
+    private let contentRevision = UUID()
     public let title: String
     public let sub: String?
     public let tone: Tone
@@ -49,7 +51,9 @@ public struct MetalToastModel: Identifiable, Equatable {
     fileprivate func retained(as id: UUID) -> Self { var copy = self; copy.id = id; return copy }
     fileprivate func holding() -> Self { var copy = self; copy.timeout = 0; return copy }
     fileprivate var lifetime: Double { timeout ?? (tone == .error ? 0 : undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs) }
-    public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
+    public static func == (a: Self, b: Self) -> Bool {
+        a.id == b.id && a.contentRevision == b.contentRevision && a.timeout == b.timeout
+    }
 }
 
 /// The toast pill: glass in the colorway, the result with its Undo cap, a count after a repeat (×3)
@@ -88,7 +92,10 @@ public struct MetalToast: View {
                         .transition(reduceMotion ? .opacity : .asymmetric(
                             insertion: .opacity.combined(with: .offset(y: MetalSpace.s4)),
                             removal: .opacity.combined(with: .offset(y: -MetalSpace.s4))))
-                }.clipped().metalAnimation(.settle, value: model.title)
+                }.id(reduceMotion).clipped().metalAnimation(.settle, value: model.title)
+                    .transaction { transaction in
+                        if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+                    }
                     .accessibilityElement(children: .ignore).accessibilityLabel(model.title)
                 if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
                 if count > 1 {
