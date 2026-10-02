@@ -28,9 +28,11 @@ export interface TabItem<V extends string = string> {
   /** A leading glyph at the size the height gives (12 in 24, 14 in 28). */
   icon?: React.ReactNode;
   disabled?: boolean;
+  'aria-describedby'?: string;
 }
 
 export interface TabsProps<V extends string = string> {
+  orientation?: 'horizontal' | 'vertical';
   value?: V;
   defaultValue?: V;
   onValueChange?: (value: V) => void;
@@ -58,9 +60,9 @@ const PANEL = 'mu-tabs-panel tabs-panel';
 const join = (a: string, b?: string) => (b ? `${a} ${b}` : a);
 
 /** Holds the active tab; put a TabList and one TabPanel per tab anywhere inside. */
-export function Tabs<V extends string = string>({ value, defaultValue, onValueChange, children, className }: TabsProps<V>) {
+export function Tabs<V extends string = string>({ value, defaultValue, onValueChange, children, className, orientation = 'horizontal' }: TabsProps<V>) {
   return (
-    <BaseTabs.Root value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as V)} className={className}>
+    <BaseTabs.Root orientation={orientation} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as V)} className={join('mu-tabs data-[orientation=vertical]:flex data-[orientation=vertical]:items-start data-[orientation=vertical]:gap-mu-related', className)}>
       {children}
     </BaseTabs.Root>
   );
@@ -69,10 +71,10 @@ export function Tabs<V extends string = string>({ value, defaultValue, onValueCh
 /** The tabs, on the switcher track with its gliding thumb. */
 export function TabList<V extends string = string>({ items, size = 'regular', className, ...props }: TabListProps<V>) {
   return (
-    <BaseTabs.List activateOnFocus aria-label={props["aria-label"]} data-size={size} className={join(trackParts.TRACK, className)}>
+    <BaseTabs.List activateOnFocus aria-label={props["aria-label"]} data-size={size} className={join(`${trackParts.TRACK} tabs-track`, className)}>
       <SlidingIndicator className={trackParts.THUMB} />
       {items.map((t) => (
-        <BaseTabs.Tab key={t.value} value={t.value} disabled={t.disabled} className={trackParts.OPTION[size]}>
+        <BaseTabs.Tab key={t.value} value={t.value} disabled={t.disabled} aria-describedby={t['aria-describedby']} className={trackParts.OPTION[size]}>
           {t.icon}
           {t.label}
         </BaseTabs.Tab>

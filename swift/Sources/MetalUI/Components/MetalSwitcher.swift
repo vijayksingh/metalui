@@ -16,6 +16,7 @@ struct MetalSwitchTrack<Value: Hashable>: View {
     let options: [MetalTrackOption<Value>]
     let size: MetalSwitcher<Value>.Size
     let role: Role
+    var vertical = false
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.isEnabled) private var isEnabled
@@ -47,7 +48,9 @@ struct MetalSwitchTrack<Value: Hashable>: View {
         let recipe = MetalRecipes.switcher
         let cw = MetalRecipeColorway(colorway)
         let h = recipe.points(size == .compact ? "option.height" : "option.height-regular")
-        return HStack(spacing: .zero) {
+        let layout = vertical ? AnyLayout(VStackLayout(alignment: .leading, spacing: .zero)) : AnyLayout(HStackLayout(spacing: .zero))
+        let radius = h / 2 + recipe.points("self.pad")
+        return layout {
             ForEach(options, id: \.value) { option in
                 let on = option.value == selection
                 Button {
@@ -58,6 +61,7 @@ struct MetalSwitchTrack<Value: Hashable>: View {
                         .tracking(recipe.tracking("option.tracking", size: recipe.fontSize("option.font")))
                         .foregroundColor((recipe.color(on || hovering == option.value ? "option.ink-on" : "option.ink", colorway: cw) ?? colorway.tokens.ink).color)
                         .padding(.horizontal, recipe.points("option.pad-x"))
+                        .frame(maxWidth: vertical ? .infinity : nil, alignment: .leading)
                         .frame(height: h)
                         .background {
                             if on {
@@ -78,15 +82,18 @@ struct MetalSwitchTrack<Value: Hashable>: View {
                 .focused($focused, equals: option.value)
                 .focusEffectDisabled()
                 .onHover { hovering = $0 ? option.value : nil }
-                .onKeyPress(.leftArrow) { move(-1); return .handled }
-                .onKeyPress(.rightArrow) { move(1); return .handled }
+                .onKeyPress(.leftArrow) { guard !vertical else { return .ignored }; move(-1); return .handled }
+                .onKeyPress(.rightArrow) { guard !vertical else { return .ignored }; move(1); return .handled }
+                .onKeyPress(.upArrow) { guard vertical else { return .ignored }; move(-1); return .handled }
+                .onKeyPress(.downArrow) { guard vertical else { return .ignored }; move(1); return .handled }
                 .onKeyPress(.home) { select(options.first { !$0.disabled }?.value); return .handled }
                 .onKeyPress(.end) { select(options.last { !$0.disabled }?.value); return .handled }
                 .accessibilityAddTraits(on ? [.isSelected] : [])
             }
         }
         .padding(recipe.points("self.pad"))
-        .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
+        .metalObjectRecipe(recipe, part: "self", in: RoundedRectangle(cornerRadius: radius, style: .continuous))
+        .fixedSize(horizontal: vertical, vertical: false)
         .opacity(isEnabled ? Double.one : recipe.scalar("option.disabled"))
         .accessibilityElement(children: .contain)
         .accessibilityLabel(label)

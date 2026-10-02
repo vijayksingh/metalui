@@ -8,8 +8,8 @@ import { COLORWAYS, capture, open } from './helpers';
 const block = (page: Page) => page.getByRole('region', { name: 'Settings', exact: true }).first();
 const bar = (page: Page) => block(page).getByRole('region', { name: 'Unsaved changes' });
 const section = async (page: Page, name: string) => {
-  const nav = block(page).getByRole('navigation', { name: 'Settings sections' });
-  if (await nav.isVisible()) await nav.getByRole('button', { name }).click();
+  const nav = block(page).getByRole('tablist', { name: 'Settings sections' });
+  if (await nav.isVisible()) await nav.getByRole('tab', { name }).click();
   else {
     await block(page).getByRole('combobox', { name: 'Settings section' }).click();
     await page.getByRole('option', { name }).click();
@@ -39,9 +39,9 @@ for (const colorway of COLORWAYS) {
     await section(page, 'Profile');
     await expect(b.getByRole('textbox', { name: 'Name' })).toHaveValue('Marta S. Silva');
     // Each section holding edits says so; one without doesn't.
-    const nav = b.getByRole('navigation', { name: 'Settings sections' });
-    await expect(nav.getByRole('button', { name: 'Notifications' })).toHaveAccessibleDescription('Has unsaved changes');
-    await expect(nav.getByRole('button', { name: 'Appearance' })).not.toHaveAccessibleDescription('Has unsaved changes');
+    const nav = b.getByRole('tablist', { name: 'Settings sections' });
+    await expect(nav.getByRole('tab', { name: 'Notifications' })).toHaveAccessibleDescription('Has unsaved changes');
+    await expect(nav.getByRole('tab', { name: 'Appearance' })).not.toHaveAccessibleDescription('Has unsaved changes');
 
     // Undoing an edit by hand counts down.
     await b.getByRole('textbox', { name: 'Name' }).fill('Marta Silva');
@@ -165,14 +165,16 @@ test('the colorway, density and motion switches change the block itself', async 
 test('the keyboard reaches everything and ⌘S saves', async ({ page }) => {
   await open(page, '/blocks/settings', 'bone');
   const b = block(page);
-  const nav = b.getByRole('navigation', { name: 'Settings sections' });
-  await nav.getByRole('button', { name: 'Profile' }).focus();
-  await page.keyboard.press('Tab');
-  await expect(nav.getByRole('button', { name: 'Notifications' })).toBeFocused();
-  await page.keyboard.press('Enter');
+  const nav = b.getByRole('tablist', { name: 'Settings sections' });
+  await nav.getByRole('tab', { name: 'Profile' }).focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(nav.getByRole('tab', { name: 'Notifications' })).toBeFocused();
   await expect(b.getByRole('heading', { name: 'Notifications' })).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await expect(nav.getByRole('tab', { name: 'Appearance' })).toBeFocused();
+  await page.keyboard.press('ArrowUp');
   await page.keyboard.press('Tab');
-  await expect(nav.getByRole('button', { name: 'Appearance' })).toBeFocused();
+  await expect(b.getByRole('tabpanel')).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(b.getByRole('switch', { name: 'Email digests' })).toBeFocused();
   await page.keyboard.press('Space');
@@ -215,7 +217,7 @@ for (const colorway of COLORWAYS) {
     await page.setViewportSize({ width: 375, height: 1100 });
     await open(page, '/blocks/settings', colorway);
     const b = block(page);
-    await expect(b.getByRole('navigation', { name: 'Settings sections' })).toBeHidden();
+    await expect(b.getByRole('tablist', { name: 'Settings sections' })).toBeHidden();
     await section(page, 'Notifications');
     await b.getByRole('switch', { name: 'Mentions' }).click();
     await section(page, 'Profile');

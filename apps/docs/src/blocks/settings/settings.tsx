@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motionReduced as reduced } from '@unlocalhosted/metalui';
 import {
-  Avatar, Button, Field, FormField, Led, Radio, RadioGroup, Select, Sidebar, SwapText, Switch, Switcher, Textarea,
+  Avatar, Button, Field, FormField, Led, Radio, RadioGroup, Select, Tabs, TabList, TabPanel, SwapText, Switch, Switcher, Textarea,
 } from '@unlocalhosted/metalui';
 import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
@@ -13,7 +13,7 @@ import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
  *   rest      a raised slab: the title and workspace; a section nav on the left (Profile,
  *             Notifications, Appearance) under one lifted highlight; the section's panel beside it
  *
- *   section   choosing one: the highlight glides to it (settle spring, the Sidebar's own); the new
+ *   section   choosing one: the highlight glides to it (settle spring, the Tabs track's own); the new
  *             panel comes in one nest from the side the highlight went, fading (settle); the old
  *             one leaves at once. Edits are kept: nothing is lost by leaving a section.
  *
@@ -63,7 +63,7 @@ type Section = 'profile' | 'notifications' | 'appearance';
 
 /**
  * A section's glyph, with a waiting lamp on its corner while the section holds unsaved edits.
- * Inert: in Chrome a Sidebar item's svg takes a Tab stop of its own.
+ * Inert: in Chrome a tab's svg takes a Tab stop of its own.
  */
 function Glyph({ name, dirty }: { name: 'me' | 'clock' | 'layout'; dirty: boolean }) {
   return (
@@ -202,7 +202,6 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
   const [status, setStatus] = React.useState('');
 
   const root = React.useRef<HTMLElement>(null);
-  const panel = React.useRef<HTMLDivElement>(null);
   const heading = React.useRef<HTMLHeadingElement>(null);
   const bar = React.useRef<HTMLDivElement>(null);
   const photoInput = React.useRef<HTMLInputElement>(null);
@@ -224,16 +223,8 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
   const shown = { name: touched.name ? errors.name : '', email: touched.email ? errors.email : '' };
   const compact = draft.density === 'compact';
 
-  /* Section: the new panel comes in one nest from the side the highlight went. */
-  const lastSection = React.useRef(section);
+  // Tabs owns panel motion; focus after validation remains the host's responsibility.
   React.useLayoutEffect(() => {
-    const from = SECTIONS.findIndex((s) => s.value === lastSection.current);
-    const to = SECTIONS.findIndex((s) => s.value === section);
-    lastSection.current = section;
-    const el = panel.current;
-    if (!el || from === to) return;
-    const { ms, easing } = spring(el, 'settle');
-    if (ms) el.animate([{ opacity: 0, transform: `translateY(${(to > from ? 1 : -1) * nestOf(el)}px)` }, { opacity: 1, transform: 'none' }], { duration: ms, easing });
     if (focusNext.current) {
       fields[focusNext.current].current?.focus();
       focusNext.current = null;
@@ -337,25 +328,13 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
         <p className="m-0 type-meta text-ink2">Lisbon Studio · your account</p>
       </header>
 
-      <div className="grid min-w-0 @xl/block:grid-cols-[11rem_minmax(0,1fr)]">
+      <Tabs orientation="vertical" value={section} onValueChange={setSection} className="grid! min-w-0 gap-0! @xl/block:grid-cols-[11rem_minmax(0,1fr)]">
         {/* Sections: a list on the left from 36rem, a Select above the panel under it */}
         <div className="hidden border-r border-rule py-8 @xl/block:block">
-          <Sidebar aria-label="Settings sections" className="w-full! h-auto! bg-transparent">
-            <Sidebar.Section>
-              {SECTIONS.map((s) => (
-                <Sidebar.Item
-                  key={s.value}
-                  icon={<Glyph name={s.glyph} dirty={dirty(s.value)} />}
-                  active={section === s.value}
-                  aria-describedby={dirty(s.value) ? `${ids}-dirty` : undefined}
-                  render={<button type="button" className="w-full border-0 bg-transparent cursor-pointer text-left" />}
-                  onClick={() => setSection(s.value)}
-                >
-                  {s.label}
-                </Sidebar.Item>
-              ))}
-            </Sidebar.Section>
-          </Sidebar>
+          <TabList aria-label="Settings sections" className="w-full" size={compact ? 'compact' : 'regular'} items={SECTIONS.map(s => ({
+            value: s.value, label: s.label, icon: <Glyph name={s.glyph} dirty={dirty(s.value)} />,
+            'aria-describedby': dirty(s.value) ? `${ids}-dirty` : undefined,
+          }))} />
           <span id={`${ids}-dirty`} hidden>Has unsaved changes</span>
         </div>
 
@@ -370,7 +349,7 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
             />
           </div>
 
-          <div ref={panel} className={`grid min-w-0 content-start ${rows}`}>
+          <TabPanel value={section} className={`grid min-w-0 content-start ${rows}`}>
             <div className="grid gap-2">
               {/* Narrow, the Select above already names the section; the title stays for assistive tech and focus. */}
               <h3 ref={heading} tabIndex={-1} id={`${ids}-section`} className="m-0 type-title text-ink outline-none sr-only @xl/block:not-sr-only">{about.label}</h3>
@@ -464,9 +443,9 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
                 </div>
               </>
             )}
-          </div>
+          </TabPanel>
         </div>
-      </div>
+      </Tabs>
 
       {/* The save bar: pinned to the bottom of the block, or of the window while the block runs past it */}
       <div className="pointer-events-none sticky bottom-0 z-10 h-0">

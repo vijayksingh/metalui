@@ -35,12 +35,27 @@ function Play() {
   );
 }
 
+function VerticalTabs() {
+  const [value, setValue] = React.useState('profile');
+  return <div data-testid="vertical-tabs">
+    <Tabs orientation="vertical" value={value} onValueChange={setValue}>
+      <TabList aria-label="Account sections" items={[{ value: 'profile', label: 'Profile' }, { value: 'billing', label: 'Billing', disabled: true, 'aria-describedby': 'billing-held' }, { value: 'notifications', label: 'Notifications' }, { value: 'appearance', label: 'Appearance' }]} />
+      {['profile', 'billing', 'notifications', 'appearance'].map(name => <TabPanel key={name} value={name} className="min-w-0 flex-1">
+        <p className="type-title text-ink">{name}</p>
+        <input className="type-ui text-ink" aria-label={`${name} setting`} defaultValue="Your choice" />
+      </TabPanel>)}
+    </Tabs>
+    <span id="billing-held" hidden>Only the workspace owner can open Billing.</span>
+  </div>;
+}
+
 export default function TabsPage() {
   return (
     <ComponentPage
       title="Tabs"
       lede="Switch which panel is shown. The tabs sit on the same track as the Switcher, and the new panel comes in from the side you moved to."
       play={{ lede: 'Click a tab, or focus one and use ← →. Watch the panel come in from the side the thumb went.', node: <Play /> }}
+      more={[{ id: 'vertical', title: 'A vertical track', lede: 'Up and Down select sections; disabled tabs remain reachable to explain why and never activate. Tab moves into the panel. The same thumb moves along the vertical track, and the panel enters from above or below.', node: <VerticalTabs /> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

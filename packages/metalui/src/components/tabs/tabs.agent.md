@@ -32,6 +32,10 @@ Keys: ← → move and choose, Home / End jump, Tab goes into the panel. Reduce 
 
 ## API
 
-`<Tabs value onValueChange defaultValue>` · `<TabList items size ("regular" 28 | "compact" 24) aria-label />` · `<TabPanel value keepMounted>`
+`<Tabs orientation ("horizontal" | "vertical") value onValueChange defaultValue>` · `<TabList items size ("regular" 28 | "compact" 24) aria-label />` · `<TabPanel value keepMounted>`
 
 `items` is `[{ value, label, icon?, disabled? }]`.
+
+Vertical tabs use Up/Down, Home/End and the same Base UI focus rules; Left/Right belong to horizontal tabs. The panel drifts along the selected axis. Track radius is derived from the row height plus its nest, with no new dimensions. Swift MetalTabs `orientation: .vertical` uses the same track material and native tab accessibility. Each item may describe a held or dirty state with `aria-describedby`.
+
+Base UI keeps disabled tabs arrow-reachable while refusing activation; give them `aria-describedby` when a reason helps. Native tab controls follow platform keyboard behavior. Never reinterpret a disabled tab as a panel switch.

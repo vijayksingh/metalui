@@ -1,5 +1,7 @@
 import SwiftUI
 
+public enum MetalTabsOrientation: Sendable { case horizontal, vertical }
+
 public struct MetalTab<Value: Hashable>: Identifiable {
     public let value: Value
     public let title: String
@@ -19,6 +21,7 @@ public struct MetalTabs<Value: Hashable, Panel: View>: View {
     @Binding var selection: Value
     let options: [MetalTab<Value>]
     let size: MetalSwitcher<Value>.Size
+    let orientation: MetalTabsOrientation
     let panel: (Value) -> Panel
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -26,19 +29,21 @@ public struct MetalTabs<Value: Hashable, Panel: View>: View {
     @State private var direction: CGFloat = .zero
 
     public init(_ label: String, selection: Binding<Value>, options: [MetalTab<Value>],
-                size: MetalSwitcher<Value>.Size = .regular, @ViewBuilder panel: @escaping (Value) -> Panel) {
+                size: MetalSwitcher<Value>.Size = .regular, orientation: MetalTabsOrientation = .horizontal, @ViewBuilder panel: @escaping (Value) -> Panel) {
         self.label = label
         _selection = selection
         self.options = options
         self.size = size
+        self.orientation = orientation
         self.panel = panel
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: MetalSpace.s0) {
+        let layout = orientation == .vertical ? AnyLayout(HStackLayout(alignment: .top, spacing: MetalLayout.gapRelated)) : AnyLayout(VStackLayout(alignment: .leading, spacing: MetalSpace.s0))
+        layout {
             MetalSwitchTrack(label: label, selection: tabSelection,
                              options: options.map { MetalTrackOption(value: $0.value, title: $0.title, disabled: $0.disabled) },
-                             size: size, role: .tab)
+                             size: size, role: .tab, vertical: orientation == .vertical)
             ZStack(alignment: .topLeading) {
                 panel(selection)
                     .id(selection)
@@ -52,7 +57,8 @@ public struct MetalTabs<Value: Hashable, Panel: View>: View {
 
     private var insertion: AnyTransition {
         guard hasAppeared, !reduceMotion else { return .opacity }
-        return .offset(x: direction * MetalRecipes.tabs.points("panel.drift")).combined(with: .opacity)
+        let drift = direction * MetalRecipes.tabs.points("panel.drift")
+        return (orientation == .vertical ? AnyTransition.offset(y: drift) : AnyTransition.offset(x: drift)).combined(with: .opacity)
     }
 
     private var tabSelection: Binding<Value> {
