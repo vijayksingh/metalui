@@ -1,0 +1,7077 @@
+{
+  "runtimeSource": "f979b6928a10275c3eaf1cbcd3d904f229d07fcd",
+  "productionBuildSource": "f979b692",
+  "bundleSource": "dbaa783f",
+  "command": "METALUI_BENCH_PORT=4302 BENCH_PAGES=all npm run bench:web",
+  "method": {
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "deviceScaleFactor": 1,
+    "colorway": "bone",
+    "workers": 1,
+    "settleMs": 2000,
+    "windowMs": 5000,
+    "externalRequests": "aborted",
+    "pointer": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "environment": {
+    "sha": "f979b6928a10275c3eaf1cbcd3d904f229d07fcd",
+    "startedAt": "2026-10-02T22:35:03.408Z",
+    "host": "Unknown_26:19:17:93:a9:a8",
+    "cpu": "Apple M1 Pro",
+    "cpus": 8,
+    "memGB": 16,
+    "hypervisor": null,
+    "platform": "darwin",
+    "architecture": "arm64",
+    "kernel": "25.6.0",
+    "node": "v25.9.0",
+    "playwright": "1.60.0",
+    "loadBefore": 6.611328125,
+    "loadAfter": 9.74365234375,
+    "maxLoad": null,
+    "valid": false,
+    "validityReason": "Unpinned macOS diagnostic sampling; CPU durations and power are not validated.",
+    "sampling": {
+      "routes": 112,
+      "colorways": [
+        "bone"
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "deviceScaleFactor": 1,
+      "settleMs": 2000,
+      "windowMs": 5000,
+      "workers": 1
+    },
+    "bundleSourceSha": "dbaa783f",
+    "finishedAt": "2026-10-02T22:49:52.371Z"
+  },
+  "originalIdle": [
+    {
+      "path": "/blocks/ai-composer",
+      "colorway": "bone",
+      "cpuMsPerS": 38.42435129740518,
+      "scriptMsPerS": 0.05768463073852295,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2311377245508982,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.19560878243513,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/blocks/availability-picker",
+      "colorway": "bone",
+      "cpuMsPerS": 39.09470529470529,
+      "scriptMsPerS": 0.03876123876123875,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.10489510489510495,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.5984015984015985,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/blocks/settings",
+      "colorway": "bone",
+      "cpuMsPerS": 34.55568838414027,
+      "scriptMsPerS": 0.03267583183901175,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19565650527993628,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.390914524805738,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/blocks/share-panel",
+      "colorway": "bone",
+      "cpuMsPerS": 41.75599520383693,
+      "scriptMsPerS": 0.04216626698641088,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.24720223820943246,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1982414068745006,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/blocks/studio-week",
+      "colorway": "bone",
+      "cpuMsPerS": 36.584249450329786,
+      "scriptMsPerS": 0.04897061762942234,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.24605236857885257,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998800719568259,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/blocks/task-inbox",
+      "colorway": "bone",
+      "cpuMsPerS": 40.81734612310154,
+      "scriptMsPerS": 0.03057553956834522,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1672661870503597,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/changelog",
+      "colorway": "bone",
+      "cpuMsPerS": 23.52066929133858,
+      "scriptMsPerS": 0.11988188976377952,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16889763779527558,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.7716535433070866,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/accordion",
+      "colorway": "bone",
+      "cpuMsPerS": 29.188924430227896,
+      "scriptMsPerS": 0.03298680527788889,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12714914034386243,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9992003198720512,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/alert-dialog",
+      "colorway": "bone",
+      "cpuMsPerS": 31.874475314811114,
+      "scriptMsPerS": 0.06755946432140715,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16630021986807914,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/attachment",
+      "colorway": "bone",
+      "cpuMsPerS": 32.40613790354722,
+      "scriptMsPerS": 0.04384216819449983,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.20825029892387403,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.391390992427262,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/avatar",
+      "colorway": "bone",
+      "cpuMsPerS": 33.691358024691354,
+      "scriptMsPerS": 0.03863002787733969,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2098765432098766,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9912385503783352,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/block-silhouette",
+      "colorway": "bone",
+      "cpuMsPerS": 41.43252940003986,
+      "scriptMsPerS": 0.03248953557903133,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1702212477576241,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3918676499900338,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/breadcrumbs",
+      "colorway": "bone",
+      "cpuMsPerS": 30.586248251049373,
+      "scriptMsPerS": 0.03477913252048773,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13691784929042577,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.798920647611433,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/brush-cursor",
+      "colorway": "bone",
+      "cpuMsPerS": 22.477522477522488,
+      "scriptMsPerS": 0.021178821178821174,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.11008991008991006,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/button",
+      "colorway": "bone",
+      "cpuMsPerS": 34.61982810313813,
+      "scriptMsPerS": 0.049370377773336006,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16370177893264043,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/button-group",
+      "colorway": "bone",
+      "cpuMsPerS": 36.18601398601399,
+      "scriptMsPerS": 0.035964035964035974,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2921078921078921,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/calendar",
+      "colorway": "bone",
+      "cpuMsPerS": 35.08394963022185,
+      "scriptMsPerS": 0.037577453527883255,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.32900259844093543,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/card",
+      "colorway": "bone",
+      "cpuMsPerS": 35.437799043062206,
+      "scriptMsPerS": 0.02472089314194577,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15610047846889955,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.7942583732057416,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/checkbox",
+      "colorway": "bone",
+      "cpuMsPerS": 34.477218225419676,
+      "scriptMsPerS": 0.03477218225419667,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15807354116706632,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1982414068745006,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/checkbox-group",
+      "colorway": "bone",
+      "cpuMsPerS": 31.72467532467532,
+      "scriptMsPerS": 0.03936063936063938,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2081918081918082,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.197802197802198,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/code-card",
+      "colorway": "bone",
+      "cpuMsPerS": 35.01538461538462,
+      "scriptMsPerS": 0.02637362637362641,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13266733266733263,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998001998001998,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/colour-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 30.101898101898083,
+      "scriptMsPerS": 0.04455544455544456,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16283716283716285,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/combobox",
+      "colorway": "bone",
+      "cpuMsPerS": 28.713486513486522,
+      "scriptMsPerS": 0.041758241758241756,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15364635364635368,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998001998001998,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/command-palette",
+      "colorway": "bone",
+      "cpuMsPerS": 34.12667332667332,
+      "scriptMsPerS": 0.12187812187812186,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.6191808191808192,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 6.593406593406594,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "i.xr-caret [xr-blink]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/connector",
+      "colorway": "bone",
+      "cpuMsPerS": 31.92564461323206,
+      "scriptMsPerS": 0.03797721367179689,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14971017389566263,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.798920647611433,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/cue",
+      "colorway": "bone",
+      "cpuMsPerS": 43.65887290167866,
+      "scriptMsPerS": 0.022182254196642687,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.22322142286171065,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/date-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 31.36830535571542,
+      "scriptMsPerS": 0.03377298161470826,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19984012789768194,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/day",
+      "colorway": "bone",
+      "cpuMsPerS": 114.29536370903278,
+      "scriptMsPerS": 8.562350119904078,
+      "layoutMsPerS": 1.0957234212629896,
+      "styleMsPerS": 0.6990407673860912,
+      "layoutsPerS": 1.9984012789768186,
+      "styleRecalcsPerS": 5.1958433253397285,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/dialog",
+      "colorway": "bone",
+      "cpuMsPerS": 32.5444733160104,
+      "scriptMsPerS": 0.026384169498301052,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1265240855486708,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998800719568259,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/dot-display",
+      "colorway": "bone",
+      "cpuMsPerS": 31.293320039880356,
+      "scriptMsPerS": 0.05244267198404786,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1256231306081755,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9940179461615155,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/draw-tools",
+      "colorway": "bone",
+      "cpuMsPerS": 33.23362619808306,
+      "scriptMsPerS": 0.03154952076677311,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16054313099041534,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3961661341853033,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/drop-zone",
+      "colorway": "bone",
+      "cpuMsPerS": 31.90391530163804,
+      "scriptMsPerS": 0.025369556532161417,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.10507391130643227,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.5980823012385137,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/empty-state",
+      "colorway": "bone",
+      "cpuMsPerS": 39.671591135955275,
+      "scriptMsPerS": 0.046516270712717134,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.18227191056099035,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9964064683569573,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/enum-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 30.58276689324272,
+      "scriptMsPerS": 0.033386645341863225,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1599360255897641,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1991203518592566,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/fan",
+      "colorway": "bone",
+      "cpuMsPerS": 29.57762237762238,
+      "scriptMsPerS": 0.041758241758241756,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15524475524475523,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.197802197802198,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/field",
+      "colorway": "bone",
+      "cpuMsPerS": 31.912470023980816,
+      "scriptMsPerS": 0.0401678657074341,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1540767386091127,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/folder",
+      "colorway": "bone",
+      "cpuMsPerS": 0.3314851485148477,
+      "scriptMsPerS": 0,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 0,
+      "infiniteAnimations": [],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/form-field",
+      "colorway": "bone",
+      "cpuMsPerS": 30.048570857485515,
+      "scriptMsPerS": 0.0519688187087747,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.23645812512492503,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/hover-engraving",
+      "colorway": "bone",
+      "cpuMsPerS": 26.38257045772536,
+      "scriptMsPerS": 0.041974815110933414,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13931641015390764,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/icon-button",
+      "colorway": "bone",
+      "cpuMsPerS": 32.701778932640416,
+      "scriptMsPerS": 0.03337997201678993,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14091545072956232,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.599040575654607,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/kbd",
+      "colorway": "bone",
+      "cpuMsPerS": 36.152677857713826,
+      "scriptMsPerS": 0.025579536370903298,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15907274180655484,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1982414068745006,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/lasso",
+      "colorway": "bone",
+      "cpuMsPerS": 28.28442934239456,
+      "scriptMsPerS": 0.024385368778732788,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.09854087547471516,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.599040575654607,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/led",
+      "colorway": "bone",
+      "cpuMsPerS": 29.211231015187852,
+      "scriptMsPerS": 0.05975219824140693,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1724620303756995,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/lens-bar",
+      "colorway": "bone",
+      "cpuMsPerS": 26.775982445641326,
+      "scriptMsPerS": 0.09495312188310395,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1932974266906044,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.194294833433074,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/line-handles",
+      "colorway": "bone",
+      "cpuMsPerS": 38.19648211073356,
+      "scriptMsPerS": 0.02998201079352392,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14451329202478516,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.798920647611433,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/link",
+      "colorway": "bone",
+      "cpuMsPerS": 33.18089146512093,
+      "scriptMsPerS": 0.03797721367179693,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14171497101738958,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/link-card",
+      "colorway": "bone",
+      "cpuMsPerS": 34.35258844693184,
+      "scriptMsPerS": 0.0399760143913652,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14231461123326006,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/link-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 31.41466826538769,
+      "scriptMsPerS": 0.06314948041566744,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15367705835331738,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/memory-scrubber",
+      "colorway": "bone",
+      "cpuMsPerS": 31.047124600638966,
+      "scriptMsPerS": 0.7252396166134184,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1521565495207668,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9968051118210863,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/menu",
+      "colorway": "bone",
+      "cpuMsPerS": 32.407429598562004,
+      "scriptMsPerS": 0.026562812063111663,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1557819053325345,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.396644697423607,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/menubar",
+      "colorway": "bone",
+      "cpuMsPerS": 29.43647622852576,
+      "scriptMsPerS": 0.02317219336795849,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 1.1350379544546543,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1973631642029563,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/meter",
+      "colorway": "bone",
+      "cpuMsPerS": 27.12741389607805,
+      "scriptMsPerS": 0.020306589687437808,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.143937885725662,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.389010551463269,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/navigation-menu",
+      "colorway": "bone",
+      "cpuMsPerS": 31.18988606835899,
+      "scriptMsPerS": 0.11832900259844091,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.7283629822106736,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/number-field",
+      "colorway": "bone",
+      "cpuMsPerS": 29.90047961630694,
+      "scriptMsPerS": 0.03617106314948041,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12290167865707438,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/numeric-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 27.556441962504977,
+      "scriptMsPerS": 0.05783805345033905,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.153968887116075,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.193857199840447,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/pagination",
+      "colorway": "bone",
+      "cpuMsPerS": 23.491308691308692,
+      "scriptMsPerS": 0.018381618381618395,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12827172827172828,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/past-banner",
+      "colorway": "bone",
+      "cpuMsPerS": 34.00319616460247,
+      "scriptMsPerS": 0.058330003995205736,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.21254494606472232,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.796644027167399,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/perfect-preview",
+      "colorway": "bone",
+      "cpuMsPerS": 28.877098321342924,
+      "scriptMsPerS": 0.03117505995203835,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1496802557953637,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/person-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 25.360023961661337,
+      "scriptMsPerS": 0.021565495207667713,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12280351437699683,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9968051118210863,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/popover",
+      "colorway": "bone",
+      "cpuMsPerS": 28.823940847322145,
+      "scriptMsPerS": 0.023980815347721843,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.17705835331734612,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1982414068745006,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/preview-card",
+      "colorway": "bone",
+      "cpuMsPerS": 35.058576569372256,
+      "scriptMsPerS": 0.030187924830067995,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1377449020391843,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9992003198720512,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/progress",
+      "colorway": "bone",
+      "cpuMsPerS": 33.36064593301437,
+      "scriptMsPerS": 0.029306220095693346,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.18540669856459335,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3923444976076556,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/provenance-tooltip",
+      "colorway": "bone",
+      "cpuMsPerS": 37.37709497206704,
+      "scriptMsPerS": 0.024142059058260182,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.18395849960095767,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1947326416600164,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/radio",
+      "colorway": "bone",
+      "cpuMsPerS": 25.990203918432634,
+      "scriptMsPerS": 0.021591363454618158,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.08936425429828067,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.599360255897641,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/region",
+      "colorway": "bone",
+      "cpuMsPerS": 33.12972216669998,
+      "scriptMsPerS": 0.2748350989406356,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19268438936638016,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/rename-editor",
+      "colorway": "bone",
+      "cpuMsPerS": 32.99760335530258,
+      "scriptMsPerS": 0.0892750149790293,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1511883363291392,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9972039145196725,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/row",
+      "colorway": "bone",
+      "cpuMsPerS": 28.748651348651357,
+      "scriptMsPerS": 0.03216783216783219,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12387612387612386,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.5984015984015985,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/scroll-area",
+      "colorway": "bone",
+      "cpuMsPerS": 34.30567772890843,
+      "scriptMsPerS": 0.030787684926029596,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19892043182726907,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3990403838464616,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/select",
+      "colorway": "bone",
+      "cpuMsPerS": 30.4829102538477,
+      "scriptMsPerS": 0.11613032180691583,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16789926044373377,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/selection-frame",
+      "colorway": "bone",
+      "cpuMsPerS": 34.905713144226944,
+      "scriptMsPerS": 0.02457051538154214,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12884538553735514,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9976028765481422,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/settings",
+      "colorway": "bone",
+      "cpuMsPerS": 32.71197281631022,
+      "scriptMsPerS": 0.018588846691984805,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13971617029782135,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998800719568259,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/sheet",
+      "colorway": "bone",
+      "cpuMsPerS": 31.130521686987805,
+      "scriptMsPerS": 0.024985008994603257,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.20607635418748746,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/sidebar",
+      "colorway": "bone",
+      "cpuMsPerS": 37.994805194805195,
+      "scriptMsPerS": 0.03776223776223779,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2483516483516483,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/size-readout",
+      "colorway": "bone",
+      "cpuMsPerS": 34.59380619380618,
+      "scriptMsPerS": 0.05894105894105892,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1914085914085914,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/skeleton",
+      "colorway": "bone",
+      "cpuMsPerS": 38.93343993603837,
+      "scriptMsPerS": 0.5332800319808115,
+      "layoutMsPerS": 0.20187887267639418,
+      "styleMsPerS": 0.5344793124125515,
+      "layoutsPerS": 0.1998800719568259,
+      "styleRecalcsPerS": 3.198081151309214,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/slider",
+      "colorway": "bone",
+      "cpuMsPerS": 33.27352647352649,
+      "scriptMsPerS": 0.04415584415584417,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15624375624375617,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.998001998001998,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/snap-guides",
+      "colorway": "bone",
+      "cpuMsPerS": 34.0377245508982,
+      "scriptMsPerS": 0.04031936127744512,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12674650698602793,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.7964071856287427,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/spinner",
+      "colorway": "bone",
+      "cpuMsPerS": 34.87689848121502,
+      "scriptMsPerS": 0.040367705835331724,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1422861710631495,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/split-pane",
+      "colorway": "bone",
+      "cpuMsPerS": 32.799320407755346,
+      "scriptMsPerS": 0.0353787727363582,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.14151509094543271,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.798920647611433,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/status",
+      "colorway": "bone",
+      "cpuMsPerS": 37.58190171793848,
+      "scriptMsPerS": 0.04075109868158212,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19756292449061125,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9976028765481422,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/suggestion-chip",
+      "colorway": "bone",
+      "cpuMsPerS": 35.15610633619828,
+      "scriptMsPerS": 0.025384769138516877,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2452528482910253,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/swatch",
+      "colorway": "bone",
+      "cpuMsPerS": 31.414834066373444,
+      "scriptMsPerS": 0.02538984406237504,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1389444222311076,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3990403838464616,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/switch",
+      "colorway": "bone",
+      "cpuMsPerS": 34.50039968025579,
+      "scriptMsPerS": 0.03577138289368508,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.19364508393285368,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/switcher",
+      "colorway": "bone",
+      "cpuMsPerS": 37.34538553735518,
+      "scriptMsPerS": 0.035157810627247287,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.23292049540551338,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1973631642029563,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/table",
+      "colorway": "bone",
+      "cpuMsPerS": 35.68151848151849,
+      "scriptMsPerS": 0.035964035964035974,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.2307692307692308,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/tabs",
+      "colorway": "bone",
+      "cpuMsPerS": 31.92154122579357,
+      "scriptMsPerS": 0.03853064483928929,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13875024955080856,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.7967658215212616,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/tag-cue",
+      "colorway": "bone",
+      "cpuMsPerS": 33.127171092034345,
+      "scriptMsPerS": 0.025354362148133344,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12257935715711714,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9964064683569573,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/textarea",
+      "colorway": "bone",
+      "cpuMsPerS": 30.82893685051958,
+      "scriptMsPerS": 0.026179056754596336,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.25539568345323743,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/toast",
+      "colorway": "bone",
+      "cpuMsPerS": 36.86707975214871,
+      "scriptMsPerS": 0.02218668798720767,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.16470117929242453,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.798920647611433,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/toggle",
+      "colorway": "bone",
+      "cpuMsPerS": 37.56900339524666,
+      "scriptMsPerS": 0.026562812063111663,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.146395046934292,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9972039145196725,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/tool-strip",
+      "colorway": "bone",
+      "cpuMsPerS": 30.91591771519873,
+      "scriptMsPerS": 0.02037147992810068,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.11763531056520865,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9972039145196725,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/toolbar",
+      "colorway": "bone",
+      "cpuMsPerS": 32.56454836131096,
+      "scriptMsPerS": 0.01958433253397282,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1282973621103117,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9984012789768186,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/tooltip",
+      "colorway": "bone",
+      "cpuMsPerS": 37.35584415584416,
+      "scriptMsPerS": 0.025974025974025955,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.17142857142857149,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3976023976023977,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/components/weather",
+      "colorway": "bone",
+      "cpuMsPerS": 368.43953627823305,
+      "scriptMsPerS": 20.03078153108135,
+      "layoutMsPerS": 2.3104137517489507,
+      "styleMsPerS": 2.061363182090745,
+      "layoutsPerS": 11.992804317409554,
+      "styleRecalcsPerS": 27.7833300019988,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations",
+      "colorway": "bone",
+      "cpuMsPerS": 21.922677322677327,
+      "scriptMsPerS": 0.050549450549450564,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12327672327672327,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.197802197802198,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/color",
+      "colorway": "bone",
+      "cpuMsPerS": 21.81071357185689,
+      "scriptMsPerS": 0.01878872676394166,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13351988806715973,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3985608634819107,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/elevation",
+      "colorway": "bone",
+      "cpuMsPerS": 31.063936063936072,
+      "scriptMsPerS": 0.04155844155844157,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13426573426573427,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.197802197802198,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/materials",
+      "colorway": "bone",
+      "cpuMsPerS": 24.257291250499406,
+      "scriptMsPerS": 0.04394726328405914,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1502197363164203,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3971234518577704,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/motion",
+      "colorway": "bone",
+      "cpuMsPerS": 30.933453237410067,
+      "scriptMsPerS": 0.047961630695443604,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.10311750599520383,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.598721023181455,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/radius",
+      "colorway": "bone",
+      "cpuMsPerS": 21.19604316546762,
+      "scriptMsPerS": 0.03477218225419667,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13369304556354916,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/sizing",
+      "colorway": "bone",
+      "cpuMsPerS": 30.149790293588985,
+      "scriptMsPerS": 0.07149990013980428,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.1555821849410825,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.1969243059716397,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/sound",
+      "colorway": "bone",
+      "cpuMsPerS": 29.484618457850566,
+      "scriptMsPerS": 0.0435477427087495,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15001997602876546,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.9976028765481422,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/spacing",
+      "colorway": "bone",
+      "cpuMsPerS": 22.145283772981614,
+      "scriptMsPerS": 0.020583533173461236,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.13669064748201443,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3980815347721824,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/transitions",
+      "colorway": "bone",
+      "cpuMsPerS": 30.7672930827669,
+      "scriptMsPerS": 0.07057177129148341,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.20911635345861657,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3990403838464616,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/foundations/typography",
+      "colorway": "bone",
+      "cpuMsPerS": 20.35031974420464,
+      "scriptMsPerS": 0.04416466826538768,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.10071942446043167,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.598721023181455,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/icons",
+      "colorway": "bone",
+      "cpuMsPerS": 33.4087547471517,
+      "scriptMsPerS": 0.034979012592444514,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.15990405756546075,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.198680791525085,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/icons/life",
+      "colorway": "bone",
+      "cpuMsPerS": 33.30735411670665,
+      "scriptMsPerS": 0.04316546762589929,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.09372501998401278,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 1.598721023181455,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/layers",
+      "colorway": "bone",
+      "cpuMsPerS": 26.624900239425383,
+      "scriptMsPerS": 0.11891460494812452,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.18196328810853954,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.394253790901836,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/overview",
+      "colorway": "bone",
+      "cpuMsPerS": 52.66201395812563,
+      "scriptMsPerS": 4.026719840478564,
+      "layoutMsPerS": 0.28115653040877364,
+      "styleMsPerS": 3.464606181455633,
+      "layoutsPerS": 4.386839481555334,
+      "styleRecalcsPerS": 9.571286141575275,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item [drift]",
+        "div.drift-item.is-live [drift]",
+        "div.drift-item.is-live [drift]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/performance",
+      "colorway": "bone",
+      "cpuMsPerS": 23.350369335196646,
+      "scriptMsPerS": 0.22419644639648628,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.23457776003194247,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.395687762028349,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/",
+      "colorway": "bone",
+      "cpuMsPerS": 44.621405750798715,
+      "scriptMsPerS": 3.7178514376996796,
+      "layoutMsPerS": 0.5521166134185304,
+      "styleMsPerS": 2.201876996805112,
+      "layoutsPerS": 4.39297124600639,
+      "styleRecalcsPerS": 5.1916932907348246,
+      "infiniteAnimations": [
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]",
+        "div.drift-item.in-space [drift-space]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    },
+    {
+      "path": "/wip",
+      "colorway": "bone",
+      "cpuMsPerS": 22.70395525369557,
+      "scriptMsPerS": 0.02516979624450655,
+      "layoutMsPerS": 0,
+      "styleMsPerS": 0.12465041949660406,
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3971234518577704,
+      "infiniteAnimations": [
+        "span.inline-block.flex-none [mu-led-breathe]"
+      ],
+      "runningFinite": 0,
+      "windowMs": 5000
+    }
+  ],
+  "targetedIdle": [
+    {
+      "source": "f979b692",
+      "investigation": "PastBanner original2.7966style/s; three paired exact-method repeat samples, all retained without runtime or ceiling changes",
+      "samples": [
+        {
+          "pair": 1,
+          "path": "/foundations/spacing",
+          "colorway": "bone",
+          "cpuMsPerS": 32.501698980611636,
+          "scriptMsPerS": 0.2214671197281631,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.15350789526284228,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3985608634819107,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "pair": 1,
+          "path": "/components/past-banner",
+          "colorway": "bone",
+          "cpuMsPerS": 34.622501998401276,
+          "scriptMsPerS": 0.025579536370903207,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.1490807354116707,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9984012789768186,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "pair": 2,
+          "path": "/foundations/spacing",
+          "colorway": "bone",
+          "cpuMsPerS": 31.17186250999201,
+          "scriptMsPerS": 0.07893685051958434,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.2791766586730615,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.1982414068745006,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "pair": 2,
+          "path": "/components/past-banner",
+          "colorway": "bone",
+          "cpuMsPerS": 30.127149140343853,
+          "scriptMsPerS": 0.022790883646541416,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.13334666133546583,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9992003198720512,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "pair": 3,
+          "path": "/foundations/spacing",
+          "colorway": "bone",
+          "cpuMsPerS": 33.270837497501496,
+          "scriptMsPerS": 0.03717769338396961,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.1950829502298621,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3985608634819107,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "pair": 3,
+          "path": "/components/past-banner",
+          "colorway": "bone",
+          "cpuMsPerS": 39.373226773226754,
+          "scriptMsPerS": 0.058541458541458556,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.17302697302697304,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3976023976023977,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        }
+      ]
+    },
+    {
+      "source": "84da8cdf",
+      "investigation": "Weather docs day clock uses existing166ms shared sky step, retains elapsed-time48second day; old19.7style/15layout ceilings unchanged",
+      "samples": [
+        {
+          "path": "/components/weather",
+          "colorway": "bone",
+          "cpuMsPerS": 233.36809571286145,
+          "scriptMsPerS": 12.055234297108676,
+          "layoutMsPerS": 2.7706879361914254,
+          "styleMsPerS": 1.6187437686939183,
+          "layoutsPerS": 5.982053838484546,
+          "styleRecalcsPerS": 10.767696909272184,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        }
+      ]
+    },
+    {
+      "source": "916dce18",
+      "command": "METALUI_BENCH_PORT=4302 BENCH_PAGES=all npm run bench:web -- --grep 'idle (/blocks/studio-week|/changelog|/components/(avatar|hover-engraving|lens-bar|status|weather)) bone'",
+      "result": "7 fixtures passed53.5seconds; final targeted build, authored2s/5s method; CPU/power invalid",
+      "samples": [
+        {
+          "path": "/blocks/studio-week",
+          "colorway": "bone",
+          "cpuMsPerS": 37.81049271893077,
+          "scriptMsPerS": 0.04707759824456411,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.17414721723518845,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9948134849391583,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/changelog",
+          "colorway": "bone",
+          "cpuMsPerS": 34.44173495902459,
+          "scriptMsPerS": 0.10473715770537681,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.18329002598440933,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.998800719568259,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/components/avatar",
+          "colorway": "bone",
+          "cpuMsPerS": 39.45203836930455,
+          "scriptMsPerS": 0.03836930455635494,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.23601119104716226,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3980815347721824,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/components/hover-engraving",
+          "colorway": "bone",
+          "cpuMsPerS": 38.81095123900881,
+          "scriptMsPerS": 0.02737809752198241,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.14968025579536373,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3980815347721824,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/components/lens-bar",
+          "colorway": "bone",
+          "cpuMsPerS": 21.970411835265903,
+          "scriptMsPerS": 0.030187924830067995,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.1415433826469412,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3990403838464616,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]",
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/components/status",
+          "colorway": "bone",
+          "cpuMsPerS": 37.35530257639306,
+          "scriptMsPerS": 0.06171360095865789,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.2983822648292391,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.396644697423607,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]",
+            "span.inline-block.flex-none [mu-led-breathe]",
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        {
+          "path": "/components/weather",
+          "colorway": "bone",
+          "cpuMsPerS": 229.88614649681526,
+          "scriptMsPerS": 13.9359076433121,
+          "layoutMsPerS": 2.7949840764331206,
+          "styleMsPerS": 1.1815286624203822,
+          "layoutsPerS": 6.170382165605096,
+          "styleRecalcsPerS": 10.151273885350319,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        }
+      ]
+    }
+  ],
+  "bundle": {
+    "package": {
+      "total": {
+        "raw": 1089002,
+        "gzip": 164643,
+        "brotli": 134269
+      },
+      "files": {
+        "chunk.js": {
+          "raw": 13488,
+          "gzip": 4298,
+          "brotli": 3821
+        },
+        "icons-life.css": {
+          "raw": 51178,
+          "gzip": 5706,
+          "brotli": 4914
+        },
+        "icons-life.js": {
+          "raw": 9497,
+          "gzip": 2043,
+          "brotli": 1775
+        },
+        "icons.css": {
+          "raw": 244905,
+          "gzip": 16607,
+          "brotli": 13294
+        },
+        "icons.js": {
+          "raw": 2741,
+          "gzip": 616,
+          "brotli": 545
+        },
+        "index.js": {
+          "raw": 94304,
+          "gzip": 26296,
+          "brotli": 22734
+        },
+        "sound.js": {
+          "raw": 19581,
+          "gzip": 5079,
+          "brotli": 4503
+        },
+        "styles.css": {
+          "raw": 326691,
+          "gzip": 52021,
+          "brotli": 41381
+        },
+        "styles.unlayered.css": {
+          "raw": 326617,
+          "gzip": 51977,
+          "brotli": 41302
+        }
+      }
+    },
+    "docs": {
+      "total": {
+        "raw": 5948806,
+        "gzip": 1788370,
+        "brotli": 1559025
+      },
+      "files": {
+        "Accordion.js": {
+          "raw": 19218,
+          "gzip": 6935,
+          "brotli": 6161
+        },
+        "AiComposer.js": {
+          "raw": 33728,
+          "gzip": 11082,
+          "brotli": 9913
+        },
+        "AlertDialog.js": {
+          "raw": 16016,
+          "gzip": 5567,
+          "brotli": 4898
+        },
+        "Attachment.js": {
+          "raw": 22924,
+          "gzip": 8112,
+          "brotli": 7219
+        },
+        "AvailabilityPicker.js": {
+          "raw": 37355,
+          "gzip": 11942,
+          "brotli": 10727
+        },
+        "Avatar.js": {
+          "raw": 12430,
+          "gzip": 4658,
+          "brotli": 4093
+        },
+        "BlockPage.js": {
+          "raw": 2171,
+          "gzip": 1006,
+          "brotli": 874
+        },
+        "BlockSilhouette.js": {
+          "raw": 12280,
+          "gzip": 4575,
+          "brotli": 4003
+        },
+        "Breadcrumbs.js": {
+          "raw": 11649,
+          "gzip": 4510,
+          "brotli": 3994
+        },
+        "BrushCursor.js": {
+          "raw": 33552,
+          "gzip": 12572,
+          "brotli": 11308
+        },
+        "Button.js": {
+          "raw": 88732,
+          "gzip": 26810,
+          "brotli": 23199
+        },
+        "Button.css": {
+          "raw": 14882,
+          "gzip": 3091,
+          "brotli": 2667
+        },
+        "ButtonGroup.js": {
+          "raw": 26258,
+          "gzip": 8702,
+          "brotli": 7713
+        },
+        "ButtonXray.js": {
+          "raw": 25813,
+          "gzip": 8597,
+          "brotli": 7744
+        },
+        "CSPContext.js": {
+          "raw": 170,
+          "gzip": 161,
+          "brotli": 123
+        },
+        "Calendar.js": {
+          "raw": 85299,
+          "gzip": 23005,
+          "brotli": 20236
+        },
+        "Card.js": {
+          "raw": 11778,
+          "gzip": 4814,
+          "brotli": 4171
+        },
+        "Changelog.js": {
+          "raw": 12287,
+          "gzip": 5478,
+          "brotli": 4617
+        },
+        "Checkbox.js": {
+          "raw": 13709,
+          "gzip": 5235,
+          "brotli": 4607
+        },
+        "CheckboxGroup.js": {
+          "raw": 10003,
+          "gzip": 3708,
+          "brotli": 3259
+        },
+        "CheckboxXray.css": {
+          "raw": 1984,
+          "gzip": 626,
+          "brotli": 532
+        },
+        "CheckboxXray.js": {
+          "raw": 19900,
+          "gzip": 6707,
+          "brotli": 6034
+        },
+        "ChipXray.js": {
+          "raw": 19457,
+          "gzip": 6432,
+          "brotli": 5734
+        },
+        "ChipXray.css": {
+          "raw": 1359,
+          "gzip": 524,
+          "brotli": 455
+        },
+        "CodeCard.js": {
+          "raw": 9244,
+          "gzip": 3856,
+          "brotli": 3415
+        },
+        "Color.js": {
+          "raw": 12577,
+          "gzip": 4564,
+          "brotli": 3982
+        },
+        "ColourCue.js": {
+          "raw": 23236,
+          "gzip": 8109,
+          "brotli": 7159
+        },
+        "Combobox.js": {
+          "raw": 12600,
+          "gzip": 4923,
+          "brotli": 4325
+        },
+        "ComboboxEmpty.js": {
+          "raw": 28512,
+          "gzip": 10345,
+          "brotli": 9476
+        },
+        "CommandPalette.js": {
+          "raw": 42016,
+          "gzip": 13075,
+          "brotli": 11533
+        },
+        "ComponentPage.js": {
+          "raw": 1327,
+          "gzip": 703,
+          "brotli": 624
+        },
+        "Connector.js": {
+          "raw": 18812,
+          "gzip": 7125,
+          "brotli": 6349
+        },
+        "CueFamily.js": {
+          "raw": 61175,
+          "gzip": 18790,
+          "brotli": 16492
+        },
+        "DateCue.js": {
+          "raw": 25878,
+          "gzip": 8963,
+          "brotli": 7857
+        },
+        "Day.js": {
+          "raw": 33854,
+          "gzip": 11073,
+          "brotli": 9854
+        },
+        "Dialog.js": {
+          "raw": 5605,
+          "gzip": 2415,
+          "brotli": 2060
+        },
+        "DialogDescription.js": {
+          "raw": 708,
+          "gzip": 458,
+          "brotli": 407
+        },
+        "DialogPopup.js": {
+          "raw": 1922,
+          "gzip": 960,
+          "brotli": 843
+        },
+        "DialogRoot.js": {
+          "raw": 156,
+          "gzip": 146,
+          "brotli": 115
+        },
+        "DialogTitle.js": {
+          "raw": 359,
+          "gzip": 280,
+          "brotli": 259
+        },
+        "DialogXray.js": {
+          "raw": 19330,
+          "gzip": 6765,
+          "brotli": 6023
+        },
+        "DialogXray.css": {
+          "raw": 2845,
+          "gzip": 904,
+          "brotli": 765
+        },
+        "DotDisplay.js": {
+          "raw": 13652,
+          "gzip": 5338,
+          "brotli": 4805
+        },
+        "DrawTools.js": {
+          "raw": 9397,
+          "gzip": 3139,
+          "brotli": 2798
+        },
+        "DropZone.js": {
+          "raw": 29690,
+          "gzip": 9995,
+          "brotli": 8859
+        },
+        "Elevation.js": {
+          "raw": 4867,
+          "gzip": 2148,
+          "brotli": 1868
+        },
+        "EmptyState.js": {
+          "raw": 15614,
+          "gzip": 5990,
+          "brotli": 5333
+        },
+        "EnumCue.js": {
+          "raw": 30126,
+          "gzip": 10080,
+          "brotli": 8891
+        },
+        "Fan.js": {
+          "raw": 49855,
+          "gzip": 14625,
+          "brotli": 13034
+        },
+        "Field.js": {
+          "raw": 19047,
+          "gzip": 6864,
+          "brotli": 6064
+        },
+        "FieldControl.js": {
+          "raw": 1915,
+          "gzip": 1021,
+          "brotli": 905
+        },
+        "FieldRoot.js": {
+          "raw": 3980,
+          "gzip": 1748,
+          "brotli": 1598
+        },
+        "FieldXray.css": {
+          "raw": 1143,
+          "gzip": 469,
+          "brotli": 397
+        },
+        "FieldXray.js": {
+          "raw": 16749,
+          "gzip": 6189,
+          "brotli": 5562
+        },
+        "FloatingPortal.js": {
+          "raw": 9897,
+          "gzip": 3987,
+          "brotli": 3636
+        },
+        "FloatingPortalLite.js": {
+          "raw": 405,
+          "gzip": 297,
+          "brotli": 285
+        },
+        "Folder.js": {
+          "raw": 28879,
+          "gzip": 10244,
+          "brotli": 9148
+        },
+        "Folder.css": {
+          "raw": 37423,
+          "gzip": 5834,
+          "brotli": 5179
+        },
+        "FolderXray.css": {
+          "raw": 3513,
+          "gzip": 1158,
+          "brotli": 1002
+        },
+        "FolderXray.js": {
+          "raw": 19419,
+          "gzip": 6715,
+          "brotli": 6013
+        },
+        "FormField.js": {
+          "raw": 21566,
+          "gzip": 7325,
+          "brotli": 6461
+        },
+        "Home.js": {
+          "raw": 4236,
+          "gzip": 1598,
+          "brotli": 1341
+        },
+        "HoverEngraving.js": {
+          "raw": 19029,
+          "gzip": 6589,
+          "brotli": 5819
+        },
+        "Icon.css": {
+          "raw": 180919,
+          "gzip": 15985,
+          "brotli": 12957
+        },
+        "Icon.js": {
+          "raw": 192318,
+          "gzip": 26216,
+          "brotli": 21174
+        },
+        "IconButton.js": {
+          "raw": 11071,
+          "gzip": 4037,
+          "brotli": 3556
+        },
+        "IconButtonXray.css": {
+          "raw": 1052,
+          "gzip": 444,
+          "brotli": 371
+        },
+        "IconButtonXray.js": {
+          "raw": 21714,
+          "gzip": 7355,
+          "brotli": 6622
+        },
+        "Icons.js": {
+          "raw": 23822,
+          "gzip": 7388,
+          "brotli": 6379
+        },
+        "IconsLife.js": {
+          "raw": 16240,
+          "gzip": 5779,
+          "brotli": 5141
+        },
+        "Kbd.js": {
+          "raw": 12760,
+          "gzip": 4747,
+          "brotli": 4162
+        },
+        "KbdXray.css": {
+          "raw": 849,
+          "gzip": 350,
+          "brotli": 284
+        },
+        "KbdXray.js": {
+          "raw": 21234,
+          "gzip": 7130,
+          "brotli": 6403
+        },
+        "Landing.js": {
+          "raw": 1614,
+          "gzip": 828,
+          "brotli": 711
+        },
+        "Lasso.css": {
+          "raw": 2119,
+          "gzip": 686,
+          "brotli": 571
+        },
+        "Lasso.js": {
+          "raw": 19205,
+          "gzip": 7104,
+          "brotli": 6292
+        },
+        "Layers.css": {
+          "raw": 883,
+          "gzip": 296,
+          "brotli": 236
+        },
+        "Layers.js": {
+          "raw": 16444,
+          "gzip": 6025,
+          "brotli": 5335
+        },
+        "Led.js": {
+          "raw": 7294,
+          "gzip": 3135,
+          "brotli": 2745
+        },
+        "LensBar.js": {
+          "raw": 17850,
+          "gzip": 6383,
+          "brotli": 5725
+        },
+        "LifeIcon.js": {
+          "raw": 68421,
+          "gzip": 18698,
+          "brotli": 15889
+        },
+        "LifeIcon.css": {
+          "raw": 41669,
+          "gzip": 5420,
+          "brotli": 4740
+        },
+        "LineHandles.js": {
+          "raw": 6704,
+          "gzip": 2822,
+          "brotli": 2489
+        },
+        "Link.js": {
+          "raw": 20616,
+          "gzip": 6950,
+          "brotli": 6143
+        },
+        "LinkCard.js": {
+          "raw": 33883,
+          "gzip": 10353,
+          "brotli": 9160
+        },
+        "LinkCardXray.css": {
+          "raw": 2095,
+          "gzip": 712,
+          "brotli": 594
+        },
+        "LinkCardXray.js": {
+          "raw": 21572,
+          "gzip": 7440,
+          "brotli": 6610
+        },
+        "LinkCue.js": {
+          "raw": 28562,
+          "gzip": 9521,
+          "brotli": 8379
+        },
+        "Materials.js": {
+          "raw": 5557,
+          "gzip": 2350,
+          "brotli": 2079
+        },
+        "MemoryScrubber.js": {
+          "raw": 16330,
+          "gzip": 6092,
+          "brotli": 5416
+        },
+        "Menu.js": {
+          "raw": 31086,
+          "gzip": 10388,
+          "brotli": 9204
+        },
+        "MenuXray.js": {
+          "raw": 16922,
+          "gzip": 6059,
+          "brotli": 5440
+        },
+        "MenuXray.css": {
+          "raw": 1211,
+          "gzip": 424,
+          "brotli": 344
+        },
+        "Menubar.js": {
+          "raw": 12173,
+          "gzip": 4644,
+          "brotli": 4073
+        },
+        "MetalStatus.js": {
+          "raw": 10585,
+          "gzip": 3641,
+          "brotli": 3250
+        },
+        "Meter.js": {
+          "raw": 12848,
+          "gzip": 4956,
+          "brotli": 4372
+        },
+        "Motion.js": {
+          "raw": 17342,
+          "gzip": 6392,
+          "brotli": 5612
+        },
+        "NavigationMenu.js": {
+          "raw": 32946,
+          "gzip": 11466,
+          "brotli": 10322
+        },
+        "NumberField.js": {
+          "raw": 13033,
+          "gzip": 5071,
+          "brotli": 4464
+        },
+        "NumberFieldScrubArea.js": {
+          "raw": 14227,
+          "gzip": 6375,
+          "brotli": 5756
+        },
+        "NumericCue.js": {
+          "raw": 39271,
+          "gzip": 12431,
+          "brotli": 11014
+        },
+        "Pagination.js": {
+          "raw": 9675,
+          "gzip": 3671,
+          "brotli": 3257
+        },
+        "PaletteXray.js": {
+          "raw": 32140,
+          "gzip": 10625,
+          "brotli": 9501
+        },
+        "PaletteXray.css": {
+          "raw": 1293,
+          "gzip": 456,
+          "brotli": 367
+        },
+        "PastBanner.js": {
+          "raw": 9112,
+          "gzip": 3469,
+          "brotli": 3031
+        },
+        "PerfectPreview.js": {
+          "raw": 13904,
+          "gzip": 5674,
+          "brotli": 5070
+        },
+        "Performance.js": {
+          "raw": 6881,
+          "gzip": 3017,
+          "brotli": 2578
+        },
+        "PersonCue.js": {
+          "raw": 26246,
+          "gzip": 8991,
+          "brotli": 7911
+        },
+        "Popover.js": {
+          "raw": 14615,
+          "gzip": 5451,
+          "brotli": 4743
+        },
+        "PopoverPopup.js": {
+          "raw": 7712,
+          "gzip": 3041,
+          "brotli": 2750
+        },
+        "PreviewCard.js": {
+          "raw": 16512,
+          "gzip": 6319,
+          "brotli": 5691
+        },
+        "Principles.js": {
+          "raw": 3656,
+          "gzip": 1711,
+          "brotli": 1418
+        },
+        "Progress.js": {
+          "raw": 26162,
+          "gzip": 8669,
+          "brotli": 7758
+        },
+        "ProgressIndicator.js": {
+          "raw": 1878,
+          "gzip": 951,
+          "brotli": 859
+        },
+        "ProvenanceTooltip.js": {
+          "raw": 55846,
+          "gzip": 17242,
+          "brotli": 15044
+        },
+        "Radio.js": {
+          "raw": 10847,
+          "gzip": 4214,
+          "brotli": 3701
+        },
+        "Radius.js": {
+          "raw": 6497,
+          "gzip": 2676,
+          "brotli": 2388
+        },
+        "Region.js": {
+          "raw": 48356,
+          "gzip": 15444,
+          "brotli": 13826
+        },
+        "RenameDemo.js": {
+          "raw": 5519,
+          "gzip": 2379,
+          "brotli": 2116
+        },
+        "RenameEditor.js": {
+          "raw": 21243,
+          "gzip": 7002,
+          "brotli": 6103
+        },
+        "Row.js": {
+          "raw": 16993,
+          "gzip": 5477,
+          "brotli": 4806
+        },
+        "SaveGlyph.js": {
+          "raw": 422,
+          "gzip": 287,
+          "brotli": 233
+        },
+        "ScrollArea.js": {
+          "raw": 9785,
+          "gzip": 3857,
+          "brotli": 3357
+        },
+        "Select.js": {
+          "raw": 14879,
+          "gzip": 5460,
+          "brotli": 4798
+        },
+        "SelectItemText.js": {
+          "raw": 21728,
+          "gzip": 8034,
+          "brotli": 7305
+        },
+        "SelectionFrame.js": {
+          "raw": 73777,
+          "gzip": 26067,
+          "brotli": 22979
+        },
+        "SelectionFrame.css": {
+          "raw": 950,
+          "gzip": 447,
+          "brotli": 330
+        },
+        "Separator.js": {
+          "raw": 314,
+          "gzip": 244,
+          "brotli": 197
+        },
+        "Settings.js": {
+          "raw": 9992,
+          "gzip": 3673,
+          "brotli": 3270
+        },
+        "SharePanel.js": {
+          "raw": 36777,
+          "gzip": 11848,
+          "brotli": 10573
+        },
+        "Sheet.js": {
+          "raw": 32929,
+          "gzip": 11693,
+          "brotli": 10595
+        },
+        "Sidebar.js": {
+          "raw": 20097,
+          "gzip": 6887,
+          "brotli": 6124
+        },
+        "SizeReadout.js": {
+          "raw": 8843,
+          "gzip": 3448,
+          "brotli": 3020
+        },
+        "Sizing.js": {
+          "raw": 2997,
+          "gzip": 1542,
+          "brotli": 1354
+        },
+        "Skeleton.js": {
+          "raw": 8983,
+          "gzip": 3396,
+          "brotli": 3013
+        },
+        "Slider.js": {
+          "raw": 56142,
+          "gzip": 16627,
+          "brotli": 14773
+        },
+        "SliderXray.css": {
+          "raw": 1389,
+          "gzip": 548,
+          "brotli": 469
+        },
+        "SliderXray.js": {
+          "raw": 18882,
+          "gzip": 6320,
+          "brotli": 5662
+        },
+        "SnapCanvas.js": {
+          "raw": 4925,
+          "gzip": 2285,
+          "brotli": 2058
+        },
+        "SnapGuides.css": {
+          "raw": 2489,
+          "gzip": 749,
+          "brotli": 635
+        },
+        "SnapGuides.js": {
+          "raw": 33386,
+          "gzip": 11719,
+          "brotli": 10416
+        },
+        "Sound.js": {
+          "raw": 20988,
+          "gzip": 8545,
+          "brotli": 7626
+        },
+        "Spacing.js": {
+          "raw": 9090,
+          "gzip": 3591,
+          "brotli": 3053
+        },
+        "Spinner.js": {
+          "raw": 24140,
+          "gzip": 8401,
+          "brotli": 7366
+        },
+        "SplitPane.js": {
+          "raw": 14620,
+          "gzip": 5340,
+          "brotli": 4780
+        },
+        "Status.js": {
+          "raw": 19070,
+          "gzip": 7305,
+          "brotli": 6296
+        },
+        "StatusXray.css": {
+          "raw": 2132,
+          "gzip": 651,
+          "brotli": 547
+        },
+        "StatusXray.js": {
+          "raw": 20627,
+          "gzip": 7395,
+          "brotli": 6621
+        },
+        "StudioWeek.js": {
+          "raw": 38149,
+          "gzip": 12674,
+          "brotli": 11413
+        },
+        "SuggestionChip.js": {
+          "raw": 14374,
+          "gzip": 5266,
+          "brotli": 4597
+        },
+        "Swatch.js": {
+          "raw": 7382,
+          "gzip": 2910,
+          "brotli": 2585
+        },
+        "SwatchXray.css": {
+          "raw": 1128,
+          "gzip": 422,
+          "brotli": 352
+        },
+        "SwatchXray.js": {
+          "raw": 17350,
+          "gzip": 5941,
+          "brotli": 5392
+        },
+        "SwiftCapture.js": {
+          "raw": 27664,
+          "gzip": 5606,
+          "brotli": 4688
+        },
+        "Switch.js": {
+          "raw": 7206,
+          "gzip": 2862,
+          "brotli": 2474
+        },
+        "SwitchXray.js": {
+          "raw": 14356,
+          "gzip": 5279,
+          "brotli": 4779
+        },
+        "SwitchXray.css": {
+          "raw": 1028,
+          "gzip": 451,
+          "brotli": 377
+        },
+        "Switcher.js": {
+          "raw": 15780,
+          "gzip": 5257,
+          "brotli": 4666
+        },
+        "SwitcherXray.js": {
+          "raw": 23932,
+          "gzip": 7970,
+          "brotli": 7139
+        },
+        "SwitcherXray.css": {
+          "raw": 2387,
+          "gzip": 695,
+          "brotli": 590
+        },
+        "Table.js": {
+          "raw": 17563,
+          "gzip": 6362,
+          "brotli": 5694
+        },
+        "Tabs.js": {
+          "raw": 9779,
+          "gzip": 3689,
+          "brotli": 3216
+        },
+        "TagCue.js": {
+          "raw": 13549,
+          "gzip": 5453,
+          "brotli": 4723
+        },
+        "TaskInbox.js": {
+          "raw": 60155,
+          "gzip": 19456,
+          "brotli": 16872
+        },
+        "Textarea.js": {
+          "raw": 16250,
+          "gzip": 6094,
+          "brotli": 5380
+        },
+        "TickGlyph.js": {
+          "raw": 4339,
+          "gzip": 1930,
+          "brotli": 1777
+        },
+        "Toast.js": {
+          "raw": 56614,
+          "gzip": 17510,
+          "brotli": 15426
+        },
+        "ToastXray.js": {
+          "raw": 19511,
+          "gzip": 6382,
+          "brotli": 5724
+        },
+        "ToastXray.css": {
+          "raw": 2182,
+          "gzip": 786,
+          "brotli": 673
+        },
+        "Toggle.js": {
+          "raw": 1026,
+          "gzip": 640,
+          "brotli": 569
+        },
+        "ToolStrip.js": {
+          "raw": 33641,
+          "gzip": 11379,
+          "brotli": 10120
+        },
+        "Toolbar.js": {
+          "raw": 19794,
+          "gzip": 6159,
+          "brotli": 5486
+        },
+        "ToolbarButton.js": {
+          "raw": 747,
+          "gzip": 442,
+          "brotli": 388
+        },
+        "ToolbarGroup.js": {
+          "raw": 529,
+          "gzip": 365,
+          "brotli": 305
+        },
+        "ToolbarGroupContext.js": {
+          "raw": 146,
+          "gzip": 139,
+          "brotli": 107
+        },
+        "ToolbarRoot.js": {
+          "raw": 754,
+          "gzip": 462,
+          "brotli": 398
+        },
+        "ToolbarRootContext.js": {
+          "raw": 236,
+          "gzip": 196,
+          "brotli": 162
+        },
+        "ToolbarSeparator.js": {
+          "raw": 318,
+          "gzip": 242,
+          "brotli": 207
+        },
+        "ToolbarXray.css": {
+          "raw": 1551,
+          "gzip": 505,
+          "brotli": 416
+        },
+        "ToolbarXray.js": {
+          "raw": 19754,
+          "gzip": 6392,
+          "brotli": 5707
+        },
+        "Tooltip.js": {
+          "raw": 19549,
+          "gzip": 6779,
+          "brotli": 5973
+        },
+        "TooltipXray.css": {
+          "raw": 2107,
+          "gzip": 718,
+          "brotli": 633
+        },
+        "TooltipXray.js": {
+          "raw": 20051,
+          "gzip": 6844,
+          "brotli": 6141
+        },
+        "Transitions.js": {
+          "raw": 11411,
+          "gzip": 4718,
+          "brotli": 4022
+        },
+        "Typography.js": {
+          "raw": 5023,
+          "gzip": 2450,
+          "brotli": 2104
+        },
+        "Usage.js": {
+          "raw": 2486,
+          "gzip": 1305,
+          "brotli": 1186
+        },
+        "Weather.js": {
+          "raw": 41460,
+          "gzip": 13491,
+          "brotli": 11974
+        },
+        "Wip.js": {
+          "raw": 59928,
+          "gzip": 23652,
+          "brotli": 20563
+        },
+        "addEventListener.js": {
+          "raw": 103,
+          "gzip": 99,
+          "brotli": 70
+        },
+        "alert-dialog.js": {
+          "raw": 2357,
+          "gzip": 962,
+          "brotli": 849
+        },
+        "areArraysEqual.js": {
+          "raw": 140,
+          "gzip": 134,
+          "brotli": 107
+        },
+        "attachment.js": {
+          "raw": 3395,
+          "gzip": 1549,
+          "brotli": 1367
+        },
+        "avatar.js": {
+          "raw": 4288,
+          "gzip": 1921,
+          "brotli": 1738
+        },
+        "beat.js": {
+          "raw": 3629,
+          "gzip": 1438,
+          "brotli": 1284
+        },
+        "calendar.js": {
+          "raw": 18481,
+          "gzip": 6564,
+          "brotli": 5953
+        },
+        "card.js": {
+          "raw": 1447,
+          "gzip": 711,
+          "brotli": 609
+        },
+        "checkbox.js": {
+          "raw": 6026,
+          "gzip": 2791,
+          "brotli": 2534
+        },
+        "checkbox-group.js": {
+          "raw": 4233,
+          "gzip": 1967,
+          "brotli": 1804
+        },
+        "chip.js": {
+          "raw": 1674,
+          "gzip": 693,
+          "brotli": 625
+        },
+        "clamp.js": {
+          "raw": 85,
+          "gzip": 94,
+          "brotli": 82
+        },
+        "code-card.js": {
+          "raw": 2750,
+          "gzip": 1307,
+          "brotli": 1183
+        },
+        "colour-cue.js": {
+          "raw": 4014,
+          "gzip": 2010,
+          "brotli": 1823
+        },
+        "combobox.js": {
+          "raw": 8455,
+          "gzip": 3490,
+          "brotli": 3150
+        },
+        "components.generated.js": {
+          "raw": 1571,
+          "gzip": 712,
+          "brotli": 587
+        },
+        "connector.js": {
+          "raw": 5940,
+          "gzip": 2703,
+          "brotli": 2475
+        },
+        "cue-document.js": {
+          "raw": 2623,
+          "gzip": 1000,
+          "brotli": 899
+        },
+        "date-cue.js": {
+          "raw": 4967,
+          "gzip": 2331,
+          "brotli": 2059
+        },
+        "doc.js": {
+          "raw": 166941,
+          "gzip": 50604,
+          "brotli": 44625
+        },
+        "dot-display.js": {
+          "raw": 1668,
+          "gzip": 960,
+          "brotli": 840
+        },
+        "draw-picks.js": {
+          "raw": 1673,
+          "gzip": 677,
+          "brotli": 595
+        },
+        "draw-tools.js": {
+          "raw": 1204,
+          "gzip": 576,
+          "brotli": 505
+        },
+        "drop-zone.js": {
+          "raw": 4720,
+          "gzip": 1964,
+          "brotli": 1736
+        },
+        "edit.js": {
+          "raw": 9715,
+          "gzip": 3646,
+          "brotli": 3312
+        },
+        "edit.css": {
+          "raw": 8988,
+          "gzip": 2421,
+          "brotli": 2125
+        },
+        "edit-request.js": {
+          "raw": 766,
+          "gzip": 404,
+          "brotli": 347
+        },
+        "empty-state.js": {
+          "raw": 1247,
+          "gzip": 517,
+          "brotli": 462
+        },
+        "engine.js": {
+          "raw": 189,
+          "gzip": 175,
+          "brotli": 137
+        },
+        "enum-cue.js": {
+          "raw": 5848,
+          "gzip": 2519,
+          "brotli": 2256
+        },
+        "field.js": {
+          "raw": 3841,
+          "gzip": 1264,
+          "brotli": 1116
+        },
+        "floating.js": {
+          "raw": 12870,
+          "gzip": 4872,
+          "brotli": 4315
+        },
+        "folder.js": {
+          "raw": 3302,
+          "gzip": 1444,
+          "brotli": 1298
+        },
+        "form-field.js": {
+          "raw": 5974,
+          "gzip": 2532,
+          "brotli": 2239
+        },
+        "formatNumber.js": {
+          "raw": 274,
+          "gzip": 216,
+          "brotli": 196
+        },
+        "glass-face.js": {
+          "raw": 557,
+          "gzip": 297,
+          "brotli": 249
+        },
+        "glyph.js": {
+          "raw": 558,
+          "gzip": 342,
+          "brotli": 311
+        },
+        "haptic.js": {
+          "raw": 1058,
+          "gzip": 581,
+          "brotli": 480
+        },
+        "hop.js": {
+          "raw": 2405,
+          "gzip": 1118,
+          "brotli": 1005
+        },
+        "icon-button.js": {
+          "raw": 1784,
+          "gzip": 686,
+          "brotli": 593
+        },
+        "index.css": {
+          "raw": 473362,
+          "gzip": 82985,
+          "brotli": 65878
+        },
+        "index.js": {
+          "raw": 659817,
+          "gzip": 202127,
+          "brotli": 173109
+        },
+        "kbd.js": {
+          "raw": 1067,
+          "gzip": 645,
+          "brotli": 545
+        },
+        "kit.js": {
+          "raw": 10574,
+          "gzip": 3868,
+          "brotli": 3484
+        },
+        "label.js": {
+          "raw": 1905,
+          "gzip": 724,
+          "brotli": 642
+        },
+        "lasso.js": {
+          "raw": 2427,
+          "gzip": 1166,
+          "brotli": 1024
+        },
+        "leave.js": {
+          "raw": 886,
+          "gzip": 524,
+          "brotli": 453
+        },
+        "link.js": {
+          "raw": 2378,
+          "gzip": 1182,
+          "brotli": 1042
+        },
+        "link-card.js": {
+          "raw": 2972,
+          "gzip": 1271,
+          "brotli": 1128
+        },
+        "link-cue.js": {
+          "raw": 5447,
+          "gzip": 2346,
+          "brotli": 2046
+        },
+        "mark.js": {
+          "raw": 4080,
+          "gzip": 1658,
+          "brotli": 1508
+        },
+        "menu.js": {
+          "raw": 31181,
+          "gzip": 10644,
+          "brotli": 9740
+        },
+        "mergeCleanups.js": {
+          "raw": 92,
+          "gzip": 104,
+          "brotli": 87
+        },
+        "meter.js": {
+          "raw": 2977,
+          "gzip": 1429,
+          "brotli": 1313
+        },
+        "number-field.js": {
+          "raw": 6780,
+          "gzip": 2974,
+          "brotli": 2678
+        },
+        "numeric-cue.js": {
+          "raw": 7073,
+          "gzip": 3001,
+          "brotli": 2664
+        },
+        "numeric-cue.css": {
+          "raw": 1,
+          "gzip": 21,
+          "brotli": 5
+        },
+        "past-banner.js": {
+          "raw": 889,
+          "gzip": 500,
+          "brotli": 436
+        },
+        "person-cue.js": {
+          "raw": 3659,
+          "gzip": 1785,
+          "brotli": 1586
+        },
+        "popover.js": {
+          "raw": 4973,
+          "gzip": 2291,
+          "brotli": 2045
+        },
+        "popupTriggerMap.js": {
+          "raw": 9023,
+          "gzip": 3549,
+          "brotli": 3270
+        },
+        "portal-colorway.js": {
+          "raw": 540,
+          "gzip": 324,
+          "brotli": 270
+        },
+        "progress.js": {
+          "raw": 5481,
+          "gzip": 2306,
+          "brotli": 2076
+        },
+        "provenance-tooltip.js": {
+          "raw": 986,
+          "gzip": 587,
+          "brotli": 512
+        },
+        "radio.js": {
+          "raw": 2019,
+          "gzip": 954,
+          "brotli": 828
+        },
+        "refuse.js": {
+          "raw": 578,
+          "gzip": 327,
+          "brotli": 291
+        },
+        "region.js": {
+          "raw": 3014,
+          "gzip": 1292,
+          "brotli": 1164
+        },
+        "resolveAriaLabelledBy.js": {
+          "raw": 99,
+          "gzip": 102,
+          "brotli": 75
+        },
+        "resolveValueLabel.js": {
+          "raw": 2238,
+          "gzip": 945,
+          "brotli": 880
+        },
+        "row.js": {
+          "raw": 2839,
+          "gzip": 925,
+          "brotli": 790
+        },
+        "rule.js": {
+          "raw": 453,
+          "gzip": 309,
+          "brotli": 280
+        },
+        "scroll-area.js": {
+          "raw": 12336,
+          "gzip": 4844,
+          "brotli": 4363
+        },
+        "scrollable.js": {
+          "raw": 632,
+          "gzip": 337,
+          "brotli": 295
+        },
+        "select.js": {
+          "raw": 4325,
+          "gzip": 1849,
+          "brotli": 1658
+        },
+        "selection-frame.js": {
+          "raw": 4416,
+          "gzip": 1766,
+          "brotli": 1616
+        },
+        "shim.js": {
+          "raw": 1932,
+          "gzip": 942,
+          "brotli": 840
+        },
+        "size-readout.js": {
+          "raw": 1448,
+          "gzip": 615,
+          "brotli": 547
+        },
+        "skeleton.js": {
+          "raw": 1367,
+          "gzip": 642,
+          "brotli": 569
+        },
+        "slider.js": {
+          "raw": 24501,
+          "gzip": 9648,
+          "brotli": 8746
+        },
+        "springTuning.js": {
+          "raw": 301,
+          "gzip": 248,
+          "brotli": 207
+        },
+        "status.js": {
+          "raw": 1445,
+          "gzip": 811,
+          "brotli": 711
+        },
+        "store.js": {
+          "raw": 6695,
+          "gzip": 2290,
+          "brotli": 2126
+        },
+        "stringifyLocale.js": {
+          "raw": 99,
+          "gzip": 109,
+          "brotli": 83
+        },
+        "styles.js": {
+          "raw": 456,
+          "gzip": 324,
+          "brotli": 275
+        },
+        "swatch.js": {
+          "raw": 1209,
+          "gzip": 623,
+          "brotli": 535
+        },
+        "switch.js": {
+          "raw": 3853,
+          "gzip": 1839,
+          "brotli": 1644
+        },
+        "switcher.js": {
+          "raw": 97943,
+          "gzip": 35743,
+          "brotli": 30697
+        },
+        "tag-cue.js": {
+          "raw": 802,
+          "gzip": 527,
+          "brotli": 451
+        },
+        "textarea.js": {
+          "raw": 3652,
+          "gzip": 1745,
+          "brotli": 1536
+        },
+        "theme.js": {
+          "raw": 219301,
+          "gzip": 32063,
+          "brotli": 26021
+        },
+        "time-scrubber.js": {
+          "raw": 2241,
+          "gzip": 1201,
+          "brotli": 1083
+        },
+        "toast.js": {
+          "raw": 23152,
+          "gzip": 8376,
+          "brotli": 7654
+        },
+        "toggle.js": {
+          "raw": 2477,
+          "gzip": 1162,
+          "brotli": 1033
+        },
+        "tokens.js": {
+          "raw": 273344,
+          "gzip": 63356,
+          "brotli": 50869
+        },
+        "tool-strip.js": {
+          "raw": 6992,
+          "gzip": 3040,
+          "brotli": 2749
+        },
+        "toolbar.js": {
+          "raw": 2015,
+          "gzip": 837,
+          "brotli": 739
+        },
+        "tooltip.js": {
+          "raw": 13734,
+          "gzip": 5184,
+          "brotli": 4749
+        },
+        "useClick.js": {
+          "raw": 1373,
+          "gzip": 745,
+          "brotli": 674
+        },
+        "useFloatingRootContext.js": {
+          "raw": 715,
+          "gzip": 389,
+          "brotli": 340
+        },
+        "useFocus.js": {
+          "raw": 2093,
+          "gzip": 1019,
+          "brotli": 929
+        },
+        "useListNavigation.js": {
+          "raw": 6122,
+          "gzip": 2623,
+          "brotli": 2399
+        },
+        "useOpenInteractionType.js": {
+          "raw": 734,
+          "gzip": 435,
+          "brotli": 374
+        },
+        "usePopupHandleStore.js": {
+          "raw": 344,
+          "gzip": 249,
+          "brotli": 214
+        },
+        "usePositioner.js": {
+          "raw": 35876,
+          "gzip": 13250,
+          "brotli": 11961
+        },
+        "useRegisteredLabelId.js": {
+          "raw": 150,
+          "gzip": 148,
+          "brotli": 119
+        },
+        "useRender.js": {
+          "raw": 106,
+          "gzip": 123,
+          "brotli": 110
+        },
+        "useRenderDialogRoot.js": {
+          "raw": 4601,
+          "gzip": 1923,
+          "brotli": 1761
+        },
+        "useScrollLock.js": {
+          "raw": 13334,
+          "gzip": 5153,
+          "brotli": 4725
+        },
+        "useSwipeDismiss.js": {
+          "raw": 9712,
+          "gzip": 3896,
+          "brotli": 3577
+        },
+        "useTriggerFocusGuards.js": {
+          "raw": 1025,
+          "gzip": 580,
+          "brotli": 514
+        },
+        "useValueAsRef.js": {
+          "raw": 210,
+          "gzip": 167,
+          "brotli": 151
+        },
+        "valueToPercent.js": {
+          "raw": 55,
+          "gzip": 75,
+          "brotli": 59
+        },
+        "weather.js": {
+          "raw": 14659,
+          "gzip": 5358,
+          "brotli": 4898
+        },
+        "well.js": {
+          "raw": 877,
+          "gzip": 500,
+          "brotli": 438
+        }
+      }
+    },
+    "exports": {
+      "Accordion": {
+        "raw": 69223,
+        "gzip": 26558
+      },
+      "AlertDialog": {
+        "raw": 87037,
+        "gzip": 29017
+      },
+      "Attachment": {
+        "raw": 264771,
+        "gzip": 53355
+      },
+      "Avatar": {
+        "raw": 15730,
+        "gzip": 6034
+      },
+      "AvatarGroup": {
+        "raw": 16372,
+        "gzip": 6246
+      },
+      "BlockSilhouette": {
+        "raw": 2863,
+        "gzip": 1052
+      },
+      "Breadcrumbs": {
+        "raw": 352133,
+        "gzip": 82425
+      },
+      "BrushCursor": {
+        "raw": 3768,
+        "gzip": 1445
+      },
+      "Button": {
+        "raw": 22030,
+        "gzip": 7572
+      },
+      "ButtonGroup": {
+        "raw": 23992,
+        "gzip": 8158
+      },
+      "ButtonGroupReadout": {
+        "raw": 3911,
+        "gzip": 1604
+      },
+      "Calendar": {
+        "raw": 329614,
+        "gzip": 75148
+      },
+      "Card": {
+        "raw": 7320,
+        "gzip": 2902
+      },
+      "Checkbox": {
+        "raw": 27969,
+        "gzip": 10970
+      },
+      "CheckboxGroup": {
+        "raw": 32346,
+        "gzip": 12530
+      },
+      "Chip": {
+        "raw": 3115,
+        "gzip": 1143
+      },
+      "CodeCard": {
+        "raw": 5851,
+        "gzip": 2170
+      },
+      "ColourCue": {
+        "raw": 426714,
+        "gzip": 104319
+      },
+      "Combobox": {
+        "raw": 344644,
+        "gzip": 81412
+      },
+      "CommandPalette": {
+        "raw": 170323,
+        "gzip": 59064
+      },
+      "Connector": {
+        "raw": 7351,
+        "gzip": 3199
+      },
+      "ContextMenu": {
+        "raw": 158683,
+        "gzip": 54330
+      },
+      "Cue": {
+        "raw": 266780,
+        "gzip": 46900
+      },
+      "CueDocument": {
+        "raw": 3772,
+        "gzip": 1323
+      },
+      "CueInferred": {
+        "raw": 1805,
+        "gzip": 639
+      },
+      "CueLife": {
+        "raw": 1863,
+        "gzip": 668
+      },
+      "CueUrgency": {
+        "raw": 1747,
+        "gzip": 623
+      },
+      "CueUrl": {
+        "raw": 1807,
+        "gzip": 668
+      },
+      "DAY_LINES": {
+        "raw": 2089,
+        "gzip": 853
+      },
+      "DRAW_TOOLS": {
+        "raw": 194638,
+        "gzip": 27040
+      },
+      "DateCue": {
+        "raw": 452380,
+        "gzip": 112493
+      },
+      "DatePicker": {
+        "raw": 445941,
+        "gzip": 116638
+      },
+      "Day": {
+        "raw": 12980,
+        "gzip": 5147
+      },
+      "DayTile": {
+        "raw": 7999,
+        "gzip": 3152
+      },
+      "Dialog": {
+        "raw": 72553,
+        "gzip": 24719
+      },
+      "Dimple": {
+        "raw": 27973,
+        "gzip": 10980
+      },
+      "DotDisplay": {
+        "raw": 2361,
+        "gzip": 1032
+      },
+      "DrawTools": {
+        "raw": 314274,
+        "gzip": 69890
+      },
+      "DropZone": {
+        "raw": 50354,
+        "gzip": 19434
+      },
+      "EmptyState": {
+        "raw": 2657,
+        "gzip": 949
+      },
+      "EnumCue": {
+        "raw": 375066,
+        "gzip": 85454
+      },
+      "Fan": {
+        "raw": 318391,
+        "gzip": 71280
+      },
+      "Field": {
+        "raw": 29824,
+        "gzip": 11009
+      },
+      "Fieldset": {
+        "raw": 7738,
+        "gzip": 3051
+      },
+      "FilterBar": {
+        "raw": 48719,
+        "gzip": 17127
+      },
+      "Folder": {
+        "raw": 6470,
+        "gzip": 2434
+      },
+      "Form": {
+        "raw": 9699,
+        "gzip": 4001
+      },
+      "FormField": {
+        "raw": 27342,
+        "gzip": 10174
+      },
+      "GlassFace": {
+        "raw": 2010,
+        "gzip": 718
+      },
+      "Glyph": {
+        "raw": 2003,
+        "gzip": 771
+      },
+      "HoverEngraving": {
+        "raw": 9984,
+        "gzip": 3495
+      },
+      "INKS": {
+        "raw": 1668,
+        "gzip": 591
+      },
+      "INK_WIDTHS": {
+        "raw": 1624,
+        "gzip": 581
+      },
+      "IconButton": {
+        "raw": 3249,
+        "gzip": 1123
+      },
+      "InkPicks": {
+        "raw": 118536,
+        "gzip": 41254
+      },
+      "Kbd": {
+        "raw": 2560,
+        "gzip": 1062
+      },
+      "Label": {
+        "raw": 3367,
+        "gzip": 1160
+      },
+      "Lasso": {
+        "raw": 9283,
+        "gzip": 3267
+      },
+      "Led": {
+        "raw": 3696,
+        "gzip": 1478
+      },
+      "LensBar": {
+        "raw": 49002,
+        "gzip": 17269
+      },
+      "LineHandles": {
+        "raw": 2435,
+        "gzip": 994
+      },
+      "Link": {
+        "raw": 295864,
+        "gzip": 63403
+      },
+      "LinkCard": {
+        "raw": 198607,
+        "gzip": 28358
+      },
+      "LinkCue": {
+        "raw": 351017,
+        "gzip": 81837
+      },
+      "Mark": {
+        "raw": 266781,
+        "gzip": 46901
+      },
+      "MarkInferred": {
+        "raw": 1806,
+        "gzip": 641
+      },
+      "MarkLife": {
+        "raw": 1864,
+        "gzip": 669
+      },
+      "MarkLine": {
+        "raw": 1836,
+        "gzip": 689
+      },
+      "MarkUrgency": {
+        "raw": 1748,
+        "gzip": 625
+      },
+      "MarkUrl": {
+        "raw": 1808,
+        "gzip": 669
+      },
+      "MemoryScrubber": {
+        "raw": 261086,
+        "gzip": 52152
+      },
+      "Menu": {
+        "raw": 156140,
+        "gzip": 53549
+      },
+      "MenuCheckboxItem": {
+        "raw": 159769,
+        "gzip": 55238
+      },
+      "MenuItem": {
+        "raw": 154551,
+        "gzip": 53102
+      },
+      "MenuSeparator": {
+        "raw": 153088,
+        "gzip": 52425
+      },
+      "Menubar": {
+        "raw": 163865,
+        "gzip": 55996
+      },
+      "Meter": {
+        "raw": 10341,
+        "gzip": 4187
+      },
+      "NavigationMenu": {
+        "raw": 154219,
+        "gzip": 56346
+      },
+      "NumberField": {
+        "raw": 235906,
+        "gzip": 43602
+      },
+      "NumericCue": {
+        "raw": 398877,
+        "gzip": 94959
+      },
+      "Pagination": {
+        "raw": 198058,
+        "gzip": 28137
+      },
+      "PastBanner": {
+        "raw": 219336,
+        "gzip": 35602
+      },
+      "PerfectPreview": {
+        "raw": 2580,
+        "gzip": 1013
+      },
+      "PersonCue": {
+        "raw": 445715,
+        "gzip": 109647
+      },
+      "Popover": {
+        "raw": 122672,
+        "gzip": 42618
+      },
+      "PreviewCard": {
+        "raw": 97490,
+        "gzip": 34261
+      },
+      "Progress": {
+        "raw": 58012,
+        "gzip": 22432
+      },
+      "ProvenanceProvider": {
+        "raw": 99806,
+        "gzip": 34913
+      },
+      "ProvenanceTooltip": {
+        "raw": 101299,
+        "gzip": 35517
+      },
+      "Radio": {
+        "raw": 21776,
+        "gzip": 8547
+      },
+      "RadioGroup": {
+        "raw": 34651,
+        "gzip": 12987
+      },
+      "RadioKeys": {
+        "raw": 38493,
+        "gzip": 14070
+      },
+      "Region": {
+        "raw": 11184,
+        "gzip": 3532
+      },
+      "RegionRow": {
+        "raw": 6492,
+        "gzip": 2058
+      },
+      "RenameEditor": {
+        "raw": 284223,
+        "gzip": 60524
+      },
+      "Row": {
+        "raw": 4282,
+        "gzip": 1362
+      },
+      "Rule": {
+        "raw": 1897,
+        "gzip": 742
+      },
+      "ScrollArea": {
+        "raw": 22544,
+        "gzip": 8671
+      },
+      "SearchField": {
+        "raw": 3930,
+        "gzip": 1465
+      },
+      "Segmented": {
+        "raw": 36171,
+        "gzip": 13408
+      },
+      "Select": {
+        "raw": 179406,
+        "gzip": 65775
+      },
+      "SelectionFrame": {
+        "raw": 12695,
+        "gzip": 4371
+      },
+      "Settings": {
+        "raw": 7655,
+        "gzip": 2648
+      },
+      "Sheet": {
+        "raw": 114910,
+        "gzip": 39571
+      },
+      "Sidebar": {
+        "raw": 148557,
+        "gzip": 53617
+      },
+      "SizeReadout": {
+        "raw": 8242,
+        "gzip": 2868
+      },
+      "Skeleton": {
+        "raw": 2790,
+        "gzip": 1067
+      },
+      "Slider": {
+        "raw": 51409,
+        "gzip": 19660
+      },
+      "SlidingIndicator": {
+        "raw": 2854,
+        "gzip": 1218
+      },
+      "SnapGuides": {
+        "raw": 3003,
+        "gzip": 1303
+      },
+      "Sparkline": {
+        "raw": 3704,
+        "gzip": 1402
+      },
+      "SpatialFieldCanvas": {
+        "raw": 1795,
+        "gzip": 687
+      },
+      "SpatialFieldController": {
+        "raw": 8135,
+        "gzip": 2909
+      },
+      "Spinner": {
+        "raw": 4090,
+        "gzip": 1670
+      },
+      "SplitButton": {
+        "raw": 213225,
+        "gzip": 74367
+      },
+      "SplitPane": {
+        "raw": 4247,
+        "gzip": 1775
+      },
+      "StatusBadge": {
+        "raw": 147149,
+        "gzip": 53253
+      },
+      "SuggestionChip": {
+        "raw": 200105,
+        "gzip": 28665
+      },
+      "Surface": {
+        "raw": 2989,
+        "gzip": 1009
+      },
+      "SwapIcon": {
+        "raw": 2959,
+        "gzip": 1199
+      },
+      "SwapText": {
+        "raw": 3616,
+        "gzip": 1495
+      },
+      "Swatch": {
+        "raw": 2651,
+        "gzip": 1038
+      },
+      "Switch": {
+        "raw": 17717,
+        "gzip": 7041
+      },
+      "Switcher": {
+        "raw": 36160,
+        "gzip": 13397
+      },
+      "TabList": {
+        "raw": 40442,
+        "gzip": 14874
+      },
+      "TabPanel": {
+        "raw": 37523,
+        "gzip": 13954
+      },
+      "Table": {
+        "raw": 72586,
+        "gzip": 28461
+      },
+      "Tabs": {
+        "raw": 37694,
+        "gzip": 14004
+      },
+      "TagCue": {
+        "raw": 466819,
+        "gzip": 116367
+      },
+      "Textarea": {
+        "raw": 30148,
+        "gzip": 11387
+      },
+      "TimeScrubber": {
+        "raw": 261074,
+        "gzip": 52144
+      },
+      "ToastProvider": {
+        "raw": 316041,
+        "gzip": 72817
+      },
+      "Toggle": {
+        "raw": 18494,
+        "gzip": 6914
+      },
+      "ToggleGroup": {
+        "raw": 20559,
+        "gzip": 7386
+      },
+      "ToolButton": {
+        "raw": 118369,
+        "gzip": 41163
+      },
+      "ToolStrip": {
+        "raw": 409831,
+        "gzip": 99187
+      },
+      "Toolbar": {
+        "raw": 116056,
+        "gzip": 40328
+      },
+      "ToolbarSearch": {
+        "raw": 24354,
+        "gzip": 8889
+      },
+      "ToolbarSeparator": {
+        "raw": 23047,
+        "gzip": 8286
+      },
+      "Tooltip": {
+        "raw": 100554,
+        "gzip": 35245
+      },
+      "TooltipProvider": {
+        "raw": 99597,
+        "gzip": 34860
+      },
+      "WEATHER_SKIES": {
+        "raw": 2243,
+        "gzip": 796
+      },
+      "Weather": {
+        "raw": 20292,
+        "gzip": 7402
+      },
+      "WeatherGlyph": {
+        "raw": 3547,
+        "gzip": 1348
+      },
+      "WeatherTile": {
+        "raw": 12074,
+        "gzip": 4883
+      },
+      "Well": {
+        "raw": 2338,
+        "gzip": 927
+      },
+      "WidthPicks": {
+        "raw": 118582,
+        "gzip": 41287
+      },
+      "connectWebKitHaptics": {
+        "raw": 1739,
+        "gzip": 665
+      },
+      "diffClasses": {
+        "raw": 1630,
+        "gzip": 601
+      },
+      "formatBytes": {
+        "raw": 1746,
+        "gzip": 663
+      },
+      "haptic": {
+        "raw": 2291,
+        "gzip": 942
+      },
+      "hop": {
+        "raw": 3904,
+        "gzip": 1623
+      },
+      "hopPoint": {
+        "raw": 1986,
+        "gzip": 833
+      },
+      "initialsOf": {
+        "raw": 1666,
+        "gzip": 618
+      },
+      "inkColor": {
+        "raw": 1562,
+        "gzip": 555
+      },
+      "leaveRow": {
+        "raw": 2975,
+        "gzip": 1221
+      },
+      "linkHueDegrees": {
+        "raw": 1562,
+        "gzip": 576
+      },
+      "menuParts": {
+        "raw": 2707,
+        "gzip": 1068
+      },
+      "moonAge": {
+        "raw": 1564,
+        "gzip": 588
+      },
+      "moonPhaseName": {
+        "raw": 1649,
+        "gzip": 607
+      },
+      "motionReduced": {
+        "raw": 1720,
+        "gzip": 648
+      },
+      "pageWindow": {
+        "raw": 3198,
+        "gzip": 1040
+      },
+      "paletteParts": {
+        "raw": 3605,
+        "gzip": 1298
+      },
+      "relativeDateWords": {
+        "raw": 2219,
+        "gzip": 899
+      },
+      "setHapticBridge": {
+        "raw": 1566,
+        "gzip": 575
+      },
+      "swatchInk": {
+        "raw": 1725,
+        "gzip": 646
+      },
+      "tagColor": {
+        "raw": 1805,
+        "gzip": 670
+      },
+      "tagIdentity": {
+        "raw": 1779,
+        "gzip": 660
+      },
+      "tintCode": {
+        "raw": 2075,
+        "gzip": 845
+      },
+      "toastParts": {
+        "raw": 2380,
+        "gzip": 890
+      },
+      "useAwake": {
+        "raw": 1925,
+        "gzip": 739
+      },
+      "useCueDocument": {
+        "raw": 4043,
+        "gzip": 1437
+      },
+      "useDotTick": {
+        "raw": 2325,
+        "gzip": 937
+      },
+      "usePortalColorway": {
+        "raw": 1980,
+        "gzip": 762
+      },
+      "useReducedMotion": {
+        "raw": 2194,
+        "gzip": 861
+      },
+      "useToast": {
+        "raw": 75154,
+        "gzip": 27199
+      },
+      "useWaiting": {
+        "raw": 2640,
+        "gzip": 1029
+      },
+      "verbsFor": {
+        "raw": 1986,
+        "gzip": 795
+      },
+      "weatherScene": {
+        "raw": 4924,
+        "gzip": 2272
+      }
+    }
+  },
+  "budgetReview": {
+    "originalPageBudgets": 102,
+    "currentRoutes": 112,
+    "loopSignatureMigration": {
+      "from": "span.mu-led.inline-block [mu-led-breathe]",
+      "to": "span.inline-block.flex-none [mu-led-breathe]",
+      "countPolicy": "Preserve each existing count; only separately reviewed active-state routes may add counts."
+    },
+    "newQuietRoutes": [
+      {
+        "path": "/components/colour-cue",
+        "observed": {
+          "path": "/components/colour-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 30.101898101898083,
+          "scriptMsPerS": 0.04455544455544456,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.16283716283716285,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.3976023976023977,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/date-cue",
+        "observed": {
+          "path": "/components/date-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 31.36830535571542,
+          "scriptMsPerS": 0.03377298161470826,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.19984012789768194,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9984012789768186,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/enum-cue",
+        "observed": {
+          "path": "/components/enum-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 30.58276689324272,
+          "scriptMsPerS": 0.033386645341863225,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.1599360255897641,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.1991203518592566,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/link-cue",
+        "observed": {
+          "path": "/components/link-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 31.41466826538769,
+          "scriptMsPerS": 0.06314948041566744,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.15367705835331738,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9984012789768186,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/numeric-cue",
+        "observed": {
+          "path": "/components/numeric-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 27.556441962504977,
+          "scriptMsPerS": 0.05783805345033905,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.153968887116075,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.193857199840447,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/person-cue",
+        "observed": {
+          "path": "/components/person-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 25.360023961661337,
+          "scriptMsPerS": 0.021565495207667713,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.12280351437699683,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9968051118210863,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/rename-editor",
+        "observed": {
+          "path": "/components/rename-editor",
+          "colorway": "bone",
+          "cpuMsPerS": 32.99760335530258,
+          "scriptMsPerS": 0.0892750149790293,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.1511883363291392,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9972039145196725,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/row",
+        "observed": {
+          "path": "/components/row",
+          "colorway": "bone",
+          "cpuMsPerS": 28.748651348651357,
+          "scriptMsPerS": 0.03216783216783219,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.12387612387612386,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.5984015984015985,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/components/tag-cue",
+        "observed": {
+          "path": "/components/tag-cue",
+          "colorway": "bone",
+          "cpuMsPerS": 33.127171092034345,
+          "scriptMsPerS": 0.025354362148133344,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.12257935715711714,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 1.9964064683569573,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      },
+      {
+        "path": "/performance",
+        "observed": {
+          "path": "/performance",
+          "colorway": "bone",
+          "cpuMsPerS": 23.350369335196646,
+          "scriptMsPerS": 0.22419644639648628,
+          "layoutMsPerS": 0,
+          "styleMsPerS": 0.23457776003194247,
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 2.395687762028349,
+          "infiniteAnimations": [
+            "span.inline-block.flex-none [mu-led-breathe]"
+          ],
+          "runningFinite": 0,
+          "windowMs": 5000
+        },
+        "budget": {
+          "layoutsPerS": 0,
+          "styleRecalcsPerS": 3,
+          "loops": {
+            "span.inline-block.flex-none [mu-led-breathe]": 1
+          }
+        }
+      }
+    ],
+    "counterCeilings": "No existing layout/style ceiling increased.",
+    "activePendingAllowance": {
+      "source": "6084d497",
+      "sourceGuide": "packages/metalui/src/components/led/led.agent.md",
+      "featureProof": "e2e/led-semantic-idle.spec.ts",
+      "offscreenProof": "e2e/clocks-sleep.spec.ts",
+      "routes": [
+        {
+          "path": "/components/lens-bar",
+          "count": 2,
+          "reason": "One explicit asking fixture plus shared Work in progress lamp; playground begins at model."
+        },
+        {
+          "path": "/components/status",
+          "count": 3,
+          "reason": "Waiting LED and waiting badge gallery fixtures plus shared Work in progress lamp."
+        }
+      ],
+      "otherExistingCounts": "Unchanged"
+    }
+  },
+  "typeCompatibility": {
+    "source": "60ed0078",
+    "runtimeEquivalentTo": "f979b692",
+    "method": "esbuild tsx automatic JSX targetes2020 without minifier identifier renaming; exact emitted JavaScript equality",
+    "sha256": {
+      "NumericCue": "190aef8bfba6f1d4eb227ea306eb50b1aab83a3412685196886775557537e1b7",
+      "DateCue": "b2e9cb37aeaec7c95075daf9caa3c7e42c1bf1b22622af506b042fd18b505b2a"
+    }
+  },
+  "reviewedOverrides": [
+    {
+      "path": "/components/past-banner",
+      "source": "f979b692",
+      "selection": "Worst of allthree pairedrepeats, original retained",
+      "sample": {
+        "path": "/components/past-banner",
+        "colorway": "bone",
+        "cpuMsPerS": 39.373226773226754,
+        "scriptMsPerS": 0.058541458541458556,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.17302697302697304,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 2.3976023976023977,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/blocks/studio-week",
+      "source": "916dce18",
+      "sample": {
+        "path": "/blocks/studio-week",
+        "colorway": "bone",
+        "cpuMsPerS": 37.81049271893077,
+        "scriptMsPerS": 0.04707759824456411,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.17414721723518845,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 1.9948134849391583,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/changelog",
+      "source": "916dce18",
+      "sample": {
+        "path": "/changelog",
+        "colorway": "bone",
+        "cpuMsPerS": 34.44173495902459,
+        "scriptMsPerS": 0.10473715770537681,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.18329002598440933,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 1.998800719568259,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/components/avatar",
+      "source": "916dce18",
+      "sample": {
+        "path": "/components/avatar",
+        "colorway": "bone",
+        "cpuMsPerS": 39.45203836930455,
+        "scriptMsPerS": 0.03836930455635494,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.23601119104716226,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 2.3980815347721824,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/components/hover-engraving",
+      "source": "916dce18",
+      "sample": {
+        "path": "/components/hover-engraving",
+        "colorway": "bone",
+        "cpuMsPerS": 38.81095123900881,
+        "scriptMsPerS": 0.02737809752198241,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.14968025579536373,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 2.3980815347721824,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/components/lens-bar",
+      "source": "916dce18",
+      "sample": {
+        "path": "/components/lens-bar",
+        "colorway": "bone",
+        "cpuMsPerS": 21.970411835265903,
+        "scriptMsPerS": 0.030187924830067995,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.1415433826469412,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 2.3990403838464616,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]",
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/components/status",
+      "source": "916dce18",
+      "sample": {
+        "path": "/components/status",
+        "colorway": "bone",
+        "cpuMsPerS": 37.35530257639306,
+        "scriptMsPerS": 0.06171360095865789,
+        "layoutMsPerS": 0,
+        "styleMsPerS": 0.2983822648292391,
+        "layoutsPerS": 0,
+        "styleRecalcsPerS": 2.396644697423607,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]",
+          "span.inline-block.flex-none [mu-led-breathe]",
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    },
+    {
+      "path": "/components/weather",
+      "source": "916dce18",
+      "sample": {
+        "path": "/components/weather",
+        "colorway": "bone",
+        "cpuMsPerS": 229.88614649681526,
+        "scriptMsPerS": 13.9359076433121,
+        "layoutMsPerS": 2.7949840764331206,
+        "styleMsPerS": 1.1815286624203822,
+        "layoutsPerS": 6.170382165605096,
+        "styleRecalcsPerS": 10.151273885350319,
+        "infiniteAnimations": [
+          "span.inline-block.flex-none [mu-led-breathe]"
+        ],
+        "runningFinite": 0,
+        "windowMs": 5000
+      }
+    }
+  ],
+  "evidenceScope": "Original112-route sweep at runtimeSource plus explicitly sourced targeted samples; not a second full sweep. CPU durations/power invalid. Original gate failures retained. Bundle gate enforces only5 named exports.",
+  "finalBundle": {
+    "source": "916dce18",
+    "command": "npm run bench:bundle:gate",
+    "result": "pass",
+    "measurement": {
+      "package": {
+        "total": {
+          "raw": 1083341,
+          "gzip": 163064,
+          "brotli": 132764
+        },
+        "files": {
+          "chunk.js": {
+            "raw": 7471,
+            "gzip": 2591,
+            "brotli": 2307
+          },
+          "icons-life.css": {
+            "raw": 51178,
+            "gzip": 5706,
+            "brotli": 4914
+          },
+          "icons-life.js": {
+            "raw": 9497,
+            "gzip": 2043,
+            "brotli": 1775
+          },
+          "icons.css": {
+            "raw": 244905,
+            "gzip": 16607,
+            "brotli": 13294
+          },
+          "icons.js": {
+            "raw": 2741,
+            "gzip": 616,
+            "brotli": 543
+          },
+          "index.js": {
+            "raw": 94320,
+            "gzip": 26299,
+            "brotli": 22755
+          },
+          "sound.js": {
+            "raw": 19581,
+            "gzip": 5079,
+            "brotli": 4503
+          },
+          "styles.css": {
+            "raw": 326861,
+            "gzip": 52082,
+            "brotli": 41291
+          },
+          "styles.unlayered.css": {
+            "raw": 326787,
+            "gzip": 52041,
+            "brotli": 41382
+          }
+        }
+      },
+      "docs": {
+        "total": {
+          "raw": 6011188,
+          "gzip": 1806713,
+          "brotli": 1575306
+        },
+        "files": {
+          "Accordion.js": {
+            "raw": 19218,
+            "gzip": 6937,
+            "brotli": 6171
+          },
+          "AiComposer.js": {
+            "raw": 33728,
+            "gzip": 11080,
+            "brotli": 9897
+          },
+          "AlertDialog.js": {
+            "raw": 16016,
+            "gzip": 5563,
+            "brotli": 4896
+          },
+          "Attachment.js": {
+            "raw": 22924,
+            "gzip": 8111,
+            "brotli": 7214
+          },
+          "AvailabilityPicker.js": {
+            "raw": 37355,
+            "gzip": 11948,
+            "brotli": 10745
+          },
+          "Avatar.js": {
+            "raw": 12630,
+            "gzip": 4749,
+            "brotli": 4164
+          },
+          "BlockPage.js": {
+            "raw": 2171,
+            "gzip": 1008,
+            "brotli": 876
+          },
+          "BlockSilhouette.js": {
+            "raw": 12280,
+            "gzip": 4577,
+            "brotli": 4003
+          },
+          "Breadcrumbs.js": {
+            "raw": 11649,
+            "gzip": 4510,
+            "brotli": 3987
+          },
+          "BrushCursor.js": {
+            "raw": 33552,
+            "gzip": 12572,
+            "brotli": 11319
+          },
+          "Button.css": {
+            "raw": 14882,
+            "gzip": 3091,
+            "brotli": 2667
+          },
+          "Button.js": {
+            "raw": 88732,
+            "gzip": 26813,
+            "brotli": 23193
+          },
+          "ButtonGroup.js": {
+            "raw": 26258,
+            "gzip": 8703,
+            "brotli": 7709
+          },
+          "ButtonXray.js": {
+            "raw": 25813,
+            "gzip": 8598,
+            "brotli": 7743
+          },
+          "CSPContext.js": {
+            "raw": 170,
+            "gzip": 161,
+            "brotli": 128
+          },
+          "Calendar.js": {
+            "raw": 85299,
+            "gzip": 23007,
+            "brotli": 20235
+          },
+          "Card.js": {
+            "raw": 11778,
+            "gzip": 4814,
+            "brotli": 4174
+          },
+          "Changelog.js": {
+            "raw": 12304,
+            "gzip": 5489,
+            "brotli": 4638
+          },
+          "Checkbox.js": {
+            "raw": 13709,
+            "gzip": 5233,
+            "brotli": 4606
+          },
+          "CheckboxGroup.js": {
+            "raw": 10003,
+            "gzip": 3706,
+            "brotli": 3259
+          },
+          "CheckboxXray.css": {
+            "raw": 1984,
+            "gzip": 626,
+            "brotli": 532
+          },
+          "CheckboxXray.js": {
+            "raw": 19900,
+            "gzip": 6710,
+            "brotli": 6042
+          },
+          "ChipXray.css": {
+            "raw": 1359,
+            "gzip": 524,
+            "brotli": 455
+          },
+          "ChipXray.js": {
+            "raw": 19457,
+            "gzip": 6432,
+            "brotli": 5735
+          },
+          "CodeCard.js": {
+            "raw": 9244,
+            "gzip": 3857,
+            "brotli": 3416
+          },
+          "Color.js": {
+            "raw": 12577,
+            "gzip": 4566,
+            "brotli": 3992
+          },
+          "ColourCue.js": {
+            "raw": 23808,
+            "gzip": 8255,
+            "brotli": 7266
+          },
+          "Combobox.js": {
+            "raw": 12600,
+            "gzip": 4922,
+            "brotli": 4301
+          },
+          "ComboboxEmpty.js": {
+            "raw": 28512,
+            "gzip": 10347,
+            "brotli": 9476
+          },
+          "CommandPalette.js": {
+            "raw": 42016,
+            "gzip": 13077,
+            "brotli": 11523
+          },
+          "ComponentPage.js": {
+            "raw": 1327,
+            "gzip": 708,
+            "brotli": 636
+          },
+          "Connector.js": {
+            "raw": 18812,
+            "gzip": 7124,
+            "brotli": 6350
+          },
+          "CueFamily.js": {
+            "raw": 61892,
+            "gzip": 18957,
+            "brotli": 16630
+          },
+          "DateCue.js": {
+            "raw": 27174,
+            "gzip": 9064,
+            "brotli": 7940
+          },
+          "Day.js": {
+            "raw": 33854,
+            "gzip": 11073,
+            "brotli": 9890
+          },
+          "Dialog.js": {
+            "raw": 5605,
+            "gzip": 2417,
+            "brotli": 2065
+          },
+          "DialogDescription.js": {
+            "raw": 708,
+            "gzip": 458,
+            "brotli": 413
+          },
+          "DialogPopup.js": {
+            "raw": 1922,
+            "gzip": 962,
+            "brotli": 838
+          },
+          "DialogRoot.js": {
+            "raw": 156,
+            "gzip": 151,
+            "brotli": 116
+          },
+          "DialogTitle.js": {
+            "raw": 359,
+            "gzip": 280,
+            "brotli": 264
+          },
+          "DialogXray.css": {
+            "raw": 2845,
+            "gzip": 904,
+            "brotli": 765
+          },
+          "DialogXray.js": {
+            "raw": 19330,
+            "gzip": 6766,
+            "brotli": 6024
+          },
+          "DotDisplay.js": {
+            "raw": 13652,
+            "gzip": 5342,
+            "brotli": 4803
+          },
+          "DrawTools.js": {
+            "raw": 9397,
+            "gzip": 3141,
+            "brotli": 2800
+          },
+          "DropZone.js": {
+            "raw": 29690,
+            "gzip": 9995,
+            "brotli": 8857
+          },
+          "Elevation.js": {
+            "raw": 4867,
+            "gzip": 2145,
+            "brotli": 1866
+          },
+          "EmptyState.js": {
+            "raw": 15614,
+            "gzip": 5993,
+            "brotli": 5336
+          },
+          "EnumCue.js": {
+            "raw": 31137,
+            "gzip": 10239,
+            "brotli": 9043
+          },
+          "Fan.js": {
+            "raw": 49855,
+            "gzip": 14624,
+            "brotli": 13021
+          },
+          "Field.js": {
+            "raw": 19047,
+            "gzip": 6869,
+            "brotli": 6073
+          },
+          "FieldControl.js": {
+            "raw": 1915,
+            "gzip": 1019,
+            "brotli": 915
+          },
+          "FieldRoot.js": {
+            "raw": 3980,
+            "gzip": 1747,
+            "brotli": 1596
+          },
+          "FieldXray.js": {
+            "raw": 16749,
+            "gzip": 6191,
+            "brotli": 5574
+          },
+          "FieldXray.css": {
+            "raw": 1143,
+            "gzip": 469,
+            "brotli": 397
+          },
+          "FloatingPortal.js": {
+            "raw": 9897,
+            "gzip": 3987,
+            "brotli": 3634
+          },
+          "FloatingPortalLite.js": {
+            "raw": 405,
+            "gzip": 300,
+            "brotli": 284
+          },
+          "Folder.js": {
+            "raw": 28879,
+            "gzip": 10245,
+            "brotli": 9152
+          },
+          "Folder.css": {
+            "raw": 37423,
+            "gzip": 5834,
+            "brotli": 5179
+          },
+          "FolderXray.css": {
+            "raw": 3513,
+            "gzip": 1158,
+            "brotli": 1002
+          },
+          "FolderXray.js": {
+            "raw": 19419,
+            "gzip": 6714,
+            "brotli": 6019
+          },
+          "FormField.js": {
+            "raw": 21566,
+            "gzip": 7328,
+            "brotli": 6467
+          },
+          "Home.js": {
+            "raw": 4236,
+            "gzip": 1598,
+            "brotli": 1341
+          },
+          "HoverEngraving.js": {
+            "raw": 19245,
+            "gzip": 6678,
+            "brotli": 5910
+          },
+          "Icon.css": {
+            "raw": 180919,
+            "gzip": 15985,
+            "brotli": 12957
+          },
+          "Icon.js": {
+            "raw": 192318,
+            "gzip": 26217,
+            "brotli": 21072
+          },
+          "IconButton.js": {
+            "raw": 11071,
+            "gzip": 4036,
+            "brotli": 3554
+          },
+          "IconButtonXray.css": {
+            "raw": 1052,
+            "gzip": 444,
+            "brotli": 371
+          },
+          "IconButtonXray.js": {
+            "raw": 21714,
+            "gzip": 7357,
+            "brotli": 6628
+          },
+          "Icons.js": {
+            "raw": 23822,
+            "gzip": 7391,
+            "brotli": 6395
+          },
+          "IconsLife.js": {
+            "raw": 16240,
+            "gzip": 5779,
+            "brotli": 5138
+          },
+          "Kbd.js": {
+            "raw": 12760,
+            "gzip": 4748,
+            "brotli": 4167
+          },
+          "KbdXray.css": {
+            "raw": 849,
+            "gzip": 350,
+            "brotli": 284
+          },
+          "KbdXray.js": {
+            "raw": 21234,
+            "gzip": 7131,
+            "brotli": 6410
+          },
+          "Landing.js": {
+            "raw": 1614,
+            "gzip": 829,
+            "brotli": 713
+          },
+          "Lasso.js": {
+            "raw": 19205,
+            "gzip": 7110,
+            "brotli": 6283
+          },
+          "Lasso.css": {
+            "raw": 2119,
+            "gzip": 686,
+            "brotli": 571
+          },
+          "Layers.css": {
+            "raw": 883,
+            "gzip": 296,
+            "brotli": 236
+          },
+          "Layers.js": {
+            "raw": 16444,
+            "gzip": 6029,
+            "brotli": 5324
+          },
+          "Led.js": {
+            "raw": 8518,
+            "gzip": 3676,
+            "brotli": 3195
+          },
+          "LensBar.js": {
+            "raw": 17850,
+            "gzip": 6384,
+            "brotli": 5727
+          },
+          "LifeIcon.js": {
+            "raw": 68421,
+            "gzip": 18702,
+            "brotli": 15873
+          },
+          "LifeIcon.css": {
+            "raw": 41669,
+            "gzip": 5420,
+            "brotli": 4740
+          },
+          "LineHandles.js": {
+            "raw": 6704,
+            "gzip": 2821,
+            "brotli": 2495
+          },
+          "Link.js": {
+            "raw": 20616,
+            "gzip": 6949,
+            "brotli": 6143
+          },
+          "LinkCard.js": {
+            "raw": 33883,
+            "gzip": 10354,
+            "brotli": 9177
+          },
+          "LinkCardXray.js": {
+            "raw": 21572,
+            "gzip": 7439,
+            "brotli": 6615
+          },
+          "LinkCardXray.css": {
+            "raw": 2095,
+            "gzip": 712,
+            "brotli": 594
+          },
+          "LinkCue.js": {
+            "raw": 30000,
+            "gzip": 9774,
+            "brotli": 8599
+          },
+          "Materials.js": {
+            "raw": 5557,
+            "gzip": 2347,
+            "brotli": 2055
+          },
+          "MemoryScrubber.js": {
+            "raw": 16330,
+            "gzip": 6094,
+            "brotli": 5415
+          },
+          "Menu.js": {
+            "raw": 31086,
+            "gzip": 10393,
+            "brotli": 9221
+          },
+          "MenuXray.css": {
+            "raw": 1211,
+            "gzip": 424,
+            "brotli": 344
+          },
+          "MenuXray.js": {
+            "raw": 16922,
+            "gzip": 6062,
+            "brotli": 5448
+          },
+          "Menubar.js": {
+            "raw": 12173,
+            "gzip": 4644,
+            "brotli": 4076
+          },
+          "MetalStatus.js": {
+            "raw": 10585,
+            "gzip": 3641,
+            "brotli": 3250
+          },
+          "Meter.js": {
+            "raw": 12848,
+            "gzip": 4959,
+            "brotli": 4373
+          },
+          "Motion.js": {
+            "raw": 17342,
+            "gzip": 6393,
+            "brotli": 5614
+          },
+          "NavigationMenu.js": {
+            "raw": 32946,
+            "gzip": 11467,
+            "brotli": 10317
+          },
+          "NumberField.js": {
+            "raw": 13033,
+            "gzip": 5071,
+            "brotli": 4460
+          },
+          "NumberFieldScrubArea.js": {
+            "raw": 14227,
+            "gzip": 6380,
+            "brotli": 5751
+          },
+          "NumericCue.js": {
+            "raw": 41450,
+            "gzip": 12683,
+            "brotli": 11245
+          },
+          "Pagination.js": {
+            "raw": 9675,
+            "gzip": 3672,
+            "brotli": 3261
+          },
+          "PaletteXray.js": {
+            "raw": 32140,
+            "gzip": 10630,
+            "brotli": 9493
+          },
+          "PaletteXray.css": {
+            "raw": 1293,
+            "gzip": 456,
+            "brotli": 367
+          },
+          "PastBanner.js": {
+            "raw": 9112,
+            "gzip": 3473,
+            "brotli": 3032
+          },
+          "PerfectPreview.js": {
+            "raw": 13904,
+            "gzip": 5674,
+            "brotli": 5074
+          },
+          "Performance.js": {
+            "raw": 6881,
+            "gzip": 3019,
+            "brotli": 2579
+          },
+          "PersonCue.js": {
+            "raw": 26376,
+            "gzip": 9020,
+            "brotli": 7930
+          },
+          "Popover.js": {
+            "raw": 14615,
+            "gzip": 5451,
+            "brotli": 4750
+          },
+          "PopoverPopup.js": {
+            "raw": 7712,
+            "gzip": 3046,
+            "brotli": 2743
+          },
+          "PreviewCard.js": {
+            "raw": 16512,
+            "gzip": 6318,
+            "brotli": 5689
+          },
+          "Principles.js": {
+            "raw": 3656,
+            "gzip": 1712,
+            "brotli": 1421
+          },
+          "Progress.js": {
+            "raw": 26162,
+            "gzip": 8669,
+            "brotli": 7756
+          },
+          "ProgressIndicator.js": {
+            "raw": 1878,
+            "gzip": 951,
+            "brotli": 855
+          },
+          "ProvenanceTooltip.js": {
+            "raw": 59472,
+            "gzip": 18496,
+            "brotli": 15976
+          },
+          "Radio.js": {
+            "raw": 10847,
+            "gzip": 4212,
+            "brotli": 3706
+          },
+          "Radius.js": {
+            "raw": 6497,
+            "gzip": 2675,
+            "brotli": 2377
+          },
+          "Region.js": {
+            "raw": 48356,
+            "gzip": 15447,
+            "brotli": 13827
+          },
+          "RenameDemo.js": {
+            "raw": 5519,
+            "gzip": 2384,
+            "brotli": 2126
+          },
+          "RenameEditor.js": {
+            "raw": 21243,
+            "gzip": 7005,
+            "brotli": 6099
+          },
+          "Row.js": {
+            "raw": 16993,
+            "gzip": 5481,
+            "brotli": 4812
+          },
+          "SaveGlyph.js": {
+            "raw": 422,
+            "gzip": 290,
+            "brotli": 235
+          },
+          "ScrollArea.js": {
+            "raw": 9785,
+            "gzip": 3854,
+            "brotli": 3354
+          },
+          "Select.js": {
+            "raw": 14879,
+            "gzip": 5459,
+            "brotli": 4801
+          },
+          "SelectItemText.js": {
+            "raw": 21728,
+            "gzip": 8035,
+            "brotli": 7313
+          },
+          "SelectionFrame.css": {
+            "raw": 950,
+            "gzip": 447,
+            "brotli": 330
+          },
+          "SelectionFrame.js": {
+            "raw": 73777,
+            "gzip": 26069,
+            "brotli": 22935
+          },
+          "Separator.js": {
+            "raw": 314,
+            "gzip": 245,
+            "brotli": 199
+          },
+          "Settings.js": {
+            "raw": 42646,
+            "gzip": 12984,
+            "brotli": 11556
+          },
+          "SharePanel.js": {
+            "raw": 36777,
+            "gzip": 11849,
+            "brotli": 10584
+          },
+          "Sheet.js": {
+            "raw": 32929,
+            "gzip": 11687,
+            "brotli": 10596
+          },
+          "Sidebar.js": {
+            "raw": 20097,
+            "gzip": 6888,
+            "brotli": 6118
+          },
+          "SizeReadout.js": {
+            "raw": 8843,
+            "gzip": 3449,
+            "brotli": 3019
+          },
+          "Sizing.js": {
+            "raw": 2997,
+            "gzip": 1543,
+            "brotli": 1354
+          },
+          "Skeleton.js": {
+            "raw": 8983,
+            "gzip": 3393,
+            "brotli": 3010
+          },
+          "Slider.js": {
+            "raw": 56142,
+            "gzip": 16626,
+            "brotli": 14795
+          },
+          "SliderXray.js": {
+            "raw": 18882,
+            "gzip": 6322,
+            "brotli": 5662
+          },
+          "SliderXray.css": {
+            "raw": 1389,
+            "gzip": 548,
+            "brotli": 469
+          },
+          "SnapCanvas.js": {
+            "raw": 4925,
+            "gzip": 2290,
+            "brotli": 2057
+          },
+          "SnapGuides.css": {
+            "raw": 2489,
+            "gzip": 749,
+            "brotli": 635
+          },
+          "SnapGuides.js": {
+            "raw": 33386,
+            "gzip": 11719,
+            "brotli": 10447
+          },
+          "Sound.js": {
+            "raw": 20988,
+            "gzip": 8547,
+            "brotli": 7632
+          },
+          "Spacing.js": {
+            "raw": 9090,
+            "gzip": 3592,
+            "brotli": 3060
+          },
+          "Spinner.js": {
+            "raw": 24140,
+            "gzip": 8400,
+            "brotli": 7362
+          },
+          "SplitPane.js": {
+            "raw": 14620,
+            "gzip": 5340,
+            "brotli": 4772
+          },
+          "Status.js": {
+            "raw": 19070,
+            "gzip": 7306,
+            "brotli": 6316
+          },
+          "StatusXray.js": {
+            "raw": 20627,
+            "gzip": 7396,
+            "brotli": 6633
+          },
+          "StatusXray.css": {
+            "raw": 2132,
+            "gzip": 651,
+            "brotli": 547
+          },
+          "StudioWeek.js": {
+            "raw": 38183,
+            "gzip": 12696,
+            "brotli": 11423
+          },
+          "SuggestionChip.js": {
+            "raw": 14374,
+            "gzip": 5270,
+            "brotli": 4603
+          },
+          "Swatch.js": {
+            "raw": 7382,
+            "gzip": 2912,
+            "brotli": 2584
+          },
+          "SwatchXray.js": {
+            "raw": 17350,
+            "gzip": 5940,
+            "brotli": 5391
+          },
+          "SwatchXray.css": {
+            "raw": 1128,
+            "gzip": 422,
+            "brotli": 352
+          },
+          "SwiftCapture.js": {
+            "raw": 27664,
+            "gzip": 5607,
+            "brotli": 4693
+          },
+          "Switch.js": {
+            "raw": 7206,
+            "gzip": 2863,
+            "brotli": 2471
+          },
+          "SwitchXray.js": {
+            "raw": 14356,
+            "gzip": 5280,
+            "brotli": 4780
+          },
+          "SwitchXray.css": {
+            "raw": 1028,
+            "gzip": 451,
+            "brotli": 377
+          },
+          "Switcher.js": {
+            "raw": 15780,
+            "gzip": 5258,
+            "brotli": 4675
+          },
+          "SwitcherXray.js": {
+            "raw": 23932,
+            "gzip": 7969,
+            "brotli": 7145
+          },
+          "SwitcherXray.css": {
+            "raw": 2387,
+            "gzip": 695,
+            "brotli": 590
+          },
+          "Table.js": {
+            "raw": 17563,
+            "gzip": 6362,
+            "brotli": 5703
+          },
+          "Tabs.js": {
+            "raw": 9779,
+            "gzip": 3689,
+            "brotli": 3216
+          },
+          "TagCue.js": {
+            "raw": 13549,
+            "gzip": 5452,
+            "brotli": 4718
+          },
+          "TaskInbox.js": {
+            "raw": 60155,
+            "gzip": 19463,
+            "brotli": 16892
+          },
+          "Textarea.js": {
+            "raw": 16250,
+            "gzip": 6096,
+            "brotli": 5378
+          },
+          "TickGlyph.js": {
+            "raw": 4339,
+            "gzip": 1932,
+            "brotli": 1781
+          },
+          "Toast.js": {
+            "raw": 56614,
+            "gzip": 17516,
+            "brotli": 15438
+          },
+          "ToastXray.js": {
+            "raw": 19511,
+            "gzip": 6384,
+            "brotli": 5727
+          },
+          "ToastXray.css": {
+            "raw": 2182,
+            "gzip": 786,
+            "brotli": 673
+          },
+          "Toggle.js": {
+            "raw": 16869,
+            "gzip": 5748,
+            "brotli": 5057
+          },
+          "ToolStrip.js": {
+            "raw": 33641,
+            "gzip": 11385,
+            "brotli": 10129
+          },
+          "Toolbar.js": {
+            "raw": 19794,
+            "gzip": 6160,
+            "brotli": 5487
+          },
+          "ToolbarButton.js": {
+            "raw": 747,
+            "gzip": 446,
+            "brotli": 389
+          },
+          "ToolbarGroup.js": {
+            "raw": 529,
+            "gzip": 369,
+            "brotli": 306
+          },
+          "ToolbarGroupContext.js": {
+            "raw": 146,
+            "gzip": 140,
+            "brotli": 113
+          },
+          "ToolbarRoot.js": {
+            "raw": 754,
+            "gzip": 463,
+            "brotli": 405
+          },
+          "ToolbarRootContext.js": {
+            "raw": 236,
+            "gzip": 197,
+            "brotli": 191
+          },
+          "ToolbarSeparator.js": {
+            "raw": 318,
+            "gzip": 247,
+            "brotli": 210
+          },
+          "ToolbarXray.css": {
+            "raw": 1551,
+            "gzip": 505,
+            "brotli": 416
+          },
+          "ToolbarXray.js": {
+            "raw": 19754,
+            "gzip": 6391,
+            "brotli": 5703
+          },
+          "Tooltip.js": {
+            "raw": 19549,
+            "gzip": 6779,
+            "brotli": 5973
+          },
+          "TooltipXray.css": {
+            "raw": 2107,
+            "gzip": 718,
+            "brotli": 633
+          },
+          "TooltipXray.js": {
+            "raw": 20051,
+            "gzip": 6842,
+            "brotli": 6137
+          },
+          "Transitions.js": {
+            "raw": 11411,
+            "gzip": 4717,
+            "brotli": 4013
+          },
+          "Typography.js": {
+            "raw": 5023,
+            "gzip": 2451,
+            "brotli": 2104
+          },
+          "Usage.js": {
+            "raw": 2486,
+            "gzip": 1307,
+            "brotli": 1180
+          },
+          "Weather.js": {
+            "raw": 42078,
+            "gzip": 13830,
+            "brotli": 12307
+          },
+          "Wip.js": {
+            "raw": 59928,
+            "gzip": 23648,
+            "brotli": 20580
+          },
+          "addEventListener.js": {
+            "raw": 103,
+            "gzip": 99,
+            "brotli": 70
+          },
+          "alert-dialog.js": {
+            "raw": 2357,
+            "gzip": 962,
+            "brotli": 844
+          },
+          "areArraysEqual.js": {
+            "raw": 140,
+            "gzip": 134,
+            "brotli": 107
+          },
+          "attachment.js": {
+            "raw": 3395,
+            "gzip": 1549,
+            "brotli": 1367
+          },
+          "avatar.js": {
+            "raw": 4305,
+            "gzip": 1933,
+            "brotli": 1748
+          },
+          "beat.js": {
+            "raw": 3629,
+            "gzip": 1439,
+            "brotli": 1284
+          },
+          "calendar.js": {
+            "raw": 18481,
+            "gzip": 6565,
+            "brotli": 5960
+          },
+          "card.js": {
+            "raw": 1447,
+            "gzip": 714,
+            "brotli": 618
+          },
+          "checkbox.js": {
+            "raw": 6026,
+            "gzip": 2791,
+            "brotli": 2530
+          },
+          "checkbox-group.js": {
+            "raw": 4233,
+            "gzip": 1965,
+            "brotli": 1794
+          },
+          "chip.js": {
+            "raw": 1674,
+            "gzip": 696,
+            "brotli": 620
+          },
+          "clamp.js": {
+            "raw": 85,
+            "gzip": 94,
+            "brotli": 82
+          },
+          "code-card.js": {
+            "raw": 2750,
+            "gzip": 1311,
+            "brotli": 1190
+          },
+          "colour-cue.js": {
+            "raw": 4014,
+            "gzip": 2009,
+            "brotli": 1829
+          },
+          "combobox.js": {
+            "raw": 8455,
+            "gzip": 3493,
+            "brotli": 3154
+          },
+          "components.generated.js": {
+            "raw": 1571,
+            "gzip": 714,
+            "brotli": 584
+          },
+          "connector.js": {
+            "raw": 5940,
+            "gzip": 2705,
+            "brotli": 2477
+          },
+          "cue-document.js": {
+            "raw": 2623,
+            "gzip": 1003,
+            "brotli": 904
+          },
+          "date-cue.js": {
+            "raw": 4967,
+            "gzip": 2333,
+            "brotli": 2068
+          },
+          "doc.js": {
+            "raw": 166941,
+            "gzip": 50605,
+            "brotli": 44699
+          },
+          "dot-display.js": {
+            "raw": 1668,
+            "gzip": 962,
+            "brotli": 848
+          },
+          "draw-picks.js": {
+            "raw": 1673,
+            "gzip": 676,
+            "brotli": 593
+          },
+          "draw-tools.js": {
+            "raw": 1204,
+            "gzip": 576,
+            "brotli": 502
+          },
+          "drop-zone.js": {
+            "raw": 4720,
+            "gzip": 1964,
+            "brotli": 1747
+          },
+          "edit.css": {
+            "raw": 8988,
+            "gzip": 2421,
+            "brotli": 2125
+          },
+          "edit.js": {
+            "raw": 9715,
+            "gzip": 3648,
+            "brotli": 3313
+          },
+          "edit-request.js": {
+            "raw": 766,
+            "gzip": 405,
+            "brotli": 347
+          },
+          "empty-state.js": {
+            "raw": 1247,
+            "gzip": 520,
+            "brotli": 466
+          },
+          "engine.js": {
+            "raw": 189,
+            "gzip": 174,
+            "brotli": 135
+          },
+          "enum-cue.js": {
+            "raw": 5848,
+            "gzip": 2521,
+            "brotli": 2245
+          },
+          "field.js": {
+            "raw": 3841,
+            "gzip": 1266,
+            "brotli": 1120
+          },
+          "floating.js": {
+            "raw": 12870,
+            "gzip": 4872,
+            "brotli": 4306
+          },
+          "folder.js": {
+            "raw": 3302,
+            "gzip": 1444,
+            "brotli": 1297
+          },
+          "form-field.js": {
+            "raw": 5974,
+            "gzip": 2533,
+            "brotli": 2261
+          },
+          "formatNumber.js": {
+            "raw": 274,
+            "gzip": 216,
+            "brotli": 196
+          },
+          "glass-face.js": {
+            "raw": 557,
+            "gzip": 300,
+            "brotli": 249
+          },
+          "glyph.js": {
+            "raw": 558,
+            "gzip": 347,
+            "brotli": 304
+          },
+          "haptic.js": {
+            "raw": 1058,
+            "gzip": 581,
+            "brotli": 480
+          },
+          "hop.js": {
+            "raw": 2405,
+            "gzip": 1118,
+            "brotli": 1005
+          },
+          "icon-button.js": {
+            "raw": 1784,
+            "gzip": 690,
+            "brotli": 591
+          },
+          "index.css": {
+            "raw": 473601,
+            "gzip": 83058,
+            "brotli": 66009
+          },
+          "index.js": {
+            "raw": 659817,
+            "gzip": 202113,
+            "brotli": 173181
+          },
+          "kbd.js": {
+            "raw": 1067,
+            "gzip": 647,
+            "brotli": 548
+          },
+          "kit.js": {
+            "raw": 10574,
+            "gzip": 3868,
+            "brotli": 3489
+          },
+          "label.js": {
+            "raw": 1905,
+            "gzip": 728,
+            "brotli": 638
+          },
+          "lasso.js": {
+            "raw": 2427,
+            "gzip": 1167,
+            "brotli": 1025
+          },
+          "leave.js": {
+            "raw": 886,
+            "gzip": 526,
+            "brotli": 461
+          },
+          "link.js": {
+            "raw": 2378,
+            "gzip": 1186,
+            "brotli": 1048
+          },
+          "link-card.js": {
+            "raw": 2972,
+            "gzip": 1275,
+            "brotli": 1133
+          },
+          "link-cue.js": {
+            "raw": 5447,
+            "gzip": 2348,
+            "brotli": 2040
+          },
+          "mark.js": {
+            "raw": 4080,
+            "gzip": 1659,
+            "brotli": 1507
+          },
+          "menu.js": {
+            "raw": 31181,
+            "gzip": 10644,
+            "brotli": 9761
+          },
+          "mergeCleanups.js": {
+            "raw": 92,
+            "gzip": 104,
+            "brotli": 87
+          },
+          "meter.js": {
+            "raw": 2977,
+            "gzip": 1432,
+            "brotli": 1315
+          },
+          "number-field.js": {
+            "raw": 6780,
+            "gzip": 2976,
+            "brotli": 2682
+          },
+          "numeric-cue.js": {
+            "raw": 7073,
+            "gzip": 3002,
+            "brotli": 2665
+          },
+          "numeric-cue.css": {
+            "raw": 1,
+            "gzip": 21,
+            "brotli": 5
+          },
+          "past-banner.js": {
+            "raw": 889,
+            "gzip": 501,
+            "brotli": 434
+          },
+          "person-cue.js": {
+            "raw": 3659,
+            "gzip": 1788,
+            "brotli": 1586
+          },
+          "popover.js": {
+            "raw": 4973,
+            "gzip": 2294,
+            "brotli": 2044
+          },
+          "popupTriggerMap.js": {
+            "raw": 9023,
+            "gzip": 3550,
+            "brotli": 3274
+          },
+          "portal-colorway.js": {
+            "raw": 540,
+            "gzip": 326,
+            "brotli": 277
+          },
+          "progress.js": {
+            "raw": 5481,
+            "gzip": 2310,
+            "brotli": 2072
+          },
+          "provenance-tooltip.js": {
+            "raw": 986,
+            "gzip": 587,
+            "brotli": 516
+          },
+          "radio.js": {
+            "raw": 2019,
+            "gzip": 953,
+            "brotli": 827
+          },
+          "refuse.js": {
+            "raw": 578,
+            "gzip": 327,
+            "brotli": 291
+          },
+          "region.js": {
+            "raw": 3014,
+            "gzip": 1295,
+            "brotli": 1151
+          },
+          "resolveAriaLabelledBy.js": {
+            "raw": 99,
+            "gzip": 102,
+            "brotli": 75
+          },
+          "resolveValueLabel.js": {
+            "raw": 2238,
+            "gzip": 946,
+            "brotli": 884
+          },
+          "row.js": {
+            "raw": 2839,
+            "gzip": 929,
+            "brotli": 803
+          },
+          "rule.js": {
+            "raw": 453,
+            "gzip": 313,
+            "brotli": 270
+          },
+          "scroll-area.js": {
+            "raw": 12336,
+            "gzip": 4845,
+            "brotli": 4361
+          },
+          "scrollable.js": {
+            "raw": 632,
+            "gzip": 335,
+            "brotli": 297
+          },
+          "select.js": {
+            "raw": 4325,
+            "gzip": 1855,
+            "brotli": 1662
+          },
+          "selection-frame.js": {
+            "raw": 4416,
+            "gzip": 1767,
+            "brotli": 1613
+          },
+          "shim.js": {
+            "raw": 1932,
+            "gzip": 943,
+            "brotli": 842
+          },
+          "size-readout.js": {
+            "raw": 1448,
+            "gzip": 613,
+            "brotli": 543
+          },
+          "skeleton.js": {
+            "raw": 1367,
+            "gzip": 643,
+            "brotli": 571
+          },
+          "slider.js": {
+            "raw": 24501,
+            "gzip": 9650,
+            "brotli": 8753
+          },
+          "springTuning.js": {
+            "raw": 301,
+            "gzip": 246,
+            "brotli": 205
+          },
+          "status.js": {
+            "raw": 1445,
+            "gzip": 812,
+            "brotli": 716
+          },
+          "store.js": {
+            "raw": 6695,
+            "gzip": 2290,
+            "brotli": 2128
+          },
+          "stringifyLocale.js": {
+            "raw": 99,
+            "gzip": 109,
+            "brotli": 83
+          },
+          "styles.js": {
+            "raw": 456,
+            "gzip": 327,
+            "brotli": 287
+          },
+          "swatch.js": {
+            "raw": 1209,
+            "gzip": 625,
+            "brotli": 536
+          },
+          "switch.js": {
+            "raw": 3853,
+            "gzip": 1840,
+            "brotli": 1642
+          },
+          "switcher.js": {
+            "raw": 97943,
+            "gzip": 35744,
+            "brotli": 30701
+          },
+          "tag-cue.js": {
+            "raw": 802,
+            "gzip": 525,
+            "brotli": 455
+          },
+          "textarea.js": {
+            "raw": 3652,
+            "gzip": 1745,
+            "brotli": 1539
+          },
+          "theme.js": {
+            "raw": 219482,
+            "gzip": 32101,
+            "brotli": 26038
+          },
+          "time-scrubber.js": {
+            "raw": 2241,
+            "gzip": 1203,
+            "brotli": 1079
+          },
+          "toast.js": {
+            "raw": 23152,
+            "gzip": 8379,
+            "brotli": 7664
+          },
+          "toggle.js": {
+            "raw": 2477,
+            "gzip": 1164,
+            "brotli": 1034
+          },
+          "tokens.js": {
+            "raw": 273514,
+            "gzip": 63437,
+            "brotli": 50907
+          },
+          "tool-strip.js": {
+            "raw": 6992,
+            "gzip": 3041,
+            "brotli": 2739
+          },
+          "toolbar.js": {
+            "raw": 2015,
+            "gzip": 841,
+            "brotli": 747
+          },
+          "tooltip.js": {
+            "raw": 13734,
+            "gzip": 5184,
+            "brotli": 4754
+          },
+          "useClick.js": {
+            "raw": 1373,
+            "gzip": 744,
+            "brotli": 682
+          },
+          "useFloatingRootContext.js": {
+            "raw": 715,
+            "gzip": 388,
+            "brotli": 337
+          },
+          "useFocus.js": {
+            "raw": 2093,
+            "gzip": 1019,
+            "brotli": 928
+          },
+          "useListNavigation.js": {
+            "raw": 6122,
+            "gzip": 2620,
+            "brotli": 2401
+          },
+          "useOpenInteractionType.js": {
+            "raw": 734,
+            "gzip": 435,
+            "brotli": 374
+          },
+          "usePopupHandleStore.js": {
+            "raw": 344,
+            "gzip": 249,
+            "brotli": 212
+          },
+          "usePositioner.js": {
+            "raw": 35876,
+            "gzip": 13248,
+            "brotli": 11962
+          },
+          "useRegisteredLabelId.js": {
+            "raw": 150,
+            "gzip": 147,
+            "brotli": 120
+          },
+          "useRender.js": {
+            "raw": 106,
+            "gzip": 123,
+            "brotli": 106
+          },
+          "useRenderDialogRoot.js": {
+            "raw": 4601,
+            "gzip": 1924,
+            "brotli": 1750
+          },
+          "useScrollLock.js": {
+            "raw": 13334,
+            "gzip": 5153,
+            "brotli": 4738
+          },
+          "useSwipeDismiss.js": {
+            "raw": 9712,
+            "gzip": 3896,
+            "brotli": 3577
+          },
+          "useTriggerFocusGuards.js": {
+            "raw": 1025,
+            "gzip": 579,
+            "brotli": 513
+          },
+          "useValueAsRef.js": {
+            "raw": 210,
+            "gzip": 166,
+            "brotli": 150
+          },
+          "valueToPercent.js": {
+            "raw": 55,
+            "gzip": 75,
+            "brotli": 59
+          },
+          "weather.js": {
+            "raw": 14659,
+            "gzip": 5359,
+            "brotli": 4905
+          },
+          "well.js": {
+            "raw": 877,
+            "gzip": 503,
+            "brotli": 440
+          }
+        }
+      },
+      "exports": {
+        "Accordion": {
+          "raw": 69223,
+          "gzip": 26568
+        },
+        "AlertDialog": {
+          "raw": 87037,
+          "gzip": 29023
+        },
+        "Attachment": {
+          "raw": 264771,
+          "gzip": 52837
+        },
+        "Avatar": {
+          "raw": 15746,
+          "gzip": 6040
+        },
+        "AvatarGroup": {
+          "raw": 16388,
+          "gzip": 6239
+        },
+        "BlockSilhouette": {
+          "raw": 2863,
+          "gzip": 1052
+        },
+        "Breadcrumbs": {
+          "raw": 352133,
+          "gzip": 82567
+        },
+        "BrushCursor": {
+          "raw": 3768,
+          "gzip": 1445
+        },
+        "Button": {
+          "raw": 22032,
+          "gzip": 7562
+        },
+        "ButtonGroup": {
+          "raw": 23992,
+          "gzip": 8146
+        },
+        "ButtonGroupReadout": {
+          "raw": 3911,
+          "gzip": 1604
+        },
+        "Calendar": {
+          "raw": 329614,
+          "gzip": 75353
+        },
+        "Card": {
+          "raw": 7320,
+          "gzip": 2905
+        },
+        "Checkbox": {
+          "raw": 27969,
+          "gzip": 10969
+        },
+        "CheckboxGroup": {
+          "raw": 32346,
+          "gzip": 12525
+        },
+        "Chip": {
+          "raw": 3115,
+          "gzip": 1143
+        },
+        "CodeCard": {
+          "raw": 5851,
+          "gzip": 2170
+        },
+        "ColourCue": {
+          "raw": 426714,
+          "gzip": 105905
+        },
+        "Combobox": {
+          "raw": 344644,
+          "gzip": 81362
+        },
+        "CommandPalette": {
+          "raw": 170323,
+          "gzip": 58965
+        },
+        "Connector": {
+          "raw": 7351,
+          "gzip": 3199
+        },
+        "ContextMenu": {
+          "raw": 158683,
+          "gzip": 54165
+        },
+        "Cue": {
+          "raw": 266780,
+          "gzip": 47180
+        },
+        "CueDocument": {
+          "raw": 3772,
+          "gzip": 1323
+        },
+        "CueInferred": {
+          "raw": 1805,
+          "gzip": 639
+        },
+        "CueLife": {
+          "raw": 1863,
+          "gzip": 668
+        },
+        "CueUrgency": {
+          "raw": 1747,
+          "gzip": 623
+        },
+        "CueUrl": {
+          "raw": 1807,
+          "gzip": 668
+        },
+        "DAY_LINES": {
+          "raw": 2089,
+          "gzip": 853
+        },
+        "DRAW_TOOLS": {
+          "raw": 194638,
+          "gzip": 27040
+        },
+        "DateCue": {
+          "raw": 452380,
+          "gzip": 113829
+        },
+        "DatePicker": {
+          "raw": 445941,
+          "gzip": 116743
+        },
+        "Day": {
+          "raw": 12980,
+          "gzip": 5147
+        },
+        "DayTile": {
+          "raw": 7999,
+          "gzip": 3152
+        },
+        "Dialog": {
+          "raw": 72553,
+          "gzip": 24646
+        },
+        "Dimple": {
+          "raw": 27973,
+          "gzip": 10971
+        },
+        "DotDisplay": {
+          "raw": 2361,
+          "gzip": 1032
+        },
+        "DrawTools": {
+          "raw": 314274,
+          "gzip": 69839
+        },
+        "DropZone": {
+          "raw": 50354,
+          "gzip": 19243
+        },
+        "EmptyState": {
+          "raw": 2657,
+          "gzip": 949
+        },
+        "EnumCue": {
+          "raw": 375066,
+          "gzip": 86940
+        },
+        "Fan": {
+          "raw": 318391,
+          "gzip": 71177
+        },
+        "Field": {
+          "raw": 29824,
+          "gzip": 11050
+        },
+        "Fieldset": {
+          "raw": 7738,
+          "gzip": 3051
+        },
+        "FilterBar": {
+          "raw": 48718,
+          "gzip": 17066
+        },
+        "Folder": {
+          "raw": 6470,
+          "gzip": 2434
+        },
+        "Form": {
+          "raw": 9699,
+          "gzip": 3998
+        },
+        "FormField": {
+          "raw": 27342,
+          "gzip": 10220
+        },
+        "GlassFace": {
+          "raw": 2010,
+          "gzip": 718
+        },
+        "Glyph": {
+          "raw": 2003,
+          "gzip": 771
+        },
+        "HoverEngraving": {
+          "raw": 10000,
+          "gzip": 3500
+        },
+        "INKS": {
+          "raw": 1668,
+          "gzip": 591
+        },
+        "INK_WIDTHS": {
+          "raw": 1624,
+          "gzip": 581
+        },
+        "IconButton": {
+          "raw": 3249,
+          "gzip": 1123
+        },
+        "InkPicks": {
+          "raw": 118536,
+          "gzip": 41102
+        },
+        "Kbd": {
+          "raw": 2560,
+          "gzip": 1062
+        },
+        "Label": {
+          "raw": 3367,
+          "gzip": 1160
+        },
+        "Lasso": {
+          "raw": 9283,
+          "gzip": 3268
+        },
+        "Led": {
+          "raw": 3696,
+          "gzip": 1478
+        },
+        "LensBar": {
+          "raw": 49002,
+          "gzip": 17206
+        },
+        "LineHandles": {
+          "raw": 2435,
+          "gzip": 994
+        },
+        "Link": {
+          "raw": 295864,
+          "gzip": 63788
+        },
+        "LinkCard": {
+          "raw": 198607,
+          "gzip": 28358
+        },
+        "LinkCue": {
+          "raw": 351017,
+          "gzip": 82117
+        },
+        "Mark": {
+          "raw": 266781,
+          "gzip": 47182
+        },
+        "MarkInferred": {
+          "raw": 1806,
+          "gzip": 641
+        },
+        "MarkLife": {
+          "raw": 1864,
+          "gzip": 669
+        },
+        "MarkLine": {
+          "raw": 1836,
+          "gzip": 689
+        },
+        "MarkUrgency": {
+          "raw": 1748,
+          "gzip": 625
+        },
+        "MarkUrl": {
+          "raw": 1808,
+          "gzip": 669
+        },
+        "MemoryScrubber": {
+          "raw": 261086,
+          "gzip": 52599
+        },
+        "Menu": {
+          "raw": 156140,
+          "gzip": 53384
+        },
+        "MenuCheckboxItem": {
+          "raw": 159769,
+          "gzip": 54977
+        },
+        "MenuItem": {
+          "raw": 154551,
+          "gzip": 52938
+        },
+        "MenuSeparator": {
+          "raw": 153088,
+          "gzip": 52271
+        },
+        "Menubar": {
+          "raw": 163865,
+          "gzip": 55803
+        },
+        "Meter": {
+          "raw": 10342,
+          "gzip": 4180
+        },
+        "NavigationMenu": {
+          "raw": 154219,
+          "gzip": 55921
+        },
+        "NumberField": {
+          "raw": 235906,
+          "gzip": 44113
+        },
+        "NumericCue": {
+          "raw": 398877,
+          "gzip": 96507
+        },
+        "Pagination": {
+          "raw": 198058,
+          "gzip": 28547
+        },
+        "PastBanner": {
+          "raw": 219336,
+          "gzip": 36161
+        },
+        "PerfectPreview": {
+          "raw": 2580,
+          "gzip": 1013
+        },
+        "PersonCue": {
+          "raw": 445715,
+          "gzip": 111424
+        },
+        "Popover": {
+          "raw": 122672,
+          "gzip": 42532
+        },
+        "PreviewCard": {
+          "raw": 97490,
+          "gzip": 34200
+        },
+        "Progress": {
+          "raw": 58012,
+          "gzip": 22305
+        },
+        "ProvenanceProvider": {
+          "raw": 99806,
+          "gzip": 34720
+        },
+        "ProvenanceTooltip": {
+          "raw": 101299,
+          "gzip": 35339
+        },
+        "Radio": {
+          "raw": 21776,
+          "gzip": 8525
+        },
+        "RadioGroup": {
+          "raw": 34651,
+          "gzip": 12959
+        },
+        "RadioKeys": {
+          "raw": 38493,
+          "gzip": 14038
+        },
+        "Region": {
+          "raw": 11184,
+          "gzip": 3532
+        },
+        "RegionRow": {
+          "raw": 6492,
+          "gzip": 2058
+        },
+        "RenameEditor": {
+          "raw": 284223,
+          "gzip": 60492
+        },
+        "Row": {
+          "raw": 4282,
+          "gzip": 1362
+        },
+        "Rule": {
+          "raw": 1897,
+          "gzip": 742
+        },
+        "ScrollArea": {
+          "raw": 22544,
+          "gzip": 8671
+        },
+        "SearchField": {
+          "raw": 3930,
+          "gzip": 1465
+        },
+        "Segmented": {
+          "raw": 36171,
+          "gzip": 13375
+        },
+        "Select": {
+          "raw": 179406,
+          "gzip": 65403
+        },
+        "SelectionFrame": {
+          "raw": 12695,
+          "gzip": 4370
+        },
+        "Settings": {
+          "raw": 7655,
+          "gzip": 2648
+        },
+        "Sheet": {
+          "raw": 114910,
+          "gzip": 39613
+        },
+        "Sidebar": {
+          "raw": 148557,
+          "gzip": 53793
+        },
+        "SizeReadout": {
+          "raw": 8242,
+          "gzip": 2868
+        },
+        "Skeleton": {
+          "raw": 2790,
+          "gzip": 1067
+        },
+        "Slider": {
+          "raw": 51409,
+          "gzip": 19639
+        },
+        "SlidingIndicator": {
+          "raw": 2854,
+          "gzip": 1218
+        },
+        "SnapGuides": {
+          "raw": 3003,
+          "gzip": 1303
+        },
+        "Sparkline": {
+          "raw": 3704,
+          "gzip": 1402
+        },
+        "SpatialFieldCanvas": {
+          "raw": 1795,
+          "gzip": 687
+        },
+        "SpatialFieldController": {
+          "raw": 8135,
+          "gzip": 2909
+        },
+        "Spinner": {
+          "raw": 4090,
+          "gzip": 1670
+        },
+        "SplitButton": {
+          "raw": 213225,
+          "gzip": 74890
+        },
+        "SplitPane": {
+          "raw": 4247,
+          "gzip": 1775
+        },
+        "StatusBadge": {
+          "raw": 147149,
+          "gzip": 53324
+        },
+        "SuggestionChip": {
+          "raw": 200105,
+          "gzip": 28665
+        },
+        "Surface": {
+          "raw": 2989,
+          "gzip": 1009
+        },
+        "SwapIcon": {
+          "raw": 2959,
+          "gzip": 1199
+        },
+        "SwapText": {
+          "raw": 3616,
+          "gzip": 1495
+        },
+        "Swatch": {
+          "raw": 2651,
+          "gzip": 1038
+        },
+        "Switch": {
+          "raw": 17717,
+          "gzip": 7040
+        },
+        "Switcher": {
+          "raw": 36160,
+          "gzip": 13364
+        },
+        "TabList": {
+          "raw": 40444,
+          "gzip": 14877
+        },
+        "TabPanel": {
+          "raw": 37525,
+          "gzip": 13947
+        },
+        "Table": {
+          "raw": 72586,
+          "gzip": 28327
+        },
+        "Tabs": {
+          "raw": 37696,
+          "gzip": 13996
+        },
+        "TagCue": {
+          "raw": 466819,
+          "gzip": 118227
+        },
+        "Textarea": {
+          "raw": 30148,
+          "gzip": 11417
+        },
+        "TimeScrubber": {
+          "raw": 261074,
+          "gzip": 52591
+        },
+        "ToastProvider": {
+          "raw": 316041,
+          "gzip": 73124
+        },
+        "Toggle": {
+          "raw": 18494,
+          "gzip": 6928
+        },
+        "ToggleGroup": {
+          "raw": 20559,
+          "gzip": 7388
+        },
+        "ToolButton": {
+          "raw": 118369,
+          "gzip": 41023
+        },
+        "ToolStrip": {
+          "raw": 409831,
+          "gzip": 99525
+        },
+        "Toolbar": {
+          "raw": 116056,
+          "gzip": 40113
+        },
+        "ToolbarSearch": {
+          "raw": 24354,
+          "gzip": 8864
+        },
+        "ToolbarSeparator": {
+          "raw": 23047,
+          "gzip": 8256
+        },
+        "Tooltip": {
+          "raw": 100554,
+          "gzip": 35054
+        },
+        "TooltipProvider": {
+          "raw": 99597,
+          "gzip": 34669
+        },
+        "WEATHER_SKIES": {
+          "raw": 2243,
+          "gzip": 796
+        },
+        "Weather": {
+          "raw": 20292,
+          "gzip": 7404
+        },
+        "WeatherGlyph": {
+          "raw": 3547,
+          "gzip": 1348
+        },
+        "WeatherTile": {
+          "raw": 12074,
+          "gzip": 4883
+        },
+        "Well": {
+          "raw": 2338,
+          "gzip": 927
+        },
+        "WidthPicks": {
+          "raw": 118582,
+          "gzip": 41133
+        },
+        "connectWebKitHaptics": {
+          "raw": 1739,
+          "gzip": 665
+        },
+        "diffClasses": {
+          "raw": 1630,
+          "gzip": 601
+        },
+        "formatBytes": {
+          "raw": 1746,
+          "gzip": 663
+        },
+        "haptic": {
+          "raw": 2291,
+          "gzip": 942
+        },
+        "hop": {
+          "raw": 3904,
+          "gzip": 1623
+        },
+        "hopPoint": {
+          "raw": 1986,
+          "gzip": 833
+        },
+        "initialsOf": {
+          "raw": 1666,
+          "gzip": 618
+        },
+        "inkColor": {
+          "raw": 1562,
+          "gzip": 555
+        },
+        "leaveRow": {
+          "raw": 2975,
+          "gzip": 1221
+        },
+        "linkHueDegrees": {
+          "raw": 1562,
+          "gzip": 576
+        },
+        "menuParts": {
+          "raw": 2707,
+          "gzip": 1068
+        },
+        "moonAge": {
+          "raw": 1564,
+          "gzip": 588
+        },
+        "moonPhaseName": {
+          "raw": 1649,
+          "gzip": 607
+        },
+        "motionReduced": {
+          "raw": 1720,
+          "gzip": 648
+        },
+        "pageWindow": {
+          "raw": 3198,
+          "gzip": 1040
+        },
+        "paletteParts": {
+          "raw": 3605,
+          "gzip": 1298
+        },
+        "relativeDateWords": {
+          "raw": 2219,
+          "gzip": 899
+        },
+        "setHapticBridge": {
+          "raw": 1566,
+          "gzip": 575
+        },
+        "swatchInk": {
+          "raw": 1725,
+          "gzip": 646
+        },
+        "tagColor": {
+          "raw": 1805,
+          "gzip": 670
+        },
+        "tagIdentity": {
+          "raw": 1779,
+          "gzip": 660
+        },
+        "tintCode": {
+          "raw": 2075,
+          "gzip": 845
+        },
+        "toastParts": {
+          "raw": 2380,
+          "gzip": 890
+        },
+        "useAwake": {
+          "raw": 1925,
+          "gzip": 739
+        },
+        "useCueDocument": {
+          "raw": 4043,
+          "gzip": 1437
+        },
+        "useDotTick": {
+          "raw": 2325,
+          "gzip": 937
+        },
+        "usePortalColorway": {
+          "raw": 1980,
+          "gzip": 762
+        },
+        "useReducedMotion": {
+          "raw": 2194,
+          "gzip": 861
+        },
+        "useToast": {
+          "raw": 75154,
+          "gzip": 27276
+        },
+        "useWaiting": {
+          "raw": 2640,
+          "gzip": 1029
+        },
+        "verbsFor": {
+          "raw": 1986,
+          "gzip": 795
+        },
+        "weatherScene": {
+          "raw": 4924,
+          "gzip": 2272
+        }
+      }
+    }
+  },
+  "finalChecks": {
+    "source": "916dce18",
+    "build": "npm run build: passed check/package/docs; sitemap112routes",
+    "typecheck": "npm run typecheck: passed all3workspaces afterbuild; initialparallel launch-video read raced package dist declaration cleanup, failedTS7016 before retry",
+    "installedConsumer": "npm run verify:package: passed installedlocaltarball source-host callbacktypes, controlledcue Reactrender and CSS",
+    "idleGate": "npm run bench:gate:112pageswithinbudget, comprising104originalunchanged+1unchanged-sourcePastworstof3+7finaltargeted",
+    "idleReport": "Executed; its Set(signature) chrome subtraction hides repeated lamp multiplicity, so reviewed lamp counts come from raw samples and exact-count gate.",
+    "finishedAt": "2026-10-02T23:16:19.075Z"
+  }
+}

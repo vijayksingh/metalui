@@ -2,705 +2,705 @@
   "pages": {
     "/blocks/ai-composer": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/blocks/availability-picker": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/blocks/settings": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.8
     },
     "/blocks/share-panel": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/blocks/studio-week": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/blocks/task-inbox": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/changelog": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/accordion": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/alert-dialog": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/attachment": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/avatar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/block-silhouette": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/breadcrumbs": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/brush-cursor": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/button": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/button-group": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/calendar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/card": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/checkbox": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/checkbox-group": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/code-card": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/combobox": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/command-palette": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1,
-        "i.xr-caret [xr-blink]": 1
+        "i.xr-caret [xr-blink]": 1,
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 10.5
     },
     "/components/connector": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/cue": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/day": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 2.5,
       "styleRecalcsPerS": 6.5
     },
     "/components/dialog": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/dot-display": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/draw-tools": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/drop-zone": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/empty-state": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/fan": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/field": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/folder": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/form-field": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/hover-engraving": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/icon-button": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/kbd": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/lasso": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/led": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 7
+        "span.inline-block.flex-none [mu-led-breathe]": 7
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/lens-bar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 2
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/line-handles": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/link": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/link-card": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/memory-scrubber": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/menu": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/menubar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/meter": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/navigation-menu": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/number-field": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/pagination": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/past-banner": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/perfect-preview": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/popover": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/preview-card": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/progress": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1,
-        "div.mu-progress-fill.block [mu-progress-sweep]": 2
+        "div.mu-progress-fill.block [mu-progress-sweep]": 2,
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 7.5
     },
     "/components/provenance-tooltip": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/radio": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/region": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/scroll-area": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/select": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/selection-frame": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/settings": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/sheet": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/sidebar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/size-readout": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/skeleton": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0.3,
       "styleRecalcsPerS": 4.3
     },
     "/components/slider": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/snap-guides": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/spinner": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1,
-        "span.mu-spinner-arc.spinner-arc [mu-spinner-turn]": 4
+        "span.mu-spinner-arc.spinner-arc [mu-spinner-turn]": 4,
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 10.5
     },
     "/components/split-pane": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/status": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 3
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/suggestion-chip": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/swatch": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/switch": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/switcher": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/table": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/tabs": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/textarea": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/toast": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/toggle": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/tool-strip": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/toolbar": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/components/tooltip": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/components/weather": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 15,
       "styleRecalcsPerS": 19.7
     },
     "/foundations": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/color": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/foundations/elevation": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/materials": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/motion": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/radius": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/sizing": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/sound": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/spacing": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/foundations/transitions": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/foundations/typography": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/icons": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/icons/life": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
     },
     "/layers": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
     },
     "/overview": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1,
         "div.drift-item.is-live [drift]": 18,
-        "div.drift-item [drift]": 1
+        "div.drift-item [drift]": 1,
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 5.5,
       "styleRecalcsPerS": 9.8
@@ -714,10 +714,80 @@
     },
     "/wip": {
       "loops": {
-        "span.mu-led.inline-block [mu-led-breathe]": 1
+        "span.inline-block.flex-none [mu-led-breathe]": 1
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 2.5
+    },
+    "/components/colour-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/date-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/enum-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/link-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/numeric-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/person-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/rename-editor": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/row": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/components/tag-cue": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/performance": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
     }
   }
 }

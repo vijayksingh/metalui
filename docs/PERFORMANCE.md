@@ -30,7 +30,7 @@ Each rule says how it is enforced. A rule with no check is a promise, not a rule
 ## What ships
 
 10. **One import ships one component.** Component factories are marked pure in the build (`packages/metalui/tsup.config.ts`), so a bundler drops what an app does not use.
-    *Enforced:* `npm run bench:bundle:gate` holds a single-component import under 40 KB gzip.
+    *Enforced:* `npm run bench:bundle:gate` enforces five consumer-import gzip budgets: Button 9 KB, Switch 12 KB, and Led, Well and Surface 6 KB each. It measures the other exports without enforcing a size ceiling for them.
 11. **Icons are imported by name**, never as the whole catalog. CSS is imported in entry files, not inside components.
 12. **SwiftUI follows the same rules.** No clock that runs at rest, `TimelineView` always has a `paused:` that includes `scenePhase`, shadow stacks render through `drawingGroup` or a cached image, no `.saturation` on a material, Low Power Mode drops the material.
 
@@ -41,7 +41,7 @@ Numbers come from the benchmark harness, run on a separate machine, never a lapt
 | Command | What it does |
 |---|---|
 | `npm run bench:bundle` | bytes per file (raw, gzip, brotli) and what each export costs a consumer |
-| `npm run bench:bundle:gate` | fails if a single-component import grows past its ceiling |
+| `npm run bench:bundle:gate` | fails if Button, Switch, Led, Well or Surface exceeds its named gzip ceiling |
 | `npm run bench:web` | idle counters for every docs page (`BENCH_PAGES=all`), on the built site |
 | `npm run bench:idle-report` | pages that do more than the docs chrome at rest |
 | `npm run bench:gate` | fails on a new loop, or more layouts and style recalcs than the budget |
