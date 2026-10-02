@@ -12,7 +12,7 @@ Cues describe a person's own text. A mark is a **Part**; an editable cue is a **
 | Amount | Step the numeric amount; switch currency through an explicit host factor | Vertical scrub; horizontal currency change | Up/Down; Shift larger, Alt finer; Left/Right currency | $40 or €36; demonstration factors are never represented as market rates |
 | Measurement | Step the quantity; convert compatible units | Vertical scrub; horizontal unit change | Up/Down; Shift larger, Alt finer; Left/Right unit | 6h, 360min; other units require host conversions |
 | Colour | Change hue while retaining saturation and lightness; choose a swatch | Open colour well, then drag hue | Enter opens; arrows change hue; Escape cancels | #FF6B3D, rewritten as a full six-digit hex value |
-| Tag | Choose one of the host's recent tags | Wheel cycles; click opens list | Space cycles; Enter opens list; arrows choose | #poster; typing # offers the same recent list |
+| Tag | Choose one of the host's recent tags | Wheel/vertical drag cycles; click steps | Space/Up/Down cycle; Escape restores held edits | #poster; typing an unfinished # opens the host’s actual Tag.Picker list |
 | Derived tag | Confirm a suggestion, then operate it as a tag | Click confirms; subsequent edits use tag control | Tab/Enter confirms; Escape declines | Only confirmation inserts or replaces the proposed tag |
 | Enum tag | Step a host-declared finite state, distinct from a free tag | Wheel/vertical drag; adjacent states peek only while held | Space/Up/Down step; Escape restores | #todo, #doing, #done, #dropped |
 | Link | Open destination; edit its URL in an anchored field | Click follows; edit action opens field | Enter follows; edit action opens field | Full URL; display-only host chip remains a link |
@@ -67,3 +67,5 @@ Host typing through `setSource` coalesces until `commit`, `begin` or history nav
 ## Known person picker
 
 `PersonCue` / `MetalPersonCue` render the host's exact current source name. Known choices may supply shorter picker labels and a host Avatar Object, but only complete source values replace the document. Every name reserves the footprint before opening. Highlighting is an Instrument and does not write; one confirmed choice commits one history entry. Dismissal restores the captured selection; an unrelated source edit invalidates the old range. The operable trigger receives provenance descriptions directly, without a second Tab stop. The shared person glyph is the meaning-slot fallback.
+
+Authored source comparisons use exact UTF16 code units on both platforms. Canonically equivalent NFC/NFD spellings remain distinct source edits with their own length, selection and history. Textarea/TextKit mirrors use the same exact comparison even when the caret does not move. NFC normalization belongs only to the tag identity palette, never to the saved document.

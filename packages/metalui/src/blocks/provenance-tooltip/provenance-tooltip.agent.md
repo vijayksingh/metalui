@@ -41,6 +41,7 @@ One hover away from every cue: where it came from. A composition block: a wrappe
 | `detail` | dimmed, after a middle dot |
 | `clearsChip` | the cue has its own value chip: sit above it |
 | `open` | controlled |
+| `disabled` | suppresses the visual tooltip while an editing instrument is held; source metadata and trigger focus remain |
 
 ## Rules
 
@@ -50,8 +51,18 @@ One hover away from every cue: where it came from. A composition block: a wrappe
 
 ## Accessibility
 
-- Base UI Tooltip: it opens on hover and on keyboard focus and closes on Escape. Tooltips are visual only, so the block also sets the cue's `aria-description` to the provenance ("Recognizer, 0.82"). The cue stays the focusable element.
-- It never holds interactive content.
+- Base UI Tooltip: it opens on hover and on keyboard focus and closes on Escape. Tooltips are visual only, so the block also appends provenance to the cue's authored `aria-description` ("Recognizer, 0.82"). The cue stays the focusable element.
+- It never holds interactive content. Native exposes Source as high-importance custom accessibility content, preserving the wrapped cue’s keyboard hint.
+- Compose with the actual control trigger. Numeric and date inputs receive source through `inputAria.aria-describedby`; Person, Enum, Tag, Colour and Link forward it directly. Do not add a focusable wrapper.
+- Use `disabled={document.editing}` or native `enabled: !document.editing` while scale/adjacent-state feedback is held. Suppression closes the visual overlay without disabling the control or erasing its origin.
+
+## One source document
+
+The docs source example uses `useCueDocument` and native `MetalCueDocument` with the exact sentence and an explicit 2 October 2026 date reference. Host-known tags and names, finite task states, canonical minutes, full hex and URLs remain authored source words. No recognizer confidence is invented. The source textarea/TextKit editor owns UTF16 selection; apply it only when that editor is already focused.
+
+`onBegin` captures the operated range, source callbacks replace its words, `onCommit` records one gesture and `onCancel` restores it. Pointer previews create one Undo. Numeric keyboard detents commit one edit; Enum key repeats share a held gesture until release. Undo/Redo restores source and selection without stealing focus. Compare source by exact UTF16 units; NFC/NFD spellings remain distinct authored edits even when the caret does not move. Typing an unfinished hash opens `TagCue.Picker` against that captured range; search leaves it unchanged, choosing replaces it once, dismissal retains the typed hash. Known people use a named Select trigger and listbox; finite state/tag rotors remain named adjustable buttons. Numeric/date cues remain spinbuttons.
+
+Examples live outside the published native library in `swift/Examples/MetalProvenanceDocumentExample.swift`; the same public controls back the actual macOS feature fixture. Browser and native receipts cover UTF16 emoji/caret shifts, history, cancellation, fixed footprints, read-only controls and both colorways/reduced motion. These receipts do not claim observed VoiceOver speech or physical trackpad feedback.
 
 ## Tokens
 

@@ -31,16 +31,22 @@ export interface ProvenanceTooltipProps {
   children: React.ReactElement<Record<string, unknown>>;
   /** Controlled open state (a docs still, a test). */
   open?: boolean;
+  /** Suppress visual provenance while the cue is operated; the accessible source description remains. */
+  disabled?: boolean;
 }
 
 /** Says where a cue came from, one hover away. */
-export function ProvenanceTooltip({ source, detail = [], clearsChip, children, open }: ProvenanceTooltipProps) {
+export function ProvenanceTooltip({ source, detail = [], clearsChip, children, open, disabled }: ProvenanceTooltipProps) {
   // Tooltips are visual; the provenance is also the cue's accessible description.
-  const trigger = React.cloneElement(children, { 'aria-description': [source, ...detail].join(', ') });
+  const [requestedOpen, setRequestedOpen] = React.useState(false);
+  React.useEffect(() => { if (disabled) setRequestedOpen(false); }, [disabled]);
+  const authored = typeof children.props['aria-description'] === 'string' ? children.props['aria-description'] : undefined;
+  const trigger = React.cloneElement(children, { 'aria-description': [authored, [source, ...detail].join(', ')].filter(Boolean).join('. ') });
   return (
     <Tooltip
       wrap
-      open={open}
+      open={disabled ? false : open ?? requestedOpen}
+      onOpenChange={next => { if (!disabled) setRequestedOpen(next); }}
       className="mu-provenance"
       delay={token('--mu-provenance-delay-ms', 380)}
       offset={token(clearsChip ? '--mu-provenance-chip-offset' : '--mu-provenance-offset', clearsChip ? 34 : 8)}

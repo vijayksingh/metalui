@@ -108,3 +108,7 @@ Run `python3 e2e/native/run-status-label-proof.py`. The actual badge changes syn
 # Native retained Toast labels and actions
 
 Run `python3 e2e/native/run-toast-label-proof.py`. A single public toast keeps its id while synced/offline words change. Own-window captures compare full, reduced and mid-transition labels; a same-id/same-words replacement must also invoke its new Undo callback through Cmd-Z. This covers the native rendered update rather than model-array assertions alone.
+
+# Native provenance source document
+
+`python3 e2e/native/run-provenance-document-proof.py` compiles the docs' actual example against the published MetalUI library and launches it as a macOS app. The real TextKit editor and public inline controls share one source/history writer. Thirty-six receipts cover held state preview/Escape, 6h→360min pointer conversion, fixed footprints, UTF16 caret shifts, focus preservation, local Undo/Redo and read-only refusal in both colorways, with scoped reduction in Graphite. An actual encoding-form Enum replaces NFC é with NFD e + combining accent while the caret stays zero; real TextKit typing verifies exact source and pre-edit selection snapshots through Undo/Redo. View anchors resolve visible control bounds into host coordinates, avoiding title-safe-area offsets. Set `METALUI_NATIVE_CAPTURE` for docs captures. App fixtures run serially; these receipts do not claim spoken VoiceOver output or physical haptics.

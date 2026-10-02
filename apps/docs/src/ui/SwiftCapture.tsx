@@ -6,11 +6,11 @@ import { Bench } from './doc';
 const CAPTURES = import.meta.glob('../../../../docs/captures/swift/*.png', { eager: true, import: 'default' }) as Record<string, string>;
 
 /** The SwiftUI twin of a specimen, rendered by ImageRenderer, in the page's colorway. */
-export function SwiftCapture({ name, maxWidth = 760 }: { name: string; maxWidth?: number }) {
+export function SwiftCapture({ name, maxWidth = 760, caption }: { name: string; maxWidth?: number; caption?: string }) {
   const { colorway } = useColorway();
   const src = Object.entries(CAPTURES).find(([k]) => k.endsWith(`/${name}-${colorway}.png`))?.[1];
   return (
-    <Bench tone="page" caption={`The SwiftUI twin at the same size, rendered by ImageRenderer in ${colorway === "graphite" ? "Graphite" : "Bone"}.`}>
+    <Bench tone="page" caption={caption ?? `The SwiftUI twin at the same size, rendered by ImageRenderer in ${colorway === "graphite" ? "Graphite" : "Bone"}.`}>
       {src ? <Capture src={src} alt={`SwiftUI ${name} in ${colorway}`} maxWidth={maxWidth} /> : <span className="type-doc-caption text-ink3">No capture yet: run the Swift captures.</span>}
     </Bench>
   );

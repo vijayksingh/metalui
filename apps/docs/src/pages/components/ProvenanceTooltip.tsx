@@ -3,8 +3,11 @@ import { Cue, ProvenanceProvider, ProvenanceTooltip } from '@unlocalhosted/metal
 import reactSource from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.agent.md?raw';
+import documentSource from '../../ui/cues/ProvenanceDocument.tsx?raw';
+import nativeDocumentSource from '../../../../../swift/Examples/MetalProvenanceDocumentExample.swift?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { ProvenanceDocument } from '../../ui/cues/ProvenanceDocument';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 export default function ProvenanceTooltipPage() {
@@ -14,6 +17,10 @@ export default function ProvenanceTooltipPage() {
         title="Provenance tooltip"
         lede="One hover away from every cue: where it came from. A rule, the recognizer with its confidence, a region, a cluster, a formula, or you. If the app guessed, the number is shown, because hidden confidence is a bug. Built on Base UI Tooltip."
       />
+
+      <Section id="source-document" title="The words are the document" lede="Operate a cue inside the sentence. One completed gesture creates one Undo; Escape restores its original words and UTF16 selection. Hover or focus keeps each cue’s source one step away.">
+        <Bench caption="editable source · retained selection · one history"><ProvenanceDocument /></Bench>
+      </Section>
 
       <Section title="On a block" lede="Hover or tab to a cue. The first tooltip waits 380 ms; moving to the next cue shows it at once. A cue that shows its own value chip keeps its tooltip clear above it.">
         <Bench caption="rule · recognizer · region · you" className="min-h-[220px]">
@@ -54,11 +61,14 @@ export default function ProvenanceTooltipPage() {
 
       <Section title="SwiftUI" lede="MetalProvenanceTooltip on the graphite frost; .metalProvenance(_:detail:) adds the 380 ms hover.">
         <SwiftCapture name="provenance-tooltip" maxWidth={560} />
+        <SwiftCapture name="provenance-document" maxWidth={960} caption="The public SwiftUI source host, captured from its real macOS window in this colorway." />
       </Section>
 
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
+          { id: 'document', label: 'Source document', code: documentSource },
+          { id: 'native-document', label: 'Native document', code: nativeDocumentSource },
           { id: 'css', label: 'CSS', code: cssSource },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
