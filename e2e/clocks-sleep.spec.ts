@@ -59,7 +59,7 @@ test('the Day clock only counts while it is on screen', async ({ page }) => {
 test('a breathing LED holds still while it is scrolled away', async ({ page }) => {
   await open(page, '/components/led', 'bone');
   const lamp = page.locator('[data-cell="waiting-breathe"] [data-gesture]');
-  const state = () => lamp.evaluate((el) => el.getAnimations().map((a) => a.playState));
+  const state = () => lamp.evaluate((el) => el.getAnimations({ subtree: true }).map((a) => a.playState));
   await lamp.evaluate((el) => el.scrollIntoView({ block: 'center' }));
   await page.waitForTimeout(400);
   expect(await state()).toEqual(['running']);

@@ -22,13 +22,18 @@ for (const colorway of COLORWAYS) {
     await expect(page.getByRole('heading', { level: 1, name: 'Work in progress' })).toBeVisible();
     // On its own page the notice doesn't link to itself.
     await expect(notice(page).getByRole('link')).toHaveCount(0);
-    // SwiftUI placeholders come from meta.json (swift.status "wip"): the drop zone is one.
+    // The real remaining Table adapter is declared wip; completed native ports leave this list.
     const swift = page.locator('#swiftui');
-    await expect(swift.getByRole('link', { name: 'Drop zone' })).toBeVisible();
+    await expect(swift.getByRole('link', { name: 'Table', exact: true })).toBeVisible();
+    await expect(swift.getByRole('link', { name: 'Drop zone', exact: true })).toHaveCount(0);
     await expect(swift.getByRole('link', { name: 'Button', exact: true })).toHaveCount(0);
     // Blocks and open backlog topics.
     await expect(page.locator('#blocks').getByRole('link', { name: 'Studio week' })).toBeVisible();
-    await expect(page.locator('#reworks')).toContainText(/Library gaps found by building blocks\s*\d+ open/);
+    const reworks = page.locator('#reworks');
+    await expect(reworks.getByRole('heading', { name: /Being reworked/ })).toBeVisible();
+    await expect(reworks).toContainText('Open items from the backlog, by topic.');
+    // A topic is allowed to finish; any topics still listed must declare their open count.
+    for (const topic of await reworks.getByRole('listitem').all()) await expect(topic).toContainText(/\d+ open/);
     await page.screenshot({ path: capture(`docs-wip-${colorway}`), fullPage: true });
   });
 }
