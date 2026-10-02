@@ -42,6 +42,7 @@ export const routes: RouteObject[] = [
       { path: 'components/switcher', lazy: lazy(() => import('../pages/components/Switcher')) },
       { path: 'components/fan', lazy: lazy(() => import('../pages/components/Fan')) },
       { path: 'components/swatch', lazy: lazy(() => import('../pages/components/Swatch')) },
+      { path: 'components/row', lazy: lazy(() => import('../pages/components/Row')) },
       { path: 'components/checkbox', lazy: lazy(() => import('../pages/components/Checkbox')) },
       { path: 'components/radio', lazy: lazy(() => import('../pages/components/Radio')) },
       { path: 'components/textarea', lazy: lazy(() => import('../pages/components/Textarea')) },

@@ -37,8 +37,8 @@ for (const colorway of COLORWAYS) {
 
     // Tick a task: its box is checked at once, it stays a beat, then settles out of All into Done.
     const fix = row(page, 'Fix the cropped invoice PDF');
-    await fix.getByRole('checkbox', { name: 'Complete Fix the cropped invoice PDF' }).click();
-    await expect(fix.getByRole('checkbox', { name: /^Complete/ })).toBeChecked();
+    await fix.getByRole('button', { name: 'Complete Fix the cropped invoice PDF' }).click();
+    await expect(fix.getByRole('button', { name: /^Complete/ })).toHaveAttribute('aria-pressed', 'true');
     await expect(toast(page)).toContainText('Completed');
     await page.waitForTimeout(300);
     await expect(fix).toHaveCount(1);
@@ -75,7 +75,7 @@ for (const colorway of COLORWAYS) {
     await toast(page).getByRole('button', { name: /Undo/ }).click();
     await expect(rows(page)).toHaveCount(8);
     for (const t of ['Review the onboarding copy', 'Draft the Q4 roadmap notes', 'Swap the hero photo on pricing']) {
-      await expect(row(page, t).getByRole('checkbox', { name: /^Complete/ })).not.toBeChecked();
+      await expect(row(page, t).getByRole('button', { name: /^Complete/ })).toHaveAttribute('aria-pressed', 'false');
     }
   });
 }
@@ -146,14 +146,14 @@ test('the keyboard moves, selects, completes, opens and clears', async ({ page }
 
   // ↩ opens (a rail marks the row); e completes and focus moves on when the row leaves.
   await page.keyboard.press('Enter');
-  await expect(row(page, 'Fix the cropped invoice PDF')).toHaveAttribute('data-open', '');
+  await expect(row(page, 'Fix the cropped invoice PDF')).toHaveAttribute('data-opened', '');
   await page.keyboard.press('e');
   await expect(row(page, 'Fix the cropped invoice PDF')).toHaveCount(0, { timeout: 3000 });
   await expect(task('Draft the Q4 roadmap notes')).toBeFocused();
 
   // ← reaches the row's boxes; Space on the selection box selects.
   await page.keyboard.press('ArrowLeft');
-  await expect(row(page, 'Draft the Q4 roadmap notes').getByRole('checkbox', { name: /^Complete/ })).toBeFocused();
+  await expect(row(page, 'Draft the Q4 roadmap notes').getByRole('button', { name: /^Complete/ })).toBeFocused();
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('Space');
   await expect(strip(page)).toContainText('1 selected');

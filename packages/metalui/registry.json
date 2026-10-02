@@ -1326,7 +1326,7 @@
       "name": "row",
       "type": "registry:ui",
       "title": "Row",
-      "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+      "description": "A list, panel or option row; selection raises its plate, opened detail marks its rail, and completion strikes its text.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"

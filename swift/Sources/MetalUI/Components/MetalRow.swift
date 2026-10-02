@@ -10,6 +10,8 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     let variant: MetalRowVariant
     let checked: Bool
     let active: Bool
+    let selected: Bool
+    let opened: Bool
     let maybe: Bool
     @ViewBuilder let lead: Lead
     @ViewBuilder let content: Content
@@ -19,13 +21,15 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     @State private var hovering = false
 
     public init(_ variant: MetalRowVariant = .list, checked: Bool = false,
-                active: Bool = false, maybe: Bool = false,
+                active: Bool = false, selected: Bool = false, opened: Bool = false, maybe: Bool = false,
                 @ViewBuilder lead: () -> Lead,
                 @ViewBuilder text: () -> Content,
                 @ViewBuilder trail: () -> Trail) {
         self.variant = variant
         self.checked = checked
         self.active = active
+        self.selected = selected
+        self.opened = opened
         self.maybe = maybe
         self.lead = lead()
         self.content = text()
@@ -50,9 +54,9 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         .foregroundColor(colorway.tokens.ink.color)
         .padding(.horizontal, recipe.points("\(part).pad-x"))
         .modifier(MetalRowVerticalLayout(variant: variant, recipe: recipe))
-        .metalObjectRecipe(recipe, part: part, state: state, in: shape)
+        .metalObjectRecipe(recipe, part: selected ? "option" : part, state: selected ? "on" : state, in: shape)
         .overlay(alignment: .leading) {
-            if variant == .option && active {
+            if opened || (variant == .option && active) {
                 RoundedRectangle(cornerRadius: recipe.points("rail.radius"), style: .continuous)
                     .fill((recipe.color("rail.color") ?? MetalShared.greenDeep).color)
                     .frame(width: recipe.points("rail.w"))
@@ -63,6 +67,8 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         }
         .contentShape(shape)
         .opacity(maybe ? recipe.scalar("self.maybe") : .one)
+        .accessibilityAddTraits(selected ? [.isSelected] : [])
+        .accessibilityHint(opened ? "Opened" : "")
         .onHover { hovering = $0 }
         .animation(.easeInOut(duration: recipe.durationSeconds("self.fade")), value: hovering)
     }

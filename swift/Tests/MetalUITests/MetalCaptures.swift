@@ -493,6 +493,27 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testRowStates() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: MetalSpace.s8) {
+                ForEach(0..<4) { state in
+                    MetalRow(.panel, checked: state == 3, selected: state == 1 || state == 3, opened: state >= 2) {
+                        MetalIcon(.note, size: 14)
+                    } text: {
+                        MetalRowText(["Rest", "Selected", "Opened", "Selected, opened and complete"][state])
+                    } trail: {
+                        EmptyView()
+                    }
+                }
+            }
+            .frame(width: MetalSpace.s64 * 6)
+            .padding(MetalSpace.s24)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("row-states-\(colorway.rawValue)", view)
+        }
+    }
+
     func testToast() {
         for colorway in MetalColorway.allCases {
             // The deck as the web page deals it: five results, the last one twice; folded, then fanned out.

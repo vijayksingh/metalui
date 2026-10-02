@@ -14,12 +14,16 @@ export interface RowRootProps extends React.HTMLAttributes<HTMLElement> {
   checked?: boolean;
   /** option: the active row. */
   active?: boolean;
+  /** Persistent selection plate, independent of keyboard highlight or completion. */
+  selected?: boolean;
+  /** The row whose detail is open: a leading rail, independent of selection. */
+  opened?: boolean;
   /** a weak match, faded. */
   maybe?: boolean;
   as?: 'div' | 'li' | 'tr' | 'button';
 }
 
-const FRAME = 'group/row relative box-border flex text-ink cursor-pointer outline-none data-maybe:opacity-row-maybe';
+const FRAME = 'group/row relative box-border flex text-ink cursor-pointer outline-none data-maybe:opacity-row-maybe data-selected:recipe-row-option-on data-selected:hover:recipe-row-option-on data-selected:focus-visible:recipe-row-option-on data-opened:before:absolute data-opened:before:left-row-rail-offset data-opened:before:top-row-rail-inset data-opened:before:bottom-row-rail-inset data-opened:before:w-row-rail-w data-opened:before:rounded-row-rail-radius data-opened:before:bg-row-rail-color';
 const VARIANTS = {
   list: 'items-start gap-row-list-gap py-row-list-pad-y px-row-list-pad-x rounded-row-list-radius type-row-list transition-row hover:recipe-row-list-hover focus-visible:recipe-row-list-hover',
   panel: 'items-start gap-row-panel-gap py-row-panel-pad-y px-row-panel-pad-x rounded-row-panel-radius type-row-panel transition-row hover:recipe-row-panel-hover focus-visible:recipe-row-panel-hover',
@@ -29,7 +33,7 @@ const LEAD = 'mu-row-lead inline-flex flex-none';
 const TEXT = 'mu-row-text flex-1 min-w-0 group-data-checked/row:text-row-text-checked group-data-checked/row:line-through';
 const TRAIL = 'mu-row-trail inline-flex items-center gap-row-option-gap ml-auto';
 
-const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, maybe, as = 'div', className, ...props }, ref) {
+const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, selected, opened, maybe, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const own = `mu-row ${FRAME} ${VARIANTS[variant]}`;
   return (
@@ -37,6 +41,9 @@ const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ vari
       ref={ref}
       data-variant={variant}
       data-checked={checked ? '' : undefined}
+      data-selected={selected ? '' : undefined}
+      data-opened={opened ? '' : undefined}
+      aria-selected={props.role && ['row', 'option', 'treeitem', 'tab'].includes(props.role) ? selected : undefined}
       data-active={active ? '' : undefined}
       data-maybe={maybe ? '' : undefined}
       className={className ? `${own} ${className}` : own}

@@ -354,8 +354,8 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Icon: `act` sequence plays a glyph's act on demand in React and Swift** for results; the inbox no longer dispatches a synthetic click.
 - [x] **AlertDialog.Popup** forwards typed Base UI `initialFocus` / `finalFocus`.
 - [x] **Avatar**: accessible label independent of initials (`aria-label`, also per group member; Swift `accessibilityLabel`). An empty label makes the disc decorative.
-- [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
-- [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
+- [x] **Row**: `selected` raises a persistent shared plate in every variant; `opened` adds the leading rail independently of selection/completion. React role semantics and Swift selection/hint match; task inbox uses the API instead of copied rail/selection classes.
+- [x] **Task inbox polish**: selection keeps its well and persistent row plate; completion is a separate compact status key (`task` → `check`) with pressed state and native keyboard activation. Eleven inbox feature checks and Row states in both colorways/reduced motion pass.
 - [x] **Block glyph inventory available**: `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload` all ship with semantic authored acts, web/Swift/native outputs and 16/24px references. Replacing the settings/composer/assignment usages remains the block migration below.
 - [x] **Sidebar glyphs**: inert icon wrappers remove extra Chrome Tab stops in both expanded and collapsed rails; the enclosing link or toggle remains the icon trigger.
 - [x] **Textarea size and counter**: regular/compact match Field’s UI type; large preserves prose. `counterThreshold` controls each instance, with omitted values read from the local recipe. Settings Bio uses size and an always-visible counter instead of copied CSS. Swift mirrors size/count policy; full native rendering remains explicitly WIP.

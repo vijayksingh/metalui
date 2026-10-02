@@ -10,8 +10,10 @@ A row in a list. React: `Row` with parts `Row.Root`, `Row.Lead`, `Row.Text`, `Ro
 
 ## States
 
+- `selected`: persistent shared selected plate in every variant; independent of focus/highlight and task completion. `opened`: leading rail for the row whose detail is open; either state can coexist.
 - `checked`: `Row.Text` is struck through in ink3. `maybe`: a weak match at 55 %.
 
 ## Keyboard and accessibility
 
+- With `role="row"`, `option`, `treeitem` or `tab`, `selected` supplies `aria-selected`; an explicit host attribute wins. Other roles receive appearance only. Hosts own the open-detail relationship (`aria-controls`, `aria-expanded` where appropriate). Swift marks selection and exposes an opened hint.
 - The host gives the row its role (`listitem`, `option`, `row`) and makes it focusable when it acts; focus shows the same raise as hover.

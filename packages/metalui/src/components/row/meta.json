@@ -3,7 +3,7 @@
   "title": "Row",
   "status": "alpha",
   "layer": "part",
-  "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+  "description": "A list, panel or option row; selection raises its plate, opened detail marks its rail, and completion strikes its text.",
   "base": "none",
   "react": {
     "export": "Row",
@@ -23,5 +23,6 @@
       "Text",
       "Trail"
     ]
-  }
+  },
+  "page": "/components/row"
 }
