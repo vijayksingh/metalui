@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "colorway",
+  "type": "registry:lib",
+  "title": "MetalUI portal colorway",
+  "description": "Reactive inheritance of an anchor colorway across DOM portals.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "packages/metalui/src/theme/portal-colorway.ts",
+      "type": "registry:ui",
+      "target": "components/metalui/theme/portal-colorway.ts",
+      "content": "'use client';\n\nimport * as React from 'react';\n\n/** Carry an anchor's nearest explicit colorway across a DOM portal.\n * Copy the result onto the portal's positioner; never move a popup inside a clipped host.\n * Ancestor changes update open popups, while an absent override keeps normal CSS inheritance.\n */\nexport function usePortalColorway(anchor?: Element | null): string | undefined {\n  const snapshot = React.useCallback(() => {\n    if (typeof document === 'undefined') return undefined;\n    return (anchor ?? document.documentElement).closest('[data-mu-colorway]')?.getAttribute('data-mu-colorway') ?? undefined;\n  }, [anchor]);\n  const subscribe = React.useCallback((notify: () => void) => {\n    if (typeof document === 'undefined') return () => {};\n    const observer = new MutationObserver(notify);\n    for (let element: Element | null = anchor ?? document.documentElement; element; element = element.parentElement) {\n      observer.observe(element, { attributes: true, attributeFilter: ['data-mu-colorway'] });\n    }\n    return () => observer.disconnect();\n  }, [anchor]);\n  return React.useSyncExternalStore(subscribe, snapshot, () => undefined);\n}\n"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ export { Well, type WellProps, type WellVariant, type WellRadius } from './compo
 export { useAwake } from './motion/awake';
 export { motionReduced, useReducedMotion } from './motion/reduced';
 export { leaveRow, type RowLeaveOptions } from './motion/leave';
+export { usePortalColorway } from './theme/portal-colorway';
 export { DotDisplay, useDotTick, type DotDisplayProps, type DotColour, type DotInk } from './components/dot-display/dot-display';
 export { Label, type LabelProps, type LabelVariant } from './components/label/label';
 export { Rule, type RuleProps } from './components/rule/rule';

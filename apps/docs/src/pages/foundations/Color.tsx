@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { createPortal } from 'react-dom';
+import { Button, usePortalColorway } from '@unlocalhosted/metalui';
 import { LifeIcon, type LifeIconName, type TintName } from '@unlocalhosted/metalui/icons/life';
 import { CheckIcon } from '@unlocalhosted/metalui/icons';
 import { tokens, worstContrast } from '../../lib/tokens';
@@ -18,6 +20,21 @@ const surfaces = (cw: CW) => {
 };
 
 const SURFACE_KEYS = ['s-hi', 's', 's-lo', 'well-top', 'well-bot'] as const;
+
+function PortalSpecimen() {
+  const [scope, setScope] = React.useState<CW>('graphite');
+  const [anchor, setAnchor] = React.useState<HTMLDivElement | null>(null);
+  const [host, setHost] = React.useState<HTMLElement | null>(null);
+  const [shown, setShown] = React.useState(false);
+  const colorway = usePortalColorway(anchor);
+  React.useEffect(() => setHost(document.body), []);
+  return <div ref={setAnchor} data-testid="portal-scope" data-mu-colorway={scope} className="mu-cluster recipe-surface-raise-sm rounded-card p-mu-space-16">
+    <Button onClick={() => setShown((value) => !value)}>{shown ? 'Hide portal specimen' : 'Show portal specimen'}</Button>
+    <Button onClick={() => setScope((value) => value === 'bone' ? 'graphite' : 'bone')}>Change specimen colorway</Button>
+    <span className="type-ui text-ink">{scope}</span>
+    {host && shown && createPortal(<span data-testid="portal-specimen" data-mu-colorway={colorway} role="status" className="fixed bottom-mu-space-24 right-mu-space-24 z-tooltip-z recipe-surface-raise-sm rounded-card p-mu-space-16 type-ui text-ink">Portalled specimen · {colorway}</span>, host)}
+  </div>;
+}
 
 function Led({ ok }: { ok: boolean }) {
   return (
@@ -198,7 +215,7 @@ export default function Color() {
       </Section>
 
       <Section title="Signals" lede="Signals say something about the system’s state. One signal per object at most. Phosphor green marks intent, red is reserved for destruction, success always carries its check, and LEDs are radial, lit from the same top-left light. None of them carries meaning by hue alone.">
-        <Bench caption="Phosphor · green-deep · destructive · success with its check · warning · photon · capture blue · keeper gold · LEDs">
+        <Bench caption="Phosphor · green-deep · destructive · success with its check · warning · photon · capture blue · gold hairline · LEDs">
           <div className="flex flex-col items-center gap-24">
             <div className="flex flex-wrap items-end justify-center gap-24">
               {SWATCHES.map((name) => (
@@ -227,9 +244,13 @@ export default function Color() {
               .filter(([k]) => !k.startsWith('$'))
               .map(([k, use]) => [`--mu-${k}`, k.startsWith('led-') ? 'radial' : SHARED[k as keyof typeof SHARED], use]),
             ['--mu-blue', SHARED.blue, 'The capture card, the one saturated hero surface.'],
-            ['--mu-gold', SHARED.gold, 'Keeper ring, as a hairline only.'],
+            ['--mu-gold', SHARED.gold, 'Gold ring, as a hairline only.'],
           ]}
         />
+      </Section>
+
+      <Section id="portals" title="A colorway crosses a portal" lede="A popup keeps the nearest colorway of its anchor, even when its DOM lives under the page body. usePortalColorway copies that scope onto its positioner and follows changes while open. The portal keeps collision placement and escapes clipping; SwiftUI carries metalColorway through its environment.">
+        <Bench><PortalSpecimen /></Bench>
       </Section>
 
       <Section
@@ -253,8 +274,8 @@ export default function Color() {
         />
         <Rules
           rules={[
-            { id: 'C4', title: 'The stroke carries the feeling', body: 'A tint colors the glyph’s line, and a tinted glyph is stroke only: the vessel is not filled; any other duotone part follows the line at its usual opacity. Strokes are mixed at the orange’s chroma, deep enough for 3.3:1 on bone and light enough for 4.5:1 on graphite. No family sits on yellow, because a yellow deep enough to read on bone is brown. Words never take a tint.', origin: 'Ours · the Kamui life set’s stroke tint, with new pigments' },
-            { id: 'C5', title: 'Color names the kind, never the strength', body: 'Joy, affection, calm, wonder, low and tension each have one pigment. How strong a feeling is shows in its shape. Moments that carry an unmistakable feeling take it too: a date, a friend, family and a gift are affection; a party is joy.', origin: 'Ours · replaces hue-is-valence, saturation-is-energy (Kamui 02 §3)' },
+            { id: 'C4', title: 'The stroke carries the feeling', body: 'A tint colors the glyph’s line, and a tinted glyph is stroke only: the vessel is not filled; any other duotone part follows the line at its usual opacity. Strokes are mixed at the orange’s chroma, deep enough for 3.3:1 on bone and light enough for 4.5:1 on graphite. No family sits on yellow, because a yellow deep enough to read on bone is brown. Words never take a tint.', origin: 'Ours · the life set’s stroke tint, with new pigments; source in CREDITS.md' },
+            { id: 'C5', title: 'Color names the kind, never the strength', body: 'Joy, affection, calm, wonder, low and tension each have one pigment. How strong a feeling is shows in its shape. Moments that carry an unmistakable feeling take it too: a date, a friend, family and a gift are affection; a party is joy.', origin: 'Ours · replaces hue-is-valence, saturation-is-energy; source spec 02 §3 in CREDITS.md' },
             { id: 'C6', title: 'Off under Increase Contrast, and by one setting', body: 'prefers-contrast: more returns every body to ink, and so does data-mu-untinted on any ancestor (.metalUntinted() in SwiftUI). The shape language reads without color.', origin: 'Ours' },
           ]}
         />

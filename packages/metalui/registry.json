@@ -17,6 +17,20 @@
       }
     },
     {
+      "name": "colorway",
+      "type": "registry:lib",
+      "title": "MetalUI portal colorway",
+      "description": "Reactive inheritance of an anchor colorway across DOM portals.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/metalui/src/theme/portal-colorway.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/theme/portal-colorway.ts"
+        }
+      ]
+    },
+    {
       "name": "motion",
       "type": "registry:lib",
       "title": "MetalUI motion",

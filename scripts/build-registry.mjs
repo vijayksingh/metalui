@@ -17,6 +17,12 @@ const fileType = (f) => (f.endsWith('.css') ? 'registry:file' : 'registry:ui');
 
 // Files that components share without being components: each becomes one registry item.
 const shared = {
+  colorway: {
+    title: 'MetalUI portal colorway',
+    description: 'Reactive inheritance of an anchor colorway across DOM portals.',
+    dependsOn: [],
+    files: ['theme/portal-colorway.ts'],
+  },
   motion: {
     title: 'MetalUI motion',
     description: 'Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.',
