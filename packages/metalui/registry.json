@@ -769,6 +769,40 @@
       "docs": "Agent guide: https://metalui.dev/r/empty-state.md. SwiftUI: MetalEmptyState in the MetalUI Swift package."
     },
     {
+      "name": "enum-cue",
+      "type": "registry:ui",
+      "title": "Enum cue",
+      "description": "A finite host-declared source state: cycle, keyboard step, focused wheel or held vertical drag with one source/history transaction and a fixed footprint.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/enum-cue/enum-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/enum-cue/enum-cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/enum-cue/gesture.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/components/enum-cue/gesture.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/components/enum-cue/enum-cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/enum-cue/enum-cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/enum-cue.md. SwiftUI: MetalEnumCue, MetalEnumCueChoice in the MetalUI Swift package."
+    },
+    {
       "name": "fan",
       "type": "registry:ui",
       "title": "Fan",

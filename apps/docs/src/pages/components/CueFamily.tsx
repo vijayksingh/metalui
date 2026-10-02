@@ -10,6 +10,7 @@ import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCu
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { CueRecognition, CueLegend } from './CueRecognition';
+import { EnumCueDocument } from './EnumCue';
 import { CueDocumentProof } from './CueDocumentProof';
 
 const TABS = [
@@ -95,6 +96,7 @@ export default function CueFamilyPage() {
 
       <Section id="source-history" title="The text owns the edit" lede="Scrub the existing number control. Intermediate frames replace exactly one source range; release records one Undo step. Escape cancels the held edit. UTF16 selection before, inside or after the range follows the replacement and returns with Undo. Recognition does not write text.">
         <Bench caption="Real source · one gesture · retained selection"><CueDocumentProof /></Bench>
+        <Bench caption="Finite state · fixed source footprint"><EnumCueDocument /></Bench>
       </Section>
 
       <Section title="The dimple" lede="A task's checkbox on Base UI Checkbox: rest, hover, checked (a pen draws the tick: the short leg, a beat at the corner, then the long leg on a spring), doing (announced as mixed), ghost, and disabled.">

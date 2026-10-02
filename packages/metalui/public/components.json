@@ -444,6 +444,23 @@
       "agent": "https://metalui.dev/r/empty-state.md"
     },
     {
+      "name": "enum-cue",
+      "title": "Enum cue",
+      "status": "alpha",
+      "description": "A finite host-declared source state: cycle, keyboard step, focused wheel or held vertical drag with one source/history transaction and a fixed footprint.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "EnumCue",
+        "base": "@base-ui/react/button"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalEnumCue, MetalEnumCueChoice"
+      },
+      "registry": "https://metalui.dev/r/enum-cue.json",
+      "agent": "https://metalui.dev/r/enum-cue.md"
+    },
+    {
       "name": "fan",
       "title": "Fan",
       "status": "alpha",

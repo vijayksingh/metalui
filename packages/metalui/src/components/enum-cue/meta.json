@@ -1,0 +1,8 @@
+{
+  "name": "enum-cue", "title": "Enum cue", "status": "alpha", "layer": "component",
+  "description": "A finite host-declared source state: cycle, keyboard step, focused wheel or held vertical drag with one source/history transaction and a fixed footprint.",
+  "base": "@base-ui/react/button",
+  "react": { "export": "EnumCue", "files": ["enum-cue.tsx", "gesture.generated.ts", "enum-cue.css"] },
+  "swift": { "symbol": "MetalEnumCue, MetalEnumCueChoice", "file": "swift/Sources/MetalUI/Components/MetalEnumCue.swift" },
+  "agent": "enum-cue.agent.md", "page": "/components/enum-cue"
+}
