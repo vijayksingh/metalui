@@ -247,7 +247,7 @@ public struct MetalBrushCursor {
             }
         case .rectangle:
             path.append(UIBezierPath(roundedRect: CGRect(x: centre.x - r, y: centre.y - r * 0.75,
-                                                        width: size, height: size * 0.75), cornerRadius: .one))
+                                                        width: size, height: size * 0.75), cornerRadius: CGFloat(Double.one)))
         case .ellipse:
             path.append(UIBezierPath(ovalIn: CGRect(x: centre.x - r, y: centre.y - r * 0.75,
                                                    width: size, height: size * 0.75)))
