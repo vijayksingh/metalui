@@ -91,8 +91,10 @@ function Playground() {
     },
     motion: { animate: true },
   });
-  const [watch, awake] = useAwake(); // the demo's day-cycle clock sleeps when the page is hidden or scrolled away
-  const hour = useClock(d.time.runs && awake, d.time.dayLength, d.time.start);
+  const [watchBone, awakeBone] = useAwake();
+  const [watchGraphite, awakeGraphite] = useAwake();
+  // Either visible forecast keeps the shared day moving; neither runs it off screen.
+  const hour = useClock(d.time.runs && (awakeBone || awakeGraphite), d.time.dayLength, d.time.start);
   const p = period(hour);
   const kind: WeatherKind = d.sky.kind === 'forecast' ? p.kind : (d.sky.kind as WeatherKind);
   const sky: WeatherSky = d.sky.own
@@ -107,26 +109,33 @@ function Playground() {
   });
   const clock = `${pad(Math.floor(hour))}:${pad(Math.floor(((hour % 1) * 60) / 5) * 5)}`;
   const widget = (cw: 'bone' | 'graphite') => (
-    <div key={cw} ref={cw === 'bone' ? watch : undefined} data-mu-colorway={cw} data-testid={`weather-${cw}`} className="flex flex-col items-center gap-20 rounded-card bg-page p-24">
-      <Weather
-        place="Lisbon"
-        summary={`${condition} now`}
-        hour={hour}
-        sky={sky}
-        condition={condition}
-        temp={temp}
-        feels={temp - 1}
-        rain={RAIN[kind]}
-        wind="9 km/h"
-        live={d.time.runs}
-        clock={clock}
-        hours={hours}
-        days={DAYS}
-        animate={d.motion.animate}
-      />
+    <div key={cw} ref={cw === 'bone' ? watchBone : watchGraphite} data-mu-colorway={cw} data-testid={`weather-${cw}`}
+      role="region" aria-label={`${cw === 'bone' ? 'Bone' : 'Graphite'} weather forecast`} tabIndex={0}
+      className="min-w-0 w-full overflow-x-auto rounded-card bg-page focus-visible:focus-ring-flush">
+      <div className="mu-stack w-fit min-w-full items-center p-mu-space-24">
+        <Weather
+          place="Lisbon"
+          summary={`${condition} now`}
+          hour={hour}
+          sky={sky}
+          condition={condition}
+          temp={temp}
+          feels={temp - 1}
+          rain={RAIN[kind]}
+          wind="9 km/h"
+          live={d.time.runs}
+          clock={clock}
+          hours={hours}
+          days={DAYS}
+          animate={d.motion.animate}
+        />
+      </div>
     </div>
   );
-  return <div className="grid w-full gap-16 xl:grid-cols-2">{widget('bone')}{widget('graphite')}</div>;
+  return <div className="mu-auto-grid w-full gap-mu-space-16"
+    style={{ '--mu-layout-column-min': 'calc(var(--mu-r-weather-self-width) + var(--mu-space-24) * 2)' } as React.CSSProperties}>
+    {widget('bone')}{widget('graphite')}
+  </div>;
 }
 
 function Tiles() {
@@ -152,7 +161,7 @@ export default function WeatherPage() {
     <ComponentPage
       title="Weather"
       lede="Weather as an object: a slab with a dot-matrix sky sunk into it. The sun rides its arc to the time of day, the moon crosses in its phase, and the weather moves in stepped frames. The next hours and the week sit under it."
-      play={{ lede: "The day runs in 48 seconds. Use the Weather panel to stop it, set the time, choose a sky, or compose your own: rain, snow, thunder, mist, wind and its direction, heat, birds and the moon's phase.", node: <Playground /> }}
+      play={{ lede: "The day runs in 48 seconds. Use the Weather panel to stop it, set the time, choose a sky, or compose your own: rain, snow, thunder, mist, wind and its direction, heat, birds and the moon's phase. On narrow screens, scroll each forecast sideways to read it in full.", node: <Playground /> }}
       more={[{ id: 'tiles', title: 'Tiles', lede: 'One sky each, at the same time of day. Move the time to see the sun and the moon cross them all.', node: <Tiles /> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

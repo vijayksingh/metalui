@@ -5,7 +5,6 @@ import { COLORWAYS, capture, open } from './helpers';
 // week read their values, every tile draws its own sky, and reduced motion holds one frame.
 for (const colorway of COLORWAYS) {
   test(`weather widget in ${colorway}`, async ({ page }) => {
-    await page.setViewportSize({ width: 1800, height: 900 }); // Both fixed 400px slabs fit the docs' two-column showcase.
     await open(page, '/components/weather', colorway);
     const widget = page.getByTestId(`weather-${colorway}`).locator('section.mu-weather');
     await expect(widget).toHaveAttribute('aria-label', 'Weather in Lisbon');
@@ -35,7 +34,6 @@ test('night brings the moon', async ({ page }) => {
 });
 
 test('reduced motion holds one frame', async ({ page }) => {
-  await page.setViewportSize({ width: 1800, height: 900 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page, '/components/weather', 'bone');
   const rain = page.getByTestId('weather-tiles-bone').locator('section.mu-weather-tile').nth(4).locator('path[data-layer="rain"]');
@@ -67,4 +65,58 @@ test('the Weather day keeps its rate and sleeps off screen', async ({ page }) =>
   expect(await clock.innerText()).toBe(held);
   await page.getByTestId('weather-bone').scrollIntoViewIfNeeded();
   await expect.poll(async () => clock.innerText()).not.toBe(held);
+});
+
+for (const width of [375, 1280]) {
+  for (const colorway of COLORWAYS) {
+    test(`Weather forecast fits its ${width}px host in ${colorway}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page, '/components/weather', colorway);
+      const viewport = page.getByTestId(`weather-${colorway}`);
+      const widget = viewport.locator('section.mu-weather');
+      await viewport.scrollIntoViewIfNeeded();
+      await viewport.evaluate(element => window.scrollTo(0, window.scrollY + element.getBoundingClientRect().top - 24));
+      const bounds = await viewport.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      const body = await widget.evaluate((element) => ({
+        width: element.getBoundingClientRect().width,
+        recipe: parseFloat(getComputedStyle(element).getPropertyValue('--mu-r-weather-self-width')),
+        transform: getComputedStyle(element).transform,
+      }));
+      expect(body.width).toBe(body.recipe);
+      expect(body.transform).toBe('none');
+      if (width === 375) {
+        expect(await viewport.evaluate((element) => element.scrollWidth)).toBeGreaterThan(bounds!.width);
+        await viewport.screenshot({ path: capture(`weather-${colorway}-375-start`) });
+        await viewport.focus();
+        await expect(viewport).toBeFocused();
+        await page.keyboard.press('ArrowRight');
+        await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+        await viewport.evaluate((element) => element.scrollTo({ left: element.scrollWidth }));
+        const right = await widget.boundingBox();
+        expect(right!.x + right!.width).toBeLessThanOrEqual(bounds!.x + bounds!.width);
+        await viewport.screenshot({ path: capture(`weather-${colorway}-375-end`) });
+      } else {
+        expect(await viewport.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+        const first = await page.getByTestId('weather-bone').locator('section.mu-weather').boundingBox();
+        const second = await page.getByTestId('weather-graphite').locator('section.mu-weather').boundingBox();
+        const separated = first!.x + first!.width <= second!.x || second!.x + second!.width <= first!.x || first!.y + first!.height <= second!.y || second!.y + second!.height <= first!.y;
+        expect(separated).toBe(true);
+      }
+    });
+  }
+}
+
+test('viewing the stacked Graphite forecast keeps the shared day live', async ({ page }) => {
+  await open(page, '/components/weather', 'graphite');
+  const bone = page.getByTestId('weather-bone'), graphite = page.getByTestId('weather-graphite');
+  await graphite.evaluate(element => window.scrollTo(0, window.scrollY + element.getBoundingClientRect().top));
+  await page.waitForTimeout(400);
+  expect((await bone.boundingBox())!.y + (await bone.boundingBox())!.height).toBeLessThan(0);
+  const clock = graphite.locator('header .type-readout');
+  const before = await clock.innerText();
+  await expect.poll(() => clock.innerText()).not.toBe(before);
 });
