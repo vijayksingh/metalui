@@ -3,16 +3,17 @@
   "title": "Button group",
   "status": "alpha",
   "layer": "component",
-  "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
+  "description": "Related action segments cut from one raised bar with engraved seams, independent presses and noninteractive readout windows. SplitButton shares one cap material with a held menu segment.",
   "base": "div role=group; @base-ui/react/menu",
   "react": {
-    "export": "ButtonGroup, SplitButton",
-    "files": ["button-group.tsx"]
+    "export": "ButtonGroup, ButtonGroupReadout, SplitButton",
+    "files": [
+      "button-group.tsx"
+    ]
   },
   "swift": {
-    "symbol": "MetalButtonGroup",
-    "file": "swift/Sources/MetalUI/Components/MetalButtonGroup.swift",
-    "status": "wip"
+    "symbol": "MetalButtonGroup, MetalButtonGroupReadout, MetalButtonGroupToggle, MetalSplitButton",
+    "file": "swift/Sources/MetalUI/Components/MetalButtonGroup.swift"
   },
   "agent": "button-group.agent.md",
   "page": "/components/button-group"

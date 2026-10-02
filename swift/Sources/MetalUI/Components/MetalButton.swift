@@ -42,6 +42,10 @@ private struct MetalButtonBody: View {
     let size: MetalButtonSize
 
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.metalButtonGroup) private var group
+    @Environment(\.metalButtonGroupLatched) private var latched
+    @Environment(\.metalButtonGroupWidth) private var groupWidth
+    @State private var segmentID = UUID()
     @Environment(\.metalButtonHolding) private var holding
     @Environment(\.metalButtonWaiting) private var waiting
     @Environment(\.metalButtonIconOnly) private var iconOnly
@@ -51,12 +55,13 @@ private struct MetalButtonBody: View {
     @State private var hovering = false
 
     var body: some View {
-        let isDown = isEnabled && (configuration.isPressed || holding || waiting)
+        let isDown = isEnabled && (configuration.isPressed || holding || waiting || latched)
         let recipe = MetalRecipes.button
         let strip = cap == .strip || cap == .stripDanger
         let compact = size == .compact && !strip
         let height = recipe.points(strip ? "strip.height" : compact ? "compact.height" : "self.height")
-        let shape = RoundedRectangle(cornerRadius: strip ? recipe.points("strip.radius") : height / 2, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: group != nil ? .zero : strip ? recipe.points("strip.radius") : height / 2, style: .continuous)
+        let width = (groupWidth ?? (iconOnly ? height : nil)).map(CGFloat.init)
         let part = strip ? "strip" : compact && cap == .standard ? "compact" : cap == .standard ? "self" : cap == .primary ? "primary" : "destructive"
 
         configuration.label
@@ -68,14 +73,15 @@ private struct MetalButtonBody: View {
             // A button is as wide as its label: it never truncates it.
             .fixedSize(horizontal: true, vertical: false)
             .foregroundStyle(foreground(colorway.tokens))
-            .padding(.horizontal, iconOnly ? .zero : recipe.points(strip ? "strip.pad" : compact ? "compact.pad" : "self.pad"))
-            .frame(width: iconOnly ? height : nil)
+            .padding(.horizontal, iconOnly || groupWidth != nil ? .zero : recipe.points(strip ? "strip.pad" : compact ? "compact.pad" : "self.pad"))
+            .frame(width: width)
             .frame(height: height)
             .contentShape(shape)
+            .background { if group != nil && hovering && isEnabled && !isDown { Color.clear.metalObjectRecipe(MetalRecipes.buttonGroup, part: "key", state: "hover", in: shape).allowsHitTesting(false) } }
             .onHover { hovering = $0 }
             .background {
                 ZStack {
-                    Color.clear.metalObjectRecipe(recipe, part: part, state: strip && hovering ? "hover" : nil, in: shape).opacity(isDown ? Double.zero : .one)
+                    Color.clear.metalObjectRecipe(recipe, part: part, state: strip && hovering ? "hover" : nil, in: shape).opacity(isDown || group != nil ? Double.zero : .one)
                     Color.clear.metalObjectRecipe(recipe, part: part, state: "pressed", in: shape).opacity(isDown ? Double.one : .zero)
                     if cap == .destructive || cap == .stripDanger {
                         Color.clear.metalObjectRecipe(recipe, part: "hold", in: shape)
@@ -90,7 +96,7 @@ private struct MetalButtonBody: View {
             .overlay {
                 if isFocused && isEnabled {
                     shape
-                        .inset(by: -(recipe.points("self.focus-offset") + recipe.points("self.focus-width") / 2))
+                        .inset(by: group != nil ? recipe.points("self.focus-width") / 2 : -(recipe.points("self.focus-offset") + recipe.points("self.focus-width") / 2))
                         .stroke(MetalShared.focus.color, lineWidth: recipe.points("self.focus-width"))
                 }
             }
@@ -98,6 +104,8 @@ private struct MetalButtonBody: View {
             // The press rides release, which Reduce Motion keeps unchanged (MetalMotion).
             .metalAnimation(.release, value: isDown)
             .opacity(isEnabled ? Double.one : recipe.scalar("self.disabled"))
+            .anchorPreference(key: MetalButtonGroupAnchors.self, value: .bounds) { group == nil ? [:] : [segmentID: $0] }
+            .onChange(of: isDown) { _, down in group?.pressed(segmentID, down) }
     }
 
     private func foreground(_ tokens: MetalColorwayTokens) -> Color {
@@ -133,6 +141,7 @@ public struct MetalButton<Icon: View>: View {
     @State private var keyboardHold: Task<Void, Never>?
     @FocusState private var focused: Bool
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.metalButtonGroup) private var group
     @Environment(\.isEnabled) private var isEnabled
     private let action: () -> Void
 
@@ -166,6 +175,8 @@ public struct MetalButton<Icon: View>: View {
     }
 
     public var body: some View {
+        let cap = group?.cap ?? self.cap
+        let size = group?.size ?? self.size
         let compact = size == .compact || cap == .strip || cap == .stripDanger
         let recipe = MetalRecipes.button
         let glyph = recipe.points(compact ? "compact.glyph" : "self.glyph")

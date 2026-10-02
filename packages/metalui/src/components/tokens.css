@@ -1094,12 +1094,18 @@
   --mu-r-link-out-gap: 0.18em;
   --mu-r-link-out-nudge: 2px;
   --mu-r-link-self-pressed: 0.64;
-  /* button-group: the button cap; the switch track (recipe switch) as the tray; the menu; the part spring */
-  --mu-r-button-group-tray-pad: 2px;
-  --mu-r-button-group-tray-gap: 2px;
-  --mu-r-button-group-key-radius: 8px;
+  /* button-group: button raised and pressed recipes; rule engraved seam; field well window; part spring; existing cap dimensions */
+  --mu-r-button-group-key-hover-background:
+    /* mu-recipe:button-group:0 */ rgba(255,255,255,.06);
+  --mu-r-button-group-tray-pad: 0px;
+  --mu-r-button-group-tray-gap: 0px;
+  --mu-r-button-group-key-radius: 0px;
   --mu-r-button-group-chevron-width: 30px;
   --mu-r-button-group-chevron-glyph: 12px;
+  --mu-r-button-group-chevron-turn: 180deg;
+  --mu-r-button-group-rocker-angle: 1deg;
+  --mu-r-button-group-seam-inset: var(--mu-nest);
+  --mu-r-button-group-seam-width: var(--mu-r-rule-self-thickness);
   /* breadcrumbs: the menu; the settle spring; the WAI breadcrumb pattern */
   --mu-r-breadcrumbs-self-gap: 6px;
   --mu-r-breadcrumbs-self-max: 4px;

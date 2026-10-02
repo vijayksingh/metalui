@@ -47,3 +47,5 @@ Reduce Motion: the latch snaps to its depth; the lamp still lights.
 
 - The label names the mode, not the action: "Grid", not "Show grid".
 - The lamp is the promise that it latches; keep it unless the icon itself shows the state.
+
+`ToggleGroup joined` uses the machined ButtonGroup bar: one raised surface, fixed engraved seams, square interior faces, inset focus and each latched key’s lamp. Base UI still owns arrows and roving tab stops. See ButtonGroup for the material contract.

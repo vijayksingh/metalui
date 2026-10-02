@@ -300,11 +300,12 @@
       "name": "button-group",
       "type": "registry:ui",
       "title": "Button group",
-      "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
+      "description": "Related action segments cut from one raised bar with engraved seams, independent presses and noninteractive readout windows. SplitButton shares one cap material with a held menu segment.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -314,7 +315,7 @@
           "target": "components/metalui/components/button-group/button-group.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/button-group.md. SwiftUI: MetalButtonGroup in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/button-group.md. SwiftUI: MetalButtonGroup, MetalButtonGroupReadout, MetalButtonGroupToggle, MetalSplitButton in the MetalUI Swift package."
     },
     {
       "name": "calendar",

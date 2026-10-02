@@ -997,18 +997,22 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Related actions as one cluster of keys: the button caps set side by side in a sunk tray (the switch track's well), the inner corners tightened so the caps read as one set; each key presses on its own (the button's 1 press), and its neighbours stay still. A split button is the main action plus a chevron key that opens a menu of the other ways to do it; while the menu is open the chevron turns over on the part spring, and turns back when it closes. (the button cap; the switch track (recipe switch) as the tray; the menu; the part spring)
+    /// One raised machined bar of related keys, outer pill radius only, fixed engraved seams and square interior edges. Keys sink alone; a noninteractive window carries readouts. Split keeps one cap material and its chevron held while open. Optional two-key rocker tips one degree on the part spring; Reduce Motion has no tilt. (button raised and pressed recipes; rule engraved seam; field well window; part spring; existing cap dimensions)
     public static let buttonGroup = MetalObjectRecipe(
         name: "button-group",
         layers: [
-
+            .init(part: "key", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:button-group:0 rgba(255,255,255,.06)
         ],
         props: [
-            "tray.pad": .number(2.0),
-            "tray.gap": .number(2.0),
-            "key.radius": .number(8.0),
+            "tray.pad": .number(0.0),
+            "tray.gap": .number(0.0),
+            "key.radius": .number(0.0),
             "chevron.width": .number(30.0),
             "chevron.glyph": .number(12.0),
+            "chevron.turn": .text("180deg"),
+            "rocker.angle": .text("1deg"),
+            "seam.inset": .text("var(--mu-nest)"),
+            "seam.width": .text("var(--mu-r-rule-self-thickness)"),
         ]
     )
 

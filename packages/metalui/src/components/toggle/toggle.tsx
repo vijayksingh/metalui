@@ -49,9 +49,14 @@ export const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(function 
 
 export interface ToggleGroupProps extends Omit<BaseToggleGroup.Props, 'className'> {
   className?: string;
+  /** Latched segments in one raised machined bar, with fixed engraved seams. */
+  joined?: boolean;
 }
 
 /** Toggles in a row. `multiple` lets several latch at once; otherwise latching one releases the other. */
-export function ToggleGroup({ className, ...props }: ToggleGroupProps) {
-  return <BaseToggleGroup className={className ? `${GROUP} ${className}` : GROUP} {...props} />;
+export function ToggleGroup({ className, joined = false, children, ...props }: ToggleGroupProps) {
+  const own = joined ? 'mu-toggle-group mu-button-group inline-flex items-stretch rounded-pill recipe-button button-group-bar text-ink' : GROUP;
+  return <BaseToggleGroup className={className ? `${own} ${className}` : own} {...props}>
+    {joined ? <span className="inline-flex items-stretch rounded-pill overflow-hidden">{React.Children.toArray(children).map((child, index) => <span key={index} className="inline-flex button-group-seam">{child}</span>)}</span> : children}
+  </BaseToggleGroup>;
 }
