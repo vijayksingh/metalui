@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Led, Select, StatusBadge, Switch, type LedKind, type StatusTone, type StatusSurface } from '@unlocalhosted/metalui';
+import { Button, Led, Select, StatusBadge, Switch, type LedKind, type StatusTone, type StatusSurface } from '@unlocalhosted/metalui';
+import { Icon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/status/status.tsx?raw';
 import ledSource from '../../../../../packages/metalui/src/components/led/led.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -70,6 +71,25 @@ function SurfaceProof() {
   </div>;
 }
 
+/** One retained status owns every connectivity meaning; the neighboring keys change the fixture. */
+function Connectivity() {
+  const [state, setState] = React.useState<'synced' | 'offline' | 'sync-error'>('synced');
+  const d = useDialKit('Sync meaning', { reduced: false,
+    tone: { type: 'select', options: ['default', 'quiet', 'strong'], default: 'default' },
+  });
+  const words = state === 'synced' ? 'All changes synced' : state === 'offline' ? 'Offline · changes stay here' : 'Sync failed · retry available';
+  return <div data-testid="sync-meaning" data-mu-motion={d.reduced ? 'reduce' : undefined} className="mu-stack items-center gap-mu-group">
+    <StatusBadge glyph={state} led={state === 'synced' ? 'link' : state === 'offline' ? 'off' : 'failed'} tone={d.tone as StatusTone}
+      hint={state === 'sync-error' ? 'Check the connection, then retry sync.' : undefined}>{words}</StatusBadge>
+    <div className="mu-cluster gap-mu-related">
+      <Button size="compact" icon={<Icon name="offline" />} onClick={() => setState('offline')}>Disconnect</Button>
+      <Button size="compact" icon={<Icon name="sync-error" />} onClick={() => setState('sync-error')}>Fail sync</Button>
+      <Button size="compact" icon={<Icon name="synced" />} onClick={() => setState('synced')}>Retry sync</Button>
+    </div>
+    <p className="type-doc-body text-ink2">This connectivity fixture changes one retained badge. Offline changes remain local; failure exposes a separate retry command. DialKit reduces motion and chooses its existing plate tone.</p>
+  </div>;
+}
+
 export default function StatusPage() {
   return <>
     <PageHeader title="LED and status badge" lede="A readable state in words, beside a lamp sunk into its own opaque socket. Live and linked hold steady; waiting breathes; failure double-blinks once; off stays dark. Every badge owns an opaque plate by default, so a frosted parent or an image cannot swallow it." />
@@ -82,6 +102,7 @@ export default function StatusPage() {
       </Bench>
       <SwiftCapture name="status" maxWidth={760} />
     </Section>
+    <Section title="One sync status" lede="The same glyph becomes synced, offline and failed while the words turn together. The plate and glyph slot stay; the fixing command lives beside it."><Bench caption="retained connectivity badge · existing compact glyph slot"><Connectivity /></Bench><SwiftCapture name="status-sync" maxWidth={760} /></Section>
     <Section title="Ground, tone and transparency" lede="Default is opaque. Transparent means the existing strong frost fill without blur; frosted adds the shared backdrop. Solid overrides either; Reduce Transparency removes blur and selects the opaque twin. Strong is a tinted opaque plate; quiet is words and lamp only.">
       <Bench caption="real status parts over an image and a frosted parent · DialKit material controls"><SurfaceProof /></Bench>
       <SwiftCapture name="status-surfaces" maxWidth={760} />

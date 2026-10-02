@@ -1296,7 +1296,7 @@
       "name": "status",
       "title": "Status badge",
       "status": "alpha",
-      "description": "A readable 26pt status plate with words and a sunk LED. Quiet, opaque strong tint, explicit transparent/frosted surfaces and a solid override. State gestures have reduced-motion alternatives.",
+      "description": "A readable 26pt status plate with words and a sunk LED or retained morphing meaning glyph. Quiet, opaque strong tint, explicit transparent/frosted surfaces and a solid override. State gestures have reduced-motion alternatives.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "StatusBadge",

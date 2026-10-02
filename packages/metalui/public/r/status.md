@@ -1,6 +1,6 @@
 # Status badge
 
-`StatusBadge` / `MetalStatusBadge` names a system state beside a decorative lamp. A component: it tells you what is happening; it never executes the fixing action. A hint uses Base UI Tooltip on hover and focus. Use separate buttons for Retry or settings.
+`StatusBadge` / `MetalStatusBadge` names a system state beside a decorative lamp or an authored meaning glyph. A component: it tells you what is happening; it never executes the fixing action. A hint uses Base UI Tooltip on hover and focus. Use separate buttons for Retry or settings.
 
 ## Material and state
 
@@ -24,8 +24,14 @@ Only inner lens opacity animates; the socket never fades. OS, html.rm and scoped
 - `surface="transparent"`: explicit strong frost fill without blur. `surface="frosted"`: same fill plus shared 22px / 1.6 backdrop. Both use full shared ink for worst-case contrast; default opaque/quiet/strong use ink2.
 - `solid`: forces an opaque plate, including quiet and translucent requests. Reduced transparency / low power also replaces transparent/frosted with the existing opaque twin and removes blur. Native respects Reduce Transparency.
 
-React: `StatusBadge led hint tone surface solid gesture` with words as children. Swift: `MetalStatusBadge("Sync live", led: .live, tone: .default, surface: .solid, solid: false)`; optional `hint` and `gesture` match React. The tone wins over surface; solid wins over tone. Scope policies use `data-mu-transparency="reduce"`, `data-mu-power="low"`, `data-mu-motion="reduce"` on the parent.
+React: `StatusBadge led hint tone surface solid gesture glyph` with words as children. Swift: `MetalStatusBadge("Sync live", led: .live, tone: .default, surface: .solid, solid: false)`; optional `hint`, `gesture` and `glyph` match React. The tone wins over surface; solid wins over tone. Scope policies use `data-mu-transparency="reduce"`, `data-mu-power="low"`, `data-mu-motion="reduce"` on the parent.
 
 ## Accessibility
 
-The badge has role=status and atomic announcements when its words change; keep it outside another aria-busy host. With hint it is focusable, with a description and tooltip; otherwise it has no tab stop. LEDs are aria-hidden. Native combines the words as its accessibility label and exposes the hint as help. Never convey a failure only by red or blinking.
+The badge has role=status and atomic announcements when its words change; keep it outside another aria-busy host. With hint it is focusable, with a description and tooltip; otherwise it has no tab stop. LEDs and meaning glyphs are aria-hidden. Native combines the words as its accessibility label and exposes the hint as help. Never convey a failure only by red or blinking.
+
+## One retained sync meaning
+
+Pass `glyph="synced"`, `"offline"` or `"sync-error"` to replace the lamp in the shared 14pt compact glyph slot. `led` still identifies the plate tint: link, off or failed. One MorphIcon remains mounted as that name changes; string children turn on the shared SwapText drum in the same render. Swift `MetalStatusBadge("Offline · changes stay here", led: .off, glyph: .offline)` uses MetalMorphIcon and the existing settle label transition. Reduced motion holds the glyph at its new authored geometry and cross-fades the words. No timer runs at rest.
+
+Keep the badge outside the work item's busy subtree. Words describe the consequence (offline changes remain local), and a separate Retry action executes recovery. A glyph never replaces words or supplies a second announcement. Arbitrary React children remain supported; when composing rich changing labels, supply your own SwapText. Omit `glyph` for the established LED/lamp behavior.

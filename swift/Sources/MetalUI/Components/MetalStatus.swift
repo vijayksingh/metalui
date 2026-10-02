@@ -103,13 +103,15 @@ public struct MetalStatusBadge: View {
     let surface: MetalStatusSurface
     let solid: Bool
     let gesture: MetalLampGesture?
+    let glyph: MetalIconName?
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
 
     public init(_ text: String, led: MetalLEDKind, hint: String? = nil,
                 tone: MetalStatusTone = .default, surface: MetalStatusSurface = .solid,
-                solid: Bool = false, gesture: MetalLampGesture? = nil) {
+                solid: Bool = false, gesture: MetalLampGesture? = nil, glyph: MetalIconName? = nil) {
         self.text = text; self.led = led; self.hint = hint; self.tone = tone
-        self.surface = surface; self.solid = solid; self.gesture = gesture
+        self.surface = surface; self.solid = solid; self.gesture = gesture; self.glyph = glyph
     }
     public var body: some View {
         let recipe = MetalRecipes.status
@@ -122,8 +124,17 @@ public struct MetalStatusBadge: View {
             backdrop: surface == .frosted ? frost.backdrop : nil,
             opaqueFill: frost.opaqueFill, contrastEdge: frost.contrastEdge)
         HStack(spacing: recipe.points("badge.gap")) {
-            MetalLED(led, gesture: gesture)
-            Text(text.uppercased())
+            if let glyph {
+                MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
+                    .foregroundStyle((translucent ? colorway.tokens.ink : colorway.tokens.ink2).color)
+                    .accessibilityHidden(true)
+            } else { MetalLED(led, gesture: gesture) }
+            ZStack {
+                Text(text.uppercased()).id(glyph == nil ? "words" : text)
+                    .transition(reduceMotion ? .opacity : .asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: MetalSpace.s4)),
+                        removal: .opacity.combined(with: .offset(y: -MetalSpace.s4))))
+            }.clipped().metalAnimation(.settle, value: text)
                 .font(recipe.font("badge.font"))
                 .tracking(recipe.tracking("badge.tracking", size: recipe.fontSize("badge.font")))
                 .foregroundColor((translucent ? colorway.tokens.ink : colorway.tokens.ink2).color)
