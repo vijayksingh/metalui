@@ -119,6 +119,32 @@
       ]
     },
     {
+      "name": "morph-icons",
+      "type": "registry:lib",
+      "title": "MetalUI glyph morph runtime",
+      "description": "The MorphIcon element, canonical glyph geometry and shared-settle morph engine for meaning changes.",
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/MorphIcon.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/MorphIcon.tsx"
+        },
+        {
+          "path": "packages/metalui/src/icons/morph.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/morph.ts"
+        },
+        {
+          "path": "packages/metalui/src/icons/morph.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/morph.generated.ts"
+        }
+      ]
+    },
+    {
       "name": "icon-components",
       "type": "registry:lib",
       "title": "MetalUI icon components",
