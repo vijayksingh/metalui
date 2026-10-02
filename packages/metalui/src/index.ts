@@ -90,7 +90,7 @@ export { SpatialFieldCanvas, SpatialFieldController, type SpatialFieldRect, type
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';
-export { haptic, setHapticBridge, type HapticKind, type HapticPath, type HapticBridge } from './motion/haptic';
+export { haptic, setHapticBridge, connectWebKitHaptics, type HapticKind, type HapticPath, type HapticBridge } from './motion/haptic';
 export { LinkCard, linkHueDegrees, type LinkCardProps, type LinkPreview } from './blocks/link-card/link-card';
 export { Settings, type SettingsRowProps } from './blocks/settings/settings';
 export { CodeCard, tintCode, diffClasses, type CodeCardProps, type DiffClass } from './blocks/code-card/code-card';

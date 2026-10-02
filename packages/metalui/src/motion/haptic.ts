@@ -29,10 +29,25 @@ const TICKS: Record<HapticKind, number> = { alignment: 1, detent: 1, refusal: 2 
 const TICK_GAP = 80;
 
 let bridge: HapticBridge | null = null;
+let bridgeVersion = 0;
 
 /** Route haptic() to the host's native haptic (a web view in a Mac app), or back to the web with null. */
 export function setHapticBridge(fn: HapticBridge | null) {
   bridge = fn;
+  const installed = ++bridgeVersion;
+  // A disposed host must never clear a newer host's transport.
+  return () => {
+    if (bridgeVersion === installed) { bridge = null; bridgeVersion++; }
+  };
+}
+
+/** Opt into the shipped WKWebView host handler. SSR and ordinary browsers return null. */
+export function connectWebKitHaptics(): (() => void) | null {
+  if (typeof window === 'undefined') return null;
+  const host = window as Window & { webkit?: { messageHandlers?: { metaluiHaptic?: { postMessage(kind: HapticKind): void } } } };
+  const handler = host.webkit?.messageHandlers?.metaluiHaptic;
+  if (typeof handler?.postMessage !== 'function') return null;
+  return setHapticBridge(kind => handler.postMessage(kind));
 }
 
 const coarse = () => typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;

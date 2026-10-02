@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { open } from './helpers';
+import { capture, open } from './helpers';
 
 /* The Snap guides playground calls haptic('alignment') once per line caught and says which path this
  * browser took. A desktop browser has none; a touch device vibrates where it can, and iOS Safari
@@ -71,4 +71,52 @@ test.describe('on a touch device', () => {
     await expect(sw).toHaveAttribute('aria-hidden', 'true');
     await expect(sw.locator('input[type="checkbox"][switch]')).toHaveCount(1);
   });
+});
+
+test('an opted-in Mac web-view host receives catch requests and can disconnect', async ({ page }) => {
+  await page.addInitScript(() => {
+    const calls: string[] = [];
+    Object.assign(window, { __nativeHaptics: calls, webkit: { messageHandlers: { metaluiHaptic: { postMessage: (kind: string) => calls.push(kind) } } } });
+  });
+  await open(page, '/components/snap-guides', 'graphite');
+  await page.getByRole('button', { name: 'Connect web-view haptics' }).click();
+  await expect(page.getByRole('status')).toHaveText('Native haptic transport connected.');
+  await catchALine(page);
+  await expect(caption(page)).toHaveAttribute('data-haptic-path', 'bridge');
+  const taps = Number((await caption(page).textContent())!.match(/haptic taps · (\d+)/)![1]);
+  const calls = await page.evaluate(() => (window as unknown as { __nativeHaptics: string[] }).__nativeHaptics);
+  expect(calls).toEqual(Array(taps).fill('alignment'));
+  await page.locator('#native-haptics').screenshot({ path: capture('haptic-bridge-graphite') });
+  await page.getByRole('button', { name: 'Disconnect haptics' }).click();
+  await expect(page.getByRole('status')).toHaveText('Native transport disconnected.');
+  expect(await page.locator('audio, [data-mu-haptic]').count()).toBe(0);
+});
+
+test('disposing an older host retains its successor on real catches', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.assign(window, { webkit: { messageHandlers: { metaluiHaptic: { postMessage: () => {} } } } });
+  });
+  await open(page, '/components/snap-guides', 'bone');
+  await page.getByRole('button', { name: 'Connect web-view haptics' }).click();
+  await page.evaluate(async (modulePath) => {
+    const { setHapticBridge } = await import(/* @vite-ignore */ modulePath);
+    const calls: string[] = [];
+    Object.assign(window, { __successorHaptics: calls });
+    setHapticBridge((kind: string) => calls.push(kind));
+  }, `/@fs${process.cwd()}/packages/metalui/src/motion/haptic.ts`);
+  await page.getByRole('button', { name: 'Disconnect haptics' }).click();
+  await catchALine(page);
+  await expect(caption(page)).toHaveAttribute('data-haptic-path', 'bridge');
+  expect(await page.evaluate(() => (window as unknown as { __successorHaptics: string[] }).__successorHaptics.length)).toBeGreaterThan(0);
+});
+
+
+test('ordinary browsers leave the optional transport disconnected under reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/snap-guides', 'bone');
+  await page.getByRole('button', { name: 'Connect web-view haptics' }).click();
+  await expect(page.getByRole('status')).toHaveText('No WKWebView transport in this browser.');
+  await catchALine(page);
+  await expect(caption(page)).toHaveAttribute('data-haptic-path', 'none');
+  await page.locator('#native-haptics').screenshot({ path: capture('haptic-bridge-bone-reduced') });
 });

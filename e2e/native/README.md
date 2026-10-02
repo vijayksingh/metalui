@@ -22,3 +22,7 @@ Run `python3 e2e/native/run-radio-keys-proof.py` on macOS. A real SwiftUI window
 `motion-policy-proof.swift` is a public-API SwiftUI host. Two trash glyphs receive the same hold; one is inside a dynamically reduced subtree, with a nested `false` probe. The outside glyph continues while the scoped glyph cancels. The nested probe remains reduced; restoring the scope does not resume the cancelled clock. The OS accessibility preference is always ORed with the scope.
 
 Observed on iPhone 15 / iOS 17.5: [both holding](../../docs/captures/swift/motion-policy-active.png), [scope reduced](../../docs/captures/swift/motion-policy-reduced.png), [scope restored](../../docs/captures/swift/motion-policy-restored.png). The generic iOS Simulator package build and macOS `swift build -j 2` pass. Existing native readers and the shared animation modifier use `@MetalMotionPreference`.
+
+# Mac WKWebView haptic transport
+
+Run `python3 e2e/native/run-haptic-webview-proof.py`. A real WKWebView sends alignment, detent and refusal requests through the shipped native bridge. Its device callback records the matching AppKit patterns; invalid names and subframe requests do not reach the device. Detaching twice is safe and stops delivery. This proves transport and pattern mapping, not physical trackpad sensation.

@@ -51,28 +51,47 @@ Reduce Motion: they clear at once.
 
 ### A web view in a Mac app
 
-A host that renders MetalUI in a web view (Electron, Tauri, a `WKWebView`) can route `haptic()` to `NSHapticFeedbackManager`. Set the bridge once, at start-up; every `haptic()` call then goes to it and returns `'bridge'`:
+MetalUI ships an optional Mac `MetalHapticWebViewBridge`. Retain one per trusted controller and call `detach()` when that host closes. Its weak script handler does not retain the bridge; messages from subframes and unknown kinds are ignored. Install it before loading the page:
+
+```swift
+import MetalUI
+import WebKit
+
+let configuration = WKWebViewConfiguration()
+let haptics = MetalHapticWebViewBridge(configuration.userContentController)
+let webView = WKWebView(frame: .zero, configuration: configuration)
+// Retain haptics alongside webView. At teardown: haptics.detach().
+```
+
+The bundled page opts in explicitly; ordinary browsers and SSR return `null`:
+
+```tsx
+import { connectWebKitHaptics } from '@unlocalhosted/metalui';
+useEffect(() => connectWebKitHaptics() ?? undefined, []);
+```
+
+`connectWebKitHaptics()` installs the `metaluiHaptic` message handler as the `haptic()` transport. Its cleanup clears only its own installation. A later `setHapticBridge()` stays installed if an older host disposes. A disconnected host returns to browser paths; nothing is auto-connected merely because a global exists.
+
+Electron and Tauri use the same typed semantic hook. Electron's preload exposes a fixed `native.haptic(kind)` IPC function; its main process validates the three names and invokes the app's native addon. Tauri exposes a fixed native `haptic` command. Those app-specific native adapters are owned by the host; a Node process cannot call AppKit without an addon.
 
 ```ts
 import { setHapticBridge } from '@unlocalhosted/metalui';
-
-// Electron: the preload exposes ipcRenderer.send('haptic', kind) as window.native.haptic
-setHapticBridge((kind) => window.native.haptic(kind));
-// WKWebView: a WKScriptMessageHandler named "haptic"
-setHapticBridge((kind) => window.webkit.messageHandlers.haptic.postMessage(kind));
-// Tauri: a command that performs it
-setHapticBridge((kind) => invoke('haptic', { kind }));
+// Electron preload: haptic: kind => ipcRenderer.send('metalui:haptic', kind)
+const disconnect = setHapticBridge(kind => window.native.haptic(kind));
+// Tauri host: a registered native command performs the matching pattern.
+const disconnectTauri = setHapticBridge(kind => { void invoke('haptic', { kind }); });
+// At teardown, call the cleanup belonging to the installed host.
 ```
 
-On the native side, perform it at once (`performanceTime: .now`), mapping the kind:
+The shipped Swift bridge performs the request immediately (`performanceTime: .now`):
 
-| `kind` | `NSHapticFeedbackManager.FeedbackPattern` |
+| kind | NSHapticFeedbackManager.FeedbackPattern |
 |---|---|
-| `alignment` | `.alignment` |
-| `detent` | `.levelChange` |
-| `refusal` | `.generic` |
+| alignment | alignment |
+| detent | levelChange |
+| refusal | generic |
 
-`setHapticBridge(null)` returns to the web paths. The bridge is a setter rather than a global so it is typed, and so a page never picks up a haptic it did not ask for.
+`MetalHapticWebViewBridge` optionally accepts a `perform` callback for another native device. Tests use it to record pattern delivery from a real WKWebView; transport delivery does not measure a physical trackpad's response. Native apps still depend on available hardware and system settings.
 
 ## API
 
