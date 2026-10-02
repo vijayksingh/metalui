@@ -79,6 +79,7 @@ export const ICONS = [
   { name: 'tag', cat: 'Tools', label: 'Tag' },
   { name: 'calendar', cat: 'Tools', label: 'Calendar' },
   { name: 'document', cat: 'Tools', label: 'Document' },
+  { name: 'coin', cat: 'Status', label: 'Coin · Amount' },
   { name: 'clock', cat: 'Status', label: 'Time' },
   { name: 'me', cat: 'Tools', label: 'Me' },
   { name: 'seed', cat: 'Actions', label: 'Seed sample' },

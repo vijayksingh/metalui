@@ -4524,7 +4524,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 76 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 77 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4620,6 +4620,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `TagIcon` | `tag` | Tools | The cord tugs the tag by its eyelet, and it swings there and comes to hang still. | plays the same act |
 | `CalendarIcon` | `calendar` | Tools | Today's leaf curls up and flips over the binding, kicking the rings, and a fresh page is left. | plays the same act |
 | `DocumentIcon` | `document` | Tools | A thumb folds the corner down, the page turns, and the next page's lines write in. | plays the same act |
+| `CoinIcon` | `coin` | Status | The minted coin tilts to its edge once and returns to its stamped face. | plays the same act |
 | `ClockIcon` | `clock` | Status | An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back. | plays the same act |
 | `MeIcon` | `me` | Tools | Today's point runs back along your days and climbs to today again, drawing the trend behind it. | plays the same act |
 | `SeedIcon` | `seed` | Actions | The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings. | plays the same act |

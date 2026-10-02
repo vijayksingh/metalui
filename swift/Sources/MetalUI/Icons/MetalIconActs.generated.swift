@@ -4087,6 +4087,31 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .coin: MetalIconAct(
+            duration: 1.309,
+            caption: "The minted coin tilts to its edge once and returns to its stamped face.",
+            parts: [
+            MetalIconActPart(
+                name: "coin", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1299, x: 0.0, y: 0.0, r: -12.0, sx: 0.28, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1833, x: 0.0, y: 0.0, r: -12.0, sx: 0.28, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.4553, x: 0.0, y: 0.0, r: 1.1842, sx: 1.0711, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.728, x: 0.0, y: 0.0, r: -0.1169, sx: 0.993, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M20.2 12C20.2 16.5287 16.5287 20.2 12 20.2C7.4713 20.2 3.8 16.5287 3.8 12C3.8 7.4713 7.4713 3.8 12 3.8C16.5287 3.8 20.2 7.4713 20.2 12Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M17.2 12C17.2 14.8719 14.8719 17.2 12 17.2C9.1281 17.2 6.8 14.8719 6.8 12C6.8 9.1281 9.1281 6.8 12 6.8C14.8719 6.8 17.2 9.1281 17.2 12Z", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12 9L12 15M10.3 9L13.7 9M10.3 15L13.7 15", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .clock: MetalIconAct(
             duration: 1.3,
             caption: "An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back.",

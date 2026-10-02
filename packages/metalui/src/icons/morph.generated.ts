@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "coin", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -384,6 +384,13 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M7.2 3.5L13.6 3.5L18.6 8.5L18.6 18.5C18.6 19.6 17.7 20.5 16.6 20.5L7.2 20.5C6.1 20.5 5.2 19.6 5.2 18.5L5.2 5.5C5.2 4.4 6.1 3.5 7.2 3.5Z", 1.7, 0.1, 0, 1],
     ["M8.6 12.4L15.4 12.4", 1.7, 0, 0, 1],
     ["M8.6 15.8L12.6 15.8", 1.7, 0, 0, 1],
+  ],
+  "coin": [
+    ["M20.2 12C20.2 16.53 16.53 20.2 12 20.2C7.47 20.2 3.8 16.53 3.8 12C3.8 7.47 7.47 3.8 12 3.8C16.53 3.8 20.2 7.47 20.2 12Z", 1.7, 0.16, 0, 1],
+    ["M17.2 12C17.2 14.87 14.87 17.2 12 17.2C9.13 17.2 6.8 14.87 6.8 12C6.8 9.13 9.13 6.8 12 6.8C14.87 6.8 17.2 9.13 17.2 12Z", 1.7, 0, 0, 1],
+    ["M12 9L12 15", 1.7, 0, 0, 1],
+    ["M10.3 9L13.7 9", 1.7, 0, 0, 1],
+    ["M10.3 15L13.7 15", 1.7, 0, 0, 1],
   ],
   "clock": [
     ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.08, 0, 1],

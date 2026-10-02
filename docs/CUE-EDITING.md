@@ -22,13 +22,13 @@ Cues describe a person's own text. A mark is a **Part**; an editable cue is a **
 
 Time uses an engraved underline and a clock. Money uses a coin and tabular figures. Body quantities use the moon for sleep or the existing footsteps for steps. Colour uses its actual swatch. Links use the existing link chip. People use an avatar. Tags share one raised tab with a real punched hole; derived tags retain that tab and add an explicit suggestion state.
 
-Text advance stays unchanged for display-only marks. Glyphs occupy space above their own chunk, with a shared, reserved line clearance in raw and cued views; they never overlap neighbouring words or consume the text's width. The glyph's tooltip names its meaning. A trailing glyph describes the whole line only and has its own name. Existing plain inline Mark users keep their metrics.
+Text advance stays unchanged for display-only marks. Glyphs occupy space above their own chunk, with a shared, reserved clearance on every wrapped line in raw and cued views; they never overlap neighbouring words or consume the text's width. The glyph's tooltip names its meaning. Display glyphs stay decorative and add no Tab stop; the operated chunk exposes its meaning and help to keyboard users. A trailing glyph describes the whole line only and has its own name. Existing plain inline Mark users keep their metrics.
 
 Tags use a stable NFC-normalised hash into a shared palette, rendered with full text ink. Hue is identity, never state. React and Swift use the same scalar hash and token palette. A quiet hash, clipped tag tip and punched hole distinguish the shape from a disabled chip.
 
 ## Recognition storyboard
 
-While the caret is inside a candidate, show raw text. Recognise after a word boundary or the caret leaves it. Draw its underline using scale on the settle spring; reveal its own glyph on the object spring. A colour swatch blooms once; a formatted amount uses the existing drum; a date's resolved chip rises using the existing chip distance. Play a short glyph act once for that recognition identity. Re-rendering, hovering another chunk or scrolling never repeats recognition.
+While the caret is inside a candidate, show raw text. Suspend recognition throughout IME composition; recognition resumes only after composition commits and the caret leaves the candidate. Recognise after a word boundary or the caret leaves it. Draw its underline using scale on the settle spring; reveal its own glyph on the object spring. A colour swatch blooms once; a formatted amount uses the existing drum; a date's resolved chip rises using the existing chip distance. Play a short glyph act once for that recognition identity. Re-rendering, hovering another chunk or scrolling never repeats recognition.
 
 Inferred values remain dashed and in secondary ink until explicitly confirmed. Confirmation presses the suggestion, makes it solid and emits a brief acknowledgement; reduction makes every stage immediate. A raw/cued switch fades marks and glyphs in their existing slots. It never remounts or moves the text.
 

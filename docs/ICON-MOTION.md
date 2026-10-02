@@ -142,3 +142,6 @@ Every icon's entry opens with its card, as a comment above it (see `select`):
 ## Playback pair
 
 `play` is a closed transport triangle: it advances one grid step and returns on the part spring. `pause` uses two upright rounded wire stops: both catch half a step inward, then return together. These are demand acts, never progress clocks. Each resting contour retains its identity under reduced motion and participates in the wire morph catalog. Pause uses a wider central gap in the 16px static export; the tuned stroke leaves about two CSS pixels clear at rest. The docs playback controls show both sizes, both acts, and Play/Pause morphing.
+
+
+Coin is the amount glyph: a currency-neutral minted rim and stamp. Its one quarter tilt returns on the object spring. Two closed rims and one stamped route remain distinct from Info and Target in the tuned16 cut; the complete face stays static under either motion reduction setting. The cue grammar uses the same coin, never a local SVG.

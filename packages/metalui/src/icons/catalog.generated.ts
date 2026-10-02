@@ -1614,6 +1614,27 @@ export const ICON_CATALOG = {
     motion: {"duration":900,"caption":"A thumb folds the corner down, the page turns, and the next page's lines write in.","stages":["Thumb","Turn","Read"],"tracks":[{"part":"flap","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.04444,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.15)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.22222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1.08)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32222,"transform":"translate(0px,0px) rotate(45deg) scale(1,-1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(45deg) scale(1,0.28)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55556,"transform":"translate(0px,0px) rotate(45deg) scale(1,-0.1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.66667,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(45deg) scale(1,0)","opacity":0}]},{"part":"l1","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.32222,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.37778,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.6,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"l2","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22222,"strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.33333,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48889,"strokeDashoffset":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.68889,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * COIN · AMOUNT · Status · one act, 1309ms
+   *
+   * Face → Quarter tilt → Face again
+   *          The minted coin tilts to its edge once and returns to its stamped face.
+   *  coin       0 → 170 → 240 → 596 → 953 → 1309ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "coin": {
+    label: "Coin · Amount",
+    category: "Status",
+    hover: "The minted coin tilts to its edge once and returns to its stamped face.",
+    press: "plays the same act",
+    pressMs: 1309,
+    defs: "",
+    body: "<g data-part=\"coin\"><circle class=\"f\" style=\"--duo:.16\" cx=\"12\" cy=\"12\" r=\"8.2\"/><circle cx=\"12\" cy=\"12\" r=\"5.2\"/><path d=\"M12 9v6M10.3 9h3.4M10.3 15h3.4\"/></g>",
+    body16: "<circle class=\"f\" style=\"--duo:.16\" cx=\"12\" cy=\"12\" r=\"8.2\"/><circle cx=\"12\" cy=\"12\" r=\"5.2\"/><path d=\"M12 9v6M10.3 9h3.4M10.3 15h3.4\"/>",
+    sw16: 1.85,
+    motion: {"duration":1309,"caption":"The minted coin tilts to its edge once and returns to its stamped face.","stages":["Face","Quarter tilt","Face again"],"tracks":[{"part":"coin","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.12987,"transform":"translate(0px,0px) rotate(-12deg) scale(0.28,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18335,"transform":"translate(0px,0px) rotate(-12deg) scale(0.28,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.45531,"transform":"translate(0px,0px) rotate(1.1842deg) scale(1.0711,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.72804,"transform":"translate(0px,0px) rotate(-0.1169deg) scale(0.993,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * TIME · Status · one act, 1300ms
    *
    * Take up → An hour → Set back

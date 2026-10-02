@@ -158,6 +158,11 @@ export default function Icons() {
           ))}
         </div>
       </Section>
+      <Section id="amount" title="Amount" lede="The coin names a monetary amount without assuming its currency. Two minted rims enclose a stamp; one short tilt reveals its edge and restores the face.">
+        <button type="button" data-testid="amount-glyph" aria-label="Coin: monetary amount" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 rounded-plate hover:material-well">
+          <Icon name="coin" size={16} /><Icon name="coin" size={24} /><span className="type-ui text-ink">$40 · €36</span>
+        </button>
+      </Section>
       <Section id="playback" title="Playback" lede="Play advances or resumes a transport; Pause holds its amount for resumption. Both remain complete when motion is reduced, and perform one short act when their host is handled.">
         <div className="mu-cluster gap-mu-related" data-testid="playback-family">
           {(['play', 'pause'] as const).map(name => (
