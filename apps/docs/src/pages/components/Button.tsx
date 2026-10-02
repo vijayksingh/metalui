@@ -11,6 +11,7 @@ import { SwiftCapture } from '../../ui/SwiftCapture';
 import { ButtonXray, BUTTON_XRAY_INITIAL, type ButtonXrayModel } from '../../ui/xray/ButtonXray';
 import { ButtonSmartControls } from './ButtonSmartControls';
 import { useColorway } from '../../app/colorway';
+import { SaveGlyph } from '../../ui/async/SaveGlyph';
 import { useCopyFeedback } from '../../lib/useCopyFeedback';
 import { tokens } from '../../lib/tokens';
 import './button-workbench.css';
@@ -499,8 +500,8 @@ function OneLine() {
     >
       <div className="flex w-full flex-col gap-20">
         {[
-          { tag: 'wraps', lit: false, node: <Button tabIndex={-1} className="h-auto! min-h-32 whitespace-normal! py-6 text-center">Export all canvases as PDF</Button> },
-          { tag: 'one line', lit: true, node: <Button tabIndex={-1}>Export all canvases as PDF</Button> },
+          { tag: 'wraps', lit: false, node: <Button tabIndex={-1} icon={<Icon name="download" />} className="h-auto! min-h-32 whitespace-normal! py-6 text-center">Export all canvases as PDF</Button> },
+          { tag: 'one line', lit: true, node: <Button tabIndex={-1} icon={<Icon name="download" />}>Export all canvases as PDF</Button> },
         ].map((r) => (
           <div key={r.tag} className="flex items-center gap-16">
             <span className="w-72 shrink-0"><Tag tone={r.lit ? 'lit' : 'quiet'}>{r.tag}</Tag></span>
@@ -551,7 +552,7 @@ function Variants() {
           <Button size="compact">lenses <Kbd size="small">⌘K</Kbd></Button>
           <Button size="compact" cap="primary" icon={<Icon name="pin" />}>Keep</Button>
           <Button size="compact" cap="destructive" icon={<TrashIcon />}>Delete</Button>
-          <Button size="compact" disabled>Share</Button>
+          <Button size="compact" disabled icon={<ShareIcon />}>Share</Button>
         </div>
       </Stage>
       <Stage tone="dark" caption="Link, graphite, strip and strip-danger, each on the dark surface it belongs to.">
@@ -696,7 +697,7 @@ function Waiting() {
     <Stage>
       <div className="mu-stack items-center gap-mu-related">
         <Button cap="primary" state={state} waitingLabel="Saving…" doneLabel="Saved" errorLabel="Try again" showDelay={dial.showDelay} minVisible={dial.minVisible} onClick={save}
-          icon={<MorphIcon name={state === 'done' ? 'check' : state === 'error' ? 'sync-error' : 'document'} />}>Save</Button>
+          icon={<SaveGlyph state={state} />}>Save</Button>
         <p className="type-doc-caption text-ink2" data-testid="save-requests">{requests} {requests === 1 ? 'request' : 'requests'}</p>
         <div className="mu-cluster gap-mu-related" aria-label="Request examples">
           {[['Quick save', 100, false], ['Slow save', 1800, false], ['Failed save', 900, true], ['Brief wait', 500, false]].map(([name, duration, fail]) => <Button key={String(name)} size="compact" onClick={() => { clearTimeout(task.current); setState('idle'); controller.setValues({ duration: Number(duration), fail: Boolean(fail) }); }}>{String(name)}</Button>)}
@@ -707,7 +708,7 @@ function Waiting() {
     <CodeScreen tabs={[{ id: 'react', label: 'React', lang: 'tsx', file: 'save.tsx', code: `<Button state={state} cap="primary"
   waitingLabel="Saving…" doneLabel="Saved"
   icon={<MorphIcon name={state === 'done' ? 'check' :
-    state === 'error' ? 'sync-error' : 'document'} />}
+    state === 'error' ? 'sync-error' : 'save'} />}
   onClick={save}>Save</Button>` }]} />
     <p className="type-doc-caption text-ink2">Waiting and done refuse another press and keep focus. An error accepts a retry. The label and glyph reserve their widest configured footprint; give this key its final host width from the start. The host must commit the real result before setting done and must reset to idle for a new action. Hidden and offscreen arcs pause; reduced motion keeps a breathing arc. Tune the timing and failure in DialKit.</p>
   </Section>;

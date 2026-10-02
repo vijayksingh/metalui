@@ -7,6 +7,7 @@ for (const colorway of COLORWAYS) {
     const demo = page.locator('#waiting');
     await demo.scrollIntoViewIfNeeded();
     const key = demo.locator('button[data-cap=primary]');
+    await expect(key.locator('svg.mu-ic-save').filter({ visible: true })).toHaveCount(1);
     const width = (await key.boundingBox())!.width;
     await demo.getByRole('button', { name: 'Slow save', exact: true }).click();
     await key.click();

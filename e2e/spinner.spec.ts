@@ -4,6 +4,8 @@ import { COLORWAYS, capture, open } from './helpers';
 for (const colorway of COLORWAYS) {
   test(`waiting belongs to each real host in ${colorway}`, async ({ page }) => {
     await open(page, '/components/spinner', colorway);
+    const action = page.getByTestId('waiting-action');
+    await expect(action.locator('svg.mu-ic-save').filter({ visible: true })).toHaveCount(2);
     const item = page.getByTestId('waiting-item');
     await item.getByRole('button', { name: 'Upload' }).click();
     await expect(item).toHaveAttribute('aria-busy', 'true');

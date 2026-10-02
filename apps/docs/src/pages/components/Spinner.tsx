@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Card, Field, Led, Progress, Row, Skeleton, Spinner, useWaiting, type WaitingState } from '@unlocalhosted/metalui';
 import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
+import { SaveGlyph } from '../../ui/async/SaveGlyph';
 import { useAwake } from '../../../../../packages/metalui/src/motion/awake';
 import reactSource from '../../../../../packages/metalui/src/components/spinner/spinner.tsx?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSpinner.swift?raw';
@@ -86,9 +87,9 @@ function Placements() {
     <Host work={action} name="action">
       <h3 className="type-title m-0 text-ink">Action</h3>
       <div className="mu-cluster gap-mu-related">
-        <Button cap="primary" state={action.state} icon={<Icon name="check" />} waitingLabel="Saving…" doneLabel="Saved" errorLabel="Try again"
+        <Button cap="primary" state={action.state} icon={<SaveGlyph state={action.phase} />} waitingLabel="Saving…" doneLabel="Saved" errorLabel="Try again"
           showDelay={d.showDelay} minVisible={d.minVisible} onClick={() => action.run()}>Save</Button>
-        <Button size="compact" onClick={() => { action.cancel(); action.run(); }} disabled={pending(action)}>Save again</Button>
+        <Button size="compact" icon={<Icon name="save" />} onClick={() => { action.cancel(); action.run(); }} disabled={pending(action)}>Save again</Button>
       </div>
       <p className="type-meta m-0 text-ink2">{action.long ? 'Still saving… waiting for the server to accept the change.' : 'The key carries the wait. Its width and the cap’s ink stay.'}</p>
     </Host>
