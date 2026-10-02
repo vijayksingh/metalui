@@ -207,7 +207,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   const [model, setModel] = React.useState<ModelId>('fast');
   const [away, setAway] = React.useState(false); // scrolled up, away from the foot
   const root = React.useRef<HTMLElement>(null);
-  const content = React.useRef<HTMLDivElement>(null);
+  const viewport = React.useRef<HTMLDivElement>(null);
   const well = React.useRef<HTMLTextAreaElement>(null);
   const picker = React.useRef<HTMLInputElement>(null);
   const seq = React.useRef(OPENING.length + 1);
@@ -220,31 +220,29 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   const busy = !!live;
   const empty = draft.trim() === '' && files.length === 0;
 
-  // The ScrollArea keeps its viewport to itself; find it from inside.
-  const viewport = () => content.current?.closest<HTMLElement>('.mu-scroll-area-viewport') ?? null;
-
   const toFoot = (smooth: boolean) => {
-    const v = viewport();
+    const v = viewport.current;
     if (!v) return;
     v.scrollTo({ top: v.scrollHeight, behavior: smooth && !reduced(v) ? 'smooth' : 'auto' });
   };
 
   // Where the person is: at the foot the thread follows; away, it stays put and offers a way back.
+  const onScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const v = event.currentTarget;
+    const atFoot = v.scrollHeight - v.scrollTop - v.clientHeight <= THREAD.followSlop;
+    if (jumping.current) { if (atFoot) jumping.current = false; else return; }
+    pinned.current = atFoot;
+    setAway(!atFoot);
+  };
+
   React.useEffect(() => {
-    const v = viewport();
+    const v = viewport.current;
     if (!v) return;
-    const onScroll = () => {
-      const atFoot = v.scrollHeight - v.scrollTop - v.clientHeight <= THREAD.followSlop;
-      if (jumping.current) { if (atFoot) jumping.current = false; else return; }
-      pinned.current = atFoot;
-      setAway(!atFoot);
-    };
     const onPerson = () => { jumping.current = false; };
-    v.addEventListener('scroll', onScroll, { passive: true });
     v.addEventListener('wheel', onPerson, { passive: true });
     v.addEventListener('touchmove', onPerson, { passive: true });
     toFoot(false);
-    return () => { v.removeEventListener('scroll', onScroll); v.removeEventListener('wheel', onPerson); v.removeEventListener('touchmove', onPerson); };
+    return () => { v.removeEventListener('wheel', onPerson); v.removeEventListener('touchmove', onPerson); };
   }, []);
 
   // Follow the words while at the foot.
@@ -323,8 +321,8 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
       </header>
 
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <ScrollArea className="min-h-0 flex-1">
-          <div ref={content} role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md:px-14">
+        <ScrollArea viewportRef={viewport} onScroll={onScroll} className="min-h-0 flex-1">
+          <div role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md:px-14">
             {messages.map((m, i) => {
               const land = !landed.current.has(m.id);
               landed.current.add(m.id);

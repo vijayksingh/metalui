@@ -34,6 +34,27 @@ Reduce Motion: the thumb's width snaps; the fades stay.
 | children (the content) | `content:` |
 | `className` (give it a height or max-height) | `.frame(maxHeight:)` |
 | `aria-label` (makes it a named region) | `.accessibilityLabel` |
+| `ref` (the outer frame) | No DOM ref; compose the view with SwiftUI modifiers |
+| `viewportRef` (`Ref<HTMLDivElement>`, object or callback; the scrollable element) | Wrap in `ScrollViewReader` and use its proxy to scroll to a content ID |
+| `onScroll` (Base UI viewport handler; `event.currentTarget` is the viewport) | No offset callback at the current macOS 14 minimum; native `onScrollGeometryChange` requires macOS 15 |
+
+```tsx
+const viewport = useRef<HTMLDivElement>(null);
+
+<ScrollArea
+  viewportRef={viewport}
+  onScroll={(event) => setOffset(event.currentTarget.scrollTop)}
+  aria-label="Notes"
+  className="h-[240px]"
+>
+  {notes}
+</ScrollArea>
+
+// Read dimensions on demand, outside the scroll handler.
+viewport.current?.scrollTo({ top: viewport.current.scrollHeight });
+```
+
+`onScroll` observes wheel, keyboard, and imperative scrolling without replacing Base UI's thumb and edge handling. Keep scroll handlers light: read the existing offset, not layout dimensions. The root's other props and `ref` keep their existing destination; use `viewportRef` for scrolling or viewport focus. Callback refs receive `null` when detached. SwiftUI remains the documented system `ScrollView` placeholder; these DOM APIs do not imply native visual or offset-observation parity.
 
 ## Keyboard and accessibility
 

@@ -48,3 +48,35 @@ test('the bar leaves after the pointer does', async ({ page }) => {
   expect(parseFloat(await bar.evaluate((el) => getComputedStyle(el).opacity))).toBeGreaterThan(0.9);
   await expect(bar).toHaveCSS('opacity', '0', { timeout: 2000 });
 });
+
+for (const colorway of COLORWAYS) {
+  test(`viewport access and scroll events stay linked in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/scroll-area', colorway);
+    const vp = page.getByRole('region', { name: 'Linked notes', exact: true });
+    const offset = page.getByRole('status', { name: 'Scroll offset' });
+    await expect(offset).toHaveText('0 px');
+
+    await page.getByRole('button', { name: 'Last note', exact: true }).click();
+    await expect.poll(async () => (await fades(vp)).bottom).toBe(0);
+    await expect.poll(() => vp.evaluate((el) => el.scrollTop)).toBeGreaterThan(100);
+    await expect.poll(async () => Number.parseInt((await offset.textContent())!) - await vp.evaluate((el) => Math.round(el.scrollTop))).toBe(0);
+
+    await page.getByRole('button', { name: 'First note', exact: true }).click();
+    await expect(offset).toHaveText('0 px');
+    await expect.poll(async () => (await fades(vp)).top).toBe(0);
+
+    await vp.focus();
+    await page.keyboard.press('PageDown');
+    await expect.poll(() => vp.evaluate((el) => el.scrollTop)).toBeGreaterThan(100);
+    await expect.poll(async () => Number.parseInt((await offset.textContent())!) - await vp.evaluate((el) => Math.round(el.scrollTop))).toBe(0);
+
+    const beforeWheel = await vp.evaluate((el) => el.scrollTop);
+    const box = (await vp.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.wheel(0, 120);
+    await expect.poll(() => vp.evaluate((el) => el.scrollTop)).toBeGreaterThan(beforeWheel);
+    await expect.poll(async () => Number.parseInt((await offset.textContent())!) - await vp.evaluate((el) => Math.round(el.scrollTop))).toBe(0);
+    await page.locator('#access').screenshot({ path: capture(`scroll-area-access-${colorway}-reduced`) });
+  });
+}

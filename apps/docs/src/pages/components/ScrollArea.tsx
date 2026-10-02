@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { ScrollArea } from '@unlocalhosted/metalui';
+import { Button, ScrollArea } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/scroll-area/scroll-area.tsx?raw';
@@ -44,13 +44,44 @@ function BarTuner() {
   return <div data-testid="scroll-bar-tuner" className="flex justify-center" style={vars}><List label="Tuned notes" /></div>;
 }
 
+function ScrollControls() {
+  const viewport = React.useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = React.useState(0);
+
+  return (
+    <div className="mu-stack gap-mu-related w-full max-w-[380px] mx-auto">
+      <ScrollArea
+        viewportRef={viewport}
+        onScroll={(event) => setOffset(Math.round(event.currentTarget.scrollTop))}
+        aria-label="Linked notes"
+        className="h-[240px] w-full rounded-card recipe-well-field"
+      >
+        <ul className="m-0 grid list-none gap-2 p-12">
+          {NOTES.map((n) => <li key={n} className="type-ui text-ink px-4 py-6">{n}</li>)}
+        </ul>
+      </ScrollArea>
+      <div className="mu-cluster gap-mu-related">
+        <Button size="compact" onClick={() => viewport.current?.scrollTo({ top: 0 })}>First note</Button>
+        <Button size="compact" onClick={() => {
+          const node = viewport.current;
+          if (node) node.scrollTo({ top: node.scrollHeight });
+        }}>Last note</Button>
+        <output className="type-ui text-ink-dim" aria-label="Scroll offset">{offset} px</output>
+      </div>
+    </div>
+  );
+}
+
 export default function ScrollAreaPage() {
   return (
     <ComponentPage
       title="Scroll area"
       lede="A region that scrolls with the system's own scrollbar. The thumb fades in while you scroll and widens when you reach for it; the edges fade only where there is more to see."
       play={{ lede: 'Scroll the list, reach for the bar, or Tab in and use the arrow keys.', caption: '24 notes in a 240 frame', node: <div className="flex w-full justify-center"><List label="Notes" /></div> }}
-      more={[{ id: 'bar', title: 'Tune the bar', lede: 'The Scroll bar panel sets how long the bar waits after you stop, how wide the thumb grows when reached for, and the size of the edge fades.', node: <BarTuner /> }]}
+      more={[
+        { id: 'access', title: 'Control and observe scrolling', lede: 'viewportRef reaches the scrollable element for scrollTo and focus. onScroll receives its event, so the offset below follows wheel, keyboard, and button scrolling. The normal ref still reaches the outer frame.', node: <ScrollControls /> },
+        { id: 'bar', title: 'Tune the bar', lede: 'The Scroll bar panel sets how long the bar waits after you stop, how wide the thumb grows when reached for, and the size of the edge fades.', node: <BarTuner /> },
+      ]}
       usage={`<ScrollArea aria-label="Notes" className="h-60">
   {notes.map((n) => <p key={n.id}>{n.text}</p>)}
 </ScrollArea>`}
