@@ -32,6 +32,8 @@ export interface ButtonProps extends BaseButton.Props {
   hold?: boolean | number;
   /** The host owns the request and result. Idle and error accept another press; waiting and done refuse it. */
   state?: ButtonState;
+  /** Glyph-only key, square at the cap height; keep its spoken verb in aria-label or text children. */
+  iconOnly?: boolean;
   waitingLabel?: string;
   doneLabel?: string;
   errorLabel?: string;
@@ -77,7 +79,7 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
  * MetalUI icons inside it play their act from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', size = 'default', icon, hold = false, state, waitingLabel = 'Working…', doneLabel = 'Done', errorLabel = 'Try again', showDelay, minVisible, className, children, ...props },
+  { cap = 'standard', size = 'default', icon, hold = false, state, waitingLabel = 'Working…', doneLabel = 'Done', errorLabel = 'Try again', iconOnly = false, showDelay, minVisible, className, children, ...props },
   ref,
 ) {
   const element = React.useRef<HTMLElement>(null);
@@ -148,17 +150,18 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
   React.useEffect(() => { if (props.disabled || blocked || !holdEnabled) cancel(); }, [props.disabled, blocked, holdEnabled, cancel]);
   const pressed = face === 'waiting' ? cap === 'standard' ? size === 'compact' ? 'recipe-button-compact-pressed' : 'recipe-button-pressed' : cap === 'primary' ? 'recipe-button-primary-pressed' : cap === 'destructive' ? 'recipe-button-destructive-pressed' : '' : '';
   const label = face === 'waiting' ? waitingLabel : face === 'done' ? doneLabel : face === 'error' ? errorLabel : typeof children === 'string' ? children : '';
-  const content = state === undefined ? <>{icon}{children}</> : <>
+  const content = state === undefined ? <>{icon}{!iconOnly && children}</> : <>
     <span className={`relative inline-grid flex-none place-items-center ${size === 'compact' || ['link', 'graphite', 'strip', 'strip-danger'].includes(cap) ? 'size-button-compact-glyph [&_svg]:size-button-compact-glyph' : 'size-button-glyph [&_svg]:size-button-glyph'}`}>
       <span className={`col-start-1 row-start-1 inline-flex ${face === 'waiting' ? 'opacity-0' : 'opacity-100'}`}>{icon}</span>
       {face === 'waiting' && <ButtonWaitArc />}
     </span>
-    <span className="inline-grid place-items-center">
+    {!iconOnly && <span className="inline-grid place-items-center">
       {[children, waitingLabel, doneLabel, errorLabel].map((value, i) => <span key={i} className="col-start-1 row-start-1 invisible pointer-events-none" aria-hidden>{value}</span>)}
       <span className="col-start-1 row-start-1">{label ? <SwapText value={label} /> : children}</span>
-    </span>
+    </span>}
   </>;
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${pressed} ${face === 'waiting' ? 'translate-y-button-travel cursor-default' : ''} ${holdEnabled ? `relative overflow-hidden data-holding:translate-y-button-travel ${cap === 'strip-danger' ? 'data-holding:recipe-button-strip-pressed' : 'data-holding:recipe-button-destructive-pressed'} data-holding:duration-button-press data-holding:ease-linear` : ''}`;
+  const square = iconOnly ? ['strip', 'strip-danger'].includes(cap) ? 'w-button-strip-height px-0!' : cap === 'graphite' ? 'w-button-graphite-height px-0!' : size === 'compact' ? 'w-button-compact-height px-0!' : 'w-button-height px-0!' : '';
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${square} ${pressed} ${face === 'waiting' ? 'translate-y-button-travel cursor-default' : ''} ${holdEnabled ? `relative overflow-hidden data-holding:translate-y-button-travel ${cap === 'strip-danger' ? 'data-holding:recipe-button-strip-pressed' : 'data-holding:recipe-button-destructive-pressed'} data-holding:duration-button-press data-holding:ease-linear` : ''}`;
   return (
     <>
     <BaseButton
@@ -173,6 +176,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
         return extra ? `${own} ${extra}` : own;
       }}
       {...props}
+      aria-label={props['aria-label'] ?? (iconOnly ? label || (typeof children === 'string' ? children : undefined) : undefined)}
       aria-busy={state === 'waiting' || props['aria-busy']}
       aria-disabled={blocked || props['aria-disabled']}
       aria-describedby={holdEnabled ? [props['aria-describedby'], hintId].filter(Boolean).join(' ') : props['aria-describedby']}

@@ -686,6 +686,8 @@ Swift: `MetalButton("Save", state: state, waitingLabel: "Saving…", doneLabel: 
 
 Swift dense strips may use `cap: .strip` / `.stripDanger`; the danger strip accepts hold. `iconOnly: true` preserves the spoken title and makes the cap square at its recipe height, for use behind a tooltip in ToolStrip. Group styling and tooltip remain the host’s responsibility.
 
+React `iconOnly` also makes the key square at its cap height and keeps the waiting/result glyph in that slot without a label footprint. Provide its verb as `aria-label` (or text children for an automatic spoken label), and use Tooltip for discovery. Button waiting labels still announce the request and result.
+
 ---
 
 # Button group and split button
