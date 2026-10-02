@@ -3939,9 +3939,11 @@ The badge has role=status and atomic announcements when its words change; keep i
 
 ## One retained sync meaning
 
-Pass `glyph="synced"`, `"offline"` or `"sync-error"` to replace the lamp in the shared 14pt compact glyph slot. `led` still identifies the plate tint: link, off or failed. One MorphIcon remains mounted as that name changes; string children turn on the shared SwapText drum in the same render. Swift `MetalStatusBadge("Offline · changes stay here", led: .off, glyph: .offline)` uses MetalMorphIcon and the existing settle label transition. Reduced motion holds the glyph at its new authored geometry and cross-fades the words. No timer runs at rest.
+Pass `glyph="synced"`, `"offline"` or `"sync-error"` to replace the lamp in the shared 14pt compact glyph slot. `led` still identifies the plate tint: link, off or failed. One MorphIcon remains mounted as that name changes; string children turn on the shared SwapText drum in the same render. Swift `MetalStatusBadge("Offline · changes stay here", led: .off, glyph: .offline)` uses MetalMorphIcon and the existing settle label transition. Reduced motion holds the glyph at its new authored geometry. React words cross-fade; native words resolve immediately, including when reduction is enabled on a live badge, so SwiftUI cannot retain an outgoing vertical transition. No timer runs at rest.
 
 Keep the badge outside the work item's busy subtree. Words describe the consequence (offline changes remain local), and a separate Retry action executes recovery. A glyph never replaces words or supplies a second announcement. Arbitrary React children remain supported; when composing rich changing labels, supply your own SwapText. Omit `glyph` for the established LED/lamp behavior.
+
+`e2e/native/run-status-label-proof.py` exercises the actual quiet badge in both colorways, switches a live scope to reduced motion, and compares rendered label pixels during and after the change. The glyph result act stays separately scoped; the native words become still immediately. It does not assert spoken VoiceOver output.
 
 ---
 

@@ -134,7 +134,12 @@ public struct MetalStatusBadge: View {
                     .transition(reduceMotion ? .opacity : .asymmetric(
                         insertion: .opacity.combined(with: .offset(y: MetalSpace.s4)),
                         removal: .opacity.combined(with: .offset(y: -MetalSpace.s4))))
-            }.clipped().metalAnimation(.settle, value: text)
+            }.id(reduceMotion).clipped().metalAnimation(.settle, value: text)
+                // A removed SwiftUI identity can retain its former offset transition.
+                // Resolve reduced words immediately so a live scope change cannot travel.
+                .transaction { transaction in
+                    if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+                }
                 .font(recipe.font("badge.font"))
                 .tracking(recipe.tracking("badge.tracking", size: recipe.fontSize("badge.font")))
                 .foregroundColor((translucent ? colorway.tokens.ink : colorway.tokens.ink2).color)

@@ -97,3 +97,7 @@ Run `python3 e2e/native/run-select-chevron-proof.py`. Default-action Return open
 # Native Person cue
 
 Run `python3 e2e/native/run-person-cue-proof.py`. A real public `MetalPersonCue` opens its own names plate, highlights without source mutation, chooses the complete source name despite a shorter picker label, and records one Undo with retained UTF16 selection. The host measures the adjacent text anchor before/after that choice. Escape, scoped reduction, typeahead, read-only and disabled follow the same source lifecycle. Actual-window captures show the Mark quiet underline/person glyph and donor menu/pen in both colorways. Native Avatar remains its separately documented WIP; hosts may provide an `AnyView` fitted to the compact glyph slot. This fixture measures SwiftUI source/history, rather than claiming TextKit IME or spoken VoiceOver output. Native app fixtures must run serially so another app cannot invalidate the active scene.
+
+# Native Status live reduction
+
+Run `python3 e2e/native/run-status-label-proof.py`. The actual badge changes synced/offline in both colorways, then changes after enabling a reduced scope. Own-window pixels cover full travel and reduced immediate label settlement; the trailing text crop excludes the glyph's separate result act. The full window must settle at rest. Set `METALUI_NATIVE_CAPTURE` to save moving and settled views.
