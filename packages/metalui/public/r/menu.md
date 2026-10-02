@@ -64,3 +64,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 ## Tokens
 
 `--mu-menu-*` (section), `--mu-menu-bg`, `--mu-menu-row-hover` (colorway), `--mu-raise`, `--mu-radius-plate`, `--mu-radius-row`, `--mu-engrave`, `--mu-rule`, `--mu-red`, `--mu-spring-settle`, `--mu-spring-release`. Swift: `MetalMenuMetrics`.
+
+## Scoped colorways
+
+Both Menu and ContextMenu copy the target’s nearest `data-mu-colorway` to the portalled positioner and follow live ancestor changes. The popup remains outside clipped hosts. With no override it inherits the document; SwiftUI uses its native colorway environment.

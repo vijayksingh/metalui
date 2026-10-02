@@ -5,6 +5,7 @@ import { SlidingIndicator } from '../../motion/indicator';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
+import { usePortalColorway } from '../../theme/portal-colorway';
 
 /* ─────────────────────────────────────────────────────────
  * MENU and CORRECTION POPOVER (the brief, 04 §8, §18; the reference design's #pop) on Base UI Menu
@@ -72,11 +73,13 @@ export interface MenuProps {
 
 /** A menu from a trigger: a frosted plate of rows 6 below it. */
 export function Menu({ trigger, heading, side = 'bottom', align = 'start', children, open, onOpenChange }: MenuProps) {
+  const [anchor, setAnchor] = React.useState<HTMLElement | null>(null);
+  const colorway = usePortalColorway(anchor);
   return (
     <BaseMenu.Root open={open} onOpenChange={onOpenChange ? (o) => onOpenChange(o) : undefined}>
-      <BaseMenu.Trigger render={trigger} />
+      <BaseMenu.Trigger ref={setAnchor} render={trigger} />
       <BaseMenu.Portal>
-        <BaseMenu.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+        <BaseMenu.Positioner data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
           <Plate heading={heading}>{children}</Plate>
         </BaseMenu.Positioner>
       </BaseMenu.Portal>
@@ -98,11 +101,13 @@ export interface ContextMenuProps {
  * and are remembered; the host shows a toast with Undo after one.
  */
 export function ContextMenu({ menu, heading, children }: ContextMenuProps) {
+  const [anchor, setAnchor] = React.useState<HTMLDivElement | null>(null);
+  const colorway = usePortalColorway(anchor);
   return (
     <BaseContextMenu.Root>
-      <BaseContextMenu.Trigger render={children} />
+      <BaseContextMenu.Trigger ref={setAnchor} render={children} />
       <BaseContextMenu.Portal>
-        <BaseContextMenu.Positioner className={POSITIONER} collisionPadding={8}>
+        <BaseContextMenu.Positioner data-mu-colorway={colorway} className={POSITIONER} collisionPadding={8}>
           <Plate heading={heading}>{menu}</Plate>
         </BaseContextMenu.Positioner>
       </BaseContextMenu.Portal>

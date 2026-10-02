@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { ContextMenu, Cue, IconButton, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { Button, ContextMenu, Cue, IconButton, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -41,6 +41,18 @@ function Corrections() {
   );
 }
 
+function ScopedMenus() {
+  const [colorway, setColorway] = React.useState<'bone' | 'graphite'>('graphite');
+  const [result, setResult] = React.useState('No action yet');
+  const items = <MenuItem icon={<DuplicateIcon size={14} />} onSelect={() => setResult('Duplicated')}>Duplicate scoped note</MenuItem>;
+  return <div data-testid="scoped-menu" data-mu-colorway={colorway} className="mu-stack gap-mu-related p-mu-space-4 rounded-mu-space-3 recipe-surface overflow-hidden">
+    <Menu trigger={<Button cap="standard">Scoped actions</Button>}>{items}</Menu>
+    <ContextMenu menu={items}><button type="button" className="type-ui text-ink" aria-label="Scoped context target">Right-click this note</button></ContextMenu>
+    <Button cap="link" onClick={() => setColorway(colorway === 'graphite' ? 'bone' : 'graphite')}>Change host colorway</Button>
+    <span className="meta" role="status">{result}</span>
+  </div>;
+}
+
 export default function MenuPage() {
   const d = useDialKit('Menu', { heading: true });
   const [ran, setRan] = React.useState('–');
@@ -67,6 +79,9 @@ export default function MenuPage() {
           } />
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
+      </Section>
+      <Section id="portal" title="A scoped host" lede="Trigger and context menus carry their host’s colorway outside clipped parents and follow changes while open. Native menus inherit the SwiftUI colorway environment.">
+        <ScopedMenus />
       </Section>
       <Section id="x-ray" title="X-ray" lede="See what the menu is made of. Click an icon to learn about one part and change it.">
         <MenuXray />
