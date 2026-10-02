@@ -11,5 +11,5 @@
 }
 svg.mu-icon [data-part="pad"]{transform-origin:12px 16px}
 @media (prefers-reduced-motion:no-preference){svg.mu-icon:is(:hover,:focus-visible,[data-state~="play"]) [data-part="pad"]{animation:mu-stop-pad 514ms linear both}@keyframes mu-stop-pad{0%{transform:translate(0px,0px) rotate(0deg) scale(1,1);animation-timing-function:cubic-bezier(.55,0,.85,.45)}27.237%{transform:translate(0px,1.2px) rotate(0deg) scale(1,0.94);animation-timing-function:cubic-bezier(.4,0,.2,1)}38.911%{transform:translate(0px,1.2px) rotate(0deg) scale(1,0.94);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:translate(0px,0px) rotate(0deg) scale(1,1)}}}</style>
-<rect class="f" style="--duo:.08" x="4.5" y="4.5" width="15" height="15" rx="2.2"/><rect class="s" data-part="pad" x="8" y="8" width="8" height="8" rx=".65"/>
+<rect class="f" style="--duo:.08" x="4.5" y="4.5" width="15" height="15" rx="2.2"/><rect class="f" style="--duo:.16" data-part="pad" x="8" y="8" width="8" height="8" rx=".65"/>
 </svg>

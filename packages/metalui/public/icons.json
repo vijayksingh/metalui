@@ -660,7 +660,7 @@
         ]
       },
       "tuned16": false,
-      "construction": "Fixed rounded stop case with a solid inset square pad. The pad presses1.2 into its seat once on the release spring; the square stays a square."
+      "construction": "Fixed rounded stop case with a duotone inset square pad. The pad presses1.2 into its seat once on the release spring; the square stays a square."
     },
     {
       "name": "attach",
@@ -800,7 +800,7 @@
         ]
       },
       "tuned16": false,
-      "construction": "Half-lit circular lamp with four cardinal rays. A clipped shade adjusts the lit area inside the fixed disc; the silhouette distinguishes brightness adjustment from the eight-ray daylight Sun."
+      "construction": "Duotone half-lit circular lamp with four cardinal rays. A clipped shade adjusts the lit area inside the fixed disc; the silhouette distinguishes brightness adjustment from the eight-ray daylight Sun."
     },
     {
       "name": "send-away",

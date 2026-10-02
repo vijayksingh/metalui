@@ -273,14 +273,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return 0.092
         case .eyeOff: return 0.08
         case .lock: return 0.12
-        case .stop: return 0.08
+        case .stop: return 0.098
         case .attach: return nil
         case .retry: return nil
         case .person: return 0.1
         case .bell: return 0.102
         case .palette: return 0.08
         case .volume: return 0.1
-        case .brightness: return nil
+        case .brightness: return 0.16
         case .sendAway: return nil
         case .trash: return 0.12
         case .group: return 0.156

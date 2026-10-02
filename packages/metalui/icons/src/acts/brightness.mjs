@@ -14,10 +14,10 @@ const moves = [
 const D = Math.max(...moves.map(end));
 const finish = (frames) => end(frames) === D ? frames : [...frames, pose(D, T())];
 export const act = {
-  body: `<circle cx="12" cy="12" r="3.8"/><g clip-path="url(#lamp)"><path class="s" data-part="shade" d="M12 8.2a3.8 3.8 0 0 1 0 7.6Z"/></g><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2"/>`,
+  body: `<circle cx="12" cy="12" r="3.8"/><g clip-path="url(#lamp)"><path class="f" style="--duo:.16" data-part="shade" d="M12 8.2a3.8 3.8 0 0 1 0 7.6Z"/></g><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2"/>`,
   defs: `<clipPath id="lamp"><circle cx="12" cy="12" r="3.8"/></clipPath>`,
   study: motion(D, 'The level shade opens inside the fixed lamp and seats back at its half-lit position.', ['Adjust light', 'Open level', 'Seat'], [
     actor('shade', '12px 12px', finish(moves[0])),
   ]),
-  shape: 'Half-lit circular lamp with four cardinal rays. A clipped shade adjusts the lit area inside the fixed disc; the silhouette distinguishes brightness adjustment from the eight-ray daylight Sun.',
+  shape: 'Duotone half-lit circular lamp with four cardinal rays. A clipped shade adjusts the lit area inside the fixed disc; the silhouette distinguishes brightness adjustment from the eight-ray daylight Sun.',
 };

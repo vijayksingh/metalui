@@ -12,6 +12,8 @@ function Still({ frame, size = 32 }: { frame: MorphFrame; size?: number }) {
 
 // Pairs a product actually switches between, then a few far ones to show any-to-any.
 const PAIRS: [MorphIconName, MorphIconName][] = [
+  ['send', 'stop'],
+  ['eye', 'eye-off'],
   ['synced', 'offline'],
   ['offline', 'sync-error'],
   ['paste', 'check'],

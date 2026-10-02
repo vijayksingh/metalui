@@ -14,9 +14,9 @@ const moves = [
 const D = Math.max(...moves.map(end));
 const finish = (frames) => end(frames) === D ? frames : [...frames, pose(D, T())];
 export const act = {
-  body: `<rect class="f" style="--duo:.08" x="4.5" y="4.5" width="15" height="15" rx="2.2"/><rect class="s" data-part="pad" x="8" y="8" width="8" height="8" rx=".65"/>`,
+  body: `<rect class="f" style="--duo:.08" x="4.5" y="4.5" width="15" height="15" rx="2.2"/><rect class="f" style="--duo:.16" data-part="pad" x="8" y="8" width="8" height="8" rx=".65"/>`,
   study: motion(D, 'The square stop pad contacts its seat once and releases inside the fixed case.', ['Stop', 'Contact', 'Release'], [
     actor('pad', '12px 16px', finish(moves[0])),
   ]),
-  shape: 'Fixed rounded stop case with a solid inset square pad. The pad presses1.2 into its seat once on the release spring; the square stays a square.',
+  shape: 'Fixed rounded stop case with a duotone inset square pad. The pad presses1.2 into its seat once on the release spring; the square stays a square.',
 };

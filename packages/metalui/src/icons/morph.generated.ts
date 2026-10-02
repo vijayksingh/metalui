@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "attach", "retry", "person", "bell", "palette", "volume", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -182,6 +182,10 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M8.5 11L15.5 11C16.6 11 17.5 11.9 17.5 13L17.5 18.2C17.5 19.3 16.6 20.2 15.5 20.2L8.5 20.2C7.4 20.2 6.5 19.3 6.5 18.2L6.5 13C6.5 11.9 7.4 11 8.5 11Z", 1.7, 0.12, 0, 1],
     ["M12 14.6L12 17", 1.7, 0, 0, 1],
   ],
+  "stop": [
+    ["M6.7 4.5L17.3 4.5C18.52 4.5 19.5 5.48 19.5 6.7L19.5 17.3C19.5 18.52 18.52 19.5 17.3 19.5L6.7 19.5C5.48 19.5 4.5 18.52 4.5 17.3L4.5 6.7C4.5 5.48 5.48 4.5 6.7 4.5Z", 1.7, 0.08, 0, 1],
+    ["M8.65 8L15.35 8C15.71 8 16 8.29 16 8.65L16 15.35C16 15.71 15.71 16 15.35 16L8.65 16C8.29 16 8 15.71 8 15.35L8 8.65C8 8.29 8.29 8 8.65 8Z", 1.7, 0.16, 0, 1],
+  ],
   "attach": [
     ["M8 8.5L8 7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7L16 16.5C16 19.54 13.54 22 10.5 22C7.46 22 5 19.54 5 16.5L5 9", 1.7, 0, 0, 1],
     ["M8 8.5L8 16.2C8 17.53 9.07 18.6 10.4 18.6C11.73 18.6 12.8 17.53 12.8 16.2L12.8 8.5", 1.7, 0, 0, 1],
@@ -212,6 +216,14 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M4 9.5L7.4 9.5L12 5.8L12 18.2L7.4 14.5L4 14.5Z", 1.7, 0.1, 0, 1],
     ["M15 9C15.81 9.79 16.26 10.87 16.26 12C16.26 13.13 15.81 14.21 15 15", 1.7, 0, 0, 1],
     ["M17.5 6.4C19.02 7.87 19.87 9.89 19.87 12C19.87 14.11 19.02 16.13 17.5 17.6", 1.7, 0, 0, 1],
+  ],
+  "brightness": [
+    ["M15.8 12C15.8 14.1 14.1 15.8 12 15.8C9.9 15.8 8.2 14.1 8.2 12C8.2 9.9 9.9 8.2 12 8.2C14.1 8.2 15.8 9.9 15.8 12Z", 1.7, 0, 0, 1],
+    ["M12 8.2C14.1 8.2 15.8 9.9 15.8 12C15.8 14.1 14.1 15.8 12 15.8Z", 1.7, 0.16, 0, 1, [["inside",0,0.03]]],
+    ["M12 3.5L12 5.5", 1.7, 0, 0, 1],
+    ["M12 18.5L12 20.5", 1.7, 0, 0, 1],
+    ["M3.5 12L5.5 12", 1.7, 0, 0, 1],
+    ["M18.5 12L20.5 12", 1.7, 0, 0, 1],
   ],
   "send-away": [
     ["M12.06 13.05L11.89 13.19L11.69 13.3L11.46 13.36L11.2 13.37L10.94 13.34L10.67 13.25L10.4 13.11L10.15 12.92L9.93 12.68L9.74 12.39L9.59 12.07L9.5 11.7L9.46 11.31L9.48 10.91L9.57 10.5L9.73 10.09L9.96 9.7L10.25 9.34L10.61 9.01L11.03 8.74L11.5 8.53L12.01 8.38L12.55 8.31L13.1 8.33L13.67 8.43L14.23 8.62L14.76 8.9L15.26 9.27L15.72 9.72L16.1 10.24L16.42 10.82L16.64 11.46L16.78 12.14L16.81 12.85L16.73 13.57L16.55 14.29L16.25 14.98L15.85 15.64L15.34 16.24L14.75 16.77L14.06 17.21L13.31 17.55L12.5 17.79L11.65 17.9L10.78 17.89L9.9 17.74L9.05 17.47L8.23 17.06L7.46 16.53L6.77 15.89L6.17 15.14L5.69 14.29L5.32 13.37L5.09 12.4L5.01 11.38L5.08 10.36L5.29 9.33L5.67 8.34L6.18 7.4L6.84 6.53L7.63 5.76L8.54 5.11L9.54 4.58L10.63 4.21L11.77 3.99L12.94 3.95L14.12 4.07L15.29 4.38L16.41 4.85L17.46 5.49", 1.7, 0, 0, 1],
