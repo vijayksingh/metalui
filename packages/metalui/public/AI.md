@@ -3542,6 +3542,8 @@ Reduce Motion: width and words change at once; the highlight moves at once.
 
 The default toggle morphs the shared `sidebar` and `sidebar-collapsed` glyphs at16px as its label turns on the drum. The frame stays fixed, the navigation boundary moves, and rail word marks withdraw. Pass `icon` only for custom artwork; it stays host-owned. Swift's operable `MetalSidebarToggle(collapsed:)` uses the same pair and spoken collapse/expand verbs; `.disabled` prevents a change. `MetalSidebar` itself remains a system List placeholder: the native gliding highlight and word/width choreography are still WIP. Reduced motion lands the toggle's glyph and label immediately.
 
+The native toggle's existing outer reduced transaction also settles a live label swap. Its public-App rendering audit flips scoped motion 15ms into the swap, compares actual word ink at 50ms and after settling, then compares a newly mounted reduced toggle. Both colorways pass without a runtime change (`e2e/native/run-sidebar-words-proof.py`); binding activation and disabled refusal are checked alongside the words. This receipt covers the operable toggle, not the native List placeholder's remaining choreography.
+
 ---
 
 # Size readout
