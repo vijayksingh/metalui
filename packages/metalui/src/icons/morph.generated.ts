@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -148,6 +148,39 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M10.2 4.5L6.5 4.5C5.4 4.5 4.5 5.4 4.5 6.5L4.5 17.5C4.5 18.6 5.4 19.5 6.5 19.5L17.5 19.5C18.6 19.5 19.5 18.6 19.5 17.5L19.5 13.8", 1.7, 0, 0, 1],
     ["M10.2 13.8L19.5 4.5", 1.7, 0, 0, 1],
     ["M14 4.5L19.5 4.5L19.5 10", 1.7, 0, 0, 1],
+  ],
+  "settings": [
+    ["M4 6L20 6", 1.7, 0, 0, 1],
+    ["M4 12L20 12", 1.7, 0, 0, 1],
+    ["M4 18L20 18", 1.7, 0, 0, 1],
+    ["M8 3.8L9.4 3.8C9.95 3.8 10.4 4.25 10.4 4.8L10.4 7.2C10.4 7.75 9.95 8.2 9.4 8.2L8 8.2C7.45 8.2 7 7.75 7 7.2L7 4.8C7 4.25 7.45 3.8 8 3.8Z", 1.7, 0.12, 0, 1],
+    ["M15 9.8L16.4 9.8C16.95 9.8 17.4 10.25 17.4 10.8L17.4 13.2C17.4 13.75 16.95 14.2 16.4 14.2L15 14.2C14.45 14.2 14 13.75 14 13.2L14 10.8C14 10.25 14.45 9.8 15 9.8Z", 1.7, 0.12, 0, 1],
+    ["M9.5 15.8L10.9 15.8C11.45 15.8 11.9 16.25 11.9 16.8L11.9 19.2C11.9 19.75 11.45 20.2 10.9 20.2L9.5 20.2C8.95 20.2 8.5 19.75 8.5 19.2L8.5 16.8C8.5 16.25 8.95 15.8 9.5 15.8Z", 1.7, 0.12, 0, 1],
+  ],
+  "filter": [
+    ["M4 4.8L20 4.8L14 12L10 12Z", 1.7, 0.1, 0, 1],
+    ["M10 11.2L10 20.2L14 18L14 11.2", 1.7, 0.1, 0, 1],
+  ],
+  "sort": [
+    ["M4 5.5L11.5 5.5", 1.7, 0, 0, 1],
+    ["M4 11.5L9.5 11.5", 1.7, 0, 0, 1],
+    ["M4 17.5L7.5 17.5", 1.7, 0, 0, 1],
+    ["M17.5 4.8L17.5 18.2", 1.7, 0, 0, 1],
+    ["M14.3 15L17.5 18.2L20.7 15", 1.7, 0, 0, 1],
+  ],
+  "eye": [
+    ["M3.5 12C9.17 5 14.83 5 20.5 12C14.83 19 9.17 19 3.5 12Z", 1.7, 0.08, 0, 1],
+    ["M14.6 12C14.6 13.44 13.44 14.6 12 14.6C10.56 14.6 9.4 13.44 9.4 12C9.4 10.56 10.56 9.4 12 9.4C13.44 9.4 14.6 10.56 14.6 12Z", 1.7, 0.16, 0, 1],
+  ],
+  "eye-off": [
+    ["M3.5 12C9.17 5 14.83 5 20.5 12C14.83 19 9.17 19 3.5 12Z", 1.7, 0.08, 0, 1, [["behind",2,2.2]]],
+    ["M14.6 12C14.6 13.44 13.44 14.6 12 14.6C10.56 14.6 9.4 13.44 9.4 12C9.4 10.56 10.56 9.4 12 9.4C13.44 9.4 14.6 10.56 14.6 12Z", 1.7, 0, 0, 1, [["behind",2,2.2]]],
+    ["M4.5 4.5L19.5 19.5", 1.7, 0, 0, 1],
+  ],
+  "lock": [
+    ["M8.5 11L8.5 7.3C8.5 5.37 10.07 3.8 12 3.8C13.93 3.8 15.5 5.37 15.5 7.3L15.5 11", 1.7, 0, 0, 1],
+    ["M8.5 11L15.5 11C16.6 11 17.5 11.9 17.5 13L17.5 18.2C17.5 19.3 16.6 20.2 15.5 20.2L8.5 20.2C7.4 20.2 6.5 19.3 6.5 18.2L6.5 13C6.5 11.9 7.4 11 8.5 11Z", 1.7, 0.12, 0, 1],
+    ["M12 14.6L12 17", 1.7, 0, 0, 1],
   ],
   "send-away": [
     ["M12.06 13.05L11.89 13.19L11.69 13.3L11.46 13.36L11.2 13.37L10.94 13.34L10.67 13.25L10.4 13.11L10.15 12.92L9.93 12.68L9.74 12.39L9.59 12.07L9.5 11.7L9.46 11.31L9.48 10.91L9.57 10.5L9.73 10.09L9.96 9.7L10.25 9.34L10.61 9.01L11.03 8.74L11.5 8.53L12.01 8.38L12.55 8.31L13.1 8.33L13.67 8.43L14.23 8.62L14.76 8.9L15.26 9.27L15.72 9.72L16.1 10.24L16.42 10.82L16.64 11.46L16.78 12.14L16.81 12.85L16.73 13.57L16.55 14.29L16.25 14.98L15.85 15.64L15.34 16.24L14.75 16.77L14.06 17.21L13.31 17.55L12.5 17.79L11.65 17.9L10.78 17.89L9.9 17.74L9.05 17.47L8.23 17.06L7.46 16.53L6.77 15.89L6.17 15.14L5.69 14.29L5.32 13.37L5.09 12.4L5.01 11.38L5.08 10.36L5.29 9.33L5.67 8.34L6.18 7.4L6.84 6.53L7.63 5.76L8.54 5.11L9.54 4.58L10.63 4.21L11.77 3.99L12.94 3.95L14.12 4.07L15.29 4.38L16.41 4.85L17.46 5.49", 1.7, 0, 0, 1],

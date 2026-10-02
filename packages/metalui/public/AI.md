@@ -4481,7 +4481,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 55 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 61 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4490,6 +4490,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 ```
 
+- **Adjustment and visibility:** `settings` adjusts values; `filter` narrows results; `sort` orders rows (turn for the reverse order). Morph `eye` ↔ `eye-off` when the same key changes visibility; `lock` describes access. The eye enclosure stays recognizable behind its shutter.
 - **Transfer and record:** `save` retains a document; `download` receives into this device; `upload` transfers to the service; `send` dispatches a message. `copy` takes a paper copy to the clipboard (`paste` retrieves it, `duplicate` creates another object). `external` opens another context. Pair the glyph with the action verb.
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
@@ -4525,6 +4526,12 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `UploadIcon` | `upload` | Actions | The arrow rises to the upper boundary; the boundary receives it and releases. | plays the same act |
 | `SendIcon` | `send` | Actions | The folded message draws back, leaves along its pointed tip, and the next message is ready. | plays the same act |
 | `ExternalIcon` | `external` | Actions | The arrow reaches through the open window corner into the external context, then returns ready. | plays the same act |
+| `SettingsIcon` | `settings` | Tools | Three adjustment knobs reach their rail stops in order and seat back into their settings. | plays the same act |
+| `FilterIcon` | `filter` | Tools | The throat seats in the fixed funnel and narrows the result stream. | plays the same act |
+| `SortIcon` | `sort` | Tools | The ordering shaft presses its terminal and returns; the ordered rows stay fixed. | plays the same act |
+| `EyeIcon` | `eye` | Actions | The iris inspects through the fixed lens and returns to centre. | plays the same act |
+| `EyeOffIcon` | `eye-off` | Actions | The visibility shutter seats across the fixed lens, then returns to its concealed position. | plays the same act |
+| `LockIcon` | `lock` | Status | The closed shackle seats in its catches; the secure body stays fixed. | plays the same act |
 | `SendAwayIcon` | `send-away` | Actions | The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim. | plays the same act |
 | `TrashIcon` | `trash` | Actions | The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge. | plays the same act |
 | `GroupIcon` | `group` | Actions | The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing. | plays the same act |

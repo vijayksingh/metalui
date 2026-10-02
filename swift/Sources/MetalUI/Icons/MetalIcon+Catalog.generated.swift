@@ -29,6 +29,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case upload = "upload"
     case send = "send"
     case external = "external"
+    case settings = "settings"
+    case filter = "filter"
+    case sort = "sort"
+    case eye = "eye"
+    case eyeOff = "eye-off"
+    case lock = "lock"
     case sendAway = "send-away"
     case trash = "trash"
     case group = "group"
@@ -89,6 +95,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return "Upload"
         case .send: return "Send"
         case .external: return "Open externally"
+        case .settings: return "Settings"
+        case .filter: return "Filter"
+        case .sort: return "Sort"
+        case .eye: return "Show value"
+        case .eyeOff: return "Hide value"
+        case .lock: return "Locked"
         case .sendAway: return "Delete · Send away"
         case .trash: return "Delete · Trash"
         case .group: return "Group · Stack"
@@ -149,6 +161,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return .actions
         case .send: return .actions
         case .external: return .actions
+        case .settings: return .tools
+        case .filter: return .tools
+        case .sort: return .tools
+        case .eye: return .actions
+        case .eyeOff: return .actions
+        case .lock: return .status
         case .sendAway: return .actions
         case .trash: return .actions
         case .group: return .actions
@@ -210,6 +228,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return nil
         case .send: return 0.12
         case .external: return nil
+        case .settings: return 0.12
+        case .filter: return 0.1
+        case .sort: return nil
+        case .eye: return 0.092
+        case .eyeOff: return 0.08
+        case .lock: return 0.12
         case .sendAway: return nil
         case .trash: return 0.12
         case .group: return 0.156
@@ -271,6 +295,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return nil
         case .send: return nil
         case .external: return nil
+        case .settings: return nil
+        case .filter: return nil
+        case .sort: return nil
+        case .eye: return nil
+        case .eyeOff: return nil
+        case .lock: return nil
         case .sendAway: return nil
         case .trash: return nil
         case .group: return nil
@@ -332,6 +362,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return false
         case .send: return false
         case .external: return false
+        case .settings: return false
+        case .filter: return false
+        case .sort: return false
+        case .eye: return false
+        case .eyeOff: return false
+        case .lock: return false
         case .sendAway: return true
         case .trash: return false
         case .group: return true
@@ -393,6 +429,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .upload: return 1.85
         case .send: return 1.85
         case .external: return 1.85
+        case .settings: return 1.85
+        case .filter: return 1.85
+        case .sort: return 1.85
+        case .eye: return 1.85
+        case .eyeOff: return 1.85
+        case .lock: return 1.85
         case .sendAway: return 1.9
         case .trash: return 1.85
         case .group: return 1.9

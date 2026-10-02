@@ -1717,6 +1717,179 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .settings: MetalIconAct(
+            duration: 0.9,
+            caption: "Three adjustment knobs reach their rail stops in order and seat back into their settings.",
+            parts: [
+            MetalIconActPart(
+                name: "upper", origin: CGPoint(x: 8.7, y: 6.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1667, x: 2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2333, x: 2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5722, x: -0.209, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.9111, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "middle", origin: CGPoint(x: 15.7, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2111, x: -2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2778, x: -2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6167, x: 0.209, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.9556, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "lower", origin: CGPoint(x: 10.2, y: 18.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2556, x: 2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.3222, x: 2.4, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6611, x: -0.209, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4 6L20 6M4 12L20 12M4 18L20 18", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8 3.8L9.4 3.8C9.9523 3.8 10.4 4.2477 10.4 4.8L10.4 7.2C10.4 7.7523 9.9523 8.2 9.4 8.2L8 8.2C7.4477 8.2 7 7.7523 7 7.2L7 4.8C7 4.2477 7.4477 3.8 8 3.8Z", parts: [0], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M15 9.8L16.4 9.8C16.9523 9.8 17.4 10.2477 17.4 10.8L17.4 13.2C17.4 13.7523 16.9523 14.2 16.4 14.2L15 14.2C14.4477 14.2 14 13.7523 14 13.2L14 10.8C14 10.2477 14.4477 9.8 15 9.8Z", parts: [1], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M9.5 15.8L10.9 15.8C11.4523 15.8 11.9 16.2477 11.9 16.8L11.9 19.2C11.9 19.7523 11.4523 20.2 10.9 20.2L9.5 20.2C8.9477 20.2 8.5 19.7523 8.5 19.2L8.5 16.8C8.5 16.2477 8.9477 15.8 9.5 15.8Z", parts: [2], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .filter: MetalIconAct(
+            duration: 0.85,
+            caption: "The throat seats in the fixed funnel and narrows the result stream.",
+            parts: [
+            MetalIconActPart(
+                name: "throat", origin: CGPoint(x: 12.0, y: 11.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2118, x: 0.0, y: -1.3, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2824, x: 0.0, y: -1.3, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6412, x: 0.0, y: 0.1132, r: 0.0, sx: 1.0, sy: 1.007, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4 4.8L20 4.8L14 12L10 12Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M10 11.2L10 20.2L14 18L14 11.2", parts: [0], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .sort: MetalIconAct(
+            duration: 0.84,
+            caption: "The ordering shaft presses its terminal and returns; the ordered rows stay fixed.",
+            parts: [
+            MetalIconActPart(
+                name: "order", origin: CGPoint(x: 17.5, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2024, x: 0.0, y: 1.3, r: 0.0, sx: 1.0, sy: 0.94, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2738, x: 0.0, y: 1.3, r: 0.0, sx: 1.0, sy: 0.94, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6369, x: 0.0, y: -0.1132, r: 0.0, sx: 1.0, sy: 1.0052, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4 5.5L11.5 5.5M4 11.5L9.5 11.5M4 17.5L7.5 17.5", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M17.5 4.8L17.5 18.2M14.3 15L17.5 18.2L20.7 15", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .eye: MetalIconAct(
+            duration: 0.86,
+            caption: "The iris inspects through the fixed lens and returns to centre.",
+            parts: [
+            MetalIconActPart(
+                name: "iris", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2093, x: 2.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2907, x: 2.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6453, x: -0.1741, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M3.5 12C9.1667 5 14.8333 5 20.5 12C14.8333 19 9.1667 19 3.5 12Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0),
+            MetalIconActInk(d: "M14.6 12C14.6 13.4359 13.4359 14.6 12 14.6C10.5641 14.6 9.4 13.4359 9.4 12C9.4 10.5641 10.5641 9.4 12 9.4C13.4359 9.4 14.6 10.5641 14.6 12Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .eyeOff: MetalIconAct(
+            duration: 0.545,
+            caption: "The visibility shutter seats across the fixed lens, then returns to its concealed position.",
+            parts: [
+            MetalIconActPart(
+                name: "shutter", origin: CGPoint(x: 12.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3303, x: 0.92, y: 0.92, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4404, x: 0.92, y: 0.92, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M3.5 12C9.1667 5 14.8333 5 20.5 12C14.8333 19 9.1667 19 3.5 12Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0,
+                cuts: [
+                    MetalIconActCut(d: "M4.5 4.5L19.5 19.5", parts: [0], fill: false, stroke: 4.4, keep: false),
+                ]),
+            MetalIconActInk(d: "M14.6 12C14.6 13.4359 13.4359 14.6 12 14.6C10.5641 14.6 9.4 13.4359 9.4 12C9.4 10.5641 10.5641 9.4 12 9.4C13.4359 9.4 14.6 10.5641 14.6 12Z", parts: [], stroke: 1.0, fill: .none, opacity: 1.0,
+                cuts: [
+                    MetalIconActCut(d: "M4.5 4.5L19.5 19.5", parts: [0], fill: false, stroke: 4.4, keep: false),
+                ]),
+            MetalIconActInk(d: "M4.5 4.5L19.5 19.5", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .lock: MetalIconAct(
+            duration: 0.84,
+            caption: "The closed shackle seats in its catches; the secure body stays fixed.",
+            parts: [
+            MetalIconActPart(
+                name: "shackle", origin: CGPoint(x: 12.0, y: 11.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2024, x: 0.0, y: 1.3, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2738, x: 0.0, y: 1.3, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6369, x: 0.0, y: -0.1132, r: 0.0, sx: 1.0, sy: 1.007, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M8.5 11L8.5 7.3C8.5 5.367 10.067 3.8 12 3.8C13.933 3.8 15.5 5.367 15.5 7.3L15.5 11", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M8.5 11L15.5 11C16.6046 11 17.5 11.8954 17.5 13L17.5 18.2C17.5 19.3046 16.6046 20.2 15.5 20.2L8.5 20.2C7.3954 20.2 6.5 19.3046 6.5 18.2L6.5 13C6.5 11.8954 7.3954 11 8.5 11Z", parts: [], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M12 14.6L12 17", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .sendAway: MetalIconAct(
             duration: 1.245,
             caption: "The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.",

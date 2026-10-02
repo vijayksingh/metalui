@@ -68,6 +68,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 \`\`\`
 
+- **Adjustment and visibility:** \`settings\` adjusts values; \`filter\` narrows results; \`sort\` orders rows (turn for the reverse order). Morph \`eye\` ↔ \`eye-off\` when the same key changes visibility; \`lock\` describes access. The eye enclosure stays recognizable behind its shutter.
 - **Transfer and record:** \`save\` retains a document; \`download\` receives into this device; \`upload\` transfers to the service; \`send\` dispatches a message. \`copy\` takes a paper copy to the clipboard (\`paste\` retrieves it, \`duplicate\` creates another object). \`external\` opens another context. Pair the glyph with the action verb.
 - **Triggering:** an icon inside any element with the class \`mu-icon-trigger\` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without \`title\` are decorative (\`aria-hidden\`). Give icon-only controls an \`aria-label\`.

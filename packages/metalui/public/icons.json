@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 55,
+  "count": 61,
   "icons": [
     {
       "name": "select",
@@ -521,6 +521,126 @@
       },
       "tuned16": false,
       "construction": "Fixed open window frame and diagonal arrow through the top-right corner; the arrow reaches1.2 along the opening and returns on the shared part spring."
+    },
+    {
+      "name": "settings",
+      "component": "SettingsIcon",
+      "label": "Settings",
+      "category": "Tools",
+      "hover": "Three adjustment knobs reach their rail stops in order and seat back into their settings.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "Three adjustment knobs reach their rail stops in order and seat back into their settings.",
+        "durationMs": 900,
+        "stages": [
+          "Adjust",
+          "Reach stops",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Three fixed horizontal rails with inset rectangular knobs, offset along their guides. Only the knobs travel 2.4 on the shared part spring."
+    },
+    {
+      "name": "filter",
+      "component": "FilterIcon",
+      "label": "Filter",
+      "category": "Tools",
+      "hover": "The throat seats in the fixed funnel and narrows the result stream.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The throat seats in the fixed funnel and narrows the result stream.",
+        "durationMs": 850,
+        "stages": [
+          "Narrow",
+          "Seat throat",
+          "Release"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Wide funnel mouth at4.8 tapering to a four-unit throat. The throat inserts 1.3 and springs home; the fixed mouth keeps filtering distinct from sorting."
+    },
+    {
+      "name": "sort",
+      "component": "SortIcon",
+      "label": "Sort",
+      "category": "Tools",
+      "hover": "The ordering shaft presses its terminal and returns; the ordered rows stay fixed.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The ordering shaft presses its terminal and returns; the ordered rows stay fixed.",
+        "durationMs": 840,
+        "stages": [
+          "Order",
+          "Commit",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Three descending row lengths beside a down ordering shaft. Turn the whole glyph for the opposite state; only the shaft presses its stop during an act."
+    },
+    {
+      "name": "eye",
+      "component": "EyeIcon",
+      "label": "Show value",
+      "category": "Actions",
+      "hover": "The iris inspects through the fixed lens and returns to centre.",
+      "press": "plays the same act",
+      "pressMs": 860,
+      "motion": {
+        "caption": "The iris inspects through the fixed lens and returns to centre.",
+        "durationMs": 860,
+        "stages": [
+          "Inspect",
+          "Track",
+          "Centre"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed almond lens17 wide and10.5 high with a2.6 iris. Eye and Eye-off share the same enclosure; the iris tracks2 along the visible opening."
+    },
+    {
+      "name": "eye-off",
+      "component": "EyeOffIcon",
+      "label": "Hide value",
+      "category": "Actions",
+      "hover": "The visibility shutter seats across the fixed lens, then returns to its concealed position.",
+      "press": "plays the same act",
+      "pressMs": 545,
+      "motion": {
+        "caption": "The visibility shutter seats across the fixed lens, then returns to its concealed position.",
+        "durationMs": 545,
+        "stages": [
+          "Conceal",
+          "Seat shutter",
+          "Release"
+        ]
+      },
+      "tuned16": false,
+      "construction": "The Eye lens and iris under a diagonal visibility shutter. A matching knockout follows the shutter so the crossing remains clear on either material at16."
+    },
+    {
+      "name": "lock",
+      "component": "LockIcon",
+      "label": "Locked",
+      "category": "Status",
+      "hover": "The closed shackle seats in its catches; the secure body stays fixed.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The closed shackle seats in its catches; the secure body stays fixed.",
+        "durationMs": 840,
+        "stages": [
+          "Secure",
+          "Catch",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Closed3.5-radius shackle over an11-wide secure body with a central key slot. Only the shackle presses into its catches and returns on the part spring."
     },
     {
       "name": "send-away",

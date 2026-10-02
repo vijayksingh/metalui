@@ -53,6 +53,18 @@ export const UploadIcon = createIcon("upload", "UploadIcon");
 export const SendIcon = createIcon("send", "SendIcon");
 /** Open externally. Hover: The arrow reaches through the open window corner into the external context, then returns ready.. Press: plays the same act. */
 export const ExternalIcon = createIcon("external", "ExternalIcon");
+/** Settings. Hover: Three adjustment knobs reach their rail stops in order and seat back into their settings.. Press: plays the same act. */
+export const SettingsIcon = createIcon("settings", "SettingsIcon");
+/** Filter. Hover: The throat seats in the fixed funnel and narrows the result stream.. Press: plays the same act. */
+export const FilterIcon = createIcon("filter", "FilterIcon");
+/** Sort. Hover: The ordering shaft presses its terminal and returns; the ordered rows stay fixed.. Press: plays the same act. */
+export const SortIcon = createIcon("sort", "SortIcon");
+/** Show value. Hover: The iris inspects through the fixed lens and returns to centre.. Press: plays the same act. */
+export const EyeIcon = createIcon("eye", "EyeIcon");
+/** Hide value. Hover: The visibility shutter seats across the fixed lens, then returns to its concealed position.. Press: plays the same act. */
+export const EyeOffIcon = createIcon("eye-off", "EyeOffIcon");
+/** Locked. Hover: The closed shackle seats in its catches; the secure body stays fixed.. Press: plays the same act. */
+export const LockIcon = createIcon("lock", "LockIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */

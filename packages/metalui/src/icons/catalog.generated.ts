@@ -602,6 +602,128 @@ export const ICON_CATALOG = {
     motion: {"duration":850,"caption":"The arrow reaches through the open window corner into the external context, then returns ready.","stages":["Reach","Open outside","Ready"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"transform":"translate(1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28235,"transform":"translate(1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(-0.1045px,0.1045px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * SETTINGS · Tools · one act, 900ms
+   *
+   * Adjust → Reach stops → Seat
+   *          Three adjustment knobs reach their rail stops in order and seat back into their settings.
+   *  upper      0 → 150 → 210 → 515 → 820 → 900ms
+   *  middle     0 → 190 → 250 → 555 → 860 → 900ms
+   *  lower      0 → 230 → 290 → 595 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "settings": {
+    label: "Settings",
+    category: "Tools",
+    hover: "Three adjustment knobs reach their rail stops in order and seat back into their settings.",
+    press: "plays the same act",
+    pressMs: 900,
+    defs: "",
+    body: "<path d=\"M4 6h16M4 12h16M4 18h16\"/><rect class=\"f\" style=\"--duo:.12\" data-part=\"upper\" x=\"7\" y=\"3.8\" width=\"3.4\" height=\"4.4\" rx=\"1\"/><rect class=\"f\" style=\"--duo:.12\" data-part=\"middle\" x=\"14\" y=\"9.8\" width=\"3.4\" height=\"4.4\" rx=\"1\"/><rect class=\"f\" style=\"--duo:.12\" data-part=\"lower\" x=\"8.5\" y=\"15.8\" width=\"3.4\" height=\"4.4\" rx=\"1\"/>",
+    sw16: 1.85,
+    motion: {"duration":900,"caption":"Three adjustment knobs reach their rail stops in order and seat back into their settings.","stages":["Adjust","Reach stops","Seat"],"tracks":[{"part":"upper","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16667,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.23333,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.57222,"transform":"translate(-0.209px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.91111,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"middle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21111,"transform":"translate(-2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27778,"transform":"translate(-2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.61667,"transform":"translate(0.209px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.95556,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"lower","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.25556,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32222,"transform":"translate(2.4px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66111,"transform":"translate(-0.209px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * FILTER · Tools · one act, 850ms
+   *
+   * Narrow → Seat throat → Release
+   *          The throat seats in the fixed funnel and narrows the result stream.
+   *  throat     0 → 180 → 240 → 545 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "filter": {
+    label: "Filter",
+    category: "Tools",
+    hover: "The throat seats in the fixed funnel and narrows the result stream.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M4 4.8h16l-6 7.2h-4Z\"/><path class=\"f\" style=\"--duo:.1\" data-part=\"throat\" d=\"M10 11.2v9l4-2.2v-6.8\"/>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The throat seats in the fixed funnel and narrows the result stream.","stages":["Narrow","Seat throat","Release"],"tracks":[{"part":"throat","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21176,"transform":"translate(0px,-1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28235,"transform":"translate(0px,-1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(0px,0.1132px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SORT · Tools · one act, 840ms
+   *
+   * Order → Commit → Seat
+   *          The ordering shaft presses its terminal and returns; the ordered rows stay fixed.
+   *  order      0 → 170 → 230 → 535 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "sort": {
+    label: "Sort",
+    category: "Tools",
+    hover: "The ordering shaft presses its terminal and returns; the ordered rows stay fixed.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<path d=\"M4 5.5h7.5M4 11.5h5.5M4 17.5h3.5\"/><path data-part=\"order\" d=\"M17.5 4.8v13.4m-3.2-3.2 3.2 3.2 3.2-3.2\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The ordering shaft presses its terminal and returns; the ordered rows stay fixed.","stages":["Order","Commit","Seat"],"tracks":[{"part":"order","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20238,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27381,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.94)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.1132px) rotate(0deg) scale(1,1.0052)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SHOW VALUE · Actions · one act, 860ms
+   *
+   * Inspect → Track → Centre
+   *          The iris inspects through the fixed lens and returns to centre.
+   *  iris       0 → 180 → 250 → 555 → 860ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye": {
+    label: "Show value",
+    category: "Actions",
+    hover: "The iris inspects through the fixed lens and returns to centre.",
+    press: "plays the same act",
+    pressMs: 860,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.08\" d=\"M3.5 12Q12 1.5 20.5 12Q12 22.5 3.5 12Z\"/><circle class=\"f\" style=\"--duo:.16\" data-part=\"iris\" cx=\"12\" cy=\"12\" r=\"2.6\"/>",
+    sw16: 1.85,
+    motion: {"duration":860,"caption":"The iris inspects through the fixed lens and returns to centre.","stages":["Inspect","Track","Centre"],"tracks":[{"part":"iris","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2093,"transform":"translate(2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.2907,"transform":"translate(2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64535,"transform":"translate(-0.1741px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * HIDE VALUE · Actions · one act, 545ms
+   *
+   * Conceal → Seat shutter → Release
+   *          The visibility shutter seats across the fixed lens, then returns to its concealed position.
+   *  shutter    0 → 180 → 240 → 545ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye-off": {
+    label: "Hide value",
+    category: "Actions",
+    hover: "The visibility shutter seats across the fixed lens, then returns to its concealed position.",
+    press: "plays the same act",
+    pressMs: 545,
+    defs: "<mask id=\"visibility\"><rect width=\"24\" height=\"24\" fill=\"white\"/><path data-part=\"shutter\" d=\"M4.5 4.5l15 15\" stroke=\"black\" stroke-width=\"4.4\" fill=\"none\"/></mask>",
+    body: "<g mask=\"url(#visibility)\"><path class=\"f\" style=\"--duo:.08\" d=\"M3.5 12Q12 1.5 20.5 12Q12 22.5 3.5 12Z\"/><circle cx=\"12\" cy=\"12\" r=\"2.6\"/></g><path data-part=\"shutter\" d=\"M4.5 4.5l15 15\"/>",
+    sw16: 1.85,
+    motion: {"duration":545,"caption":"The visibility shutter seats across the fixed lens, then returns to its concealed position.","stages":["Conceal","Seat shutter","Release"],"tracks":[{"part":"shutter","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.33028,"transform":"translate(0.92px,0.92px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44037,"transform":"translate(0.92px,0.92px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * LOCKED · Status · one act, 840ms
+   *
+   * Secure → Catch → Seat
+   *          The closed shackle seats in its catches; the secure body stays fixed.
+   *  shackle    0 → 170 → 230 → 535 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "lock": {
+    label: "Locked",
+    category: "Status",
+    hover: "The closed shackle seats in its catches; the secure body stays fixed.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<path data-part=\"shackle\" d=\"M8.5 11V7.3a3.5 3.5 0 0 1 7 0V11\"/><rect class=\"f\" style=\"--duo:.12\" x=\"6.5\" y=\"11\" width=\"11\" height=\"9.2\" rx=\"2\"/><path d=\"M12 14.6v2.4\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The closed shackle seats in its catches; the secure body stays fixed.","stages":["Secure","Catch","Seat"],"tracks":[{"part":"shackle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20238,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27381,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.1132px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * DELETE · SEND AWAY · Actions · one act, 1245ms
    *
    * Wind up → Draw in → Rise again

@@ -14,6 +14,14 @@ const TRANSFER = [
   ['copy', 'Take a paper copy to the clipboard.'],
   ['external', 'Open a resource outside this context.'],
 ] as const;
+const CONTROLS = [
+  ['settings', 'Adjust values along their rails.'],
+  ['filter', 'Narrow the result stream.'],
+  ['sort', 'Order the result rows.'],
+  ['eye', 'Reveal the value through its lens.'],
+  ['eye-off', 'Conceal the value behind a shutter.'],
+  ['lock', 'Secure access with a closed shackle.'],
+] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
@@ -51,6 +59,23 @@ export default function Icons() {
           {TRANSFER.map(([name, meaning]) => (
             <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
               aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-transfer={name}>
+              <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
+                <Icon name={name} size={16} />
+                <Icon name={name} size={24} />
+              </span>
+              <span className="mu-stack gap-mu-space-2">
+                <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+                <span className="type-meta text-ink2">{meaning}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Section>
+      <Section id="adjust-visibility" title="Adjustment and visibility" lede="Rails adjust values; a funnel narrows results; an ordering shaft sorts them. Eye and Eye-off share a lens while its shutter changes visibility; Lock secures access.">
+        <div className="mu-auto-grid" data-testid="controls-family">
+          {CONTROLS.map(([name, meaning]) => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-control={name}>
               <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
                 <Icon name={name} size={16} />
                 <Icon name={name} size={24} />
