@@ -86,6 +86,7 @@ export default function RadioPage() {
         { id: 'RD1', title: 'Every option is in view', body: 'If the options do not fit on screen together, it is a select.', origin: 'Ours' },
         { id: 'RD2', title: 'The press points at the result', body: 'The well goes dark on press; the pip latches only on release, so dragging off cancels without a change.', origin: 'Ours' },
         { id: 'RD3', title: 'One holds, one lets go', body: 'The new pip springs in and the old one drops out in the same frame: an interlock, never a pip sliding between wells.', origin: 'Preset buttons' },
+        { id: 'RD4', title: 'A held choice stays findable', body: 'A disabled checked option stays reachable by Tab so its value and reason can be heard. Unchecked disabled options are skipped. Use aria-describedby for the reason; the held choice cannot change.', origin: 'Base UI' },
       ]}
     />
   );

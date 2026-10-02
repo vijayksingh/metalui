@@ -342,7 +342,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root.
 - [ ] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).
 - [ ] **Tabs has no vertical orientation** (settings sections use Sidebar items instead).
-- [ ] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document.
+- [x] **RadioGroup disabled**: keep the checked option reachable to explain the held choice, following Base UI; skip unchecked disabled options. Guide and page require an `aria-describedby` reason. Settings keyboard e2e covers the held choice.
 - [ ] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
 

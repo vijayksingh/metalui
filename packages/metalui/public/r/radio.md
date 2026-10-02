@@ -48,6 +48,7 @@ Arrow keys choose without the press phase: the latch and release are the same. R
 - The group is a `radiogroup`; each option is a `radio`. Tab enters on the chosen option (or the first); arrow keys move and choose; Space chooses the focused one.
 - Name the group: `aria-labelledby` to a visible heading, or `aria-label`. Each option's label is its text.
 - Inside a Base UI Field, `invalid` shows the red ring and the Field's error text explains it.
+- A disabled checked option stays reachable by Tab, following Base UI's radio contract. This lets someone discover the held choice and hear why it is unavailable; it cannot change by Space, arrows or a label click. Unchecked disabled options are skipped. Attach the reason with `aria-describedby` on the group or option. Do not force `tabIndex`: it would break the group's managed focus.
 
 ## Rules
 
