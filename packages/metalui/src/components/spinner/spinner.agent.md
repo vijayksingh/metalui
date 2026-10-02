@@ -1,43 +1,33 @@
-# Spinner
+# Spinner and waiting hosts
 
-Steady work that will be done soon, in a small space. React: `Spinner` from `@unlocalhosted/metalui`. SwiftUI: `MetalSpinner` (work in progress). The well is the `switch` recipe's sunk track; the `spinner` recipe adds the arc and its motion.
+React `Spinner`, `useWaiting`; Swift `MetalSpinner`, `MetalWaitingPresentation`, `MetalWaitingShape`. An unknown task's arc takes the host's ink and glyph diameter. No well and no fixed green. The shared waiting foundation defines 400ms arrival, 300ms minimum visibility and a useful explanation after 10s.
 
-## Use it for
+## Placement
 
-- Inside or beside the control that started the work: a Save button while saving, a row while its preview loads.
-
-## Don't use it for
-
-- Work whose amount you can show (use progress), or whole-page loading (show the page's shape and fill it in).
-
-## Anatomy
-
-- Well: a sunk circle, 16 (small 12), the switch track's look.
-- Arc: a green ring 2.5 thick, lit at its head and fading into a tail over 72 % of the turn.
-
-## States and motion
-
-| State | Look | Motion |
-|---|---|---|
-| mounted | invisible | waits 400 ms, so quick work never flashes it |
-| working | the well and the turning arc | fades in (160 ms); turns at 900 ms a turn, linear |
-| done | – | the host unmounts it; the result is the news, so there is no exit |
-
-Reduce Motion: the arc stands still and breathes (opacity).
+- Action: Button `state`, with waiting/done/error labels and its retained glyph slot. It refuses another request while busy.
+- Small item: a ring in its glyph/trailing slot; dim and disable only that item. Completion shows check and fades; failure offers Try again.
+- Large item: matching skeletons in the item's actual image/text areas, operation words, real Progress when the count is known.
+- Field: trailing ring replaces clear; typing remains possible. Abort or ignore stale searches before publishing results.
+- Place: reserve the incoming structure with skeletons and a thin route Progress bar. No central spinner.
+- Background: Led waiting/breathe plus words, leaving other actions enabled. Live is steady; error has words and retry.
 
 ## API
 
-| React | SwiftUI |
+| React | Swift |
 |---|---|
-| `size` (`regular`, `small`) | `size:` |
-| `label` ("Loading") | `label:` |
+| `active` (default true), keep mounted | `active:` |
+| `size`: regular16, small12, or host diameter | `size:`, `diameter:` |
+| `label` | `label:` |
+| `announce=false` inside a host with its own status | `announce: false` |
+| `showDelay`, `minVisible` in ms | same names in seconds |
+| `useWaiting(state, ref, timing)` returns `phase`, `long` | `MetalWaitingPresentation(state:…) { phase, long in … }` |
 
-## Keyboard and accessibility
+A host clock owns the whole displayed phase. Pass zero delay/minimum to a nested arc to avoid timing twice. The host owns actual requests, data, errors and progress; the clock never makes a request or invents a percentage.
 
-- A `status` named by `label`; it takes no focus. Mark the busy region with `aria-busy` while it shows, and announce the result when the work ends.
+## Motion, accessibility and lifecycle
 
-## Rules
+`aria-busy` follows the real request immediately, even while the visual face stays unchanged. Announce start and outcome once in one polite host status. Do not live-announce percentages or every phase. A 10s explanation is optional and occurs once when useful. Preserve focus; don't disable a whole region to disable one row. Known work uses Progress as soon as the amount is available.
 
-- Put it where the work is, not in a corner.
-- Constant speed: never ease or spring the turn.
-- Say what is working in the label: "Saving", "Loading preview".
+The arc turns linearly at 900ms/turn and inherits currentColor. Reduce Motion keeps it stationary and pulses opacity using the shared Progress breathing recipe. Offscreen/hidden tabs pause the arc; inactive hosts contain no arc animation. Native clocks cancel when the request changes or the view disappears; the arc pauses outside an active scene. Web shapes use the Skeleton recipe and stop their sheen under reduced motion. Native MetalWaitingShape uses the same field-well material and reserves the incoming geometry without a loop. Hosts must gate skeleton sheen with `--mu-waiting-play-state` while offscreen.
+
+See `docs/WAITING.md` for research, each placement's storyboard and timing ownership. The docs page provides real host compositions, simulated network work, retry, counted batches, and DialKit latency/presentation controls.

@@ -795,7 +795,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Something is working and will be done soon, in a small space (inside a button, beside a row): a sunk round well (the switch track's look) with a lit green arc fading into a tail, turning at a constant speed (linear: steady work has no spring). It appears only after a beat, so a quick action never flashes it. Reduce Motion: the arc stands still and breathes. The well is the switch recipe; this adds the arc and its motion. (the switch track (recipe switch); a conic arc masked to a ring)
+    /// Unknown work in a small host glyph slot: a current-ink arc, no well. The host owns busy and results, the waiting foundation owns arrival/minimum/long clocks. Large items keep their content shape; known amounts use Progress. The turn is constant; reduced motion pulses opacity without turning. (host glyph diameter and current ink; shared waiting timing; conic arc masked to a ring)
     public static let spinner = MetalObjectRecipe(
         name: "spinner",
         layers: [

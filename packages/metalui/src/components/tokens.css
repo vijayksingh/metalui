@@ -1007,7 +1007,7 @@
   --mu-r-progress-segment-sweep: 1400ms;
   --mu-r-progress-segment-breathe: 1600ms;
   --mu-r-progress-segment-dim: 0.35;
-  /* spinner: the switch track (recipe switch); a conic arc masked to a ring */
+  /* spinner: host glyph diameter and current ink; shared waiting timing; conic arc masked to a ring */
   --mu-r-spinner-self-size: 16px;
   --mu-r-spinner-self-small: 12px;
   --mu-r-spinner-self-ring: 2.5px;

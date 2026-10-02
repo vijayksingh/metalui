@@ -1443,10 +1443,13 @@
   opacity: var(--mu-r-progress-segment-dim);
 }
 @utility spinner-arc {
-  position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-self-tail)) * 360deg), var(--mu-spinner-ink, var(--mu-green-deep))); mask: radial-gradient(farthest-side, rgba(0,0,0,0) calc(100% - var(--mu-r-spinner-self-ring)), #000 calc(100% - var(--mu-r-spinner-self-ring) + 0.5px)); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; @media (prefers-reduced-motion: reduce) { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } .rm & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+  position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-self-tail)) * 360deg), currentColor); mask: radial-gradient(farthest-side, rgba(0,0,0,0) calc(100% - var(--mu-r-spinner-self-ring)), #000 calc(100% - var(--mu-r-spinner-self-ring) + 0.5px)); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; @media (prefers-reduced-motion: reduce) { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } .rm & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
 }
 @utility spinner-arrive {
-  animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both;
+  animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) ease-out both;
+}
+@utility waiting-check-fade {
+  animation: mu-waiting-check-fade var(--mu-r-spinner-self-fade) var(--mu-waiting-minimum-visible) ease-out forwards;
 }
 @utility duration-spinner-turn {
   --tw-duration: var(--mu-r-spinner-self-turn);
@@ -1558,7 +1561,7 @@
   animation: mu-skeleton-arrive var(--mu-spring-settle-d) var(--mu-r-skeleton-self-delay) var(--mu-spring-settle) both;
 }
 @utility skeleton-sheen {
-  position: relative; overflow: hidden; &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(0,0,0,0) 20%, var(--mu-r-skeleton-sheen-ink) 50%, rgba(0,0,0,0) 80%); translate: -100% 0; animation: mu-skeleton-sheen var(--mu-r-skeleton-self-sweep) linear infinite; } @media (prefers-reduced-motion: reduce) { &::after { animation: none; opacity: 0; } } [data-mu-motion=reduce] &::after { animation: none; opacity: 0; }
+  position: relative; overflow: hidden; &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(0,0,0,0) 20%, var(--mu-r-skeleton-sheen-ink) 50%, rgba(0,0,0,0) 80%); translate: -100% 0; animation: mu-skeleton-sheen var(--mu-r-skeleton-self-sweep) linear infinite; animation-play-state: var(--mu-waiting-play-state, running); } @media (prefers-reduced-motion: reduce) { &::after { animation: none; opacity: 0; } } [data-mu-motion=reduce] &::after { animation: none; opacity: 0; } .rm &::after { animation: none; opacity: 0; }
 }
 @utility skeleton-swap-in {
   animation: mu-skeleton-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
@@ -3123,6 +3126,9 @@
 }
 @keyframes mu-spinner-arrive {
   from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes mu-waiting-check-fade {
+  to { opacity: 0; }
 }
 @keyframes mu-skeleton-arrive {
   from { opacity: 0; } to { opacity: 1; }

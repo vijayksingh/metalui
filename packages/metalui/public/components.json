@@ -1194,7 +1194,7 @@
       "name": "spinner",
       "title": "Spinner",
       "status": "alpha",
-      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "description": "Unknown work in a host glyph slot: current ink, delayed arrival and minimum visibility. Large hosts show their incoming shape; known amounts use Progress.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Spinner",
