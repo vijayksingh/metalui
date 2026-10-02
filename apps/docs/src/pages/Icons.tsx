@@ -158,6 +158,21 @@ export default function Icons() {
           ))}
         </div>
       </Section>
+      <Section id="playback" title="Playback" lede="Play advances or resumes a transport; Pause holds its amount for resumption. Both remain complete when motion is reduced, and perform one short act when their host is handled.">
+        <div className="mu-cluster gap-mu-related" data-testid="playback-family">
+          {(['play', 'pause'] as const).map(name => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={name === 'play' ? 'Play: advance or resume' : 'Pause: hold for resumption'} aria-pressed={picked === name} onClick={() => setPicked(name)} data-playback={name}>
+              <Icon name={name} size={16} /><Icon name={name} size={24} />
+              <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+            </button>
+          ))}
+          <button type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 rounded-plate hover:material-well"
+            aria-label="Change transport state" onClick={() => setPicked(picked === 'pause' ? 'play' : 'pause')} data-testid="playback-morph">
+            <MorphIcon name={picked === 'pause' ? 'pause' : 'play'} /><span className="type-ui text-ink">Change transport state</span>
+          </button>
+        </div>
+      </Section>
       <Section title="Glyphs">
         {CATEGORIES.map((cat) => {
           const names = ICON_NAMES.filter((n) => ICON_CATALOG[n].category === cat);

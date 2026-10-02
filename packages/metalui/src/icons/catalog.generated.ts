@@ -1134,6 +1134,49 @@ export const ICON_CATALOG = {
     motion: {"duration":754,"caption":"A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.","stages":["Mark","Cross out","Settle"],"tracks":[{"part":"x1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.14589,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34483,"transform":"translate(0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.43103,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.46419,"transform":"translate(-0.5657px,0.5657px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.8687,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"x2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"linear"},{"offset":0.30504,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.4244,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0.7,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.58355,"transform":"translate(-0.3536px,0.3536px) rotate(0deg) scale(1,1)","strokeDashoffset":0,"easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","strokeDashoffset":0}]},{"part":"impact","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.4443,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.48408,"transform":"scale(.8)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.64987,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * PLAY · RESUME · Actions · one act, 545ms
+   *
+   * Advance → Run → Ready
+   *          The transport key advances one step and returns ready to resume.
+   *  transport  0 → 170 → 240 → 545ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "play": {
+    label: "Play · Resume",
+    category: "Actions",
+    hover: "The transport key advances one step and returns ready to resume.",
+    press: "plays the same act",
+    pressMs: 545,
+    defs: "",
+    body: "<path data-part=\"transport\" class=\"f\" style=\"--duo:.16\" d=\"M8 5 19 12 8 19Z\"/>",
+    body16: "<path class=\"f\" style=\"--duo:.16\" d=\"M8 5 19 12 8 19Z\"/>",
+    sw16: 1.85,
+    motion: {"duration":545,"caption":"The transport key advances one step and returns ready to resume.","stages":["Advance","Run","Ready"],"tracks":[{"part":"transport","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.31193,"transform":"translate(1px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44037,"transform":"translate(1px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * PAUSE · Actions · one act, 545ms
+   *
+   * Catch → Hold → Ready
+   *          The two transport stops catch together and release to their ready gap.
+   *  left       0 → 170 → 240 → 545ms
+   *  right      0 → 170 → 240 → 545ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "pause": {
+    label: "Pause",
+    category: "Actions",
+    hover: "The two transport stops catch together and release to their ready gap.",
+    press: "plays the same act",
+    pressMs: 545,
+    defs: "",
+    body: "<rect data-part=\"left\" class=\"f\" style=\"--duo:.16\" x=\"8\" y=\"5\" width=\"2\" height=\"14\" rx=\".7\"/><rect data-part=\"right\" class=\"f\" style=\"--duo:.16\" x=\"14\" y=\"5\" width=\"2\" height=\"14\" rx=\".7\"/>",
+    body16: "<rect class=\"f\" style=\"--duo:.16\" x=\"7.5\" y=\"5\" width=\"2\" height=\"14\" rx=\".7\"/><rect class=\"f\" style=\"--duo:.16\" x=\"14.5\" y=\"5\" width=\"2\" height=\"14\" rx=\".7\"/>",
+    sw16: 1.85,
+    motion: {"duration":545,"caption":"The two transport stops catch together and release to their ready gap.","stages":["Catch","Hold","Ready"],"tracks":[{"part":"left","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.31193,"transform":"translate(0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44037,"transform":"translate(0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"right","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.31193,"transform":"translate(-0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44037,"transform":"translate(-0.5px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * CHECK · Actions · one act, 793ms
    *
    * Touch down → Press and flick → Ring out

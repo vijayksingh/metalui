@@ -103,6 +103,10 @@ export const RedoIcon = createIcon("redo", "RedoIcon");
 export const MoreIcon = createIcon("more", "MoreIcon");
 /** Close. Hover: A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact.. Press: plays the same act. */
 export const CloseIcon = createIcon("close", "CloseIcon");
+/** Play · Resume. Hover: The transport key advances one step and returns ready to resume.. Press: plays the same act. */
+export const PlayIcon = createIcon("play", "PlayIcon");
+/** Pause. Hover: The two transport stops catch together and release to their ready gap.. Press: plays the same act. */
+export const PauseIcon = createIcon("pause", "PauseIcon");
 /** Check. Hover: A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.. Press: plays the same act. */
 export const CheckIcon = createIcon("check", "CheckIcon");
 /** Information. Hover: The information stem seats in its fixed circular window and releases.. Press: plays the same act. */

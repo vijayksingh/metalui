@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 74,
+  "count": 76,
   "icons": [
     {
       "name": "select",
@@ -1021,6 +1021,46 @@
       },
       "tuned16": false,
       "construction": "X on the circle keyline, arms 13.6u, always at 45°: a turn is no motion for an ×, it reads as loading. Motion (study): crossed out in order. The first stroke draws back up its line and strikes down again, overrunning .5; the second does the same through it, knocking the first .8 along its travel at the crossing, where an impact ring opens; both settle on their springs."
+    },
+    {
+      "name": "play",
+      "component": "PlayIcon",
+      "label": "Play · Resume",
+      "category": "Actions",
+      "hover": "The transport key advances one step and returns ready to resume.",
+      "press": "plays the same act",
+      "pressMs": 545,
+      "motion": {
+        "caption": "The transport key advances one step and returns ready to resume.",
+        "durationMs": 545,
+        "stages": [
+          "Advance",
+          "Run",
+          "Ready"
+        ]
+      },
+      "tuned16": true,
+      "construction": "Closed wire triangle from8,5 through19,12 to8,19; duotone tint inside. Advances1u along its direction then returns on the part spring."
+    },
+    {
+      "name": "pause",
+      "component": "PauseIcon",
+      "label": "Pause",
+      "category": "Actions",
+      "hover": "The two transport stops catch together and release to their ready gap.",
+      "press": "plays the same act",
+      "pressMs": 545,
+      "motion": {
+        "caption": "The two transport stops catch together and release to their ready gap.",
+        "durationMs": 545,
+        "stages": [
+          "Catch",
+          "Hold",
+          "Ready"
+        ]
+      },
+      "tuned16": true,
+      "construction": "Two closed rounded wire stops,8..10 and14..16 by5..19. Both catch .5u inward then return together on the part spring. The16px drawing opens the central gap by1u."
     },
     {
       "name": "check",

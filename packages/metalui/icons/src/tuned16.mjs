@@ -11,6 +11,8 @@ function spiral(turns, r0, r1) {
 }
 const S = spiral(1.28, 1.9, 8.2);
 export const T16 = {
+  play: { sw: 1.85, body: `<path class="f" style="--duo:.16" d="M8 5 19 12 8 19Z"/>` },
+  pause: { sw: 1.85, body: `<rect class="f" style="--duo:.16" x="7.5" y="5" width="2" height="14" rx=".7"/><rect class="f" style="--duo:.16" x="14.5" y="5" width="2" height="14" rx=".7"/>` },
   'send-away': { sw: 1.9, body: `<path d="${S.d}"/><circle class="s" cx="${S.dot[0]}" cy="${S.dot[1]}" r="1.6"/>` },
   group: { sw: 1.9, body: `<path d="M3.5 12.2V6.3a1.9 1.9 0 0 1 1.9-1.9h3.1a1.6 1.6 0 0 1 1.2.53l1.2 1.37H12"/><path d="M8.2 11V8.6a1.8 1.8 0 0 1 1.8-1.8h6.6a1.8 1.8 0 0 1 1.8 1.8V11" transform="rotate(4 13 11)"/><path class="f" style="--duo:.16" d="M3.5 12.4h17v5.2a2.5 2.5 0 0 1-2.5 2.5H6a2.5 2.5 0 0 1-2.5-2.5Z"/>` },
   tidy: { sw: 1.85, body: `<path d="M4.3 4v16"/><path d="M8.2 6.4h11.4" transform="translate(1.2 0) rotate(-4 8.2 6.4)"/><path d="M8.2 12h7.4" transform="translate(2.4 0) rotate(5 8.2 12)"/><path d="M8.2 17.6h9.6" transform="translate(.8 0) rotate(-3 8.2 17.6)"/>` },

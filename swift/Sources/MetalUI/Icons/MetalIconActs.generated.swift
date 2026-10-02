@@ -2868,6 +2868,60 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .play: MetalIconAct(
+            duration: 0.545,
+            caption: "The transport key advances one step and returns ready to resume.",
+            parts: [
+            MetalIconActPart(
+                name: "transport", origin: CGPoint(x: 8.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3119, x: 1.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4404, x: 1.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M8 5L19 12L8 19Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .pause: MetalIconAct(
+            duration: 0.545,
+            caption: "The two transport stops catch together and release to their ready gap.",
+            parts: [
+            MetalIconActPart(
+                name: "left", origin: CGPoint(x: 9.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3119, x: 0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4404, x: 0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "right", origin: CGPoint(x: 15.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.3119, x: -0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4404, x: -0.5, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M8.7 5L9.3 5C9.6866 5 10 5.3134 10 5.7L10 18.3C10 18.6866 9.6866 19 9.3 19L8.7 19C8.3134 19 8 18.6866 8 18.3L8 5.7C8 5.3134 8.3134 5 8.7 5Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            MetalIconActInk(d: "M14.7 5L15.3 5C15.6866 5 16 5.3134 16 5.7L16 18.3C16 18.6866 15.6866 19 15.3 19L14.7 19C14.3134 19 14 18.6866 14 18.3L14 5.7C14 5.3134 14.3134 5 14.7 5Z", parts: [1], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .check: MetalIconAct(
             duration: 0.793,
             caption: "A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.",

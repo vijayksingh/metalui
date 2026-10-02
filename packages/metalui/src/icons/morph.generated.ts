@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "stop", "attach", "retry", "person", "bell", "palette", "volume", "brightness", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "play", "pause", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -277,6 +277,13 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
   "close": [
     ["M7.2 7.2L16.8 16.8", 1.7, 0, 0, 1],
     ["M16.8 7.2L7.2 16.8", 1.7, 0, 0, 1],
+  ],
+  "play": [
+    ["M8 5L19 12L8 19Z", 1.7, 0.16, 0, 1],
+  ],
+  "pause": [
+    ["M8.7 5L9.3 5C9.69 5 10 5.31 10 5.7L10 18.3C10 18.69 9.69 19 9.3 19L8.7 19C8.31 19 8 18.69 8 18.3L8 5.7C8 5.31 8.31 5 8.7 5Z", 1.7, 0.16, 0, 1],
+    ["M14.7 5L15.3 5C15.69 5 16 5.31 16 5.7L16 18.3C16 18.69 15.69 19 15.3 19L14.7 19C14.31 19 14 18.69 14 18.3L14 5.7C14 5.31 14.31 5 14.7 5Z", 1.7, 0.16, 0, 1],
   ],
   "check": [
     ["M5.4 12.6L9.5 16.7L18.6 7.3", 1.7, 0, 0, 1],

@@ -57,6 +57,8 @@ export const ICONS = [
   { name: 'redo', cat: 'Actions', label: 'Redo' },
   { name: 'more', cat: 'Actions', label: 'More' },
   { name: 'close', cat: 'Actions', label: 'Close' },
+  { name: 'play', cat: 'Actions', label: 'Play · Resume' },
+  { name: 'pause', cat: 'Actions', label: 'Pause' },
   { name: 'check', cat: 'Actions', label: 'Check' },
   { name: 'info', cat: 'Status', label: 'Information' },
   { name: 'warning', cat: 'Status', label: 'Warning' },

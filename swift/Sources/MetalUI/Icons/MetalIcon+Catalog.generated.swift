@@ -54,6 +54,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case redo = "redo"
     case more = "more"
     case close = "close"
+    case play = "play"
+    case pause = "pause"
     case check = "check"
     case info = "info"
     case warning = "warning"
@@ -133,6 +135,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return "Redo"
         case .more: return "More"
         case .close: return "Close"
+        case .play: return "Play · Resume"
+        case .pause: return "Pause"
         case .check: return "Check"
         case .info: return "Information"
         case .warning: return "Warning"
@@ -212,6 +216,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return .actions
         case .more: return .actions
         case .close: return .actions
+        case .play: return .actions
+        case .pause: return .actions
         case .check: return .actions
         case .info: return .status
         case .warning: return .status
@@ -292,6 +298,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return nil
         case .more: return nil
         case .close: return nil
+        case .play: return 0.16
+        case .pause: return 0.16
         case .check: return nil
         case .info: return 0.08
         case .warning: return 0.1
@@ -372,6 +380,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return nil
         case .more: return nil
         case .close: return nil
+        case .play: return nil
+        case .pause: return nil
         case .check: return nil
         case .info: return nil
         case .warning: return nil
@@ -452,6 +462,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return false
         case .more: return false
         case .close: return false
+        case .play: return true
+        case .pause: return true
         case .check: return false
         case .info: return false
         case .warning: return false
@@ -532,6 +544,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .redo: return 1.85
         case .more: return 1.85
         case .close: return 1.85
+        case .play: return 1.85
+        case .pause: return 1.85
         case .check: return 1.85
         case .info: return 1.85
         case .warning: return 1.85

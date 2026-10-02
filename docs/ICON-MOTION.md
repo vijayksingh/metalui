@@ -138,3 +138,7 @@ Every icon's entry opens with its card, as a comment above it (see `select`):
 3. Write the timeline with the icon's own numbers. Reuse the engine and the curves, never another icon's performance.
 4. Film it: `node scripts/icon-film.mjs <name>` checks the study against the build's contract and the SwiftUI generator's, compiles it as the build does, and writes a filmstrip per colorway (96 px frames, then 24 and 16 px) to `docs/captures/review/`. SwiftUI films every act too: `METALUI_CAPTURES=$PWD/docs/captures/swift swift test --filter MetalIconActCaptures` writes `icon-acts-<colorway>.png`.
 5. Check the end is at rest, re-triggers, reduced motion and the SVG export. Commit that one icon, then start the next.
+
+## Playback pair
+
+`play` is a closed transport triangle: it advances one grid step and returns on the part spring. `pause` uses two upright rounded wire stops: both catch half a step inward, then return together. These are demand acts, never progress clocks. Each resting contour retains its identity under reduced motion and participates in the wire morph catalog. Pause uses a wider central gap in the 16px static export; the tuned stroke leaves about two CSS pixels clear at rest. The docs playback controls show both sizes, both acts, and Play/Pause morphing.

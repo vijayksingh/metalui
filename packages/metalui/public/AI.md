@@ -4526,7 +4526,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 74 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 76 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4600,6 +4600,8 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `RedoIcon` | `redo` | Actions | The hook winds back, whips forward about its centre and reels its tail in; the head's echo carries on, a step on. | plays the same act |
 | `MoreIcon` | `more` | Actions | The first dot is struck into the row; the knock runs through and kicks the last one out: there is more. | plays the same act |
 | `CloseIcon` | `close` | Actions | A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact. | plays the same act |
+| `PlayIcon` | `play` | Actions | The transport key advances one step and returns ready to resume. | plays the same act |
+| `PauseIcon` | `pause` | Actions | The two transport stops catch together and release to their ready gap. | plays the same act |
 | `CheckIcon` | `check` | Actions | A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings. | plays the same act |
 | `InfoIcon` | `info` | Status | The information stem seats in its fixed circular window and releases. | plays the same act |
 | `WarningIcon` | `warning` | Status | The alert stem seats inside a fixed warning triangle; its dot remains visible. | plays the same act |
