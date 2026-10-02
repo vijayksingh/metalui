@@ -4481,7 +4481,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 61 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 66 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4490,6 +4490,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 ```
 
+- **Status and environment:** `info` names information; `warning` names a warning with its triangular enclosure. Morph `sun` ↔ `moon` when changing colorway. `sidebar` describes a rail in a fixed window; turn 180 for a rail on the right. Always retain a visible or accessible status label.
 - **Adjustment and visibility:** `settings` adjusts values; `filter` narrows results; `sort` orders rows (turn for the reverse order). Morph `eye` ↔ `eye-off` when the same key changes visibility; `lock` describes access. The eye enclosure stays recognizable behind its shutter.
 - **Transfer and record:** `save` retains a document; `download` receives into this device; `upload` transfers to the service; `send` dispatches a message. `copy` takes a paper copy to the clipboard (`paste` retrieves it, `duplicate` creates another object). `external` opens another context. Pair the glyph with the action verb.
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
@@ -4544,6 +4545,11 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `MoreIcon` | `more` | Actions | The first dot is struck into the row; the knock runs through and kicks the last one out: there is more. | plays the same act |
 | `CloseIcon` | `close` | Actions | A pen crosses it out: the first stroke marks down, the second strikes through it, and the crossing takes the impact. | plays the same act |
 | `CheckIcon` | `check` | Actions | A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings. | plays the same act |
+| `InfoIcon` | `info` | Status | The information stem seats in its fixed circular window and releases. | plays the same act |
+| `WarningIcon` | `warning` | Status | The alert stem seats inside a fixed warning triangle; its dot remains visible. | plays the same act |
+| `SunIcon` | `sun` | Status | One daylight beam opens from the fixed sun and seats back at its source. | plays the same act |
+| `MoonIcon` | `moon` | Status | The inset night shade seats against a fixed crescent and returns to its quiet position. | plays the same act |
+| `SidebarIcon` | `sidebar` | Tools | The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed. | plays the same act |
 | `SyncedIcon` | `synced` | Status | The satellite winds back, laps the core once and clicks home into its slot. | plays the same act |
 | `OfflineIcon` | `offline` | Status | The lost satellite swings back toward its slot, falls a unit short and is thrown back out. | plays the same act |
 | `SyncErrorIcon` | `sync-error` | Status | The orbit heaves to turn, catches on a stop and rattles against it; the mark jolts. | plays the same act |

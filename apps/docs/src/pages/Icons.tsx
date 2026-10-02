@@ -22,6 +22,13 @@ const CONTROLS = [
   ['eye-off', 'Conceal the value behind a shutter.'],
   ['lock', 'Secure access with a closed shackle.'],
 ] as const;
+const ENVIRONMENT = [
+  ['info', 'Read the information in its window.'],
+  ['warning', 'Attend to an alert in its triangle.'],
+  ['sun', 'Show daylight with a complete lit disc.'],
+  ['moon', 'Show night with a shaded crescent.'],
+  ['sidebar', 'Toggle the navigation rail in its window.'],
+] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
@@ -76,6 +83,23 @@ export default function Icons() {
           {CONTROLS.map(([name, meaning]) => (
             <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
               aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-control={name}>
+              <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
+                <Icon name={name} size={16} />
+                <Icon name={name} size={24} />
+              </span>
+              <span className="mu-stack gap-mu-space-2">
+                <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+                <span className="type-meta text-ink2">{meaning}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Section>
+      <Section id="status-environment" title="Status and environment" lede="Information uses a round window; warnings use a triangle. Daylight and night keep distinct silhouettes. A sidebar rail slides inside its window, and the same glyph turns for a rail on the opposite side.">
+        <div className="mu-auto-grid" data-testid="environment-family">
+          {ENVIRONMENT.map(([name, meaning]) => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-environment={name}>
               <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
                 <Icon name={name} size={16} />
                 <Icon name={name} size={24} />

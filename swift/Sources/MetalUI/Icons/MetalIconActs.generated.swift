@@ -2742,6 +2742,124 @@ extension MetalIconAct {
             ],
             holdAt: nil
         ),
+        .info: MetalIconAct(
+            duration: 0.81,
+            caption: "The information stem seats in its fixed circular window and releases.",
+            parts: [
+            MetalIconActPart(
+                name: "stem", origin: CGPoint(x: 12.0, y: 16.8),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1852, x: 0.0, y: 1.2, r: 0.0, sx: 1.0, sy: 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2469, x: 0.0, y: 1.2, r: 0.0, sx: 1.0, sy: 0.9, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6235, x: 0.0, y: -0.1045, r: 0.0, sx: 1.0, sy: 1.0087, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M20.1 12C20.1 16.4735 16.4735 20.1 12 20.1C7.5265 20.1 3.9 16.4735 3.9 12C3.9 7.5265 7.5265 3.9 12 3.9C16.4735 3.9 20.1 7.5265 20.1 12Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0),
+            MetalIconActInk(d: "M12.9 7.6C12.9 8.0971 12.4971 8.5 12 8.5C11.5029 8.5 11.1 8.0971 11.1 7.6C11.1 7.1029 11.5029 6.7 12 6.7C12.4971 6.7 12.9 7.1029 12.9 7.6Z", parts: [], stroke: 0.0, fill: .solid, opacity: 1.0),
+            MetalIconActInk(d: "M10.7 11L12 11L12 16.8L13.5 16.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .warning: MetalIconAct(
+            duration: 0.81,
+            caption: "The alert stem seats inside a fixed warning triangle; its dot remains visible.",
+            parts: [
+            MetalIconActPart(
+                name: "stem", origin: CGPoint(x: 12.0, y: 13.9),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1852, x: 0.0, y: 1.2, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2469, x: 0.0, y: 1.2, r: 0.0, sx: 1.0, sy: 0.92, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6235, x: 0.0, y: -0.1045, r: 0.0, sx: 1.0, sy: 1.007, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M11.2 4.5C11.7333 3.5667 12.2667 3.5667 12.8 4.5L20.9 18.5C21.4333 19.4333 21.1667 19.9 20.1 19.9L3.9 19.9C2.8333 19.9 2.5667 19.4333 3.1 18.5Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M12 8.5L12 13.9", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M12.85 17C12.85 17.4694 12.4694 17.85 12 17.85C11.5306 17.85 11.15 17.4694 11.15 17C11.15 16.5306 11.5306 16.15 12 16.15C12.4694 16.15 12.85 16.5306 12.85 17Z", parts: [], stroke: 0.0, fill: .solid, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .sun: MetalIconAct(
+            duration: 0.79,
+            caption: "One daylight beam opens from the fixed sun and seats back at its source.",
+            parts: [
+            MetalIconActPart(
+                name: "beam", origin: CGPoint(x: 18.7, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1646, x: 1.2, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2278, x: 1.2, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6139, x: -0.1045, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M15.8 12C15.8 14.0987 14.0987 15.8 12 15.8C9.9013 15.8 8.2 14.0987 8.2 12C8.2 9.9013 9.9013 8.2 12 8.2C14.0987 8.2 15.8 9.9013 15.8 12Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M12 3L12 5.3M12 18.7L12 21M3 12L5.3 12M5.6 5.6L7.2 7.2M16.8 16.8L18.4 18.4M5.6 18.4L7.2 16.8M16.8 7.2L18.4 5.6", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M18.7 12L21 12", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .moon: MetalIconAct(
+            duration: 0.79,
+            caption: "The inset night shade seats against a fixed crescent and returns to its quiet position.",
+            parts: [
+            MetalIconActPart(
+                name: "shade", origin: CGPoint(x: 13.1, y: 7.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1646, x: -1.2, y: 0.3, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2278, x: -1.2, y: 0.3, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6139, x: 0.1045, y: -0.0261, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M17.2 3.9C13.2462 2.0207 8.5121 3.493 6.3214 7.2831C4.1308 11.0732 5.2182 15.9103 8.8201 18.3982C12.4221 20.8861 17.3309 20.1906 20.1 16.8C17.6398 15.8258 15.8205 13.6982 15.2401 11.1166C14.6597 8.535 15.3934 5.8334 17.2 3.9Z", parts: [], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
+            MetalIconActInk(d: "M13.1 7.2C12.2324 10.2175 13.2101 13.4636 15.6 15.5", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
+        .sidebar: MetalIconAct(
+            duration: 0.83,
+            caption: "The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.",
+            parts: [
+            MetalIconActPart(
+                name: "rail", origin: CGPoint(x: 9.2, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1928, x: -1.8, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2651, x: -1.8, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6325, x: 0.1567, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M5.8 4.8L18.2 4.8C19.3046 4.8 20.2 5.6954 20.2 6.8L20.2 17.2C20.2 18.3046 19.3046 19.2 18.2 19.2L5.8 19.2C4.6954 19.2 3.8 18.3046 3.8 17.2L3.8 6.8C3.8 5.6954 4.6954 4.8 5.8 4.8Z", parts: [], stroke: 1.0, fill: .duotone(0.08), opacity: 1.0),
+            MetalIconActInk(d: "M9.2 5.5L9.2 18.5M6 9L6.8 9M6 12L6.8 12M6 15L6.8 15", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            ],
+            holdAt: nil
+        ),
         .synced: MetalIconAct(
             duration: 1.1,
             caption: "The satellite winds back, laps the core once and clicks home into its slot.",

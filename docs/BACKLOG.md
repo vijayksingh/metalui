@@ -108,7 +108,7 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 - [x] `chevron` (one glyph; `turn` prop on Icon and MorphIcon), `minus` (done)
 - [x] `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow): authored acts, 16/24px references, React/Swift/custom symbols and reduced-motion proof.
 - [x] `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`: fixed enclosures, authored part acts and 16/24px reference family.
-- `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
+- [x] `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle): fixed silhouettes with inset-part acts, native symbols and 16/24px reference family.
 
 Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` → C (component by component) → B's morphs (copy first, it's everywhere) → A in the docs pages.
 

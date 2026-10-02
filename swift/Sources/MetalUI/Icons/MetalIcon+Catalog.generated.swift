@@ -47,6 +47,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case more = "more"
     case close = "close"
     case check = "check"
+    case info = "info"
+    case warning = "warning"
+    case sun = "sun"
+    case moon = "moon"
+    case sidebar = "sidebar"
     case synced = "synced"
     case offline = "offline"
     case syncError = "sync-error"
@@ -113,6 +118,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return "More"
         case .close: return "Close"
         case .check: return "Check"
+        case .info: return "Information"
+        case .warning: return "Warning"
+        case .sun: return "Daylight"
+        case .moon: return "Night"
+        case .sidebar: return "Sidebar"
         case .synced: return "Synced"
         case .offline: return "Offline"
         case .syncError: return "Sync Error"
@@ -179,6 +189,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return .actions
         case .close: return .actions
         case .check: return .actions
+        case .info: return .status
+        case .warning: return .status
+        case .sun: return .status
+        case .moon: return .status
+        case .sidebar: return .tools
         case .synced: return .status
         case .offline: return .status
         case .syncError: return .status
@@ -246,6 +261,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return nil
         case .close: return nil
         case .check: return nil
+        case .info: return 0.08
+        case .warning: return 0.1
+        case .sun: return 0.1
+        case .moon: return 0.1
+        case .sidebar: return 0.08
         case .synced: return nil
         case .offline: return nil
         case .syncError: return nil
@@ -313,6 +333,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return nil
         case .close: return nil
         case .check: return nil
+        case .info: return nil
+        case .warning: return nil
+        case .sun: return nil
+        case .moon: return nil
+        case .sidebar: return nil
         case .synced: return nil
         case .offline: return 0.55
         case .syncError: return nil
@@ -380,6 +405,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return false
         case .close: return false
         case .check: return false
+        case .info: return false
+        case .warning: return false
+        case .sun: return false
+        case .moon: return false
+        case .sidebar: return false
         case .synced: return false
         case .offline: return false
         case .syncError: return false
@@ -447,6 +477,11 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .more: return 1.85
         case .close: return 1.85
         case .check: return 1.85
+        case .info: return 1.85
+        case .warning: return 1.85
+        case .sun: return 1.85
+        case .moon: return 1.85
+        case .sidebar: return 1.85
         case .synced: return 1.85
         case .offline: return 1.85
         case .syncError: return 1.85

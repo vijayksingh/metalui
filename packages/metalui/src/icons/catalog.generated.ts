@@ -996,6 +996,106 @@ export const ICON_CATALOG = {
     motion: {"duration":793,"caption":"A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.","stages":["Touch down","Press and flick","Ring out"],"tracks":[{"part":"nod","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15132,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32787,"transform":"translate(0px,0px) rotate(5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.37831,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.52963,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tick","keyframes":[{"offset":0,"opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15132,"opacity":0.3,"easing":"linear"},{"offset":0.55485,"opacity":0.3,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.65574,"opacity":1},{"offset":1,"opacity":1}]},{"part":"ink","keyframes":[{"offset":0,"opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.13871,"opacity":0,"strokeDashoffset":1,"easing":"linear"},{"offset":0.15132,"opacity":1,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32787,"opacity":1,"strokeDashoffset":0.69,"easing":"linear"},{"offset":0.37831,"opacity":1,"strokeDashoffset":0.69,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.52963,"opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.65574,"opacity":1,"strokeDashoffset":0,"easing":"linear"},{"offset":0.66835,"opacity":0,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"opacity":0,"strokeDashoffset":1,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.52333,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.57377,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.80706,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * INFORMATION · Status · one act, 810ms
+   *
+   * Read → Seat stem → Release
+   *          The information stem seats in its fixed circular window and releases.
+   *  stem       0 → 150 → 200 → 505 → 810ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "info": {
+    label: "Information",
+    category: "Status",
+    hover: "The information stem seats in its fixed circular window and releases.",
+    press: "plays the same act",
+    pressMs: 810,
+    defs: "",
+    body: "<circle class=\"f\" style=\"--duo:.08\" cx=\"12\" cy=\"12\" r=\"8.1\"/><circle class=\"s\" cx=\"12\" cy=\"7.6\" r=\".9\"/><path data-part=\"stem\" d=\"M10.7 11h1.3v5.8h1.5\"/>",
+    sw16: 1.85,
+    motion: {"duration":810,"caption":"The information stem seats in its fixed circular window and releases.","stages":["Read","Seat stem","Release"],"tracks":[{"part":"stem","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18519,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.24691,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62346,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * WARNING · Status · one act, 810ms
+   *
+   * Attend → Seat alert → Release
+   *          The alert stem seats inside a fixed warning triangle; its dot remains visible.
+   *  stem       0 → 150 → 200 → 505 → 810ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "warning": {
+    label: "Warning",
+    category: "Status",
+    hover: "The alert stem seats inside a fixed warning triangle; its dot remains visible.",
+    press: "plays the same act",
+    pressMs: 810,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M11.2 4.5q.8-1.4 1.6 0l8.1 14q.8 1.4-.8 1.4H3.9q-1.6 0-.8-1.4Z\"/><path data-part=\"stem\" d=\"M12 8.5v5.4\"/><circle class=\"s\" cx=\"12\" cy=\"17\" r=\".85\"/>",
+    sw16: 1.85,
+    motion: {"duration":810,"caption":"The alert stem seats inside a fixed warning triangle; its dot remains visible.","stages":["Attend","Seat alert","Release"],"tracks":[{"part":"stem","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18519,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.24691,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62346,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * DAYLIGHT · Status · one act, 790ms
+   *
+   * Open light → Reach → Seat beam
+   *          One daylight beam opens from the fixed sun and seats back at its source.
+   *  beam       0 → 130 → 180 → 485 → 790ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "sun": {
+    label: "Daylight",
+    category: "Status",
+    hover: "One daylight beam opens from the fixed sun and seats back at its source.",
+    press: "plays the same act",
+    pressMs: 790,
+    defs: "",
+    body: "<circle class=\"f\" style=\"--duo:.1\" cx=\"12\" cy=\"12\" r=\"3.8\"/><path d=\"M12 3v2.3M12 18.7V21M3 12h2.3M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6\"/><path data-part=\"beam\" d=\"M18.7 12H21\"/>",
+    sw16: 1.85,
+    motion: {"duration":790,"caption":"One daylight beam opens from the fixed sun and seats back at its source.","stages":["Open light","Reach","Seat beam"],"tracks":[{"part":"beam","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16456,"transform":"translate(1.2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22785,"transform":"translate(1.2px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.61392,"transform":"translate(-0.1045px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * NIGHT · Status · one act, 790ms
+   *
+   * Shade → Seat → Rest
+   *          The inset night shade seats against a fixed crescent and returns to its quiet position.
+   *  shade      0 → 130 → 180 → 485 → 790ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "moon": {
+    label: "Night",
+    category: "Status",
+    hover: "The inset night shade seats against a fixed crescent and returns to its quiet position.",
+    press: "plays the same act",
+    pressMs: 790,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M17.2 3.9a8.4 8.4 0 1 0 2.9 12.9 8 8 0 0 1-2.9-12.9Z\"/><path data-part=\"shade\" d=\"M13.1 7.2a8 8 0 0 0 2.5 8.3\"/>",
+    sw16: 1.85,
+    motion: {"duration":790,"caption":"The inset night shade seats against a fixed crescent and returns to its quiet position.","stages":["Shade","Seat","Rest"],"tracks":[{"part":"shade","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16456,"transform":"translate(-1.2px,0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.22785,"transform":"translate(-1.2px,0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.61392,"transform":"translate(0.1045px,-0.0261px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SIDEBAR · Tools · one act, 830ms
+   *
+   * Collapse rail → Seat → Ready
+   *          The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.
+   *  rail       0 → 160 → 220 → 525 → 830ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "sidebar": {
+    label: "Sidebar",
+    category: "Tools",
+    hover: "The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.",
+    press: "plays the same act",
+    pressMs: 830,
+    defs: "",
+    body: "<rect class=\"f\" style=\"--duo:.08\" x=\"3.8\" y=\"4.8\" width=\"16.4\" height=\"14.4\" rx=\"2\"/><path data-part=\"rail\" d=\"M9.2 5.5v13M6 9h.8M6 12h.8M6 15h.8\"/>",
+    sw16: 1.85,
+    motion: {"duration":830,"caption":"The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.","stages":["Collapse rail","Seat","Ready"],"tracks":[{"part":"rail","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(-1.8px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(-1.8px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0.1567px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * SYNCED · Status · one act, 1100ms
    *
    * Wind back → Lap → Click home

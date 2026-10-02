@@ -89,6 +89,16 @@ export const MoreIcon = createIcon("more", "MoreIcon");
 export const CloseIcon = createIcon("close", "CloseIcon");
 /** Check. Hover: A pen writes the tick: down the short leg, pressed into the corner, flicked up the long leg, and the tip rings.. Press: plays the same act. */
 export const CheckIcon = createIcon("check", "CheckIcon");
+/** Information. Hover: The information stem seats in its fixed circular window and releases.. Press: plays the same act. */
+export const InfoIcon = createIcon("info", "InfoIcon");
+/** Warning. Hover: The alert stem seats inside a fixed warning triangle; its dot remains visible.. Press: plays the same act. */
+export const WarningIcon = createIcon("warning", "WarningIcon");
+/** Daylight. Hover: One daylight beam opens from the fixed sun and seats back at its source.. Press: plays the same act. */
+export const SunIcon = createIcon("sun", "SunIcon");
+/** Night. Hover: The inset night shade seats against a fixed crescent and returns to its quiet position.. Press: plays the same act. */
+export const MoonIcon = createIcon("moon", "MoonIcon");
+/** Sidebar. Hover: The sidebar rail slides toward its frame and seats back; the content enclosure stays fixed.. Press: plays the same act. */
+export const SidebarIcon = createIcon("sidebar", "SidebarIcon");
 /** Synced. Hover: The satellite winds back, laps the core once and clicks home into its slot.. Press: plays the same act. */
 export const SyncedIcon = createIcon("synced", "SyncedIcon");
 /** Offline. Hover: The lost satellite swings back toward its slot, falls a unit short and is thrown back out.. Press: plays the same act. */

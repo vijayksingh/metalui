@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "copy", "save", "download", "upload", "send", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "info", "warning", "sun", "moon", "sidebar", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -237,6 +237,38 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
   ],
   "check": [
     ["M5.4 12.6L9.5 16.7L18.6 7.3", 1.7, 0, 0, 1],
+  ],
+  "info": [
+    ["M20.1 12C20.1 16.47 16.47 20.1 12 20.1C7.53 20.1 3.9 16.47 3.9 12C3.9 7.53 7.53 3.9 12 3.9C16.47 3.9 20.1 7.53 20.1 12Z", 1.7, 0.08, 0, 1],
+    ["M12 7.6", 1.8, 0, 0, 1],
+    ["M10.7 11L12 11L12 16.8L13.5 16.8", 1.7, 0, 0, 1],
+  ],
+  "warning": [
+    ["M11.2 4.5C11.73 3.57 12.27 3.57 12.8 4.5L20.9 18.5C21.43 19.43 21.17 19.9 20.1 19.9L3.9 19.9C2.83 19.9 2.57 19.43 3.1 18.5Z", 1.7, 0.1, 0, 1],
+    ["M12 8.5L12 13.9", 1.7, 0, 0, 1],
+    ["M12 17", 1.7, 0, 0, 1],
+  ],
+  "sun": [
+    ["M15.8 12C15.8 14.1 14.1 15.8 12 15.8C9.9 15.8 8.2 14.1 8.2 12C8.2 9.9 9.9 8.2 12 8.2C14.1 8.2 15.8 9.9 15.8 12Z", 1.7, 0.1, 0, 1],
+    ["M12 3L12 5.3", 1.7, 0, 0, 1],
+    ["M12 18.7L12 21", 1.7, 0, 0, 1],
+    ["M3 12L5.3 12", 1.7, 0, 0, 1],
+    ["M5.6 5.6L7.2 7.2", 1.7, 0, 0, 1],
+    ["M16.8 16.8L18.4 18.4", 1.7, 0, 0, 1],
+    ["M5.6 18.4L7.2 16.8", 1.7, 0, 0, 1],
+    ["M16.8 7.2L18.4 5.6", 1.7, 0, 0, 1],
+    ["M18.7 12L21 12", 1.7, 0, 0, 1],
+  ],
+  "moon": [
+    ["M17.2 3.9C13.25 2.02 8.51 3.49 6.32 7.28C4.13 11.07 5.22 15.91 8.82 18.4C12.42 20.89 17.33 20.19 20.1 16.8C17.64 15.83 15.82 13.7 15.24 11.12C14.66 8.53 15.39 5.83 17.2 3.9Z", 1.7, 0.1, 0, 1],
+    ["M13.1 7.2C12.23 10.22 13.21 13.46 15.6 15.5", 1.7, 0, 0, 1],
+  ],
+  "sidebar": [
+    ["M5.8 4.8L18.2 4.8C19.3 4.8 20.2 5.7 20.2 6.8L20.2 17.2C20.2 18.3 19.3 19.2 18.2 19.2L5.8 19.2C4.7 19.2 3.8 18.3 3.8 17.2L3.8 6.8C3.8 5.7 4.7 4.8 5.8 4.8Z", 1.7, 0.08, 0, 1],
+    ["M9.2 5.5L9.2 18.5", 1.7, 0, 0, 1],
+    ["M6 9L6.8 9", 1.7, 0, 0, 1],
+    ["M6 12L6.8 12", 1.7, 0, 0, 1],
+    ["M6 15L6.8 15", 1.7, 0, 0, 1],
   ],
   "synced": [
     ["M12 12", 4.2, 0, 0, 1],
