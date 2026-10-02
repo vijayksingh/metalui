@@ -5,6 +5,7 @@ import reactSource from '../../../../../packages/metalui/src/blocks/link-card/li
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalGlassFace.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/blocks/link-card/link-card.agent.md?raw';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 import { ComponentPage } from '../../ui/ComponentPage';
 
 // A still image and icon drawn inline, so the docs never fetch from another site.
@@ -35,6 +36,7 @@ export default function LinkCardPage() {
             <PreviewDemo />
           </div>
         ) }}
+      more={[{ id: 'native', title: 'SwiftUI', lede: 'OPEN uses the same external glyph inside the glass action. The card stays inert.', node: <SwiftCapture name="link-card-open" maxWidth={600} /> }]}
       xray={<LinkCardXray />}
       sources={[
         { id: 'react', label: "React", code: reactSource },

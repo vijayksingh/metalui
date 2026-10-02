@@ -47,7 +47,7 @@ private struct MetalGlassBody<Content: View>: View {
                 Color.clear.metalObjectRecipe(r, part: screen, in: screenShape, self: own)
             }
             if let screenRecipe {
-                Color.clear.metalObjectRecipe(screenRecipe, part: "screen", in: screenShape)
+                Color.clear.metalObjectRecipe(screenRecipe, part: "screen", in: screenShape, self: own)
             }
             if let underlay {
                 GeometryReader { geometry in
@@ -137,7 +137,7 @@ public struct MetalLinkFace: View {
     @Environment(\.metalColorway) private var colorway
 
     public init(_ href: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
-                tag: String = "LINK", openLabel: String = "OPEN ↗", preview: MetalLinkPreview? = nil,
+                tag: String = "LINK", openLabel: String = "OPEN", preview: MetalLinkPreview? = nil,
                 open: (() -> Void)? = nil) {
         self.raw = href
         self.url = URL(string: href)
@@ -151,7 +151,7 @@ public struct MetalLinkFace: View {
     }
 
     public init(url: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
-                tag: String = "LINK", openLabel: String = "OPEN ↗", preview: MetalLinkPreview? = nil,
+                tag: String = "LINK", openLabel: String = "OPEN", preview: MetalLinkPreview? = nil,
                 open: (() -> Void)? = nil) {
         self.init(url, host: host, path: path, hue: hue, tag: tag, openLabel: openLabel, preview: preview, open: open)
     }
@@ -229,15 +229,23 @@ public struct MetalLinkFace: View {
     private func openControl(host: String) -> some View {
         if let open {
             Button(action: open) {
-                MetalChip(.glassAction) { MetalChipText { Text(openLabel) } }
+                openFace
             }
-                .buttonStyle(.plain)
+                .buttonStyle(MetalLinkFaceOpenStyle())
                 .accessibilityLabel("Open \(host)")
         } else if let url {
             Link(destination: url) {
-                MetalChip(.glassAction) { MetalChipText { Text(openLabel) } }
+                openFace
             }
+                .buttonStyle(MetalLinkFaceOpenStyle())
                 .accessibilityLabel("Open \(host)")
+        }
+    }
+
+    private var openFace: some View {
+        MetalChip(.glassAction) {
+            MetalChipLead { MetalIcon(.external, size: MetalRecipes.button.points("compact.glyph")) }
+            MetalChipText { Text(openLabel) }
         }
     }
 
@@ -406,5 +414,16 @@ public struct MetalCodeFace: View {
         let height = (pad + pad) + r.points("screen.pad-top") + Double(max(Int(Double.one), lines.count)) * r.lineHeight("code.font")
             + r.points("screen.pad-bottom")
         return CGSize(width: width, height: height.rounded())
+    }
+}
+
+/// The action owns the shared glyph interaction; no layout or material changes on press.
+private struct MetalLinkFaceOpenStyle: ButtonStyle {
+    @State private var hovering = false
+    @Environment(\.isEnabled) private var enabled
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .metalIconInteraction(MetalIconInteraction(isHovered: enabled && hovering, isPressed: enabled && configuration.isPressed))
+            .onHover { hovering = $0 }
     }
 }

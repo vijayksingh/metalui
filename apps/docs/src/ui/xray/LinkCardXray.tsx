@@ -89,7 +89,7 @@ export function LinkCardXray({ startOpen = false }: { startOpen?: boolean }) {
   const screen = (
     <div className="xr-face is-flat xr-linkscreen" style={{ left: sx, top: sy, width: sw, height: sh, borderRadius: m.screenR * S, transform: `translateZ(${top + 0.5}px)`, background: screenBg, boxShadow: scalePx(GLARE_SH.join(', '), S), padding: `${P.screen['pad-y'] * S}px ${P.screen['pad-x'] * S}px` }}>
       <span className="xr-linkchip" style={{ left: inset, top: inset, fontSize: 9 * S, gap: 5 * S, height: 18 * S, padding: `0 ${7 * S}px`, borderRadius: 7 * S }}><i style={{ width: 5 * S, height: 5 * S }} />LINK</span>
-      <span className={spot === 'press' ? 'xr-linkchip is-action is-lit' : 'xr-linkchip is-action'} onClick={() => setOpened(m.host)} style={{ right: inset, top: inset, fontSize: 9 * S, height: 18 * S, padding: `0 ${7 * S}px`, borderRadius: 7 * S }}>OPEN ↗</span>
+      <span className={spot === 'press' ? 'xr-linkchip is-action is-lit' : 'xr-linkchip is-action'} onClick={() => setOpened(m.host)} style={{ right: inset, top: inset, fontSize: 9 * S, height: 18 * S, padding: `0 ${7 * S}px`, borderRadius: 7 * S }}>OPEN</span>
       <b style={{ font: `620 ${m.hostSize * S}px/1.2 var(--sans)`, letterSpacing: `${m.hostTrack}em`, color: hostInk }}>{m.host}</b>
       <span style={{ font: `400 ${m.pathSize * S}px/1.4 var(--mono)`, letterSpacing: `${m.pathTrack}em`, color: pathInk }}>/NIGHT-MARKET</span>
     </div>

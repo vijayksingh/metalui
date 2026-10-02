@@ -735,7 +735,7 @@
       "name": "link-card",
       "title": "Link card",
       "status": "alpha",
-      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN action.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "LinkCard, linkHueDegrees",

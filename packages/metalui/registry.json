@@ -1135,11 +1135,12 @@
       "name": "link-card",
       "type": "registry:ui",
       "title": "Link card",
-      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+      "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN action.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/glass-face.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

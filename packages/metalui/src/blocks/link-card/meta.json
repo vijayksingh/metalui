@@ -9,7 +9,7 @@
     "glass-face",
     "chip"
   ],
-  "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
+  "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN action.",
   "base": "none (a group; OPEN is the only link)",
   "react": {
     "export": "LinkCard, linkHueDegrees",
@@ -19,7 +19,7 @@
   },
   "swift": {
     "symbol": "MetalLinkCard",
-    "file": "swift/Sources/MetalUI/Blocks/MetalLinkCard.swift"
+    "file": "swift/Sources/MetalUI/Components/MetalGlassFace.swift"
   },
   "agent": "link-card.agent.md",
   "page": "/components/link-card"
