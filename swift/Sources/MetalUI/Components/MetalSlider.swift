@@ -159,7 +159,9 @@ public struct MetalSlider: View {
             if showsValue { readout }
         }
         .opacity(isEnabled ? .one : MetalRecipes.slider.scalar("self.disabled"))
+        #if os(macOS)
         .focusSection()
+        #endif
         .onChange(of: focused) { _, next in onFocusChange?(next != nil) }
         .onChange(of: values) { before, after in
             guard isEnabled else { return }
