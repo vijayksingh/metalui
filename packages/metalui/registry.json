@@ -49,6 +49,11 @@
           "target": "components/metalui/motion/layout-effect.ts"
         },
         {
+          "path": "packages/metalui/src/motion/leave.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/leave.ts"
+        },
+        {
           "path": "packages/metalui/src/motion/reduced.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/reduced.ts"

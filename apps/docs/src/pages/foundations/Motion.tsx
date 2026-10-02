@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, useReducedMotion } from '@unlocalhosted/metalui';
+import { Button, Switch, leaveRow, useReducedMotion } from '@unlocalhosted/metalui';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 import { HopDemo } from '../../ui/HopDemo';
@@ -123,6 +123,32 @@ function ReducedMotionBench() {
       </div>
     </div>
   );
+}
+
+function RowLeaveDemo() {
+  const row = React.useRef<HTMLDivElement>(null);
+  const cancel = React.useRef<(() => void) | undefined>(undefined);
+  const [present, setPresent] = React.useState(true);
+  const [leaving, setLeaving] = React.useState(false);
+  const [reduced, setReduced] = React.useState(false);
+  const [removed, setRemoved] = React.useState(0);
+  React.useEffect(() => () => cancel.current?.(), []);
+  const remove = () => {
+    cancel.current = leaveRow(row.current, () => {
+      setPresent(false); setLeaving(false); setRemoved((n) => n + 1);
+    }, { onStart: () => setLeaving(true) });
+  };
+  return <div data-testid="row-leave-demo" data-mu-motion={reduced ? 'reduce' : undefined} className="mu-stack items-start">
+    <Switch label="Reduce row motion" checked={reduced} onCheckedChange={setReduced} />
+    {present && <div ref={row} role="group" aria-label="Lisbon export" className="mu-cluster recipe-surface-raise-sm rounded-card p-mu-space-12">
+      <span className="type-ui text-ink">Lisbon export</span><Button size="compact" onClick={remove}>Remove row</Button>
+    </div>}
+    <div className="mu-cluster">
+      <Button size="compact" disabled={!leaving} onClick={() => { cancel.current?.(); setLeaving(false); }}>Keep row</Button>
+      <Button size="compact" disabled={present} onClick={() => setPresent(true)}>Restore row</Button>
+      <span role="status" className="type-meta text-ink2">{leaving ? 'Leaving' : present ? 'Row ready' : 'Row removed'} · {removed} removed</span>
+    </div>
+  </div>;
 }
 
 export default function Motion() {
@@ -273,6 +299,10 @@ export default function Motion() {
             </div>
           </Bench>
         </div>
+      </Section>
+
+      <Section id="row-leave" title="A row leaves" lede="leaveRow reads the row's own release spring and nest distance. Capture the list in onStart, remove the row in onLeft, and keep its cancellation for unmount. Repeated presses finish once. Reduced motion removes rows at once, including a preference changed while leaving; the one-point return of a pressed cap keeps its release feedback.">
+        <Bench><RowLeaveDemo /></Bench>
       </Section>
 
       <Section title="Hop" lede="When a thing changes place, it hops: a short throw along a small arc, as if lifted and set down, instead of sliding across. A light stepping down a list hops near (the arc bows at most --mu-motion-hop-lift); a thing carried to another place hops far (--mu-motion-hop-lift-far). Both take --mu-motion-hop-duration, easing out. Click the card, then switch to Slide to feel the difference.">

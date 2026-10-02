@@ -12,19 +12,20 @@ export function motionReduced(element?: Element | null): boolean {
 }
 
 /** Subscribe to both motion switches, including live changes on a scoped ancestor. */
+export function subscribeMotionPreference(element: Element | null | undefined, notify: () => void): () => void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return () => {};
+  const media = window.matchMedia(QUERY);
+  const observer = new MutationObserver(notify);
+  media.addEventListener('change', notify);
+  for (let ancestor: Element | null = element ?? document.documentElement; ancestor; ancestor = ancestor.parentElement) {
+    observer.observe(ancestor, { attributes: true, attributeFilter: ['class', 'data-mu-motion'] });
+  }
+  return () => { media.removeEventListener('change', notify); observer.disconnect(); };
+}
+
+/** Reactive rendering policy; SSR uses the still-unresolved preference. */
 export function useReducedMotion(element?: Element | null): boolean {
-  const subscribe = React.useCallback((notify: () => void) => {
-    const media = window.matchMedia(QUERY);
-    const observer = new MutationObserver(notify);
-    media.addEventListener('change', notify);
-    for (let ancestor: Element | null = element ?? document.documentElement; ancestor; ancestor = ancestor.parentElement) {
-      observer.observe(ancestor, { attributes: true, attributeFilter: ['class', 'data-mu-motion'] });
-    }
-    return () => {
-      media.removeEventListener('change', notify);
-      observer.disconnect();
-    };
-  }, [element]);
+  const subscribe = React.useCallback((notify: () => void) => subscribeMotionPreference(element, notify), [element]);
   const snapshot = React.useCallback(() => motionReduced(element), [element]);
   return React.useSyncExternalStore(subscribe, snapshot, () => false);
 }
