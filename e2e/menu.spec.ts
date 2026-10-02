@@ -10,6 +10,7 @@ for (const colorway of COLORWAYS) {
     await line.locator('.mu-cue[data-kind="date"]').click({ button: 'right' });
     const menu = page.getByRole('menu');
     await expect(menu).toContainText('Date · rule · date parser');
+    await expect(menu.getByRole('menuitem', { name: 'Gather Similar' }).locator('svg.mu-ic-layout')).toHaveCount(1);
     await expect(menu.getByRole('menuitem', { name: 'Reset Corrections' })).toHaveAttribute('aria-disabled', 'true');
     await menu.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
     await menu.screenshot({ path: capture(`menu-correction-${colorway}`) });

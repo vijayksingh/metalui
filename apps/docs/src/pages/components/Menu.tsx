@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, ContextMenu, Cue, IconButton, Menu, MenuItem, MenuCheckboxItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
-import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
+import { DuplicateIcon, MoreIcon, PinIcon, LayoutIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/menu/menu.agent.md?raw';
@@ -26,7 +26,7 @@ function Corrections() {
         <MenuItem onSelect={() => correct('date')}>Ignore “tomorrow 4pm”</MenuItem>
         <MenuItem onSelect={() => setOff([])} disabled={off.length === 0}>Reset Corrections</MenuItem>
         <MenuSeparator />
-        <MenuItem icon={<SearchIcon size={14} />} onSelect={() => {}}>Gather Similar</MenuItem>
+        <MenuItem icon={<LayoutIcon size={14} />} onSelect={() => {}}>Gather Similar</MenuItem>
       </>}>
         {on('date') ? <Cue kind="date" resolved="TUE 30 SEP · 16:00">tomorrow 4pm</Cue> : <span>tomorrow 4pm</span>}
       </ContextMenu>

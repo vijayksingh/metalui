@@ -2284,7 +2284,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
   <MenuItem onSelect={() => correct({ task: false })}>Not a Task</MenuItem>
   <MenuItem onSelect={resetCorrections}>Reset Corrections</MenuItem>
   <MenuSeparator />
-  <MenuItem onSelect={gatherSimilar} icon={<SearchIcon size={14} />}>Gather Similar</MenuItem>
+  <MenuItem onSelect={gatherSimilar} icon={<LayoutIcon size={14} />}>Gather Similar</MenuItem>
 </>}>
   <span>{cue}</span>
 </ContextMenu>

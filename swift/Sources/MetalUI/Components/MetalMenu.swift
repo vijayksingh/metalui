@@ -214,7 +214,7 @@ extension View {
     ///     cue.metalMenu(isPresented: $correcting, at: clickPoint, heading: "NOTE · TASK BY RECOGNIZER 0.82", items: [
     ///         MetalMenuItem("Not a Task") { correct(.task(false)) },
     ///         .separator,
-    ///         MetalMenuItem("Gather Similar", icon: .search) { gather() },
+    ///         MetalMenuItem("Gather Similar", icon: .layout) { gather() },
     ///     ])
     public func metalMenu(isPresented: Binding<Bool>, at point: CGPoint? = nil, heading: String? = nil, items: [MetalMenuItem]) -> some View {
         modifier(MetalMenuPresenter(isPresented: isPresented, point: point, heading: heading, items: items))
