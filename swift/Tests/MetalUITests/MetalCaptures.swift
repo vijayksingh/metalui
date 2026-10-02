@@ -434,8 +434,14 @@ final class MetalCaptures: XCTestCase {
 
     func testToolStrip() {
         for colorway in MetalColorway.allCases {
-            let view = MetalToolStrip(label: "3 blocks", items: ["Tasks", "Summarise", "Gather", "Region", "Export"].map { MetalToolStripItem($0) {} } + [MetalToolStripItem("Send away", destructive: true) {}])
-                .padding(28)
+            let view = VStack(alignment: .leading, spacing: MetalToolStripMetrics.gapAbove) {
+                MetalLabel("TEXT · 1 SELECTED", style: .engraved)
+                MetalToolStrip(label: "a note", items: [MetalToolStripItem("Tasks", icon: .task) {}, MetalToolStripItem("Summarise", icon: .document) {}, MetalToolStripItem("Region", icon: .region) {}, MetalToolStripItem("Gather", icon: .group) {}, MetalToolStripItem("Export", icon: .share) {}, MetalToolStripItem("Rename", icon: .text, singleOnly: true) {}, MetalToolStripItem("Send away", icon: .sendAway, destructive: true, irreversible: true) {}], count: 1, maxVisible: 5, entrance: false)
+                MetalLabel("IMAGE · 1 SELECTED", style: .engraved)
+                MetalToolStrip(label: "an image", items: [MetalToolStripItem("Lift subject", icon: .capture) {}, MetalToolStripItem("Copy", icon: .duplicate) {}, MetalToolStripItem("Crop", icon: .region, disabledReason: "This image is locked") {}, MetalToolStripItem("Send away", icon: .sendAway, destructive: true) {}], count: 1, entrance: false)
+                MetalLabel("MIX · 3 SELECTED", style: .engraved)
+                MetalToolStrip(label: "3 blocks", items: [MetalToolStripItem("Gather", icon: .group) {}, MetalToolStripItem("Export", icon: .share) {}, MetalToolStripItem("Send away", icon: .sendAway, destructive: true) {}], count: 3, entrance: false)
+            }.padding(MetalRadius.card)
                 .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
                 .metalColorway(colorway)
             capture("tool-strip-\(colorway.rawValue)", view)

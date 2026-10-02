@@ -260,12 +260,12 @@ Owner, on the Tool strip's Swift capture: "this tool strip is static; it should 
 
 Now: `ToolStrip` takes a fixed `items` list (Tasks, Summarise, Gather, Region, Export | Send away); the page shows one set of worded verbs whatever is selected, and it doesn't place itself.
 
-- [ ] **Verbs come from the selection**: the strip asks what's selected and shows the verbs that apply: a text block (Tasks, Summarise, Region), an image (Lift subject, Copy, Crop), a link (Open, Copy link), a mix of kinds (only the verbs they share: Gather, Export, Send away), one item vs many (Rename only for one). An API like `verbsFor(selection)` or per-kind verb sets merged by intersection, with the order kept stable so muscle memory holds.
-- [ ] **Changing the selection morphs the strip**: when the verbs change, the strip's width settles on the settle spring, leaving verbs fade out, new ones fade in, and kept verbs stay in place (no jump); glyphs rather than words (the icons entry), names in tooltips.
-- [ ] **It places itself at the node**: anchored to the selection's bounds (above it, or below when there's no room; follows when the canvas pans or zooms; flips at screen edges), rising from the selection on the part spring as now.
-- [ ] **Overflow**: when the verbs don't fit, the rest go into a More key (`more`) at the end, before the destructive verb.
-- [ ] **States**: disabled verbs say why in the tooltip; a verb in progress shows the waiting language (the spinner entry) in its key; the destructive verb stays last, apart, and uses hold-to-confirm when irreversible.
-- [ ] Redo the page with a small canvas where clicking a text block, an image, a link or several shows the strip adapting; Swift twin in step and recaptured.
+- [x] **Verbs come from the selection**: the strip asks what's selected and shows the verbs that apply: a text block (Tasks, Summarise, Region), an image (Lift subject, Copy, Crop), a link (Open, Copy link), a mix of kinds (only the verbs they share: Gather, Export, Send away), one item vs many (Rename only for one). An API like `verbsFor(selection)` or per-kind verb sets merged by intersection, with the order kept stable so muscle memory holds.
+- [x] **Changing the selection morphs the strip**: when the verbs change, the strip's width settles on the settle spring, leaving verbs fade out, new ones fade in, and kept verbs stay in place (no jump); glyphs rather than words (the icons entry), names in tooltips.
+- [x] **It places itself at the node**: anchored to the selection's bounds (above it, or below when there's no room; follows when the canvas pans or zooms; flips at screen edges), rising from the selection on the part spring as now.
+- [x] **Overflow**: when the verbs don't fit, the rest go into a More key (`more`) at the end, before the destructive verb.
+- [x] **States**: disabled verbs say why in the tooltip; a verb in progress shows the waiting language (the spinner entry) in its key; the destructive verb stays last, apart, and uses hold-to-confirm when irreversible.
+- [x] Redo the page with a small canvas where clicking a text block, an image, a link or several shows the strip adapting; Swift twin in step and recaptured.
 
 ## Cues (the in-text semantic marks): meaning, tags, motion, delight
 
@@ -348,7 +348,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [x] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
-- [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
+- [x] **ToolStrip** now accepts icons, menu children with controlled triggers and a leading count; the task inbox composes the shared strip. Selection intersections, anchored placement and overflow are covered in the Tool strip entry above.
 - [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.
 - [x] **Person / assign glyph available**: `person` reads as a portrait with a fixed shoulder enclosure and seated head, distinct from `me`. Assignment wiring remains part of the block migration below.
 - [x] **Icon: `act` sequence plays a glyph's act on demand in React and Swift** for results; the inbox no longer dispatches a synthetic click.

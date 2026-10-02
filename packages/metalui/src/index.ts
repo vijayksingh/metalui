@@ -68,7 +68,7 @@ export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './com
 export { LineHandles, type LineHandlesProps } from './components/line-handles/line-handles';
 export { PerfectPreview, type PerfectPreviewProps } from './components/perfect-preview/perfect-preview';
 export { DrawTools, DRAW_TOOLS, type DrawTool, type DrawToolsProps } from './blocks/draw-tools/draw-tools';
-export { ToolStrip, type ToolStripProps, type ToolStripItem } from './blocks/tool-strip/tool-strip';
+export { ToolStrip, verbsFor, type ToolStripProps, type ToolStripItem, type ToolStripSelection, type ToolStripVerbSets } from './blocks/tool-strip/tool-strip';
 export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-banner';
 export { TimeScrubber, MemoryScrubber, type TimeScrubberProps, type MemoryScrubberProps } from './blocks/time-scrubber/time-scrubber';
 export { FilterBar, LensBar, type FilterBarProps, type FilterView, type LensBarProps, type LensMode } from './blocks/filter-bar/filter-bar';

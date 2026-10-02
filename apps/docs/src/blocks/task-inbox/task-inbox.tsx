@@ -2,10 +2,9 @@
 
 import * as React from 'react';
 import { motionReduced as reduced } from '@unlocalhosted/metalui';
-import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import {
   AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Menu, MenuItem, Row, Rule, Surface,
-  SwapText, Switcher, useToast,
+  SwapText, Switcher, ToolStrip, useToast,
 } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 
@@ -205,7 +204,6 @@ const RAIL = 'data-open:before:absolute data-open:before:left-row-rail-offset da
 const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-aria-selected/row:opacity-100 group-data-selecting/grid:opacity-100 pointer-coarse:opacity-100`;
 
 // A key on the graphite strip: the strip cap's look; the verb hides under 32rem, the glyph stays.
-const Verb = ({ children }: { children: string }) => <span className="sr-only @lg/block:not-sr-only">{children}</span>;
 const STRIP_GLYPH = 'size-16';
 // The icon set has no person glyph yet: a head and shoulders, drawn to the set's 24 grid and stroke.
 const PERSON = <svg aria-hidden viewBox="0 0 24 24" className={STRIP_GLYPH} fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
@@ -630,42 +628,13 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       <div className="sticky bottom-12 z-1 grid min-h-toolstrip-button-height place-items-center">
         {stripUp ? (
           <div ref={strip} className="col-start-1 row-start-1">
-            <BaseToolbar.Root
-              aria-label={`Tools for ${plural(stripCount, 'selected task', 'selected tasks')}`}
-              render={<Surface material="graphite-strip" radius="strip" className="mu-toolstrip inline-flex items-center gap-toolstrip-gap p-toolstrip-pad [&>.mu-rule]:h-toolstrip-sep-height" />}
-            >
-              <span className="px-8 type-ui whitespace-nowrap tabular-nums text-toolstrip-ink-hover"><SwapText value={`${stripCount} selected`} /></span>
-              <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="check" className={STRIP_GLYPH} />} />} aria-label="Complete" aria-keyshortcuts="E" onClick={completeTargets}>
-                <Verb>Complete</Verb>
-              </BaseToolbar.Button>
-              <Menu
-                side="top"
-                heading="Assign to"
-                open={assignOpen}
-                onOpenChange={setAssignOpen}
-                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={PERSON} />} aria-label="Assign"><Verb>Assign</Verb></BaseToolbar.Button>}
-              >
-                {PEOPLE.map((p) => (
-                  <MenuItem key={p.id} onSelect={() => assign(targets(), p.id)}>{p.id === ME ? `${p.name} (you)` : p.name}</MenuItem>
-                ))}
-              </Menu>
-              <Menu
-                side="top"
-                heading="Snooze until"
-                open={snoozeOpen}
-                onOpenChange={setSnoozeOpen}
-                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="clock" className={STRIP_GLYPH} />} />} aria-label="Snooze"><Verb>Snooze</Verb></BaseToolbar.Button>}
-              >
-                <MenuItem onSelect={() => snooze(targets(), 1, 'tomorrow')}>Tomorrow</MenuItem>
-                <MenuItem onSelect={() => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`)}>Next week</MenuItem>
-              </Menu>
-              <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip-danger" icon={<Icon name="trash" className={STRIP_GLYPH} />} />} aria-label="Delete" aria-keyshortcuts="Delete" onClick={() => openConfirm()}>
-                <Verb>Delete</Verb>
-              </BaseToolbar.Button>
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="close" className={STRIP_GLYPH} />} />} aria-label="Clear selection" aria-keyshortcuts="Escape" onClick={() => { clearSelection(); focusCell(activeId); }} />
-            </BaseToolbar.Root>
+            <ToolStrip label={plural(stripCount, 'selected task', 'selected tasks')} count={stripCount} items={[
+              { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: completeTargets },
+              { label: 'Assign', icon: PERSON, menuOpen: assignOpen, onMenuOpenChange: setAssignOpen, menu: PEOPLE.map((p) => <MenuItem key={p.id} onSelect={() => assign(targets(), p.id)}>{p.id === ME ? `${p.name} (you)` : p.name}</MenuItem>) },
+              { label: 'Snooze', icon: <Icon name="clock" />, menuOpen: snoozeOpen, onMenuOpenChange: setSnoozeOpen, menu: <><MenuItem onSelect={() => snooze(targets(), 1, 'tomorrow')}>Tomorrow</MenuItem><MenuItem onSelect={() => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`)}>Next week</MenuItem></> },
+              { label: 'Clear selection', icon: <Icon name="close" />, shortcut: 'Escape', onSelect: () => { clearSelection(); focusCell(activeId); } },
+              { label: 'Delete', icon: <Icon name="trash" />, destructive: true, shortcut: 'Delete', onSelect: () => openConfirm() },
+            ]} />
           </div>
         ) : visible.length > 0 && (
           <p aria-hidden className="col-start-1 row-start-1 m-0 hidden flex-wrap items-center justify-center gap-x-12 gap-y-4 type-meta text-ink3 @md/block:flex pointer-coarse:hidden">

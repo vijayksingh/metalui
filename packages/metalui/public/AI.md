@@ -4256,51 +4256,42 @@ Reduce Motion: the latch snaps to its depth; the lamp still lights.
 
 # Tool strip
 
-Verbs over a selection. A composition block on Base UI Toolbar. React: `ToolStrip` from `@unlocalhosted/metalui`. SwiftUI: `MetalToolStrip`.
+Selection actions on a graphite strip. React `ToolStrip` and `verbsFor` from `@unlocalhosted/metalui`; Swift `MetalToolStrip`, `metalVerbsFor`. Compose Surface, Button, Rule, Menu and Tooltip; Base UI owns the web toolbar's arrows, popup placement and menus.
 
 ## Use it for
 
-- A click selection on the canvas: **Tasks** (adds `[ ]`), **Summarise** (counts, next dated task, totals, tags), **Gather** (a lens of the selection), **Region** (wraps it), **Export** (copies Markdown), **Send away** (with Undo).
+A click selection on a canvas or list. The host owns the selected data, results and Undo. Finishing a gesture makes a quiet selection; do not show it while dragging, resizing, in the past or while the palette is open.
 
-## Don't use it for
+## Selection grammar
 
-- A selection made by finishing (⎋, ⌘↩): that selection is quiet.
-- While dragging, resizing, in the past, or with the palette open.
-- App-level tools (select, write, region, ink). Those are the toolbar.
+Give each selected object `{ id, kind }`, and each kind its verb set. `verbsFor(selection, sets)` intersects stable verb IDs across all selected kinds. Unknown kinds produce no actions. `singleOnly` keeps Rename only for one object. `order` supplies a catalog-wide ordering; otherwise kind-set insertion order determines it. Disabled reasons and busy state merge from the matching kind sets. Swift takes an explicit `order: [String]` so Dictionary iteration cannot change muscle memory.
 
-## Anatomy
+```tsx
+<ToolStrip label="2 blocks" selection={selection} verbSets={sets}
+  anchor={viewportBounds} boundary={canvasElement} maxVisible={5} />
+```
 
-`Surface material="graphite-strip" radius="strip"` (16), padding 4, gap 2, floating 12 above the selection's top centre; `Button cap="strip"` verbs (28 tall, radius 11, padding 10, 12 pt in `#D6D6D8`); a `Rule tone="graphite"` 16 tall before the destructive verb, `Button cap="strip-danger"` in `#FF8A7E`.
+You can continue passing fixed `items`. Each item has `id?`, `label`, `icon?`, `onSelect?`, `menu?` (MenuItem children), `menuOpen?` / `onMenuOpenChange?`, `order?`, `singleOnly?`, `shortcut?`, `disabled?`, `disabledReason?`, `busy?`, `destructive?`, `irreversible?`. The leading count defaults to selection length; supply `count` for a fixed list. A glyph key has an accessible name and tooltip; worded legacy actions remain supported. Menu keys name themselves and expose their menu with the standard trigger semantics.
+
+## Placement and overflow
+
+`anchor` accepts an Element or viewport `{ x, y, width, height }`. The host updates selection bounds after each canvas pan or zoom. Base UI follows the element or the inert bounds marker, positions 12 above the selection, flips below when needed and shifts at edges. `boundary` confines the strip to a canvas Element or viewport rectangle. No position clock runs at rest. When used inline, placement belongs to the host.
+
+`maxVisible` limits regular keys; available boundary width can reduce it further. More occupies the last regular slot. The destructive action remains visible after More and an engraved Rule. Keep one destructive action. Very small boundaries still need enough room for a count, More and that action.
+
+Swift uses parent-space `anchor: CGRect` and `viewport: CGRect` inside a ZStack. Pass updated bounds after pan/zoom. Its `maxVisible` and viewport capacity reveal More before the destructive action. Native menu panels expose overflow actions. `entrance: false` supports a settled capture.
 
 ## States and motion
 
-| State | Look | Motion |
-|---|---|---|
-| appears (click selection) | the strip | rises 4 on part (instant under Reduce Motion) |
-| button hover | `rgba(255,255,255,.08)`, white | settle |
-| button pressed | down 1 on `rgba(0,0,0,.35)` | 50 ms, back on release |
-| disabled | 40 % | – |
+The strip rises 4 on the part spring. Selection changes resize the backing surface through scale, translate retained keys from their old positions on settle, fade arriving actions in and departing actions out. Only transform and opacity animate. With the OS preference, site switch or scoped motion reduction, geometry changes instantly. Swift matches key positions and scales its backing on settle.
 
-## API
+A disabled reason appears in the tooltip and is announced; its key stays focusable and cannot run. `busy` delegates waiting feedback to Button: 400ms show delay, a 300ms minimum display, no repeat activation. Only an irreversible destructive action sets `irreversible`: pointer, Space or Enter must be held until Button confirms. Reversible Send away can run immediately with Undo.
 
-| React | SwiftUI |
-|---|---|
-| `items: { label, onSelect, destructive?, disabled?, shortcut? }[]` | `items: [MetalToolStripItem]` |
-| `label` (what they act on) | `label:` |
+## Accessibility and delivery
 
-## Rules
+The web toolbar is named `Tools for ${label}`, has one tab stop and Base UI arrow navigation. Tooltips describe glyph actions; menus own menu-key focus. Disabled reasons are descriptions, never an excuse to remove the action's name. Swift has spoken labels, hints, tooltips, arrow navigation and the same held action.
 
-- Verbs compose, and never own the data before or after.
-- Every verb confirms with a toast that says what happened and offers Undo ("Made 3 tasks", "Sent away 3 blocks").
-- One destructive verb, last, after the separator. Canvas delete is send away (DS-33).
-
-## Accessibility
-
-- A Base UI toolbar named "Tools for 3 blocks": one tab stop, arrows between verbs; destructive is named, not only coloured.
-
-## Tokens
-
-`--mu-toolstrip-*`, `.mu-frost-graphite`, `--mu-radius-plate`, `--mu-radius-row`, `--mu-spring-part`, `--mu-travel-part`. Swift: `MetalToolStripMetrics`.
+React, Swift, docs and targeted integration captures ship together. Tokens are existing toolstrip layout, button strip/strip-danger caps, graphite-strip Surface, Rule, Menu and shared springs. No new material numbers.
 
 ---
 

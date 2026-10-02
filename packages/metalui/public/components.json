@@ -1415,7 +1415,7 @@
       "name": "tool-strip",
       "title": "Tool strip",
       "status": "alpha",
-      "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+      "description": "Selection-aware graphite action strip: stable verb intersections, glyph keys and count, anchored collision placement, More overflow, disabled reasons, waiting feedback and held irreversible actions.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "ToolStrip",

@@ -7,9 +7,12 @@
   "uses": [
     "surface",
     "button",
-    "rule"
+    "rule",
+    "menu",
+    "tooltip",
+    "label"
   ],
-  "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+  "description": "Selection-aware graphite action strip: stable verb intersections, glyph keys and count, anchored collision placement, More overflow, disabled reasons, waiting feedback and held irreversible actions.",
   "base": "@base-ui/react/toolbar",
   "react": {
     "export": "ToolStrip",
@@ -19,7 +22,7 @@
   },
   "swift": {
     "symbol": "MetalToolStrip",
-    "file": "swift/Sources/MetalUI/Components/MetalToolStrip.swift"
+    "file": "swift/Sources/MetalUI/Blocks/MetalToolStrip.swift"
   },
   "agent": "tool-strip.agent.md",
   "page": "/components/tool-strip"

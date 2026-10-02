@@ -1814,15 +1814,20 @@
       "name": "tool-strip",
       "type": "registry:ui",
       "title": "Tool strip",
-      "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+      "description": "Selection-aware graphite action strip: stable verb intersections, glyph keys and count, anchored collision placement, More overflow, disabled reasons, waiting feedback and held irreversible actions.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/rule.json",
         "https://metalui.dev/r/surface.json",
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
@@ -2024,7 +2029,6 @@
       "title": "Task inbox",
       "description": "A task list block: search and views, a tick that settles a task into Done, multi-select with a tool strip to complete, assign, snooze or delete, and Undo.",
       "dependencies": [
-        "@base-ui/react@^1.8.0",
         "@unlocalhosted/metalui@^0.3.0"
       ],
       "registryDependencies": [
