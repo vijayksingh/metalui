@@ -1938,6 +1938,9 @@
 @utility recipe-button-strip-focus {
   box-shadow: var(--mu-r-button-strip-focus-shadow);
 }
+@utility recipe-button-hold {
+  background: var(--mu-r-button-hold-background);
+}
 @utility duration-button-press {
   --tw-duration: var(--mu-r-button-self-press);
   transition-duration: var(--mu-r-button-self-press);
@@ -1974,6 +1977,10 @@
 @utility type-button-strip {
   font: var(--mu-r-button-strip-font);
   letter-spacing: var(--mu-r-button-strip-tracking);
+}
+@utility duration-button-hold-duration {
+  --tw-duration: var(--mu-r-button-hold-duration);
+  transition-duration: var(--mu-r-button-hold-duration);
 }
 @utility recipe-kbd {
   background: var(--mu-r-kbd-self-background);

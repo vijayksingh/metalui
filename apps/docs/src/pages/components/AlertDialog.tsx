@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { AlertDialog, Button } from '@unlocalhosted/metalui';
+import { TrashIcon } from '@unlocalhosted/metalui/icons';
+import { tokens } from '../../lib/tokens';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/alert-dialog/alert-dialog.tsx?raw';
@@ -24,7 +26,7 @@ function Question({ onDelete }: { onDelete: () => void }) {
       <AlertDialog.Description>Their notes move to the past, where you can bring them back for 30 days.</AlertDialog.Description>
       <AlertDialog.Actions>
         <AlertDialog.Cancel />
-        <AlertDialog.Confirm onClick={onDelete}>Delete regions</AlertDialog.Confirm>
+        <AlertDialog.Confirm icon={<TrashIcon />} onClick={onDelete}>Delete regions</AlertDialog.Confirm>
       </AlertDialog.Actions>
     </AlertDialog.Popup>
   );
@@ -61,6 +63,34 @@ function RefusalTuner() {
   );
 }
 
+/* Hold storyboard: press starts one 800ms clock; release cancels; completion performs one act.
+ * The undoable question above uses a plain press. This question permanently removes the data.
+ * Reduced motion preserves the linear time fill and removes icon travel/settle. */
+function IrreversibleQuestion() {
+  const [open, setOpen] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
+  const [singlePress, setSinglePress] = React.useState(false);
+  const d = useDialKit('Hold to delete', {
+    hold: true,
+    duration: [parseFloat(tokens.recipes.button.props.hold.duration), 400, 1600],
+  });
+  return <div data-testid="hold-delete-demo" className="mu-stack items-center gap-mu-related">
+    <Button cap="destructive" icon={<TrashIcon />} onClick={() => { setDeleted(false); setOpen(true); }}>Delete forever…</Button>
+    <Button aria-pressed={singlePress} onClick={() => setSinglePress(value => !value)}>{singlePress ? 'Use holding' : 'Use single press'}</Button>
+    <p role="status" className="type-doc-caption text-ink2">{deleted ? 'Permanently deleted' : d.hold && !singlePress ? 'Hold enabled · release early to cancel' : 'Plain press enabled · the question still guards deletion'}</p>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialog.Popup>
+        <AlertDialog.Title>Delete these regions forever?</AlertDialog.Title>
+        <AlertDialog.Description>This permanently removes the regions and their notes. There is no undo.</AlertDialog.Description>
+        <AlertDialog.Actions className="flex-wrap">
+          <AlertDialog.Cancel />
+          <AlertDialog.Confirm hold={d.hold && !singlePress ? d.duration : false} icon={<TrashIcon />} onClick={() => setDeleted(true)}>Delete forever</AlertDialog.Confirm>
+        </AlertDialog.Actions>
+      </AlertDialog.Popup>
+    </AlertDialog>
+  </div>;
+}
+
 export default function AlertDialogPage() {
   const [open, setOpen] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
@@ -76,7 +106,7 @@ export default function AlertDialogPage() {
           </AlertDialog>
         </div>
       ) }}
-      more={[{ id: 'refusal', title: 'Tune the refusal', lede: 'The Alert refusal panel swaps the spring, the reach and the time. Open it and click the scrim.', node: <RefusalTuner /> }]}
+      more={[{ id: 'hold-to-delete', title: 'Hold for irreversible loss', lede: 'Hold the pointer, Space or Enter until the fill completes. Releasing early cancels. The Hold to delete panel offers a plain press for pointers that cannot hold. Undoable deletion above stays a plain press.', node: <IrreversibleQuestion /> }, { id: 'refusal', title: 'Tune the refusal', lede: 'The Alert refusal panel swaps the spring, the reach and the time. Open it and click the scrim.', node: <RefusalTuner /> }]}
       usage={`<AlertDialog open={open} onOpenChange={setOpen}>
   <AlertDialog.Popup>
     <AlertDialog.Title>Delete 3 regions?</AlertDialog.Title>

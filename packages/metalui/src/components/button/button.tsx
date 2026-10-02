@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced } from '../../motion/reduced';
 import { Button as BaseButton } from '@base-ui/react/button';
 
 /**
@@ -23,6 +24,8 @@ export interface ButtonProps extends BaseButton.Props {
    * with `SwapText`. The button is the icon's trigger, so it plays its act on hover and press.
    */
   icon?: React.ReactNode;
+  /** Irreversible destructive actions only. Hold Space, Enter or pointer for 800ms; false restores ordinary activation. */
+  hold?: boolean | number;
 }
 
 /* Styled with the theme's utilities: the button recipe's sizes, type and layered looks
@@ -62,23 +65,114 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
  * MetalUI icons inside it play their act from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', size = 'default', icon, className, children, ...props },
+  { cap = 'standard', size = 'default', icon, hold = false, className, children, ...props },
   ref,
 ) {
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}`;
+  const element = React.useRef<HTMLElement>(null);
+  React.useImperativeHandle(ref, () => element.current!);
+  const fill = React.useRef<HTMLSpanElement>(null);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const animation = React.useRef<Animation | undefined>(undefined);
+  const started = React.useRef(false);
+  const confirmed = React.useRef(false);
+  const [holding, setHolding] = React.useState(false);
+  const [hint, setHint] = React.useState(false);
+  const hintId = React.useId();
+  // One clock drives the informational fill and icon gesture. No frame loop or layout reads.
+  const holdEnabled = Boolean(hold) && cap === 'destructive';
+  const notifyIcon = (phase: 'start' | 'cancel' | 'complete', duration?: number) => {
+    element.current?.dispatchEvent(new CustomEvent('mu-hold', { detail: { phase, duration } }));
+  };
+  const cancel = React.useCallback(() => {
+    if (!started.current) return;
+    clearTimeout(timer.current);
+    started.current = false;
+    setHolding(false);
+    setHint(true);
+    const el = fill.current;
+    if (el) {
+      const current = getComputedStyle(el).transform;
+      animation.current?.cancel();
+      const css = getComputedStyle(el);
+      animation.current = el.animate([{ transform: current }, { transform: 'scaleX(0)' }], {
+        duration: parseFloat(css.getPropertyValue('--mu-spring-release-d')) || 178,
+        easing: css.getPropertyValue('--mu-spring-release').trim() || 'ease-out',
+        fill: 'forwards',
+      });
+    }
+    notifyIcon('cancel');
+  }, []);
+  const start = () => {
+    if (!holdEnabled || props.disabled || started.current) return;
+    confirmed.current = false;
+    started.current = true;
+    setHolding(true);
+    setHint(false);
+    const css = getComputedStyle(element.current!);
+    const duration = typeof hold === 'number' ? Math.max(0, hold) : parseFloat(css.getPropertyValue('--mu-r-button-hold-duration'));
+    if (!Number.isFinite(duration) || duration <= 0) { started.current = false; setHolding(false); setHint(true); return; }
+    animation.current?.cancel();
+    animation.current = fill.current?.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration, easing: 'linear', fill: 'forwards' });
+    notifyIcon('start', duration);
+    timer.current = setTimeout(() => {
+      if (!started.current) return;
+      started.current = false;
+      confirmed.current = true;
+      setHolding(false);
+      if (element.current && !motionReduced(element.current)) {
+        element.current.animate([{ transform: 'translateY(calc(-1 * var(--mu-r-button-self-travel)))' }, { transform: 'translateY(0px)' }], { duration: parseFloat(css.getPropertyValue('--mu-spring-object-d')), easing: css.getPropertyValue('--mu-spring-object').trim() });
+      }
+      notifyIcon('complete');
+      element.current?.click();
+    }, duration);
+  };
+  React.useEffect(() => {
+    const onHidden = () => { if (document.hidden) cancel(); };
+    document.addEventListener('visibilitychange', onHidden);
+    return () => { clearTimeout(timer.current); animation.current?.cancel(); document.removeEventListener('visibilitychange', onHidden); };
+  }, [cancel]);
+  React.useEffect(() => { if (props.disabled || !holdEnabled) cancel(); }, [props.disabled, holdEnabled, cancel]);
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${holdEnabled ? 'relative overflow-hidden data-holding:translate-y-button-travel data-holding:recipe-button-destructive-pressed data-holding:duration-button-press data-holding:ease-linear' : ''}`;
   return (
+    <>
     <BaseButton
-      ref={ref}
+      ref={element}
       data-cap={cap}
       data-size={size}
+      data-hold={holdEnabled ? '' : undefined}
+      data-holding={holding ? '' : undefined}
       className={(state) => {
         const extra = typeof className === 'function' ? className(state) : className;
         return extra ? `${own} ${extra}` : own;
       }}
       {...props}
+      aria-describedby={holdEnabled ? [props['aria-describedby'], hintId].filter(Boolean).join(' ') : props['aria-describedby']}
+      onClick={(event) => {
+        if (holdEnabled && !confirmed.current) { event.preventDefault(); setHint(true); return; }
+        confirmed.current = false;
+        props.onClick?.(event);
+      }}
+      onPointerDown={(event) => { props.onPointerDown?.(event); if (!event.defaultPrevented && event.button === 0) start(); }}
+      onPointerUp={(event) => { props.onPointerUp?.(event); cancel(); }}
+      onPointerLeave={(event) => { props.onPointerLeave?.(event); cancel(); }}
+      onPointerCancel={(event) => { props.onPointerCancel?.(event); cancel(); }}
+      onBlur={(event) => { props.onBlur?.(event); cancel(); }}
+      onKeyDown={(event) => {
+        props.onKeyDown?.(event);
+        if (holdEnabled && !event.defaultPrevented && (event.key === ' ' || event.key === 'Enter')) { event.preventDefault(); if (!event.repeat) start(); }
+        if (event.key === 'Escape') cancel();
+      }}
+      onKeyUp={(event) => {
+        props.onKeyUp?.(event);
+        if (holdEnabled && (event.key === ' ' || event.key === 'Enter')) { event.preventDefault(); cancel(); }
+      }}
     >
-      {icon}
-      {children}
+      {holdEnabled ? <>
+        <span ref={fill} aria-hidden style={{ transform: 'scaleX(0)' }} className="absolute inset-0 rounded-pill recipe-button-hold origin-left pointer-events-none" />
+        <span className={size === 'compact' ? 'relative inline-flex items-center gap-button-compact-gap [&>svg]:size-button-compact-glyph' : 'relative inline-flex items-center gap-button-gap [&>svg]:size-button-glyph'}>{icon}{children}</span>
+      </> : <>{icon}{children}</>}
     </BaseButton>
+    {holdEnabled && <span id={hintId} className={hint ? 'basis-full type-doc-caption text-ink2' : 'sr-only'} role="status">Hold to confirm</span>}
+    </>
   );
 });

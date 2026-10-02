@@ -314,9 +314,9 @@ Reduce Motion: no shake; the rise is a crossfade.
 | React | SwiftUI |
 |---|---|
 | `AlertDialog.Root` `open`, `onOpenChange` | `isPresented:` |
-| `AlertDialog.Popup`, `Title`, `Description`, `Actions` | `title:`, `message:` |
+| `AlertDialog.Popup` forwards typed Base UI `initialFocus` / `finalFocus`; `Title`, `Description`, `Actions` | `title:`, `message:` |
 | `AlertDialog.Cancel` (children: its label) | `cancel:` |
-| `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`) | `confirm:`, `role: .destructive` |
+| `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`), `icon`, `hold` | `confirm:`, `role: .destructive` |
 
 ## Keyboard and accessibility
 
@@ -327,6 +327,8 @@ Reduce Motion: no shake; the rise is a crossfade.
 - The title is the question; the confirm button says the action ("Delete regions"), never "OK" or "Yes".
 - Say what is lost in the description. If nothing is lost, it is not an alert dialog.
 - A click outside is refused, not obeyed: the shake says an answer is needed.
+
+For permanent loss, Confirm may pass `hold` and a `trash` icon. Button blocks short clicks before Base UI's Close handler runs, so early release leaves the question open. Space and Enter use the same hold; completion fires the action once, then closes. The cancel button remains initially focused. The host can pass `hold={false}` for an ordinary single-pointer confirm; the question still guards the action. Never require holding for an undoable delete.
 
 ---
 
@@ -611,6 +613,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14) | – |
+| `hold` | `hold:` | boolean, or custom milliseconds (React); destructive cap only | `false` |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |
@@ -660,6 +663,16 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 ## Tokens
 
 `--mu-button-*` (sizes, press, fade, focus), `--mu-raise-sm` (compact), `--mu-btn-bg`, `--mu-btn-sh`, `--mu-pressed-bg`, `--mu-pressed-sh`, `--mu-primary-*`, `--mu-destructive-*`, `--mu-spring-release`, `--mu-focus`. Swift: `MetalButtonMetrics`, `MetalTokens.<colorway>.btnBg/btnSh/pressedBg/pressedSh`, `MetalCaps.primary/destructive`, `MetalSprings.release`.
+
+## Irreversible confirmation
+
+`<Button cap="destructive" hold icon={<TrashIcon />} onClick={removeForever}>Delete forever</Button>` requires an 800ms hold. Pointer, Space and Enter share one clock. Release early, leave the cap, blur, Escape, a hidden tab or disabling the key cancels without invoking the action. A short tap reveals “Hold to confirm”; the button always has that accessible description. Repeated keydown does not restart the clock. Completion invokes one click and gives one material-depth settle on the object spring.
+
+The darker red fill scales from the leading edge with linear time; release drains it on the release spring. It remains informational under Reduce Motion, while the completion settle and trash lid motion stop. Trash's authored act pauses at its open-lid checkpoint: preparation stretches over the hold, cancellation reverses it, confirmation continues the same act through closure. No frame loop runs at rest.
+
+Use hold only for permanent loss, inside a question naming the consequence. Undoable deletion stays a plain press. Hosts must offer `hold={false}` for pointers that cannot hold; the Alert dialog page demonstrates that setting. Swift offers the same timing and fill through `MetalButton(..., hold: true)`, long press and held Space/Return, plus an accessible Confirm action.
+
+A custom rendered element must forward Button's ref and input events. Without loaded tokens an unspecified hold refuses activation rather than firing immediately. An async host owns completion/error reporting; holding is confirmation, not evidence of success.
 
 ---
 

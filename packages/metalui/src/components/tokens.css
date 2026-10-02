@@ -1362,6 +1362,8 @@
     /* mu-recipe:button:56 */ 0 0 0 .5px rgba(110,10,0,.55);
   --mu-r-button-strip-focus-shadow:
     /* mu-recipe:button:57 */ 0 0 0 1.5px #3FB97A;
+  --mu-r-button-hold-background:
+    /* mu-recipe:button:67 */ rgba(80,0,0,.25);
   --mu-r-button-self-height: 32px;
   --mu-r-button-self-pad: 15px;
   --mu-r-button-self-gap: 6px;
@@ -1398,6 +1400,7 @@
   --mu-r-button-strip-ink-hover: #FFFFFF;
   --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-destructive-ink: #FFFFFF;
+  --mu-r-button-hold-duration: 800ms;
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */
   --mu-r-kbd-strip-background:
     /* mu-recipe:kbd:12 */ linear-gradient(#303033, #262628);

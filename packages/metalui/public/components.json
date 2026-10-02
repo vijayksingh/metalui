@@ -124,7 +124,7 @@
       "name": "button",
       "title": "Button",
       "status": "alpha",
-      "description": "A press-in pill button. It sinks 1px into a well while held and springs back on release: standard, primary and destructive caps at 32 or compact 26, and the link, graphite and strip caps. Tailwind v4 utilities from the theme.",
+      "description": "A press-in pill button with compact signal caps, sized icon slots and opt-in irreversible hold confirmation. Tailwind v4 utilities from the theme; React on Base UI and SwiftUI.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Button",

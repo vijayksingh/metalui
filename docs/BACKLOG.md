@@ -34,16 +34,16 @@ Owner: "the tick animation is boring, it just makes it appear; it should make th
 
 Owner, on the Alert dialog's "Delete regions" button: "this should have motion like hold to delete, and proper icon animation." (2026-09-30)
 
-- [ ] **Hold to confirm** as a Button behaviour (`hold` on a destructive cap, e.g. `<Button cap="destructive" hold>`), used by `AlertDialog.Confirm` for irreversible acts:
+- [x] **Hold to confirm** as a Button behaviour (`hold` on a destructive cap, e.g. `<Button cap="destructive" hold>`), used by `AlertDialog.Confirm` for irreversible acts:
   - press: the cap presses as now, and a darker red fill runs across it from the leading edge over the hold time (a token, about 800 ms, linear, so it reads as time and not as a spring);
   - let go early: the fill drains back on the release spring, and nothing happens; a short line under the actions says "Hold to delete" the first time;
   - complete: the fill reaches the end, the cap gives one small settle (object spring), and the act fires; then the dialog closes;
   - keyboard: holding Space or Enter fills it the same way; a single tap only shows the hint.
-- [ ] **The trash glyph acts**: the cap leads with the trash icon; while held, its lid lifts a little in step with the fill; at complete, the lid drops shut (a short timeline in the icon set's motion format, from `icons.mjs`, not a CSS pose).
-- [ ] **Accessibility**: say the hold in the button's name or description ("Delete regions, hold to confirm"); announce the progress sparingly; WCAG 2.5.7 needs a single-pointer path; for pointers that can't hold, offer a setting or `hold={false}`, and the alert dialog's question still guards the act.
-- [ ] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
-- [ ] SwiftUI in step (a long-press gesture with the same fill and timing).
-- [ ] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
+- [x] **The trash glyph acts**: the cap leads with the trash icon; while held, its lid lifts a little in step with the fill; at complete, the lid drops shut (a short timeline in the icon set's motion format, from `icons.mjs`, not a CSS pose).
+- [x] **Accessibility**: say the hold in the button's name or description ("Delete regions, hold to confirm"); announce the progress sparingly; WCAG 2.5.7 needs a single-pointer path; for pointers that can't hold, offer a setting or `hold={false}`, and the alert dialog's question still guards the act.
+- [x] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
+- [x] SwiftUI in step (a long-press gesture with the same fill and timing).
+- [x] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
 
 ## Button group and Split button: redesign
 
@@ -332,8 +332,8 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
 - [x] **Button strip / graphite / link caps size an `icon` at compact 14** (noted with the icon slot); blocks pass `size-16`.
 - [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
-- [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
-- [ ] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
+- [x] **Icon: `act` sequence plays a glyph's act on demand in React and Swift** for results; the inbox no longer dispatches a synthetic click.
+- [x] **AlertDialog.Popup** forwards typed Base UI `initialFocus` / `finalFocus`.
 - [x] **Avatar**: accessible label independent of initials (`aria-label`, also per group member; Swift `accessibilityLabel`). An empty label makes the disc decorative.
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.

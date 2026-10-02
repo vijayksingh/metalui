@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog';
 import { Surface } from '../surface/surface';
-import { Button } from '../button/button';
+import { Button, type ButtonProps } from '../button/button';
 import { refuse } from '../../motion/refuse';
 
 /* ─────────────────────────────────────────────────────────
@@ -48,7 +48,9 @@ function Root({ open, onOpenChange, children }: AlertDialogRootProps) {
   );
 }
 
-function Popup({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export interface AlertDialogPopupProps extends Omit<BaseAlertDialog.Popup.Props, 'render' | 'className'> { className?: string }
+
+function Popup({ className, children, ...props }: AlertDialogPopupProps) {
   const ctx = React.useContext(AlertCtx)!;
   return (
     <BaseAlertDialog.Popup ref={ctx.popup} initialFocus={ctx.cancel} {...props} className={className ? `${POPUP} ${className}` : POPUP} render={<Surface material="plate" radius="card" />}>
@@ -82,11 +84,14 @@ export interface AlertDialogConfirmProps {
   onClick: () => void;
   /** destructive (the default) for a loss; primary for a weighty but safe yes. */
   tone?: 'destructive' | 'primary';
+  /** Hold only for irreversible loss. Undoable deletes stay ordinary presses. */
+  hold?: ButtonProps['hold'];
+  icon?: React.ReactNode;
 }
 
 /** The answer that does the thing, last; it closes after it runs. */
-function Confirm({ children, onClick, tone = 'destructive' }: AlertDialogConfirmProps) {
-  return <BaseAlertDialog.Close render={<Button cap={tone} />} onClick={onClick}>{children}</BaseAlertDialog.Close>;
+function Confirm({ children, onClick, tone = 'destructive', hold = false, icon }: AlertDialogConfirmProps) {
+  return <BaseAlertDialog.Close render={<Button cap={tone} hold={hold} icon={icon} />} onClick={onClick}>{children}</BaseAlertDialog.Close>;
 }
 
 export const AlertDialog = Object.assign(Root, { Popup, Title, Description, Actions, Cancel, Confirm, Root });

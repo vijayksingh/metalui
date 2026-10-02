@@ -1520,6 +1520,7 @@ public enum MetalRecipes {
             .init(part: "primary", state: "pressed", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(218.0, 217.0, 213.0, 1.0)), 0.0), .init(.color(MetalRGBA(227.0, 226.0, 222.0, 1.0)), 1.0)])), // mu-recipe:button:64 linear-gradient(#DAD9D5,#E3E2DE)
             .init(part: "primary", state: "pressed", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.28)))), // mu-recipe:button:65 inset 0 1px 3px rgba(0,0,0,.28)
             .init(part: "primary", state: "pressed", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:button:66 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "hold", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(80.0, 0.0, 0.0, 0.25)))), // mu-recipe:button:67 rgba(80,0,0,.25)
         ],
         props: [
             "self.height": .number(32.0),
@@ -1559,6 +1560,7 @@ public enum MetalRecipes {
             "strip-danger.ink": .text("#FF8A7E"),
             "primary.ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
             "destructive.ink": .text("#FFFFFF"),
+            "hold.duration": .text("800ms"),
         ]
     )
 

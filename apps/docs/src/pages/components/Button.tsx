@@ -58,7 +58,7 @@ export default function ButtonPage() {
           items={[
             { label: 'React', value: 'import { Button }', href: '#hero', mono: true },
             { label: 'Swift', value: 'MetalButton', href: '#platforms', mono: true },
-            { label: 'Props', value: '6', href: '#api' },
+            { label: 'Props', value: '7', href: '#api' },
             { label: 'States', value: '5', href: '#states' },
             { label: 'Tokens', value: '12', href: '#tokens' },
           ]}
@@ -625,6 +625,7 @@ function Api() {
           ['cap', "'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger'", "'standard'", 'At most one primary or destructive per group. link, graphite and strip caps set their own size.'],
           ['size', "'default' | 'compact'", "'default'", 'default is 32 tall; compact is 26 (the canvas pill).'],
           ['icon', 'ReactNode', '–', 'The action’s glyph, before the label, sized by the cap (16, compact 14). A MorphIcon here morphs when the control changes meaning. Plain choices have none.'],
+          ['hold', 'boolean | number', 'false', 'Destructive cap only: hold pointer, Space or Enter for 800ms (or custom milliseconds). Release, blur or Escape cancels. Use false for a single press; irreversible loss belongs inside AlertDialog.'],
           ['disabled', 'boolean', 'false', 'Renders at 40% and skips icon motion. From Base UI.'],
           ['focusableWhenDisabled', 'boolean', 'false', 'Keeps a disabled button in the tab order. From Base UI.'],
           ['render', 'Base UI render prop', '–', 'Render as a link or custom element; set nativeButton={false}.'],

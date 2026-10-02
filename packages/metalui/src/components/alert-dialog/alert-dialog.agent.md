@@ -33,9 +33,9 @@ Reduce Motion: no shake; the rise is a crossfade.
 | React | SwiftUI |
 |---|---|
 | `AlertDialog.Root` `open`, `onOpenChange` | `isPresented:` |
-| `AlertDialog.Popup`, `Title`, `Description`, `Actions` | `title:`, `message:` |
+| `AlertDialog.Popup` forwards typed Base UI `initialFocus` / `finalFocus`; `Title`, `Description`, `Actions` | `title:`, `message:` |
 | `AlertDialog.Cancel` (children: its label) | `cancel:` |
-| `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`) | `confirm:`, `role: .destructive` |
+| `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`), `icon`, `hold` | `confirm:`, `role: .destructive` |
 
 ## Keyboard and accessibility
 
@@ -46,3 +46,5 @@ Reduce Motion: no shake; the rise is a crossfade.
 - The title is the question; the confirm button says the action ("Delete regions"), never "OK" or "Yes".
 - Say what is lost in the description. If nothing is lost, it is not an alert dialog.
 - A click outside is refused, not obeyed: the shake says an answer is needed.
+
+For permanent loss, Confirm may pass `hold` and a `trash` icon. Button blocks short clicks before Base UI's Close handler runs, so early release leaves the question open. Space and Enter use the same hold; completion fires the action once, then closes. The cancel button remains initially focused. The host can pass `hold={false}` for an ordinary single-pointer confirm; the question still guards the action. Never require holding for an undoable delete.
