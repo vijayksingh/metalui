@@ -2719,6 +2719,8 @@ The positioner copies the active trigger’s nearest `data-mu-colorway`, includi
 
 Compose RenameEditor inside Popover.Body. Capture the original when opening; the editor selects the meaningful name, validates, commits on Enter, and retains failures for retry. The host controls open, refuses outside/Escape dismissal while onPendingChange is true, and closes onDone after the glyph/drum settle and result beat. onRenamed receives the captured original for a toast Undo closure. Popover owns focus placement/restoration; the editor owns only the edit. See rename-editor.agent.md.
 
+`Popover.Content anchor` accepts Base UI's Element, ref, virtual anchor or resolver. Use it when an existing input owns activation; no wrapper button or second tab stop is needed. The direct element (or a virtual anchor's contextElement) supplies live nearest colorway inheritance. `initialFocus` and `finalFocus` remain Base UI Popup props; return focus to the operated input explicitly.
+
 ---
 
 # Preview card

@@ -60,6 +60,23 @@ function ScopedPopover() {
   </div>;
 }
 
+function InputAnchor() {
+  const [shown, setShown] = React.useState(false);
+  const [colorway, setColorway] = React.useState<'bone' | 'graphite'>('graphite');
+  const input = React.useRef<HTMLInputElement>(null);
+  return <div data-testid="input-anchored-popover" data-mu-colorway={colorway} className="rounded-plate p-mu-space-16 material-well">
+    <Popover open={shown} onOpenChange={setShown}>
+      <Field><Field.Input ref={input} aria-label="Anchored input" defaultValue="Trip to Lisbon" onKeyDown={event => { if (event.altKey && event.key === 'ArrowDown') { event.preventDefault(); setShown(true); } }} /></Field>
+      <Popover.Content anchor={input} align="start" finalFocus={input}>
+        <Popover.Title>Input anchor</Popover.Title>
+        <Popover.Description>Alt+Down opened this plate from the existing field.</Popover.Description>
+        <Button onClick={() => setColorway(value => value === 'bone' ? 'graphite' : 'bone')}>Change input colorway</Button>
+      </Popover.Content>
+    </Popover>
+  </div>;
+}
+
+
 export default function PopoverPage() {
   return (
     <ComponentPage
@@ -70,7 +87,7 @@ export default function PopoverPage() {
           <RenameDemo />
         </div>
       ) }}
-      more={[{ id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }, { id: 'portal', title: 'A scoped host', lede: 'A panel keeps the active trigger’s nearest colorway and follows live changes. It stays outside clipped parents. Native popovers inherit their SwiftUI environment.', node: <ScopedPopover /> }]}
+      more={[{ id: 'input-anchor', title: 'An existing input', lede: 'Alt+Down opens from the field itself. The direct anchor retains collision handling, scoped colorway and focus return.', node: <InputAnchor /> }, { id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }, { id: 'portal', title: 'A scoped host', lede: 'A panel keeps the active trigger’s nearest colorway and follows live changes. It stays outside clipped parents. Native popovers inherit their SwiftUI environment.', node: <ScopedPopover /> }]}
       usage={`<Popover>
   <Popover.Trigger><Button>Rename…</Button></Popover.Trigger>
   <Popover.Content>

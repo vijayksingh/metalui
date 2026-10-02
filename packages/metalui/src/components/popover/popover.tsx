@@ -79,15 +79,19 @@ export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'clas
   side?: 'bottom' | 'top' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
   className?: string;
+  /** Direct anchor for an existing input or editable cue, without another trigger control. */
+  anchor?: BasePopover.Positioner.Props['anchor'];
 }
 
 /** The plate: portalled and placed beside its trigger. */
-const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', className, ...props }, ref) {
+const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', className, anchor, ...props }, ref) {
   const context = React.useContext(AnchorContext);
-  const colorway = usePortalColorway(context?.anchor);
+  const resolved = typeof anchor === 'function' ? anchor() : anchor && 'current' in anchor ? anchor.current : anchor;
+  const element = resolved && 'nodeType' in resolved ? resolved as Element : resolved && 'contextElement' in resolved ? resolved.contextElement : null;
+  const colorway = usePortalColorway(element ?? context?.anchor);
   return (
     <BasePopover.Portal>
-      <BasePopover.Positioner data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+      <BasePopover.Positioner anchor={anchor} data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
         <BasePopover.Popup ref={ref} className={className ? `${PLATE} ${className}` : PLATE} {...props} />
       </BasePopover.Positioner>
     </BasePopover.Portal>
