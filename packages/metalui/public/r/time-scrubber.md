@@ -50,7 +50,7 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 ## Accessibility
 
 - A Base UI slider labelled "Scrub through time": ← → step an hour, Shift a day, Home and End jump to the start and now; its value text reads the moment ("TUE 23 SEP · 14:10", or "Now").
-- NOW is a real button.
+- NOW is a real button with the canonical `clock` action glyph. It returns to the present; it is distinct from the decorative 10px readout clock. Native uses the same glyph and keeps its plain engraved key.
 - Whole 330 × 50 box starts a scrub; readout text passes pointer hits through to slider, while NOW keeps its own hit target.
 
 ## Tokens

@@ -11,6 +11,7 @@ public struct MetalTimeScrubber: View {
     let onScrubChange: ((Bool) -> Void)?
     let isScrubbing: Bool
 
+    @Environment(\.metalColorway) private var colorway
     @MetalMotionPreference private var reduceMotion
 
     public init(range: ClosedRange<Date>, selection: Binding<Date?>,
@@ -99,7 +100,11 @@ public struct MetalTimeScrubber: View {
                     Button {
                         withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = nil }
                     } label: {
-                        MetalLabel("NOW", style: .engraved, tone: .accent)
+                        HStack(spacing: MetalScrubberMetrics.glyphGap) {
+                            MetalIcon(.clock, size: MetalRecipes.button.points("compact.glyph"))
+                                .foregroundStyle((MetalRecipes.label.color("accent.color", colorway: MetalRecipeColorway(colorway))?.color) ?? .primary)
+                            MetalLabel("NOW", style: .engraved, tone: .accent)
+                        }
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Back to Now")

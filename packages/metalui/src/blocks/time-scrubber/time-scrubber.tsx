@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { Slider } from '../../components/slider/slider';
 import { Label } from '../../components/label/label';
 import { Glyph } from '../../components/glyph/glyph';
@@ -80,7 +81,7 @@ export function TimeScrubber({ start, end, value, onValueChange, marks = [], for
           {glyph && <Glyph size="tiny" tone="inherit" className={GLYPH}>{glyph}</Glyph>}
           {title} · {read}
         </Label>
-        {value != null && <Button cap="link" className="pointer-events-auto" onClick={() => onValueChange(null)}>NOW</Button>}
+        {value != null && <Button cap="link" icon={<Icon name="clock" />} className="pointer-events-auto" onClick={() => onValueChange(null)}>NOW</Button>}
       </div>
       <Slider.Root
         className={SLIDER}

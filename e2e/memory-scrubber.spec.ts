@@ -36,10 +36,19 @@ for (const colorway of COLORWAYS) {
     await expect(knob).not.toHaveAttribute('aria-valuetext', 'Now');
     const now = page.getByRole('button', { name: 'NOW' });
     await expect(now).toBeVisible();
+    await expect(now.locator("svg.mu-ic-clock")).toHaveCount(1);
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`memory-scrubber-${colorway}`) });
     await now.click();
     await expect(knob).toHaveAttribute('aria-valuetext', 'Now');
     await expect(now).toHaveCount(0);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await knob.focus();
+    await page.keyboard.press('Shift+ArrowLeft');
+    await expect(now).toBeVisible();
+    await expect.poll(() => now.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`memory-scrubber-${colorway}-reduced`) });
+    await now.click();
+    await expect(knob).toHaveAttribute('aria-valuetext', 'Now');
   });
 
   test(`the past banner names the moment and brings you back in ${colorway}`, async ({ page }) => {

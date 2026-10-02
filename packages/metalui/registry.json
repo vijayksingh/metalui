@@ -2032,6 +2032,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/glyph.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/slider.json",
         "https://metalui.dev/r/tokens.json"
