@@ -7,12 +7,13 @@
   "base": "table role=grid (the ARIA date grid pattern); Popover",
   "react": {
     "export": "Calendar, DatePicker",
-    "files": ["calendar.tsx"]
+    "files": [
+      "calendar.tsx"
+    ]
   },
   "swift": {
     "symbol": "MetalCalendar",
-    "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift"
   },
   "agent": "calendar.agent.md",
   "page": "/components/calendar"

@@ -765,6 +765,7 @@ ${swiftSprings}
 
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
+    public static let content: Double = ${num(parseFloat(T.motion.content.value))}
     public static let fanStagger: Double = ${num(parseFloat(T.motion['fan-stagger'].value) / 1000)}
     public static let hopDuration: Double = ${num(parseFloat(T.motion['hop-duration'].value) / 1000)}
     public static let hopDurationFar: Double = ${num(parseFloat(T.motion['hop-duration-far'].value) / 1000)}

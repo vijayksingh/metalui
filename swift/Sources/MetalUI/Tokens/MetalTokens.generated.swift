@@ -492,6 +492,7 @@ public enum MetalSprings {
 
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
+    public static let content: Double = 8.0
     public static let fanStagger: Double = 0.01
     public static let hopDuration: Double = 0.25
     public static let hopDurationFar: Double = 0.34
@@ -1105,6 +1106,7 @@ public enum MetalRecipes {
             "self.disabled": .text("0.4"),
             "step.glyph": .number(10.0),
             "picker.min-width": .number(200.0),
+            "land.scale": .text("0.9"),
         ]
     )
 

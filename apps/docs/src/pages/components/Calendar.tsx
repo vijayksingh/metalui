@@ -70,6 +70,19 @@ function ControlledMonth() {
   );
 }
 
+
+function SelectionModes() {
+  const [range, setRange] = React.useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+  const [many, setMany] = React.useState<Date[]>([]);
+  return <div className="mu-stack gap-mu-group">
+    <div className="mu-stack items-center"><Calendar mode="range" aria-label="Trip range" value={range} onValueChange={setRange} defaultMonth={SEP_30} months={2} min={new Date(2026, 8, 1)} max={new Date(2026, 9, 31)} minDays={2} maxDays={10} isDateUnavailable={(d) => d.getMonth() === 8 && d.getDate() === 20} unavailableLabel="Booked" locale="en-GB" weekNumbers markedDays={(d) => d.getDate() === 15 ? 'Concert' : false} /><output className="type-meta text-ink2">{range.start ? range.start.toLocaleDateString('en-GB') : 'No start'} – {range.end ? range.end.toLocaleDateString('en-GB') : 'No end'}</output></div>
+    <div className="mu-cluster justify-center items-start gap-mu-group">
+      <div className="mu-stack items-center"><Calendar mode="multiple" aria-label="Working days" value={many} onValueChange={setMany} defaultMonth={SEP_30} locale="en-GB" weekStartsOn={0} isDateUnavailable={(d) => d.getDay() === 0 || d.getDay() === 6} unavailableLabel="Weekend" /><output className="type-meta text-ink2">{many.length} days chosen</output></div>
+      <div className="mu-stack"><span className="type-ui text-ink">Eligible dates: 10–20 September</span><DatePicker aria-label="Limited date" min={new Date(2026, 8, 10)} max={new Date(2026, 8, 20)} defaultMonth={SEP_30} locale="en-GB" /></div>
+    </div>
+  </div>;
+}
+
 export default function CalendarPage() {
   const [due, setDue] = React.useState<Date | null>(null);
   return (
@@ -87,7 +100,7 @@ export default function CalendarPage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, stretches time, and sets the first and last eligible September days.', node: <MonthTuner /> }, { id: 'controlled-month', title: 'Control the month', lede: 'Choose a day elsewhere: the following calendar reveals it. The controlled calendar keeps its own displayed month. Its host can accept a month request or keep the month fixed.', node: <ControlledMonth /> }]}
+      more={[{ id: 'selections', title: 'Ranges and working days', lede: 'A trip spans 2–10 inclusive days across two months. Working days toggle independently; weekends announce why they cannot be chosen. ISO week numbers and event marks stay visible. Open the month title to jump to a year or month.', node: <SelectionModes /> }, { id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, stretches time, and sets the first and last eligible September days.', node: <MonthTuner /> }, { id: 'controlled-month', title: 'Control the month', lede: 'Choose a day elsewhere: the following calendar reveals it. The controlled calendar keeps its own displayed month. Its host can accept a month request or keep the month fixed.', node: <ControlledMonth /> }]}
       usage={`const [day, setDay] = React.useState<Date | null>(null);
 
 <Calendar aria-label="Trip day" value={day} onValueChange={setDay} min={new Date()} />

@@ -64,7 +64,7 @@ test('the date picker opens on today, chooses and closes', async ({ page }) => {
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('Enter');
   await expect(page.getByRole('button', { name: /^Due date: 1 Oct 2026$/ })).toBeFocused();
-  await expect(page.getByRole('grid', { name: /October 2026/ })).toHaveCount(0);
+  await expect(page.getByRole('group', { name: 'Due date', exact: true })).toHaveCount(0);
 });
 
 for (const colorway of COLORWAYS) {
@@ -110,7 +110,7 @@ test('external day changes reveal their month without resetting an unchanged day
   await expect(following.getByRole('grid', { name: 'October 2026' })).toBeVisible();
   await expect(following.locator('[data-selected]')).toHaveAttribute('aria-label', /15 October 2026/);
   await expect(controlled.getByRole('grid', { name: 'September 2026' })).toBeVisible();
-  await expect(controlled.locator('button[tabindex="0"]:enabled')).toHaveCount(1);
+  await expect(controlled.locator('.mu-calendar-day[tabindex="0"]:enabled')).toHaveCount(1);
   await expect(page.getByText('Month requests: 0', { exact: true })).toBeVisible();
   await following.getByRole('button', { name: 'Next month', exact: true }).click();
   await page.getByRole('button', { name: 'Refresh chosen day', exact: true }).click();
@@ -133,7 +133,7 @@ test('controlled month requests can be accepted or held without losing keyboard 
   await controlled.getByRole('button', { name: 'Next month', exact: true }).click();
   await expect(controlled.getByRole('grid', { name: 'October 2026' })).toBeVisible();
   await expect(page.getByText('Month requests: 3', { exact: true })).toBeVisible();
-  const entry = controlled.locator('button[tabindex="0"]:enabled');
+  const entry = controlled.locator('.mu-calendar-day[tabindex="0"]:enabled');
   await expect(entry).toHaveCount(1);
   await entry.focus();
   await page.keyboard.press('ArrowRight');

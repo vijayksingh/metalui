@@ -6,15 +6,15 @@ Feedback, bugs and performance notes to work on later. The owner's word is in th
 
 Owner: "no select date range; add option for min legit date, option for max legit date, and like everything which should be there for date." (2026-09-30)
 
-- [ ] **Range selection**: `mode="range"`, `{ start, end }` value; the thumb stretches across the range, with ends and a hover preview of the range before the second click; `minDays` / `maxDays`.
-- [ ] **Min and max on the page**: `Calendar` already takes `min` / `max` (out-of-range days disabled, month steps stop), but the docs page doesn't show them and `DatePicker` does not pass them through. Wire them through, demo them, and let the DialKit set them.
-- [ ] **Unavailable days**: `isDateUnavailable(date)` (weekends, booked days), distinct from out of range, and said to assistive tech.
-- [ ] **Multiple days**: `mode="multiple"`.
-- [ ] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
-- [ ] **More than one month** side by side (`months={2}`, for ranges).
-- [ ] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
+- [x] **Range selection**: `mode="range"`, `{ start, end }` value; the thumb stretches across the range, with ends and a hover preview of the range before the second click; `minDays` / `maxDays`.
+- [x] **Min and max on the page**: `Calendar` already takes `min` / `max` (out-of-range days disabled, month steps stop), but the docs page doesn't show them and `DatePicker` does not pass them through. Wire them through, demo them, and let the DialKit set them.
+- [x] **Unavailable days**: `isDateUnavailable(date)` (weekends, booked days), distinct from out of range, and said to assistive tech.
+- [x] **Multiple days**: `mode="multiple"`.
+- [x] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
+- [x] **More than one month** side by side (`months={2}`, for ranges).
+- [x] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
 - [x] **Controlled month**: `month` / `onMonthChange` keep displayed month separate from selection and focus. Uncontrolled calendars reveal changed values; controlled hosts can accept, defer or reject month requests without losing keyboard access.
-- [ ] **Marked days**: a dot or LED for days with something on them (events).
+- [x] **Marked days**: a dot or LED for days with something on them (events).
 - [ ] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
 - [ ] **Time** (later): date and time together, and time zones.
 - [ ] Check on the Calendar page: a pill-shaped plate cut off at the left edge of the viewport, level with the playground (seen in the owner's screenshot); find what it is.
@@ -325,7 +325,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Switch**: optional visible `label` uses a native associated hit area. Blocks use associated labels instead of manual toggle handlers. Swift `showsLabel` keeps labels operable too; disabled and keyboard behavior covered.
 - [x] **Calendar adjacent-month pointer selection**: focus leaves the day mounted until click; selection turns the month and keeps focus. Removed the availability picker's mouse-down workaround; both colorways and reduced motion covered by e2e.
 - [x] **Calendar follows a changed controlled `value` into another month** unless the host controls `month`. Recreating the same day preserves browsing; removed the availability picker remount workaround.
-- [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.
+- [x] **Calendar unavailable predicate**: `isDateUnavailable` announces its reason and refuses selection. Availability picker uses it for days without free times; scoped aria-label CSS removed.
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.

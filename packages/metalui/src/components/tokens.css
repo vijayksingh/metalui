@@ -1144,6 +1144,7 @@
   --mu-r-calendar-self-disabled: 0.4;
   --mu-r-calendar-step-glyph: 10px;
   --mu-r-calendar-picker-min-width: 200px;
+  --mu-r-calendar-land-scale: 0.9;
   /* avatar: the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar */
   --mu-r-avatar-size-small: 24px;
   --mu-r-avatar-size-regular: 32px;
