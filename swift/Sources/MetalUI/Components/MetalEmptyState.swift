@@ -5,6 +5,8 @@ import SwiftUI
 // empty-state.agent.md. Web is the reference.
 
 /// A place with nothing in it yet. Work in progress: see empty-state.agent.md.
+/// Supply a starting action such as `MetalButton("Attach files", icon: .attach)`
+/// or `MetalButton("New note", icon: .note)` through the action builder.
 public struct MetalEmptyState<Action: View>: View {
     private let title: String
     private let description: String?

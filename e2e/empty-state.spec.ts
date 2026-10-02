@@ -15,7 +15,13 @@ for (const colorway of COLORWAYS) {
     expect(await empty.evaluate((el) => getComputedStyle(el).animationName)).toBe('mu-empty-state-arrive');
     await page.waitForTimeout(600);
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`empty-state-${colorway}`) });
-    await empty.getByRole('button', { name: 'Attach files' }).click();
+    const attach = empty.getByRole('button', { name: 'Attach files' });
+    await expect(attach.locator('svg.mu-ic-attach')).toHaveCount(1);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await attach.hover();
+    await expect(attach.locator('[data-playing]')).toHaveCount(0);
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`empty-state-${colorway}-reduced`) });
+    await attach.click();
     await expect(place(page).getByRole('group')).toHaveCount(3);
     await expect(page.getByRole('status').filter({ hasText: 'No comments' })).toContainText('No comments');
   });

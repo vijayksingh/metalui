@@ -3,7 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Attachment, Button, EmptyState } from '@unlocalhosted/metalui';
 import { CommentDemo } from '../../ui/comment/CommentDemo';
 import swiftExample from '../../../../../swift/Examples/MetalCommentExample.swift?raw';
-import { RegionIcon } from '@unlocalhosted/metalui/icons';
+import { AttachIcon, NoteIcon, RegionIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/empty-state/empty-state.tsx?raw';
@@ -30,7 +30,7 @@ function Place({ label }: { label: string }) {
           icon={<RegionIcon size={24} />}
           title="No files in this region"
           description="Drop files onto the region, or attach them from here."
-          action={<Button cap="primary" onClick={() => setFiles(FILES)}>Attach files</Button>}
+          action={<Button cap="primary" icon={<AttachIcon />} onClick={() => setFiles(FILES)}>Attach files</Button>}
         />
       ) : files.map((f) => <Attachment key={f} name={f} size={1_200_000} onRemove={() => setFiles((all) => all.filter((x) => x !== f))} />)}
     </div>
@@ -64,7 +64,7 @@ export default function EmptyStatePage() {
     icon={<NoteIcon size={24} />}
     title="No notes yet"
     description="Write anywhere on the canvas to start one."
-    action={<Button cap="primary" onClick={newNote}>New note</Button>}
+    action={<Button cap="primary" icon={<NoteIcon />} onClick={newNote}>New note</Button>}
   />
 ) : notes.map((n) => <Note key={n.id} {...n} />)}`}
       sources={[
