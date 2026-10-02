@@ -26,6 +26,8 @@ with tempfile.TemporaryDirectory(prefix="metalui-provenance-document-") as tempo
                     "-o", str(contents / "MacOS" / "ProvenanceDocumentProof")], check=True)
     report = Path(temporary) / "result.txt"
     command = ["open", "-W", "-n", str(contents.parent), "--env", f"METALUI_NATIVE_REPORT={report}"]
+    if os.environ.get("METALUI_MINUTE_SOURCE_ONLY"):
+        command.extend(["--env", "METALUI_MINUTE_SOURCE_ONLY=1"])
     if os.environ.get("METALUI_COLORWAY"):
         command.extend(["--env", f"METALUI_COLORWAY={os.environ['METALUI_COLORWAY']}"])
     if os.environ.get("METALUI_NATIVE_CAPTURE"):

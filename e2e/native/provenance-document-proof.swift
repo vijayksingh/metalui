@@ -65,6 +65,23 @@ import MetalUI
             let text = try unwrap(editor(host)); window.makeFirstResponder(text)
             text.setSelectedRange(NSRange(location: original.utf16.count, length: 0)); try await wait()
             checks[prefix + "actual TextKit source"] = text.string == original && document.selection.start == original.utf16.count
+            if ProcessInfo.processInfo.environment["METALUI_MINUTE_SOURCE_ONLY"] == "1" {
+                let fractional = original.replacingOccurrences(of: "6h", with: "6.001min")
+                document.setSource(fractional); document.commit(); try await wait()
+                checks[prefix + "sub-minute words remain exact and plain"] = frames.values["sleep0"] == nil && text.string.utf16.elementsEqual(fractional.utf16)
+                let exact = original.replacingOccurrences(of: "6h", with: "0.1h")
+                document.setSource(exact); document.commit(); try await wait()
+                let sleepPoint = try point("sleep0", frames: frames, host: host)
+                try mouse(.leftMouseDown, point: sleepPoint, window: window); try await wait(70)
+                try mouse(.leftMouseDragged, point: NSPoint(x: sleepPoint.x + 48, y: sleepPoint.y), window: window); try await wait()
+                try mouse(.leftMouseUp, point: NSPoint(x: sleepPoint.x + 48, y: sleepPoint.y), window: window); try await wait()
+                checks[prefix + "decimal hours convert exact whole minutes"] = document.source == original.replacingOccurrences(of: "6h", with: "6min")
+                document.undo(); try await wait()
+                checks[prefix + "conversion Undo restores authored decimal hours"] = document.source == exact && text.string == exact
+                document.setSource(original.replacingOccurrences(of: "6h", with: "24.1h")); document.commit(); try await wait()
+                checks[prefix + "outside host range stays plain"] = frames.values["sleep0"] == nil
+                continue
+            }
             let stateBefore = try unwrap(frames.values["state0"]), sleepBefore = try unwrap(frames.values["sleep0"])
             let statePoint = try point("state0", frames: frames, host: host)
             try mouse(.leftMouseDown, point: statePoint, window: window); try await wait(70)

@@ -32,7 +32,7 @@ function tokens(source: string): Token[] {
     const words = match[0];
     const kind: Kind = /^#[0-9a-f]{6}$/i.test(words) ? 'colour' : states.some(state => state.value === words) ? 'state' : words.startsWith('#') ? 'tag' : dateWords.has(words) ? 'date' : /^\d{1,2}(?::\d{2})?(?:am|pm)$/.test(words) ? 'clock' : /^\d.*(?:h\d*|min)$/.test(words) ? 'sleep' : words.startsWith('http') ? 'link' : 'person';
     if (kind === 'clock') { const time = /^(\d+)(?::(\d+))?/.exec(words)!; if (Number(time[1]) < 1 || Number(time[1]) > 12 || Number(time[2] || 0) > 59) return []; }
-    if (kind === 'sleep' && quantity(words, kind).value > 1440) return [];
+    if (kind === 'sleep') { const minutes = quantity(words, kind).value; if (!Number.isInteger(minutes) || minutes > 1440) return []; }
     if (kind === 'person' && !['Sam', 'Ana', 'Hiro'].includes(words)) return [];
     return [{ words, kind, start: match.index!, end: match.index! + words.length }];
   });

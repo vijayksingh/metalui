@@ -122,8 +122,11 @@ private struct MetalProvenanceTextEditor: UIViewRepresentable {
 private final class MetalProvenanceTextView: UITextView {
     var document: MetalCueDocument?
     override var keyCommands: [UIKeyCommand]? {
-        [UIKeyCommand(input: "z", modifierFlags: .command, action: #selector(undoSource)),
-         UIKeyCommand(input: "z", modifierFlags: [.command, .shift], action: #selector(redoSource))]
+        let inherited = (super.keyCommands ?? []).filter { command in
+            !(command.input?.lowercased() == "z" && (command.modifierFlags == .command || command.modifierFlags == [.command, .shift]))
+        }
+        return inherited + [UIKeyCommand(input: "z", modifierFlags: .command, action: #selector(undoSource)),
+                            UIKeyCommand(input: "z", modifierFlags: [.command, .shift], action: #selector(redoSource))]
     }
     @objc private func undoSource() { document?.undo() }
     @objc private func redoSource() { document?.redo() }

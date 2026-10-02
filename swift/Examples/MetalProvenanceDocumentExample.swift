@@ -47,7 +47,10 @@ public struct MetalProvenanceDocumentExample: View {
                 let parts = words.dropLast(2).split(separator: ":")
                 guard let hour = Int(parts[0]), (1...12).contains(hour), (0...59).contains(parts.count > 1 ? Int(parts[1]) ?? 60 : 0) else { continue }
             }
-            if kind == .sleep, Self.quantity(words, clock: false).value > 1440 { continue }
+            if kind == .sleep {
+                let minutes = Self.quantity(words, clock: false).value
+                guard minutes.isFinite, minutes.rounded() == minutes, minutes <= 1440 else { continue }
+            }
             if match.range.location > at { result.append(.init(id: "plain\(result.count)", kind: .plain, words: source.substring(with: NSRange(location: at, length: match.range.location - at)), range: NSRange(location: at, length: match.range.location - at))) }
             let ordinal = counts[kind, default: 0]; counts[kind] = ordinal + 1
             result.append(.init(id: "\(kind.rawValue)\(ordinal)", kind: kind, words: words, range: match.range)); at = NSMaxRange(match.range)

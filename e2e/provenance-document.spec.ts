@@ -124,3 +124,23 @@ for (const colorway of COLORWAYS) {
     expect(await source.evaluate(field => (field as HTMLTextAreaElement).selectionStart)).toBe(0);
   });
 }
+
+for (const colorway of COLORWAYS) {
+  test(`the declared source host accepts exact minute quantities and leaves sub-minute words authored in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/provenance-tooltip#source-document', colorway);
+    const doc = page.getByTestId('provenance-document'), source = doc.locator('textarea[aria-label="Provenance document source"]');
+    const fractional = original.replace('6h', '6.001min');
+    await source.fill(fractional); await source.press('Tab');
+    await expect(doc.getByRole('spinbutton', { name: 'Sleep', exact: true })).toHaveCount(0);
+    await expect(doc.getByTestId('provenance-line-0')).toContainText('6.001min');
+    await expect(source).toHaveValue(fractional);
+    const exact = original.replace('6h', '0.1h');
+    await source.fill(exact); await source.press('Tab');
+    const sleep = doc.getByRole('spinbutton', { name: 'Sleep', exact: true });
+    await sleep.focus(); await page.keyboard.press('Alt+ArrowRight');
+    await expect(source).toHaveValue(original.replace('6h', '6min'));
+    await doc.getByRole('button', { name: 'Undo source edit' }).click(); await expect(source).toHaveValue(exact);
+    await source.fill(original.replace('6h', '24.1h')); await source.press('Tab');
+    await expect(doc.getByRole('spinbutton', { name: 'Sleep', exact: true })).toHaveCount(0);
+  });
+}
