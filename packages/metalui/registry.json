@@ -628,6 +628,35 @@
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
     },
     {
+      "name": "date-cue",
+      "type": "registry:ui",
+      "title": "Date cue",
+      "description": "An inline civil date: day/week detents, nearby relative source words, a resolved date and a Calendar opened by hold or keyboard. Explicit today, bounds and footprint keep date/source semantics stable.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/calendar.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/numeric-cue.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/date-cue/date-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/date-cue/date-cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/date-cue/date-cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/date-cue/date-cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/date-cue.md. SwiftUI: MetalDateCue in the MetalUI Swift package."
+    },
+    {
       "name": "day",
       "type": "registry:ui",
       "title": "Day",
@@ -1357,6 +1386,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

@@ -152,6 +152,7 @@ public struct MetalCalendar: View {
         .padding(recipe.points("self.pad"))
         .foregroundStyle(colorway.tokens.ink.color)
         .accessibilityElement(children: .contain).accessibilityLabel(label)
+        .onAppear { if let chosen = firstChosen, !outside(chosen), !isDateUnavailable(chosen) { focused = calendar.startOfDay(for: chosen) } }
         .onChange(of: firstChosen) { _, next in if let next, monthBinding == nil, next < month || next >= addMonths(month, months) { show(next) } }
     }
     @ViewBuilder private var panels: some View {
@@ -216,8 +217,9 @@ public struct MetalCalendar: View {
                 .overlay { if focused == date { shape.strokeBorder(MetalShared.focus.color, lineWidth: MetalRecipes.switcher.points("option.focus-width")) } }
         }
         .buttonStyle(.plain).disabled(outside(date)).opacity(outside(date) || blocked ? recipe.scalar("self.disabled") : .one)
-        .focused($focused, equals: date).focusEffectDisabled()
+        .focusable().focused($focused, equals: date).focusEffectDisabled()
         .onHover { hovering = $0 ? date : nil; if $0 && currentRange?.start != nil && currentRange?.end == nil { preview = date } else if !$0 { preview = nil } }
+        .onKeyPress(.return) { choose(date); return .handled }.onKeyPress(.space) { choose(date); return .handled }
         .onKeyPress(.leftArrow) { moveFocus(addDays(date, -1)); return .handled }.onKeyPress(.rightArrow) { moveFocus(addDays(date, 1)); return .handled }
         .onKeyPress(.upArrow) { moveFocus(addDays(date, -7)); return .handled }.onKeyPress(.downArrow) { moveFocus(addDays(date, 7)); return .handled }
         .onKeyPress(.pageUp) { moveFocus(addMonths(date, -1)); return .handled }.onKeyPress(.pageDown) { moveFocus(addMonths(date, 1)); return .handled }

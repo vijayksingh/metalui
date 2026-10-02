@@ -1,0 +1,7 @@
+{
+  "name": "date-cue", "title": "Date cue", "status": "alpha", "layer": "component",
+  "description": "An inline civil date: day/week detents, nearby relative source words, a resolved date and a Calendar opened by hold or keyboard. Explicit today, bounds and footprint keep date/source semantics stable.",
+  "base": "@base-ui/react/number-field", "react": { "export": "DateCue", "files": ["date-cue.tsx", "date-cue.css"] },
+  "swift": { "symbol": "MetalDateCue", "file": "swift/Sources/MetalUI/Components/MetalDateCue.swift", "status": "alpha" },
+  "agent": "date-cue.agent.md", "page": "/components/date-cue", "dependsOn": ["numeric-cue", "calendar", "popover"]
+}

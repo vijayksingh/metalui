@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Popover as BasePopover } from '@base-ui/react/popover';
+import { useReducedMotion } from '../../motion/reduced';
 import { usePortalColorway } from '../../theme/portal-colorway';
 
 /* ─────────────────────────────────────────────────────────
@@ -89,9 +90,10 @@ const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function P
   const resolved = typeof anchor === 'function' ? anchor() : anchor && 'current' in anchor ? anchor.current : anchor;
   const element = resolved && 'nodeType' in resolved ? resolved as Element : resolved && 'contextElement' in resolved ? resolved.contextElement : null;
   const colorway = usePortalColorway(element ?? context?.anchor);
+  const reduced = useReducedMotion(element ?? context?.anchor);
   return (
     <BasePopover.Portal>
-      <BasePopover.Positioner anchor={anchor} data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+      <BasePopover.Positioner anchor={anchor} data-mu-colorway={colorway} data-mu-motion={reduced ? 'reduce' : undefined} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
         <BasePopover.Popup ref={ref} className={className ? `${PLATE} ${className}` : PLATE} {...props} />
       </BasePopover.Positioner>
     </BasePopover.Portal>

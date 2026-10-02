@@ -36,6 +36,10 @@ export interface NumericCueProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
   kind?: Extract<MarkKind, 'date' | 'duration' | 'amount' | 'measurement'>;
   meaning?: MarkMeaning;
   raw?: boolean;
+  /** Resolved semantic words, shown by the existing Mark chip and included in the spoken value. */
+  resolved?: string;
+  /** Suppress visual help when a source/provenance host supplies it; keyboard instructions remain. */
+  hint?: boolean;
   locale?: string;
   numberFormat?: Intl.NumberFormatOptions;
   /** Keep formatted words while focused; numeric keys/scrub remain operable, text insertion is blocked. */
@@ -56,7 +60,7 @@ const same = (a: NumericCueValue, b: NumericCueValue) => a.unit === b.unit && a.
 /** An inline, host-controlled numeric cue. Base UI owns the spinbutton, typing and vertical scrub. */
 export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(function NumericCue({
   value, units, onValueChange, label, footprint, min, max, kind = 'measurement', meaning,
-  raw = false, locale, numberFormat, allowTyping = true, inputAria, disabled = false, readOnly = false, name,
+  raw = false, resolved, hint = true, locale, numberFormat, allowTyping = true, inputAria, disabled = false, readOnly = false, name,
   onBegin, onSourceChange, onCommit, onCancel, className, style, ...props
 }, forwardedRef) {
   const root = React.useRef<HTMLSpanElement>(null);
@@ -193,15 +197,15 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
       }
       publish({ value: amount * unit.factor, unit: unit.id }, details.reason === 'scrub' || details.reason === 'keyboard');
     }} onValueCommitted={() => { if (!held) finish(); }} {...props}>
-    <TooltipProvider><Tooltip label={help} disabled={disabled} wrap><BaseNumberField.ScrubArea direction="vertical"
+    <TooltipProvider><Tooltip label={help} disabled={disabled || !!resolved || !hint} wrap><BaseNumberField.ScrubArea direction="vertical"
       className="mu-numeric-cue-face block cursor-ns-resize"
       onPointerDownCapture={() => { if (!disabled && !readOnly) { cancelledInput.current = false; begin(); setHeld(true); } }}
       onDoubleClick={() => { if (allowTyping && !readOnly && !disabled) { setTyping(true); input.current?.focus(); } }}>
-      <Mark kind={kind} meaning={meaning} meaningLabel={`${label}, ${formatted}`} raw={raw || disabled || readOnly} className="block">
+      <Mark kind={kind} meaning={meaning} meaningLabel={`${label}, ${formatted}`} raw={raw || disabled || readOnly} resolved={hint ? resolved : undefined} data-reveal={hint && held && resolved ? true : undefined} className="block">
         <SwapText value={raw ? words : formatted} />
       </Mark>
     </BaseNumberField.ScrubArea></Tooltip></TooltipProvider>
-    <BaseNumberField.Input {...inputAria} ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={`${formatted}, ${unit.label}`} title={help}
+    <BaseNumberField.Input {...inputAria} ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={resolved ? `${formatted}, ${resolved}` : `${formatted}, ${unit.label}`} title={hint ? help : undefined}
       className="mu-numeric-cue-input absolute inset-0 w-full bg-transparent p-0 border-0 rounded-none text-inherit font-inherit focus-visible:focus-ring"
       onFocus={() => { if (!held) { cancelledInput.current = false; setTyping(allowTyping); begin(); } }} onBlur={() => { setTyping(false); finish(); }}
 

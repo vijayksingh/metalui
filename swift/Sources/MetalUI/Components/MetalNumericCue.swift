@@ -44,6 +44,9 @@ public struct MetalNumericCue: View {
     private let raw: Bool
     private let readOnly: Bool
     private let allowTyping: Bool
+    private let hint: Bool
+    private let resolved: String?
+    private let onOpenPicker: (() -> Void)?
     private let locale: Locale
     private let onBegin: () -> Void
     private let onSourceChange: (String) -> Void
@@ -66,12 +69,12 @@ public struct MetalNumericCue: View {
     public init(_ label: String, value: Binding<MetalNumericCueValue>, units: [MetalNumericCueUnit],
                 in bounds: ClosedRange<Double>, footprint: [String], kind: MetalCueKind = .measurement,
                 meaning: MetalCueMeaning? = nil, raw: Bool = false, readOnly: Bool = false, allowTyping: Bool = true,
-                locale: Locale = .current, onBegin: @escaping () -> Void = {},
+                locale: Locale = .current, resolved: String? = nil, hint: Bool = true, onOpenPicker: (() -> Void)? = nil, onBegin: @escaping () -> Void = {},
                 onSourceChange: @escaping (String) -> Void = { _ in }, onCommit: @escaping () -> Void = {},
                 onCancel: @escaping (MetalNumericCueCancelReason) -> Void = { _ in }) {
         precondition(!units.isEmpty && !footprint.isEmpty && bounds.lowerBound.isFinite && bounds.upperBound.isFinite)
         self.label = label; _value = value; self.units = units; self.bounds = bounds; self.footprint = footprint
-        self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.allowTyping = allowTyping; self.locale = locale
+        self.kind = kind; self.meaning = meaning; self.raw = raw; self.readOnly = readOnly; self.allowTyping = allowTyping; self.locale = locale; self.resolved = resolved; self.hint = hint; self.onOpenPicker = onOpenPicker
         self.onBegin = onBegin; self.onSourceChange = onSourceChange; self.onCommit = onCommit; self.onCancel = onCancel
     }
     private var unit: MetalNumericCueUnit { units.first { $0.id == value.unit } ?? units[0] }
@@ -91,7 +94,7 @@ public struct MetalNumericCue: View {
                 Text(words).font(.metal(MetalType.content)).monospacedDigit().hidden().accessibilityHidden(true)
                     .padding(.top, MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)
             }
-            MetalCueText(raw ? words : formatted, kind: kind, meaning: meaning, label: label, raw: raw || !mutable)
+            MetalCueText(raw ? words : formatted, kind: kind, meaning: meaning, label: hint ? label : "", raw: raw || !mutable)
                 .opacity(typing ? .zero : .one)
                 .contentTransition(reduceMotion ? .opacity : .numericText(value: displayed))
                 .metalAnimation(.settle, value: value)
@@ -104,7 +107,7 @@ public struct MetalNumericCue: View {
         .foregroundStyle(colorway.tokens.ink.color)
         .overlay(alignment: .topLeading) {
             if held {
-                MetalTooltipChip(label: "−  │  \(formatted)  │  +", shortcut: nil)
+                MetalTooltipChip(label: resolved.map { "\($0) · − │ \(formatted) │ +" } ?? "−  │  \(formatted)  │  +", shortcut: nil)
                     .offset(y: -(MetalRecipes.button.points("compact.height") + MetalSpace.s2))
                     .allowsHitTesting(false).accessibilityHidden(true)
             }
@@ -113,13 +116,13 @@ public struct MetalNumericCue: View {
         .onChange(of: focused) { _, next in if !next { typing = false; commit() } }
         .onKeyPress(phases: .down) { press in handleKey(press) }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(label).accessibilityValue("\(formatted), \(unit.label)")
+        .accessibilityLabel(label).accessibilityValue(resolved.map { "\(formatted), \($0)" } ?? "\(formatted), \(unit.label)")
         .accessibilityHint("Up and down change the value. Option left and right convert units. Escape cancels.")
         .accessibilityAdjustableAction { direction in
             guard mutable else { return }
             begin(); step(direction == .increment ? 1 : -1, amount: unit.step); commit()
         }
-        .help("Drag vertically to change, horizontally to convert. Shift steps more; Option steps less. Escape cancels.")
+        .help(hint ? "Drag vertically to change, horizontally to convert. Shift steps more; Option steps less. Escape cancels." : "")
         .onChange(of: value) { previous, next in
             if initial != nil, next != expected { cancel(.external) }
             else if typing && previous.unit != next.unit { draft = numberFormatter.string(from: NSNumber(value: displayed)) ?? String(displayed) }
@@ -202,6 +205,7 @@ public struct MetalNumericCue: View {
     }
     private func handleKey(_ press: KeyPress) -> KeyPress.Result {
         guard mutable else { return .ignored }
+        if !allowTyping, let onOpenPicker, press.key == .return || press.key == .space || (press.key == .downArrow && press.modifiers.contains(.option)) { onOpenPicker(); return .handled }
         if press.key == .escape { cancel(.escape); return .handled }
         if press.modifiers.contains(.option) && (press.key == .leftArrow || press.key == .rightArrow) {
             blockedDrag = false; begin(); convert(press.key == .leftArrow ? -1 : 1); commit(); return .handled

@@ -3078,6 +3078,17 @@ public enum MetalRecipes {
             :
         ]
     )
+
+    /// Civil day component: NumericCue day detents and fixed footprint, Mark date grammar and resolved words, Calendar selection in an input-anchored Popover. No additional material or dimensions. (docs/CUE-EDITING.md; recipes.numeric-cue; recipes.mark; recipes.calendar; recipes.popover)
+    public static let dateCue = MetalObjectRecipe(
+        name: "date-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

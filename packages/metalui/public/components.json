@@ -325,6 +325,23 @@
       "agent": "https://metalui.dev/r/connector.md"
     },
     {
+      "name": "date-cue",
+      "title": "Date cue",
+      "status": "alpha",
+      "description": "An inline civil date: day/week detents, nearby relative source words, a resolved date and a Calendar opened by hold or keyboard. Explicit today, bounds and footprint keep date/source semantics stable.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DateCue",
+        "base": "@base-ui/react/number-field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDateCue"
+      },
+      "registry": "https://metalui.dev/r/date-cue.json",
+      "agent": "https://metalui.dev/r/date-cue.md"
+    },
+    {
       "name": "day",
       "title": "Day",
       "status": "alpha",
