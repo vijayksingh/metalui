@@ -1492,6 +1492,8 @@ While dragging, only the MIME type is known, so an extension pattern (`.pdf`) is
 
 Native `MetalDropZone` uses the same well/surface recipes and 20pt `MetalMorphIcon`, with `icon:`, `maxSize:`, `multiple:` and `onRefused:`. Type, size and count are checked before callbacks for both picker and URL drops. `onFiles` receives accepted URLs; `onRefused` receives `MetalDropRefusal` with `.type`, `.size` or `.count`. The caller starts security-scoped access when reading a returned URL. The system’s URL drop destination cannot inspect item types until delivery, so native refusal appears after dropping; target lighting starts when the tray is targeted. Custom `systemImage:` callers retain their artwork. Neither custom artwork escape hatch invents a cross-shape animation.
 
+Native drag-over and refusal words settle within their reserved label window. Reduced Motion applies words instantly and cancels any retiring full-motion face when the scope changes. The rendered tray also cancels its sink, glyph lift and any in-flight refusal immediately; the receiving Button and its focus stay mounted. `e2e/native/run-drop-zone-label-proof.py` uses a real AppKit drag payload and own-window pixels to prove both colorways, a live drag-over policy switch and a live refusal policy switch.
+
 ---
 
 # Empty state

@@ -8,6 +8,22 @@ public struct MetalDropRefusal {
     public let reason: Reason
 }
 
+/// Resolve every interpolated transform frame against the live policy. Changing a transaction
+/// does not cancel an already-retained SwiftUI scale/offset presentation layer.
+private struct MetalDropZonePlacement: ViewModifier, Animatable {
+    var scale: CGFloat = 1
+    var x: CGFloat = 0
+    var y: CGFloat = 0
+    let reduced: Bool
+    var animatableData: AnimatablePair<CGFloat, AnimatablePair<CGFloat, CGFloat>> {
+        get { AnimatablePair(scale, AnimatablePair(x, y)) }
+        set { scale = newValue.first; x = newValue.second.first; y = newValue.second.second }
+    }
+    func body(content: Content) -> some View {
+        content.scaleEffect(reduced ? 1 : scale).offset(x: reduced ? 0 : x, y: reduced ? 0 : y)
+    }
+}
+
 /// A recipe-painted place that receives files through the native picker or drop destination.
 public struct MetalDropZone: View {
     private let title: String
@@ -64,12 +80,13 @@ public struct MetalDropZone: View {
             .metalObjectRecipe(MetalRecipes.well, part: "self", state: "field", in: shape)
             .overlay { shape.strokeBorder(result == .refused ? t.invalid.color : over ? MetalShared.green.color : .clear,
                                            lineWidth: recipe.points("self.edge")) }
-            .scaleEffect(over && !reduceMotion ? recipe.scalar("self.sink") : .one)
+            .modifier(MetalDropZonePlacement(scale: over ? recipe.scalar("self.sink") : .one, x: refusal, reduced: reduceMotion))
             .metalAnimation(over ? .part : .object, value: over)
             .metalAnimation(.settle, value: result)
-            .offset(x: reduceMotion ? 0 : refusal)
             .opacity(isEnabled ? .one : recipe.scalar("self.disabled"))
             .contentShape(shape)
+            .animation(nil, value: reduceMotion)
+            .transaction { if reduceMotion { $0.animation = nil; $0.disablesAnimations = true } }
         }
         .buttonStyle(.plain)
         .accessibilityLabel(title)
@@ -109,8 +126,9 @@ public struct MetalDropZone: View {
         .frame(width: recipe.points("well.size"), height: recipe.points("well.size"))
         .metalObjectRecipe(MetalRecipes.surface, part: "self", state: "raise-sm",
                            in: RoundedRectangle(cornerRadius: recipe.points("well.radius"), style: .continuous))
-        .offset(y: over && !reduceMotion ? -MetalSpace.s4 : 0)
+        .modifier(MetalDropZonePlacement(y: over ? -MetalSpace.s4 : 0, reduced: reduceMotion))
         .metalAnimation(over ? .part : .object, value: over)
+        .animation(nil, value: reduceMotion)
         .accessibilityHidden(true)
     }
 
@@ -121,9 +139,10 @@ public struct MetalDropZone: View {
                 Text(title).hidden()
                 Text(line).id(line)
                     .transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
-            }
+            }.id(reduceMotion).clipped()
             .font(.metal(MetalType.ui)).foregroundStyle(colorway.tokens.ink.color)
-            .metalAnimation(.settle, value: over)
+            .metalAnimation(.settle, value: line)
+            .transaction { if reduceMotion { $0.animation = nil; $0.disablesAnimations = true } }
             if let description { Text(description).font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink3.color) }
         }.lineLimit(compact ? 1 : nil)
     }
