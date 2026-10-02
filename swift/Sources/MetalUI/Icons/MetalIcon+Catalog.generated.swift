@@ -23,6 +23,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case zoomOut = "zoom-out"
     case fit = "fit"
     case duplicate = "duplicate"
+    case copy = "copy"
+    case save = "save"
+    case download = "download"
+    case upload = "upload"
+    case send = "send"
+    case external = "external"
     case sendAway = "send-away"
     case trash = "trash"
     case group = "group"
@@ -77,6 +83,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return "Zoom Out"
         case .fit: return "Fit"
         case .duplicate: return "Duplicate"
+        case .copy: return "Copy"
+        case .save: return "Save"
+        case .download: return "Download"
+        case .upload: return "Upload"
+        case .send: return "Send"
+        case .external: return "Open externally"
         case .sendAway: return "Delete · Send away"
         case .trash: return "Delete · Trash"
         case .group: return "Group · Stack"
@@ -131,6 +143,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return .tools
         case .fit: return .tools
         case .duplicate: return .actions
+        case .copy: return .actions
+        case .save: return .actions
+        case .download: return .actions
+        case .upload: return .actions
+        case .send: return .actions
+        case .external: return .actions
         case .sendAway: return .actions
         case .trash: return .actions
         case .group: return .actions
@@ -186,6 +204,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return nil
         case .fit: return 0.18
         case .duplicate: return 0.16
+        case .copy: return 0.1
+        case .save: return 0.1
+        case .download: return nil
+        case .upload: return nil
+        case .send: return 0.12
+        case .external: return nil
         case .sendAway: return nil
         case .trash: return 0.12
         case .group: return 0.156
@@ -241,6 +265,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return nil
         case .fit: return nil
         case .duplicate: return nil
+        case .copy: return nil
+        case .save: return nil
+        case .download: return nil
+        case .upload: return nil
+        case .send: return nil
+        case .external: return nil
         case .sendAway: return nil
         case .trash: return nil
         case .group: return nil
@@ -296,6 +326,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return false
         case .fit: return false
         case .duplicate: return false
+        case .copy: return false
+        case .save: return false
+        case .download: return false
+        case .upload: return false
+        case .send: return false
+        case .external: return false
         case .sendAway: return true
         case .trash: return false
         case .group: return true
@@ -351,6 +387,12 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .zoomOut: return 1.85
         case .fit: return 1.85
         case .duplicate: return 1.85
+        case .copy: return 1.85
+        case .save: return 1.85
+        case .download: return 1.85
+        case .upload: return 1.85
+        case .send: return 1.85
+        case .external: return 1.85
         case .sendAway: return 1.9
         case .trash: return 1.85
         case .group: return 1.9

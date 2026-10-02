@@ -6,6 +6,14 @@ import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
 import { MorphFilmstrips, MorphParity, MorphPlayground } from '../demos/MorphGlyphs';
 
 const CATEGORIES = ['Tools', 'Actions', 'Status'] as const;
+const TRANSFER = [
+  ['save', 'Retain a document in its storage case.'],
+  ['download', 'Receive content into this device.'],
+  ['upload', 'Transfer content to the service.'],
+  ['send', 'Dispatch a message to its recipient.'],
+  ['copy', 'Take a paper copy to the clipboard.'],
+  ['external', 'Open a resource outside this context.'],
+] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
@@ -37,6 +45,23 @@ export default function Icons() {
         </div>
         <Code lang="tsx" code={`<Icon name="check" act={resultSequence} />
 // Increment resultSequence when the work succeeds.`} />
+      </Section>
+      <Section id="transfer-record" title="Transfer and record" lede="Choose the glyph by where the content goes. Save retains it; download receives it; upload crosses the upper boundary; send dispatches a message; copy takes a second sheet; external leaves the current window.">
+        <div className="mu-auto-grid" data-testid="transfer-family">
+          {TRANSFER.map(([name, meaning]) => (
+            <button key={name} type="button" className="mu-icon-trigger mu-cluster gap-mu-related p-mu-space-12 text-left rounded-plate hover:material-well"
+              aria-label={`${ICON_CATALOG[name].label}: ${meaning}`} aria-pressed={picked === name} onClick={() => setPicked(name)} data-transfer={name}>
+              <span className="mu-cluster gap-mu-space-8 text-icon" aria-hidden>
+                <Icon name={name} size={16} />
+                <Icon name={name} size={24} />
+              </span>
+              <span className="mu-stack gap-mu-space-2">
+                <span className="type-ui text-ink">{ICON_CATALOG[name].label}</span>
+                <span className="type-meta text-ink2">{meaning}</span>
+              </span>
+            </button>
+          ))}
+        </div>
       </Section>
       <Section title="Glyphs">
         {CATEGORIES.map((cat) => {

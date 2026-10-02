@@ -480,6 +480,128 @@ export const ICON_CATALOG = {
     motion: {"duration":1183,"caption":"The copy slides back onto the original, presses to take its impression, and is peeled off into place.","stages":["Press","Peel off","Land"],"tracks":[{"part":"copy","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16906,"transform":"translate(-3px,-3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.22823,"transform":"translate(-3.2px,-3.2px) rotate(0deg) scale(0.92,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27895,"transform":"translate(-3.1px,-3.1px) rotate(0deg) scale(0.94,0.94)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.3973,"transform":"translate(1.4px,1.4px) rotate(7deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69822,"transform":"translate(-0.1382px,-0.1382px) rotate(-0.6908deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"glint","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.58326,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.65089,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.89603,"transform":"scale(1.1)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * COPY · Actions · one act, 666ms
+   *
+   * Impression → Peel → Land
+   *          The front sheet takes an impression from its fixed source and peels off as a paper copy.
+   *  paper      0 → 170 → 310 → 666ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "copy": {
+    label: "Copy",
+    category: "Actions",
+    hover: "The front sheet takes an impression from its fixed source and peels off as a paper copy.",
+    press: "plays the same act",
+    pressMs: 666,
+    defs: "<mask id=\"&-copy\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><rect data-part=\"paper\" x=\"3.5\" y=\"6\" width=\"13.8\" height=\"15.5\" rx=\"2.8\" fill=\"#000\" stroke=\"none\"/></mask>",
+    body: "<rect mask=\"url(#&-copy)\" x=\"8.5\" y=\"3.5\" width=\"11\" height=\"13\" rx=\"2\"/><rect data-part=\"paper\" class=\"f\" style=\"--duo:.1\" x=\"5\" y=\"7.5\" width=\"11\" height=\"13\" rx=\"2\"/>",
+    sw16: 1.85,
+    motion: {"duration":666,"caption":"The front sheet takes an impression from its fixed source and peels off as a paper copy.","stages":["Impression","Peel","Land"],"tracks":[{"part":"paper","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.25526,"transform":"translate(1.2px,-1.2px) rotate(0deg) scale(1,0.96)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.46547,"transform":"translate(-0.7px,0.7px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SAVE · Actions · one act, 830ms
+   *
+   * Seat → Record → Release
+   *          The write window seats into the storage case, records the document, then releases.
+   *  write      0 → 160 → 220 → 525 → 830ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "save": {
+    label: "Save",
+    category: "Actions",
+    hover: "The write window seats into the storage case, records the document, then releases.",
+    press: "plays the same act",
+    pressMs: 830,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M6.5 3.8h9l4 4v10.4a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V5.8a2 2 0 0 1 2-2Z\"/><rect data-part=\"write\" x=\"8\" y=\"4.8\" width=\"6.4\" height=\"4.7\" rx=\".6\"/><path d=\"M7.8 20.2v-6.3h8.4v6.3M10 16.5h4\"/>",
+    sw16: 1.85,
+    motion: {"duration":830,"caption":"The write window seats into the storage case, records the document, then releases.","stages":["Seat","Record","Release"],"tracks":[{"part":"write","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.19277,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26506,"transform":"translate(0px,1.3px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0px,-0.1132px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * DOWNLOAD · Actions · one act, 900ms
+   *
+   * Travel → Receive → Ready
+   *          The arrow descends into the receiving tray; the tray takes its weight and releases.
+   *  receiver   0 → 270 → 300 → 330 → 900ms
+   *  arrow      0 → 180 → 300 → 420 → 430 → 650 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "download": {
+    label: "Download",
+    category: "Actions",
+    hover: "The arrow descends into the receiving tray; the tray takes its weight and releases.",
+    press: "plays the same act",
+    pressMs: 900,
+    defs: "",
+    body: "<path data-part=\"receiver\" d=\"M4.8 16.5v2a1.7 1.7 0 0 0 1.7 1.7h11a1.7 1.7 0 0 0 1.7-1.7v-2\"/><path data-part=\"arrow\" d=\"M12 4.2v11M8.8 12 12 15.2 15.2 12\"/>",
+    sw16: 1.85,
+    motion: {"duration":900,"caption":"The arrow descends into the receiving tray; the tray takes its weight and releases.","stages":["Travel","Receive","Ready"],"tracks":[{"part":"receiver","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.3,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.33333,"transform":"translate(0px,1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.36667,"transform":"translate(0px,1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"transform":"translate(0px,0.9px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.33333,"transform":"translate(0px,4.3px) rotate(0deg) scale(1,0.88)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.46667,"transform":"translate(0px,4.5px) rotate(0deg) scale(1,0.78)","opacity":0,"easing":"linear"},{"offset":0.47778,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.72222,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * UPLOAD · Actions · one act, 1020ms
+   *
+   * Travel → Receive → Ready
+   *          The arrow rises to the upper boundary; the boundary receives it and releases.
+   *  receiver   0 → 320 → 350 → 380 → 1020ms
+   *  arrow      0 → 220 → 350 → 490 → 500 → 760 → 1020ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "upload": {
+    label: "Upload",
+    category: "Actions",
+    hover: "The arrow rises to the upper boundary; the boundary receives it and releases.",
+    press: "plays the same act",
+    pressMs: 1020,
+    defs: "",
+    body: "<path data-part=\"receiver\" d=\"M4.8 7.5v-2a1.7 1.7 0 0 1 1.7-1.7h11a1.7 1.7 0 0 1 1.7 1.7v2\"/><path data-part=\"arrow\" d=\"M12 19.8v-11M8.8 12 12 8.8 15.2 12\"/>",
+    sw16: 1.85,
+    motion: {"duration":1020,"caption":"The arrow rises to the upper boundary; the boundary receives it and releases.","stages":["Travel","Receive","Ready"],"tracks":[{"part":"receiver","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31373,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.34314,"transform":"translate(0px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.37255,"transform":"translate(0px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.21569,"transform":"translate(0px,-0.9px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.34314,"transform":"translate(0px,-4.3px) rotate(0deg) scale(1,0.88)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48039,"transform":"translate(0px,-4.5px) rotate(0deg) scale(1,0.78)","opacity":0,"easing":"linear"},{"offset":0.4902,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.7451,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SEND · Actions · one act, 850ms
+   *
+   * Gather → Dispatch → Ready
+   *          The folded message draws back, leaves along its pointed tip, and the next message is ready.
+   *  message    0 → 140 → 320 → 430 → 440 → 600 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "send": {
+    label: "Send",
+    category: "Actions",
+    hover: "The folded message draws back, leaves along its pointed tip, and the next message is ready.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<g data-part=\"message\"><path class=\"f\" style=\"--duo:.12\" d=\"m3.8 10.5 16.4-6.7-6.7 16.4-3-6.7-6.7-3Z\"/><path d=\"m10.5 13.5 9.7-9.7\"/></g>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The folded message draws back, leaves along its pointed tip, and the next message is ready.","stages":["Gather","Dispatch","Ready"],"tracks":[{"part":"message","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.16471,"transform":"translate(-0.8px,0.8px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.37647,"transform":"translate(2px,-2px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.50588,"transform":"translate(3px,-3px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.51765,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.70588,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * OPEN EXTERNALLY · Actions · one act, 850ms
+   *
+   * Reach → Open outside → Ready
+   *          The arrow reaches through the open window corner into the external context, then returns ready.
+   *  arrow      0 → 170 → 240 → 545 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "external": {
+    label: "Open externally",
+    category: "Actions",
+    hover: "The arrow reaches through the open window corner into the external context, then returns ready.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<path d=\"M10.2 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.7\"/><path data-part=\"arrow\" d=\"m10.2 13.8 9.3-9.3M14 4.5h5.5V10\"/>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The arrow reaches through the open window corner into the external context, then returns ready.","stages":["Reach","Open outside","Ready"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.2,"transform":"translate(1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28235,"transform":"translate(1.2px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(-0.1045px,0.1045px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * DELETE · SEND AWAY · Actions · one act, 1245ms
    *
    * Wind up → Draw in → Rise again

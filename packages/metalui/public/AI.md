@@ -4480,7 +4480,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 49 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 55 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4489,11 +4489,12 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 ```
 
+- **Transfer and record:** `save` retains a document; `download` receives into this device; `upload` transfers to the service; `send` dispatches a message. `copy` takes a paper copy to the clipboard (`paste` retrieves it, `duplicate` creates another object). `external` opens another context. Pair the glyph with the action verb.
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
 - **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, play/pause, download/upload) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
-- **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
+- **SwiftUI and SVG:** the same glyphs ship as custom SF Symbols, plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
 
 | Component | Name | Category | Hover | Press |
 |---|---|---|---|---|
@@ -4517,6 +4518,12 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ZoomOutIcon` | `zoom-out` | Tools | The lens is drawn back along its handle; the minus recedes and the old view closes in. | plays the same act |
 | `FitIcon` | `fit` | Tools | The content grows to the frame and the four corners clamp onto it; the open sides of the frame flash shut. | plays the same act |
 | `DuplicateIcon` | `duplicate` | Actions | The copy slides back onto the original, presses to take its impression, and is peeled off into place. | plays the same act |
+| `CopyIcon` | `copy` | Actions | The front sheet takes an impression from its fixed source and peels off as a paper copy. | plays the same act |
+| `SaveIcon` | `save` | Actions | The write window seats into the storage case, records the document, then releases. | plays the same act |
+| `DownloadIcon` | `download` | Actions | The arrow descends into the receiving tray; the tray takes its weight and releases. | plays the same act |
+| `UploadIcon` | `upload` | Actions | The arrow rises to the upper boundary; the boundary receives it and releases. | plays the same act |
+| `SendIcon` | `send` | Actions | The folded message draws back, leaves along its pointed tip, and the next message is ready. | plays the same act |
+| `ExternalIcon` | `external` | Actions | The arrow reaches through the open window corner into the external context, then returns ready. | plays the same act |
 | `SendAwayIcon` | `send-away` | Actions | The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim. | plays the same act |
 | `TrashIcon` | `trash` | Actions | The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge. | plays the same act |
 | `GroupIcon` | `group` | Actions | The two cards lift, square up into one stack and drop into the folder, splaying back into place as the flap takes the landing. | plays the same act |

@@ -58,7 +58,7 @@ const iconsDoc = `
 
 # Icons
 
-\`@unlocalhosted/metalui/icons\` has ${icons.count} Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit \`currentColor\`. A static icon (\`animate={false}\`) at 16px or below uses a tuned small cut with a heavier stroke.
+\`@unlocalhosted/metalui/icons\` has ${icons.count} Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored one-shot act on hover or press, then rests. Icons inherit \`currentColor\`. A static icon (\`animate={false}\`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 \`\`\`tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -67,11 +67,12 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 <Icon name="synced" size={13} title="Synced" />
 \`\`\`
 
+- **Transfer and record:** \`save\` retains a document; \`download\` receives into this device; \`upload\` transfers to the service; \`send\` dispatches a message. \`copy\` takes a paper copy to the clipboard (\`paste\` retrieves it, \`duplicate\` creates another object). \`external\` opens another context. Pair the glyph with the action verb.
 - **Triggering:** an icon inside any element with the class \`mu-icon-trigger\` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without \`title\` are decorative (\`aria-hidden\`). Give icon-only controls an \`aria-label\`.
 - **State glyphs morph:** \`MorphIcon\` (copy, check, plus, close, minus, menu, arrows, chevrons, play/pause, download/upload) transforms into another state glyph instead of being replaced: \`<MorphIcon name={copied ? 'check' : 'copy'} size={14} />\`.
 - **Static:** \`animate={false}\` keeps a glyph static. Reduced motion does this automatically.
-- **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at \`${ORIGIN}/icons/svg/<name>.svg\`.
+- **SwiftUI and SVG:** the same glyphs ship as custom SF Symbols, plus static and animated SVGs at \`${ORIGIN}/icons/svg/<name>.svg\`.
 
 | Component | Name | Category | Hover | Press |
 |---|---|---|---|---|

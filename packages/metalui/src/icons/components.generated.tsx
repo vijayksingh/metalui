@@ -41,6 +41,18 @@ export const ZoomOutIcon = createIcon("zoom-out", "ZoomOutIcon");
 export const FitIcon = createIcon("fit", "FitIcon");
 /** Duplicate. Hover: The copy slides back onto the original, presses to take its impression, and is peeled off into place.. Press: plays the same act. */
 export const DuplicateIcon = createIcon("duplicate", "DuplicateIcon");
+/** Copy. Hover: The front sheet takes an impression from its fixed source and peels off as a paper copy.. Press: plays the same act. */
+export const CopyIcon = createIcon("copy", "CopyIcon");
+/** Save. Hover: The write window seats into the storage case, records the document, then releases.. Press: plays the same act. */
+export const SaveIcon = createIcon("save", "SaveIcon");
+/** Download. Hover: The arrow descends into the receiving tray; the tray takes its weight and releases.. Press: plays the same act. */
+export const DownloadIcon = createIcon("download", "DownloadIcon");
+/** Upload. Hover: The arrow rises to the upper boundary; the boundary receives it and releases.. Press: plays the same act. */
+export const UploadIcon = createIcon("upload", "UploadIcon");
+/** Send. Hover: The folded message draws back, leaves along its pointed tip, and the next message is ready.. Press: plays the same act. */
+export const SendIcon = createIcon("send", "SendIcon");
+/** Open externally. Hover: The arrow reaches through the open window corner into the external context, then returns ready.. Press: plays the same act. */
+export const ExternalIcon = createIcon("external", "ExternalIcon");
 /** Delete · Send away. Hover: The well turns and draws the dot round and down into its centre; it goes under with a gulp and a new dot rises on the rim.. Press: plays the same act. */
 export const SendAwayIcon = createIcon("send-away", "SendAwayIcon");
 /** Delete · Trash. Hover: The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.. Press: plays the same act. */

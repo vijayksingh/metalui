@@ -106,7 +106,7 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 ### D. Glyphs the set lacks (design each in `icons.mjs`, with its act and morph partners)
 
 - [x] `chevron` (one glyph; `turn` prop on Icon and MorphIcon), `minus` (done)
-- `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow)
+- [x] `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow): authored acts, 16/24px references, React/Swift/custom symbols and reduced-motion proof.
 - `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`
 - `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
 

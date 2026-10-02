@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 49,
+  "count": 55,
   "icons": [
     {
       "name": "select",
@@ -401,6 +401,126 @@
       },
       "tuned16": false,
       "construction": "Two 12u squares r3, offset 5u; the back one (source) is masked by the front + 1.5u gap, and that clearance moves with the copy. Motion (study): the copy slides 3u back onto the source, presses (.92), peels off 1.4u past rest with a 7° twist, and an edge light catches inside its landing corner."
+    },
+    {
+      "name": "copy",
+      "component": "CopyIcon",
+      "label": "Copy",
+      "category": "Actions",
+      "hover": "The front sheet takes an impression from its fixed source and peels off as a paper copy.",
+      "press": "plays the same act",
+      "pressMs": 666,
+      "motion": {
+        "caption": "The front sheet takes an impression from its fixed source and peels off as a paper copy.",
+        "durationMs": 666,
+        "stages": [
+          "Impression",
+          "Peel",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Two tall paper sheets offset3.5, one tinted .1, with a moving clearance around the front sheet. Distinct from square plus cards (Duplicate) and the clipboard (Paste)."
+    },
+    {
+      "name": "save",
+      "component": "SaveIcon",
+      "label": "Save",
+      "category": "Actions",
+      "hover": "The write window seats into the storage case, records the document, then releases.",
+      "press": "plays the same act",
+      "pressMs": 830,
+      "motion": {
+        "caption": "The write window seats into the storage case, records the document, then releases.",
+        "durationMs": 830,
+        "stages": [
+          "Seat",
+          "Record",
+          "Release"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Closed cut-corner storage case, inset write window and lower label. The write window presses 1.3 into its seat and returns on the shared part spring; the case never leaves."
+    },
+    {
+      "name": "download",
+      "component": "DownloadIcon",
+      "label": "Download",
+      "category": "Actions",
+      "hover": "The arrow descends into the receiving tray; the tray takes its weight and releases.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The arrow descends into the receiving tray; the tray takes its weight and releases.",
+        "durationMs": 900,
+        "stages": [
+          "Travel",
+          "Receive",
+          "Ready"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Vertical down arrow with a lower receiving boundary. Contact compresses the arrow along its shaft; boundary releases on the shared part spring; a fresh arrow is ready at rest."
+    },
+    {
+      "name": "upload",
+      "component": "UploadIcon",
+      "label": "Upload",
+      "category": "Actions",
+      "hover": "The arrow rises to the upper boundary; the boundary receives it and releases.",
+      "press": "plays the same act",
+      "pressMs": 1020,
+      "motion": {
+        "caption": "The arrow rises to the upper boundary; the boundary receives it and releases.",
+        "durationMs": 1020,
+        "stages": [
+          "Travel",
+          "Receive",
+          "Ready"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Vertical up arrow with an upper receiving boundary. Contact compresses the arrow along its shaft; boundary releases on the shared part spring; a fresh arrow is ready at rest."
+    },
+    {
+      "name": "send",
+      "component": "SendIcon",
+      "label": "Send",
+      "category": "Actions",
+      "hover": "The folded message draws back, leaves along its pointed tip, and the next message is ready.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The folded message draws back, leaves along its pointed tip, and the next message is ready.",
+        "durationMs": 850,
+        "stages": [
+          "Gather",
+          "Dispatch",
+          "Ready"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Folded paper plane with one diagonal crease; its tip leads dispatch up-right, while the fold stays attached. No receiving tray or window frame."
+    },
+    {
+      "name": "external",
+      "component": "ExternalIcon",
+      "label": "Open externally",
+      "category": "Actions",
+      "hover": "The arrow reaches through the open window corner into the external context, then returns ready.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The arrow reaches through the open window corner into the external context, then returns ready.",
+        "durationMs": 850,
+        "stages": [
+          "Reach",
+          "Open outside",
+          "Ready"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Fixed open window frame and diagonal arrow through the top-right corner; the arrow reaches1.2 along the opening and returns on the shared part spring."
     },
     {
       "name": "send-away",
