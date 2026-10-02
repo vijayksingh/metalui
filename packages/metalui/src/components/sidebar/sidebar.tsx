@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
 import { SlidingIndicator } from '../../motion/indicator';
+import { MorphIcon } from '../../icons/MorphIcon';
+import { SwapText } from '../../motion/swap';
 import { Tooltip } from '../tooltip/tooltip';
 
 /* ─────────────────────────────────────────────────────────
@@ -111,7 +113,8 @@ function Item({ icon, children, active, render, className, ...props }: SidebarIt
 export interface SidebarToggleProps {
   collapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
-  icon: React.ReactNode;
+  /** Optional custom artwork; omitted uses the shared Sidebar ↔ Sidebar Rail pair. */
+  icon?: React.ReactNode;
 }
 
 /** Collapses the sidebar to a rail and back. */
@@ -119,8 +122,8 @@ function Toggle({ collapsed, onCollapsedChange, icon }: SidebarToggleProps) {
   const label = collapsed ? 'Expand the sidebar' : 'Collapse to a rail';
   const button = (
     <button type="button" aria-label={label} aria-expanded={!collapsed} className={`${ITEM} border-0 bg-transparent cursor-pointer`} onClick={() => onCollapsedChange(!collapsed)}>
-      <span aria-hidden inert className="inline-grid flex-none">{icon}</span>
-      <span className={WORDS}>{collapsed ? 'Expand' : 'Collapse'}</span>
+      <span aria-hidden inert className="inline-grid flex-none">{icon ?? <MorphIcon name={collapsed ? 'sidebar-collapsed' : 'sidebar'} size={16} />}</span>
+      <span className={WORDS}><SwapText value={collapsed ? 'Expand' : 'Collapse'} /></span>
     </button>
   );
   return <Tooltip label={label} side="right" disabled={!collapsed}>{button}</Tooltip>;

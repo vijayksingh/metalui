@@ -37,7 +37,7 @@ Reduce Motion: width and words change at once; the highlight moves at once.
 | `Sidebar.Header`, `Sidebar.Footer` | – |
 | `Sidebar.Section` `title` | `Section(title)` |
 | `Sidebar.Item` `icon`, `href`, `active`, `render` (a router's link), children (the word) | `NavigationLink` |
-| `Sidebar.Toggle` `collapsed`, `onCollapsedChange`, `icon` | – |
+| `Sidebar.Toggle` `collapsed`, `onCollapsedChange`, optional `icon` | `MetalSidebarToggle(collapsed:)` |
 
 ## Keyboard and accessibility
 
@@ -49,3 +49,5 @@ Reduce Motion: width and words change at once; the highlight moves at once.
 - Remember whether someone collapsed it.
 
 - Glyph wrappers are inert: only the navigation link or collapse button enters the Tab order, including in Chrome. Icons still act through the enclosing control trigger.
+
+The default toggle morphs the shared `sidebar` and `sidebar-collapsed` glyphs at16px as its label turns on the drum. The frame stays fixed, the navigation boundary moves, and rail word marks withdraw. Pass `icon` only for custom artwork; it stays host-owned. Swift's operable `MetalSidebarToggle(collapsed:)` uses the same pair and spoken collapse/expand verbs; `.disabled` prevents a change. `MetalSidebar` itself remains a system List placeholder: the native gliding highlight and word/width choreography are still WIP. Reduced motion lands the toggle's glyph and label immediately.

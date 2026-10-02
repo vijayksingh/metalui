@@ -91,7 +91,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`).
 - **Save** (idle → saving (Spinner) → saved `check`): the Button's "saving" demo.
 - **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.
-- **Sidebar Toggle** (collapse ↔ expand) and **Split pane** collapse: a `layout` glyph whose panel part slides; today the caller passes a static icon.
+- [x] **Sidebar Toggle** (collapse ↔ expand): shared Sidebar ↔ Sidebar Rail slides the panel boundary, optional host artwork stays supported; native binding toggle uses the same glyph. Split pane audited: it uses a focusable separator grip, with Home collapse / Enter restore, and has no static glyph key to replace.
 - **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
 - [x] **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
 - [x] **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.

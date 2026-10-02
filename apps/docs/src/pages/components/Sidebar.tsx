@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Sidebar } from '@unlocalhosted/metalui';
-import { BoardIcon, LayoutIcon, NoteIcon, PinIcon, RegionIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
+import { BoardIcon, NoteIcon, PinIcon, RegionIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/sidebar/sidebar.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSidebar.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/components/sidebar/sidebar.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -42,7 +43,7 @@ function App({ label, collapsed, onCollapsed }: { label: string; collapsed?: boo
           </Sidebar.Section>
         ))}
         <Sidebar.Footer>
-          <Sidebar.Toggle collapsed={folded} onCollapsedChange={setFolded} icon={<LayoutIcon size={16} />} />
+          <Sidebar.Toggle collapsed={folded} onCollapsedChange={setFolded} />
         </Sidebar.Footer>
       </Sidebar>
       <main className="grid flex-1 content-start gap-8 p-24">
@@ -78,12 +79,13 @@ export default function SidebarPage() {
     <Sidebar.Item icon={<BoardIcon size={16} />} href="/board">Board</Sidebar.Item>
   </Sidebar.Section>
   <Sidebar.Footer>
-    <Sidebar.Toggle collapsed={collapsed} onCollapsedChange={setCollapsed} icon={<LayoutIcon size={16} />} />
+    <Sidebar.Toggle collapsed={collapsed} onCollapsedChange={setCollapsed} />
   </Sidebar.Footer>
 </Sidebar>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

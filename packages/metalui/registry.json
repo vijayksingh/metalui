@@ -1566,6 +1566,7 @@
       "description": "An app's side place for moving between places: sections of items with one highlight that glides to the current place; it collapses to a rail (words first, then width) with tooltips.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/tooltip.json"

@@ -72,3 +72,22 @@ for (const colorway of COLORWAYS) {
     }
   });
 }
+
+for (const colorway of COLORWAYS) {
+  test(`the collapse key morphs its panel and keeps the spoken state in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/sidebar', colorway);
+    const rail = nav(page);
+    const key = rail.getByRole('button');
+    await expect(key.locator('[data-glyph]')).toHaveAttribute('data-glyph', 'sidebar');
+    await key.focus();
+    await page.keyboard.press('Space');
+    await expect(key).toHaveAccessibleName('Expand the sidebar');
+    await expect(key).toHaveAttribute('aria-expanded', 'false');
+    await expect(key.locator('[data-glyph]')).toHaveAttribute('data-glyph', 'sidebar-collapsed');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await key.press('Enter');
+    await expect(key).toHaveAttribute('aria-expanded', 'true');
+    await expect(key.locator('[data-glyph]')).toHaveAttribute('data-glyph', 'sidebar');
+    await rail.screenshot({ path: capture(`sidebar-toggle-${colorway}-reduced`) });
+  });
+}

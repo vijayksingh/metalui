@@ -72,3 +72,7 @@ Run `python3 e2e/native/run-spark-proof.py` on macOS. A real default-action Retu
 # Native navigation panel glyph
 
 Run `python3 e2e/native/run-sidebar-glyph-proof.py` on macOS. A real default-action Return toggles the host's navigation state, and the same shell morphs its panel boundary between Sidebar and Sidebar Rail at14/16/24px. Captures cover the transition, settled rail and reduced expanded panel. Set `METALUI_COLORWAY` and `METALUI_NATIVE_CAPTURE` for both colorways.
+
+# Native sidebar collapse key
+
+Run `python3 e2e/native/run-sidebar-toggle-proof.py` on macOS. The real public `MetalSidebarToggle(collapsed:)` key receives the default-action Return. Its binding collapses, expands under scoped reduction, and refuses a third press while disabled. Captures show the shared16px panel/rail glyph and its label. The native List's material and collapse layout remain WIP; this proof covers the operable key.
