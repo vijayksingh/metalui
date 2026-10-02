@@ -6,14 +6,14 @@ import { ComponentPage } from '../../ui/ComponentPage';
 import source from '../../../../../packages/metalui/src/components/tag-cue/tag-cue.tsx?raw';
 import swift from '../../../../../swift/Sources/MetalUI/Components/MetalTagCue.swift?raw';
 import guide from '../../../../../packages/metalui/src/components/tag-cue/tag-cue.agent.md?raw';
-const RECENT = ['#poster', '#studio', '#coffee', '#long-project'];
+const RECENT = ['#poster', '#studio', '#coffee', '#long-project', '#cafe\u0301'];
 export function TagCueDocument() {
   const doc = useCueDocument('🎨 Send #poster with Sam.', { start: 2, end: 2 });
   const editor = React.useRef<HTMLInputElement>(null);
   const latest = React.useRef(doc); latest.current = doc;
   const [capture, setCapture] = React.useState<{ start: number; end: number; source: string } | null>(null);
   const d = useDialKit('Tag cue', { readOnly: false, disabled: false, raw: false });
-  const match = /#[\p{L}\p{N}_-]+/u.exec(doc.source);
+  const match = /#[\p{L}\p{N}\p{M}_-]+/u.exec(doc.source);
   React.useLayoutEffect(() => {
     if (editor.current && document.activeElement === editor.current) editor.current.setSelectionRange(doc.selection.start, doc.selection.end, doc.selection.direction);
   }, [doc.source, doc.selection]);
@@ -28,7 +28,7 @@ export function TagCueDocument() {
         onChange={event => {
           const input = event.currentTarget, caret = input.selectionStart ?? input.value.length;
           doc.setSource(input.value, { start: caret, end: input.selectionEnd ?? caret });
-          const unfinished = /#[\p{L}\p{N}_-]*$/u.exec(input.value.slice(0, caret));
+          const unfinished = /#[\p{L}\p{N}\p{M}_-]*$/u.exec(input.value.slice(0, caret));
           if (unfinished && !RECENT.includes(unfinished[0])) setCapture({ start: unfinished.index, end: caret, source: input.value });
         }}
         onSelect={event => { const input = event.currentTarget; doc.setSelection({ start: input.selectionStart ?? 0, end: input.selectionEnd ?? 0 }); }} onBlur={doc.commit}

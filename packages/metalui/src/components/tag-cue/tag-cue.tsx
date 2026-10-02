@@ -5,7 +5,7 @@ import { Combobox } from '../combobox/combobox';
 import { Mark } from '../mark/mark';
 import { tagColor } from '../mark/identity.generated';
 
-const valid = (tag: string) => /^#[\p{L}\p{N}_-]+$/u.test(tag);
+const valid = (tag: string) => /^#[\p{L}\p{N}\p{M}_-]+$/u.test(tag);
 const recent = (tags: readonly string[]) => [...new Set(tags.filter(valid))];
 export interface TagCueProps extends Omit<EnumCueProps, 'choices'> { recentTags: readonly string[] }
 /** Recent source tags reuse the finite-state control; their colour remains their canonical identity. */

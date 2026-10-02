@@ -16,6 +16,26 @@ for (const colorway of COLORWAYS) {
     const fixed = host.getByRole('button', { name: 'Read-only tag: #coffee' }); await fixed.focus(); await page.keyboard.press('Space'); await expect(source).toHaveValue('🎨 Send #studio with Sam.');
     await expect(host.getByRole('button', { name: 'Disabled tag: #poster' })).toBeDisabled();
   });
+  test(`combining accents cycle and complete as exact source words in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' }); await open(page, '/components/tag-cue', colorway);
+    const host = page.getByTestId('tag-document'), source = host.locator('input[aria-label="Tag source"]');
+    const authored = '🎨 Send #cafe\u0301 with Sam.';
+    await source.fill(authored);
+    const cue = host.getByRole('button', { name: 'Project tag: #cafe\u0301', exact: true });
+    await expect(cue).toBeVisible(); await expect(host.getByTestId('tag-neighbour')).toHaveText(' with Sam.');
+    await cue.focus(); await page.keyboard.press('Space');
+    await expect(source).toHaveValue('🎨 Send #poster with Sam.');
+    await host.getByRole('button', { name: 'Undo tag edit' }).click(); await expect(source).toHaveValue(authored);
+    await source.focus(); await source.evaluate((input: HTMLInputElement) => input.setSelectionRange(3, 3));
+    await page.keyboard.type('#');
+    const lookup = page.getByRole('combobox', { name: 'Find a recent tag' }); await expect(lookup).toBeFocused();
+    await lookup.fill('cafe'); await expect(page.getByRole('option', { name: '#cafe\u0301', exact: true })).toBeVisible();
+    await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
+    await expect(source).toHaveValue('🎨 #cafe\u0301Send #cafe\u0301 with Sam.');
+    await expect(source).toBeFocused();
+    await expect.poll(() => source.evaluate((input: HTMLInputElement) => input.selectionStart)).toBe(9);
+    await host.getByRole('button', { name: 'Undo tag edit' }).click(); await expect(source).toHaveValue('🎨 #Send #cafe\u0301 with Sam.');
+  });
   test(`typing a hash chooses one recent tag at the UTF16 caret and Escape keeps source in ${colorway}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' }); await open(page, '/components/tag-cue', colorway);
     const host = page.getByTestId('tag-document'), source = host.locator('input[aria-label="Tag source"]');
