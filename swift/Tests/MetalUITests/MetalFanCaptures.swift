@@ -31,22 +31,22 @@ final class MetalFanCaptures: XCTestCase {
                     Spacer(minLength: 0)
                     MetalFan("Canvas tools", initialOpen: scene.hasPrefix("picker") ? .picker : scene == "rest" ? nil : .tray,
                              reduceMotion: reduced) {
-                        MetalFanLabel(drawing ? "Ink" : text ? "Text" : "Canvas")
+                        MetalFanLabel(drawing ? "Ink" : text ? "Text" : "Canvas", icon: drawing ? .draw : text ? .text : .region)
                         MetalFanPicker("Tool", value: .constant(drawing ? .pen : .select), options: tools)
                         if drawing {
                             MetalFanTray("Ink", icon: { MetalIcon(.draw, size: MetalRecipes.iconButton.points("tool.glyph")) }) {
-                                MetalInkPicks(value: .constant(.ink))
-                                MetalWidthPicks(value: .constant(.regular))
+                                MetalFanInk(value: .constant(.ink))
+                                MetalFanWidth(value: .constant(.regular))
                             }
                         } else {
                             MetalFanTray(text ? "Text actions" : "Canvas options", icon: { MetalIcon(.more, size: MetalRecipes.iconButton.points("tool.glyph")) }) {
                                 if text {
-                                    MetalButton("Tasks", size: .compact) {}
-                                    MetalButton("Summarise", size: .compact) {}
-                                    MetalButton("Gather", size: .compact) {}
-                                    MetalButton("Region", size: .compact) {}
-                                    MetalButton("Export", size: .compact) {}
-                                    MetalButton("Send away", size: .compact) {}
+                                    MetalFanAction("Tasks", icon: .task) {}
+                                    MetalFanAction("Summarise", icon: .document) {}
+                                    MetalFanAction("Gather", icon: .group) {}
+                                    MetalFanAction("Region", icon: .region) {}
+                                    MetalFanAction("Export", icon: .share) {}
+                                    MetalFanAction("Send away", icon: .sendAway) {}
                                 } else { MetalButton("Image", size: .compact) {}; MetalButton("Me", size: .compact) {} }
                             }
                         }

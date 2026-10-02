@@ -82,8 +82,8 @@ public struct MetalFan<Content: View>: View {
                             }
                             var bounds = view.convert(view.bounds, to: nil)
                             if state.open == .picker {
-                                let reach = Double(state.pickerCount) * (MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap"))
-                                bounds = bounds.insetBy(dx: 0, dy: -reach)
+                                let reach = Double((state.pickerCount + 2) / 3) * (MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap"))
+                                bounds = bounds.insetBy(dx: MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap"), dy: -reach)
                             }
                             if !bounds.contains(event.locationInWindow) { state.open = nil }
                             return event
@@ -175,10 +175,13 @@ private struct MetalFanOutsideTapLayer: UIViewRepresentable {
 /// Current context, using the same graphite cap material as the tool cells.
 public struct MetalFanLabel: View {
     let title: String
-    public init(_ title: String) { self.title = title }
+    private let icon: MetalIconName?
+    public init(_ title: String, icon: MetalIconName? = nil) { self.title = title; self.icon = icon }
     public var body: some View {
         let r = MetalRecipes.iconButton
-        Text(title)
+        Group { if let icon { MetalIcon(icon, size: r.points("tool.glyph")) } else { Text(title) } }
+            .accessibilityLabel(title)
+            .metalTooltip(title)
             .font(MetalRecipes.toolbar.font("search.font"))
             .foregroundStyle((r.color("tool.ink") ?? MetalTokens.graphite.ink).color)
             .padding(.horizontal, MetalRecipes.toolbar.points("self.pad"))
@@ -217,27 +220,29 @@ public struct MetalFanPicker<Value: Hashable>: View {
         self.label = label; _value = value; self.options = options; self.direction = direction
     }
 
-    private var others: [MetalFanOption<Value>] { options.filter { $0.value != value } }
+    private var others: [MetalFanOption<Value>] { options }
     private var current: MetalFanOption<Value>? { options.first { $0.value == value } ?? options.first }
     private var open: Bool { state.open == .picker }
     private var still: Bool { reduceMotionOverride ?? reduceMotion }
-    private func slot(_ index: Int) -> Int {
-        if direction == .up { return -(index + 1) }
-        return (index.isMultiple(of: 2) ? -1 : 1) * (index / 2 + 1)
+    private func row(_ index: Int) -> Int {
+        let rows = (others.count + 2) / 3
+        let center = (rows + 1) / 2
+        let row = index / 3
+        return direction == .up ? row - rows : row - center + (row >= center ? 1 : 0)
     }
 
     private func moveFocus(from index: Int, by delta: Int) {
         let next = index + delta
-        if next < 0 { capFocused = true }
-        else if next < others.count { focusedOption = next }
+        if next >= 0 && next < others.count && (abs(delta) == 3 || next / 3 == index / 3) { focusedOption = next }
     }
 
     public var body: some View {
         let step = MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap")
         ZStack(alignment: .bottom) {
             ForEach(Array(others.enumerated()), id: \.element.id) { index, option in
+                let delay = Double(abs(index % 3 - 1) + abs(row(index))) * MetalMotionTokens.fanStagger
                 MetalIconButton(option.shortcut.map { "\(option.label) · \($0)" } ?? option.label,
-                                icon: option.icon, variant: .tool) {
+                                icon: option.icon, variant: .tool, pressed: option.value == value) {
                     value = option.value
                     state.open = nil
                     capFocused = true
@@ -245,21 +250,25 @@ public struct MetalFanPicker<Value: Hashable>: View {
                 .focused($focusedOption, equals: index)
                 #if os(macOS)
                 .onMoveCommand { move in
-                    moveFocus(from: index, by: move == .up ? 1 : move == .down ? -1 : 0)
+                    moveFocus(from: index, by: move == .up ? -3 : move == .down ? 3 : move == .left ? -1 : move == .right ? 1 : 0)
                 }
                 #else
-                .onKeyPress(.upArrow) { moveFocus(from: index, by: 1); return .handled }
-                .onKeyPress(.downArrow) { moveFocus(from: index, by: -1); return .handled }
+                .onKeyPress(.upArrow) { moveFocus(from: index, by: -3); return .handled }
+                .onKeyPress(.downArrow) { moveFocus(from: index, by: 3); return .handled }
+                .onKeyPress(.leftArrow) { moveFocus(from: index, by: -1); return .handled }
+                .onKeyPress(.rightArrow) { moveFocus(from: index, by: 1); return .handled }
                 #endif
                 // Before the offset: the reported frame moves with the drawn option.
                 .metalHitRegion(open)
                 // Each choice travels out of the cap on SwiftUI's own snappy motion (the chrome
                 // role): quick and exact like a system menu. Opening staggers by a beat; folding
                 // goes back together.
-                .offset(y: open ? Double(slot(index)) * step : 0)
+                .accessibilityAddTraits(option.value == value ? [.isSelected] : [])
+                .overlay { if option.value == value { RoundedRectangle(cornerRadius: MetalRecipes.iconButton.points("tool.radius")).stroke(MetalTokens.graphite.ink.color, lineWidth: MetalRecipes.switcher.points("self.focus-width")).allowsHitTesting(false) } }
+                .offset(x: open ? Double(index % 3 - 1) * step : 0, y: open ? Double(row(index)) * step : 0)
                 .opacity(open ? .one : .zero)
                 .animation(still ? MetalSpringClass.crossfade.spring.animation
-                                 : MetalSprings.chrome.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero),
+                                 : MetalSpringClass.part.spring.animation.delay(open ? delay : .zero),
                            value: open)
                 .allowsHitTesting(open)
                 .accessibilityHidden(!open)
@@ -296,6 +305,8 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
     @Environment(\.metalFanReduceMotionOverride) private var reduceMotionOverride
     @FocusState private var capFocused: Bool
     @FocusState private var foldFocused: Bool
+    @State private var previousWidth: CGFloat = 0
+    @State private var backingScale: CGFloat = 1
     private var still: Bool { reduceMotionOverride ?? reduceMotion }
 
     public init(_ label: String, @ViewBuilder icon: () -> Icon, @ViewBuilder content: () -> Content) {
@@ -310,9 +321,7 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
                 content
                     .environment(\.metalToolbarVariant, true)
                     .accessibilityLabel(label)
-                MetalIconButton("Fold \(label)", variant: .tool) { state.open = nil; capFocused = true } icon: {
-                    Text("‹").font(MetalRecipes.toolbar.font("search.font"))
-                }
+                MetalIconButton("Fold \(label)", icon: .close, variant: .tool) { state.open = nil; capFocused = true }
                 .focused($foldFocused)
             } else {
                 MetalIconButton(label, variant: .tool) { state.toggle(.tray) } icon: { icon }
@@ -322,13 +331,72 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
         }
         .padding(.horizontal, open ? MetalRecipes.toolbar.points("self.pad") : .zero)
         .frame(height: r.points("tool.size"))
-        .metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
+        .background { Color.clear.metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous)).scaleEffect(x: backingScale, y: 1, anchor: .leading) }
+        .background { GeometryReader { proxy in Color.clear.preference(key: MetalFanWidthKey.self, value: proxy.size.width) } }
+        .onPreferenceChange(MetalFanWidthKey.self) { width in
+            let old = previousWidth; previousWidth = width
+            guard old > 0, width > 0, old != width, !still else { backingScale = 1; return }
+            backingScale = old / width
+            DispatchQueue.main.async { withAnimation(MetalSpringClass.part.spring.animation) { backingScale = 1 } }
+        }
         .fixedSize()
         .metalHitRegion()
-        .animation(MetalMotion.resolve(.chrome, reduceMotion: still).animation, value: open)
+
         .onChange(of: state.open) { old, new in
             if new == .tray { foldFocused = true }
             else if old == .tray && new == nil { capFocused = true }
         }
+    }
+}
+
+private struct MetalFanWidthKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+}
+
+/// Named glyph key. Acts, press travel and help use the shared tool-cap contract.
+public struct MetalFanAction: View {
+    let label: String
+    let icon: MetalIconName
+    let action: () -> Void
+    public init(_ label: String, icon: MetalIconName, action: @escaping () -> Void) { self.label = label; self.icon = icon; self.action = action }
+    public var body: some View { MetalIconButton(label, icon: icon, variant: .tool, action: action).metalTooltip(label) }
+}
+
+public struct MetalFanInk: View {
+    @Binding private var value: MetalInk
+    public init(value: Binding<MetalInk>) { _value = value }
+    public var body: some View {
+        HStack(spacing: MetalRecipes.draw.points("self.gap")) {
+            ForEach(MetalInk.allCases) { ink in MetalFanDrawKey(label: "Ink: \(ink.rawValue)", chosen: value == ink, ink: ink) { value = ink } }
+        }.accessibilityElement(children: .contain).accessibilityLabel("Ink")
+    }
+}
+public struct MetalFanWidth: View {
+    @Binding private var value: MetalInkWidth
+    private let ink: MetalInk
+    public init(value: Binding<MetalInkWidth>, ink: MetalInk = .ink) { _value = value; self.ink = ink }
+    public var body: some View {
+        HStack(spacing: MetalRecipes.draw.points("self.gap")) {
+            ForEach(MetalInkWidth.allCases) { width in MetalFanDrawKey(label: "Width: \(width.rawValue)", chosen: value == width, ink: ink, width: width) { value = width } }
+        }.accessibilityElement(children: .contain).accessibilityLabel("Width")
+    }
+}
+private struct MetalFanDrawKey: View {
+    let label: String
+    let chosen: Bool
+    let ink: MetalInk
+    var width: MetalInkWidth? = nil
+    let action: () -> Void
+    @Environment(\.metalColorway) private var colorway
+    var body: some View {
+        let r = MetalRecipes.draw
+        Button(action: action) {
+            Group {
+                if let width { Capsule().fill(ink.color(in: colorway, graphiteStrip: true).color).frame(width: r.points("self.bead"), height: width.points) }
+                else { Circle().fill(ink.color(in: colorway, graphiteStrip: true).color).metalRecipe(MetalDrawGloss.recipe(ink: ink.color(in: colorway, graphiteStrip: true), colorway: colorway), in: Circle()).frame(width: r.points("self.bead"), height: r.points("self.bead")) }
+            }.frame(width: r.points("self.size"), height: r.points("self.size"))
+                .background { if chosen { Color.clear.metalRecipe(MetalRecipe(fill: colorway.tokens.pressedBg, shadows: colorway.tokens.pressedSh), in: Circle()) } }
+        }.buttonStyle(.plain).metalTooltip(label).accessibilityLabel(label).accessibilityAddTraits(chosen ? [.isSelected] : [])
     }
 }

@@ -3,25 +3,14 @@
 import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
+import { useReducedMotion } from '../../motion/reduced';
+import { Tooltip, TooltipProvider } from '../tooltip/tooltip';
+import { CloseIcon } from '../../icons/components.generated';
+import { Toggle } from '@base-ui/react/toggle';
+import { INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth } from '../draw-picks/draw-picks';
 
-/* ─────────────────────────────────────────────────────────
- * FAN: a compact control bar whose cells open in place
- *
- *   rest      a row of graphite caps: a label (what the bar is about), the current choice, and an
- *             options cap; nothing else is on screen
- *   picker    pressing the current choice fans its siblings out along one axis from behind it
- *             (up, for a bar at the bottom of the screen; both ways, centred on it, elsewhere),
- *             each on the part spring, staggered by a beat; choosing one folds the fan and the
- *             choice takes the cap
- *   tray      pressing the options cap stretches it sideways into a capsule of more controls, on
- *             the part spring; the controls fade in as it opens; ‹ at its end folds it back
- *   one open  opening one cell folds any other; Escape or a press outside folds it and focus
- *             returns to the cell that opened it
- *   keys      Enter or Space opens; arrows move along the fan; Enter picks; Escape folds
- *   hover     caps brighten on settle (the icon-button recipe); a pressed cap sinks 1
- *   reduced   the fan and the tray appear and fold without travel (a crossfade)
- * Every option stays one press away and in view once opened: nothing hides in a menu.
- * ───────────────────────────────────────────────────────── */
+/* Compact canvas control: one grouped tool grid or contextual tray is open.
+ * Caps use the shared tool recipe; all travel uses the part spring. */
 
 type Open = { id: string; restore: () => void } | null;
 const FanContext = React.createContext<{ open: Open; setOpen: (o: Open) => void } | null>(null);
@@ -31,13 +20,12 @@ const useFan = () => {
   return c;
 };
 
-const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 
 /* Styled with the theme's utilities: the icon-button tool cap for cells, the toolbar recipe for the tray. */
 const ROW = 'mu-fan relative inline-flex items-end gap-toolbar-gap';
-const CAP = 'mu-icon-trigger box-border inline-grid place-items-center flex-none p-0 border-0 cursor-pointer tap-highlight-none size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed focus-visible:focus-ring-flush';
+const CAP = 'disabled:opacity-button-disabled disabled:cursor-default mu-icon-trigger box-border inline-grid place-items-center flex-none p-0 border-0 cursor-pointer tap-highlight-none size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed focus-visible:focus-ring-flush';
 const LABEL = 'mu-fan-label box-border inline-flex items-center h-icon-button-tool-size px-toolbar-pad rounded-icon-button-tool-radius recipe-icon-button-tool type-toolbar-search text-icon-button-tool-ink whitespace-nowrap';
-const TRAY = 'mu-fan-tray relative box-border inline-flex items-center h-icon-button-tool-size overflow-hidden rounded-icon-button-tool-radius recipe-icon-button-tool';
 /** The part spring, from the theme (duration and curve). */
 const SPRING = 'duration-part ease-part';
 
@@ -69,14 +57,15 @@ function FanRoot({ className, children, ...props }: FanProps) {
   }, [open]);
   return (
     <FanContext.Provider value={{ open, setOpen }}>
-      <div ref={root} role="toolbar" aria-label={props['aria-label']} className={className ? `${ROW} ${className}` : ROW}>{children}</div>
+      <TooltipProvider><div ref={root} role="toolbar" aria-label={props['aria-label']} className={className ? `${ROW} ${className}` : ROW}>{children}</div></TooltipProvider>
     </FanContext.Provider>
   );
 }
 
 /** What the bar is about right now: "Canvas", "Text", "Ink", "3 selected". */
-function FanLabel({ children }: { children: React.ReactNode }) {
-  return <div className={LABEL}>{children}</div>;
+function FanLabel({ children, label }: { children: React.ReactNode; label?: string }) {
+  const content = <div className={label ? `${CAP} mu-fan-label` : LABEL} aria-label={label}>{children}</div>;
+  return label ? <Tooltip label={label}>{content}</Tooltip> : content;
 }
 
 export interface FanOption<V extends string> { value: V; label: string; icon: React.ReactNode; shortcut?: string }
@@ -100,7 +89,8 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
   const items = React.useRef<(HTMLButtonElement | null)[]>([]);
   const [step, setStep] = React.useState(0);
   const current = options.find((o) => o.value === value) ?? options[0];
-  const others = options.filter((o) => o.value !== current.value);
+  const choices = options;
+  const rows = Math.ceil(choices.length / 3);
 
   // One slot is a cap plus the bar's gap, measured as the fan opens so it follows the theme (and
   // never reads a size from before the styles arrived).
@@ -112,41 +102,45 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
   };
   React.useEffect(() => { if (isOpen) items.current[0]?.focus(); }, [isOpen]);
 
-  const slot = (k: number) => (direction === 'up' ? -(k + 1) : (k % 2 === 0 ? -1 : 1) * (Math.floor(k / 2) + 1));
+  const cell = (k: number) => {
+    const row = Math.floor(k / 3);
+    const centre = Math.ceil(rows / 2);
+    return { x: (k % 3 - 1) * step, y: (direction === 'up' ? row - rows : row - centre + (row >= centre ? 1 : 0)) * step };
+  };
   const choose = (v: V) => { onValueChange(v); setOpen(null); cap.current?.focus(); };
   const toggle = () => { if (!isOpen) measure(); setOpen(isOpen ? null : { id, restore: () => cap.current?.focus() }); };
-  // Up moves away from the cap along the fan, down back toward it (list order in both directions).
   const move = (e: React.KeyboardEvent, k: number) => {
-    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 }[e.key];
+    if (delta === undefined) return;
     e.preventDefault();
-    const next = e.key === 'ArrowUp' ? k + 1 : k - 1;
-    if (next < 0) { cap.current?.focus(); return; }
-    items.current[Math.min(others.length - 1, next)]?.focus();
+    const next = k + delta;
+    if (next >= 0 && next < choices.length && (Math.abs(delta) === 3 || Math.floor(next / 3) === Math.floor(k / 3))) items.current[next]?.focus();
   };
-  const still = reduced();
+  const still = useReducedMotion(cap.current);
 
+  if (!current) return null;
   return (
     <div className="mu-fan-picker relative">
       <div role="listbox" aria-label={label} aria-hidden={!isOpen} className="absolute inset-0 pointer-events-none">
-        {others.map((o, k) => {
-          const y = isOpen ? slot(k) * step : 0;
+        {choices.map((o, k) => {
+          const { x, y } = cell(k);
           return (
             <button
               key={o.value}
               ref={(el) => { items.current[k] = el; }}
               type="button"
               role="option"
-              aria-selected={false}
+              aria-selected={o.value === value}
               aria-label={o.shortcut ? `${o.label} · ${o.shortcut}` : o.label}
               title={o.shortcut ? `${o.label} · ${o.shortcut}` : o.label}
               tabIndex={isOpen ? 0 : -1}
-              className={`${CAP} absolute inset-0 ${SPRING}`}
+              className={`${CAP} absolute inset-0 ${SPRING} aria-selected:recipe-icon-button-tool-pressed`}
               style={{
-                transform: `translateY(${y}px)`,
+                transform: isOpen ? `translate(${x}px, ${y}px)` : 'translate(0, 0)',
                 opacity: isOpen ? 1 : 0,
                 pointerEvents: isOpen ? 'auto' : 'none',
                 transitionProperty: still ? 'opacity' : 'transform, opacity',
-                transitionDelay: !still && isOpen ? `calc(${k} * var(--mu-motion-fan-stagger))` : undefined,
+                transitionDelay: !still && isOpen ? `calc(${Math.abs(k % 3 - 1) + Math.abs(Math.floor(k / 3) - rows)} * var(--mu-motion-fan-stagger))` : undefined,
               }}
               onClick={() => choose(o.value)}
               onKeyDown={(e) => move(e, k)}
@@ -188,12 +182,25 @@ function FanTray({ label, icon, children }: FanTrayProps) {
   const cap = React.useRef<HTMLButtonElement>(null);
   const shell = React.useRef<HTMLDivElement>(null);
   const inner = React.useRef<HTMLDivElement>(null);
-  const [width, setWidth] = React.useState<number | null>(null);
+  const backing = React.useRef<HTMLDivElement>(null);
+  const previousWidth = React.useRef<number | null>(null);
+  const still = useReducedMotion(shell.current);
 
   useIsoLayoutEffect(() => {
-    if (!isOpen) { setWidth(null); return; }
-    setWidth(inner.current?.scrollWidth ?? null);
-  }, [isOpen, children]);
+    const el = shell.current;
+    if (!el) return;
+    const width = el.offsetWidth;
+    const previous = previousWidth.current;
+    previousWidth.current = width;
+    const css = getComputedStyle(el);
+    const raw = css.getPropertyValue(still ? '--mu-spring-settle-d' : '--mu-spring-part-d').trim();
+    const duration = parseFloat(raw) * (raw.endsWith('ms') ? 1 : 1000);
+    const easing = css.getPropertyValue(still ? '--mu-spring-settle' : '--mu-spring-part').trim();
+    if (isOpen) inner.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration, easing });
+    if (!still && previous && previous !== width) {
+      backing.current?.animate([{ transform: `scaleX(${previous / width})` }, { transform: 'scaleX(1)' }], { duration, easing });
+    }
+  }, [isOpen, children, still]);
   React.useEffect(() => {
     if (!isOpen) return;
     const first = inner.current?.querySelector<HTMLElement>('button, [tabindex="0"]');
@@ -202,14 +209,14 @@ function FanTray({ label, icon, children }: FanTrayProps) {
 
   const toggle = () => { setOpen(isOpen ? null : { id, restore: () => cap.current?.focus() }); };
   const fold = () => { setOpen(null); requestAnimationFrame(() => cap.current?.focus()); };
-  const still = reduced();
+
 
   return (
     <div
       ref={shell}
-      className={`${isOpen ? TRAY : `${TRAY} w-icon-button-tool-size`} ${SPRING}`}
-      style={{ width: isOpen && width ? width : undefined, transitionProperty: still ? 'none' : 'width' }}
+      className={`mu-fan-tray relative inline-flex items-center min-h-icon-button-tool-size ${!isOpen ? 'w-icon-button-tool-size' : ''}`}
     >
+      <div ref={backing} aria-hidden className="absolute inset-0 origin-left rounded-icon-button-tool-radius recipe-icon-button-tool" />
       <button
         ref={cap}
         type="button"
@@ -227,17 +234,33 @@ function FanTray({ label, icon, children }: FanTrayProps) {
         ref={inner}
         aria-label={label}
         aria-hidden={!isOpen}
-        className={`mu-fan-tray-inner inline-flex items-center gap-toolbar-gap px-toolbar-pad whitespace-nowrap ${SPRING}`}
-        style={{ opacity: isOpen ? 1 : 0, visibility: isOpen ? 'visible' : 'hidden', transitionProperty: 'opacity' }}
+        className={`mu-fan-tray-inner relative inline-flex flex-wrap items-center gap-toolbar-gap p-toolbar-pad ${SPRING}`}
+        style={{ maxWidth: 'calc(100vw - var(--mu-r-icon-button-tool-size) * 2 - var(--mu-space-32) * 2)', display: isOpen ? undefined : 'none', opacity: isOpen ? 1 : 0, transitionProperty: 'opacity' }}
       >
         {children}
         <BaseToolbar.Button aria-label={`Fold ${label}`} title="Fold" className={`${CAP} mu-fan-fold`} onClick={fold}>
-          <span aria-hidden className="type-toolbar-search">‹</span>
+          <CloseIcon />
         </BaseToolbar.Button>
       </BaseToolbar.Root>
     </div>
   );
 }
 
-// Bound, not assigned as statements: a bundler can drop an unused `X = Object.assign(...)`, never a bare `Fan.Label = ...`.
-export const Fan = Object.assign(FanRoot, { Label: FanLabel, Picker: FanPicker, Tray: FanTray });
+export interface FanActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  label: string;
+  icon: React.ReactNode;
+  shortcut?: string;
+}
+/** A named glyph key in a contextual tray. Icon acts follow hover and press. */
+function FanAction({ label, icon, shortcut, className, ...props }: FanActionProps) {
+  return <Tooltip label={label} shortcut={shortcut}><BaseToolbar.Button {...props} aria-label={label} title={label} className={`${CAP}${className ? ` ${className}` : ''}`}>{icon}</BaseToolbar.Button></Tooltip>;
+}
+function FanInk({ value, onValueChange }: { value: Ink; onValueChange: (ink: Ink) => void }) {
+  return <BaseToolbar.Group aria-label="Ink" className="draw-picks">{INKS.map((ink) => <Tooltip key={ink.value} label={`Ink: ${ink.label.toLowerCase()}`}><BaseToolbar.Button aria-label={`Ink: ${ink.label.toLowerCase()}`} className="mu-draw-pick draw-pick" render={<Toggle pressed={value === ink.value} onPressedChange={() => onValueChange(ink.value)} />}><span aria-hidden className="draw-bead draw-lift reduced-motion:transition-none" style={{ '--mu-self': ink.value === 'ink' ? 'var(--mu-r-draw-ink-on-dark)' : inkColor(ink.value) } as React.CSSProperties} /></BaseToolbar.Button></Tooltip>)}</BaseToolbar.Group>;
+}
+const WIDTH_CLASSES = { fine: 'draw-w-fine', regular: 'draw-w-regular', bold: 'draw-w-bold' };
+function FanWidth({ value, onValueChange, ink = 'ink' }: { value: InkWidth; onValueChange: (width: InkWidth) => void; ink?: Ink }) {
+  return <BaseToolbar.Group aria-label="Width" className="draw-picks">{INK_WIDTHS.map((width) => <Tooltip key={width.value} label={`Width: ${width.label.toLowerCase()}`}><BaseToolbar.Button aria-label={`Width: ${width.label.toLowerCase()}`} className="mu-draw-pick draw-pick" render={<Toggle pressed={value === width.value} onPressedChange={() => onValueChange(width.value)} />}><span aria-hidden className={`draw-dot ${WIDTH_CLASSES[width.value]} draw-lift reduced-motion:transition-none`} style={{ '--mu-self': ink === 'ink' ? 'var(--mu-r-draw-ink-on-dark)' : inkColor(ink), width: 'var(--mu-r-draw-self-bead)' } as React.CSSProperties} /></BaseToolbar.Button></Tooltip>)}</BaseToolbar.Group>;
+}
+// Bind once so a bundler can drop the complete component.
+export const Fan = Object.assign(FanRoot, { Label: FanLabel, Picker: FanPicker, Tray: FanTray, Action: FanAction, Ink: FanInk, Width: FanWidth });

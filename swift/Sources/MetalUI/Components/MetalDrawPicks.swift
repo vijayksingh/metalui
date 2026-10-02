@@ -138,7 +138,7 @@ private struct MetalDrawPickStyle: ButtonStyle {
 }
 
 /// Read the ordered CSS shadow stack directly from the generated draw token.
-private enum MetalDrawGloss {
+enum MetalDrawGloss {
     static func recipe(ink: MetalRGBA, colorway: MetalColorway) -> MetalRecipe {
         let raw = MetalRecipes.draw.text("bead.gloss", colorway: MetalRecipeColorway(colorway)) ?? ""
         let shadows: [MetalShadow] = raw.components(separatedBy: "), ").compactMap { segment in

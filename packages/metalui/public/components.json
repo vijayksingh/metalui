@@ -430,7 +430,7 @@
       "name": "fan",
       "title": "Fan",
       "status": "alpha",
-      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "description": "A compact canvas control bar: grouped tools unfold in a three-column grid, contextual glyph actions expand in a tray, and named ink and stroke keys latch the current settings. One cell opens at a time.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Fan"
