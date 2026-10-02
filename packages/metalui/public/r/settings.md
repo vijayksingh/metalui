@@ -21,7 +21,7 @@ An app's settings as sections of rows. React: `Settings` with `Settings.Section`
 
 - On or off, at once: `Switch`, labelled by the row's name (`aria-labelledby` with the row's `id`).
 - One of a few: `Switcher`, compact.
-- An action: `Button` (Download backup, Restore, Upgrade).
+- An action: `Button` with its semantic `icon` (Download backup: `download`; Restore: `undo`). The host owns the backup transport; the row does not serialize or restore application data. Swift hosts use `MetalButton("Download", icon: .download)` / `MetalButton("Restore…", icon: .undo)` in the row’s control builder.
 - A value (Storage used): a `Label value-small` or a `SizeReadout`.
 
 ## Rules

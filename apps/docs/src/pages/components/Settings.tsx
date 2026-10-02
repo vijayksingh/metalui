@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Switcher, Settings, StatusBadge, Switch } from '@unlocalhosted/metalui';
+import { Icon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/blocks/settings/settings.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/blocks/settings/settings.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
@@ -29,8 +30,8 @@ function SettingsView() {
             <span className="type-readout text-ink2">38.4 MB</span>
           </Settings.Row>
           <Settings.Row name="Backup" detail="One encrypted file with everything on this device.">
-            <Button>Download</Button>
-            <Button>Restore…</Button>
+            <Button icon={<Icon name="download" />}>Download</Button>
+            <Button icon={<Icon name="undo" />}>Restore…</Button>
           </Settings.Row>
         </Settings.Section>
         <Settings.Section title="Shortcuts">
@@ -53,7 +54,7 @@ export default function SettingsPage() {
     <ComponentPage
       title="Settings"
       lede="An app's settings as sections of rows. Each row says what the setting is in plain words, adds one line of detail, and has one control on the right."
-      play={{ lede: 'Everything here works: switch sync off and read its detail change, pick a colorway, hover a row and notice it does not light up; only its control acts.', node: <SettingsView /> }}
+      play={{ lede: 'Switch sync off and read its detail change, pick a colorway, hover a row and notice it does not light up. The backup keys show the host action slots; connect Download and Restore to your app’s backup transport.', node: <SettingsView /> }}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

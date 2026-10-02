@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Sections of immediate settings. Each row owns one trailing control.
+/// Backup controls come from the host: MetalButton with .download / .undo and its transport callback.
 public struct MetalSettings: View {
     private let content: AnyView
 
