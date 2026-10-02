@@ -1,0 +1,66 @@
+import { expect, test } from '@playwright/test';
+import { COLORWAYS, capture, open } from './helpers';
+for (const colorway of COLORWAYS) {
+  test(`Person picker writes exact source with fixed footprint and one Undo in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/person-cue', colorway);
+    const host = page.getByTestId('person-document'), cue = host.locator('.mu-person-cue');
+    const source = host.getByRole('textbox', { name: 'Person document source' }), tail = host.locator('[data-person-tail]');
+    const width = (await cue.boundingBox())!.width, x = (await tail.boundingBox())!.x;
+    await expect(cue).toHaveAccessibleName('Assigned person: Mira Chen');
+    await cue.focus(); await page.keyboard.press('Enter');
+    await expect(page.getByRole('listbox', { name: 'Assigned person' })).toBeVisible();
+    await expect(host).toHaveAttribute('data-editing', 'true');
+    await page.keyboard.press('ArrowDown');
+    await expect(source).toHaveValue('🧠 Ask Mira Chen about the poster.');
+    await page.getByRole('listbox').screenshot({ path: capture(`person-picker-${colorway}`) });
+    await page.keyboard.press('Enter');
+    await expect(source).toHaveValue('🧠 Ask Alexandra Rivera about the poster.');
+    await expect(cue).toHaveAccessibleName('Assigned person: Alexandra Rivera');
+    await expect(cue).toBeFocused();
+    expect((await cue.boundingBox())!.width).toBeCloseTo(width, 2); expect((await tail.boundingBox())!.x).toBeCloseTo(x, 2);
+    await host.screenshot({ path: capture(`person-chosen-${colorway}`) });
+    await host.getByRole('button', { name: 'Undo person edit' }).click();
+    await expect(source).toHaveValue('🧠 Ask Mira Chen about the poster.');
+    await expect(host.getByRole('button', { name: 'Undo person edit' })).toBeDisabled();
+    await expect(host.getByLabel('Person retained selection')).toHaveText('UTF16 33–33 · committed');
+    await cue.focus(); await page.keyboard.press('Space'); await page.keyboard.type('Sam'); await page.keyboard.press('Enter');
+    await expect(source).toHaveValue('🧠 Ask Sam Patel about the poster.');
+    await host.getByRole('button', { name: 'Undo person edit' }).click();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await cue.click(); await page.keyboard.press('End'); await page.keyboard.press('Escape');
+    await expect(source).toHaveValue('🧠 Ask Mira Chen about the poster.');
+    await expect(host).not.toHaveAttribute('data-editing', 'true');
+    await expect(cue).toBeFocused();
+    await cue.click(); await page.getByRole('option', { name: 'Sam Patel' }).click();
+    await expect(source).toHaveValue('🧠 Ask Sam Patel about the poster.');
+    await expect.poll(() => cue.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+    await host.screenshot({ path: capture(`person-chosen-${colorway}-reduced`) });
+  });
+}
+test('Person read-only, disabled, raw, dismissal and host typing do not retain a stale edit', async ({ page }) => {
+  await open(page, '/components/person-cue', 'graphite');
+  const host = page.getByTestId('person-document'), cue = host.locator('.mu-person-cue'), source = host.getByRole('textbox', { name: 'Person document source' });
+  await cue.click(); await expect(page.getByRole('option', { name: 'Robin Lee' })).toHaveAttribute('aria-disabled', 'true');
+  await page.keyboard.press('Escape'); await expect(host.getByRole('button', { name: 'Undo person edit' })).toBeDisabled();
+  await cue.click();
+  await source.evaluate((input: HTMLTextAreaElement) => {
+    Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')!.set!.call(input, '🧠 Ask Mira Chen about another poster.');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(source).toHaveValue('🧠 Ask Mira Chen about another poster.');
+  await page.keyboard.press('Enter');
+  await expect(source).toHaveValue('🧠 Ask Mira Chen about another poster.');
+  for (const panel of await page.locator('.dialkit-panel-inner[data-collapsed="true"]').all()) await panel.click();
+  const dial = (name: string) => page.locator('.dialkit-labeled-control', { has: page.locator('.dialkit-labeled-control-label', { hasText: new RegExp(`^${name.replace(/([A-Z])/g, '\\s*$1')}$`, 'i') }) });
+  await dial('readOnly').getByRole('button', { name: 'On', exact: true }).click(); await cue.click();
+  await expect(page.getByRole('listbox')).toHaveCount(0); await expect(cue).toHaveAttribute('aria-readonly', 'true');
+  await dial('readOnly').getByRole('button', { name: 'Off', exact: true }).click();
+  await dial('disabled').getByRole('button', { name: 'On', exact: true }).click(); await expect(cue).toBeDisabled();
+  await dial('disabled').getByRole('button', { name: 'Off', exact: true }).click();
+  await dial('raw').getByRole('button', { name: 'On', exact: true }).click(); await host.screenshot({ path: capture('person-raw-graphite') });
+  await cue.click(); await expect(host).toHaveAttribute('data-editing', 'true');
+  await dial('mounted').getByRole('button', { name: 'Off', exact: true }).evaluate((button: HTMLButtonElement) => button.click());
+  await expect(host).not.toHaveAttribute('data-editing', 'true'); await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(source).toHaveValue('🧠 Ask Mira Chen about another poster.');
+});

@@ -1379,6 +1379,38 @@
       "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
     },
     {
+      "name": "person-cue",
+      "type": "registry:ui",
+      "title": "Person cue",
+      "description": "An exact source name opens a host-provided avatar/name picker with a fixed footprint and one confirmed document transaction.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tick-glyph.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/person-cue/person-cue.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/person-cue/person-cue.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/person-cue/person-cue.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/person-cue/person-cue.css"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/person-cue.md. SwiftUI: MetalPersonCue, MetalPersonCueChoice in the MetalUI Swift package."
+    },
+    {
       "name": "popover",
       "type": "registry:ui",
       "title": "Popover",

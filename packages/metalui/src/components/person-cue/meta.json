@@ -1,0 +1,8 @@
+{
+  "name": "person-cue", "title": "Person cue", "status": "alpha", "layer": "component",
+  "description": "An exact source name opens a host-provided avatar/name picker with a fixed footprint and one confirmed document transaction.",
+  "base": "@base-ui/react/select",
+  "react": { "export": "PersonCue", "files": ["person-cue.tsx", "person-cue.css"] },
+  "swift": { "symbol": "MetalPersonCue, MetalPersonCueChoice", "file": "swift/Sources/MetalUI/Components/MetalPersonCue.swift" },
+  "agent": "person-cue.agent.md", "page": "/components/person-cue"
+}

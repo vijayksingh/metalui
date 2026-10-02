@@ -3068,6 +3068,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An exact source name opens the known-person picker. Compose the Mark quiet underline and host avatar slot, Enum fixed-footprint content type, Select/Menu plate/rows/pen and shared focus ring. Only a confirmed host name rewrites source; Escape restores the captured document selection. No separate dimensions or material. (recipes.mark; recipes.enum-cue; recipes.select; recipes.menu; motion/swap; cue source transaction)
+    public static let personCue = MetalObjectRecipe(
+        name: "person-cue",
+        layers: [
+
+        ],
+        props: [
+            :
+        ]
+    )
+
     /// Inline canonical quantity: composes the Mark face/underline/meaning glyph, tooltip held scale and shared numeric drum. Explicit host footprint uses inherited font metrics; no additional material or dimensions. (docs/CUE-EDITING.md; recipes.mark; recipes.tooltip; motion/swap; foundations.space)
     public static let numericCue = MetalObjectRecipe(
         name: "numeric-cue",

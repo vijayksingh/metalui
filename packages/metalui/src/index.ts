@@ -133,3 +133,5 @@ export { EnumCue, type EnumCueProps, type EnumCueChoice } from './components/enu
 export { DateCue, relativeDateWords, type DateCueProps } from './components/date-cue/date-cue';
 
 export { TagCue, type TagCueProps, type TagPickerProps } from './components/tag-cue/tag-cue';
+
+export { PersonCue, type PersonCueProps, type PersonCueChoice } from './components/person-cue/person-cue';

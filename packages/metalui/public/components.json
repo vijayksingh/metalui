@@ -919,6 +919,23 @@
       "agent": "https://metalui.dev/r/perfect-preview.md"
     },
     {
+      "name": "person-cue",
+      "title": "Person cue",
+      "status": "alpha",
+      "description": "An exact source name opens a host-provided avatar/name picker with a fixed footprint and one confirmed document transaction.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PersonCue",
+        "base": "@base-ui/react/select"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPersonCue, MetalPersonCueChoice"
+      },
+      "registry": "https://metalui.dev/r/person-cue.json",
+      "agent": "https://metalui.dev/r/person-cue.md"
+    },
+    {
       "name": "popover",
       "title": "Popover",
       "status": "alpha",
