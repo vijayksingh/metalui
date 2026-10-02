@@ -7,7 +7,9 @@ import XCTest
 @MainActor
 final class MetalRenameFeature: XCTestCase {
     private final class Document: ObservableObject {
-        @Published var name = "report.final.txt"
+        let original: String
+        @Published var name: String
+        init(_ initial: String = "report.final.txt") { original = initial; name = initial }
         @Published var pending = false
         @Published var requests = 0
         @Published var done = false
@@ -15,16 +17,24 @@ final class MetalRenameFeature: XCTestCase {
     private struct Fixture: View {
         @ObservedObject var document: Document
         let colorway: MetalColorway
-        var body: some View {
-            MetalRenameEditor(document.name, file: true, label: "File name",
+        var dialog = false
+        private var editor: some View {
+            MetalRenameEditor(document.name, file: !dialog, label: dialog ? "Name" : "File name",
                 validate: { $0 == "Taken" ? "That name is taken." : nil },
                 onRename: { _ in document.requests += 1; try await Task.sleep(for: .seconds(0.8)) },
-                onRenamed: { name, original in document.name = name; XCTAssertEqual(original, "report.final.txt") },
+                onRenamed: { name, original in document.name = name; XCTAssertEqual(original, document.original) },
                 onDone: { document.done = true }, onCancel: {}, onPendingChange: { document.pending = $0 })
-                .padding(MetalSpace.s20)
-                .frame(width: MetalRecipes.dialog.points("self.width"))
-                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
-                .metalColorway(colorway)
+        }
+        var body: some View {
+            Group {
+                if dialog {
+                    MetalDialogPopup("Rename canvas", popup: { editor }, actions: { EmptyView() })
+                } else {
+                    editor.padding(MetalSpace.s20).frame(width: MetalRecipes.dialog.points("self.width"))
+                }
+            }
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
         }
     }
     private func fields(_ view: NSView) -> [NSTextField] {
@@ -38,20 +48,20 @@ final class MetalRenameFeature: XCTestCase {
         try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
         XCTAssertNoThrow(try bitmap.representation(using: .png, properties: [:])!.write(to: url))
     }
-    func testSelectedFileRename() async throws {
+    private func renameFeature(dialog: Bool) async throws {
         _ = NSApplication.shared
         for colorway in MetalColorway.allCases {
-            let document = Document()
-            let host = NSHostingView(rootView: Fixture(document: document, colorway: colorway))
+            let document = Document(dialog ? "Trip notes" : "report.final.txt")
+            let host = NSHostingView(rootView: Fixture(document: document, colorway: colorway, dialog: dialog))
             let window = NSWindow(contentRect: NSRect(origin: .zero, size: host.fittingSize), styleMask: [.titled], backing: .buffered, defer: false)
             window.isReleasedWhenClosed = false; window.contentView = host
             window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
             defer { window.close() }
             try await Task.sleep(for: .seconds(0.25))
-            let input = try XCTUnwrap(fields(host).first(where: { $0.stringValue == "report.final.txt" }))
+            let input = try XCTUnwrap(fields(host).first(where: { $0.stringValue == document.original }))
             let editor = try XCTUnwrap(input.currentEditor() as? NSTextView)
-            XCTAssertEqual(editor.selectedRange(), NSRange(location: 0, length: ("report.final" as NSString).length))
-            snapshot("rename-editor-\(colorway.rawValue)", host)
+            XCTAssertEqual(editor.selectedRange(), NSRange(location: 0, length: ((dialog ? "Trip notes" : "report.final") as NSString).length))
+            snapshot("\(dialog ? "dialog-rename" : "rename-editor")-\(colorway.rawValue)", host)
             // This is the platform field editor's actual text/Return path, not component state mutation.
             editor.selectAll(nil); editor.insertText("Lisbon.txt", replacementRange: editor.selectedRange())
             editor.doCommand(by: #selector(NSResponder.insertNewline(_:)))
@@ -59,9 +69,12 @@ final class MetalRenameFeature: XCTestCase {
             XCTAssertTrue(document.pending); XCTAssertEqual(document.requests, 1); XCTAssertFalse(input.isEnabled)
             try await Task.sleep(for: .seconds(1.2))
             XCTAssertEqual(document.name, "Lisbon.txt"); XCTAssertFalse(document.done)
-            snapshot("rename-result-\(colorway.rawValue)", host)
+            snapshot("\(dialog ? "dialog-rename-result" : "rename-result")-\(colorway.rawValue)", host)
             try await Task.sleep(for: .seconds(0.9))
             XCTAssertTrue(document.done); XCTAssertFalse(document.pending); XCTAssertEqual(document.requests, 1)
         }
     }
+    func testSelectedFileRename() async throws { try await renameFeature(dialog: false) }
+    func testCanvasDialogRename() async throws { try await renameFeature(dialog: true) }
+
 }

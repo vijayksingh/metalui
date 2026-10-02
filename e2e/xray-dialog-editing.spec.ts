@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { COLORWAYS } from './helpers';
 
 const CALLOUTS = ['Sheet', 'Opening', 'Focus', 'Place', 'Shadow', 'Layers'];
-const FOCUSABLE = ['Name', 'Cancel', 'Save'];
+const FOCUSABLE = ['Name', 'Cancel', 'Rename'];
 
 const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-label^="${name}"]`).click();
 const readout = (card: Locator, name: string) => card.locator('.ed-readout').filter({ hasText: name });

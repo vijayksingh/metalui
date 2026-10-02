@@ -33,7 +33,7 @@ export const DIM = alphaOf(D.scrim.color.bone);
 export const TOP = parseFloat(D.self.top);
 export const RISE = Math.abs(D.self['enter-y']);
 export const FROM = Number(D.self['enter-scale']);
-export const FOCUSABLE = ['Name', 'Cancel', 'Save'];
+export const FOCUSABLE = ['Name', 'Cancel', 'Rename'];
 
 /* the window the specimen sits in: a small viewport, in points, shown at K of its size */
 const VW = 400, VH = 300, K = 0.42;
@@ -74,7 +74,7 @@ const Face = React.forwardRef<HTMLDivElement, { m: DialogModel; fill: string; sh
       <Field ref={at(0)} onClick={() => onPick?.(0)}><Field.Input defaultValue="Trip notes" aria-label="Name" readOnly tabIndex={-1} /></Field>
       <div className="mu-dialog-actions dialog-actions">
         <Button ref={at(1) as React.Ref<HTMLButtonElement>} tabIndex={-1} onClick={() => onPick?.(1)}>Cancel</Button>
-        <Button ref={at(2) as React.Ref<HTMLButtonElement>} tabIndex={-1} cap="primary" onClick={() => onPick?.(2)}>Save</Button>
+        <Button ref={at(2) as React.Ref<HTMLButtonElement>} tabIndex={-1} cap="primary" onClick={() => onPick?.(2)}>Rename</Button>
       </div>
     </Surface>
   );

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Dialog, Field, Surface } from '@unlocalhosted/metalui';
+import { Button, Surface } from '@unlocalhosted/metalui';
+import { RenameDemo } from '../rename/RenameDemo';
 import { tokens } from '../../lib/tokens';
 import { Exploded, IsoCap, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
@@ -82,7 +83,7 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
       <b style={{ font: `600 ${14 * S}px/1.2 var(--sans)`, color: 'var(--ink)' }}>Rename canvas</b>
       <span className={focusAt === 0 && spot === 'press' ? 'xr-dfield is-focus' : 'xr-dfield'} style={{ height: 26 * S, borderRadius: 10 * S, fontSize: 12 * S, padding: `0 ${10 * S}px` }}>Trip notes</span>
       <span style={{ display: 'flex', justifyContent: 'flex-end', gap: 6 * S }}>
-        {['Cancel', 'Save'].map((b, i) => <span key={b} className={focusAt === i + 1 && spot === 'press' ? 'xr-dbtn is-focus' : 'xr-dbtn'} style={{ height: 22 * S, padding: `0 ${10 * S}px`, fontSize: 11 * S, background: b === 'Save' ? '#1B1B1D' : undefined, color: b === 'Save' ? '#F2F2F0' : undefined }}>{b}</span>)}
+        {['Cancel', 'Rename'].map((b, i) => <span key={b} className={focusAt === i + 1 && spot === 'press' ? 'xr-dbtn is-focus' : 'xr-dbtn'} style={{ height: 22 * S, padding: `0 ${10 * S}px`, fontSize: 11 * S, background: b === 'Rename' ? '#1B1B1D' : undefined, color: b === 'Rename' ? '#F2F2F0' : undefined }}>{b}</span>)}
       </span>
     </div>
   );
@@ -131,18 +132,7 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
       onReset={() => { setM(INITIAL); reopen(); }} deps={[spot, m, open]}
       card={card}
     />
-    <Dialog open={real} onOpenChange={setReal}>
-        <Dialog.Popup>
-          <Dialog.Title>Rename canvas</Dialog.Title>
-          <Field>
-            <Field.Input defaultValue="Trip notes" aria-label="Name" />
-          </Field>
-          <Dialog.Actions>
-            <Button onClick={() => setReal(false)}>Cancel</Button>
-            <Button cap="primary" onClick={() => setReal(false)}>Save</Button>
-          </Dialog.Actions>
-        </Dialog.Popup>
-      </Dialog>
+    <RenameDemo dialog open={real} onOpenChange={setReal} trigger={false} initial="Trip notes" label="Name" testId="rename-canvas-xray" />
     </HintLayer>
   );
 }
@@ -153,7 +143,7 @@ export function DialogStill() {
     <Surface material="plate" radius="card" style={{ width: 210, padding: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
       <b style={{ font: '600 13px/1.2 var(--sans)' }}>Rename canvas</b>
       <span className="xr-dfield" style={{ height: 28, borderRadius: 10, padding: '0 10px', font: '500 12px var(--sans)' }}>Trip notes</span>
-      <span style={{ display: 'flex', justifyContent: 'flex-end', gap: 6, zoom: 0.85 }}><Button tabIndex={-1}>Cancel</Button><Button tabIndex={-1} cap="primary">Save</Button></span>
+      <span style={{ display: 'flex', justifyContent: 'flex-end', gap: 6, zoom: 0.85 }}><Button tabIndex={-1}>Cancel</Button><Button tabIndex={-1} cap="primary">Rename</Button></span>
     </Surface>
   );
 }

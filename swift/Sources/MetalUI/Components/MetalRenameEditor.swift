@@ -173,6 +173,13 @@ private struct MetalRenameInput: NSViewRepresentable {
     }
 }
 #elseif canImport(UIKit)
+private final class MetalRenameUITextField: UITextField {
+    var cancelEdit: (() -> Void)?
+    override var keyCommands: [UIKeyCommand]? {
+        (super.keyCommands ?? []) + [UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(cancelRename))]
+    }
+    @objc private func cancelRename() { cancelEdit?() }
+}
 private struct MetalRenameInput: UIViewRepresentable {
     @Binding var text: String
     let original: String
@@ -186,7 +193,8 @@ private struct MetalRenameInput: UIViewRepresentable {
     let cancel: () -> Void
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeUIView(context: Context) -> UITextField {
-        let input = UITextField()
+        let input = MetalRenameUITextField()
+        input.cancelEdit = { context.coordinator.owner.cancel() }
         input.text = text; input.borderStyle = .none; input.accessibilityLabel = label
         input.font = MetalFonts.ctFont(MetalType.ui, size: MetalType.ui.size) as UIFont
         input.delegate = context.coordinator

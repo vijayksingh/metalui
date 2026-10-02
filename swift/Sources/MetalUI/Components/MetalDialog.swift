@@ -29,10 +29,10 @@ public struct MetalDialogPopup<Popup: View, Actions: View>: View {
                     .foregroundStyle(colorway.tokens.ink.color)
                     .accessibilityAddTraits(.isHeader)
                 popup
-                HStack(spacing: recipe.points("actions.gap")) {
+                if Actions.self != EmptyView.self { HStack(spacing: recipe.points("actions.gap")) {
                     Spacer(minLength: .zero)
                     actions
-                }
+                } }
             }
             .padding(recipe.points("self.pad"))
             .frame(width: recipe.points("self.width"))
@@ -53,12 +53,14 @@ public struct MetalDialog<Popup: View, Actions: View>: View {
     private let actions: Actions
 
     @MetalMotionPreference private var reduceMotion
+    private let dismissible: Bool
     @State private var arrived = false
 
     public init(isPresented: Binding<Bool>, title: String,
-                material: MetalSurfaceMaterial = .plate, radius: MetalSurfaceRadius = .card,
+                material: MetalSurfaceMaterial = .plate, radius: MetalSurfaceRadius = .card, dismissible: Bool = true,
                 @ViewBuilder popup: () -> Popup, @ViewBuilder actions: () -> Actions) {
         _isPresented = isPresented
+        self.dismissible = dismissible
         self.title = title
         self.material = material
         self.radius = radius
@@ -71,6 +73,7 @@ public struct MetalDialog<Popup: View, Actions: View>: View {
             .sheet(isPresented: $isPresented, onDismiss: { arrived = false }) {
                 let recipe = MetalRecipes.dialog
                 MetalDialogPopup(title, material: material, radius: radius, popup: { popup }, actions: { actions })
+                    .interactiveDismissDisabled(!dismissible)
                     .opacity(arrived ? .one : .zero)
                     .offset(y: arrived || reduceMotion ? .zero : recipe.points("self.enter-y"))
                     .scaleEffect(arrived || reduceMotion ? .one : recipe.scalar("self.enter-scale"))

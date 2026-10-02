@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Dialog, Field } from '@unlocalhosted/metalui';
+import { useDialKit } from 'dialkit';
+import { RenameDemo } from '../../ui/rename/RenameDemo';
 import { DialogXray } from '../../ui/xray/DialogXray';
 import reactSource from '../../../../../packages/metalui/src/components/dialog/dialog.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -7,27 +8,13 @@ import agentSource from '../../../../../packages/metalui/src/components/dialog/d
 import { ComponentPage } from '../../ui/ComponentPage';
 
 export default function DialogPage() {
-  const [open, setOpen] = React.useState(false);
+  const d = useDialKit('Rename canvas request', { latency: [900, 0, 3000], fail: false });
   return (
     <ComponentPage
       title={"Dialog"}
       lede={"A plate that floats over a dimmed page and asks for one thing. Tab stays inside it. Escape or a click outside closes it."}
-      play={{ lede: "Open it, press Tab a few times, then press Escape.", node: (
-          <>
-            <Button onClick={() => setOpen(true)}>Rename canvas…</Button>
-            <Dialog open={open} onOpenChange={setOpen}>
-              <Dialog.Popup>
-                <Dialog.Title>Rename canvas</Dialog.Title>
-                <Field>
-                  <Field.Input defaultValue="Trip notes" aria-label="Name" />
-                </Field>
-                <Dialog.Actions>
-                  <Button onClick={() => setOpen(false)}>Cancel</Button>
-                  <Button cap="primary" onClick={() => setOpen(false)}>Save</Button>
-                </Dialog.Actions>
-              </Dialog.Popup>
-            </Dialog>
-          </>
+      play={{ lede: "Open it, rename the canvas, or cancel. Try Taken to keep an invalid edit open.", node: (
+          <RenameDemo dialog initial="Trip notes" label="Name" testId="rename-canvas" latency={d.latency} fail={d.fail} />
         ) }}
       xray={<DialogXray />}
       sources={[
