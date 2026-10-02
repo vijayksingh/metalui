@@ -3014,6 +3014,10 @@ Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses;
 
 `options` is `[{ value, label, lead?, disabled? }]` or groups `[{ label, options }]`.
 
+## Scoped colorways
+
+The list portals to the document body and copies the trigger’s nearest `data-mu-colorway` onto its positioner. Open lists follow ancestor colorway changes. No local override retains document inheritance; clipped hosts never clip the list. Native `MetalSelect` carries its colorway through the SwiftUI environment.
+
 ---
 
 # Selection frame

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { menuParts, ListGlide } from '../menu/menu';
+import { usePortalColorway } from '../../theme/portal-colorway';
 
 /* ─────────────────────────────────────────────────────────
  * SELECT on Base UI Select: one value from a list of named options
@@ -109,6 +110,8 @@ function Row<V extends string>({ option }: { option: SelectOption<V> }) {
 export function Select<V extends string = string>({
   options, value, defaultValue, onValueChange, placeholder, size = 'regular', disabled, invalid, className, name, ...aria
 }: SelectProps<V>) {
+  const [anchor, setAnchor] = React.useState<HTMLButtonElement | null>(null);
+  const colorway = usePortalColorway(anchor);
   const flat = isGroups(options) ? options.flatMap((g) => g.options) : options;
   const byValue = React.useMemo(() => new Map(flat.map((o) => [o.value, o])), [flat]);
   return (
@@ -120,6 +123,7 @@ export function Select<V extends string = string>({
       name={name}
     >
       <BaseSelect.Trigger
+        ref={setAnchor}
         aria-label={aria['aria-label']}
         data-invalid={invalid ? '' : undefined}
         aria-invalid={invalid || undefined}
@@ -135,7 +139,7 @@ export function Select<V extends string = string>({
         <Chevron />
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
-        <BaseSelect.Positioner className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
+        <BaseSelect.Positioner data-mu-colorway={colorway} className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
           <BaseSelect.Popup className={POP}>
             <ListGlide />
             {isGroups(options)

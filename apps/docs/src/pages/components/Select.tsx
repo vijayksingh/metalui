@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Select, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Button, Select, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { CheckIcon, DuplicateIcon, SendAwayIcon, ShareIcon, SelectIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/select/select.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/select/select.agent.md?raw';
@@ -54,12 +54,23 @@ function Play() {
   );
 }
 
+function ScopedSelect() {
+  const [colorway, setColorway] = React.useState<'bone' | 'graphite'>('graphite');
+  const [value, setValue] = React.useState('share');
+  return <div data-testid="scoped-select" data-mu-colorway={colorway} className="mu-stack gap-mu-related p-mu-space-4 rounded-mu-space-3 recipe-surface overflow-hidden">
+    <span className="meta">A clipped host with its own colorway</span>
+    <Select aria-label="Scoped icon" options={ICONS} value={value} onValueChange={setValue} />
+    <Button cap="link" onClick={() => setColorway(colorway === 'graphite' ? 'bone' : 'graphite')}>Change host colorway</Button>
+  </div>;
+}
+
 export default function SelectPage() {
   return (
     <ComponentPage
       title="Select"
       lede="Pick one value from a list: an icon, a folder, a preset. It is a raised cap you click, and it opens a frosted list with your choice over it."
       play={{ lede: 'Open one with a click or with ↵ and the arrow keys. Type a letter to jump. Try the compact one in the strip, and press "try without choosing" to see the missing-value ring.', node: <Play /> }}
+      more={[{ id: 'portal', title: 'A scoped host', lede: 'The list keeps the trigger’s nearest colorway, including changes while open. It portals outside clipped hosts. SwiftUI carries the native colorway environment.', node: <ScopedSelect /> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

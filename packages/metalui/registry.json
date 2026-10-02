@@ -1325,6 +1325,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
