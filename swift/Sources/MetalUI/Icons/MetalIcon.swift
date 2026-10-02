@@ -313,6 +313,7 @@ public struct MetalIcon: View {
     var interaction: MetalIconInteraction?
     var actTrigger: Int
 
+    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.metalIconInteraction) private var hostInteraction
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.metalColorway) private var colorway
@@ -333,7 +334,9 @@ public struct MetalIcon: View {
         self.actTrigger = act
     }
 
-    private var state: MetalIconInteraction { interaction ?? hostInteraction ?? MetalIconInteraction(isHovered: ownHover) }
+    private var state: MetalIconInteraction {
+        isEnabled ? (interaction ?? hostInteraction ?? MetalIconInteraction(isHovered: ownHover)) : MetalIconInteraction()
+    }
     private var isSmall: Bool { size <= MetalIconBundle.smallCutMaximumPointSize }
 
     /// The icon's act (docs/ICON-MOTION.md), when it has one and motion is allowed.
@@ -341,25 +344,25 @@ public struct MetalIcon: View {
 
     /// One performance at a time: a trigger during the act is ignored.
     private func playAct() {
-        guard act != nil, actStart == nil, holdStart == nil, cancelStart == nil, state.holdDuration == nil else { return }
+        guard isEnabled, act != nil, actStart == nil, holdStart == nil, cancelStart == nil, state.holdDuration == nil else { return }
         actStart = Date()
     }
 
     public var body: some View {
         let state = state
-        let motion = act != nil ? MetalIconMotion.still : MetalIconMotion.resolve(icon, reduceMotion: reduceMotion)
+        let motion = act != nil ? MetalIconMotion.still : MetalIconMotion.resolve(icon, reduceMotion: reduceMotion || !isEnabled)
         let duotone = (state.isHovered ? icon.hoverDuotone : icon.restingDuotone) * colorway.tokens.duoK
         content(motion: motion, state: state, duotone: duotone)
             .frame(width: size, height: size)
             .modifier(MetalIconTilt(effect: motion.hover, isHovered: state.isHovered))
-            .animation(.easeOut(duration: 0.15), value: duotone)
+            .animation(isEnabled ? .easeOut(duration: 0.15) : nil, value: duotone)
             .contentShape(Rectangle())
             .onHover { hovering in
-                guard interaction == nil, hostInteraction == nil else { return }
+                guard isEnabled, interaction == nil, hostInteraction == nil else { return }
                 ownHover = hovering
             }
             .onChange(of: state.holdDuration) { _, duration in
-                guard let checkpoint = act?.holdAt else { return }
+                guard isEnabled, let checkpoint = act?.holdAt else { return }
                 if let duration {
                     actStart = nil
                     cancelStart = nil
@@ -381,9 +384,18 @@ public struct MetalIcon: View {
                 try? await Task.sleep(for: .seconds(MetalSpringClass.release.spring.duration))
                 if !Task.isCancelled { cancelStart = nil }
             }
+            .onChange(of: isEnabled) { _, enabled in
+                guard !enabled else { return }
+                ownHover = false
+                actStart = nil
+                holdStart = nil
+                cancelStart = nil
+                cancelTime = 0
+                previousHoldDuration = 0
+            }
             .onChange(of: actTrigger) { _, _ in playAct() }
-            .onChange(of: state.isHovered) { _, hovered in if hovered { hoverCount += 1; playAct() } }
-            .onChange(of: state.isPressed) { _, pressed in if pressed { pressCount += 1; playAct() } }
+            .onChange(of: state.isHovered) { _, hovered in if isEnabled, hovered { hoverCount += 1; playAct() } }
+            .onChange(of: state.isPressed) { _, pressed in if isEnabled, pressed { pressCount += 1; playAct() } }
             .task(id: actStart) {
                 guard let act, actStart != nil else { return }
                 try? await Task.sleep(for: .seconds(act.duration))
@@ -418,7 +430,7 @@ public struct MetalIcon: View {
             MetalIconSymbol(symbolName: icon.symbolName(forPointSize: size), size: size, weight: weight, duotone: duotone, dimmed: icon.dimmedOpacity ?? 1)
                 .modifier(MetalIconHoverModifier(effect: motion.hover, trigger: hoverCount))
                 .modifier(MetalIconPressModifier(effect: motion.press, trigger: pressCount))
-                .symbolEffectsRemoved(reduceMotion)
+                .symbolEffectsRemoved(reduceMotion || !isEnabled)
         }
     }
 }

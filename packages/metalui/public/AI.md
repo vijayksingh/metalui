@@ -4536,6 +4536,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
 - **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, play/pause, download/upload) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
+- **Disabled:** web disabled triggers and SwiftUI `.disabled(true)` ancestors prevent acts, holds and hover effects. Disabling a native host cancels its active clocks at rest; an enabled decorative glyph still responds to `act` requests.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as custom SF Symbols, plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
 
