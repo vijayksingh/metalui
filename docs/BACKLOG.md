@@ -101,7 +101,22 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 
 ### C. Hand-drawn glyphs to replace with the set
 
-pagination, calendar (3), navigation-menu, accordion, attachment, combobox, select, table, breadcrumbs, button-group (split chevron), folder, number-field (− and + as text), fan (‹ as text), link (↗ as text). Leave the drawings that aren't glyphs: sparkline, connector, snap-guides, line-handles, brush-cursor, dot-display, perfect-preview.
+- [x] pagination: shared quarter-turned chevrons in React and Swift, end keys disabled and reduced motion still.
+- [ ] calendar (3)
+- [ ] navigation-menu
+- [ ] accordion
+- [ ] attachment
+- [ ] combobox
+- [ ] select
+- [ ] table
+- [ ] breadcrumbs
+- [ ] button-group (split chevron)
+- [ ] folder
+- [ ] number-field (− and + as text)
+- [ ] fan (‹ as text)
+- [ ] link (↗ as text)
+
+Leave the drawings that aren't glyphs: sparkline, connector, snap-guides, line-handles, brush-cursor, dot-display, perfect-preview.
 
 ### D. Glyphs the set lacks (design each in `icons.mjs`, with its act and morph partners)
 

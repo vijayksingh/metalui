@@ -55,6 +55,7 @@ export default function PaginationPage() {
       rules={[
         { id: 'PG1', title: 'The thumb travels', body: 'The current page is a part on a track; it glides to the new page on the part spring.', origin: 'The switcher' },
         { id: 'PG2', title: 'Ends and neighbours', body: 'Keep the first and last pages and the current one\'s neighbours; fold the rest.', origin: 'Ours' },
+        { id: 'PG4', title: 'One directional glyph', body: 'Previous and next use the shared chevron at quarter turns. End keys are disabled and stay still; reduced motion keeps both glyphs whole.', origin: 'The icon grammar' },
         { id: 'PG3', title: 'Say where you are', body: '"Page 3 of 12" near the keys when it matters.', origin: 'Ours' },
       ]}
     />

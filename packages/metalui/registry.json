@@ -1081,9 +1081,10 @@
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",
-      "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
+      "description": "Moving through pages of results: page numbers in the switcher's track with previous and next shared-chevron keys; the current page's thumb glides to the chosen page on the part spring.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"

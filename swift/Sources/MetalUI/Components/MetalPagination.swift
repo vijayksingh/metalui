@@ -8,6 +8,8 @@ import SwiftUI
 public struct MetalPagination: View {
     @Binding private var page: Int
     private let count: Int
+    @State private var previousActs = 0
+    @State private var nextActs = 0
 
     public init(page: Binding<Int>, count: Int) {
         self._page = page
@@ -16,11 +18,11 @@ public struct MetalPagination: View {
 
     public var body: some View {
         HStack {
-            Button { page -= 1 } label: { Image(systemName: "chevron.left") }.disabled(page <= 1).accessibilityLabel("Previous page")
+            Button { previousActs += 1; page -= 1 } label: { MetalIcon(.chevron, size: MetalRecipes.pagination.points("arrow.size"), act: previousActs).rotationEffect(.degrees(90)) }.disabled(page <= 1).accessibilityElement(children: .ignore).accessibilityLabel("Previous page")
             ForEach(1...max(count, 1), id: \.self) { p in
                 Button("\(p)") { page = p }.fontWeight(p == page ? .semibold : .regular).accessibilityLabel("Page \(p)")
             }
-            Button { page += 1 } label: { Image(systemName: "chevron.right") }.disabled(page >= count).accessibilityLabel("Next page")
+            Button { nextActs += 1; page += 1 } label: { MetalIcon(.chevron, size: MetalRecipes.pagination.points("arrow.size"), act: nextActs).rotationEffect(.degrees(270)) }.disabled(page >= count).accessibilityElement(children: .ignore).accessibilityLabel("Next page")
         }
         .buttonStyle(.plain)
     }

@@ -803,7 +803,7 @@
       "name": "pagination",
       "title": "Pagination",
       "status": "alpha",
-      "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
+      "description": "Moving through pages of results: page numbers in the switcher's track with previous and next shared-chevron keys; the current page's thumb glides to the chosen page on the part spring.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Pagination",

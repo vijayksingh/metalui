@@ -39,3 +39,21 @@ test('the thumb glides to the chosen page', async ({ page }) => {
   expect(xs.xs.some((x) => Math.abs(x - xs.target) > 2)).toBe(true);
   expect(Math.abs(xs.xs.at(-1)! - xs.target)).toBeLessThan(1);
 });
+
+
+test('reduced motion keeps directional keys still while page navigation remains operable', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/pagination', 'graphite');
+  const previous = nav(page).getByRole('button', { name: 'Previous page' });
+  await previous.hover();
+  await previous.click();
+  await expect(nav(page).getByRole('button', { name: 'Page 2' })).toHaveAttribute('aria-current', 'page');
+  await previous.click();
+  await expect(previous).toBeDisabled();
+  await previous.hover();
+  await expect(nav(page).locator('[data-playing]')).toHaveCount(0);
+  await nav(page).getByRole('button', { name: 'Next page' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(nav(page).getByRole('button', { name: 'Page 2' })).toHaveAttribute('aria-current', 'page');
+  await nav(page).screenshot({ path: capture('pagination-reduced') });
+});

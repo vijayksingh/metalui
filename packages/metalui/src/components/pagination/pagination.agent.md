@@ -13,7 +13,7 @@ Moving through pages of results. React: `Pagination` from `@unlocalhosted/metalu
 ## Anatomy
 
 - `nav` named "Pagination", holding the switcher's sunk track.
-- Keys: previous (a chevron), the page numbers (at least 28 wide, tabular figures), next.
+- Keys: previous (the shared `chevron`, turn 90), the page numbers (at least 28 wide, tabular figures), next (the same glyph, turn 270).
 - The current page: the switcher's raised thumb.
 - Long runs: the first and last pages, the current one and `siblings` (1) on each side, ellipses for the gaps.
 
@@ -26,7 +26,7 @@ Moving through pages of results. React: `Pagination` from `@unlocalhosted/metalu
 | first / last page | previous / next disabled (40 %) | – |
 | focus | the switcher's focus ring | – |
 
-Reduce Motion: the thumb moves at once.
+Reduce Motion: the thumb moves at once and the chevron stays complete and still. Previous/next keys play one chevron act on hover, focus or press; disabled end keys play nothing. Glyph dimensions come from `pagination.arrow.size` on both platforms.
 
 ## API
 

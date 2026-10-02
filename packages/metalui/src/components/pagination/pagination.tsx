@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon } from '../../icons/Icon';
 import { SlidingIndicator } from '../../motion/indicator';
 import { trackParts } from '../switcher/switcher';
 
@@ -17,7 +18,7 @@ import { trackParts } from '../switcher/switcher';
  * ───────────────────────────────────────────────────────── */
 
 const { TRACK, THUMB, OPTION } = trackParts;
-const KEY = `${OPTION.regular} justify-center min-w-pagination-page-min-width tabular-nums`;
+const KEY = `mu-icon-trigger ${OPTION.regular} justify-center min-w-pagination-page-min-width tabular-nums`;
 const GAP = 'mu-pagination-gap inline-grid place-items-center min-w-pagination-page-min-width type-switcher-option text-ink3 select-none';
 const ARROW = 'size-pagination-arrow-size';
 
@@ -46,14 +47,6 @@ export function pageWindow(page: number, count: number, siblings = 1): (number |
   return out;
 }
 
-function Arrow({ back }: { back?: boolean }) {
-  return (
-    <svg aria-hidden viewBox="0 0 10 10" className={ARROW} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d={back ? 'M6.25 2 3.25 5l3 3' : 'M3.75 2 6.75 5l-3 3'} />
-    </svg>
-  );
-}
-
 /** Moving through pages of results. */
 export function Pagination({ page, count, onPageChange, siblings = 1, className, ...aria }: PaginationProps) {
   const pages = pageWindow(page, count, siblings);
@@ -62,7 +55,7 @@ export function Pagination({ page, count, onPageChange, siblings = 1, className,
     <nav aria-label={aria['aria-label'] ?? 'Pagination'} className={className ? `mu-pagination ${className}` : 'mu-pagination'}>
       <div className={`${TRACK} items-center`}>
         <SlidingIndicator className={THUMB} />
-        <button type="button" className={KEY} aria-label="Previous page" disabled={page <= 1} data-disabled={page <= 1 ? '' : undefined} onClick={() => go(page - 1)}><Arrow back /></button>
+        <button type="button" className={KEY} aria-label="Previous page" disabled={page <= 1} data-disabled={page <= 1 ? '' : undefined} onClick={() => go(page - 1)}><Icon name="chevron" turn={90} className={ARROW} /></button>
         {pages.map((p, i) => (p == null ? (
           <span key={`gap-${i}`} aria-hidden className={GAP}>…</span>
         ) : (
@@ -78,7 +71,7 @@ export function Pagination({ page, count, onPageChange, siblings = 1, className,
             {p}
           </button>
         )))}
-        <button type="button" className={KEY} aria-label="Next page" disabled={page >= count} data-disabled={page >= count ? '' : undefined} onClick={() => go(page + 1)}><Arrow /></button>
+        <button type="button" className={KEY} aria-label="Next page" disabled={page >= count} data-disabled={page >= count ? '' : undefined} onClick={() => go(page + 1)}><Icon name="chevron" turn={270} className={ARROW} /></button>
       </div>
     </nav>
   );
