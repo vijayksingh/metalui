@@ -1,17 +1,20 @@
 import { expect, test } from '@playwright/test';
 import { COLORWAYS, capture, open } from './helpers';
+import { ICON_NAMES } from '../packages/metalui/src/icons/catalog.generated';
 
 // Every product glyph is on the Icons page and plays its act (docs/ICON-MOTION.md) from its key,
 // and none moves under reduced motion.
+const catalog = (page: import('@playwright/test').Page) =>
+  page.locator('section').filter({ has: page.getByRole('heading', { name: 'Glyphs', level: 2, exact: true }) });
 const keys = (page: import('@playwright/test').Page) =>
-  page.locator('section').first().locator('button.mu-icon-trigger', { has: page.locator('svg.mu-icon') });
+  catalog(page).locator('button.mu-icon-trigger', { has: page.locator('svg.mu-icon') });
 
 for (const colorway of COLORWAYS) {
   test(`every glyph plays its act from its key in ${colorway}`, async ({ page }) => {
     await open(page, '/icons', colorway);
     const all = keys(page);
     const count = await all.count();
-    expect(count).toBeGreaterThanOrEqual(47);
+    expect(count).toBe(ICON_NAMES.length);
     for (let i = 0; i < count; i++) {
       const key = all.nth(i);
       const svg = key.locator('svg.mu-icon');
@@ -20,7 +23,7 @@ for (const colorway of COLORWAYS) {
       await page.mouse.move(0, 0);
     }
     await page.waitForTimeout(1600); // every act back at rest
-    await page.locator('section').first().screenshot({ path: capture(`icons-${colorway}`) });
+    await catalog(page).screenshot({ path: capture(`icons-${colorway}`) });
   });
 }
 
