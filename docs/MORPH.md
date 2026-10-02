@@ -23,7 +23,7 @@ Every icon also has an authored hover pose and a press gesture (`icons.mjs`, `mo
 
 | | Constraint | Origin |
 |---|---|---|
-| C1 | One weight: 1.7 (a plate has none; the keeper's ring is .88 of it, the one exception in the set). | Ours |
+| C1 | One weight: 1.7 (a plate has none; the character glyph's ring is .88 of it, the one exception in the set). | Ours |
 | C2 | Round caps and joins everywhere, including where a ring opens: the two ends meet as caps, so opening and closing has no seam. | Ours |
 | C3 | Beads are 2.1–4.2 across; nothing solid is smaller than a bead or larger than a plate. | Ours, from the set |
 | C4 | Tint is .10–.20 and only inside a wire or on a plate; solid is 1. Tint follows the area that holds it. | Ours |
@@ -33,7 +33,7 @@ Every icon also has an authored hover pose and a press gesture (`icons.mjs`, `mo
 | C8 | The rest state is the authored icon, exactly: at rest the engine draws the authored path and the authored clearances, verified by raster parity against the static SVG. | Ours |
 | C9 | Depth is a relation between two parts, read from the authored masks: *behind* (hidden within the caster's ink widened by r) or *inside* (visible within a frame narrowed by r). A body hides its area; a wire hides only along itself. | Ours |
 | C10 | Nothing fades and nothing comes from nowhere. Material is moved, drawn out, gathered, hidden or revealed; opacity is never the transition. | Ours; the principle is shared with Animations on the Web |
-| C11 | Solid glyphs are a different system. A character or mascot (a filled body with no wire: the keeper) is not in the morph family: the generator leaves any glyph with a solid plate out of `MORPH_NAMES`, `MorphIcon` will not take its name, and a control switching to or from it rides the drum (T1, `SwapIcon`). | Ours (the user's decision; `docs/ICON-GRAMMAR.md` K0) |
+| C11 | Solid glyphs are a different system. A character or mascot (a filled body with no wire: the character glyph) is not in the morph family: the generator leaves any glyph with a solid plate out of `MORPH_NAMES`, `MorphIcon` will not take its name, and a control switching to or from it rides the drum (T1, `SwapIcon`). | Ours (the user's decision; `docs/ICON-GRAMMAR.md` K0) |
 
 ## 3. The engine
 
@@ -111,3 +111,16 @@ Do not test `align`, `assign` or `carriageOf` in isolation; test what a user see
 Follow `docs/ICON-GRAMMAR.md` §4, the build spec: draw the body, then the marks, at most one clearance, in the material band, on the keyline; lint it (`node scripts/icon-lint.mjs --proposals <module>`), score it (`node scripts/morph-strain.mjs --proposals <module>`: under 1 against every icon a product will switch it with), look at its filmstrips, then author it in `icons.mjs` with its hover and press, run `npm run generate`, confirm rest parity, and commit it as one chunk.
 
 The tools plan frames outside the set through `planFrames(from, to)` and `partsFrom(rows)`, the same engine the app runs, so a proposal is scored exactly as it would morph.
+
+## Native delivery
+
+`MetalMorphIcon` uses the same `morph.ts` planner and generated glyph parts as React. `npm run generate` bundles the DOM-free planner into `MetalMorph.generated.js`; SwiftPM copies it as a resource. A single actor owns one cached JavaScriptCore context. A meaning or quarter-turn change plans the whole settle and prepares paths at 120 samples per second once, away from the main actor. Each view owns those frames, which are discarded on landing or cancellation; Canvas selects a prepared frame without parsing paths or invoking JavaScript. No context or clock is created for a resting view.
+
+```swift
+MetalMorphIcon(copied ? .check : .copy, size: 16)
+MetalMorphIcon(.chevron, turn: open ? .up : .down)
+```
+
+An interruption seeds the next plan with the currently displayed parts. Reduced motion, a disabled ancestor or an inactive scene ends a flight immediately. Solid glyph is outside the wire family and switches directly to its authored glyph. At the end of a supported flight, the authored `MetalIcon` takes over and performs the result's act once. The icon's native weight and compact stroke, duotone multiplier and depth clearances are retained.
+
+`e2e/native/morph-proof.swift` is the real SwiftUI app fixture: copy/check, lock/warning, send/stop and eye/eye-off at 16 and 24 points in both colorways, quarter turns, independent instances, interruption, reduction during a flight and Solid glyph fallback. It also renders prepared frames to measure thread CPU separately from planning/path preparation and pairs the final Canvas frame with the resting authored glyph. See `e2e/native/README.md` for observed delivery evidence.

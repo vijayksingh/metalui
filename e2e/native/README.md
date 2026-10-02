@@ -26,3 +26,19 @@ Observed on iPhone 15 / iOS 17.5: [both holding](../../docs/captures/swift/motio
 # Mac WKWebView haptic transport
 
 Run `python3 e2e/native/run-haptic-webview-proof.py`. A real WKWebView sends alignment, detent and refusal requests through the shipped native bridge. Its device callback records the matching AppKit patterns; invalid names and subframe requests do not reach the device. Detaching twice is safe and stops delivery. This proves transport and pattern mapping, not physical trackpad sensation.
+
+
+# Native shared morph
+
+`morph-proof.swift` launches real `MetalMorphIcon` instances at 16 and 24 points. It compares prepared final frames with authored resting glyphs in both colorways, interrupts a flight, reduces a scope midflight, turns a chevron and switches safely to Solid glyph. A separate lock instance remains still throughout. The host includes the real bounded NumberField keys.
+
+Run either fixture against an iOS Simulator build (use your booted simulator UUID):
+
+```sh
+xcodebuild -jobs 2 -scheme MetalUI -destination 'generic/platform=iOS Simulator' -derivedDataPath /tmp/metalui-native build CODE_SIGNING_ALLOWED=NO OTHER_SWIFT_FLAGS=-j2
+python3 e2e/native/run-proof.py e2e/native/morph-proof.swift --derived-data /tmp/metalui-native --simulator YOUR_BOOTED_UUID --captures /tmp/metalui-native-captures
+```
+
+Observed on iPhone 15 / iOS 17.5: [bone comparison](../../docs/captures/swift/morph-bone-check.png), [graphite depth](../../docs/captures/swift/morph-graphite-eye-off.png), [interruption](../../docs/captures/swift/morph-interrupted.png), [reduced during flight](../../docs/captures/swift/morph-reduced.png), [quarter turn](../../docs/captures/swift/morph-turn.png), [Solid glyph fallback](../../docs/captures/swift/morph-fallback.png). Final Canvas and resting MetalIcon silhouettes, line widths and fills match at both sizes. MacOS and generic iOS Simulator builds pass.
+
+Thread CPU on the debug iOS17.5 simulator host: initial copy/check planning39.9ms + path preparation13.6ms; warm lock/warning, send/stop and eye/eye-off planning15.6–27.6ms + path preparation13.5–25.4ms. This preparation runs away from the main actor. ImageRenderer CPU per prepared 24-point frame at3× was55–89µs. These numbers measure CPU preparation/render submission, not GPU work or physical-device frame pacing. Each instance holds54 prepared frames only during its440ms settle; the single shared38KB planner resource is parsed once.

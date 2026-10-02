@@ -13,7 +13,7 @@ let package = Package(
             path: "swift/Sources/MetalUI",
             // Geist, Martian Mono and Doto (SIL OFL 1.1, licences alongside), registered by MetalFonts;
             // the product and life glyphs as custom SF Symbols (npm run symbols), compiled by actool.
-            resources: [.copy("Resources/Fonts"), .process("Resources/MetalIcons.xcassets")]
+            resources: [.copy("Resources/Fonts"), .copy("Resources/MetalMorph.generated.js"), .process("Resources/MetalIcons.xcassets")]
         ),
         .testTarget(name: "MetalUITests", dependencies: ["MetalUI"], path: "swift/Tests/MetalUITests",
                     resources: [.copy("Fixtures")]),
