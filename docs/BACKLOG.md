@@ -66,13 +66,13 @@ Direction (research and sketch before building; interface-craft storyboard first
 
 Owner: "for each button which causes some action, couple it with a semantic icon; we have morphing icons which we aren't using anywhere. Find all the relevant actions and semantic changes where we can apply these icons." (2026-09-30)
 
-Audit (2026-09-30): the icon set has 47 product glyphs. Each plays its act when its trigger (`.mu-icon-trigger`, which every Button carries) is hovered or pressed, so an icon in a button already moves. `MorphIcon` morphs any glyph into any other, but no component uses it; only the docs' Icons, Transitions and MorphGlyphs pages do. 16 components draw their own inline SVG or text glyph instead of using the set.
+Audit updated 2026-10-03: 79 product glyphs share authored geometry and acts, including tuned 16px contours. Owned changing controls use `MorphIcon` / `MetalMorphIcon` and a paired words drum; owned chevrons, arrows and action keys consume the set. [Glyph audit and feature receipts](GLYPH-AUDIT.md) records each host, custom-art escape hatches, conditional keys absent from current hosts and the remaining native system adapters.
 
 Rules to adopt first (one layer, in the Button foundation and agent guides):
 
-- [x] **An action names itself with a glyph and a verb** (done: `Button` `icon` prop; link, graphite and strip caps still lack a glyph size token): a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
-- [ ] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
-- [ ] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
+- [x] **An action names itself with a glyph and a verb** (all Button caps have shared glyph dimensions; glyph-only keys retain their verb in a tooltip and accessible name): a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
+- [x] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
+- [x] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
 
 ### A. Action buttons that should carry a glyph (existing glyph in brackets)
 
@@ -88,21 +88,21 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 ### B. State changes that should morph (A → B)
 
 - [x] **Copy → Copied** (`copy` → `check`, back after the pause): the docs' Copy page and code blocks, and a documented copy-button pattern.
-- **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`). Status and Toast now retain their synced/offline/error glyph and label drum in React/native; Attachment remains a separate slice.
+- [x] **Sync state**: Status and retained Toast morph `synced` / `offline` / `sync-error` with their words drum. Attachment retains `upload` / `check` / `sync-error` as the host reports upload state; retry starts upload rather than inventing a successful receipt. React and native consume the set; native words resolve immediately on a live motion switch.
 - [x] **Save** (idle → saving (Spinner) → saved `check`): the Button's "saving" demo.
-- **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.
+- **Conditional: Pin ↔ Unpin, Group ↔ Ungroup, Zoom in ↔ Zoom out at a limit.** Audited current menus/toolbars: these are separate verbs, not one changing key. The documented `MorphIcon` / native glyph-builder pattern applies when a host supplies such a changing key; no absent behavior is claimed implemented.
 - [x] **Sidebar Toggle** (collapse ↔ expand): shared Sidebar ↔ Sidebar Rail slides the panel boundary, optional host artwork stays supported; native binding toggle uses the same glyph. Split pane audited: it uses a focusable separator grip, with Home collapse / Enter restore, and has no static glyph key to replace.
-- **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
+- [x] **Open ↔ closed disclosure**: Accordion, Select, Navigation menu and shared Menu submenus morph the canonical chevron, including Menubar submenus. Combobox owns a canonical clear key and has no visible open chevron; Menubar category triggers are words. Native Accordion/Select use the shared contour; Navigation menu/Menubar remain explicit system adapters without an owned disclosure glyph.
 - [x] **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
 - [x] **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
 - [x] **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
-- **Theme switch** (Bone ↔ Graphite) and the **Motion** switch in the docs header, if they get glyphs (see D).
-- **Table sort**: `arrow` up ↔ down as a morph instead of the rotated hand-drawn arrow.
+- **Conditional: Theme and Motion header glyphs.** Current header controls remain named words. The glyph requirement applies if a host adds glyphs; no new decorative key was introduced.
+- [x] **Table sort**: React uses the shared `arrow` contour and turn morph for ascending/descending. Native `MetalTable` remains an explicit SwiftUI system adapter; it owns no custom sort glyph. This closes the glyph audit, not a full native Table implementation.
 
 ### C. Hand-drawn glyphs to replace with the set
 
 - [x] pagination: shared quarter-turned chevrons in React and Swift, end keys disabled and reduced motion still.
-- [ ] calendar (3)
+- [x] calendar: canonical quarter-turned chevron month keys, calendar picker key and close clear key in React and Swift; focus and form behavior remain verified by Calendar/DatePicker/DateCue features.
 - [x] navigation-menu: shared chevron morph follows Base UI open state; CSS rotation removed.
 - [x] accordion
 - [x] attachment: canonical close remove key in React and Swift; upload receipts share the set and keep the engraved extension.
