@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { Button } from '@unlocalhosted/metalui';
 import { Icon, ICON_CATALOG, ICON_NAMES, MorphIcon, type IconName, type MorphTurn } from '@unlocalhosted/metalui/icons';
 import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
 import { MorphFilmstrips, MorphParity, MorphPlayground } from '../demos/MorphGlyphs';
@@ -8,6 +9,7 @@ const CATEGORIES = ['Tools', 'Actions', 'Status'] as const;
 const pascal = (n: string) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
 
 export default function Icons() {
+  const [sequence, setSequence] = React.useState(0);
   const [picked, setPicked] = React.useState<IconName>('send-away');
   const d = useDialKit('Icons', {
     size: [16, 12, 48, 1],
@@ -28,6 +30,14 @@ export default function Icons() {
         lede={`${ICON_NAMES.length} glyphs, monoline with a duotone fill, on a 24 grid with a 1.7 stroke. Every glyph performs one act: its parts do what it means, as objects with weight, on the same springs as the rest of MetalUI. Hover, focus or click a key and the act plays through once.`}
       />
 
+      <Section id="on-demand" title="A result can play its glyph" lede="Increment act after a host action completes. The glyph plays once; it ignores requests while playing, stops when unmounted, and stays still under either motion switch.">
+        <div className="mu-cluster gap-mu-related">
+          <Icon name="check" act={sequence} data-testid="demand-icon" />
+          <Button onClick={() => setSequence(n => n + 1)}>Play result</Button>
+        </div>
+        <Code lang="tsx" code={`<Icon name="check" act={resultSequence} />
+// Increment resultSequence when the work succeeds.`} />
+      </Section>
       <Section title="Glyphs">
         {CATEGORIES.map((cat) => {
           const names = ICON_NAMES.filter((n) => ICON_CATALOG[n].category === cat);

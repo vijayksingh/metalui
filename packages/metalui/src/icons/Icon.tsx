@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ICON_CATALOG, type IconName } from './catalog.generated';
 import './icons.generated.css';
+import { motionReduced } from '../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * ICON PLAYBACK
@@ -41,6 +42,8 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'children
    *  down, so 90 points it left, 180 up and 270 right. A direction that is set, not a state change:
    *  a control whose chevron turns when it opens uses MorphIcon's `turn`, which morphs. */
   turn?: 0 | 90 | 180 | 270;
+  /** Increment after a host result to play one act on demand. 0/undefined is idle; repeated triggers during an act are ignored. */
+  act?: number;
 }
 
 function markup(name: IconName, uid: string, small: boolean) {
@@ -56,7 +59,8 @@ const disabled = (trigger: Element) =>
   trigger.hasAttribute('data-disabled') ||
   trigger.getAttribute('aria-disabled') === 'true';
 
-function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean) {
+function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, command?: number) {
+  const demand = React.useRef<() => void>(() => {});
   React.useEffect(() => {
     const svg = ref.current;
     const icon = ICON_CATALOG[name];
@@ -66,13 +70,15 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     svg.setAttribute('data-motion-runtime', ''); // the CSS player steps aside
     let running: Animation[] = [];
+    let pauseTimer: ReturnType<typeof setTimeout> | undefined;
     const stop = () => {
+      clearTimeout(pauseTimer);
       running.forEach((a) => a.cancel());
       running = [];
       svg.removeAttribute('data-playing');
     };
     const play = () => {
-      if (running.length || reduce.matches || disabled(trigger)) return;
+      if (running.length || motionReduced(svg) || disabled(trigger)) return;
       svg.setAttribute('data-playing', '');
       // A part and its occluders (a mask's knockout named like it) move on one track.
       running = act.tracks.flatMap(({ part, keyframes }) =>
@@ -86,28 +92,56 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
         if (running === batch) stop();
       });
     };
+    demand.current = play;
+    // Hold-aware studies name the point where their preparation pauses. The Button's
+    // clock opens the lid; cancellation reverses it; confirmation continues the authored act.
+    const onHold = (event: Event) => {
+      if (!('holdAt' in act) || typeof act.holdAt !== 'number' || motionReduced(svg)) return;
+      const holdAt = act.holdAt;
+      const { phase, duration } = (event as CustomEvent<{ phase: string; duration: number }>).detail;
+      clearTimeout(pauseTimer);
+      if (phase === 'start') {
+        stop();
+        play();
+        running.forEach(a => { a.playbackRate = holdAt / duration; });
+        pauseTimer = setTimeout(() => running.forEach(a => { a.pause(); a.currentTime = holdAt; }), duration);
+      } else if (phase === 'complete') {
+        running.forEach(a => { a.currentTime = holdAt; a.playbackRate = 1; a.play(); });
+      } else {
+        const release = parseFloat(getComputedStyle(svg).getPropertyValue('--mu-spring-release-d')) || 178;
+        running.forEach(a => { a.playbackRate = -holdAt / release; a.play(); });
+      }
+    };
+    trigger.addEventListener('mu-hold', onHold);
     const onPointer = (event: Event) => {
-      if ((event as PointerEvent).pointerType !== 'touch') play();
+      if (!trigger.hasAttribute('data-hold') && (event as PointerEvent).pointerType !== 'touch') play();
     };
     const onFocus = () => {
-      if (trigger.matches(':focus-visible')) play();
+      if (!trigger.hasAttribute('data-hold') && trigger.matches(':focus-visible')) play();
     };
     const onReduce = () => {
-      if (reduce.matches) stop();
+      if (motionReduced(svg)) stop();
     };
+    const onClick = () => { if (!trigger.hasAttribute('data-hold')) play(); };
+    const observer = new MutationObserver(onReduce);
+    for (let ancestor: Element | null = svg; ancestor; ancestor = ancestor.parentElement) observer.observe(ancestor, { attributes: true, attributeFilter: ['class', 'data-mu-motion'] });
     trigger.addEventListener('pointerenter', onPointer);
     trigger.addEventListener('focusin', onFocus);
-    trigger.addEventListener('click', play);
+    trigger.addEventListener('click', onClick);
     reduce.addEventListener('change', onReduce);
     return () => {
       stop();
       svg.removeAttribute('data-motion-runtime');
+      demand.current = () => {};
+      trigger.removeEventListener('mu-hold', onHold);
       trigger.removeEventListener('pointerenter', onPointer);
       trigger.removeEventListener('focusin', onFocus);
-      trigger.removeEventListener('click', play);
+      trigger.removeEventListener('click', onClick);
+      observer.disconnect();
       reduce.removeEventListener('change', onReduce);
     };
   }, [ref, name, enabled]);
+  React.useEffect(() => { if (command) demand.current(); }, [command]);
 }
 
 function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean) {
@@ -117,7 +151,7 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
     const trigger = (svg.closest('.mu-icon-trigger') as HTMLElement | null) ?? svg;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const play = () => {
-      if (disabled(trigger)) return;
+      if (disabled(trigger) || motionReduced(svg)) return;
       svg.removeAttribute('data-press');
       void svg.getBoundingClientRect(); // restart the keyframes
       svg.setAttribute('data-press', '');
@@ -140,7 +174,7 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
 }
 
 export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName }>(function Icon(
-  { name, size = 24, title, strokeWidth, animate = true, turn = 0, className, style, ...props },
+  { name, size = 24, title, strokeWidth, animate = true, turn = 0, act, className, style, ...props },
   forwardedRef,
 ) {
   const ref = React.useRef<SVGSVGElement>(null);
@@ -148,7 +182,7 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName
   const uid = `mu${React.useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const small = !animate && size <= SMALL;
   const sw = strokeWidth ?? (small ? ICON_CATALOG[name].sw16 : undefined);
-  useActPlayback(ref, name, animate);
+  useActPlayback(ref, name, animate, act);
   usePressPlayback(ref, name, animate);
 
   const html = markup(name, uid, small) + (title ? `<title>${title.replace(/[<&]/g, '')}</title>` : '');

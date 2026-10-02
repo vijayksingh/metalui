@@ -143,10 +143,12 @@ public enum MetalIconMetrics {
 public struct MetalIconInteraction: Equatable, Sendable {
     public var isHovered: Bool
     public var isPressed: Bool
+    public var holdDuration: Double?
 
-    public init(isHovered: Bool = false, isPressed: Bool = false) {
+    public init(isHovered: Bool = false, isPressed: Bool = false, holdDuration: Double? = nil) {
         self.isHovered = isHovered
         self.isPressed = isPressed
+        self.holdDuration = holdDuration
     }
 }
 
@@ -309,6 +311,7 @@ public struct MetalIcon: View {
     var size: CGFloat
     var weight: Font.Weight
     var interaction: MetalIconInteraction?
+    var actTrigger: Int
 
     @Environment(\.metalIconInteraction) private var hostInteraction
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -317,12 +320,17 @@ public struct MetalIcon: View {
     @State private var hoverCount = 0
     @State private var pressCount = 0
     @State private var actStart: Date?
+    @State private var holdStart: Date?
+    @State private var previousHoldDuration: Double = 0
+    @State private var cancelStart: Date?
+    @State private var cancelTime: Double = 0
 
-    public init(_ icon: MetalIconName, size: CGFloat = 16, weight: Font.Weight = .regular, interaction: MetalIconInteraction? = nil) {
+    public init(_ icon: MetalIconName, size: CGFloat = 16, weight: Font.Weight = .regular, interaction: MetalIconInteraction? = nil, act: Int = 0) {
         self.icon = icon
         self.size = size
         self.weight = weight
         self.interaction = interaction
+        self.actTrigger = act
     }
 
     private var state: MetalIconInteraction { interaction ?? hostInteraction ?? MetalIconInteraction(isHovered: ownHover) }
@@ -333,7 +341,7 @@ public struct MetalIcon: View {
 
     /// One performance at a time: a trigger during the act is ignored.
     private func playAct() {
-        guard act != nil, actStart == nil else { return }
+        guard act != nil, actStart == nil, holdStart == nil, cancelStart == nil, state.holdDuration == nil else { return }
         actStart = Date()
     }
 
@@ -350,6 +358,30 @@ public struct MetalIcon: View {
                 guard interaction == nil, hostInteraction == nil else { return }
                 ownHover = hovering
             }
+            .onChange(of: state.holdDuration) { _, duration in
+                guard let checkpoint = act?.holdAt else { return }
+                if let duration {
+                    actStart = nil
+                    cancelStart = nil
+                    previousHoldDuration = duration
+                    holdStart = Date()
+                } else if let begun = holdStart {
+                    let held = Date().timeIntervalSince(begun)
+                    holdStart = nil
+                    if held >= previousHoldDuration - MetalRecipes.button.durationSeconds("self.press") {
+                        actStart = Date().addingTimeInterval(-checkpoint)
+                    } else {
+                        cancelTime = min(held / previousHoldDuration, 1) * checkpoint
+                        cancelStart = Date()
+                    }
+                }
+            }
+            .task(id: cancelStart) {
+                guard cancelStart != nil else { return }
+                try? await Task.sleep(for: .seconds(MetalSpringClass.release.spring.duration))
+                if !Task.isCancelled { cancelStart = nil }
+            }
+            .onChange(of: actTrigger) { _, _ in playAct() }
             .onChange(of: state.isHovered) { _, hovered in if hovered { hoverCount += 1; playAct() } }
             .onChange(of: state.isPressed) { _, pressed in if pressed { pressCount += 1; playAct() } }
             .task(id: actStart) {
@@ -368,7 +400,9 @@ public struct MetalIcon: View {
                 box: size,
                 lineUnits: MetalIconMetrics.strokeUnits(for: weight, regular: isSmall ? icon.smallStrokeUnits : 1.7),
                 duoK: colorway.tokens.duoK,
-                start: actStart
+                start: actStart,
+                holdStart: holdStart, holdDuration: state.holdDuration,
+                cancelStart: cancelStart, cancelTime: cancelTime
             )
         } else if motion.usesHeroShape {
             MetalIconHero(icon: icon, pose: MetalIconHeroPose(

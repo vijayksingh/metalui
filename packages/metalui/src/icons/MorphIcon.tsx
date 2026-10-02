@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced, useReducedMotion } from '../motion/reduced';
 import { SPRINGS } from '../motion/springs.generated';
 import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
 import type { MorphIconName } from './morph.generated';
@@ -38,9 +39,6 @@ export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'nam
    *  and a half turn of a symmetric glyph turns over on its axis (docs/MORPH.md E2, E8). */
   turn?: MorphTurn;
 }
-
-const prefersReduced = () =>
-  typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /** The mask for one depth relation: what a caster's body hides (behind) or shows (inside), live. */
 function DepthMask({ id, caster, r, inside }: { id: string; caster: MorphPart; r: number; inside: boolean }) {
@@ -90,20 +88,29 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
   ref,
 ) {
   const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth, turn));
-  const shown = React.useRef({ frame, name, turn });
+  const shown = React.useRef({ frame, name, turn, strokeWidth });
+  const [element, setElement] = React.useState<SVGSVGElement | null>(null);
+  const reduced = useReducedMotion(element);
+  const attach = React.useCallback((svg: SVGSVGElement | null) => {
+    setElement(svg);
+    if (typeof ref === 'function') ref(svg);
+    else if (ref) ref.current = svg;
+  }, [ref]);
   const raf = React.useRef(0);
 
   React.useEffect(() => {
-    if (shown.current.name === name && shown.current.turn === turn) return;
-    cancelAnimationFrame(raf.current);
-    shown.current.name = name;
-    shown.current.turn = turn;
     const rest = morphParts(name, strokeWidth, turn);
-    if (prefersReduced()) {
-      shown.current.frame = rest;
+    if (reduced || motionReduced(element)) {
+      cancelAnimationFrame(raf.current);
+      shown.current = { frame: rest, name, turn, strokeWidth };
       setFrame(rest);
       return;
     }
+    if (shown.current.name === name && shown.current.turn === turn && shown.current.strokeWidth === strokeWidth) return;
+    cancelAnimationFrame(raf.current);
+    shown.current.name = name;
+    shown.current.turn = turn;
+    shown.current.strokeWidth = strokeWidth;
     const plan = planMorph(shown.current.frame, name, strokeWidth, turn);
     const { stiffness, damping, duration } = SPRINGS.settle;
     const start = performance.now();
@@ -117,11 +124,11 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
     };
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, [name, strokeWidth, turn]);
+  }, [name, strokeWidth, turn, reduced, element]);
 
   return (
     <svg
-      ref={ref}
+      ref={attach}
       viewBox="0 0 24 24"
       width={size}
       height={size}

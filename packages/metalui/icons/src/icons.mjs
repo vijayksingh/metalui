@@ -66,5 +66,5 @@ for (const file of files.filter((f) => !only || only.includes(f.slice(0, -4))).s
   const ic = ICONS.find((i) => i.name === name);
   if (!ic) throw new Error(`acts/${file}: no icon named ${name}`);
   const { act } = await import(new URL(`./acts/${file}`, import.meta.url));
-  Object.assign(ic, { body: act.body, defs: act.defs, study: act.study, shape: act.shape, hover: act.study.caption, press: 'plays the same act' });
+  Object.assign(ic, { body: act.body, defs: act.defs, study: act.study, shape: act.shape, holdAt: act.holdAt, hover: act.study.caption, press: 'plays the same act' });
 }

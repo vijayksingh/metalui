@@ -112,6 +112,7 @@ struct MetalIconAct: Sendable {
     let caption: String
     let parts: [MetalIconActPart]
     let ink: [MetalIconActInk]
+    let holdAt: Double?
 
     /// Where one part is at progress `p` (0…1 of the act).
     struct PartState {
@@ -222,13 +223,31 @@ struct MetalIconActView: View {
     let lineUnits: CGFloat
     let duoK: Double
     let start: Date?
+    var holdStart: Date? = nil
+    var holdDuration: Double? = nil
+    var cancelStart: Date? = nil
+    var cancelTime: Double = 0
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        TimelineView(.animation(paused: start == nil)) { timeline in
+        TimelineView(.animation(paused: scenePhase != .active || (start == nil && holdStart == nil && cancelStart == nil))) { timeline in
             MetalIconActCanvas(
                 act: act, box: box, lineUnits: lineUnits, duoK: duoK,
-                elapsed: start.map { timeline.date.timeIntervalSince($0) } ?? 0
+                elapsed: elapsed(at: timeline.date)
             )
         }
+    }
+}
+
+private extension MetalIconActView {
+    func elapsed(at date: Date) -> Double {
+        if let holdStart, let holdDuration, let holdAt = act.holdAt {
+            return min(max(date.timeIntervalSince(holdStart) / holdDuration, 0), 1) * holdAt
+        }
+        if let cancelStart {
+            let release = MetalSpringClass.release.spring.duration
+            return max(1 - date.timeIntervalSince(cancelStart) / release, 0) * cancelTime
+        }
+        return start.map { date.timeIntervalSince($0) } ?? 0
     }
 }

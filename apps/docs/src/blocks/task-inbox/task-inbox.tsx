@@ -497,12 +497,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
 
   /* ── Empty ───────────────────────────────────────────────── */
 
-  const zeroGlyph = React.useRef<SVGSVGElement>(null);
   const zero = allDone && view === 'all' && !query.trim() && visible.length === 0;
-  React.useEffect(() => {
-    // The icon plays its act on its trigger's events; a click on the glyph itself starts it once.
-    if (zero) requestAnimationFrame(() => zeroGlyph.current?.dispatchEvent(new MouseEvent('click')));
-  }, [zero]);
 
   const empty = (() => {
     if (visible.length) return null;
@@ -510,7 +505,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       return <EmptyState icon={<Icon name="search" />} title={`No tasks match “${short(query.trim(), 24)}”`} description="Try a title, a tag or a person’s name." action={<Button onClick={() => { setQuery(''); search.current?.focus(); }}>Clear search</Button>} />;
     }
     if (zero) {
-      return <EmptyState icon={<Icon ref={zeroGlyph} name="check" />} title="Inbox zero" description="Every task is done. Enjoy the quiet." action={<Button onClick={() => setView('done')}>See what’s done</Button>} />;
+      return <EmptyState icon={<Icon name="check" act={zero ? 1 : 0} />} title="Inbox zero" description="Every task is done. Enjoy the quiet." action={<Button onClick={() => setView('done')}>See what’s done</Button>} />;
     }
     const words: Record<View, [string, string]> = {
       all: ['Nothing open', 'New tasks for the team land here.'],

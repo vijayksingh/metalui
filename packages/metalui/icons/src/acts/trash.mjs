@@ -50,5 +50,6 @@ export const act = {
       light(620, 1, 'scale(1)', ease.smooth), light(820, 0, 'scale(1.5)'), light(D, 0, 'scale(.6)'),
     ]),
   ]),
+  holdAt: 440,
   shape: 'Portrait keyline bin, tapered 0.9u each side, lid hinged at the left end. Motion (study): the lid swings up 15.5° about its hinge, hangs, falls shut; the bin squashes .94 from its foot with the lid riding the rim, air puffs from the free edge, and the lid kicks 3.5° and settles.',
 };

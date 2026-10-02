@@ -45,7 +45,8 @@ extension MetalIconAct {
             ink: [
             MetalIconActInk(d: "M6.1 4.9L18.3 10.6C18.488 10.6833 18.6059 10.8732 18.597 11.0786C18.5882 11.2841 18.4545 11.4632 18.26 11.53L13 13.2L10.8 18.3C10.7206 18.4893 10.5335 18.6108 10.3282 18.6064C10.1229 18.602 9.9412 18.4726 9.87 18.28L6.1 4.9Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
             MetalIconActInk(d: "M9.3 4.9C9.3 6.6673 7.8673 8.1 6.1 8.1C4.3327 8.1 2.9 6.6673 2.9 4.9C2.9 3.1327 4.3327 1.7 6.1 1.7C7.8673 1.7 9.3 3.1327 9.3 4.9Z", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .text: MetalIconAct(
             duration: 1.1,
@@ -118,7 +119,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 5.2L12 18.8M9.6 18.8L14.4 18.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M19.4 12.9L19.4 19.1", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7.9 20L6.8 20.6M16.1 20L17.2 20.6", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .note: MetalIconAct(
             duration: 1.0,
@@ -202,7 +204,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M7.6 8.6L16.4 8.6", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7.6 12.2L12.4 12.2", parts: [3], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M18.4 21.1L21.1 18.4", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .image: MetalIconAct(
             duration: 1.1,
@@ -257,7 +260,8 @@ extension MetalIconAct {
                     MetalIconActCut(d: "M6.2 5.1L17.8 5.1C19.2359 5.1 20.4 6.2641 20.4 7.7L20.4 16.3C20.4 17.7359 19.2359 18.9 17.8 18.9L6.2 18.9C4.7641 18.9 3.6 17.7359 3.6 16.3L3.6 7.7C3.6 6.2641 4.7641 5.1 6.2 5.1Z", parts: [], fill: true, stroke: 0.0, keep: true),
                 ]),
             MetalIconActInk(d: "M3.4 17L8.4 12C8.6439 11.7557 8.9748 11.6185 9.32 11.6185C9.6652 11.6185 9.9961 11.7557 10.24 12L14.3 16L16.3 14.1C16.803 13.6174 17.597 13.6174 18.1 14.1L20.7 16.6", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .link: MetalIconAct(
             duration: 1.01,
@@ -314,7 +318,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12.8 16.4L11.4 17.8C9.9277 18.9754 7.8074 18.8569 6.4752 17.5248C5.1431 16.1926 5.0246 14.0723 6.2 12.6L7.6 11.2", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M9.8 14.2L13.4 10.6", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M13.7 13.7L14.6 14.6M10.3 10.3L9.4 9.4", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .draw: MetalIconAct(
             duration: 1.18,
@@ -372,7 +377,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.7 17.5C5.5 18.7 7.2 18.7 9 17.5", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M6.8645 12.4586L12.9456 6.3775C13.961 5.3621 15.6072 5.3621 16.6225 6.3775C17.6379 7.3928 17.6379 9.039 16.6225 10.0544L10.5414 16.1355L6.4756 17.7265C6.1307 17.8933 5.7181 17.8236 5.4473 17.5527C5.1764 17.2819 5.1067 16.8693 5.2735 16.5244Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M11.2485 8.0745L14.9255 11.7515", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .pen: MetalIconAct(
             duration: 1.28,
@@ -458,7 +464,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M14.3598 4.1147L18.8853 8.6402L15.2083 12.3172L14.2184 15.287L5.1674 17.8326L7.713 8.7816L10.6828 7.7917Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M5.1674 17.8326L8.7029 14.2971", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M10.6475 13.4132C10.3546 13.7061 9.8797 13.7061 9.5868 13.4132C9.2939 13.1203 9.2939 12.6454 9.5868 12.3525C9.8797 12.0596 10.3546 12.0596 10.6475 12.3525C10.9404 12.6454 10.9404 13.1203 10.6475 13.4132Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .marker: MetalIconAct(
             duration: 1.12,
@@ -506,7 +513,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M4.1 16.1L6.7 16.1C7.418 16.1 8 16.682 8 17.4L8 18C8 18.718 7.418 19.3 6.7 19.3L4.1 19.3C3.382 19.3 2.8 18.718 2.8 18L2.8 17.4C2.8 16.682 3.382 16.1 4.1 16.1Z", parts: [1], stroke: 0.0, fill: .duotone(0.32), opacity: 1.0),
             MetalIconActInk(d: "M13.7941 5.5289C14.3408 4.9822 15.2273 4.9822 15.774 5.5289L17.4711 7.226C18.0178 7.7727 18.0178 8.6592 17.4711 9.2059L11.2485 15.4284L7.5716 11.7515Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M8.1373 12.3172L10.6828 14.8627L9.1979 16.3477L4.4603 15.9941Z", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .line: MetalIconAct(
             duration: 1.0,
@@ -591,7 +599,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M6.7 18.6C6.7 19.318 6.118 19.9 5.4 19.9C4.682 19.9 4.1 19.318 4.1 18.6C4.1 17.882 4.682 17.3 5.4 17.3C6.118 17.3 6.7 17.882 6.7 18.6Z", parts: [2], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M19.9 5.4C19.9 6.118 19.318 6.7 18.6 6.7C17.882 6.7 17.3 6.118 17.3 5.4C17.3 4.682 17.882 4.1 18.6 4.1C19.318 4.1 19.9 4.682 19.9 5.4Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M21.4 5.4C21.4 6.9464 20.1464 8.2 18.6 8.2C17.0536 8.2 15.8 6.9464 15.8 5.4C15.8 3.8536 17.0536 2.6 18.6 2.6C20.1464 2.6 21.4 3.8536 21.4 5.4Z", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .arrow: MetalIconAct(
             duration: 0.8,
@@ -646,7 +655,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M5.4 18.6C9.6 14.4 13.8 10.2 18 6", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M10.8 5.4L18.6 5.4L18.6 13.2", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M20.9 5.4L21.9 5.4M20.3 3.7L21 3M18.6 3.1L18.6 2.2", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .rectangle: MetalIconAct(
             duration: 0.92,
@@ -802,7 +812,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.4 15.8L3.4 8.2", parts: [6], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M22 19C22 19.7732 21.3732 20.4 20.6 20.4C19.8268 20.4 19.2 19.7732 19.2 19C19.2 18.2268 19.8268 17.6 20.6 17.6C21.3732 17.6 22 18.2268 22 19Z", parts: [7], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M23.2 19C23.2 20.4359 22.0359 21.6 20.6 21.6C19.1641 21.6 18 20.4359 18 19C18 17.5641 19.1641 16.4 20.6 16.4C22.0359 16.4 23.2 17.5641 23.2 19Z", parts: [8], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .ellipse: MetalIconAct(
             duration: 1.1,
@@ -923,7 +934,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M20.6 12C20.6 15.8108 16.7496 18.9 12 18.9C7.2504 18.9 3.4 15.8108 3.4 12C3.4 8.1892 7.2504 5.1 12 5.1C16.7496 5.1 20.6 8.1892 20.6 12Z", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M22 12C22 12.7732 21.3732 13.4 20.6 13.4C19.8268 13.4 19.2 12.7732 19.2 12C19.2 11.2268 19.8268 10.6 20.6 10.6C21.3732 10.6 22 11.2268 22 12Z", parts: [2], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M23.2 12C23.2 13.4359 22.0359 14.6 20.6 14.6C19.1641 14.6 18 13.4359 18 12C18 10.5641 19.1641 9.4 20.6 9.4C22.0359 9.4 23.2 10.5641 23.2 12Z", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .eraser: MetalIconAct(
             duration: 1.0,
@@ -1012,7 +1024,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.1 19.6C10.1 19.9866 9.7866 20.3 9.4 20.3C9.0134 20.3 8.7 19.9866 8.7 19.6C8.7 19.2134 9.0134 18.9 9.4 18.9C9.7866 18.9 10.1 19.2134 10.1 19.6Z", parts: [3], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M12.8042 5.6704C13.5852 4.8893 14.8515 4.8893 15.6326 5.6704L17.3297 7.3674C18.1107 8.1485 18.1107 9.4148 17.3297 10.1958L8.8444 18.6811C8.0633 19.4622 6.797 19.4622 6.0159 18.6811L4.3189 16.9841C3.5378 16.203 3.5378 14.9367 4.3189 14.1556Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M7.5716 10.9029L12.0971 15.4284", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .layout: MetalIconAct(
             duration: 1.143,
@@ -1083,7 +1096,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15.8 3.6L18 3.6C19.3255 3.6 20.4 4.6745 20.4 6L20.4 8.2C20.4 9.5255 19.3255 10.6 18 10.6L15.8 10.6C14.4745 10.6 13.4 9.5255 13.4 8.2L13.4 6C13.4 4.6745 14.4745 3.6 15.8 3.6Z", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M15.8 13.4L18 13.4C19.3255 13.4 20.4 14.4745 20.4 15.8L20.4 18C20.4 19.3255 19.3255 20.4 18 20.4L15.8 20.4C14.4745 20.4 13.4 19.3255 13.4 18L13.4 15.8C13.4 14.4745 14.4745 13.4 15.8 13.4Z", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 4.6L12 19.4", parts: [3], stroke: 0.6, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .tidy: MetalIconAct(
             duration: 1.28,
@@ -1165,7 +1179,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12.1667 10.1819L16.7492 10.5828C17.8496 10.6791 18.6635 11.6492 18.5673 12.7495L18.5673 12.7495C18.471 13.8499 17.5009 14.6639 16.4006 14.5676L11.8181 14.1667C10.7177 14.0704 9.9037 13.1004 10 12L10 12C10.0963 10.8996 11.0663 10.0856 12.1667 10.1819Z", parts: [2], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
             MetalIconActInk(d: "M9.9926 15.4981L16.983 15.1317C18.0861 15.0739 19.0271 15.9213 19.0849 17.0243L19.0849 17.0243C19.1427 18.1274 18.2954 19.0684 17.1923 19.1262L10.2019 19.4926C9.0989 19.5504 8.1578 18.7031 8.1 17.6L8.1 17.6C8.0422 16.4969 8.8895 15.5559 9.9926 15.4981Z", parts: [3], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
             MetalIconActInk(d: "M5.4 6.4L6.3 6.4M5.4 12L6.3 12M5.4 17.6L6.3 17.6", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .search: MetalIconAct(
             duration: 1.12,
@@ -1228,7 +1243,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15.2 15.2L19.8 19.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12.6 10.6C12.6 11.7046 11.7046 12.6 10.6 12.6C9.4954 12.6 8.6 11.7046 8.6 10.6C8.6 9.4954 9.4954 8.6 10.6 8.6C11.7046 8.6 12.6 9.4954 12.6 10.6Z", parts: [0, 1], stroke: 0.6, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7.6 9.1C7.935 8.3996 8.4996 7.835 9.2 7.5", parts: [0, 2], stroke: 0.8, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .zoomIn: MetalIconAct(
             duration: 1.14,
@@ -1287,7 +1303,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15.2 15.2L19.8 19.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.2 10.6L13 10.6M10.6 8.2L10.6 13", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M13.15 8.05L13.65 7.55M13.15 13.15L13.65 13.65M8.05 13.15L7.55 13.65M8.05 8.05L7.55 7.55", parts: [0, 2], stroke: 0.7471, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .zoomOut: MetalIconAct(
             duration: 1.14,
@@ -1346,7 +1363,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15.2 15.2L19.8 19.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.2 10.6L13 10.6", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7.4 8.3L7.4 7.4L8.3 7.4M12.9 7.4L13.8 7.4L13.8 8.3M13.8 12.9L13.8 13.8L12.9 13.8M8.3 13.8L7.4 13.8L7.4 12.9", parts: [0, 2], stroke: 0.6, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .fit: MetalIconAct(
             duration: 1.16,
@@ -1453,7 +1471,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.6 20.2L6.4 20.2C4.9641 20.2 3.8 19.0359 3.8 17.6L3.8 15.4", parts: [3], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M10.7 9L13.3 9C14.2389 9 15 9.7611 15 10.7L15 13.3C15 14.2389 14.2389 15 13.3 15L10.7 15C9.7611 15 9 14.2389 9 13.3L9 10.7C9 9.7611 9.7611 9 10.7 9Z", parts: [4], stroke: 1.0, fill: .duotone(0.18), opacity: 1.0),
             MetalIconActInk(d: "M10.9 4.8L13.1 4.8M19.2 10.9L19.2 13.1M13.1 19.2L10.9 19.2M4.8 13.1L4.8 10.9", parts: [5], stroke: 0.6, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .duplicate: MetalIconAct(
             duration: 1.183,
@@ -1500,7 +1519,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M11.5 8.5L17.5 8.5C19.1568 8.5 20.5 9.8431 20.5 11.5L20.5 17.5C20.5 19.1568 19.1568 20.5 17.5 20.5L11.5 20.5C9.8431 20.5 8.5 19.1568 8.5 17.5L8.5 11.5C8.5 9.8431 9.8431 8.5 11.5 8.5Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M14.5 12.3L14.5 16.7M12.3 14.5L16.7 14.5", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M18.9 15.2L18.9 17.1C18.9 17.8732 18.2732 18.5 17.5 18.5L15.6 18.5", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .sendAway: MetalIconAct(
             duration: 1.245,
@@ -1611,7 +1631,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12.06 13.05L11.89 13.19L11.69 13.3L11.46 13.36L11.2 13.37L10.94 13.34L10.67 13.25L10.4 13.11L10.15 12.92L9.93 12.68L9.74 12.39L9.59 12.07L9.5 11.7L9.46 11.31L9.48 10.91L9.57 10.5L9.73 10.09L9.96 9.7L10.25 9.34L10.61 9.01L11.03 8.74L11.5 8.53L12.01 8.38L12.55 8.31L13.1 8.33L13.67 8.43L14.23 8.62L14.76 8.9L15.26 9.27L15.72 9.72L16.1 10.24L16.42 10.82L16.64 11.46L16.78 12.14L16.81 12.85L16.73 13.57L16.55 14.29L16.25 14.98L15.85 15.64L15.34 16.24L14.75 16.77L14.06 17.21L13.31 17.55L12.5 17.79L11.65 17.9L10.78 17.89L9.9 17.74L9.05 17.47L8.23 17.06L7.46 16.53L6.77 15.89L6.17 15.14L5.69 14.29L5.32 13.37L5.09 12.4L5.01 11.38L5.08 10.36L5.29 9.33L5.67 8.34L6.18 7.4L6.84 6.53L7.63 5.76L8.54 5.11L9.54 4.58L10.63 4.21L11.77 3.99L12.94 3.95L14.12 4.07L15.29 4.38L16.41 4.85L17.46 5.49", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M21.57 10.26C21.57 11.0332 20.9432 11.66 20.17 11.66C19.3968 11.66 18.77 11.0332 18.77 10.26C18.77 9.4868 19.3968 8.86 20.17 8.86C20.9432 8.86 21.57 9.4868 21.57 10.26Z", parts: [0, 1, 2, 3], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M14.3 12C14.3 13.2703 13.2703 14.3 12 14.3C10.7297 14.3 9.7 13.2703 9.7 12C9.7 10.7297 10.7297 9.7 12 9.7C13.2703 9.7 14.3 10.7297 14.3 12Z", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .trash: MetalIconAct(
             duration: 1.063,
@@ -1669,7 +1690,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M6.2 7L17.8 7L16.94 18.1C16.836 19.2916 15.8361 20.2045 14.64 20.2L9.36 20.2C8.1639 20.2045 7.164 19.2916 7.06 18.1Z", parts: [1], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
             MetalIconActInk(d: "M10.2 10.6L10.2 16.4M13.8 10.6L13.8 16.4", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M20.9 6.1L21.9 5.5M20.9 7.9L21.9 8.5", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: 0.44
         ),
         .group: MetalIconAct(
             duration: 1.253,
@@ -1749,7 +1771,8 @@ extension MetalIconAct {
                 ]),
             MetalIconActInk(d: "M3.5 12.2L20.5 12.2L20.5 17.6C20.5 18.9807 19.3807 20.1 18 20.1L6 20.1C4.6193 20.1 3.5 18.9807 3.5 17.6Z", parts: [2], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M2.8 10.2L2.1 9.5M21.2 10.2L21.9 9.5", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .ungroup: MetalIconAct(
             duration: 0.826,
@@ -1819,7 +1842,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15.3957 3.2006L20.1694 3.7024C21.0482 3.7947 21.6858 4.582 21.5934 5.4608L20.9453 11.6269C20.853 12.5057 20.0657 13.1432 19.1868 13.0509L14.4131 12.5491C13.5343 12.4568 12.8968 11.6695 12.9892 10.7906L13.6372 4.6246C13.7296 3.7458 14.5169 3.1083 15.3957 3.2006Z", parts: [1], stroke: 1.0, fill: .duotone(0.1), opacity: 1.0),
             MetalIconActInk(d: "M3.5 15.2L3.5 17.6C3.5 18.9807 4.6193 20.1 6 20.1L18 20.1C19.3807 20.1 20.5 18.9807 20.5 17.6L20.5 15.2", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 4.6L12 11.8", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .pin: MetalIconAct(
             duration: 1.03,
@@ -1882,7 +1906,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 13.2L12 19.6", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M10.6 20.8L13.4 20.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.9 20.8L7.6 20.8M15.1 20.8L16.4 20.8", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .board: MetalIconAct(
             duration: 0.776,
@@ -1923,7 +1948,8 @@ extension MetalIconAct {
             ink: [
             MetalIconActInk(d: "M6.8 19.8L6.8 5.9C6.8 4.7402 7.7402 3.8 8.9 3.8L15.1 3.8C16.2598 3.8 17.2 4.7402 17.2 5.9L17.2 19.8L12.9 16.8C12.3569 16.4305 11.6431 16.4305 11.1 16.8Z", parts: [0], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M5.3 4.4L4 4.4M18.7 4.4L20 4.4", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .share: MetalIconAct(
             duration: 0.9,
@@ -2012,7 +2038,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 14.2L12 3.9M8.9 7L12 3.9L15.1 7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 14.2L12 3.9M8.9 7L12 3.9L15.1 7", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M9.9 9.2L8.7 8M14.1 9.2L15.3 8", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .undo: MetalIconAct(
             duration: 1.01,
@@ -2067,7 +2094,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M9 5.3L5.3 9L9 12.7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M5.3 9L14.6 9C17.1405 9 19.2 11.0595 19.2 13.6C19.2 16.1405 17.1405 18.2 14.6 18.2L10.6 18.2", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M9 5.3L5.3 9L9 12.7", parts: [0, 2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .redo: MetalIconAct(
             duration: 1.01,
@@ -2122,7 +2150,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M15 5.3L18.7 9L15 12.7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M18.7 9L9.4 9C6.8595 9 4.8 11.0595 4.8 13.6C4.8 16.1405 6.8595 18.2 9.4 18.2L13.4 18.2", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M15 5.3L18.7 9L15 12.7", parts: [0, 2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .more: MetalIconAct(
             duration: 1.143,
@@ -2191,7 +2220,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M13.55 12C13.55 12.856 12.856 13.55 12 13.55C11.144 13.55 10.45 12.856 10.45 12C10.45 11.144 11.144 10.45 12 10.45C12.856 10.45 13.55 11.144 13.55 12Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M19.95 12C19.95 12.856 19.256 13.55 18.4 13.55C17.544 13.55 16.85 12.856 16.85 12C16.85 11.144 17.544 10.45 18.4 10.45C19.256 10.45 19.95 11.144 19.95 12Z", parts: [2], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M20.8 12C20.8 13.3255 19.7255 14.4 18.4 14.4C17.0745 14.4 16 13.3255 16 12C16 10.6745 17.0745 9.6 18.4 9.6C19.7255 9.6 20.8 10.6745 20.8 12Z", parts: [3], stroke: 0.6, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .close: MetalIconAct(
             duration: 0.754,
@@ -2260,7 +2290,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M7.2 7.2L16.8 16.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M16.8 7.2L7.2 16.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M14.8 12C14.8 13.5464 13.5464 14.8 12 14.8C10.4536 14.8 9.2 13.5464 9.2 12C9.2 10.4536 10.4536 9.2 12 9.2C13.5464 9.2 14.8 10.4536 14.8 12Z", parts: [2], stroke: 0.6, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .check: MetalIconAct(
             duration: 0.793,
@@ -2340,7 +2371,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M5.4 12.6L9.5 16.7L18.6 7.3", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M5.4 12.6L9.5 16.7L18.6 7.3", parts: [0, 2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M20.28 7.06L21.47 6.89M18.84 5.62L19.01 4.43", parts: [0, 3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .synced: MetalIconAct(
             duration: 1.1,
@@ -2430,7 +2462,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M19.12 6.63C19.12 7.5965 18.3365 8.38 17.37 8.38C16.4035 8.38 15.62 7.5965 15.62 6.63C15.62 5.6635 16.4035 4.88 17.37 4.88C18.3365 4.88 19.12 5.6635 19.12 6.63Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M19.12 6.63C19.12 7.5965 18.3365 8.38 17.37 8.38C16.4035 8.38 15.62 7.5965 15.62 6.63C15.62 5.6635 16.4035 4.88 17.37 4.88C18.3365 4.88 19.12 5.6635 19.12 6.63Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M20.57 6.63C20.57 8.3973 19.1373 9.83 17.37 9.83C15.6027 9.83 14.17 8.3973 14.17 6.63C14.17 4.8627 15.6027 3.43 17.37 3.43C19.1373 3.43 20.57 4.8627 20.57 6.63Z", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .offline: MetalIconAct(
             duration: 1.1,
@@ -2491,7 +2524,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M19.5896 11.6022C19.8093 15.7939 16.5894 19.3699 12.3978 19.5896C8.2061 19.8093 4.6301 16.5894 4.4104 12.3978C4.1907 8.2061 7.4106 4.6301 11.6022 4.4104C15.7939 4.1907 19.3699 7.4106 19.5896 11.6022Z", parts: [], stroke: 1.0, fill: .none, opacity: 1.0, trim: 0.76),
             MetalIconActInk(d: "M19.12 6.63C19.12 7.5965 18.3365 8.38 17.37 8.38C16.4035 8.38 15.62 7.5965 15.62 6.63C15.62 5.6635 16.4035 4.88 17.37 4.88C18.3365 4.88 19.12 5.6635 19.12 6.63Z", parts: [2], stroke: 0.6, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M20.6 5C20.6 5.8837 19.8837 6.6 19 6.6C18.1163 6.6 17.4 5.8837 17.4 5C17.4 4.1163 18.1163 3.4 19 3.4C19.8837 3.4 20.6 4.1163 20.6 5Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .syncError: MetalIconAct(
             duration: 1.185,
@@ -2553,7 +2587,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 8.6L12 12.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M13.05 15.7C13.05 16.2799 12.5799 16.75 12 16.75C11.4201 16.75 10.95 16.2799 10.95 15.7C10.95 15.1201 11.4201 14.65 12 14.65C12.5799 14.65 13.05 15.1201 13.05 15.7Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M16.85 3.95L17.39 2.88M17.78 5.15L18.95 4.88M17.47 6.63L18.43 7.36", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .capture: MetalIconAct(
             duration: 0.95,
@@ -2647,7 +2682,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.4 20.2L7 20.2C5.2327 20.2 3.8 18.7673 3.8 17L3.8 15.6", parts: [3], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M15.6 12C15.6 13.9882 13.9882 15.6 12 15.6C10.0118 15.6 8.4 13.9882 8.4 12C8.4 10.0118 10.0118 8.4 12 8.4C13.9882 8.4 15.6 10.0118 15.6 12Z", parts: [], stroke: 1.0, fill: .duotone(0.16), opacity: 1.0),
             MetalIconActInk(d: "M15.6 12C15.6 13.9882 13.9882 15.6 12 15.6C10.0118 15.6 8.4 13.9882 8.4 12C8.4 10.0118 10.0118 8.4 12 8.4C13.9882 8.4 15.6 10.0118 15.6 12Z", parts: [4], stroke: 0.0, fill: .solid, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .paste: MetalIconAct(
             duration: 0.9,
@@ -2736,7 +2772,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.6 11.8L15.4 11.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.6 15.4L12.8 15.4", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7.3 3.1L6.3 2.3M16.7 3.1L17.7 2.3", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .keeper: MetalIconAct(
             duration: 1.15,
@@ -2834,7 +2871,8 @@ extension MetalIconAct {
                 ]),
             MetalIconActInk(d: "M2.4141 14.8375C2.7012 16.1881 7.2257 16.3707 12.5198 15.2454C17.8139 14.1201 21.8729 12.113 21.5859 10.7625", parts: [0, 1], stroke: 0.8824, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.9 3.6L8.2 2.7M12 3.1L12 2.1M15.1 3.6L15.8 2.7", parts: [4], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .plus: MetalIconAct(
             duration: 0.875,
@@ -2901,7 +2939,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.8 12L15.2 12", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 8.8L12 15.2", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M7 12L7.01 12M17 12L17.01 12", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .minus: MetalIconAct(
             duration: 0.93,
@@ -2936,7 +2975,8 @@ extension MetalIconAct {
             ink: [
             MetalIconActInk(d: "M8 4.5L16 4.5C17.933 4.5 19.5 6.067 19.5 8L19.5 16C19.5 17.933 17.933 19.5 16 19.5L8 19.5C6.067 19.5 4.5 17.933 4.5 16L4.5 8C4.5 6.067 6.067 4.5 8 4.5Z", parts: [1], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
             MetalIconActInk(d: "M8.8 12L15.2 12", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .chevron: MetalIconAct(
             duration: 1.056,
@@ -3004,7 +3044,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M6.4 9.2L12 14.8", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M17.6 9.2L12 14.8", parts: [0, 2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M6.4 9.2L12 14.8L17.6 9.2", parts: [3], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .region: MetalIconAct(
             duration: 1.04,
@@ -3071,7 +3112,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.5 9.6L20.5 9.6", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M6.8 7.3L10.4 7.3", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M10.4 6.1L10.4 8.5", parts: [0, 2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .task: MetalIconAct(
             duration: 0.72,
@@ -3138,7 +3180,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.5 5L15.5 5C17.433 5 19 6.567 19 8.5L19 15.5C19 17.433 17.433 19 15.5 19L8.5 19C6.567 19 5 17.433 5 15.5L5 8.5C5 6.567 6.567 5 8.5 5Z", parts: [0], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
             MetalIconActInk(d: "M8.7 12.2L11 14.5L15.4 9.6", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.5 5L15.5 5C17.433 5 19 6.567 19 8.5L19 15.5C19 17.433 17.433 19 15.5 19L8.5 19C6.567 19 5 17.433 5 15.5L5 8.5C5 6.567 6.567 5 8.5 5Z", parts: [0, 2], stroke: 0.4529, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .tag: MetalIconAct(
             duration: 0.9,
@@ -3181,7 +3224,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.2 5L17.8 5C19.015 5 20 5.985 20 7.2L20 16.8C20 18.015 19.015 19 17.8 19L10.2 19C9.5422 19.0009 8.9186 18.7074 8.5 18.2L4.6 13.4C3.9294 12.5871 3.9294 11.4129 4.6 10.6L8.5 5.8C8.9186 5.2926 9.5422 4.9991 10.2 5Z", parts: [0], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
             MetalIconActInk(d: "M10.7 12C10.7 12.718 10.118 13.3 9.4 13.3C8.682 13.3 8.1 12.718 8.1 12C8.1 11.282 8.682 10.7 9.4 10.7C10.118 10.7 10.7 11.282 10.7 12Z", parts: [0], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M12 12C12 13.4359 10.8359 14.6 9.4 14.6C7.9641 14.6 6.8 13.4359 6.8 12C6.8 10.5641 7.9641 9.4 9.4 9.4C10.8359 9.4 12 10.5641 12 12Z", parts: [1], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .calendar: MetalIconAct(
             duration: 1.0,
@@ -3230,7 +3274,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M3.5 10L20.5 10", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.2 3.4L8.2 6.8M15.8 3.4L15.8 6.8", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M3.5 10L20.5 10L20.5 17C20.5 18.7673 19.0673 20.2 17.3 20.2L6.7 20.2C4.9327 20.2 3.5 18.7673 3.5 17Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .document: MetalIconAct(
             duration: 0.9,
@@ -3292,7 +3337,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M8.6 12.4L15.4 12.4", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M8.6 15.8L12.6 15.8", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12.564 6L19.636 6L16.1 2.464Z", parts: [0], stroke: 1.0, fill: .duotone(0.2), opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .clock: MetalIconAct(
             duration: 1.3,
@@ -3352,7 +3398,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 12L15.2 14", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 12L12 7.4", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M12 5L12 6", parts: [2], stroke: 0.8, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .me: MetalIconAct(
             duration: 1.0,
@@ -3418,7 +3465,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M7.2 15.2L10 12L12.6 14L16 9.8", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M17.2 9.8C17.2 10.4627 16.6627 11 16 11C15.3373 11 14.8 10.4627 14.8 9.8C14.8 9.1373 15.3373 8.6 16 8.6C16.6627 8.6 17.2 9.1373 17.2 9.8Z", parts: [1], stroke: 0.0, fill: .solid, opacity: 1.0),
             MetalIconActInk(d: "M18.3 9.8C18.3 11.0702 17.2703 12.1 16 12.1C14.7297 12.1 13.7 11.0702 13.7 9.8C13.7 8.5297 14.7297 7.5 16 7.5C17.2703 7.5 18.3 8.5297 18.3 9.8Z", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
         .seed: MetalIconAct(
             duration: 1.04,
@@ -3490,7 +3538,8 @@ extension MetalIconAct {
             MetalIconActInk(d: "M12 4.4L12 7", parts: [0, 1], stroke: 1.0, fill: .none, opacity: 1.0),
             MetalIconActInk(d: "M15.4 3.2C15.1 4.7 13.8 5.4 12 5.2C12.5 3.7 13.8 3 15.4 3.2Z", parts: [0, 1, 2], stroke: 1.0, fill: .duotone(0.2), opacity: 1.0),
             MetalIconActInk(d: "M8 21.3L6.8 21.3M16 21.3L17.2 21.3", parts: [3], stroke: 0.7471, fill: .none, opacity: 1.0),
-            ]
+            ],
+            holdAt: nil
         ),
     ]
 }

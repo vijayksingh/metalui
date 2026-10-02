@@ -103,6 +103,8 @@ export interface IconRecord {
 
 export interface IconMotion {
   duration: number;
+  /** Preparation time where a hold-aware host may pause this act. */
+  holdAt?: number;
   caption: string;
   stages: readonly [string, string, string];
   tracks: readonly { part: string; keyframes: readonly Keyframe[] }[];
@@ -118,7 +120,7 @@ ${entries.map(({ ic, tracks, pressMs, t16 }) => `${storyboard(ic, tracks).replac
     pressMs: ${pressMs},
     defs: ${JSON.stringify(ic.defs || '')},
     body: ${JSON.stringify(ic.body)},${t16?.body ? `\n    body16: ${JSON.stringify(t16.body)},` : ''}
-    sw16: ${t16?.sw ?? SW16},${ic.study ? `\n    motion: ${JSON.stringify({ duration: ic.study.duration, caption: ic.study.caption, stages: ic.study.stages, tracks: studyKeyframes(ic.study) })},` : ''}
+    sw16: ${t16?.sw ?? SW16},${ic.study ? `\n    motion: ${JSON.stringify({ duration: ic.study.duration, ...(ic.holdAt ? { holdAt: ic.holdAt } : {}), caption: ic.study.caption, stages: ic.study.stages, tracks: studyKeyframes(ic.study) })},` : ''}
   },`).join('\n')}
 } satisfies Record<string, IconRecord>;
 

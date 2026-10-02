@@ -22,6 +22,7 @@ study: motion(900, 'The pointer draws back, clicks its tip down, and a ring open
 ```
 
 - **Study:** one clock (`duration`, usually 700–1400 ms), a one-line `caption`, and three `stages`: the storyboard's beats.
+- **Hold checkpoint** (optional `holdAt` beside `study` in the act source): the preparation time where an irreversible confirmation pauses. Button stretches preparation over its hold duration, reverses it on cancellation, and continues the same authored act on completion. Trash pauses at the open lid (440ms).
 - **Track (actor):** one moving part, named by `data-part` in the body, with its pivot (`origin`) in grid units.
 - **Frame:** a time `at` in ms, and any of:
   - `transform` (translate, rotate, scale);
@@ -47,6 +48,8 @@ One source, three players:
 | Web Animations | React `Icon` (`useActPlayback`) | plays once on pointer enter (not touch), focus-visible or click; finishes after the pointer leaves; ignores triggers mid-act |
 | CSS keyframes | standalone `svg-animated/*.svg`, and a page before hydration | plays while hovered or focused (or with `data-state="play"`); leaving cuts it short |
 | SwiftUI | `MetalIcon` → `MetalIconActView` (data in `MetalIconActs.generated.swift`) | plays once when its host is hovered or pressed; finishes; ignores triggers mid-act; the same keyframes and curves, evaluated as Web Animations does |
+
+`Icon act={sequence}` (Swift `MetalIcon(..., act: sequence)`) plays the act when a host increments its sequence after a result. Repeated requests during playback are ignored. The SVG ref remains available for layout and focus; hosts do not dispatch synthetic clicks.
 
 Reduced motion plays nothing, and the rest glyph is complete on its own.
 
