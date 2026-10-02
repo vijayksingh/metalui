@@ -54,7 +54,7 @@ function DocumentNumber({ token, doc, raw, readOnly, disabled }: { token: Token;
       units={kind === 'clock' ? clockUnits : sleepUnits} min={0} max={kind === 'clock' ? 1439 : 1440} footprint={kind === 'clock' ? ['12:59pm'] : ['1440min', '23h59', '24h']}
       hint={false} allowTyping={false} raw={raw} readOnly={readOnly} disabled={disabled} inputAria={{ 'aria-describedby': hint }}
       onBegin={() => doc.begin({ start: token.start, end: token.end })}
-      onSourceChange={words => { expectedWords.current = words; doc.replace(words); }} onCommit={doc.commit}
+      onSourceChange={words => { const accepted = doc.replace(words); if (accepted) expectedWords.current = words; return accepted; }} onCommit={doc.commit}
       onCancel={reason => { if (reason !== 'external') doc.cancel(); }} />
   </ProvenanceTooltip><span id={hint} className="sr-only">You. {kind === 'clock' ? 'Written clock time. Up and Down change quarter hours.' : 'Written sleep quantity. Drag vertically to change; horizontally to convert hours and minutes.'} Shift changes larger steps, Alt finer steps. Escape cancels.</span></>;
 }
@@ -94,7 +94,7 @@ export function ProvenanceDocument() {
   const rows = doc.source.split('\n'); let rowStart = 0;
   return <div className="mu-stack gap-mu-group w-full" data-testid="provenance-document" data-editing={doc.editing || undefined} data-mu-motion={dial.reducedMotion ? 'reduce' : undefined}>
     <label className="mu-stack gap-mu-related type-label text-ink2">Editable document source
-      <textarea ref={editor} rows={3} aria-label="Provenance document source" value={doc.source} className="type-content text-ink material-well rounded-field p-mu-space-12 w-full"
+      <textarea ref={editor} rows={3} aria-label="Provenance document source" value={doc.source} className="type-content text-ink recipe-well-field rounded-field-regular-radius p-mu-space-12 w-full border-0 outline-none focus-visible:focus-ring-flush resize-y"
         onChange={event => {
           const field = event.currentTarget;
           doc.setSource(field.value, { start: field.selectionStart, end: field.selectionEnd, direction: field.selectionDirection });
@@ -114,15 +114,15 @@ export function ProvenanceDocument() {
         <Popover.Body><TagCue.Picker recentTags={recentTags} label="Find a source tag" onChoose={chooseTag} /></Popover.Body>
       </Popover.Content>
     </Popover>
-    <ProvenanceProvider>{rows.map((row, index) => {
+    <ProvenanceProvider><div className="mu-stack gap-mu-related">{rows.map((row, index) => {
       const start = rowStart; rowStart += row.length + 1; const found = tokens(row); let after = 0;
-      return <MarkLine key={index} data-testid={`provenance-line-${index}`} className="text-ink">{found.flatMap((token, at) => { const before = row.slice(after, token.start); after = token.end; return [<span key={`source-${at}`}>{before}</span>, render({ ...token, start: token.start + start, end: token.end + start })]; })}<span data-testid={`provenance-tail-${index}`}>{row.slice(after)}</span></MarkLine>;
-    })}</ProvenanceProvider>
+      return <MarkLine presentation="reading" key={index} data-testid={`provenance-line-${index}`} className="text-ink">{found.flatMap((token, at) => { const before = row.slice(after, token.start); after = token.end; return [<span className="whitespace-pre-wrap" key={`source-${at}`}>{before}</span>, render({ ...token, start: token.start + start, end: token.end + start })]; })}<span className="whitespace-pre-wrap" data-testid={`provenance-tail-${index}`}>{row.slice(after)}</span></MarkLine>;
+    })}</div></ProvenanceProvider>
     <span id={description} className="sr-only">You. Explicit source words. Drag or arrow keys change the date. Hold or Enter opens Calendar.</span>
     <div className="mu-cluster gap-mu-related">
-      <Button size="compact" icon={<UndoIcon />} disabled={!doc.canUndo && !doc.editing} onClick={doc.undo}>Undo source edit</Button>
-      <Button size="compact" icon={<RedoIcon />} disabled={!doc.canRedo || doc.editing} onClick={doc.redo}>Redo source edit</Button>
-      <Button size="compact" icon={<CloseIcon />} disabled={!doc.editing} onClick={doc.cancel}>Cancel source gesture</Button>
+      <Button size="compact" icon={<UndoIcon />} disabled={!doc.canUndo && !doc.editing} aria-label="Undo source edit" onClick={doc.undo}>Undo</Button>
+      <Button size="compact" icon={<RedoIcon />} disabled={!doc.canRedo || doc.editing} aria-label="Redo source edit" onClick={doc.redo}>Redo</Button>
+      <Button size="compact" icon={<CloseIcon />} disabled={!doc.editing} aria-label="Cancel source gesture" onClick={doc.cancel}>Cancel edit</Button>
       <output aria-label="Retained source selection" className="type-readout text-ink2">UTF16 {doc.selection.start}–{doc.selection.end} · {doc.editing ? 'preview' : 'committed'}</output>
     </div>
     <p className="type-meta text-ink2">The date reference is explicitly 2 October 2026. Values and vocabulary belong to this document. Recognition never saves a change.</p>

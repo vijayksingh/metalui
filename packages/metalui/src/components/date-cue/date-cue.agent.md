@@ -10,6 +10,8 @@ Controlled `value`, explicit `today`, `min`, `max` are valid civil `YYYY-MM-DD` 
 
 `hint={false}` suppresses visual inner help when a provenance host supplies it; resolved date and keyboard instructions remain accessible. `inputAria` forwards descriptions to the actual spinbutton, merging its own date instructions. `locale`, `raw`, `disabled`, `readOnly` follow shared policies. `onBegin`, `onSourceChange`, `onCommit`, `onCancel(reason)` match NumericCue source transactions. Begin is deferred until the first changed day; holding merely opens Calendar without a source/history transaction. Calendar acceptance is one transaction. Escape during scrub restores captured day/source; externally changed controlled values invalidate stale capture.
 
+React hosts may return `false` from `onBegin` or `onSourceChange` to refuse an occupied capture or lost source replacement. Scrubbing then keeps its previous date and source; Calendar confirmation publishes no date, commit or haptic and remains open. Source acceptance precedes the controlled value callback. Void callbacks retain their accepted behavior.
+
 ## Interaction
 
 Vertical drag or Arrow Up/Down steps one day; Shift steps one week; Alt/Option still steps one day. Relative words turn on the shared drum, then real date labels appear farther away. The resolved full date remains available as title/help and in Calendar's description. Formatted date words remain while focused; numeric ordinal typing is blocked without marking the component read-only.

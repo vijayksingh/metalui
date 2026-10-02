@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
-import { Mark, type MarkKind, type MarkMeaning } from '../mark/mark';
+import { Mark, useReadingLine, type MarkKind, type MarkMeaning } from '../mark/mark';
 import { Tooltip, TooltipProvider } from '../tooltip/tooltip';
 import { SwapText } from '../../motion/swap';
 import { haptic } from '../../motion/haptic';
@@ -48,8 +48,8 @@ export interface NumericCueProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
   disabled?: boolean;
   readOnly?: boolean;
   name?: string;
-  onBegin?: () => void;
-  onSourceChange?: (words: string) => void;
+  onBegin?: () => boolean | void;
+  onSourceChange?: (words: string) => boolean | void;
   onCommit?: () => void;
   /** External controlled changes invalidate a gesture without restoring its obsolete value. */
   onCancel?: (reason: 'escape' | 'external' | 'pointer') => void;
@@ -72,6 +72,8 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
   callbacks.current = { onValueChange, onBegin, onSourceChange, onCommit, onCancel };
   current.current = value;
   const [held, setHeld] = React.useState(false);
+  const reading = useReadingLine();
+  const footprintPlan = JSON.stringify(footprint);
   const [typing, setTyping] = React.useState(false);
   const [width, setWidth] = React.useState<number>();
   const reduced = useReducedMotion(root.current);
@@ -80,10 +82,12 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     throw new Error('NumericCue requires valid positive unit factors, bounds and an explicit footprint.');
   }
   const begin = () => {
-    if (disabled || readOnly || gesture.current) return;
+    if (disabled || readOnly) return false;
+    if (gesture.current) return !gesture.current.cancelled;
     const selected = units.find(u => u.id === current.current.unit)!;
+    if (callbacks.current.onBegin?.() === false) return false;
     gesture.current = { initial: { ...current.current }, source: selected.source(current.current.value / selected.factor), expected: { ...current.current }, x: 0, y: 0, unitSteps: 0 };
-    callbacks.current.onBegin?.();
+    return true;
   };
   const finish = () => {
     const active = gesture.current;
@@ -97,11 +101,11 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     if (!selected) return;
     const bounded = { value: Math.max(min, Math.min(max, next.value)), unit: next.unit };
     if (same(bounded, gesture.current?.expected ?? current.current)) return;
-    begin();
+    if (!begin()) return;
     if (gesture.current) gesture.current.expected = bounded;
+    if (callbacks.current.onSourceChange?.(selected.source(bounded.value / selected.factor)) === false) { cancel('external'); return; }
     current.current = bounded;
     callbacks.current.onValueChange(bounded);
-    callbacks.current.onSourceChange?.(selected.source(bounded.value / selected.factor));
     if (detent) haptic('detent');
   };
   const cancel = (reason: 'escape' | 'external' | 'pointer') => {
@@ -124,7 +128,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
   const convert = (direction: number) => {
     const active = gesture.current;
     if (disabled || readOnly || active?.cancelled) return;
-    begin();
+    if (!begin()) return;
     const state = active?.expected ?? current.current;
     const index = units.findIndex(u => u.id === state.unit);
     const next = units[Math.max(0, Math.min(units.length - 1, index + direction))];
@@ -147,13 +151,14 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
       if (!canvas) return;
       canvas.font = `${font.fontStyle} ${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;
       const spacing = parseFloat(font.letterSpacing) || 0;
-      setWidth(Math.ceil(Math.max(...footprint.map(words => canvas.measureText(words).width + Math.max(0, words.length - 1) * spacing))));
+      const glyphWidth = reading && meaning ? (parseFloat(font.getPropertyValue('--mu-r-button-compact-glyph')) || 0) + (parseFloat(font.getPropertyValue('--mu-space-4')) || 0) : 0;
+      setWidth(Math.ceil(Math.max(...footprint.map(words => canvas.measureText(words).width + Math.max(0, words.length - 1) * spacing))) + glyphWidth);
     };
     measure();
     document.fonts.ready.then(measure);
     document.fonts.addEventListener('loadingdone', measure);
     return () => { disposed = true; document.fonts.removeEventListener('loadingdone', measure); };
-  }, [footprint]);
+  }, [footprintPlan, reading, meaning]);
   React.useEffect(() => {
     if (!held) return;
     const owner = root.current?.ownerDocument.defaultView ?? window;
@@ -186,7 +191,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     value={value.value / unit.factor} min={min / unit.factor} max={max / unit.factor} step={unit.step ?? 1} smallStep={unit.smallStep ?? .1} largeStep={unit.largeStep ?? 10}
     disabled={disabled} readOnly={readOnly} name={name} locale={locale} format={numberFormat}
     className={`mu-numeric-cue numeric-cue relative inline-block has-[input:focus-visible]:focus-ring align-baseline${className ? ` ${className}` : ''}`}
-    style={{ ...style, width }} data-held={held || undefined} data-typing={typing || undefined} data-reduced={reduced || undefined} data-unit={unit.id}
+    style={{ ...style, width: reading && !held && !typing ? undefined : width }} data-held={held || undefined} data-typing={typing || undefined} data-reduced={reduced || undefined} data-unit={unit.id}
     onValueChange={(amount, details) => {
       if (amount === null || (!allowTyping && details.reason !== 'keyboard' && details.reason !== 'scrub')) return;
       if (details.reason === 'scrub') {
@@ -205,8 +210,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
         // Finish the previous field's blur transaction before capturing this source range.
         input.current?.focus({ preventScroll: true });
         setTyping(false);
-        begin();
-        setHeld(true);
+        if (begin()) setHeld(true);
       }}
       onDoubleClick={() => { if (allowTyping && !readOnly && !disabled) { setTyping(true); input.current?.focus(); } }}>
       <Mark kind={kind} meaning={meaning} meaningLabel={`${label}, ${formatted}`} raw={raw || disabled || readOnly} resolved={hint ? resolved : undefined} data-reveal={hint && held && resolved ? true : undefined} className="block">
@@ -215,7 +219,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     </BaseNumberField.ScrubArea></Tooltip></TooltipProvider>
     <BaseNumberField.Input {...inputAria} ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={resolved ? `${formatted}, ${resolved}` : `${formatted}, ${unit.label}`} title={hint ? help : undefined}
       className="mu-numeric-cue-input absolute inset-0 w-full bg-transparent p-0 border-0 rounded-none text-inherit font-inherit focus-visible:focus-ring"
-      onFocus={() => { if (!held) { cancelledInput.current = false; setTyping(allowTyping); begin(); } }} onBlur={() => { setTyping(false); finish(); }}
+      onFocus={() => { if (!held) { cancelledInput.current = false; if (begin()) setTyping(allowTyping); } }} onBlur={() => { setTyping(false); finish(); }}
 
       onBeforeInput={event => { if (!allowTyping) event.preventDefault(); }} onPaste={event => { if (!allowTyping) event.preventDefault(); }}
       onKeyDown={event => {

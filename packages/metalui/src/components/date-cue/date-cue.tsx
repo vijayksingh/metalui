@@ -47,8 +47,8 @@ export interface DateCueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
   inputAria?: NumericCueProps['inputAria'];
   disabled?: boolean;
   readOnly?: boolean;
-  onBegin?: () => void;
-  onSourceChange?: (words: string) => void;
+  onBegin?: () => boolean | void;
+  onSourceChange?: (words: string) => boolean | void;
   onCommit?: () => void;
   onCancel?: NumericCueProps['onCancel'];
 }
@@ -99,7 +99,14 @@ export const DateCue = React.forwardRef<HTMLSpanElement, DateCueProps>(function 
     pending.current = () => { owner.clearTimeout(timer); owner.removeEventListener('pointermove', move, true); owner.removeEventListener('pointerup', cancel, true); owner.removeEventListener('pointercancel', cancel, true); };
   };
   const begin = () => { changed.current = false; capturedWords.current = sourceWords(value); };
-  const write = (words: string) => { if (!changed.current && words === capturedWords.current) return; if (!changed.current) { changed.current = true; onBegin?.(); } onSourceChange?.(words); };
+  const write = (words: string) => {
+    if (!changed.current && words === capturedWords.current) return true;
+    if (!changed.current) {
+      if (onBegin?.() === false) return false;
+      changed.current = true;
+    }
+    return onSourceChange?.(words) !== false;
+  };
   const commit = () => { if (changed.current) onCommit?.(); changed.current = false; };
   return <Popover open={open} onOpenChange={(next, details) => {
     if (!next && details.reason === 'outside-press' && details.event.target instanceof Node && root.current?.contains(details.event.target)) { details.cancel(); return; }
@@ -121,7 +128,16 @@ export const DateCue = React.forwardRef<HTMLSpanElement, DateCueProps>(function 
       <Popover.Title>{label}</Popover.Title>
       <Popover.Description>{resolved(value)}</Popover.Description>
       <Calendar aria-label={`${label} calendar`} value={localDay(value)} min={localDay(min)} max={localDay(max)} locale={locale}
-        onValueChange={date => { if (!date || disabled || readOnly) return; const next = fromLocal(date); if (next !== value) { onBegin?.(); onValueChange(next); onSourceChange?.(sourceWords(next)); onCommit?.(); haptic('detent'); } setOpen(false); }} />
+        onValueChange={date => {
+          if (!date || disabled || readOnly) return;
+          const next = fromLocal(date);
+          if (next !== value) {
+            if (onBegin?.() === false) return;
+            if (onSourceChange?.(sourceWords(next)) === false) { onCancel?.('external'); return; }
+            onValueChange(next); onCommit?.(); haptic('detent');
+          }
+          setOpen(false);
+        }} />
     </Popover.Content>
   </Popover>;
 });

@@ -67,10 +67,17 @@ const KINDS: Record<MarkKind, string> = {
 };
 
 /** An in-flow cue on recognised text. Metric-neutral: the words keep their exact advance. */
-/** A semantic line reserves glyph clearance on every wrap, even in raw mode. */
-export function MarkLine({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  const own = 'mu-mark-line mark-semantic-line';
-  return <div className={className ? `${own} ${className}` : own} {...props} />;
+const ReadingLine = React.createContext(false);
+/** Internal cue layout policy; source bounds remain owned by each control. */
+export function useReadingLine() { return React.useContext(ReadingLine); }
+export interface MarkLineProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Reading keeps committed words compact and glyphs beside them. Semantic retains overhead slots. */
+  presentation?: 'semantic' | 'reading';
+}
+/** One typography and baseline policy for a sentence of operable cues. */
+export function MarkLine({ presentation = 'semantic', className, ...props }: MarkLineProps) {
+  const own = `mu-mark-line ${presentation === 'reading' ? 'mark-reading-line' : 'mark-semantic-line'}`;
+  return <ReadingLine.Provider value={presentation === 'reading'}><div className={className ? `${own} ${className}` : own} {...props} /></ReadingLine.Provider>;
 }
 
 /** In-flow display decoration. Recognition never writes the source string. */
@@ -98,7 +105,7 @@ export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({
       className={`mu-cue relative mark-chip mark-semantic ${KINDS[kind]}${act > 0 ? ' mark-recognised' : ''}${className ? ` ${className}` : ''}`}
       style={variables} {...props}>
       {tag && <span key={`tab-${act}`} aria-hidden className="mu-mark-tab mark-semantic-tag" />}
-      {(meaning || (kind === 'derived-tag' && !inferred && recognition)) && <span key={`meaning-${act}`} aria-hidden title={meaningLabel ?? meaning} className="mu-mark-meaning mark-semantic-glyph">
+      {(meaning || meaningGlyph || (kind === 'derived-tag' && !inferred && recognition)) && <span key={`meaning-${act}`} aria-hidden title={meaningLabel ?? meaning} className="mu-mark-meaning mark-semantic-glyph">
         {kind === 'derived-tag' && !inferred && recognition && <Icon name="spark" size={MARK_GLYPH_SIZE} act={act} />}
         {glyph && <Icon name={glyph} size={MARK_GLYPH_SIZE} act={act} />}
         {meaning === 'steps' && <LifeIcon name="steps" size={MARK_GLYPH_SIZE} />}

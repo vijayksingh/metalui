@@ -1265,6 +1265,8 @@ Controlled `value`, explicit `today`, `min`, `max` are valid civil `YYYY-MM-DD` 
 
 `hint={false}` suppresses visual inner help when a provenance host supplies it; resolved date and keyboard instructions remain accessible. `inputAria` forwards descriptions to the actual spinbutton, merging its own date instructions. `locale`, `raw`, `disabled`, `readOnly` follow shared policies. `onBegin`, `onSourceChange`, `onCommit`, `onCancel(reason)` match NumericCue source transactions. Begin is deferred until the first changed day; holding merely opens Calendar without a source/history transaction. Calendar acceptance is one transaction. Escape during scrub restores captured day/source; externally changed controlled values invalidate stale capture.
 
+React hosts may return `false` from `onBegin` or `onSourceChange` to refuse an occupied capture or lost source replacement. Scrubbing then keeps its previous date and source; Calendar confirmation publishes no date, commit or haptic and remains open. Source acceptance precedes the controlled value callback. Void callbacks retain their accepted behavior.
+
 ## Interaction
 
 Vertical drag or Arrow Up/Down steps one day; Shift steps one week; Alt/Option still steps one day. Relative words turn on the shared drum, then real date labels appear farther away. The resolved full date remains available as title/help and in Calendar's description. Formatted date words remain while focused; numeric ordinal typing is blocked without marking the component read-only.
@@ -2314,6 +2316,12 @@ SwiftUI display surfaces use `MetalCueText` and `MetalCueTag`; `MetalCueInferred
 
 `resolved` on native `MetalCueText` uses the same graphite chip and finite part-plus-settle recognition pause. Semantic chips clear the reserved glyph as well as the words; their overlays never take layout space. Confirmation uses the existing Button travel for its finite stamp and Spark for one acknowledgment. OS or scoped Reduce Motion ends current travel immediately. The Cue page DialKit controls recognition motion and display amount formatting without changing source.
 
+## Operable reading lines
+
+`<MarkLine presentation="reading">` (Swift: `.metalCuePresentation(.documentLine)`) gives a sentence one content type and baseline. Meaning glyphs sit beside their own words. Committed controls occupy their current face; a host footprint remains an input bound, not permanent empty sentence space. Numeric and enum pointer gestures reserve the bounded editing face while held, then release it at commit/cancel. Accepted words reflow the sentence normally. Default semantic/surface presentation retains the standalone reserved layout. Raw fades glyphs in their slots. Plain source runs must preserve authored spaces (`white-space: pre-wrap` on the web).
+
+This policy changes presentation only: the real Base UI/Swift controls, source transaction, exact UTF16 ranges, accessibility names, help and input bounds remain in force. URL editing measures its invisible capacity separately from the resting host pill.
+
 ---
 
 # Menu and correction popover
@@ -2624,6 +2632,8 @@ Use `kind` (date/duration/amount/measurement), `meaning`, `raw`, `locale`, `numb
 Wire `onBegin` to `useCueDocument.begin(range)`, `onSourceChange(words)` to `.replace(words)`, `onCommit` to `.commit()` and `onCancel` to `.cancel()`. One drag is one undo entry. `onCancel('external')` invalidates an obsolete capture: retain the externally supplied document; do not restore old source. Escape and pointer cancellation restore the captured canonical value, unit and spelling. Hosts own source ranges and UTF16 selection. Native supplies the same callbacks through `MetalNumericCue` and can use `MetalCueDocument`.
 
 A pointer scrub focuses the real Base UI input before capturing its source range. This finishes the previous cue's blur transaction first, so moving directly between focused cues cannot leave the face ahead of its document. The held face keeps formatted words; double-click still enters typing.
+
+React hosts may return `false` from `onBegin` or `onSourceChange` when another source gesture still owns the document. A refused capture never publishes a local quantity, held instrument or haptic; a refused replacement invalidates its capture. A fresh gesture can start after the previous owner closes. Void callbacks retain their existing accepted behavior.
 
 ## Interaction
 

@@ -68,9 +68,12 @@ for (const colorway of COLORWAYS) {
     const doc = page.getByTestId('provenance-document'), source = doc.locator('textarea[aria-label="Provenance document source"]');
     const state = doc.getByRole('button', { name: /Task state/ });
     await state.focus(); await expect(page.locator('.mu-provenance', { hasText: 'Explicit source words' })).toBeVisible();
-    const before = await doc.getByTestId('provenance-tail-0').boundingBox();
+    // Reading reserves the editing instrument only after pickup.
+    let before: Awaited<ReturnType<typeof state.boundingBox>>;
     const rect = (await state.boundingBox())!;
     await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2); await page.mouse.down();
+    await expect(state).toHaveAttribute('data-held', 'true');
+    before = await doc.getByTestId('provenance-tail-0').boundingBox();
     await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2 - 48, { steps: 6 });
     await expect(source).not.toHaveValue(original);
     await expect(page.locator('.mu-provenance', { hasText: 'Explicit source words' })).toHaveCount(0);
@@ -117,20 +120,21 @@ for (const colorway of COLORWAYS) {
 }
 
 for (const colorway of COLORWAYS) {
-  test(`the real link edits exact source without moving its adjacent tail in ${colorway}`, async ({ page }) => {
+  test(`the real link edits exact source and its adjacent punctuation follows the host in ${colorway}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await open(page, '/components/provenance-tooltip#source-document', colorway);
     const doc = page.getByTestId('provenance-document'), source = doc.locator('textarea[aria-label="Provenance document source"]');
     const link = doc.getByRole('link', { name: 'Reference link: https://metalui.dev', exact: true });
     await expect(link).toHaveAttribute('href', 'https://metalui.dev');
     await link.focus(); await expect(link).toHaveAccessibleDescription(/Enter follows.*You.*Explicit source words/);
-    const before = await doc.getByTestId('provenance-tail-1').boundingBox();
     await doc.getByRole('button', { name: 'Edit Reference link URL', exact: true }).click();
     const field = page.getByRole('textbox', { name: 'Reference link URL', exact: true });
     await field.fill('https://example.com/notes#one'); await expect(source).toHaveValue(original);
     await field.press('Enter'); await expect(source).toHaveValue(original.replace('https://metalui.dev', 'https://example.com/notes#one'));
     const after = await doc.getByTestId('provenance-tail-1').boundingBox();
-    expect(after!.x).toBeCloseTo(before!.x, 1); expect(after!.y).toBeCloseTo(before!.y, 1);
+    const current = await doc.locator('.mu-link-cue').boundingBox();
+    expect(after!.x - (current!.x + current!.width)).toBeLessThan(2);
+    expect(Math.abs(after!.y - current!.y)).toBeLessThan(4);
     await doc.getByRole('button', { name: 'Undo source edit' }).click(); await expect(source).toHaveValue(original);
     await expect(doc.getByRole('button', { name: 'Undo source edit' })).toBeDisabled();
   });
@@ -175,5 +179,43 @@ for (const colorway of COLORWAYS) {
     await doc.getByRole('button', { name: 'Undo source edit' }).click(); await expect(source).toHaveValue(exact);
     await source.fill(original.replace('6h', '24.1h')); await source.press('Tab');
     await expect(doc.getByRole('spinbutton', { name: 'Sleep', exact: true })).toHaveCount(0);
+  });
+}
+
+for (const colorway of COLORWAYS) for (const width of [375, 1280]) {
+  test(`reading sentence keeps glyphs inline and words compact at ${width} in ${colorway}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/provenance-tooltip#source-document', colorway);
+    const doc = page.getByTestId('provenance-document');
+    const geometry = await doc.evaluate(element => {
+      const lines = Array.from(element.querySelectorAll<HTMLElement>('.mu-mark-line'));
+      const glyphs = Array.from(element.querySelectorAll<HTMLElement>('.mu-mark-meaning')).map(glyph => {
+        const face = glyph.closest('.mu-cue')!, words = face.querySelector('.mu-mark-words')!;
+        const g = glyph.getBoundingClientRect(), w = words.getBoundingClientRect(), f = face.getBoundingClientRect();
+        return { gap: w.left - g.right, middle: Math.abs((g.top + g.bottom) / 2 - (w.top + w.bottom) / 2), excess: f.width - g.width - w.width - parseFloat(getComputedStyle(face).paddingLeft) - parseFloat(getComputedStyle(face).paddingRight) };
+      });
+      const link = element.querySelector<HTMLElement>('.mu-link-cue')!, anchor = link.querySelector<HTMLAnchorElement>('a:not([tabindex="-1"])')!;
+      return { glyphs, linkGap: link.getBoundingClientRect().width - anchor.getBoundingClientRect().width,
+        overflow: lines.map(line => line.scrollWidth - line.clientWidth),
+        space: getComputedStyle(element.querySelector('.mu-mark-line > span')!).whiteSpace,
+        font: getComputedStyle(element.querySelector('.mu-mark-line')!).fontSize,
+        colorFont: getComputedStyle(element.querySelector('.mu-colour-cue')!).fontSize,
+        linkFont: getComputedStyle(anchor).fontSize };
+    });
+    expect(geometry.glyphs).toHaveLength(6);
+    for (const glyph of geometry.glyphs) { expect(glyph.gap).toBeGreaterThanOrEqual(3); expect(glyph.gap).toBeLessThanOrEqual(5); expect(glyph.middle).toBeLessThan(4); expect(glyph.excess).toBeLessThan(6); }
+    expect(geometry.linkGap).toBeGreaterThanOrEqual(17); expect(geometry.linkGap).toBeLessThan(19);
+    expect(geometry.overflow.every(excess => excess <= 1)).toBe(true);
+    expect(geometry.space).toBe('pre-wrap');
+    expect(geometry.colorFont).toBe(geometry.font); expect(geometry.linkFont).toBe(geometry.font);
+    const source = doc.getByRole('textbox', { name: 'Provenance document source', exact: true });
+    await source.fill('Check this reference link: https://metalui.dev.'); await source.press('Tab');
+    expect(await doc.getByTestId('provenance-line-0').evaluate(line => line.scrollWidth - line.clientWidth)).toBeLessThanOrEqual(1);
+    await source.fill(original); await source.press('Tab');
+    await expect(doc.locator('.mu-swap-layer[data-state=out]')).toHaveCount(0);
+    await doc.locator('p.type-meta').click();
+    await expect(page.locator('.mu-provenance', { hasText: 'Explicit source words' })).toHaveCount(0);
+    await doc.screenshot({ path: capture(`provenance-reading-${colorway}-${width}`) });
   });
 }

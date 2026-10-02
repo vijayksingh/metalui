@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { Icon } from '../../icons/Icon';
-import { MarkUrl } from '../mark/mark';
+import { MarkUrl, useReadingLine } from '../mark/mark';
 import { MARK_GLYPH_SIZE } from '../mark/identity.generated';
 import { Popover } from '../popover/popover';
 import { Field } from '../field/field';
@@ -41,6 +41,7 @@ export interface LinkCueProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchor
  * Reduced motion is the donor popover fade. There is no rest clock or independently tuned motion.
  */
 export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(function LinkCue(props, ref) {
+  const reading = useReadingLine();
   const { value, label, footprint, disabled = false, readOnly = false, raw = false, editing: _editing,
     editProps, inputAria, validate: _validate, onBegin: _begin, onChange: _change, onCommit: _commit, onCancel: _cancel, className, ...linkProps } = props;
   const root = React.useRef<HTMLSpanElement>(null);
@@ -96,8 +97,8 @@ export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(functio
     onAuxClick: (event: React.MouseEvent<HTMLAnchorElement>) => { if (disabled || !url) event.preventDefault(); else linkProps.onAuxClick?.(event); },
     onKeyDown: (event: React.KeyboardEvent<HTMLAnchorElement>) => { if ((disabled || !url) && event.key === 'Enter') event.preventDefault(); else linkProps.onKeyDown?.(event); },
   };
-  return <span ref={root} className={`mu-link-cue group relative inline-grid align-baseline type-content text-ink${className ? ` ${className}` : ''}`} data-value={value} data-editing={open || undefined}>
-    <span ref={reserve} aria-hidden className="invisible col-start-1 row-start-1 inline-grid whitespace-nowrap">
+  return <span ref={root} className={`mu-link-cue group relative ${reading ? 'inline-flex items-center gap-mu-space-4' : 'inline-grid'} align-baseline type-content text-ink${className ? ` ${className}` : ''}`} data-value={value} data-editing={open || undefined}>
+    <span ref={reserve} aria-hidden className={`invisible col-start-1 row-start-1 inline-grid whitespace-nowrap${reading ? ' absolute right-0 pointer-events-none' : ''}`}>
       {footprint.map((words, index) => [<span key={`${index}-source-${words}`} className="col-start-1 row-start-1">{words}</span>, <span key={`${index}-host-${words}`} className="col-start-1 row-start-1"><MarkUrl tabIndex={-1} host={destination(words)?.hostname ?? words} glyph={<Icon name="link" size={MARK_GLYPH_SIZE} />} /></span>])}
     </span>
     <span className="col-start-1 row-start-1 justify-self-start">
@@ -111,7 +112,7 @@ export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(functio
     }}>
       <Popover.Trigger><BaseButton {...editProps} disabled={disabled} focusableWhenDisabled={readOnly} aria-disabled={!mutable || undefined}
         aria-label={`Edit ${label} URL`} aria-description={['Enter opens the URL field. Enter applies; Escape cancels.', editProps?.['aria-description'], linkProps['aria-description']].filter(Boolean).join(' ')}
-        className="mu-link-cue-edit absolute right-0 bottom-full mb-mu-space-2 inline-flex border-0 p-0 bg-transparent text-ink3 hover:text-ink2 outline-none focus-visible:focus-ring opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+        className={`mu-link-cue-edit inline-flex flex-none border-0 p-0 bg-transparent text-ink3 hover:text-ink2 outline-none focus-visible:focus-ring${reading ? '' : ' absolute right-0 bottom-full mb-mu-space-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'}`}>
         <Icon name="pen" size={MARK_GLYPH_SIZE} />
       </BaseButton></Popover.Trigger>
       <Popover.Content aria-label={`Edit ${label} URL`} align="start">

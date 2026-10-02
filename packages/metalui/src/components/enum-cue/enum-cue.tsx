@@ -8,7 +8,7 @@ import { haptic } from '../../motion/haptic';
 import { SPRINGS } from '../../motion/springs.generated';
 import { SwapText } from '../../motion/swap';
 import { Tooltip } from '../tooltip/tooltip';
-import { Mark } from '../mark/mark';
+import { Mark, useReadingLine } from '../mark/mark';
 import { MARK_GLYPH_SIZE } from '../mark/identity.generated';
 import { ENUM_CUE_STOP } from './gesture.generated';
 
@@ -49,6 +49,7 @@ type Gesture = { kind: 'pointer' | 'keyboard' | 'wheel'; original: string; curre
  * Reduced motion uses the drum's existing crossfade; no travelling instrument or spin.
  */
 export const EnumCue = React.forwardRef<HTMLElement, EnumCueProps>(function EnumCue(props, forwardedRef) {
+  const reading = useReadingLine();
   const { value, choices, label, disabled = false, readOnly = false, raw = false, hint = true, className, editing: _editing, onBegin: _begin, onChange: _change, onCommit: _commit, onCancel: _cancel, ...triggerProps } = props;
   const root = React.useRef<HTMLElement>(null);
   React.useImperativeHandle(forwardedRef, () => root.current!, []);
@@ -116,8 +117,10 @@ export const EnumCue = React.forwardRef<HTMLElement, EnumCueProps>(function Enum
     className: className ? `${own} ${className}` : own,
     onClick: event => { if (ignoreClick.current && event.detail > 0) { ignoreClick.current = false; return; } ignoreClick.current = false; if (begin('keyboard')) { step(1); commit(); } },
     onPointerDown: event => {
-      if (event.button !== 0 || !mutable || !begin('pointer', event.clientY, event.pointerId)) return;
-      ignoreClick.current = false; event.preventDefault(); event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId);
+      if (event.button !== 0 || !mutable) return;
+      event.currentTarget.focus({ preventScroll: true });
+      if (!begin('pointer', event.clientY, event.pointerId)) return;
+      ignoreClick.current = false; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
     },
     onPointerMove: event => {
       const g = gesture.current; if (!g || g.kind !== 'pointer' || g.pointer !== event.pointerId) return;
@@ -141,9 +144,9 @@ export const EnumCue = React.forwardRef<HTMLElement, EnumCueProps>(function Enum
     onKeyUp: event => { if ([' ', 'ArrowUp', 'ArrowDown'].includes(event.key) && gesture.current?.kind === 'keyboard') { event.preventDefault(); commit(); } },
   };
   const control = <BaseButton {...mergeProps(triggerProps, controlProps)} ref={root}>
-    {choices.map(item => <span key={item.value} aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">{item.value}</span>)}
-    <span className="col-start-1 row-start-1 justify-self-start"><Mark kind="tag" raw={raw} style={{ '--mu-cue-identity': current.tint ?? 'var(--mu-ink3)' } as React.CSSProperties}>{value.startsWith('#') ? <><span className="mu-mark-hash">#</span><SwapText value={value.slice(1)} /></> : <SwapText value={value} />}</Mark></span>
-    {!raw && !held && current.glyph && <span aria-hidden className="mark-semantic-glyph"><Icon name={current.glyph} size={MARK_GLYPH_SIZE} /></span>}
+    {(!reading || held) && choices.map(item => <span key={item.value} aria-hidden className={`invisible col-start-1 row-start-1 whitespace-nowrap${reading ? ' inline-flex items-baseline gap-mu-space-4 px-cue-tag-pad-x' : ''}`}>{reading && choices.some(choice => choice.glyph) && <span className="w-button-compact-glyph flex-none" />}{item.value}</span>)}
+    <span className="col-start-1 row-start-1 justify-self-start"><Mark kind="tag" raw={raw} meaningGlyph={reading && current.glyph ? <Icon name={current.glyph} size={MARK_GLYPH_SIZE} /> : undefined} style={{ '--mu-cue-identity': current.tint ?? 'var(--mu-ink3)' } as React.CSSProperties}>{value.startsWith('#') ? <><span className="mu-mark-hash">#</span><SwapText value={value.slice(1)} /></> : <SwapText value={value} />}</Mark></span>
+    {!reading && !raw && !held && current.glyph && <span aria-hidden className="mark-semantic-glyph"><Icon name={current.glyph} size={MARK_GLYPH_SIZE} /></span>}
     {held && choices.length > 1 && <span data-enum-instrument aria-hidden className="pointer-events-none absolute inset-0 type-meta text-ink2 whitespace-nowrap">
       <span className="absolute left-0 bottom-full mb-mu-space-8">{choices[(index - 1 + choices.length) % choices.length]?.label ?? choices[(index - 1 + choices.length) % choices.length]?.value}</span>
       <span className="absolute left-0 top-full mt-mu-space-8">{choices[(index + 1) % choices.length]?.label ?? choices[(index + 1) % choices.length]?.value}</span>

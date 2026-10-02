@@ -14,6 +14,8 @@ Wire `onBegin` to `useCueDocument.begin(range)`, `onSourceChange(words)` to `.re
 
 A pointer scrub focuses the real Base UI input before capturing its source range. This finishes the previous cue's blur transaction first, so moving directly between focused cues cannot leave the face ahead of its document. The held face keeps formatted words; double-click still enters typing.
 
+React hosts may return `false` from `onBegin` or `onSourceChange` when another source gesture still owns the document. A refused capture never publishes a local quantity, held instrument or haptic; a refused replacement invalidates its capture. A fresh gesture can start after the previous owner closes. Void callbacks retain their existing accepted behavior.
+
 ## Interaction
 
 Vertical drag steps the amount; horizontal drag converts units after each existing spacing stop. Axis locks for that gesture. Shift selects the unit's `largeStep`; Alt/Option its `smallStep`. Arrow Up/Down step through Base UI. Alt/Option Left/Right converts units; plain Left/Right remains a typing caret. Tab focuses the input; Enter commits; double-click types. Each accepted stop calls shared detent haptic once. No callback/haptic occurs for a disabled or read-only interaction or a rejected endpoint step. Escape cancels without a later blur commit. Source changes always follow a deliberate action, never recognition.

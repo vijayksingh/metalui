@@ -88,3 +88,9 @@ Tag hue uses shared blue/orange/gold/green-deep at the existing Status tint; red
 SwiftUI display surfaces use `MetalCueText` and `MetalCueTag`; `MetalCueInferred(confirmed:onConfirm:)` supports an explicitly controlled suggestion. Native `Text.metalCue` remains a rendering attribute, and TextKit hosts own caret/selection/history. The avatar renderer keeps its existing native WIP status; this does not claim a full native Avatar port.
 
 `resolved` on native `MetalCueText` uses the same graphite chip and finite part-plus-settle recognition pause. Semantic chips clear the reserved glyph as well as the words; their overlays never take layout space. Confirmation uses the existing Button travel for its finite stamp and Spark for one acknowledgment. OS or scoped Reduce Motion ends current travel immediately. The Cue page DialKit controls recognition motion and display amount formatting without changing source.
+
+## Operable reading lines
+
+`<MarkLine presentation="reading">` (Swift: `.metalCuePresentation(.documentLine)`) gives a sentence one content type and baseline. Meaning glyphs sit beside their own words. Committed controls occupy their current face; a host footprint remains an input bound, not permanent empty sentence space. Numeric and enum pointer gestures reserve the bounded editing face while held, then release it at commit/cancel. Accepted words reflow the sentence normally. Default semantic/surface presentation retains the standalone reserved layout. Raw fades glyphs in their slots. Plain source runs must preserve authored spaces (`white-space: pre-wrap` on the web).
+
+This policy changes presentation only: the real Base UI/Swift controls, source transaction, exact UTF16 ranges, accessibility names, help and input bounds remain in force. URL editing measures its invisible capacity separately from the resting host pill.

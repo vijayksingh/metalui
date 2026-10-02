@@ -2281,6 +2281,9 @@
 @utility mark-life {
   white-space: nowrap; & > .mu-cue-md { color: var(--mu-ink3); margin: 0 var(--mu-cue-life-gap-after) 0 var(--mu-cue-life-gap-before); } & > .mu-cue-lg { display: inline-block; vertical-align: var(--mu-cue-life-drop); color: var(--mu-ink3); transition: color var(--mu-spring-settle-d) var(--mu-spring-settle); animation: mu-cue-life var(--mu-cue-life-ms) var(--mu-ease-slide) both; } & > .mu-cue-lg > svg { display: block; } .mu-icon-trigger:hover & > .mu-cue-lg:not(:has([class*="mu-tint-"])) { color: var(--mu-ink2); }
 }
+@utility mark-reading-line {
+  display: block; font: var(--mu-type-content); color: var(--mu-ink); & .mu-cue { display: inline-flex; align-items: baseline; gap: var(--mu-space-4); white-space: nowrap; } & .mu-mark-meaning { position: static; align-self: center; flex: none; } & .mu-cue[data-semantic-tag] { padding-inline: 0; margin-inline: 0; } & .mu-cue[data-semantic-tag] > .mu-mark-words { padding-inline: var(--mu-cue-tag-pad-x); } & .mu-cue[data-semantic-tag] > .mu-mark-tab { inset-inline: 0; } & .mu-cue[data-semantic-tag]:has(> .mu-mark-meaning) > .mu-mark-tab { left: calc(var(--mu-r-button-compact-glyph) + var(--mu-space-4)); } & .mu-colour-cue, & .mu-cue-url { font: var(--mu-type-content); } & .mu-cue-url { vertical-align: baseline; } & .mark-chip:has(> .mu-mark-meaning)::after { bottom: calc(100% + var(--mu-cue-chip-gap)); }
+}
 @utility mark-semantic-line {
   display: block; padding-top: calc(var(--mu-r-button-compact-glyph) + var(--mu-space-2)); font: var(--mu-type-content); line-height: calc(var(--mu-type-content-line) + var(--mu-r-button-compact-glyph) + var(--mu-space-2)); color: var(--mu-ink);
 }

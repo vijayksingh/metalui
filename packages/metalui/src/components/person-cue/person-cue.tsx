@@ -7,7 +7,7 @@ import { TickGlyph } from '../../icons/TickGlyph';
 import { SwapText } from '../../motion/swap';
 import { usePortalColorway } from '../../theme/portal-colorway';
 import { Tooltip } from '../tooltip/tooltip';
-import { Mark } from '../mark/mark';
+import { Mark, useReadingLine } from '../mark/mark';
 import { MARK_GLYPH_SIZE } from '../mark/identity.generated';
 import { ListGlide, menuParts } from '../menu/menu';
 
@@ -50,6 +50,7 @@ function offset() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-r-select-pop-offset')) || 6;
 }
 export const PersonCue = React.forwardRef<HTMLButtonElement, PersonCueProps>(function PersonCue(props, ref) {
+  const reading = useReadingLine();
   const { value, choices, label, disabled = false, readOnly = false, raw = false, hint = true, className, triggerProps, editing: _editing, onBegin: _onBegin, onChange: _onChange, onCommit: _onCommit, onCancel: _onCancel, ...triggerEvents } = props;
   const [open, setOpen] = React.useState(false);
   const [hintOpen, setHintOpen] = React.useState(false);
@@ -94,7 +95,7 @@ export const PersonCue = React.forwardRef<HTMLButtonElement, PersonCueProps>(fun
     }}>
     <BaseSelect.Trigger {...mergeProps({ onFocus: () => setHintOpen(true), onBlur: () => setHintOpen(false) }, triggerEvents, triggerProps ?? {})} ref={triggerRef} aria-label={`${label}: ${value}`} aria-readonly={readOnly || undefined}
       data-value={value} data-readonly={readOnly || undefined} className={className ? `${own} ${className}` : own} aria-description={description}>
-      {names.map(name => <span key={name} aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">{name}</span>)}
+      {!reading && names.map(name => <span key={name} aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">{name}</span>)}
       <Tooltip label="Choose a known person · Arrows or type a name" open={hint && hintOpen && !open && mutable} onOpenChange={next => setHintOpen(next)}><span className="col-start-1 row-start-1 justify-self-start"><Mark kind="duration" meaning="person" meaningLabel={value} meaningGlyph={glyph(current)} raw={raw}><SwapText value={value} /></Mark></span></Tooltip>
     </BaseSelect.Trigger>
     <BaseSelect.Portal>
