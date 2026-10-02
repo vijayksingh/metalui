@@ -321,7 +321,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
       </header>
 
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <ScrollArea viewportRef={viewport} onScroll={onScroll} className="min-h-0 flex-1">
+        <ScrollArea viewportRef={viewport} onScroll={onScroll} className="min-h-0 flex-1 pt-mu-space-12">
           <div role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md/block:px-14">
             {messages.map((m, i) => {
               const land = !landed.current.has(m.id);

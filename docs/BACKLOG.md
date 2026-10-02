@@ -363,7 +363,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Vertical Tabs**: Base UI orientation controls axis-aware arrows and active-panel focus. Track and thumb reuse Switcher materials; panels drift on the matching axis. Swift has matching orientation. Settings uses real Tabs instead of Sidebar and local panel animation.
 - [x] **RadioGroup disabled**: keep the checked option reachable to explain the held choice, following Base UI; skip unchecked disabled options. Guide and page require an `aria-describedby` reason. Settings keyboard e2e covers the held choice.
 - [x] **Named block containers**: all six block roots use `@container/block`; whole-block variants use `/block`, and Settings fields use their intentional `/panel` scope. The block Usage guide and CSS system explain the rule. Integration checks insert nearer anonymous containers and vary the outer block width.
-- [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
+- [x] **AI composer thread edge**: the scroll viewport and its fade begin one related gap below the Assistant header. The first message keeps its own top padding; scrolling content no longer runs directly into the fixed title. Both colorways and reduced motion covered.
 
 ## SwiftUI on iOS
 
