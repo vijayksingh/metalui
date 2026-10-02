@@ -15,7 +15,7 @@ A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (name
 - Plate: raised, at least 52 tall, filling its host's column without an intrinsic min/max width. The host chooses a narrow composer or a full-width list. Radius 14, padding 8; errors expand the plate with Try again below their own line.
 - Type: a 36 sunk well with the extension engraved (PDF, PNG).
 - Name: ui type; a long name keeps its extension and cuts the middle.
-- Line: meta type, ink3: the size, "Uploading · 40 %", or the error in red.
+- Line: a canonical 14 glyph and meta type, ink3: the size, "Uploading · 40 %", "Uploaded · 2.5 MB", or the error in red. The extension well remains visible.
 - Track (uploading): 3 tall, the progress fill. Try again (failed), Remove (a mini key).
 
 ## States and motion
@@ -23,12 +23,12 @@ A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (name
 | State | Look | Motion |
 |---|---|---|
 | added | the plate | lands from one nest above on the object spring (T5b) |
-| uploading | the track fills; the line counts | settle spring |
-| done | the size | – |
-| failed | the reason in red; Try again | announced once |
+| uploading | upload glyph; the track fills; the line counts | settle spring; no idle glyph clock |
+| complete | check and Uploaded with the size | the glyph morphs; the words turn on the shared drum |
+| failed | sync-error and the reason in red; Try again with retry glyph | morph; announced once |
 | removed | – | one nest down, fading, on the release spring (T9); then gone |
 
-Reduce Motion: it appears and goes at once; the fill still moves.
+Reduce Motion: it appears and goes at once; the fill still conveys progress, and the glyph settles at its full contour. Completion persists until the host changes the receipt; the component runs no reset timer.
 
 ## API
 
@@ -36,6 +36,7 @@ Reduce Motion: it appears and goes at once; the fill still moves.
 |---|---|
 | `name`, `size` (bytes) | `name:`, `size:` |
 | `progress` (0–100 while uploading) | `progress:` |
+| `uploadState?: "idle" / "uploading" / "complete" / "error"` | `uploadState: MetalAttachmentUploadState?` |
 | `error`, `onRetry` | `error:`, `retry:` |
 | `onRemove` (called after it has left) | `remove:` |
 | `onLeaveStart` (capture neighbors before leaving) | `onLeaveStart:` |
@@ -47,5 +48,7 @@ Reduce Motion: it appears and goes at once; the fill still moves.
 
 ## Rules
 
+- The host controls completion. With `uploadState` omitted, existing `progress` / `error` infer uploading / error / idle. Clearing either prop can mean cancellation, so it never infers success. At 100 %, the glyph remains upload until the host explicitly supplies `"complete"` / `.complete`. Retry requests work; it does not claim delivery.
+- Success uses a polite web status; error keeps its alert. Native posts an `AccessibilityNotification.Announcement` when a completion/error receipt changes, and exposes the same words as its accessibility value.
 - Say why an upload failed in a few words ("Too large, 25 MB at most"), and offer to try again.
 - Keep the extension visible; cut the middle of long names.

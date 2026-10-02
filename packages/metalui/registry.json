@@ -280,12 +280,13 @@
       "name": "attachment",
       "type": "registry:ui",
       "title": "Attachment",
-      "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+      "description": "A file someone attached, as a small raised plate: type, name, size or an explicit upload receipt; shared glyphs morph from upload to check only after host confirmation. It lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

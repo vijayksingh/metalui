@@ -78,3 +78,7 @@ Run `python3 e2e/native/run-sidebar-glyph-proof.py` on macOS. A real default-act
 Run `python3 e2e/native/run-sidebar-toggle-proof.py` on macOS. The real public `MetalSidebarToggle(collapsed:)` key receives the default-action Return. Its binding collapses, expands under scoped reduction, and refuses a third press while disabled. Captures show the shared16px panel/rail glyph and its label. The native List's material and collapse layout remain WIP; this proof covers the operable key.
 
 NumericCue public host: `python3 e2e/native/run-numeric-cue-proof.py` verifies real macOS amount steps, modifiers, unit conversion, Escape, disabled and source history.
+
+# Native attachment upload receipt
+
+Run `python3 e2e/native/run-attachment-result-proof.py`. The real public `MetalAttachment` receives a host-supplied default-action Return on its retry key. It requests upload at 100 % without claiming delivery; the host explicitly commits completion. Legacy progress clearing stays idle. Captures cover idle, failure, pending, complete and scoped reduction in both colorways; disabled retry refuses the key. Error/completion use Apple’s [multiplatform announcement API](https://developer.apple.com/documentation/accessibility/accessibilitynotification/announcement). The fixture verifies event delivery, host callback counts and rendered receipts; spoken VoiceOver output is not measured.

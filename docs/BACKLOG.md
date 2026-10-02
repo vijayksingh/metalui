@@ -105,7 +105,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [ ] calendar (3)
 - [x] navigation-menu: shared chevron morph follows Base UI open state; CSS rotation removed.
 - [x] accordion
-- [ ] attachment
+- [x] attachment: canonical close remove key in React and Swift; upload receipts share the set and keep the engraved extension.
 - [x] combobox
 - [x] select
 - [x] table
@@ -113,8 +113,8 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - [x] button-group (shared split chevron morph in React and Swift)
 - [x] folder: audited; its SVG paths draw the paper/flap edges and clipping, so stay as object geometry.
 - [x] number-field (shared minus and plus)
-- [ ] fan (‹ as text)
-- [ ] link (↗ as text)
+- [x] fan: canonical close fold key in React and Swift; tool/ink trays retain semantic shared-set glyphs.
+- [x] link: canonical external/download glyphs in React and Swift, with authored acts and full reduced contours.
 
 Leave the drawings that aren't glyphs: sparkline, connector, snap-guides, line-handles, brush-cursor, dot-display, perfect-preview.
 

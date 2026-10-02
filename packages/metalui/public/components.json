@@ -39,7 +39,7 @@
       "name": "attachment",
       "title": "Attachment",
       "status": "alpha",
-      "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+      "description": "A file someone attached, as a small raised plate: type, name, size or an explicit upload receipt; shared glyphs morph from upload to check only after host confirmation. It lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Attachment",
