@@ -7,6 +7,7 @@ for (const colorway of COLORWAYS) {
     const source = host.getByRole('textbox', { name: 'Person document source' }), tail = host.locator('[data-person-tail]');
     const width = (await cue.boundingBox())!.width, x = (await tail.boundingBox())!.x;
     await expect(cue).toHaveAccessibleName('Assigned person: Mira Chen');
+    await expect(cue).toHaveAccessibleDescription(/Choose a known person.*Return chooses.*Escape cancels.*You, known people/);
     await cue.focus(); await page.keyboard.press('Enter');
     await expect(page.getByRole('listbox', { name: 'Assigned person' })).toBeVisible();
     await expect(host).toHaveAttribute('data-editing', 'true');

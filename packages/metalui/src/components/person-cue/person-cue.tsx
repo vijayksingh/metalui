@@ -80,6 +80,7 @@ export const PersonCue = React.forwardRef<HTMLButtonElement, PersonCueProps>(fun
   const glyph = (choice?: PersonCueChoice) => choice?.avatar ?? <Icon name="person" size={MARK_GLYPH_SIZE} />;
   const own = 'mu-person-cue person-cue relative inline-grid align-baseline border-0 bg-transparent p-0 type-content text-ink select-none focus-visible:focus-ring data-disabled:opacity-field-state-disabled';
   const names = [...new Set([...choices.map(choice => choice.value), value])];
+  const description = [...new Set(["Choose a known person. Arrows or type a name, Return chooses, Escape cancels.", triggerEvents["aria-description"], triggerProps?.["aria-description"]].filter(Boolean))].join(" ");
   return <BaseSelect.Root<string> value={value} open={open} disabled={disabled || !valid}
     onOpenChange={next => {
       if (!next) { cancel(); setOpen(false); return; }
@@ -92,7 +93,7 @@ export const PersonCue = React.forwardRef<HTMLButtonElement, PersonCueProps>(fun
       transaction.current = null; setOpen(false); callbacks.current.onCommit?.();
     }}>
     <BaseSelect.Trigger {...mergeProps({ onFocus: () => setHintOpen(true), onBlur: () => setHintOpen(false) }, triggerEvents, triggerProps ?? {})} ref={triggerRef} aria-label={`${label}: ${value}`} aria-readonly={readOnly || undefined}
-      data-value={value} data-readonly={readOnly || undefined} className={className ? `${own} ${className}` : own} aria-description={triggerProps?.["aria-description"] ?? triggerEvents["aria-description"] ?? "Choose a known person. Arrows or type a name, Return chooses, Escape cancels."}>
+      data-value={value} data-readonly={readOnly || undefined} className={className ? `${own} ${className}` : own} aria-description={description}>
       {names.map(name => <span key={name} aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">{name}</span>)}
       <Tooltip label="Choose a known person · Arrows or type a name" open={hint && hintOpen && !open && mutable} onOpenChange={next => setHintOpen(next)}><span className="col-start-1 row-start-1 justify-self-start"><Mark kind="duration" meaning="person" meaningLabel={value} meaningGlyph={glyph(current)} raw={raw}><SwapText value={value} /></Mark></span></Tooltip>
     </BaseSelect.Trigger>

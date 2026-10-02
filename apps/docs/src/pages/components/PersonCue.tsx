@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Avatar, Button, PersonCue, MarkLine, useCueDocument, type PersonCueChoice } from '@unlocalhosted/metalui';
+import { Avatar, Button, PersonCue, ProvenanceTooltip, MarkLine, useCueDocument, type PersonCueChoice } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/person-cue/person-cue.tsx?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalPersonCue.swift?raw';
 import cssSource from '../../../../../packages/metalui/src/components/person-cue/person-cue.css?raw';
@@ -23,8 +23,8 @@ export function PersonCueDocument() {
   }, [doc.source, doc.selection]);
   function retain(event: React.SyntheticEvent<HTMLTextAreaElement>) { doc.setSelection({ start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd, direction: event.currentTarget.selectionDirection }); }
   return <div className="mu-stack gap-mu-related w-full" data-testid="person-document" data-editing={doc.editing || undefined}>
-    <MarkLine data-testid="person-line"><span>{match ? doc.source.slice(0, match.index) : doc.source}</span>{match && d.mounted ? <PersonCue value={match[0]} choices={PEOPLE} label="Assigned person" raw={d.raw} readOnly={d.readOnly} disabled={d.disabled} editing={doc.editing}
-      onBegin={() => doc.begin({ start: match.index, end: match.index + match[0].length })} onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} /> : match?.[0]}<span data-person-tail>{match ? doc.source.slice(match.index + match[0].length) : ''}</span></MarkLine>
+    <MarkLine data-testid="person-line"><span>{match ? doc.source.slice(0, match.index) : doc.source}</span>{match && d.mounted ? <ProvenanceTooltip source="You" detail={["known people"]}><PersonCue hint={false} value={match[0]} choices={PEOPLE} label="Assigned person" raw={d.raw} readOnly={d.readOnly} disabled={d.disabled} editing={doc.editing}
+      onBegin={() => doc.begin({ start: match.index, end: match.index + match[0].length })} onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} /></ProvenanceTooltip> : match?.[0]}<span data-person-tail>{match ? doc.source.slice(match.index + match[0].length) : ''}</span></MarkLine>
     <label className="mu-stack gap-mu-related type-label text-ink2">Editable document source
       <textarea ref={editor} aria-label="Person document source" className="type-content material-well rounded-field p-mu-space-12 w-full text-ink" value={doc.source}
         onChange={event => doc.setSource(event.target.value, { start: event.target.selectionStart, end: event.target.selectionEnd, direction: event.target.selectionDirection })}
