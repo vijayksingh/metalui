@@ -1483,6 +1483,10 @@ Reduce Motion: it fades in without travel.
 - Say what would be here and how to start, not only "Nothing here".
 - One action; the one that starts it.
 
+## Comment host
+
+The compact No comments action opens a real editor. Enter adds a line; Command/Control + Enter or Comment commits one post. Escape/Cancel discard an unlocked draft; pending requests lock just the editor and refuse a second post. Failures retain text for retry. The note glyph settles into check and the label turns Posted before the editor closes; Undo restores the comments captured before that request. The docs' Comment request panel controls latency and first-request failure. The executable native host lives in `swift/Examples/MetalCommentExample.swift`; it composes existing native EmptyState and Textarea controls without introducing another renderer.
+
 ---
 
 # Fan

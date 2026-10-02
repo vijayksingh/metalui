@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Attachment, Button, EmptyState } from '@unlocalhosted/metalui';
+import { CommentDemo } from '../../ui/comment/CommentDemo';
+import swiftExample from '../../../../../swift/Examples/MetalCommentExample.swift?raw';
 import { RegionIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
@@ -50,12 +52,10 @@ export default function EmptyStatePage() {
     <ComponentPage
       title="Empty state"
       lede="A place with nothing in it yet. It says what would be here and how to start, with the one action that starts it, and it rises in when the last thing leaves rather than snapping."
-      play={{ lede: 'Remove the files one by one and watch the empty state arrive; attach them again.', caption: 'a region of files · and a compact one', node: (
+      play={{ lede: 'Remove the files one by one and watch the empty state arrive; attach them again. Comment opens an editor: Enter adds a line; Command/Control + Enter posts. Escape cancels an unlocked draft. Failure keeps its text; a landed result closes the editor and offers Undo.', caption: 'a region of files · and a compact one', node: (
         <div className="grid w-full justify-items-center gap-32">
           <Place label="Region files" />
-          <div className="w-full max-w-[360px] rounded-card recipe-well-field">
-            <EmptyState compact title="No comments" action={<Button size="compact">Comment</Button>} />
-          </div>
+          <div className="w-full max-w-[360px]"><CommentDemo /></div>
         </div>
       ) }}
       more={[{ id: 'arrival', title: 'Tune the arrival', lede: 'The Empty arrival panel swaps the spring the empty state rises on, sets how far below it starts, and stretches time.', node: <ArrivalTuner /> }]}
@@ -69,6 +69,7 @@ export default function EmptyStatePage() {
 ) : notes.map((n) => <Note key={n.id} {...n} />)}`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
+        { id: 'swift', label: 'SwiftUI comment host', code: swiftExample },
         { id: 'css', label: 'CSS', code: cssSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
