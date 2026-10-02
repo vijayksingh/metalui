@@ -88,14 +88,14 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 ### B. State changes that should morph (A → B)
 
 - [x] **Copy → Copied** (`copy` → `check`, back after the pause): the docs' Copy page and code blocks, and a documented copy-button pattern.
-- **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`). Status now retains its synced/offline/error glyph and label drum in React/native; Toast and Attachment remain separate slices.
+- **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`). Status and Toast now retain their synced/offline/error glyph and label drum in React/native; Attachment remains a separate slice.
 - [x] **Save** (idle → saving (Spinner) → saved `check`): the Button's "saving" demo.
 - **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.
 - [x] **Sidebar Toggle** (collapse ↔ expand): shared Sidebar ↔ Sidebar Rail slides the panel boundary, optional host artwork stays supported; native binding toggle uses the same glyph. Split pane audited: it uses a focusable separator grip, with Home collapse / Enter restore, and has no static glyph key to replace.
 - **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
 - [x] **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
 - [x] **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
-- **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
+- [x] **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
 - **Theme switch** (Bone ↔ Graphite) and the **Motion** switch in the docs header, if they get glyphs (see D).
 - **Table sort**: `arrow` up ↔ down as a morph instead of the rotated hand-drawn arrow.
 

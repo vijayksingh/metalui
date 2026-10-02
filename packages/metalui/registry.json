@@ -2017,13 +2017,14 @@
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
-      "description": "The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre. Results stack as a deck in depth, newest in front; pointing fans it out, a swipe dismisses, a repeat counts. Built on Base UI Toast.",
+      "description": "The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre. Results stack as a deck in depth, newest in front; pointing fans it out, a swipe dismisses, a repeat counts. Built on Base UI Toast. Retained updates and promise results morph their authored glyph and label in place, preserving card identity and dismissal.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/morph-icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

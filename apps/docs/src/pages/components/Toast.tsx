@@ -3,6 +3,7 @@ import { useDialKit } from 'dialkit';
 import { Button, Field, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
+import { Icon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/toast/toast.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/toast/toast.agent.md?raw';
@@ -74,7 +75,7 @@ function Triggers() {
     <div className="flex flex-col items-center gap-16">
       <div className="flex flex-wrap justify-center gap-8">
         <Button data-toast="undo" onClick={() => toast.show({ title: 'Moved 3 blocks', undo: () => setLog('Undone: moved 3 blocks back') })}>Move 3 blocks</Button>
-        <Button onClick={() => toast.show({ title: 'Pinned as a live region', sub: 'it updates as you write', tone: 'success' })}>Pin a lens</Button>
+        <Button icon={<Icon name="pin" />} onClick={() => toast.show({ title: 'Pinned as a live region', sub: 'it updates as you write', tone: 'success' })}>Pin a lens</Button>
         <Button onClick={() => toast.show({ title: 'Correction remembered', sub: 'for this exact text', undo: () => setLog('Correction forgotten') })}>Correct a cue</Button>
         <Button onClick={() => toast.show({ title: 'Ticked', sub: 'wrote [x] into the text', undo: () => setLog('Unticked') })}>Tick a box</Button>
         <Button cap="destructive" onClick={() => toast.show({ title: 'Could not export', sub: 'the clipboard is locked', tone: 'error' })}>Fail an export</Button>
@@ -84,6 +85,48 @@ function Triggers() {
       <span className="type-readout text-ink2" aria-live="polite">{log}</span>
     </div>
   );
+}
+
+function PromiseResult() {
+  const toast = useToast(); const [pending, setPending] = React.useState(false);
+  const [stored, setStored] = React.useState('Draft'); const [log, setLog] = React.useState('No export requested');
+  const current = React.useRef<string | undefined>(undefined);
+  const d = useDialKit('Promise result', { latency: [900, 100, 6000], fail: false });
+  const exportFile = async () => {
+    if (pending) return; setPending(true); setLog('Export requested');
+    const original = stored;
+    try {
+      await toast.promise(new Promise<string>((resolve, reject) => window.setTimeout(() => d.fail ? reject(new Error('The server refused this export.')) : resolve('poster.pdf'), d.latency)), {
+        loading: { title: 'Exporting poster', sub: 'the draft stays editable' },
+        success: name => ({ title: 'Poster exported', sub: name, undo: () => { setStored(original); setLog('Export undone'); } }),
+        error: () => ({ title: 'Export failed', sub: 'the draft stays here for retry' }),
+      });
+      setStored('poster.pdf'); setLog('Export complete');
+    } catch { setLog('Export failed; retry is available'); }
+    finally { setPending(false); }
+  };
+  const sync = (glyph: 'synced' | 'offline' | 'sync-error') => {
+    const options = { title: glyph === 'synced' ? 'All changes synced' : glyph === 'offline' ? 'Offline · changes stay here' : 'Sync failed · retry available',
+      glyph, tone: glyph === 'sync-error' ? 'error' as const : 'default' as const, timeout: 0 };
+    if (current.current && toast.update(current.current, options)) return;
+    current.current = toast.show(options);
+  };
+  return <div data-testid="toast-promise" className="mu-stack items-center gap-mu-group">
+    <div className="mu-cluster gap-mu-related">
+      <Button icon={<Icon name="download" />} disabled={pending} onClick={exportFile}>Export poster</Button>
+      <Button icon={<Icon name="sync-error" />} disabled={pending} onClick={async () => {
+        setPending(true); try { await toast.promise(Promise.reject(new Error('Refused')), { loading: { title: 'Retrying export' }, success: { title: 'Poster exported' }, error: { title: 'Export failed', sub: 'the draft stays here for retry' } }); } catch { setLog('Export failed; retry is available'); } finally { setPending(false); }
+      }}>Refuse export</Button>
+    </div>
+    <Field size="regular"><Field.Input aria-label="Poster draft" defaultValue="Poster title" /></Field>
+    <div className="mu-cluster gap-mu-related">
+      <Button size="compact" icon={<Icon name="synced" />} onClick={() => sync('synced')}>Sync result</Button>
+      <Button size="compact" icon={<Icon name="offline" />} onClick={() => sync('offline')}>Offline result</Button>
+      <Button size="compact" icon={<Icon name="sync-error" />} onClick={() => sync('sync-error')}>Failed result</Button>
+    </div>
+    <output className="type-meta text-ink2">{stored} · {log}</output>
+    <p className="type-doc-body text-ink2">The host waits for an actual async export fixture. The loading card becomes its result in place, preserves focus and exposes Undo after success. Dismissal wins over a late promise; the draft remains operable. The separate sync fixture updates one retained result id.</p>
+  </div>;
 }
 
 export default function ToastPage() {
@@ -97,6 +140,7 @@ export default function ToastPage() {
         </Bench>
         <SwiftCapture name="toast" maxWidth={560} />
       </Section>
+      <Section title="A promise becomes its result" lede="One retained card becomes info, success or error. Its glyph and words change together; updating a result keeps its position in the deck."><Bench caption="actual async host · DialKit latency and refusal"><PromiseResult /></Bench><SwiftCapture name="toast-promise" maxWidth={760} /></Section>
       <Section id="deck" title="Tune the deck" lede="The Toast deck panel sets how much smaller and how far up each card behind sits, swaps the spring a new card arrives on, and stretches time. Deal five to fill the deck.">
         <Bench caption="step · peek · arrival spring · slow">
           <DeckTuner />

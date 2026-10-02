@@ -2,6 +2,9 @@
 
 import * as React from 'react';
 import { Toast } from '@base-ui/react/toast';
+import { MorphIcon } from '../../icons/MorphIcon';
+import type { MorphIconName } from '../../icons/morph.generated';
+import { SwapText } from '../../motion/swap';
 import { Icon } from '../../icons/Icon';
 import { Kbd } from '../kbd/kbd';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
@@ -47,6 +50,8 @@ export interface ToastOptions {
   undo?: () => void;
   /** success carries its check; error stays until resolved. */
   tone?: ToastTone;
+  /** An explicit state shape, such as synced/offline/sync-error; otherwise the kind owns it. */
+  glyph?: MorphIconName;
   /** Let the host own Undo shortcuts instead. Default true; text editing always keeps its own Undo. */
   undoShortcut?: boolean;
   /** Override how long it stays, in ms (0: until dismissed). */
@@ -54,7 +59,13 @@ export interface ToastOptions {
 }
 
 /** What a toast carries besides its words: how many times it has been said in a row. */
-interface ToastData { count: number; undo?: () => void; undoShortcut: boolean }
+interface ToastData { count: number; undo?: () => void; undoShortcut: boolean; glyph?: MorphIconName }
+
+export interface ToastPromiseOptions<Value> {
+  loading: ToastOptions;
+  success: ToastOptions | ((value: Value) => ToastOptions);
+  error: ToastOptions | ((error: unknown) => ToastOptions);
+}
 
 const cssValue = (name: string) => (typeof window === 'undefined' ? '' : getComputedStyle(document.documentElement).getPropertyValue(name).trim());
 const ms = (name: string, fallback: number) => {
@@ -65,26 +76,38 @@ const ms = (name: string, fallback: number) => {
 };
 const count = (name: string, fallback: number) => Math.max(1, Math.round(parseFloat(cssValue(name))) || fallback);
 
-/** Shows toasts. Call show() from anywhere under a ToastProvider. */
+/** One mapping serves new cards, retained updates and async results. */
+const toastOptions = ({ title, sub, undo, tone = 'default', timeout, undoShortcut = true, glyph }: ToastOptions, count = 1) => ({
+  title, description: sub, type: tone,
+  timeout: timeout ?? (tone === 'error' ? 0 : undo ? ms('--mu-toast-undo-ms', 5000) : ms('--mu-toast-plain-ms', 2600)),
+  actionProps: undo ? { onClick: undo } : undefined,
+  data: { count, undo, undoShortcut, glyph } satisfies ToastData,
+});
+
+/** Shows action results under a ToastProvider. Updates retain the card, glyph and label drum. */
 export function useToast() {
   const manager = Toast.useToastManager();
   const toasts = React.useRef(manager.toasts);
   toasts.current = manager.toasts;
   return React.useMemo(() => ({
-    show({ title, sub, undo, tone = 'default', timeout, undoShortcut = true }: ToastOptions) {
-      // The same result again merges into the front card: Base UI updates a toast added with its id in place
-      // and starts its timer over.
+    show(options: ToastOptions) {
+      const { title, sub, tone = 'default' } = options;
       const front = toasts.current.find((t) => t.transitionStatus !== 'ending');
       const repeat = front && front.title === title && (front.description ?? undefined) === sub && front.type === tone;
       const times = repeat ? ((front.data as ToastData | undefined)?.count ?? 1) + 1 : 1;
-      return manager.add<ToastData>({
-        id: repeat ? front.id : undefined,
-        title,
-        description: sub,
-        type: tone,
-        timeout: timeout ?? (tone === 'error' ? 0 : undo ? ms('--mu-toast-undo-ms', 5000) : ms('--mu-toast-plain-ms', 2600)),
-        actionProps: undo ? { onClick: undo } : undefined,
-        data: { count: times, undo, undoShortcut },
+      return manager.add<ToastData>({ id: repeat ? front.id : undefined, ...toastOptions(options, times) });
+    },
+    /** A complete replacement of one live card. Closing/missing cards remain dismissed. */
+    update(id: string, options: ToastOptions): boolean {
+      if (!toasts.current.some(t => t.id === id && t.transitionStatus !== 'ending')) return false;
+      manager.update<ToastData>(id, toastOptions(options)); return true;
+    },
+    /** Base UI owns one loading card and updates its kind after this actual promise settles. */
+    promise<Value>(work: Promise<Value>, options: ToastPromiseOptions<Value>): Promise<Value> {
+      return manager.promise<Value, ToastData>(work, {
+        loading: toastOptions({ ...options.loading, timeout: 0 }),
+        success: value => toastOptions({ ...(typeof options.success === 'function' ? options.success(value) : options.success), tone: 'success' }),
+        error: error => toastOptions({ ...(typeof options.error === 'function' ? options.error(error) : options.error), tone: 'error' }),
       });
     },
     dismiss: (id: string) => manager.close(id),
@@ -158,25 +181,30 @@ function ToastList({ visible }: { visible: number }) {
     window.addEventListener('keydown', undo);
     return () => window.removeEventListener('keydown', undo);
   }, [manager, toasts]);
+  const front = live[0];
+  const frontCount = (front?.data as ToastData | undefined)?.count ?? 1;
   const more = Math.max(0, live.length - visible);
   const back = more > 0 ? live[visible - 1]?.id : undefined;
   return (
     <Toast.Portal>
-      <Toast.Viewport className={VIEWPORT} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} frontId={live[0]?.id} />}>
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true" data-toast-announcement="">
+        {front && <span key={front.id}>{front.title}{front.description ? ` · ${front.description}` : ''}{frontCount > 1 ? ` · ${frontCount} times` : ''}</span>}
+      </span>
+      <Toast.Viewport aria-live="off" className={VIEWPORT} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} frontId={live[0]?.id} />}>
         {toasts.map((t) => {
           const times = (t.data as ToastData | undefined)?.count ?? 1;
           return (
-            <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} data-type={t.type} data-toast-id={t.id} data-front={t.id === live[0]?.id ? '' : undefined} data-behind={t.id !== live[0]?.id ? '' : undefined} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
+            <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} aria-live="off" aria-atomic="true" data-type={t.type} data-toast-id={t.id} data-front={t.id === live[0]?.id ? '' : undefined} data-behind={t.id !== live[0]?.id ? '' : undefined} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
               <Toast.Content className={CONTENT}>
                 <span className={TEXT}>
-                  {t.type === 'success' && <Icon name="check" size={14} animate={false} className={CHECK} />}
-                  {t.type === 'error' && <Icon name="warning" size={14} animate={false} className={ERROR} />}
-                  <Toast.Title render={<span />}>{t.title}</Toast.Title>
+                  <MorphIcon name={(t.data as ToastData | undefined)?.glyph ?? (t.type === 'success' ? 'check' : t.type === 'error' ? 'sync-error' : 'info')} size={14}
+                    className={t.type === 'success' ? CHECK : t.type === 'error' ? ERROR : 'text-toast-sub-ink'} />
+                  <Toast.Title render={<span />}>{typeof t.title === 'string' ? <SwapText value={t.title} /> : t.title}</Toast.Title>
                   {t.description && <Toast.Description render={<span className={SUB} />}>· {t.description}</Toast.Description>}
                   {times > 1 && <span className={COUNT}>×{times}</span>}
                 </span>
                 {t.actionProps && (
-                  <Toast.Action className={UNDO} aria-keyshortcuts={(t.data as ToastData | undefined)?.undoShortcut ? 'Meta+Z Control+Z' : undefined}>
+                  <Toast.Action onClick={() => manager.close(t.id)} className={UNDO} aria-keyshortcuts={(t.data as ToastData | undefined)?.undoShortcut ? 'Meta+Z Control+Z' : undefined}>
                     Undo {(t.data as ToastData | undefined)?.undoShortcut && <Kbd surface="plain" className={KEY}>⌘Z</Kbd>}
                   </Toast.Action>
                 )}

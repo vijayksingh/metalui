@@ -1,14 +1,22 @@
 import SwiftUI
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
 
 // The same object recipe as components/toast.
 
 /// One toast: what happened, an optional detail, Undo, and a tone.
 public struct MetalToastModel: Identifiable, Equatable {
-    public enum Tone: Sendable { case `default`, success, error }
-    public let id = UUID()
+    public enum Tone: Sendable, Hashable { case `default`, success, error }
+    public private(set) var id = UUID()
     public let title: String
     public let sub: String?
     public let tone: Tone
+    public let glyph: MetalIconName?
+    /// Milliseconds; zero stays until dismissed. Nil uses the established kind/Undo policy.
+    public private(set) var timeout: Double?
     /// The toast's one action (Undo unless named otherwise).
     public let undo: (() -> Void)?
     /// The action cap's label; only Undo carries ⌘Z.
@@ -17,7 +25,8 @@ public struct MetalToastModel: Identifiable, Equatable {
     var isUndo: Bool { actionLabel == Self.undoLabel }
     static let undoLabel = "Undo"
 
-    public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil, undoShortcut: Bool = true) {
+    public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil, undoShortcut: Bool = true, glyph: MetalIconName? = nil, timeout: Double? = nil, id: UUID = UUID()) {
+        self.id = id; self.glyph = glyph; self.timeout = timeout
         self.title = title
         self.sub = sub
         self.tone = tone
@@ -27,7 +36,8 @@ public struct MetalToastModel: Identifiable, Equatable {
     }
 
     /// A toast whose action is not Undo ("Back to Now").
-    public init(_ title: String, sub: String? = nil, tone: Tone = .default, action: String, perform: @escaping () -> Void) {
+    public init(_ title: String, sub: String? = nil, tone: Tone = .default, action: String, glyph: MetalIconName? = nil, timeout: Double? = nil, id: UUID = UUID(), perform: @escaping () -> Void) {
+        self.id = id; self.glyph = glyph; self.timeout = timeout
         self.title = title
         self.sub = sub
         self.tone = tone
@@ -36,6 +46,9 @@ public struct MetalToastModel: Identifiable, Equatable {
         self.undoShortcut = false
     }
 
+    fileprivate func retained(as id: UUID) -> Self { var copy = self; copy.id = id; return copy }
+    fileprivate func holding() -> Self { var copy = self; copy.timeout = 0; return copy }
+    fileprivate var lifetime: Double { timeout ?? (tone == .error ? 0 : undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs) }
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
 }
 
@@ -52,6 +65,7 @@ public struct MetalToast: View {
     var onFocusChange: ((Bool) -> Void)?
     private enum FocusControl: Hashable { case undo, close }
     @FocusState private var focusedControl: FocusControl?
+    @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
 
     public init(_ model: MetalToastModel, count: Int = 1, onUndo: @escaping () -> Void = {}, onClose: (() -> Void)? = nil) {
@@ -66,9 +80,16 @@ public struct MetalToast: View {
         let cw = MetalRecipeColorway(colorway)
         return HStack(spacing: recipe.points("self.gap")) {
             HStack(spacing: recipe.points("text.gap")) {
-                if model.tone == .success { MetalIcon(.check, size: 14).foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
-                if model.tone == .error { MetalIcon(.warning, size: 14).foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
-                Text(model.title)
+                MetalMorphIcon(model.glyph ?? (model.tone == .success ? .check : model.tone == .error ? .syncError : .info), size: 14)
+                    .foregroundColor((model.tone == .success ? MetalShared.success : model.tone == .error ? MetalShared.red : recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color)
+                    .accessibilityHidden(true)
+                ZStack {
+                    Text(model.title).id(model.title)
+                        .transition(reduceMotion ? .opacity : .asymmetric(
+                            insertion: .opacity.combined(with: .offset(y: MetalSpace.s4)),
+                            removal: .opacity.combined(with: .offset(y: -MetalSpace.s4))))
+                }.clipped().metalAnimation(.settle, value: model.title)
+                    .accessibilityElement(children: .ignore).accessibilityLabel(model.title)
                 if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
                 if count > 1 {
                     Text("×\(count)").monospacedDigit()
@@ -125,6 +146,24 @@ public struct MetalToast: View {
     }
 }
 
+/// Event-only speech for the front result; hidden cards never request announcements.
+@MainActor private func announceToast(_ model: MetalToastModel, count: Int = 1) {
+    let words = model.title + (model.sub.map { " · " + $0 } ?? "") + (count > 1 ? " · \(count) times" : "")
+    #if os(macOS)
+    guard NSWorkspace.shared.isVoiceOverEnabled else { return }
+    NSAccessibility.post(element: NSApp as Any, notification: .announcementRequested,
+        userInfo: [.announcement: words, .priority: NSAccessibilityPriorityLevel.low.rawValue])
+    #elseif os(iOS)
+    guard UIAccessibility.isVoiceOverRunning else { return }
+    UIAccessibility.post(notification: .announcement, argument: words)
+    #endif
+}
+
+private struct MetalToastClockKey: Hashable {
+    let id: UUID; let title: String; let sub: String?; let tone: MetalToastModel.Tone; let lifetime: Double
+    init(_ model: MetalToastModel) { id = model.id; title = model.title; sub = model.sub; tone = model.tone; lifetime = model.lifetime }
+}
+
 private struct MetalToastHost: ViewModifier {
     @Binding var toast: MetalToastModel?
     @State private var hovering = false
@@ -144,11 +183,12 @@ private struct MetalToastHost: ViewModifier {
                         .transition(.asymmetric(
                             insertion: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")).combined(with: .scale(scale: MetalRecipes.toast.scalar("self.scale"))) : .identity),
                             removal: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")) : .identity)))
-                        .task(id: t.id) {
-                            guard t.tone != .error else { return }
+                        .task(id: MetalToastClockKey(t)) {
+                            announceToast(t)
+                            guard t.lifetime > 0 else { return }
                             // The clock stops while the pointer is on the toast, so its
                             // Undo is never pulled away mid-reach.
-                            var remaining = t.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
+                            var remaining = t.lifetime
                             let step = 100.0
                             while remaining > 0 {
                                 try? await Task.sleep(nanoseconds: UInt64(step * 1_000_000))
@@ -204,6 +244,7 @@ public final class MetalToastDeck {
         public let id: UUID
         public var model: MetalToastModel
         public var count: Int
+        var revision: Int = 0
     }
 
     /// Newest first.
@@ -215,13 +256,32 @@ public final class MetalToastDeck {
     public init() {}
 
     /// Shows a result in front. The same title, detail and tone as the front card counts instead of adding a card.
-    public func show(_ model: MetalToastModel) {
+    @discardableResult public func show(_ model: MetalToastModel) -> UUID {
         if let front = cards.first, front.model.title == model.title, front.model.sub == model.sub, front.model.tone == model.tone {
-            cards[0].model = model
-            cards[0].count += 1
-            return
+            cards[0].model = model.retained(as: front.id)
+            cards[0].count += 1; cards[0].revision += 1
+            return front.id
         }
         cards.insert(Card(id: model.id, model: model, count: 1), at: 0)
+        return model.id
+    }
+
+    /// Replaces one live card in place; never creates a card after dismissal.
+    @discardableResult public func update(_ id: UUID, _ model: MetalToastModel) -> Bool {
+        guard let index = cards.firstIndex(where: { $0.id == id }) else { return false }
+        cards[index].model = model.retained(as: id)
+        cards[index].count = 1; cards[index].revision += 1
+        return true
+    }
+
+    /// One retained loading/result card. The host owns the operation and handles its returned error.
+    public func promise<Value>(_ operation: () async throws -> Value, loading: MetalToastModel,
+                               success: (Value) -> MetalToastModel, error failure: (Error) -> MetalToastModel) async throws -> Value {
+        let pending = loading.holding()
+        let id = pending.id
+        cards.insert(Card(id: id, model: pending, count: 1), at: 0)
+        do { let value = try await operation(); update(id, success(value)); return value }
+        catch { update(id, failure(error)); throw error }
     }
 
     public func dismiss(_ id: UUID) {
@@ -375,15 +435,19 @@ private struct MetalToastDeckCard: View {
             .animation(travel ? MetalSpringClass.surface.spring.animation : nil, value: expanded)
             .opacity(expanded ? Double.one : .one - recipe.scalar("deck.dim") * step)
             .accessibilityHidden(index > 0 && !expanded)
-            .onChange(of: card.count) {
+            .onChange(of: card.count) { old, next in
+                guard next > old else { return }
                 // A repeat: a small press, springing back on the part spring.
                 pressed = true
                 withMetalAnimation(.part, reduceMotion: reduceMotion) { pressed = false }
             }
-            .task(id: "\(card.id)-\(card.count)") {
-                guard card.model.tone != .error else { return }
+            .task(id: "\(card.id)-\(card.revision)-\(index == 0)") {
+                if index == 0 { announceToast(card.model, count: card.count) }
+            }
+            .task(id: "\(card.id)-\(card.revision)") {
+                guard card.model.lifetime > 0 else { return }
                 // The clock stops while the deck is fanned out, so an Undo is never pulled away mid-reach.
-                var remaining = card.model.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
+                var remaining = card.model.lifetime
                 let tick = 100.0
                 while remaining > 0 {
                     try? await Task.sleep(nanoseconds: UInt64(tick * 1_000_000))
