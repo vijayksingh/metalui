@@ -47,3 +47,5 @@ Reduce Motion: no lift; the shadow still grows.
 
 - One link per card; everything else is an explicit action in the footer.
 - Only cards that go somewhere move.
+
+Footer actions carry their canonical meaning glyph: Share uses `icon={<ShareIcon />}`, while Choose stays a plain choice. A host-supplied Card menu uses shared `trash`, `duplicate`, `pen` and `pin` as appropriate; Card does not manufacture a menu or own its effects. Swift's content slot accepts `MetalButton("Share", icon: .share, size: .compact, action: share)`. Keep those actions outside any title link. The native Card body itself remains WIP.

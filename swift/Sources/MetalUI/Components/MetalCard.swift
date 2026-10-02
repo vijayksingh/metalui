@@ -4,6 +4,8 @@ import SwiftUI
 // stacks them on a rounded fill, not yet the raised surface, the media bleed, the hover lift or the
 // selected ring from card.agent.md. Web is the reference.
 
+/// Use a separate `MetalButton("Share", icon: .share, size: .compact, action: share)`
+/// in the content slot for a Share action; selection choices keep their plain word.
 /// A person's thing on a plate. Work in progress: see card.agent.md.
 public struct MetalCard<Content: View>: View {
     private let title: String

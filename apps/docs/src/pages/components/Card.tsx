@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
+import { ShareIcon } from '@unlocalhosted/metalui/icons';
 import { Button, Card } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/card/card.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCard.swift?raw';
 import agentSource from '../../../../../packages/metalui/src/components/card/card.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -27,7 +29,7 @@ function Cards({ onDid }: { onDid: (s: string) => void }) {
         <Card.Description>14 notes, 3 photos, a tram map.</Card.Description>
         <Card.Footer>
           <Button size="compact" onClick={() => { setChosen('lisbon'); onDid('Chose Lisbon'); }}>Choose</Button>
-          <Button size="compact" onClick={() => onDid('Shared Lisbon')}>Share</Button>
+          <Button size="compact" icon={<ShareIcon />} onClick={() => onDid('Shared Lisbon')}>Share</Button>
         </Card.Footer>
       </Card>
       <Card selected={chosen === 'porto'}>
@@ -69,12 +71,13 @@ export default function CardPage() {
   <Card.Title href={\`/trips/\${trip.id}\`}>{trip.name}</Card.Title>
   <Card.Description>{trip.summary}</Card.Description>
   <Card.Footer>
-    <Button size="compact" onClick={share}>Share</Button>
+    <Button size="compact" icon={<ShareIcon />} onClick={share}>Share</Button>
   </Card.Footer>
 </Card>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

@@ -13,6 +13,11 @@ for (const colorway of COLORWAYS) {
     await expect(lisbon.getByRole('link')).toHaveCount(1);
     await expect(lisbon.getByRole('link', { name: 'Trip to Lisbon' })).toHaveAttribute('href', '#lisbon');
     await expect(lisbon).toHaveAttribute('aria-current', 'true');
+    const share = lisbon.getByRole('button', { name: 'Share' });
+    await expect(share.locator('svg.mu-ic-share')).toHaveCount(1);
+    await share.click();
+    await expect(page.getByText('Shared Lisbon', { exact: true })).toBeVisible();
+    await expect(lisbon.getByRole('link')).toHaveAttribute('href', '#lisbon');
 
     // The whole card is the link's hit area: the point under the description is the link.
     const hit = await lisbon.getByText('14 notes, 3 photos, a tram map.').evaluate((el) => {
@@ -40,6 +45,11 @@ for (const colorway of COLORWAYS) {
     await page.mouse.move(0, 0);
     await page.waitForTimeout(500);
     await play(page).screenshot({ path: capture(`card-${colorway}`) });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await share.click();
+    await expect(share.locator('[data-playing]')).toHaveCount(0);
+    await page.mouse.move(0, 0);
+    await play(page).screenshot({ path: capture(`card-${colorway}-reduced`) });
   });
 }
 
