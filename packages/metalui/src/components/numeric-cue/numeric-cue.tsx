@@ -199,7 +199,15 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
     }} onValueCommitted={() => { if (!held) finish(); }} {...props}>
     <TooltipProvider><Tooltip label={help} disabled={disabled || !!resolved || !hint} wrap><BaseNumberField.ScrubArea direction="vertical"
       className="mu-numeric-cue-face block cursor-ns-resize"
-      onPointerDownCapture={() => { if (!disabled && !readOnly) { cancelledInput.current = false; begin(); setHeld(true); } }}
+      onPointerDownCapture={() => {
+        if (disabled || readOnly) return;
+        cancelledInput.current = false;
+        // Finish the previous field's blur transaction before capturing this source range.
+        input.current?.focus({ preventScroll: true });
+        setTyping(false);
+        begin();
+        setHeld(true);
+      }}
       onDoubleClick={() => { if (allowTyping && !readOnly && !disabled) { setTyping(true); input.current?.focus(); } }}>
       <Mark kind={kind} meaning={meaning} meaningLabel={`${label}, ${formatted}`} raw={raw || disabled || readOnly} resolved={hint ? resolved : undefined} data-reveal={hint && held && resolved ? true : undefined} className="block">
         <SwapText value={raw ? words : formatted} />

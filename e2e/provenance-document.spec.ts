@@ -2,6 +2,39 @@ import { expect, test } from '@playwright/test';
 import { COLORWAYS, capture, open } from './helpers';
 const original = 'Send #poster tomorrow 4pm, slept 6h in #done by #coffee\nPaint #FF6B3D with Sam; open https://metalui.dev.';
 for (const colorway of COLORWAYS) {
+  test(`pointer scrub after another focused cue keeps clock face and source together in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/provenance-tooltip#source-document', colorway);
+    const doc = page.getByTestId('provenance-document'), source = doc.locator('textarea[aria-label="Provenance document source"]');
+    const sleep = doc.getByRole('spinbutton', { name: 'Sleep', exact: true });
+    const clock = doc.getByRole('spinbutton', { name: 'Send time', exact: true });
+    await clock.scrollIntoViewIfNeeded();
+    const scrub = async () => {
+      await sleep.focus();
+      await expect(doc).toHaveAttribute('data-editing', 'true');
+      const box = (await clock.boundingBox())!;
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 - 3, { steps: 3 });
+      await expect(clock).not.toHaveAttribute('aria-valuetext', '4pm, time of day');
+      const words = (await clock.getAttribute('aria-valuetext'))!.split(',')[0];
+      await expect(source).toHaveValue(original.replace('4pm', words));
+      await expect(doc).toHaveAttribute('data-editing', 'true');
+      await expect(clock).toBeFocused();
+    };
+    await scrub();
+    await page.keyboard.press('Escape'); await page.mouse.up();
+    await expect(source).toHaveValue(original);
+    await expect(clock).toHaveAttribute('aria-valuetext', '4pm, time of day');
+    await expect(doc.getByRole('button', { name: 'Undo source edit', exact: true })).toBeDisabled();
+    await scrub(); await page.mouse.up();
+    await expect(doc).not.toHaveAttribute('data-editing');
+    await doc.getByRole('button', { name: 'Undo source edit', exact: true }).click();
+    await expect(source).toHaveValue(original);
+    await expect(clock).toHaveAttribute('aria-valuetext', '4pm, time of day');
+    await expect(doc.getByRole('button', { name: 'Undo source edit', exact: true })).toBeDisabled();
+  });
+}
+for (const colorway of COLORWAYS) {
   test(`one provenance source retains UTF16 history through clock, quantity and state in ${colorway}`, async ({ page }) => {
     await open(page, '/components/provenance-tooltip#source-document', colorway);
     const doc = page.getByTestId('provenance-document');
