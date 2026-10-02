@@ -56,7 +56,7 @@ for (const colorway of COLORWAYS) {
     await bar(page).getByRole('button', { name: 'Save' }).click();
     await expect(bar(page).getByRole('button', { name: 'Saving…' })).toHaveAttribute('aria-busy', 'true');
     await expect(bar(page).getByRole('button', { name: 'Saved' })).toBeVisible();
-    await expect(b.getByRole('status')).toHaveText('Saved 3 changes');
+    await expect(b.getByRole('status').filter({ hasText: 'Saved 3 changes' })).toHaveText('Saved 3 changes');
     await expect(bar(page)).toHaveCount(0, { timeout: 4000 });
     await expect(b.getByRole('heading', { name: 'Profile' })).toBeFocused();
     await expect(b.getByRole('textbox', { name: 'Name' })).toHaveValue('Marta S. Silva');
@@ -80,7 +80,7 @@ test('a bad email is refused on blur and on save, with focus on it', async ({ pa
   await expect(b.getByRole('heading', { name: 'Profile' })).toBeVisible();
   await expect(b.getByRole('textbox', { name: 'Name' })).toBeFocused();
   await expect(b).toContainText('Enter your name.');
-  await expect(b.getByRole('status')).toHaveText('Not saved. Enter your name.');
+  await expect(b.getByRole('status').filter({ hasText: 'Not saved. Enter your name.' })).toHaveText('Not saved. Enter your name.');
   await page.waitForTimeout(500);
   await b.screenshot({ path: capture('block-settings-invalid-bone') });
 
@@ -91,7 +91,7 @@ test('a bad email is refused on blur and on save, with focus on it', async ({ pa
   await expect(email).not.toHaveAttribute('aria-invalid', 'true');
   await expect(b).not.toContainText('Enter an email address');
   await bar(page).getByRole('button', { name: 'Save' }).click();
-  await expect(b.getByRole('status')).toHaveText('Saved 1 change');
+  await expect(b.getByRole('status').filter({ hasText: 'Saved 1 change' })).toHaveText('Saved 1 change');
 });
 
 test('discard restores every value and the bar leaves', async ({ page }) => {
@@ -104,7 +104,7 @@ test('discard restores every value and the bar leaves', async ({ page }) => {
   await expect(bar(page)).toContainText('2 changes');
   await bar(page).getByRole('button', { name: 'Discard' }).click();
   await expect(bar(page)).toHaveCount(0, { timeout: 4000 });
-  await expect(b.getByRole('status')).toHaveText('Discarded 2 changes');
+  await expect(b.getByRole('status').filter({ hasText: 'Discarded 2 changes' })).toHaveText('Discarded 2 changes');
   await expect(b.getByRole('switch', { name: 'Mentions' })).toBeChecked();
   await section(page, 'Profile');
   await expect(b.getByRole('textbox', { name: 'Email' })).toHaveValue('marta@lisbonstudio.com');
@@ -193,7 +193,7 @@ test('the keyboard reaches everything and ⌘S saves', async ({ page }) => {
 
   await b.getByRole('switch', { name: 'Mentions' }).focus();
   await page.keyboard.press('ControlOrMeta+s');
-  await expect(b.getByRole('status')).toHaveText('Saved 1 change');
+  await expect(b.getByRole('status').filter({ hasText: 'Saved 1 change' })).toHaveText('Saved 1 change');
   await expect(bar(page)).toHaveCount(0, { timeout: 4000 });
 });
 

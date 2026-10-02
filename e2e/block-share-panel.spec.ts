@@ -23,7 +23,7 @@ for (const colorway of COLORWAYS) {
     await expect(receipt.getByRole('progressbar')).toHaveCount(0);
     await expect(b.getByRole('group', { name: 'Tram map.pdf' })).toContainText('1.8 MB', { timeout: 8000 });
     await expect(b).toContainText('4 files');
-    await expect(b.getByRole('status')).toHaveText(/^Uploaded /);
+    await expect(b.getByRole('status').filter({ hasText: /^Uploaded / })).toHaveText(/^Uploaded /);
 
     // The failed upload says why, and Try again takes it to done.
     const hotel = b.getByRole('group', { name: 'Hotel booking.pdf' });
@@ -46,7 +46,7 @@ for (const colorway of COLORWAYS) {
     const lena = people.getByRole('listitem').filter({ hasText: 'Lena Fischer' });
     await expect(lena).toContainText('lena.fischer@example.com');
     await expect(lena.getByRole('combobox', { name: 'Permission for Lena Fischer' })).toHaveText(/Can edit/);
-    await expect(b.getByRole('status')).toHaveText('Invited lena.fischer@example.com, can edit');
+    await expect(b.getByRole('status').filter({ hasText: 'Invited lena.fischer@example.com, can edit' })).toHaveText('Invited lena.fischer@example.com, can edit');
     await expect(b).toContainText('4 people');
     await expect(b.getByRole('textbox', { name: 'Email to invite' })).toHaveValue('');
 
@@ -54,7 +54,7 @@ for (const colorway of COLORWAYS) {
     await expect(people.getByRole('listitem').filter({ hasText: 'Marta Silva' }).getByRole('button')).toHaveCount(0);
     await people.getByRole('combobox', { name: 'Permission for Ana Rocha' }).click();
     await page.getByRole('option', { name: 'Can edit' }).click();
-    await expect(b.getByRole('status')).toHaveText('Ana Rocha can edit now');
+    await expect(b.getByRole('status').filter({ hasText: 'Ana Rocha can edit now' })).toHaveText('Ana Rocha can edit now');
 
     await page.setViewportSize({ width: 1280, height: 1800 });
     await page.waitForTimeout(600);
@@ -91,7 +91,7 @@ test('copy link says Copied, the clipboard holds the link, and it turns back', a
 
   await b.getByRole('button', { name: 'Copy link' }).click();
   await expect(b.getByRole('button', { name: 'Copied' })).toBeVisible();
-  await expect(b.getByRole('status')).toHaveText('Link copied');
+  await expect(b.getByRole('status').filter({ hasText: 'Link copied' })).toHaveText('Link copied');
   await page.waitForTimeout(500);
   await b.getByRole('region', { name: 'Link' }).screenshot({ path: capture('block-share-panel-copied-bone') });
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(LINK);
@@ -105,7 +105,7 @@ test('the keyboard invites, removes, closes and reopens', async ({ page }) => {
   await email.focus();
   await page.keyboard.type('lena@example.com');
   await page.keyboard.press('Enter');
-  await expect(b.getByRole('status')).toHaveText('Invited lena@example.com, can view');
+  await expect(b.getByRole('status').filter({ hasText: 'Invited lena@example.com, can view' })).toHaveText('Invited lena@example.com, can view');
   await expect(email).toBeFocused();
 
   // Tab from the email reaches the permission and Invite; the Select opens and chooses from the keyboard.
@@ -126,7 +126,7 @@ test('the keyboard invites, removes, closes and reopens', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect(people.getByRole('listitem').filter({ hasText: 'Ana Rocha' })).toHaveCount(0);
   await expect(b.getByRole('button', { name: 'Remove Lena' })).toBeFocused();
-  await expect(b.getByRole('status')).toHaveText('Removed Ana Rocha');
+  await expect(b.getByRole('status').filter({ hasText: 'Removed Ana Rocha' })).toHaveText('Removed Ana Rocha');
 
   // ⎋ closes; focus returns to the key that opens it; it reopens with focus on its title.
   await page.keyboard.press('Escape');
