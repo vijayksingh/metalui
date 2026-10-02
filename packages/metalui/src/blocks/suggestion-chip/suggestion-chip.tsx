@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
 import { Chip } from '../../components/chip/chip';
 import { Label } from '../../components/label/label';
 import { IconButton } from '../../components/icon-button/icon-button';
@@ -53,8 +54,8 @@ export const SuggestionChip = React.forwardRef<HTMLSpanElement, SuggestionChipPr
       <Chip.Text>{label}</Chip.Text>
       <Label variant="small" aria-hidden className={CONF}>{conf}</Label>
       <Chip.Actions>
-        <IconButton variant="mini" accept label="Accept" icon="✓" onClick={onAccept} />
-        <IconButton variant="mini" label="Dismiss" icon="×" onClick={onDismiss} />
+        <IconButton variant="mini" accept label="Accept" icon={<Icon name="check" size={14} />} onClick={onAccept} />
+        <IconButton variant="mini" label="Dismiss" icon={<Icon name="close" size={14} />} onClick={onDismiss} />
       </Chip.Actions>
     </Chip.Root>
   );

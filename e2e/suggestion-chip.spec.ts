@@ -9,6 +9,8 @@ for (const colorway of COLORWAYS) {
     await open(page, '/components/suggestion-chip', colorway);
     const block = page.getByTestId('sugg-block');
     const chip = block.getByRole('group', { name: /Suggestion: Task\? Confidence 0\.72/ });
+    await expect(chip.getByRole('button', { name: 'Accept' }).locator('svg.mu-ic-check')).toHaveCount(1);
+    await expect(chip.getByRole('button', { name: 'Dismiss' }).locator('svg.mu-ic-close')).toHaveCount(1);
     await settled(chip);
     expect(Number(await chip.evaluate((el) => getComputedStyle(el).opacity))).toBeCloseTo(0.62, 2);
     await block.hover();
@@ -35,5 +37,21 @@ for (const reduce of [false, true]) {
     });
     if (reduce) { expect(first.f).toBeCloseTo(0, 3); expect(first.a).toBeCloseTo(1, 3); }
     else { expect(first.f).toBeCloseTo(-3, 1); expect(first.a).toBeCloseTo(0.96, 2); }
+  });
+}
+
+for (const colorway of COLORWAYS) {
+  test(`dismisses its question with a full shared glyph under reduction in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/suggestion-chip', colorway);
+    const block = page.getByTestId('sugg-block');
+    const chip = block.getByRole('group');
+    await block.hover();
+    await chip.screenshot({ path: capture(`suggestion-chip-${colorway}-reduced`) });
+    await chip.getByRole('button', { name: 'Dismiss' }).focus();
+    await page.keyboard.press('Enter');
+    await expect(chip).toHaveCount(0);
+    await expect(page.getByText('dismissed · never asked again for this text', { exact: true })).toBeVisible();
+    await expect(block.getByRole('checkbox')).toHaveCount(0);
   });
 }

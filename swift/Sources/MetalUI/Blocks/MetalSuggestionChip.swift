@@ -37,9 +37,11 @@ public struct MetalSuggestionChip: View {
                 .padding(.trailing, MetalSuggestion.confMarginEnd)
                 .accessibilityHidden(true)
             MetalChipActions {
-                MetalIconButton("Accept", variant: .mini, accept: true, action: onAccept) { Text("✓") }
+                MetalIconButton("Accept", variant: .mini, accept: true, action: onAccept) {
+                    MetalIcon(.check, size: MetalRecipes.iconButton.points("ghost.glyph"))
+                }
                     .focused($focusedAction, equals: .accept)
-                MetalIconButton("Dismiss", variant: .mini, action: onDismiss) { Text("×") }
+                MetalIconButton("Dismiss", icon: .close, variant: .mini, action: onDismiss)
                     .focused($focusedAction, equals: .dismiss)
             }
         }

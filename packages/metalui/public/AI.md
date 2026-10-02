@@ -3911,7 +3911,7 @@ One question the recognizer asks at middle confidence, beside its block. A compo
 
 ## Anatomy
 
-`Chip variant="suggestion"`: a 20 tall frosted pill with a .5 green ring at .4 over a small raise, the question in ink2. `Label variant="small"`: the confidence (`0.72`), 2 after the question and 3 before the actions. `IconButton variant="mini"`: ✓ (`accept`, green on hover) and ×, 18 × 16. It sits beside the first line of its block (`offset-x` −2, `offset-y` 10 from the block's right edge).
+`Chip variant="suggestion"`: a 20 tall frosted pill with a .5 green ring at .4 over a small raise, the question in ink2. `Label variant="small"`: the confidence (`0.72`), 2 after the question and 3 before the actions. `IconButton variant="mini"`: canonical `check` (`accept`, green on hover) and `close`, 18 × 16 with the shared 14 glyph. React `Icon` and native `MetalIconButton(icon:)` use the same authored set; full contours remain under reduction. It sits beside the first line of its block (`offset-x` −2, `offset-y` 10 from the block's right edge).
 
 ## States and motion
 
