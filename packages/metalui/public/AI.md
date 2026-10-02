@@ -2263,7 +2263,7 @@ Reduce Motion: the highlight moves at once.
 
 # Meter
 
-A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Meter. SwiftUI: `MetalMeter` (work in progress). The lamps are the LED part's looks (the `status` recipe); the `meter` recipe adds the segments and the sweep.
+A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Meter. SwiftUI: `MetalMeter`. Every segment sits in the reviewed opaque socket and uses the same per-colorway state inks and lit halo (the `status` recipe); the `meter` recipe adds the segments and the sweep.
 
 ## Use it for
 
@@ -2276,7 +2276,7 @@ A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Met
 ## Anatomy
 
 - Head (optional): label at the left (ui type), value at the right (meta type).
-- Segments: 16 lamps in a row, 10 tall, 2 apart, radius 2.5. Lit up to the value; dark (the off lamp) above.
+- Segments: 16 lamps in a row, 10 tall, 2 apart, radius 2.5; the socket bezel takes 1 inside that existing footprint. Lit up to the value; dark (the off lamp) above.
 - Colour by position: green, amber from 75 % of the range, red from 90 % (`warn`, `danger`), measured toward the bad end: the top by default, the bottom with `bad="low"` (a battery).
 
 ## States and motion
@@ -2287,15 +2287,15 @@ A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Met
 | rising | more segments light | one segment every 16 ms upward from the old edge, each fading in 90 ms |
 | falling | segments go dark | one every 16 ms downward from the old edge |
 
-Reduce Motion: every segment changes at once.
+Reduce Motion: every segment changes at once (web scoped data-mu-motion/OS, native additive metalReduceMotion/OS). Only lamp opacity transitions; nothing runs at rest.
 
 ## API
 
 | React | SwiftUI |
 |---|---|
 | `value`, `min` (0), `max` (100) | `value:`, `in:` |
-| `label`, `showValue`, `format` | `label:` |
-| `segments` (16), `warn` (0.75), `danger` (0.9), `bad` (`high`, `low`) | `segments:` |
+| `label`, `showValue`, `format` | leading label, `showValue:`, optional `valueText:` |
+| `segments` (16), `warn` (0.75), `danger` (0.9), `bad` (`high`, `low`) | `segments:`, `warn:`, `danger:`, `bad:` |
 
 ## Keyboard and accessibility
 

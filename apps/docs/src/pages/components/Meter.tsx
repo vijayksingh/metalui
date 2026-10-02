@@ -3,6 +3,8 @@ import { useDialKit } from 'dialkit';
 import { Button, Meter } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/components/meter/meter.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMeter.swift?raw';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 import agentSource from '../../../../../packages/metalui/src/components/meter/meter.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 
@@ -52,13 +54,14 @@ export default function MeterPage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'sweep', title: 'Tune the sweep', lede: 'The Meter sweep panel sets the time between segments, each lamp\'s fade and the segment count. Jump the level to see it sweep both ways.', node: <SweepTuner /> }]}
+      more={[{ id: 'native', title: 'SwiftUI twin', node: <SwiftCapture name="meter" /> }, { id: 'sweep', title: 'Tune the sweep', lede: 'The Meter sweep panel sets the time between segments, each lamp\'s fade and the segment count. Jump the level to see it sweep both ways.', node: <SweepTuner /> }]}
       usage={`<Meter label="Storage" value={42} showValue />
 <Meter label="Battery" value={18} bad="low" showValue />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
       ]}
       rules={[
         { id: 'ME1', title: 'Colour is printed, not computed', body: 'A lamp\'s colour comes from where it sits, like the scale on a level meter.', origin: 'Level meters' },

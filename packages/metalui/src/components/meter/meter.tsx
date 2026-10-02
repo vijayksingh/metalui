@@ -21,8 +21,8 @@ const HEAD = 'mu-meter-head flex items-baseline justify-between gap-meter-head-g
 const LABEL = 'mu-meter-label type-ui text-ink';
 const VALUE = 'mu-meter-value type-meta tabular-nums text-ink2';
 const TRACK = 'mu-meter-track flex gap-meter-gap h-meter-height';
-const SEGMENT = 'mu-meter-segment relative flex-1 rounded-meter-radius recipe-status-led-off';
-const ZONE = { ok: 'recipe-status-led-live', warn: 'recipe-status-led recipe-status-led-waiting', danger: 'recipe-status-led recipe-status-led-failed' };
+const SEGMENT = 'mu-meter-segment relative flex-1 rounded-meter-radius recipe-status-socket';
+const kindForZone = { ok: 'live', warn: 'waiting', danger: 'failed' };
 
 export interface MeterProps extends Omit<BaseMeter.Root.Props, 'className' | 'children'> {
   /** What is measured: "Storage". Shown above, and names it. */
@@ -60,8 +60,8 @@ export function Meter({ label, showValue, segments = 16, warn = 0.75, danger = 0
           // Segments between the old edge and the new one change in order, away from the old edge.
           const step = lit >= from ? i - from : from - 1 - i;
           return (
-            <span key={i} aria-hidden className={SEGMENT} data-lit={i < lit ? '' : undefined} data-zone={zone} style={{ '--mu-meter-step': Math.max(0, step) } as React.CSSProperties}>
-              <span className={`mu-meter-lamp meter-lamp ${ZONE[zone]}`} />
+            <span key={i} aria-hidden data-mu-self="" className={SEGMENT} data-lit={i < lit ? '' : undefined} data-zone={zone} style={{ '--mu-meter-step': Math.max(0, step), '--mu-self': 'var(--mu-r-status-ink-off)' } as React.CSSProperties}>
+              <span data-mu-self="" className="mu-meter-lamp meter-lamp recipe-status-lamp" style={{ '--mu-self': `var(--mu-r-status-ink-${kindForZone[zone]})` } as React.CSSProperties} />
             </span>
           );
         })}

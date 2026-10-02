@@ -57,3 +57,20 @@ test('Reduce Motion: every segment changes at once', async ({ page }) => {
   });
   expect(new Set(delays)).toEqual(new Set(['0s']));
 });
+
+test('segments retain their footprint and opaque socket with the shared state inks', async ({ page }) => {
+  await open(page, '/components/meter', 'bone');
+  const storage = page.getByRole('meter', { name: 'Storage' });
+  await expect(storage.locator('.mu-meter-segment')).toHaveCount(16);
+  await expect(storage.locator('.mu-meter-segment').first()).toHaveCSS('height', '10px');
+  await expect(storage.locator('.mu-meter-lamp').first()).toHaveCSS('height', '8px');
+  const colors = await storage.evaluate(el => [...el.querySelectorAll('.mu-meter-segment')].map(s => {
+    const c = document.createElement('canvas').getContext('2d')!;
+    c.fillStyle = getComputedStyle(s).backgroundColor; c.fillRect(0, 0, 1, 1);
+    return [...c.getImageData(0, 0, 1, 1).data];
+  }));
+  expect(colors.every(c => c.join() === '36,36,39,255')).toBe(true);
+  await storage.evaluate(e => e.setAttribute('data-mu-motion', 'reduce'));
+  await page.getByRole('button', { name: 'Add 25 GB' }).click();
+  expect(await storage.locator('.mu-meter-lamp').evaluateAll(lamps => lamps.every(l => getComputedStyle(l).transitionDelay === '0s'))).toBe(true);
+});

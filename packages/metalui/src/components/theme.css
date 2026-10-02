@@ -671,8 +671,6 @@
   --spacing-hover-engraving-led-size: var(--mu-r-hover-engraving-led-size);
   --spacing-hover-engraving-led-gap: var(--mu-r-hover-engraving-led-gap);
   --spacing-hover-engraving-led-lift: var(--mu-r-hover-engraving-led-lift);
-  --spacing-status-led-size: var(--mu-r-status-led-size);
-  --spacing-status-led-size-small: var(--mu-r-status-led-size-small);
   --spacing-status-badge-height: var(--mu-r-status-badge-height);
   --spacing-status-badge-pad: var(--mu-r-status-badge-pad);
   --spacing-status-badge-gap: var(--mu-r-status-badge-gap);
@@ -1500,7 +1498,7 @@
   opacity: var(--mu-r-accordion-trigger-disabled);
 }
 @utility meter-lamp {
-  position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
+  position: absolute; inset: var(--mu-r-status-lamp-bezel); border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
 }
 @utility duration-meter-lamp-fade {
   --tw-duration: var(--mu-r-meter-lamp-fade);
@@ -1895,26 +1893,6 @@
 @utility type-hover-engraving-tag {
   font: var(--mu-r-hover-engraving-tag-font);
   letter-spacing: var(--mu-r-hover-engraving-tag-tracking);
-}
-@utility recipe-status-led {
-  box-shadow: var(--mu-r-status-led-shadow);
-}
-@utility recipe-status-led-live {
-  box-shadow: var(--mu-r-status-led-live-shadow);
-  background: var(--mu-r-status-led-live-background);
-}
-@utility recipe-status-led-waiting {
-  background: var(--mu-r-status-led-waiting-background);
-}
-@utility recipe-status-led-failed {
-  background: var(--mu-r-status-led-failed-background);
-}
-@utility recipe-status-led-link {
-  background: var(--mu-r-status-led-link-background);
-}
-@utility recipe-status-led-off {
-  background: var(--mu-r-status-led-off-background);
-  box-shadow: var(--mu-r-status-led-off-shadow);
 }
 @utility recipe-status-badge {
   background: var(--mu-r-status-badge-background);

@@ -476,6 +476,20 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testMeter() {
+        for colorway in MetalColorway.allCases {
+            let view = VStack(spacing: 24) {
+                MetalMeter("Storage", value: 67)
+                MetalMeter("Battery", value: 18, bad: .low)
+                MetalMeter("Signal", value: 3, in: 0...5, segments: 5, showValue: false)
+            }
+            .frame(width: 420).padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("meter-\(colorway.rawValue)", view)
+        }
+    }
+
     func testStatus() {
         let kinds: [MetalLEDKind] = [.live, .waiting, .failed, .link, .off]
         let words = ["Sync live", "Sync waiting", "Sync failed", "Sync linked", "Sync off"]

@@ -13,8 +13,7 @@
   },
   "swift": {
     "symbol": "MetalMeter",
-    "file": "swift/Sources/MetalUI/Components/MetalMeter.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalMeter.swift"
   },
   "agent": "meter.agent.md",
   "page": "/components/meter"
