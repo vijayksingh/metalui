@@ -199,13 +199,13 @@ const X = <svg aria-hidden viewBox="0 0 10 10" className="size-attachment-remove
 // tag and due date go under the title; from 32rem they take their own columns.
 const ROW = 'grid grid-cols-[1.25rem_1.25rem_minmax(0,1fr)] items-start gap-x-10 cursor-default aria-selected:recipe-row-option-on aria-selected:hover:recipe-row-option-on';
 const CELL = 'grid min-h-[1.375rem] items-center';
-const MAIN = 'grid min-w-0 -mx-6 px-6 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12 gap-y-4 rounded-row-list-radius outline-none focus-visible:focus-ring @lg:grid-cols-[minmax(0,1fr)_auto_6.5rem_auto]';
+const MAIN = 'grid min-w-0 -mx-6 px-6 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12 gap-y-4 rounded-row-list-radius outline-none focus-visible:focus-ring @lg/block:grid-cols-[minmax(0,1fr)_auto_6.5rem_auto]';
 const RAIL = 'data-open:before:absolute data-open:before:left-row-rail-offset data-open:before:top-row-rail-inset data-open:before:bottom-row-rail-inset data-open:before:w-row-rail-w data-open:before:rounded-row-rail-radius data-open:before:bg-row-rail-color';
 // The gutter's box shows on hover, on focus, while anything is selected, and always on a touch screen.
 const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-aria-selected/row:opacity-100 group-data-selecting/grid:opacity-100 pointer-coarse:opacity-100`;
 
 // A key on the graphite strip: the strip cap's look; the verb hides under 32rem, the glyph stays.
-const Verb = ({ children }: { children: string }) => <span className="sr-only @lg:not-sr-only">{children}</span>;
+const Verb = ({ children }: { children: string }) => <span className="sr-only @lg/block:not-sr-only">{children}</span>;
 const STRIP_GLYPH = 'size-16';
 // The icon set has no person glyph yet: a head and shoulders, drawn to the set's 24 grid and stroke.
 const PERSON = <svg aria-hidden viewBox="0 0 24 24" className={STRIP_GLYPH} fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
@@ -526,7 +526,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       ref={root}
       aria-labelledby={`${ids}-title`}
       onKeyDown={onRootKey}
-      className={`@container grid w-full max-w-[44rem] gap-16 p-20 rounded-surface-radius-hero recipe-surface-raise max-[30rem]:p-12 ${className ?? ''}`}
+      className={`@container/block grid w-full max-w-[44rem] gap-16 p-20 rounded-surface-radius-hero recipe-surface-raise max-[30rem]:p-12 ${className ?? ''}`}
     >
       <header className="grid gap-12">
         <div className="flex items-baseline gap-8">
@@ -608,14 +608,14 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
                 />
               </span>
               <span role="gridcell" data-col={2} tabIndex={stop(2)} onFocus={() => setActive({ id: t.id, col: 2 })} className={MAIN}>
-                <span className={`col-start-1 row-start-1 line-clamp-2 type-ui transition-colors @lg:block @lg:truncate ${t.done ? 'text-ink3 line-through' : 'text-ink'}`}>{t.title}</span>
-                <span className="col-start-1 row-start-2 flex min-w-0 items-center gap-8 @lg:contents">
-                  <span className={`type-meta tabular-nums @lg:col-start-3 @lg:row-start-1 @lg:text-right ${due.late && !t.done ? 'text-form-field-error-ink' : due.words === 'Today' && !t.done ? 'text-ink' : 'text-ink3'}`}>
+                <span className={`col-start-1 row-start-1 line-clamp-2 type-ui transition-colors @lg/block:block @lg/block:truncate ${t.done ? 'text-ink3 line-through' : 'text-ink'}`}>{t.title}</span>
+                <span className="col-start-1 row-start-2 flex min-w-0 items-center gap-8 @lg/block:contents">
+                  <span className={`type-meta tabular-nums @lg/block:col-start-3 @lg/block:row-start-1 @lg/block:text-right ${due.late && !t.done ? 'text-form-field-error-ink' : due.words === 'Today' && !t.done ? 'text-ink' : 'text-ink3'}`}>
                     {due.late && !t.done ? due.words : <><span className="sr-only">Due </span>{due.words}</>}
                   </span>
-                  <Chip variant="tag" className="@lg:col-start-2 @lg:row-start-1 @lg:justify-self-end"><Chip.Text>{t.tag}</Chip.Text></Chip>
+                  <Chip variant="tag" className="@lg/block:col-start-2 @lg/block:row-start-1 @lg/block:justify-self-end"><Chip.Text>{t.tag}</Chip.Text></Chip>
                 </span>
-                <span title={who.id === ME ? `${who.name} (you)` : who.name} className="col-start-2 row-span-2 row-start-1 self-center @lg:col-start-4 @lg:row-span-1">
+                <span title={who.id === ME ? `${who.name} (you)` : who.name} className="col-start-2 row-span-2 row-start-1 self-center @lg/block:col-start-4 @lg/block:row-span-1">
                   <Avatar name={who.name} size="small" />
                 </span>
               </span>
@@ -668,7 +668,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
             </BaseToolbar.Root>
           </div>
         ) : visible.length > 0 && (
-          <p aria-hidden className="col-start-1 row-start-1 m-0 hidden flex-wrap items-center justify-center gap-x-12 gap-y-4 type-meta text-ink3 @md:flex pointer-coarse:hidden">
+          <p aria-hidden className="col-start-1 row-start-1 m-0 hidden flex-wrap items-center justify-center gap-x-12 gap-y-4 type-meta text-ink3 @md/block:flex pointer-coarse:hidden">
             <span><Kbd size="small">↑</Kbd> <Kbd size="small">↓</Kbd> move</span>
             <span><Kbd size="small">x</Kbd> select</span>
             <span><Kbd size="small">e</Kbd> complete</span>

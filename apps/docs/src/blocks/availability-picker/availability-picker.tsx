@@ -301,21 +301,21 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const zoneOptions = ZONES.map((z) => ({ value: z.value, label: `${z.city} (${offsetName(z.value, starts[0] ?? now)})` }));
 
   return (
-    <section ref={setRoot} aria-label={`Book a call with ${host.name}`} className={`@container grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
+    <section ref={setRoot} aria-label={`Book a call with ${host.name}`} className={`@container/block grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
       <div
         inert={booked}
-        className={`grid gap-24 p-20 transition-opacity duration-settle ease-settle reduced-motion:transition-none @xl:grid-cols-[auto_minmax(0,1fr)] @4xl:grid-cols-[minmax(0,17rem)_auto_12rem] @4xl:justify-between ${booked ? 'opacity-60' : ''}`}
+        className={`grid gap-24 p-20 transition-opacity duration-settle ease-settle reduced-motion:transition-none @xl/block:grid-cols-[auto_minmax(0,1fr)] @4xl/block:grid-cols-[minmax(0,17rem)_auto_12rem] @4xl/block:justify-between ${booked ? 'opacity-60' : ''}`}
       >
         {/* The host: one column; across the top (identity and length on one line) when there are two */}
-        <div className="grid content-start gap-16 @xl:col-span-2 @xl:grid-cols-[minmax(0,1fr)_auto] @4xl:col-span-1 @4xl:grid-cols-1">
-          <div className="flex items-center gap-12 @xl:row-start-1 @4xl:row-start-auto">
+        <div className="grid content-start gap-16 @xl/block:col-span-2 @xl/block:grid-cols-[minmax(0,1fr)_auto] @4xl/block:col-span-1 @4xl/block:grid-cols-1">
+          <div className="flex items-center gap-12 @xl/block:row-start-1 @4xl/block:row-start-auto">
             <Avatar name={host.name} size="large" presence="live" />
             <div className="grid gap-2">
               <span className="type-ui text-ink">{host.name}</span>
               <span className="type-meta text-ink2">{host.role}</span>
             </div>
           </div>
-          <div className="grid content-start gap-8 @xl:col-span-2 @xl:row-start-2 @4xl:col-span-1 @4xl:row-start-auto">
+          <div className="grid content-start gap-8 @xl/block:col-span-2 @xl/block:row-start-2 @4xl/block:col-span-1 @4xl/block:row-start-auto">
             <h2 className="m-0 type-display text-ink"><SwapText value={`${length} min call`} /></h2>
             <p className="m-0 max-w-[40ch] type-body text-ink2">{host.about}</p>
             <ul className="m-0 mt-4 grid list-none gap-6 p-0 type-meta text-ink2">
@@ -323,7 +323,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
               <li className="flex items-center gap-8"><LinkIcon size={14} animate={false} className="text-ink3" />Video call, link sent on booking</li>
             </ul>
           </div>
-          <div className="grid justify-items-start gap-6 @xl:col-start-2 @xl:row-start-1 @xl:justify-items-end @xl:self-center @4xl:col-start-auto @4xl:row-start-auto @4xl:justify-items-start">
+          <div className="grid justify-items-start gap-6 @xl/block:col-start-2 @xl/block:row-start-1 @xl/block:justify-items-end @xl/block:self-center @4xl/block:col-start-auto @4xl/block:row-start-auto @4xl/block:justify-items-start">
             <span className="type-meta text-ink3">Length</span>
             <Switcher size="compact" aria-label="Length" value={length} onValueChange={chooseLength} options={LENGTHS} />
           </div>
@@ -335,7 +335,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
         </div>
 
         {/* The day's times */}
-        <div className="grid min-w-0 content-start gap-12 @xl:flex @xl:flex-col @xl:pt-calendar-pad @xl:[contain:size] @xl:min-h-full">
+        <div className="grid min-w-0 content-start gap-12 @xl/block:flex @xl/block:flex-col @xl/block:pt-calendar-pad @xl/block:[contain:size] @xl/block:min-h-full">
           <div className="grid gap-2">
             <h3 id={headingId} className="m-0 type-title text-ink"><SwapText value={longDay.format(day)} /></h3>
             <span className="type-meta text-ink3">
@@ -349,7 +349,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
                 aria-label={`Free times, ${longDay.format(day)}`}
                 value={time == null ? null : String(time)}
                 onValueChange={(v) => setTime(v == null ? null : Number(v))}
-                className="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-8 @4xl:grid-cols-1"
+                className="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-8 @4xl/block:grid-cols-1"
               >
                 {starts.map((at, i) => (
                   <TimeKey key={at} at={at} zone={zone} chosen={at === time} delay={reduced ? 0 : i * TIMING.relabelStagger} />
@@ -387,7 +387,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
                 <SwapText value={booked ? `Booked with ${host.name} · the invite is on its way` : `${length} min with ${host.name}`} />
               </span>
             </div>
-            <div className="flex w-full items-center gap-8 @md:w-auto [&>*:last-child]:flex-1 @md:[&>*:last-child]:flex-none">
+            <div className="flex w-full items-center gap-8 @md/block:w-auto [&>*:last-child]:flex-1 @md/block:[&>*:last-child]:flex-none">
               {booked && <Button cap="strip" onClick={change} className="animate-[mu-empty-state-arrive_var(--mu-spring-settle-d)_var(--mu-spring-settle)_both] reduced-motion:animate-none">Change</Button>}
               <Button
                 ref={confirmKey}

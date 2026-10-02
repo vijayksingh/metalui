@@ -41,6 +41,7 @@ export function BlockPage({ title, lede, play, usage, registry, madeOf, more, so
         <div className="grid gap-16">
           <Code code={`npx shadcn@latest add https://metalui.dev/r/${registry}.json`} label="install" lang="bash" />
           <Code code={usage.code} label="example.tsx" lang="tsx" />
+          <p className="m-0 type-doc-prose">Layout follows the copied block’s width. Keep its <code>@container/block</code> root and name block breakpoints, for example <code>@md/block:grid-cols-2</code>. A nested panel may use its own name, such as <code>@container/panel</code> with <code>@md/panel</code>; unnamed queries can accidentally answer a nearer container.</p>
           <div className="grid gap-8">
             <span className="eng">made of</span>
             <ul className="m-0 flex list-none flex-wrap gap-8 p-0">

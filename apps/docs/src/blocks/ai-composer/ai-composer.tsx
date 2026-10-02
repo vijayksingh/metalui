@@ -109,7 +109,7 @@ function useLand<T extends HTMLElement>(on: boolean) {
 function UserMessage({ message, land }: { message: Extract<Message, { role: 'user' }>; land: boolean }) {
   const ref = useLand<HTMLElement>(land);
   return (
-    <article ref={ref} aria-label="You" className="grid justify-items-end gap-6 pl-48 @max-md:pl-32">
+    <article ref={ref} aria-label="You" className="grid justify-items-end gap-6 pl-48 @max-md/block:pl-32">
       {message.files.length > 0 && (
         <div className="flex flex-wrap justify-end gap-6">
           {message.files.map((f) => <Attachment key={f.id} name={f.name} size={f.size} />)}
@@ -314,7 +314,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   };
 
   return (
-    <section ref={root} aria-label="Assistant" className={`@container flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
+    <section ref={root} aria-label="Assistant" className={`@container/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
       <header className="flex items-baseline justify-between gap-12 px-20 pt-16 pb-8">
         <h2 className="m-0 type-title text-ink">Assistant</h2>
         <span className="type-meta text-ink3">Sample replies</span>
@@ -322,7 +322,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
 
       <div className="relative flex min-h-0 flex-1 flex-col">
         <ScrollArea viewportRef={viewport} onScroll={onScroll} className="min-h-0 flex-1">
-          <div role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md:px-14">
+          <div role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md/block:px-14">
             {messages.map((m, i) => {
               const land = !landed.current.has(m.id);
               landed.current.add(m.id);
@@ -332,7 +332,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
             })}
           </div>
         </ScrollArea>
-        <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-end px-20 @max-md:px-14">
+        <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-end px-20 @max-md/block:px-14">
           <Button
             size="compact"
             onClick={jump}
@@ -371,7 +371,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
           </Tooltip>
           <Select size="compact" aria-label="Model" value={model} onValueChange={setModel} options={MODELS.map(({ value, label }) => ({ value, label }))} />
           <span className="flex-1" />
-          <span aria-hidden className="type-meta text-ink3 @max-md:hidden">⇧↩ new line</span>
+          <span aria-hidden className="type-meta text-ink3 @max-md/block:hidden">⇧↩ new line</span>
           <Button
             cap="primary"
             onClick={busy ? stop : send}

@@ -362,7 +362,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Portalled popup colorways**: Select, Menu/ContextMenu and Popover copy the active anchor’s nearest colorway, follow live ancestor changes, and remain outside clipped hosts. Shared `usePortalColorway` keeps the policy in one place. Keyboard selection, focus return, both colorways and reduced motion covered.
 - [x] **Vertical Tabs**: Base UI orientation controls axis-aware arrows and active-panel focus. Track and thumb reuse Switcher materials; panels drift on the matching axis. Swift has matching orientation. Settings uses real Tabs instead of Sidebar and local panel animation.
 - [x] **RadioGroup disabled**: keep the checked option reachable to explain the held choice, following Base UI; skip unchecked disabled options. Guide and page require an `aria-describedby` reason. Settings keyboard e2e covers the held choice.
-- [ ] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide.
+- [x] **Named block containers**: all six block roots use `@container/block`; whole-block variants use `/block`, and Settings fields use their intentional `/panel` scope. The block Usage guide and CSS system explain the rule. Integration checks insert nearer anonymous containers and vary the outer block width.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
 
 ## SwiftUI on iOS

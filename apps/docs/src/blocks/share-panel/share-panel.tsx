@@ -144,8 +144,8 @@ function leave(row: HTMLElement | null, done: () => void) {
 const X = <svg aria-hidden viewBox="0 0 10 10" className="size-attachment-remove-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5" /></svg>;
 
 // A person: avatar, name and email, their permission, ×. Under 24rem the permission goes under the name.
-const ROW = 'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-12 gap-y-6 px-4 py-6 @sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]';
-const PERMISSION = 'col-start-2 row-start-2 justify-self-start @sm:col-start-3 @sm:row-start-1';
+const ROW = 'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-12 gap-y-6 px-4 py-6 @sm/block:grid-cols-[auto_minmax(0,1fr)_auto_auto]';
+const PERMISSION = 'col-start-2 row-start-2 justify-self-start @sm/block:col-start-3 @sm/block:row-start-1';
 
 function Heading({ id, children }: { id: string; children: React.ReactNode }) {
   return <h3 id={id} className="m-0 type-title text-ink">{children}</h3>;
@@ -286,7 +286,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
         ref={root}
         aria-labelledby={`${ids}-title`}
         onKeyDown={onKeyDown}
-        className={`@container grid w-full max-w-[36rem] gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}
+        className={`@container/block grid w-full max-w-[36rem] gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}
       >
         <header className="flex items-start justify-between gap-12">
           <div className="grid min-w-0 gap-2">
@@ -305,8 +305,8 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
         {/* People */}
         <section aria-labelledby={`${ids}-people`} className="grid gap-10">
           <Heading id={`${ids}-people`}>People</Heading>
-          <form noValidate onSubmit={invite} className="grid grid-cols-[1fr_auto] items-start gap-8 @md:grid-cols-[1fr_auto_auto]">
-            <FormField invalid={!!inviteError} className="col-span-2 @md:col-span-1">
+          <form noValidate onSubmit={invite} className="grid grid-cols-[1fr_auto] items-start gap-8 @md/block:grid-cols-[1fr_auto_auto]">
+            <FormField invalid={!!inviteError} className="col-span-2 @md/block:col-span-1">
               <FormField.Label className="sr-only">Email to invite</FormField.Label>
               <Field size="regular">
                 <Field.Input
@@ -320,7 +320,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
               </Field>
               <FormField.Error match={!!inviteError}>{inviteError}</FormField.Error>
             </FormField>
-            <Select aria-label="Permission for the invite" className="w-full @md:w-auto" options={PERMISSIONS} value={invitePermission} onValueChange={setInvitePermission} />
+            <Select aria-label="Permission for the invite" className="w-full @md/block:w-auto" options={PERMISSIONS} value={invitePermission} onValueChange={setInvitePermission} />
             <Button type="submit" icon={<Icon name="plus" />}>Invite</Button>
           </form>
           <ul ref={peopleList} aria-label={`People with access to ${folder}`} className="m-0 grid list-none gap-2 p-0">
@@ -334,8 +334,8 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
                 {p.permission === 'owner' ? (
                   // The owner can't be removed: "Owner" in the permission's place, and the ×'s room kept so it lines up.
                   <>
-                    <span className={`${PERMISSION} type-meta text-ink3 @sm:justify-self-end`}>Owner</span>
-                    <span aria-hidden className="hidden w-icon-button-mini-w @sm:col-start-4 @sm:block" />
+                    <span className={`${PERMISSION} type-meta text-ink3 @sm/block:justify-self-end`}>Owner</span>
+                    <span aria-hidden className="hidden w-icon-button-mini-w @sm/block:col-start-4 @sm/block:block" />
                   </>
                 ) : (
                   <>
@@ -345,7 +345,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
                         variant="mini"
                         label={`Remove ${p.name}`}
                         data-remove={p.id}
-                        className="col-start-3 row-start-1 @sm:col-start-4"
+                        className="col-start-3 row-start-1 @sm/block:col-start-4"
                         icon={X}
                         onClick={(e) => remove(p, e.currentTarget.closest('li'))}
                       />
