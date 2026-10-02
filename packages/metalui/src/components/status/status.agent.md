@@ -1,40 +1,31 @@
-# LED and status badge
+# Status badge
 
-A lamp for a state, and a badge that names it. React: `Led`, `StatusBadge` from `@unlocalhosted/metalui`. SwiftUI: `MetalLED`, `MetalStatusBadge`. Sheet reference: KAMUI-16; Kamui brief: 04 §10.
+`StatusBadge` / `MetalStatusBadge` names a system state beside a decorative lamp. A component: it tells you what is happening; it never executes the fixing action. A hint uses Base UI Tooltip on hover and focus. Use separate buttons for Retry or settings.
 
-## Use it for
+## Material and state
 
-- `Led`: beside words that name a state (a badge, a readout, an engraving, a glass tag). Green live or ok, amber waiting or urgent, red failed, blue a link kind, off idle.
-- `StatusBadge`: a system state in the corner: `JEV LIVE`, `JEV OFFLINE · ADD KEY TO KEYCHAIN`, `JEV · NO CONNECTION`, with the command that fixes it as its hint.
+The shared status recipe gives the badge a 26-high cap plate, 11 horizontal pad, 7 gap and defined .5 edge. Words are 500 12px/16px sans, tracking .01em in ink2. The LED lens is 8 (6 small) inside a dark opaque 1px socket: 10/8 total. All lit states have the same 4px halo at .35; off is a dull socket. Colors live in `recipes.status.props.ink`; measured contrast and protan/deuter simulations are in `docs/STATUS-COLORS.md`. Color-vision simulations do not guarantee recognition; words are mandatory.
 
-## Don't use it for
+| State | Default gesture | Words |
+|---|---|---|
+| live | steady | Sync live |
+| waiting | breathe while pending | Sync waiting |
+| failed | double blink once, then steady | Sync failed |
+| link | steady | Sync linked |
+| off | dark | Sync off |
 
-- Buttons or toggles. A badge is not pressable; a latched tool has its own LED inside the tool button.
-- Colour alone. An LED always sits beside words.
-- Success or warning banners. Use a toast (success always carries a check) or a notice.
+Only inner lens opacity animates; the socket never fades. OS, html.rm and scoped reduced motion hold lamps steady. Words retain every meaning. Hidden/offscreen lamps pause; finite gestures stop at completion.
 
-## Anatomy
+## Tone and surface
 
-- **LED**: 5 pt (4 small), a radial recipe centred at 40 % / 35 %, a .5 dark ring; green adds a ≤ 2 pt bloom at 55 %.
-- **Badge**: 24 tall pill on the cap material (`btn-bg`, `btn-sh`), padding 0 10 0 9, gap 7: the LED, then the state in the `label` role, ink2.
+- `tone="default"`: opaque plate by default; it holds its ground on frosted parents and imagery.
+- `tone="quiet"`: LED and words with no plate or horizontal padding. Use only on a controlled ground; never directly over imagery.
+- `tone="strong"`: opaque plate with 12% tint from the same state ink. Strong always stays opaque.
+- `surface="transparent"`: explicit strong frost fill without blur. `surface="frosted"`: same fill plus shared 22px / 1.6 backdrop. Both use full shared ink for worst-case contrast; default opaque/quiet/strong use ink2.
+- `solid`: forces an opaque plate, including quiet and translucent requests. Reduced transparency / low power also replaces transparent/frosted with the existing opaque twin and removes blur. Native respects Reduce Transparency.
 
-## API
-
-| React | SwiftUI |
-|---|---|
-| `Led kind size` | `MetalLED(_:size:)` |
-| `StatusBadge led hint` + children | `MetalStatusBadge(_:led:hint:)` |
-
-## Rules
-
-- One LED per object. Its colour means what the list above says, nothing else.
-- The badge text is the state, short, uppercase; the fix is the hint, never the label.
+React: `StatusBadge led hint tone surface solid gesture` with words as children. Swift: `MetalStatusBadge("Sync live", led: .live, tone: .default, surface: .solid, solid: false)`; optional `hint` and `gesture` match React. The tone wins over surface; solid wins over tone. Scope policies use `data-mu-transparency="reduce"`, `data-mu-power="low"`, `data-mu-motion="reduce"` on the parent.
 
 ## Accessibility
 
-- The badge is a `status` region (announced when it changes). With a hint it is focusable, and the hint is its description and a tooltip on hover and focus.
-- LEDs are decorative (`aria-hidden`): the words carry the state.
-
-## Tokens
-
-`--mu-status-*`, `--mu-led-*`, `--mu-led-ring`, `--mu-btn-bg`, `--mu-btn-sh`, `--mu-type-label`. Swift: `MetalStatusMetrics`, `MetalShared.led*`.
+The badge has role=status and atomic announcements when its words change; keep it outside another aria-busy host. With hint it is focusable, with a description and tooltip; otherwise it has no tab stop. LEDs are aria-hidden. Native combines the words as its accessibility label and exposes the hint as help. Never convey a failure only by red or blinking.

@@ -12,7 +12,7 @@ import './status-specimens.css';
  *   states   drag the badge sideways: it leans toward the next state, then snaps
  *   lamp     a sun on an arc above the lamp: around turns the bright spot, nearer
  *            pulls it toward the middle
- *   glow     a switch (only the green lamp has one)
+ *   glow     a switch (every lit state has one)
  *   type     drag the words: sideways for spacing, up or down for size
  *   shape    top edge for the height, right end for the space on the ends, the lamp's
  *            own ring for its size. The badge is always a pill: no corner handle.
@@ -22,14 +22,14 @@ import './status-specimens.css';
  *   which imports this file).
  * ───────────────────────────────────────────────────────── */
 
-const R = tokens.recipes.status as { props: { led: { size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } }; layers: { part: string; prop: string; value: string; state?: string }[] };
+const R = tokens.recipes.status as { props: { lamp: { size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } }; layers: { part: string; prop: string; value: string; state?: string }[] };
 const P = R.props;
 const FONT = Number(P.badge.font.match(/([\d.]+)px/)![1]);
 const TRACK = parseFloat(P.badge.tracking);
-const LIVE_FILL = R.layers.find((l) => l.part === 'led' && l.prop === 'background' && l.state === 'live')!.value;
+const LIVE_FILL = R.layers.find((l) => l.part === 'lamp' && l.prop === 'background' && !l.state)!.value;
 const [SPOT_X, SPOT_Y] = LIVE_FILL.match(/at ([\d.]+)% ([\d.]+)%/)!.slice(1).map(Number);
 /** The real states, in the order the recipe lists their lamps. */
-const KINDS = [...new Set(R.layers.filter((l) => l.part === 'led' && l.prop === 'background' && l.state).map((l) => l.state!))] as LedKind[];
+const KINDS: LedKind[] = ['live', 'waiting', 'failed', 'link', 'off'];
 const SAY: Record<LedKind, string> = { live: 'live', waiting: 'waiting', failed: 'failed', link: 'linked', off: 'off' };
 
 type Parts = { badgeBg: string; badgeSh: string; lampBg: string; lampSh: string };
@@ -49,20 +49,19 @@ const pulse = (el: Element | null | undefined, k = 1.5) => { if (el && !reduced(
  * bench draw the same values. Nothing on it animates: a tunable follows the finger exactly.
  */
 function Badge({ m, parts, words, children }: { m: Model; parts: Parts; words: Record<LedKind, string>; children?: React.ReactNode }) {
-  const lampShadow = m.kind === 'live' ? '--mu-r-status-led-live-shadow' : m.kind === 'off' ? '--mu-r-status-led-off-shadow' : '--mu-r-status-led-shadow';
   const style = {
     '--mu-r-status-badge-height': `${m.h}px`,
     '--mu-r-status-badge-pad': `${m.pad}px`,
-    '--mu-r-status-led-size': `${m.led}px`,
-    '--mu-r-status-badge-font': `500 ${m.size}px/1 var(--mu-mono)`,
+    '--ed-status-lamp-size': `${m.led}px`,
+    '--mu-r-status-badge-font': `500 ${m.size}px/1 var(--mu-sans)`,
     '--mu-r-status-badge-tracking': `${m.track}em`,
     '--mu-r-status-badge-background': parts.badgeBg,
     '--mu-r-status-badge-shadow': parts.badgeSh,
-    [`--mu-r-status-led-${m.kind}-background`]: parts.lampBg,
-    [lampShadow]: parts.lampSh,
+    '--ed-status-lamp-bg': parts.lampBg,
+    '--ed-status-lamp-shadow': parts.lampSh,
     transition: 'none',
   } as React.CSSProperties;
-  return <StatusBadge led={m.kind} className="ed-status-badge" style={style}>{children ?? words[m.kind]}</StatusBadge>;
+  return <StatusBadge gesture="steady" led={m.kind} className="ed-status-badge" style={style}>{children ?? words[m.kind]}</StatusBadge>;
 }
 
 /* ───────────────────────── states ───────────────────────── */
@@ -154,7 +153,7 @@ function Lamp({ m, set, parts, words }: Props) {
   const big = reach(OFF0 * 2);
   return (
     <>
-      <p>The lamp is a tiny glass ball, {P.led.size} pt wide. Its brightest spot sits up and to the left, where the light comes from. Drag the sun around the lamp to move the spot, and see how it stops looking like a ball.</p>
+      <p>The lamp is a tiny glass ball, {P.lamp.size} pt wide. Its brightest spot sits up and to the left, where the light comes from. Drag the sun around the lamp to move the spot, and see how it stops looking like a ball.</p>
       <div ref={well} className="ed-specimen">
         {/* the box reaches up to the arc's top, so the hint tag rides above the sun, never on it */}
         <div className="ed-status-light" data-lit={live || peek ? '' : undefined} style={{ zoom, paddingTop: Math.ceil(big - m.h / 2 + 5) }} data-hint-anchor>
@@ -250,7 +249,7 @@ function Type({ m, set, parts, words }: Props) {
 type ShapeName = 'height' | 'ends' | 'lamp';
 const H_SNAPS: Snap[] = [{ at: P.badge.height, name: 'badge height' }];
 const PAD_SNAPS: Snap[] = [{ at: P.badge.pad, name: 'badge padding' }];
-const LED_SNAPS: Snap[] = [{ at: P.led.size, name: 'lamp' }, { at: P.led['size-small'], name: 'small lamp' }];
+const LED_SNAPS: Snap[] = [{ at: P.lamp.size, name: 'lamp' }, { at: P.lamp['size-small'], name: 'small lamp' }];
 
 function Shape({ m, set, parts, words }: Props) {
   const [well, zoom] = useSpecimenZoom();

@@ -233,13 +233,13 @@ What's wrong now:
 - The Swift capture doesn't match the web: it says "Recognizer" where the web says "Sync", and its label font falls back to a serif monospace.
 
 Direction:
-- [ ] **An LED reads on any ground**: a dark bezel ring (the LED sits in a small sunk socket) so the lamp has its own backdrop on light, dark, frosted and transparent surfaces; a lit lamp glows (a soft halo in its ink), an off lamp is a dull socket. Size up to 8 at default.
-- [ ] **Stronger, separable inks**: deeper, more saturated lamp inks tuned per colorway so live / waiting / failed / link read at a glance and for colour-blind people (check with simulated deuteranopia and protanopia).
-- [ ] **Not colour alone**: each state also differs in gesture (live steady, waiting breathing, failed a double blink, off dark) and the badge says the state in words.
-- [ ] **Badges hold their own ground**: the badge plate gets a defined edge (hairline plus shadow), and on transparent or frosted parents it switches to an opaque plate (`reduce-transparency` and a `solid` option); labels in ink2 at a readable size, not ink3 engraved.
-- [ ] **Transparent mode**: define it and test it: the status parts over frost, over images, and over the dark graphite colorway, in the captures.
-- [ ] **Tones**: a quiet badge (LED and words, no plate) for dense places, and a strong one (tinted plate in the state's ink) for alerts.
-- [ ] Make the Swift twin match the web example (same words, the label font from the tokens) and recapture it.
+- [x] **An LED reads on any ground**: a dark bezel ring (the LED sits in a small sunk socket) so the lamp has its own backdrop on light, dark, frosted and transparent surfaces; a lit lamp glows (a soft halo in its ink), an off lamp is a dull socket. Size up to 8 at default.
+- [x] **Stronger, separable inks**: deeper, more saturated lamp inks tuned per colorway so live / waiting / failed / link read at a glance and for colour-blind people (check with simulated deuteranopia and protanopia).
+- [x] **Not colour alone**: each state also differs in gesture (live steady, waiting breathing, failed a double blink, off dark) and the badge says the state in words.
+- [x] **Badges hold their own ground**: the badge plate gets a defined edge (hairline plus shadow), and on transparent or frosted parents it switches to an opaque plate (`reduce-transparency` and a `solid` option); labels in ink2 at a readable size, not ink3 engraved.
+- [x] **Transparent mode**: define it and test it: the status parts over frost, over images, and over the dark graphite colorway, in the captures.
+- [x] **Tones**: a quiet badge (LED and words, no plate) for dense places, and a strong one (tinted plate in the state's ink) for alerts.
+- [x] Make the Swift twin match the web example (same words, the label font from the tokens) and recapture it.
 
 ## Toast: stack in depth
 

@@ -2,34 +2,37 @@
 
 import * as React from 'react';
 import { Tooltip } from '../tooltip/tooltip';
-import { Led, type LedKind } from '../led/led';
+import { Led, type LedKind, type LedGesture } from '../led/led';
 
-/* STATUS BADGE (the reference design's .pill.status): an LED part and the state in words.
- * The badge is not pressable; its hint (the command that fixes it) shows as a tooltip on hover and focus.
- * Styled with the theme's utilities (the status recipe). */
-
+export type StatusTone = 'default' | 'quiet' | 'strong';
+export type StatusSurface = 'solid' | 'transparent' | 'frosted';
 export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   led: LedKind;
-  /** The state, short, uppercase in the label role: "SYNC LIVE", "OFFLINE · ADD KEY TO KEYCHAIN". */
   children: React.ReactNode;
-  /** What fixes it, shown on hover and focus: "security add-generic-password -s example-service …". */
   hint?: string;
+  /** Quiet is words + lamp on a controlled ground. Strong tints an opaque plate. */
+  tone?: StatusTone;
+  /** Transparent = strong frost fill; frosted also adds the shared backdrop blur. */
+  surface?: StatusSurface;
+  /** Forces an opaque plate, even for quiet or an explicitly translucent surface. */
+  solid?: boolean;
+  gesture?: LedGesture;
 }
+const BADGE = 'mu-badge relative isolate inline-flex items-center gap-status-badge-gap h-status-badge-height rounded-pill whitespace-nowrap type-status-badge uppercase cursor-default focus-visible:focus-ring';
 
-const BADGE = 'mu-badge inline-flex items-center gap-status-badge-gap h-status-badge-height px-status-badge-pad rounded-pill whitespace-nowrap type-status-badge uppercase text-ink2 recipe-status-badge cursor-default focus-visible:focus-ring';
-
-/** A state the system is in, with its LED. Not a button. */
-export const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(function StatusBadge({ led, children, hint, className, ...props }, ref) {
-  const badge = (
-    <span ref={ref} role="status" tabIndex={hint ? 0 : undefined} aria-description={hint} className={className ? `${BADGE} ${className}` : BADGE} {...props}>
-      <Led kind={led} />
-      {children}
-    </span>
-  );
-  if (!hint) return badge;
-  return (
-    <Tooltip label={hint} side="bottom" offset={8} wrap>
-      {badge}
-    </Tooltip>
-  );
+/** System state in words, beside its decorative lamp. A hint uses Base UI Tooltip. */
+export const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(function StatusBadge({
+  led, children, hint, tone = 'default', surface = 'solid', solid = false, gesture, className, style, ...props
+}, ref) {
+  const quiet = tone === 'quiet' && !solid;
+  const material = quiet || solid || tone === 'strong' ? 'solid' : surface;
+  const plate = !quiet;
+  const own = `${BADGE} ${plate ? 'px-status-badge-pad recipe-status-badge status-surface' : ''} ${plate && material !== 'solid' ? 'text-ink' : 'text-ink2'}`;
+  const badge = <span ref={ref} role="status" aria-atomic="true" tabIndex={hint ? 0 : undefined} aria-description={hint}
+    data-tone={tone} data-surface={material} data-solid={solid || undefined} data-mu-self=""
+    className={`${own} ${className ?? ''}`} style={{ '--mu-self': `var(--mu-r-status-ink-${led})`, ...style } as React.CSSProperties} {...props}>
+    {tone === 'strong' && <span aria-hidden className="pointer-events-none absolute inset-0 -z-10 rounded-pill status-strong-tint" />}
+    <Led kind={led} gesture={gesture} />{children}
+  </span>;
+  return hint ? <Tooltip label={hint} side="bottom" offset={8} wrap>{badge}</Tooltip> : badge;
 });

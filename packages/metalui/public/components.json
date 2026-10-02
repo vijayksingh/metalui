@@ -1228,7 +1228,7 @@
       "name": "status",
       "title": "Status badge",
       "status": "alpha",
-      "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
+      "description": "A readable 26pt status plate with words and a sunk LED. Quiet, opaque strong tint, explicit transparent/frosted surfaces and a solid override. State gestures have reduced-motion alternatives.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "StatusBadge",

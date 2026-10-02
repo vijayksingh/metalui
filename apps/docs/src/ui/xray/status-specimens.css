@@ -26,3 +26,11 @@
 .ed-status-lamp[data-away] { opacity: 0; }
 .ed-status-lamp:hover, .ed-status-lamp:focus-visible, .ed-status-lamp[data-on] { box-shadow: 0 0 0 1.1px var(--mu-presence-guide); }
 [data-mu-colorway="graphite"] :is(.ed-status-lamp, .ed-status-grab:hover, .ed-status-grab:focus-visible, .ed-status-grab[data-peek]) { --mu-presence-guide: var(--green-deep); }
+
+/* The handled specimen changes the real inner lens while its opaque socket remains. */
+.ed-status-badge [data-lamp] {
+  width: var(--ed-status-lamp-size);
+  height: var(--ed-status-lamp-size);
+  background: var(--ed-status-lamp-bg);
+  box-shadow: var(--ed-status-lamp-shadow);
+}

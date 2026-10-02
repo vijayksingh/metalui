@@ -91,34 +91,58 @@ public struct MetalLED: View {
     }
 }
 
-/// A state the system is in, with its LED. Not a button; the hint is its help.
+public enum MetalStatusTone: Sendable { case `default`, quiet, strong }
+public enum MetalStatusSurface: Sendable { case solid, transparent, frosted }
+
+/// System state in words, beside its decorative lamp. A hint is its accessible help.
 public struct MetalStatusBadge: View {
     let text: String
     let led: MetalLEDKind
     let hint: String?
+    let tone: MetalStatusTone
+    let surface: MetalStatusSurface
+    let solid: Bool
+    let gesture: MetalLampGesture?
     @Environment(\.metalColorway) private var colorway
 
-    public init(_ text: String, led: MetalLEDKind, hint: String? = nil) {
-        self.text = text
-        self.led = led
-        self.hint = hint
+    public init(_ text: String, led: MetalLEDKind, hint: String? = nil,
+                tone: MetalStatusTone = .default, surface: MetalStatusSurface = .solid,
+                solid: Bool = false, gesture: MetalLampGesture? = nil) {
+        self.text = text; self.led = led; self.hint = hint; self.tone = tone
+        self.surface = surface; self.solid = solid; self.gesture = gesture
     }
-
     public var body: some View {
         let recipe = MetalRecipes.status
+        let quiet = tone == .quiet && !solid
+        let translucent = !quiet && !solid && tone != .strong && surface != .solid
+        let ink = recipe.color("ink.\(led.recipeState)", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink
+        let frost = MetalFrost.plate.recipe(in: colorway)
+        let material = MetalRecipe(fill: frost.fill,
+            shadows: recipe.shadows("badge", colorway: MetalRecipeColorway(colorway)),
+            backdrop: surface == .frosted ? frost.backdrop : nil,
+            opaqueFill: frost.opaqueFill, contrastEdge: frost.contrastEdge)
         HStack(spacing: recipe.points("badge.gap")) {
-            MetalLED(led)
+            MetalLED(led, gesture: gesture)
             Text(text.uppercased())
                 .font(recipe.font("badge.font"))
                 .tracking(recipe.tracking("badge.tracking", size: recipe.fontSize("badge.font")))
-                .foregroundColor(colorway.tokens.ink2.color)
+                .foregroundColor((translucent ? colorway.tokens.ink : colorway.tokens.ink2).color)
         }
-        .padding(.horizontal, recipe.points("badge.pad"))
+        .padding(.horizontal, quiet ? CGFloat.zero : recipe.points("badge.pad"))
         .frame(height: recipe.points("badge.height"))
-        .metalObjectRecipe(recipe, part: "badge", in: Capsule(style: .continuous))
+        .background {
+          ZStack {
+            if !quiet {
+                if translucent { Color.clear.metalRecipe(material, in: Capsule(style: .continuous)) }
+                else { Color.clear.metalObjectRecipe(recipe, part: "badge", in: Capsule(style: .continuous)) }
+                if tone == .strong { Capsule(style: .continuous).fill(ink.color.opacity(recipe.scalar("badge.tint"))) }
+            }
+          }
+        }
         .fixedSize()
         .help(hint ?? "")
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
         .accessibilityHint(hint ?? "")
     }
 }

@@ -1647,7 +1647,7 @@
       "name": "status",
       "type": "registry:ui",
       "title": "Status badge",
-      "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
+      "description": "A readable 26pt status plate with words and a sunk LED. Quiet, opaque strong tint, explicit transparent/frosted surfaces and a solid override. State gestures have reduced-motion alternatives.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],

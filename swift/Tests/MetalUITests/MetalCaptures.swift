@@ -477,19 +477,51 @@ final class MetalCaptures: XCTestCase {
     }
 
     func testStatus() {
+        let kinds: [MetalLEDKind] = [.live, .waiting, .failed, .link, .off]
+        let words = ["Sync live", "Sync waiting", "Sync failed", "Sync linked", "Sync off"]
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {
-                HStack(spacing: 24) { MetalLED(.live); MetalLED(.waiting); MetalLED(.failed); MetalLED(.link); MetalLED(.off) }
+                HStack(spacing: 24) {
+                    ForEach(Array(kinds.enumerated()), id: \.offset) { i, kind in
+                        VStack(spacing: 8) {
+                            MetalLED(kind, gesture: .steady)
+                            Text(words[i]).font(.system(size: 14)).foregroundColor(colorway.tokens.ink2.color)
+                        }
+                    }
+                }
                 HStack(spacing: 12) {
-                MetalStatusBadge("Recognizer live", led: .live)
-                MetalStatusBadge("Recognizer offline", led: .waiting)
-                MetalStatusBadge("Recognizer · no connection", led: .failed)
+                    ForEach(Array(kinds.enumerated()), id: \.offset) { i, kind in MetalStatusBadge(words[i], led: kind, gesture: .steady) }
                 }
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("status-\(colorway.rawValue)", view)
+            let surfaces = VStack(spacing: 24) {
+                HStack(spacing: 12) {
+                    MetalStatusBadge("Opaque · Sync live", led: .live)
+                    MetalStatusBadge("Transparent · Sync live", led: .live, surface: .transparent)
+                    MetalStatusBadge("Frosted · Sync live", led: .live, surface: .frosted)
+                    MetalStatusBadge("Solid override · Sync live", led: .live, surface: .frosted, solid: true)
+                }.padding(28).background {
+                    GeometryReader { g in
+                        ZStack {
+                            Color(red: 24 / 255, green: 44 / 255, blue: 67 / 255)
+                            Circle().fill(Color(red: 223 / 255, green: 163 / 255, blue: 69 / 255)).frame(width: 220, height: 220).offset(x: g.size.width * 0.25, y: -50)
+                            Rectangle().fill(Color(red: 50 / 255, green: 110 / 255, blue: 128 / 255)).rotationEffect(.degrees(25)).offset(y: 80)
+                        }.clipped()
+                    }
+                }
+                HStack(spacing: 12) {
+                    MetalStatusBadge("On frost · Sync live", led: .live)
+                    MetalStatusBadge("Strong · Sync live", led: .live, tone: .strong)
+                    MetalStatusBadge("Quiet · Sync live", led: .live, tone: .quiet)
+                }.padding(20).metalFrost(.plate, in: RoundedRectangle(cornerRadius: 12))
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("status-surfaces-\(colorway.rawValue)", surfaces)
         }
     }
 

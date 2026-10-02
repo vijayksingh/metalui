@@ -75,11 +75,11 @@ test('lamp: the sun moves the bright spot on the specimen and the bench', async 
   const across = await value(card, 'Spot across').innerText();
   const lamp = xray.locator('.xr-badgeface i');
   const bench = await style(lamp, 'background');
-  const specimen = await computed(card.locator('.ed-specimen .mu-badge .mu-led'), 'background-image');
+  const specimen = await computed(card.locator('.ed-specimen .mu-badge [data-lamp]'), 'background-image');
   await drag(page, card.getByRole('slider', { name: 'Bright spot' }), 24, 10);
   await expect(value(card, 'Spot across')).not.toHaveText(across);
   expect(await style(lamp, 'background')).not.toBe(bench);
-  expect(await computed(card.locator('.ed-specimen .mu-badge .mu-led'), 'background-image')).not.toBe(specimen);
+  expect(await computed(card.locator('.ed-specimen .mu-badge [data-lamp]'), 'background-image')).not.toBe(specimen);
 });
 
 test('glow: a switch takes the green lamp\'s glow off both', async ({ page }) => {
@@ -88,13 +88,13 @@ test('glow: a switch takes the green lamp\'s glow off both', async ({ page }) =>
   await part(xray, 'Glow');
   const lamp = xray.locator('.xr-badgeface i');
   const bench = await style(lamp, 'box-shadow');
-  const specimen = await computed(card.locator('.ed-specimen .mu-badge .mu-led'), 'box-shadow');
+  const specimen = await computed(card.locator('.ed-specimen .mu-badge [data-lamp]'), 'box-shadow');
   const glow = card.getByRole('switch', { name: 'Glow' });
   await expect(glow).toHaveAttribute('aria-checked', 'true');
   await glow.click();
   await expect(glow).toHaveAttribute('aria-checked', 'false');
   expect(await style(lamp, 'box-shadow')).not.toBe(bench);
-  expect(await computed(card.locator('.ed-specimen .mu-badge .mu-led'), 'box-shadow')).not.toBe(specimen);
+  expect(await computed(card.locator('.ed-specimen .mu-badge [data-lamp]'), 'box-shadow')).not.toBe(specimen);
 });
 
 test('type: the words are the handle; sideways sets spacing, up sets size', async ({ page }) => {

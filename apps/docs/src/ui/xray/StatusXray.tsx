@@ -16,8 +16,8 @@ import { StatusSpecimenCard } from './StatusSpecimens';
  *             a switch per layer. The bench reads the same model.
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.status.props as { led: { size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } };
-const LIVE_FILL = tokens.recipes.status.layers.find((l) => l.part === 'led' && l.prop === 'background' && 'state' in l && l.state === 'live')!.value;
+const RP = tokens.recipes.status.props as { lamp: { bezel: number; size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } };
+const LIVE_FILL = tokens.recipes.status.layers.find((l) => l.part === 'lamp' && l.prop === 'background' && !('state' in l))!.value;
 const SPOT_AT = LIVE_FILL.match(/at ([\d.]+)% ([\d.]+)%/)!.slice(1).map(Number) as [number, number];
 const S = 4;
 export const WORDS: Record<LedKind, string> = { live: 'SYNC LIVE', waiting: 'WAITING', failed: 'SYNC FAILED', link: 'LINKED', off: 'OFFLINE' };
@@ -26,8 +26,8 @@ export type Spot = 'states' | 'light' | 'shadow' | 'type' | 'shape' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
   { id: 'states', title: 'States', word: 'One colour for each state' },
   { id: 'light', title: 'Lamp', word: 'A tiny lit ball' },
-  { id: 'shadow', title: 'Glow', word: 'Only when it is on' },
-  { id: 'type', title: 'Type', word: 'The engraved words' },
+  { id: 'shadow', title: 'Glow', word: 'Every lit state, never off' },
+  { id: 'type', title: 'Type', word: 'Readable words' },
   { id: 'shape', title: 'Shape', word: 'Size and spacing' },
   { id: 'layers', title: 'Layers', word: 'What it is made of' },
 ];
@@ -46,7 +46,7 @@ export const BADGE: LayerDef[] = [
 ];
 export const LAMP: LayerDef[] = [
   { name: 'Lit ball', why: 'A round gradient with its brightest spot up and to the left. That spot is the reflection of the one light, so the lamp looks like a small glass ball.' },
-  { name: 'Rim', why: 'A very thin dark outline so a pale lamp does not melt into the badge.' },
+  { name: 'Rim', why: 'An opaque dark socket separates the lamp from any ground.' },
   { name: 'Glow', why: 'A soft coloured glow around the lamp. Only a lamp that is on has it.' },
 ];
 
@@ -58,7 +58,7 @@ export interface Model {
 export const INITIAL: Model = {
   kind: 'live', spotX: SPOT_AT[0], spotY: SPOT_AT[1], glow: true,
   track: parseFloat(RP.badge.tracking), size: Number(RP.badge.font.match(/([\d.]+)px/)![1]),
-  h: RP.badge.height, pad: RP.badge.pad, led: RP.led.size, badge: BADGE.map(() => true), lamp: LAMP.map(() => true),
+  h: RP.badge.height, pad: RP.badge.pad, led: RP.lamp.size, badge: BADGE.map(() => true), lamp: LAMP.map(() => true),
 };
 
 export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
@@ -68,8 +68,8 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
   const [focus, setFocus] = React.useState<string | null>(null);
   const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
   const badge = useRecipeLayers('status', 'badge');
-  const lamp = useStateLayers('status', m.kind, 'led');
-  const base = useStateLayers('status', '', 'led');
+  const lamp = useStateLayers('status', m.kind === 'off' ? 'off' : '', 'lamp');
+  const base = useStateLayers('status', '', 'socket');
   const t = tones(badge.colorway);
 
   const measure = React.useRef<HTMLSpanElement>(null);
@@ -80,10 +80,13 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
   const fill = m.badge[0] ? `linear-gradient(180deg, ${badge.stops.join(', ')})` : 'transparent';
   const badgeSh = badge.shadows.map((v, i) => (m.badge[i + 1] ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none';
   const shadow = scalePx(badgeSh, S);
-  const lampBg = m.lamp[0] ? lamp.fill.replace(/at [\d.]+% [\d.]+%/, `at ${m.spotX}% ${m.spotY}%`) : 'transparent';
+  const inks = tokens.recipes.status.props.ink as Record<string, string | Record<string, string>>;
+  const ink = m.kind === 'off' ? inks.off as string : (inks[m.kind] as Record<string, string>)[badge.colorway];
+  const own = (v: string) => v.replace(/self(?:\/([\d.]+))?/g, (_, a) => a ? `color-mix(in srgb, ${ink} ${Number(a) * 100}%, transparent)` : ink);
+  const lampBg = m.lamp[0] ? own(lamp.fill).replace(/at [\d.]+% [\d.]+%/, `at ${m.spotX}% ${m.spotY}%`) : 'transparent';
   // the lamp's own ring (an off bone lamp has a sunk inset instead), else the shared one
-  const glowSh = lamp.shadows.find((v) => /0 0 2px/.test(v));
-  const rim = lamp.shadows.find((v) => v !== glowSh) ?? base.shadows[0];
+  const glowSh = m.kind !== 'off' ? own(lamp.shadows.find((v) => /0 0 4px/.test(v)) ?? 'none') : undefined;
+  const rim = `0 0 0 ${RP.lamp.bezel}px ${inks.off}`;
   const lampSh = [m.lamp[1] ? rim : null, m.lamp[2] && m.glow ? glowSh : null].filter(Boolean).join(', ') || 'none';
   const lampShadow = scalePx(lampSh, S);
   const z = 1.5, top = capTop(z, 4);
@@ -99,7 +102,7 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
     <>
       <div className="xr-shadow" style={{ width: W, height: H, borderRadius: R, filter: 'blur(6px)', opacity: 0.12, transform: 'translate(4px, 8px)' }} />
       <IsoCap w={W} h={H} r={R} z={z} wall={4} fill={fill} shadow={shadow} wallTone={t.wall}>
-        <span className="xr-badgeface" style={{ paddingLeft: m.pad * S, gap: RP.badge.gap * S, fontSize: m.size * S, letterSpacing: `${m.track}em` }}>
+        <span className="xr-badgeface" style={{ paddingLeft: m.pad * S, gap: RP.badge.gap * S, fontFamily: 'var(--mu-sans)', fontSize: m.size * S, letterSpacing: `${m.track}em` }}>
           <i style={{ width: L, height: L, borderRadius: '50%', background: lampBg, boxShadow: lampShadow, flex: 'none' }} />
           {WORDS[m.kind]}
         </span>
@@ -133,7 +136,7 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
 
   return (
     <HintLayer>
-      <span ref={measure} aria-hidden className="xr-measure" style={{ font: `500 ${m.size}px/1 var(--mono)`, letterSpacing: `${m.track}em` }}>{WORDS[m.kind]}</span>
+      <span ref={measure} aria-hidden className="xr-measure" style={{ font: `500 ${m.size}px/1 var(--mu-sans)`, letterSpacing: `${m.track}em` }}>{WORDS[m.kind]}</span>
       <XrayFrame
         xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
         solid={<div style={{ zoom: 3, cursor: 'zoom-in' }}>{real}</div>}
