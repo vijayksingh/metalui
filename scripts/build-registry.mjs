@@ -35,6 +35,12 @@ const shared = {
     dependsOn: [],
     files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
+  'cue-document': {
+    title: 'MetalUI source text history',
+    description: 'UTF16 source ranges, one gesture per undo entry, and retained selection for editable cues.',
+    dependsOn: [],
+    files: ['text/cue-document.ts'],
+  },
   'life-icons': {
     title: 'MetalUI life glyph runtime',
     description: 'Canonical life glyphs, tuned cuts and finite hover acts.',

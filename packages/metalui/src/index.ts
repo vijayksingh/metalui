@@ -124,3 +124,5 @@ export { Day, DayTile, DAY_LINES, type DayLine, type DayProps, type DayRootProps
 export { useWaiting, type WaitingState, type WaitingTiming } from './motion/waiting';
 
 export { RenameEditor, type RenameEditorProps } from './components/rename-editor/rename-editor';
+
+export { CueDocument, useCueDocument, type CueSelection, type CueSourceRange, type CueDocumentSnapshot } from './text/cue-document';

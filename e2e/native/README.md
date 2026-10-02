@@ -55,3 +55,5 @@ Run `python3 e2e/native/run-menu-check-proof.py` on macOS. A real SwiftUI window
 # Native Copy result
 
 Run `python3 e2e/native/run-copy-proof.py` on macOS. A real SwiftUI app gives the public Copy button a default Return shortcut, writes the system clipboard, morphs `copy` to `check` through `MetalMorphIcon`, turns the Button result face to “Copied”, and returns to idle after the host’s pause. The proof checks the actual pasteboard content and the host’s reset. This proves that copy pattern and default-action activation, not general Tab navigation. Set `METALUI_NATIVE_CAPTURE` to an absolute directory for a result still. [Native result](../../docs/captures/swift/copy-native.png).
+
+`python3 e2e/native/run-cue-document-proof.py` launches a real macOS source editor. Public MetalCueDocument actions replace a range over repeated preview frames, commit one undo entry, and restore the actual NSTextView selection before/after the range on Undo/cancel, including a leading emoji's UTF16 offsets. Set METALUI_NATIVE_CAPTURE to save the source host proof. It verifies the writer and host integration, not recognizer accuracy.

@@ -129,6 +129,20 @@
       ]
     },
     {
+      "name": "cue-document",
+      "type": "registry:lib",
+      "title": "MetalUI source text history",
+      "description": "UTF16 source ranges, one gesture per undo entry, and retained selection for editable cues.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/metalui/src/text/cue-document.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/text/cue-document.ts"
+        }
+      ]
+    },
+    {
       "name": "life-icons",
       "type": "registry:lib",
       "title": "MetalUI life glyph runtime",
