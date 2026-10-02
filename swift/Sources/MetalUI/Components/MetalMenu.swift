@@ -14,9 +14,12 @@ public struct MetalMenuItem: Identifiable {
     let danger: Bool
     let disabled: Bool
     let action: (() -> Void)?
+    let checked: Bool?
+    let indeterminate: Bool
+    let closeOnSelect: Bool
 
-    /// A 30 row.
-    public init(_ label: String, icon: MetalIconName? = nil, shortcut: String? = nil, danger: Bool = false, disabled: Bool = false, action: @escaping () -> Void) {
+    /// A 30pt action or setting row. Supplying checked keeps the panel open; the host changes its state.
+    public init(_ label: String, icon: MetalIconName? = nil, shortcut: String? = nil, danger: Bool = false, disabled: Bool = false, checked: Bool? = nil, indeterminate: Bool = false, closeOnSelect: Bool? = nil, action: @escaping () -> Void) {
         self.id = label
         self.label = label
         self.icon = icon
@@ -24,6 +27,9 @@ public struct MetalMenuItem: Identifiable {
         self.danger = danger
         self.disabled = disabled
         self.action = action
+        self.checked = checked
+        self.indeterminate = indeterminate
+        self.closeOnSelect = closeOnSelect ?? (checked == nil)
     }
 
     private init(separator id: String) {
@@ -34,6 +40,9 @@ public struct MetalMenuItem: Identifiable {
         danger = false
         disabled = true
         action = nil
+        checked = nil
+        indeterminate = false
+        closeOnSelect = true
     }
 
     /// An engraved rule between groups of rows.
@@ -61,7 +70,7 @@ public struct MetalMenuPanel: View {
         self.onClose = onClose
     }
 
-    private var hasIcons: Bool { items.contains { $0.icon != nil } }
+    private var hasIcons: Bool { items.contains { $0.icon != nil || $0.checked != nil } }
 
     private var choosable: [Int] { items.indices.filter { !items[$0].isSeparator && !items[$0].disabled } }
 
@@ -141,7 +150,7 @@ public struct MetalMenuPanel: View {
 
     private func choose(_ index: Int?) {
         guard let index, items.indices.contains(index), !items[index].disabled, let action = items[index].action else { return }
-        onClose()
+        if items[index].closeOnSelect { onClose() }
         action()
     }
 
@@ -150,7 +159,10 @@ public struct MetalMenuPanel: View {
         let ink = item.danger ? MetalShared.red : t.ink
         let on = highlighted == index
         return HStack(spacing: recipe.points("row.gap")) {
-            if let icon = item.icon {
+            if let checked = item.checked {
+                MetalTickGlyph(mark: item.indeterminate ? .dash : checked ? .tick : nil,
+                               side: recipe.points("row.glyph"), color: t.ink.color)
+            } else if let icon = item.icon {
                 MetalIcon(icon, size: recipe.points("row.glyph"))
                     .foregroundStyle((item.danger ? MetalShared.red : t.ink2).color)
             } else if hasIcons {
@@ -174,11 +186,14 @@ public struct MetalMenuPanel: View {
         }
         .contentShape(Rectangle())
         .metalIconInteraction(MetalIconInteraction(isHovered: on, isPressed: false))
+        .disabled(item.disabled)
         .opacity(item.disabled ? recipe.scalar("row.disabled") : .one)
         .onHover { hovering in if hovering && !item.disabled { highlighted = index } }
         .onTapGesture { choose(index) }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
+        .accessibilityValue(item.checked.map { item.indeterminate ? "Mixed" : $0 ? "On" : "Off" } ?? "")
+        .accessibilityAddTraits(item.checked == true && !item.indeterminate ? .isSelected : [])
         .accessibilityAction { choose(index) }
     }
 }

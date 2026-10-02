@@ -2211,6 +2211,19 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 
 Both Menu and ContextMenu copy the target’s nearest `data-mu-colorway` to the portalled positioner and follow live ancestor changes. The popup remains outside clipped hosts. With no override it inherits the document; SwiftUI uses its native colorway environment.
 
+## Checkbox rows
+
+`MenuCheckboxItem` wraps Base UI’s checkbox menu item. It accepts `checked`/`onCheckedChange` or `defaultChecked`, `indeterminate`, `disabled`, `shortcut`, and `closeOnClick` (false by default). Keep settings open so a person can change several. Its reserved 14px slot draws the same `TickGlyph` route and pen phases as Checkbox and Select; mixed is the dash bending into the tick. Base UI owns keyboard movement and `menuitemcheckbox`; a mixed row announces `aria-checked="mixed"`. Clearing the parent’s indeterminate state is the host’s job when its children change.
+
+```tsx
+<Menu trigger={<Button>View</Button>}>
+  <MenuCheckboxItem checked={guides} onCheckedChange={setGuides}>Show guides</MenuCheckboxItem>
+  <MenuCheckboxItem checked={all} indeterminate={some && !all} onCheckedChange={selectAll}>Select all layers</MenuCheckboxItem>
+</Menu>
+```
+
+SwiftUI uses the same 14pt `MetalTickGlyph`: `MetalMenuItem("Show Guides", checked: guides) { guides.toggle() }`. Supplying `checked` makes the row stay open; `indeterminate` draws the shared dash. Set `closeOnSelect: true` for a choice that should dismiss. The host supplies current state, and the native accessibility value announces On, Off or Mixed.
+
 ---
 
 # Menubar

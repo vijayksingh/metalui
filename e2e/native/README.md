@@ -47,3 +47,7 @@ Thread CPU on the debug iOS17.5 simulator host: initial copy/check planning39.9m
 # Native NumberField keys
 
 `number-field-proof.swift` keeps a real bounded field available for interaction. The adjustable value is its own accessible element; the two native buttons retain their button roles and disabled traits. Observed on iPhone15 / iOS17.5 through Device Hub: Increase Copies takes2→3 and exposes the increase button as disabled; Decrease Copies takes3→2→1 and exposes the decrease button as disabled. [Rest](../../docs/captures/swift/number-field-rest.png), [maximum](../../docs/captures/swift/number-field-max.png), [minimum](../../docs/captures/swift/number-field-min.png). The generic simulator package build passes. Run it with the same `run-proof.py` command above, then operate the named keys during its60-second interactive interval.
+
+# Native Menu checkbox rows
+
+Run `python3 e2e/native/run-menu-check-proof.py` on macOS. A real SwiftUI window sends arrow, Return, Space and Escape events to `MetalMenuPanel`. A setting toggles while the panel stays open; a mixed parent becomes fully selected; subsequent host updates preserve the highlighted row; disabled rows cannot run; Escape dismisses. State comes through public `MetalMenuItem` callbacks. Set `METALUI_NATIVE_CAPTURE` to an absolute directory to capture the selected settings.

@@ -28,7 +28,7 @@ Owner: "the tick animation is boring, it just makes it appear; it should make th
 - [x] **Mixed (the parent's half)**: the dash draws from left to right the same way; mixed to ticked morphs the dash into the tick instead of swapping.
 - [x] **The group cascade** keeps its stagger, with each child's tick drawing in turn.
 - [x] Reduce Motion: the tick appears whole and at once. Keep SwiftUI in step (`trim(from:to:)` on the same path).
-- [ ] Anything else that draws a tick uses the same drawing: the menu's checkbox item, the select's chosen row, and the table's select column (it uses Checkbox already).
+- [x] Anything else that draws a tick uses the same drawing: the menu's checkbox item, the select's chosen row, and the table's select column (it uses Checkbox already).
 
 ## Destructive confirm: hold to delete (Alert dialog, Button)
 
@@ -93,7 +93,7 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 - **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.
 - **Sidebar Toggle** (collapse ↔ expand) and **Split pane** collapse: a `layout` glyph whose panel part slides; today the caller passes a static icon.
 - **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
-- **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
+- [x] **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
 - **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
 - **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
 - **Theme switch** (Bone ↔ Graphite) and the **Motion** switch in the docs header, if they get glyphs (see D).

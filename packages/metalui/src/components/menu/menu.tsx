@@ -5,6 +5,7 @@ import { SlidingIndicator } from '../../motion/indicator';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
+import { TickGlyph } from '../../icons/TickGlyph';
 import { usePortalColorway } from '../../theme/portal-colorway';
 
 /* ─────────────────────────────────────────────────────────
@@ -136,6 +137,28 @@ export function MenuItem({ onSelect, icon, shortcut, danger, disabled, children 
       <span className={LABEL}>{children}</span>
       {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
     </BaseMenu.Item>
+  );
+}
+
+export interface MenuCheckboxItemProps extends Omit<BaseMenu.CheckboxItem.Props, 'className' | 'render' | 'children'> {
+  /** Some children are selected: the same pen bends a dash into the tick. */
+  indeterminate?: boolean;
+  shortcut?: string;
+  children: React.ReactNode;
+}
+
+/** A setting row. Base UI owns checked state, keyboard navigation and menu dismissal. */
+export function MenuCheckboxItem({ indeterminate, shortcut, children, ...props }: MenuCheckboxItemProps) {
+  return (
+    <BaseMenu.CheckboxItem {...props} {...(indeterminate ? { 'aria-checked': 'mixed' as const } : {})} data-indeterminate={indeterminate ? '' : undefined} className={LIVE_ROW}>
+      <span aria-hidden className={GLYPH}>
+        <BaseMenu.CheckboxItemIndicator keepMounted render={(p, state) => (
+          <TickGlyph {...(p as React.SVGProps<SVGSVGElement>)} className="mu-menu-check menu-check" mark={indeterminate ? 'dash' : state.checked ? 'tick' : null} />
+        )} />
+      </span>
+      <span className={LABEL}>{children}</span>
+      {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
+    </BaseMenu.CheckboxItem>
   );
 }
 

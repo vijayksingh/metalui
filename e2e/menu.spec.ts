@@ -35,3 +35,42 @@ for (const colorway of COLORWAYS) {
     await expect(more).toBeFocused();
   });
 }
+
+for (const colorway of COLORWAYS) {
+  test(`menu settings share the pen, mixed state and keyboard in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/menu#check-items', colorway);
+    const trigger = page.getByRole('button', { name: 'View settings' });
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    const menu = page.getByRole('menu');
+    const guides = menu.getByRole('menuitemcheckbox', { name: 'Show guides' });
+    const all = menu.getByRole('menuitemcheckbox', { name: 'Select all layers' });
+    const disabled = menu.getByRole('menuitemcheckbox', { name: 'Keep proportions' });
+    await expect(all).toHaveAttribute('aria-checked', 'mixed');
+    await expect(disabled).toHaveAttribute('aria-disabled', 'true');
+    await expect(guides).toHaveAttribute('data-highlighted', '');
+    await page.keyboard.press('Enter');
+    await expect(guides).toHaveAttribute('aria-checked', 'true');
+    await expect(menu).toBeVisible();
+    await expect.poll(async () => guides.locator('path').evaluate(el => el.style.strokeDasharray)).toBe('');
+    const drawn = await guides.locator('path').getAttribute('d');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Space');
+    await expect(all).toHaveAttribute('aria-checked', 'true');
+    await expect.poll(async () => all.locator('path').getAttribute('d')).toBe(drawn);
+    await page.keyboard.press('ArrowDown');
+    await expect(disabled).toHaveAttribute('data-highlighted', '');
+    await page.keyboard.press('Enter');
+    await expect(disabled).toHaveAttribute('aria-checked', 'true');
+    await menu.screenshot({ path: capture(`menu-settings-${colorway}`) });
+    await page.keyboard.press('Escape');
+    await expect(trigger).toBeFocused();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await trigger.click();
+    await guides.click();
+    await expect(guides).toHaveAttribute('aria-checked', 'false');
+    await expect(guides.locator('path')).toHaveAttribute('visibility', 'hidden');
+    await expect.poll(async () => guides.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+    await menu.screenshot({ path: capture(`menu-settings-${colorway}-reduced`) });
+  });
+}

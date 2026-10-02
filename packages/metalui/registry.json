@@ -1045,6 +1045,7 @@
         "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tick-glyph.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

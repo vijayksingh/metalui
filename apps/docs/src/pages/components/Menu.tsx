@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button, ContextMenu, Cue, IconButton, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { Button, ContextMenu, Cue, IconButton, Menu, MenuItem, MenuCheckboxItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -53,6 +53,19 @@ function ScopedMenus() {
   </div>;
 }
 
+function SettingsMenu() {
+  const [guides, setGuides] = React.useState(false);
+  const [selection, setSelection] = React.useState<'mixed' | 'all' | 'none'>('mixed');
+  return <div data-testid="menu-settings" className="mu-stack gap-mu-related items-start">
+    <Menu trigger={<Button>View settings</Button>}>
+      <MenuCheckboxItem checked={guides} onCheckedChange={setGuides}>Show guides</MenuCheckboxItem>
+      <MenuCheckboxItem checked={selection === 'all'} indeterminate={selection === 'mixed'} onCheckedChange={(on) => setSelection(on ? 'all' : 'none')}>Select all layers</MenuCheckboxItem>
+      <MenuCheckboxItem checked disabled>Keep proportions</MenuCheckboxItem>
+    </Menu>
+    <span role="status" className="meta">{guides ? 'Guides visible' : 'Guides hidden'} · {selection === 'mixed' ? 'Some layers' : selection === 'all' ? 'All layers' : 'No layers'}</span>
+  </div>;
+}
+
 export default function MenuPage() {
   const d = useDialKit('Menu', { heading: true });
   const [ran, setRan] = React.useState('–');
@@ -80,6 +93,9 @@ export default function MenuPage() {
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
       </Section>
+      <Section id="check-items" title="Settings stay open" lede="A setting keeps its row under your hand. The shared pen draws and withdraws the tick; a partially selected parent bends its dash into the tick. Disabled settings remain reachable to explain the held choice, and Escape returns to the trigger.">
+        <Bench><SettingsMenu /></Bench>
+      </Section>
       <Section id="portal" title="A scoped host" lede="Trigger and context menus carry their host’s colorway outside clipped parents and follow changes while open. Native menus inherit the SwiftUI colorway environment.">
         <ScopedMenus />
       </Section>
@@ -101,6 +117,7 @@ export default function MenuPage() {
             ['Menu', 'trigger, heading?, side?, align?, open?, onOpenChange?', '6 from the trigger.'],
             ['ContextMenu', 'menu, heading?, children (the target)', 'At the pointer: the correction popover.'],
             ['MenuItem', 'onSelect, icon?, shortcut?, danger?, disabled?', '30 tall; Title Case.'],
+            ['MenuCheckboxItem', 'checked?, defaultChecked?, onCheckedChange?, indeterminate?, disabled?, closeOnClick?, shortcut?', '14 glyph; stays open by default.'],
             ['MenuSeparator', '–', 'An engraved rule.'],
           ]}
         />

@@ -2567,6 +2567,9 @@
   background: var(--mu-r-menu-sep-background);
   box-shadow: var(--mu-r-menu-sep-shadow);
 }
+@utility menu-check {
+  display: block; width: var(--mu-r-menu-row-glyph); height: var(--mu-r-menu-row-glyph); overflow: visible; fill: none; stroke: var(--mu-ink); stroke-width: var(--mu-r-checkbox-tick-pen); stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
+}
 @utility menu-origin {
   transform-origin: var(--transform-origin);
 }
