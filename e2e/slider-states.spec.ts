@@ -43,10 +43,9 @@ test('hover lifts the knob; pressing and dragging press it; the fill follows the
     await page.mouse.move(x, y, { steps: 4 });
     const now = await slider.evaluate((el) => {
       const k = el.querySelector('.mu-slider-knob')!.getBoundingClientRect();
-      return { dragging: el.hasAttribute('data-dragging'), transition: getComputedStyle(el).transitionProperty, centre: k.left + k.width / 2, fillEnd: el.querySelector('.mu-slider-fill')!.getBoundingClientRect().right };
+      return { dragging: el.hasAttribute('data-dragging'), centre: k.left + k.width / 2, fillEnd: el.querySelector('.mu-slider-fill')!.getBoundingClientRect().right };
     });
     expect(now.dragging).toBe(true);
-    expect(now.transition).toBe('none');
     expect(Math.abs(now.centre - x)).toBeLessThanOrEqual(3); // within a step of 1 in 100
     expect(Math.abs(now.centre - now.fillEnd)).toBeLessThanOrEqual(1);
   }

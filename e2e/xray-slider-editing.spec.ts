@@ -81,8 +81,8 @@ test('move: the rims tune the spring the knob rides on the specimen and the benc
   const card = xray.locator('.xr-card');
   await part(xray, 'Move');
   const knob = card.locator('.mu-slider-knob');
-  // the knob and its fill ride one spring, set on the slider itself
-  const springs = card.locator('.mu-slider');
+  // Inspect the moving knob: placement and fill share the authored spring.
+  const springs = knob;
   const benchMove = await style(benchKnob(xray), 'transition');
   const knobMove = await computed(springs, 'transition');
   const k0 = Number(await value(card, 'Stiffness').textContent());
