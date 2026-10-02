@@ -2,239 +2,172 @@
 
 import * as React from 'react';
 import { Slider as BaseSlider } from '@base-ui/react/slider';
+import { DirectionProvider, useDirection } from '@base-ui/react/direction-provider';
 import { Well } from '../well/well';
 import { SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
-
-/* ─────────────────────────────────────────────────────────
- * SLIDER on Base UI Slider
- *
- *   [start glyph]  ═══════●───────  [end glyph]  [value]
- *                  │    │    │    │
- *                  0   25   50   75
- *
- *   track    a well (the track well): 6 / 10 / 14 tall for compact / regular / large
- *   fill     the green intent fill at full strength up to the knob, its edge an inset hairline
- *   marks    notches cut across the groove (steps, detents, moments)
- *   ticks    a short line under the groove and its label in the meta type at ink2: readable on any
- *            stage, never the engraved ink3
- *   knob     a knurled, anodized knob, 16 / 22 / 28 across; arrows step, Shift steps large
- *   glyphs   optional glyphs at the ends (volume low / high, zoom out / in), at ink2; each plays its
- *            act when the value arrives at its end
- *   value    an optional readout beside it (format → "40 %"); its digits turn on the drum, and it
- *            keeps the width of its widest value so the groove never shifts under the finger
- *   width    full width of its container by default; `width` sets it (px or any CSS length)
- *
- * GEOMETRY (one travel for everything)
- *   groove   the full width of the control, W
- *   knob     K across; its centre travels K/2 … W − K/2, so at 0 and 100 it sits flush with the
- *            groove's rounded ends and never hangs outside it (Base UI thumbAlignment="edge")
- *   fill     from the groove's start to the knob's centre
- *   marks    on the same travel (half a knob in from each end), so a mark, a tick, the fill's
- *   ticks    end and the knob's centre line up at every value
- *
- * MOTION (one fraction, --mu-slider-at, drives the knob and the fill)
- *   jump     a click or a key: the fraction rides the part spring (it may overshoot mid-travel,
- *            but it is clamped to the travel, so at an end the knob stops flush against it)
- *   drag     no transition: the knob and the fill follow the pointer 1:1
- *   value    the readout turns on the drum (settle spring) with every change
- *   reduced  the spring's duration is 0: a jump lands at once; the drum crossfades
- *
- * STATES (the knob's face; the knob's box never changes size, so Base UI measures it true)
- *   rest      the knurled face, a small drop shadow
- *   hover     over the groove: the knob lifts ×1.08 with a longer shadow (settle spring)
- *   pressed   pressing or dragging: the knob presses ×0.94 with a tight shadow; the fill follows 1:1
- *   focus     from the keyboard: the green ring around the knob
- *   disabled  40 %, no pointer: no hover, no press, no keys
- *   refused   a key pushing past an end: the groove and knob nudge one nest that way and ring back
- *             on the refusal spring (the knob never leaves the groove). Reduce Motion: no nudge.
- *
- * Two ways to use it: <Slider value … /> draws the groove, knob, marks and ticks from props; or
- * compose the parts inside it (Slider.Track, Slider.Marks, Slider.Ticks, Slider.Knob) for a host
- * that draws its own scale (the time scrubber).
- * Slots: Slider.Root, Slider.Track, Slider.Marks, Slider.Ticks, Slider.Knob.
- * ───────────────────────────────────────────────────────── */
+import { haptic } from '../../motion/haptic';
+import { useReducedMotion } from '../../motion/reduced';
+import type { IconProps } from '../../icons/Icon';
 
 export type SliderSize = 'compact' | 'regular' | 'large';
-
-export interface SliderRootProps {
-  value: number;
-  min: number;
-  max: number;
-  step?: number;
-  largeStep?: number;
-  onValueChange: (value: number) => void;
-  /** compact (6 groove, 16 knob), regular (10, 22, the default) or large (14, 28). */
+type Amount = number | readonly number[];
+export interface SliderRootProps<T extends Amount = number> extends Omit<BaseSlider.Root.Props<T>, 'className' | 'children' | 'format' | 'onValueChange'> {
+  onValueChange?: (value: T, details: BaseSlider.Root.ChangeEventDetails) => void;
   size?: SliderSize;
-  /** Full width of its container by default; a number is px, a string any CSS length. */
   width?: number | string;
-  /** A glyph at the start and at the end (from '@unlocalhosted/metalui/icons'); decorative. */
+  /** Give a vertical host a height; horizontal controls keep their recipe height. */
+  height?: number | string;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
-  /** Show the value beside the groove, written by `format`. */
+  knobIcon?: React.ReactNode;
   showValue?: boolean;
-  /** Writes the value for the readout and for assistive tech ("40 %"). */
+  valueBubble?: boolean;
   format?: (value: number) => string;
-  /** Notches in the groove, at these values (steps, detents, moments). */
   marks?: number[];
-  /** Labelled ticks under the groove, at these values. */
   ticks?: { value: number; label: React.ReactNode }[];
-  /** Names the knob. */
+  /** Fill from the midpoint instead of the start; applies to a single knob. */
+  centered?: boolean;
+  tone?: 'green' | 'neutral';
+  /** One haptic catch per accepted stepped value; no haptic on mount. */
+  detents?: boolean;
+  /** Each range knob keeps its name and independent disabled state. */
+  thumbs?: { label?: string; disabled?: boolean }[];
   'aria-label'?: string;
-  /** Dims it to 40 % and takes no pointer or keys. */
-  disabled?: boolean;
   className?: string;
-  /** Parts, for a host that composes its own slider; left out, the props above draw it. */
   children?: React.ReactNode;
 }
-
-/* The animated fraction is a registered number, so it transitions (and each frame is clamped where
- * it is read). Registered once per document; a second registration (hot reload) throws and is fine. */
-if (typeof CSS !== 'undefined' && 'registerProperty' in CSS) {
-  try {
-    CSS.registerProperty({ name: '--mu-slider-at', syntax: '<number>', inherits: true, initialValue: '0' });
-  } catch {
-    /* already registered */
-  }
+interface Geometry { width: number; height: number; knob: number }
+interface Context {
+  values: readonly number[]; fraction: (v: number) => number; geometry: Geometry;
+  orientation: 'horizontal' | 'vertical'; rtl: boolean; centered: boolean;
+  format: (v: number) => string; bubble: boolean; knobIcon?: React.ReactNode;
+  label: string; disabled?: boolean; thumbs?: SliderRootProps['thumbs'];
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, index: number) => void;
 }
-
-/* Styled with the theme's utilities (the slider recipe on the track well). The root is a row: glyphs
- * and the value beside the control; the control fills the rest and the groove sits on its centre line.
- * A size sets the groove and knob together (--mu-slider-track, --mu-slider-knob). */
-const ROOT = 'mu-slider group/slider relative flex items-center w-full max-w-full h-full slider-gap type-meta touch-none transition-slider data-dragging:transition-none data-disabled:opacity-slider-disabled data-disabled:pointer-events-none';
+const SliderContext = React.createContext<Context | null>(null);
+function useSlider() { const c = React.useContext(SliderContext); if (!c) throw new Error('Slider parts must be inside Slider'); return c; }
+const ROOT = 'mu-slider group/slider relative flex items-center w-full max-w-full h-full slider-gap type-meta touch-none data-disabled:opacity-slider-disabled data-disabled:pointer-events-none slider-layout';
 const SIZES: Record<SliderSize, string> = { compact: 'slider-compact', regular: 'slider-regular', large: 'slider-large' };
 const CONTROL = 'mu-slider-control group/control relative flex-1 self-stretch min-w-0 slider-control-box touch-none cursor-pointer';
 const GLYPH = 'mu-slider-icon mu-icon-trigger inline-grid flex-none place-items-center text-ink2 [&>svg]:slider-glyph';
-const VALUE = 'mu-slider-value inline-grid flex-none justify-items-end type-figure text-ink';
-const VALUE_CELL = 'col-start-1 row-start-1';
 const TRACK = 'mu-slider-track absolute left-0 right-0 slider-track-place';
-const FILL = 'mu-slider-fill h-full rounded-pill recipe-slider-fill slider-fill-along';
-const MARKS = 'mu-slider-marks absolute slider-travel pointer-events-none slider-marks-place';
-const MARK = 'absolute top-0 h-full w-slider-mark-w -translate-x-1/2 rounded-slider-mark-radius bg-slider-mark-color';
-const TICKS = 'mu-slider-ticks absolute slider-travel pointer-events-none slider-ticks-place';
-const TICK = 'absolute flex -translate-x-1/2 flex-col items-center gap-slider-tick-gap type-meta text-ink2 whitespace-nowrap';
-const TICK_LINE = 'block w-slider-tick-w h-slider-tick-h bg-slider-tick-color';
-const KNOB = 'mu-slider-knob top-1/2 slider-knob-box rounded-round cursor-grab slider-knob-along group-data-dragging/slider:cursor-grabbing has-focus-visible:focus-ring';
-/* The face carries the metal and moves: it lifts on hover and presses while held or dragged. It grows
- * away from the nearer end (its origin follows the value), so even lifted it never pokes past the groove. */
-const FACE = 'mu-slider-knob-face pointer-events-none absolute inset-0 rounded-round recipe-slider-knob slider-knob-origin transition-slider-knob group-hover/control:slider-knob-lift group-hover/control:recipe-slider-knob-hover group-active/control:slider-knob-press! group-active/control:recipe-slider-knob-press! group-data-dragging/slider:slider-knob-press! group-data-dragging/slider:recipe-slider-knob-press!';
-
-/** What the knob needs from its slider: how to refuse a key that pushes past an end. */
-const SliderContext = React.createContext<{ onKeyDown?: (e: React.KeyboardEvent) => void }>({});
-
-const INCREASE = new Set(['ArrowRight', 'ArrowUp', 'PageUp', 'End']);
-const DECREASE = new Set(['ArrowLeft', 'ArrowDown', 'PageDown', 'Home']);
-
-/** Plays a glyph's act (its hover or press motion) as if it had been pressed. */
-function play(el: HTMLElement | null) {
-  if (!el) return;
-  el.dispatchEvent(new Event('click'));
-  el.dispatchEvent(new Event('pointerdown'));
-}
-
-function Root({ value, min, max, step, largeStep, onValueChange, size = 'regular', width, startIcon, endIcon, showValue, format, marks, ticks, 'aria-label': label, disabled, className, children }: SliderRootProps) {
-  const span = max - min;
-  const frac = (v: number) => (span > 0 ? Math.min(1, Math.max(0, (v - min) / span)) : 0);
-  const at = frac(value);
-  const control = React.useRef<HTMLDivElement>(null);
-  const start = React.useRef<HTMLSpanElement>(null);
-  const end = React.useRef<HTMLSpanElement>(null);
-  // At an end, that end's glyph plays its act: once as the value arrives, never on mount.
-  const was = React.useRef(at);
-  React.useEffect(() => {
-    if (at === 0 && was.current !== 0) play(start.current);
-    if (at === 1 && was.current !== 1) play(end.current);
-    was.current = at;
-  }, [at]);
-  // A key that pushes past an end is refused: the value was already there when the key went down.
-  // It rides on the knob's input (Base UI keeps its keys from bubbling), before Base UI moves it.
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (at === 1 && INCREASE.has(e.key)) refuse(control.current, 1);
-    else if (at === 0 && DECREASE.has(e.key)) refuse(control.current, -1);
-  };
-  const context = React.useMemo(() => ({ onKeyDown }), [at]); // eslint-disable-line react-hooks/exhaustive-deps
-  const own = [ROOT, SIZES[size], ticks?.length ? 'slider-ticks-room' : '', className ?? ''].filter(Boolean).join(' ');
-  const style = { '--mu-slider-at': at, ...(width !== undefined ? { width } : null) } as React.CSSProperties;
-  return (
-    <BaseSlider.Root thumbAlignment="edge" style={style} data-size={size} disabled={disabled} value={value} min={min} max={max} step={step} largeStep={largeStep} onValueChange={(v) => onValueChange(v as number)} className={own}>
-      {startIcon && <span ref={start} className={GLYPH} aria-hidden>{startIcon}</span>}
-      <BaseSlider.Control ref={control} className={CONTROL}>
-        <SliderContext.Provider value={context}>
-        {children ?? (
-          <>
-            <Track />
-            {marks?.length ? <Marks at={marks.map(frac)} /> : null}
-            {ticks?.length ? <Ticks ticks={ticks.map((t) => ({ at: frac(t.value), label: t.label }))} /> : null}
-            <Knob aria-label={label ?? 'Value'} getAriaValueText={format ? (_, v) => format(v) : undefined} />
-          </>
-        )}
-        </SliderContext.Provider>
-      </BaseSlider.Control>
-      {endIcon && <span ref={end} className={GLYPH} aria-hidden>{endIcon}</span>}
-      {showValue && <Value value={value} min={min} max={max} step={step ?? 1} format={format ?? String} />}
-    </BaseSlider.Root>
-  );
-}
-
-/** A few values are all measured (words: Draft … Best); many, only the ends (numbers grow toward them). */
+const FILL = 'mu-slider-fill rounded-pill recipe-slider-fill slider-position';
+const KNOB = 'mu-slider-knob group/knob slider-knob-box rounded-round cursor-grab slider-position data-thumb-disabled:opacity-slider-disabled data-thumb-disabled:cursor-default group-data-dragging/slider:cursor-grabbing has-focus-visible:focus-ring';
+const FACE = 'mu-slider-knob-face grid place-items-center [&>svg]:slider-glyph pointer-events-none absolute inset-0 rounded-round recipe-slider-knob slider-knob-origin transition-slider-knob group-hover/control:slider-knob-lift group-hover/control:recipe-slider-knob-hover group-active/control:slider-knob-press! group-active/control:recipe-slider-knob-press! group-data-dragging/slider:slider-knob-press! group-data-dragging/slider:recipe-slider-knob-press! group-data-thumb-disabled/knob:scale-100! group-data-thumb-disabled/knob:recipe-slider-knob!';
+const BUBBLE = 'mu-slider-bubble absolute pointer-events-none whitespace-nowrap rounded-tooltip-radius px-tooltip-pad-x py-tooltip-pad-y type-meta tabular-nums text-tooltip-ink recipe-tooltip slider-bubble';
 const MEASURE_ALL = 24;
 
-/** The value beside the groove. It reserves the width of its widest value, so the groove never moves
- *  as the digits change; the digits turn on the drum. The knob already says the value to assistive
- *  tech, so the readout is hidden from it. */
-function Value({ value, min, max, step, format }: { value: number; min: number; max: number; step: number; format: (v: number) => string }) {
+function glyph(node: React.ReactNode, sequence: number) {
+  return React.isValidElement(node) && typeof node.type !== 'string' ? React.cloneElement(node as React.ReactElement<IconProps>, { act: sequence }) : node;
+}
+function Root<T extends Amount = number>({ value, defaultValue, min = 0, max = 100, step = 1, largeStep = 10, onValueChange, size = 'regular', width, height, orientation = 'horizontal', startIcon, endIcon, knobIcon, showValue, valueBubble = false, format = String, marks, ticks, centered = false, tone = 'green', detents = false, thumbs, 'aria-label': label = 'Value', disabled, className, children, style: ownStyle, ...props }: SliderRootProps<T>) {
+  const [internal, setInternal] = React.useState<T>(() => defaultValue ?? min as T);
+  const amount = value ?? internal;
+  const values: readonly number[] = Array.isArray(amount) ? amount : [amount as number];
+  const fraction = (v: number) => Math.max(0, Math.min(1, (v - min) / Math.max(Number.EPSILON, max - min)));
+  const inheritedDirection = useDirection();
+  const direction = props.dir === 'rtl' || props.dir === 'ltr' ? props.dir : inheritedDirection;
+  const rtl = direction === 'rtl';
+  const [control, setControl] = React.useState<HTMLDivElement | null>(null);
+  const [geometry, setGeometry] = React.useState<Geometry>({ width: 0, height: 0, knob: 0 });
+  const reduced = useReducedMotion(control);
+  const [acts, setActs] = React.useState({ start: 0, end: 0 });
+  const previous = React.useRef(values);
+  React.useEffect(() => {
+    const before = previous.current;
+    if (!disabled && before.some((v, i) => v !== values[i])) {
+      setActs(a => ({ start: a.start + (values[0] === min && before[0] !== min ? 1 : 0), end: a.end + (values.at(-1) === max && before.at(-1) !== max ? 1 : 0) }));
+    }
+    previous.current = values;
+  }, [amount, min, max, disabled]); // Values are a projection of the accepted host amount.
+  React.useLayoutEffect(() => {
+    if (!control) return;
+    const read = () => {
+      const box = control.getBoundingClientRect();
+      const knob = parseFloat(getComputedStyle(control).getPropertyValue('--mu-slider-knob'));
+      setGeometry(old => old.width === box.width && old.height === box.height && old.knob === knob ? old : { width: box.width, height: box.height, knob });
+    };
+    read(); const observer = new ResizeObserver(read); observer.observe(control); return () => observer.disconnect();
+  }, [control, size, orientation]);
+  const pointer = React.useRef<{ id: number; side: number } | null>(null);
+  React.useEffect(() => {
+    if (!control) return;
+    const move = (e: PointerEvent) => {
+      if (!pointer.current || e.pointerId !== pointer.current.id || disabled) return;
+      const box = control.getBoundingClientRect();
+      const coordinate = orientation === 'vertical' ? e.clientY : e.clientX;
+      const near = orientation === 'vertical' ? box.top : box.left, far = orientation === 'vertical' ? box.bottom : box.right;
+      const side = coordinate < near ? -1 : coordinate > far ? 1 : 0;
+      if (side && pointer.current.side !== side) { haptic('refusal'); refuse(control, side as 1 | -1, orientation === 'vertical' ? 'y' : 'x'); }
+      pointer.current.side = side;
+    };
+    const release = () => { pointer.current = null; };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', release); window.addEventListener('pointercancel', release);
+    return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', release); window.removeEventListener('pointercancel', release); };
+  }, [control, disabled, orientation]);
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (disabled || thumbs?.[index]?.disabled) return;
+    const reverse = orientation === 'horizontal' && rtl;
+    const increase = (reverse && e.key === 'ArrowLeft') || (!reverse && e.key === 'ArrowRight') || ['ArrowUp', 'PageUp', 'End'].includes(e.key);
+    const decrease = (reverse && e.key === 'ArrowRight') || (!reverse && e.key === 'ArrowLeft') || ['ArrowDown', 'PageDown', 'Home'].includes(e.key);
+    const gap = (props.minStepsBetweenValues ?? 0) * step;
+    const ceiling = values[index + 1] == null ? max : values[index + 1] - gap;
+    const floor = values[index - 1] == null ? min : values[index - 1] + gap;
+    if (increase && values[index] >= ceiling || decrease && values[index] <= floor) {
+      const direction = increase ? 1 : -1;
+      haptic('refusal');
+      refuse(control, (orientation === 'vertical' || rtl ? -direction : direction) as 1 | -1, orientation === 'vertical' ? 'y' : 'x');
+    }
+  };
+  const context: Context = { values, fraction, geometry, orientation, rtl, centered, format, bubble: valueBubble, knobIcon, label, disabled, thumbs, onKeyDown };
+  return <DirectionProvider direction={direction}><BaseSlider.Root {...props} thumbAlignment="edge" dir={direction} orientation={orientation} style={{ ...ownStyle, ...(width !== undefined ? { width } : null), ...(height !== undefined ? { height } : null) }} data-size={size} data-tone={tone} data-reduced={reduced ? '' : undefined} disabled={disabled} value={amount} min={min} max={max} step={step} largeStep={largeStep} onValueChange={(v, details) => { const next = v as T; if (detents && !disabled) haptic('detent'); if (value === undefined) setInternal(next); onValueChange?.(next, details); }} className={[ROOT, SIZES[size], ticks?.length ? 'slider-ticks-room' : '', className].filter(Boolean).join(' ')}>
+    {startIcon && <span className={GLYPH} data-disabled={disabled ? '' : undefined} data-end="start" aria-hidden>{glyph(startIcon, acts.start)}</span>}
+    <BaseSlider.Control ref={setControl} className={CONTROL} onPointerDown={e => { if (!disabled && !e.defaultPrevented && !(e.target as Element).closest('[data-thumb-disabled]') && values.some((_, i) => !thumbs?.[i]?.disabled)) pointer.current = { id: e.pointerId, side: 0 }; }}>
+      <SliderContext.Provider value={context}>{children ?? <><Track />{marks?.length ? <Marks at={marks.map(fraction)} /> : null}{ticks?.length ? <Ticks ticks={ticks.map(t => ({ at: fraction(t.value), label: t.label }))} /> : null}{values.map((_, index) => <Knob key={index} index={index} aria-label={thumbs?.[index]?.label ?? (values.length > 1 ? `${label}, ${index === 0 ? 'lower' : 'upper'}` : label)} disabled={thumbs?.[index]?.disabled} getAriaValueText={(_, v) => format(v)} />)}</>}</SliderContext.Provider>
+    </BaseSlider.Control>
+    {endIcon && <span className={GLYPH} data-disabled={disabled ? '' : undefined} data-end="end" aria-hidden>{glyph(endIcon, acts.end)}</span>}
+    {showValue && <Value values={values} min={min} max={max} step={step} format={format} />}
+  </BaseSlider.Root></DirectionProvider>;
+}
+function Value({ values, min, max, step, format }: { values: readonly number[]; min: number; max: number; step: number; format: (v: number) => string }) {
   const count = step > 0 ? Math.floor((max - min) / step) : 0;
-  const sizes = count > 0 && count <= MEASURE_ALL ? Array.from({ length: count + 1 }, (_, i) => min + i * step) : [min, max];
-  return (
-    <span className={VALUE} aria-hidden>
-      {sizes.map((v) => <span key={v} className={`${VALUE_CELL} invisible`}>{format(v)}</span>)}
-      <SwapText className={VALUE_CELL} value={format(value)} />
-    </span>
-  );
+  const sizes = count > 0 && count <= MEASURE_ALL ? Array.from({ length: count + 1 }, (_, i) => min + i * step) : [min, (min + max) / 2, max];
+  return <span className="mu-slider-value inline-grid flex-none justify-items-end type-figure tabular-nums text-ink" aria-hidden>{sizes.map(v => <span key={v} className="col-start-1 row-start-1 invisible">{Array(values.length).fill(format(v)).join(' – ')}</span>)}<SwapText className="col-start-1 row-start-1" value={values.map(format).join(' – ')} /></span>;
 }
-
-/** The track well and its fill. */
 function Track() {
-  return (
-    <BaseSlider.Track render={<Well variant="track" radius="pill" />} className={TRACK}>
-      <BaseSlider.Indicator className={FILL} />
-    </BaseSlider.Track>
-  );
+  const c = useSlider();
+  const vertical = c.orientation === 'vertical';
+  const extent = vertical ? c.geometry.height : c.geometry.width;
+  const travel = Math.max(0, extent - c.geometry.knob);
+  const coordinate = (v: number) => {
+    const point = c.geometry.knob / 2 + c.fraction(v) * travel;
+    return vertical || c.rtl ? extent - point : point;
+  };
+  const from = c.values.length > 1 ? coordinate(c.values[0]) : c.centered ? extent / 2 : vertical || c.rtl ? extent : 0;
+  const to = coordinate(c.values.at(-1)!);
+  const start = Math.min(from, to), scale = Math.abs(to - from) / Math.max(Number.EPSILON, extent);
+  const transform = vertical ? `translateY(${start}px) scaleY(${scale})` : `translateX(${start}px) scaleX(${scale})`;
+  return <BaseSlider.Track render={<Well variant="track" radius="pill" />} className={TRACK}><BaseSlider.Indicator className={FILL} style={{ inset: 0, width: '100%', height: '100%', transform, transformOrigin: vertical ? 'top' : 'left' }} /></BaseSlider.Track>;
 }
-
-/** Notches cut across the groove, at fractions 0…1 of the travel (steps, detents, moments). */
 function Marks({ at }: { at: number[] }) {
-  return (
-    <div className={MARKS} aria-hidden>
-      {at.map((f, i) => (
-        <i key={i} className={MARK} style={{ left: `${(f * 100).toFixed(2)}%` }} />
-      ))}
-    </div>
-  );
+  const c = useSlider();
+  return <div className="mu-slider-marks absolute slider-travel pointer-events-none slider-marks-place" aria-hidden>{at.map((f, index) => <i key={index} className="absolute h-full w-slider-mark-w -translate-x-1/2 rounded-slider-mark-radius bg-slider-mark-color mu-slider-mark" style={c.orientation === 'vertical' ? { bottom: `${f * 100}%` } : c.rtl ? { right: `${f * 100}%` } : { left: `${f * 100}%` }} />)}</div>;
 }
-
-/** Labelled ticks under the groove: { at: 0…1, label }. A plain label is set in the meta type at ink2,
- *  on the knob's travel; a caller's own node (a Label) styles itself. */
 function Ticks({ ticks }: { ticks: { at: number; label: React.ReactNode }[] }) {
-  return (
-    <div className={TICKS} aria-hidden>
-      {ticks.map((t, i) => (
-        <span key={i} className={TICK} style={{ left: `${(t.at * 100).toFixed(2)}%` }}>
-          <i className={TICK_LINE} />
-          {t.label}
-        </span>
-      ))}
-    </div>
-  );
+  const c = useSlider();
+  return <div className="mu-slider-ticks absolute slider-travel pointer-events-none slider-ticks-place" aria-hidden>{ticks.map((t, index) => <span key={index} className="absolute flex -translate-x-1/2 flex-col items-center gap-slider-tick-gap type-meta text-ink2 whitespace-nowrap mu-slider-tick" style={c.orientation === 'vertical' ? { bottom: `${t.at * 100}%` } : c.rtl ? { right: `${t.at * 100}%` } : { left: `${t.at * 100}%` }}><i className="block w-slider-tick-w h-slider-tick-h bg-slider-tick-color" />{t.label}</span>)}</div>;
 }
-
-function Knob(props: { 'aria-label': string; getAriaValueText?: (formatted: string, value: number, index: number) => string }) {
-  const { onKeyDown } = React.useContext(SliderContext);
-  return (
-    <BaseSlider.Thumb className={KNOB} onKeyDown={onKeyDown} {...props}>
-      <span className={FACE} aria-hidden />
-    </BaseSlider.Thumb>
-  );
+function Knob({ index = 0, className, style, onKeyDown, ...props }: BaseSlider.Thumb.Props) {
+  const c = useSlider();
+  const at = c.fraction(c.values[index] ?? c.values[0]);
+  const vertical = c.orientation === 'vertical';
+  const extent = vertical ? c.geometry.height : c.geometry.width;
+  const offset = ((vertical || c.rtl ? 1 - at : at) - .5) * Math.max(0, extent - c.geometry.knob);
+  const transform = vertical ? `translate(-50%, calc(-50% + ${offset}px))` : `translate(calc(-50% + ${offset}px), -50%)`;
+  return <BaseSlider.Thumb {...props} data-thumb-disabled={props.disabled ? '' : undefined} index={index} className={`${KNOB}${className ? ` ${className}` : ''}`} style={{ ...style, left: '50%', right: 'auto', top: '50%', bottom: 'auto', translate: 'none', transform, '--mu-slider-at': at } as React.CSSProperties} onKeyDown={e => { c.onKeyDown(e, index); onKeyDown?.(e); }}>
+    <span className={`${FACE} text-ink`} data-mu-colorway="bone" aria-hidden>{c.knobIcon}</span>
+    {c.bubble && <span className={BUBBLE} aria-hidden><SwapText value={c.format(c.values[index])} /></span>}
+  </BaseSlider.Thumb>;
 }
-
-export const Slider = Object.assign(Root, { Root, Track, Marks, Ticks, Knob });
+export const Slider = Object.assign(Root, { Root, Track, Marks, Ticks, Knob, });

@@ -47,7 +47,10 @@ const springs = Object.entries(T.springs)
     `  --mu-spring-${k}-half: ${s.half};`,
     `  --mu-spring-${k}-near: ${s.near};`,
   ].join('\n'))
-  .join('\n');
+  .join('\n') + '\n' +
+  // A slider has physical hard stops: derive its curve from the authored part spring,
+  // clipping sample progress only. The generic spring and its timing remain unchanged.
+  `  --mu-spring-part-clamped: ${(T.springs.part.css ?? springCurve(T.springs.part.stiffness, T.springs.part.damping, T.springs.part.duration)).replace(/-?\d*\.?\d+/g, value => String(Math.max(0, Math.min(1, Number(value)))))};`;
 // Reduce Motion, per spring class (foundations.reduced-motion). Components multiply enter and
 // exit offsets by --mu-travel-<class>, and ride --mu-spring-<class>-d; both resolve here, from
 // the media query or from data-mu-motion="reduce" on any ancestor.

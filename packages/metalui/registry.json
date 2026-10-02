@@ -1621,11 +1621,12 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "A knob in a groove that never leaves it, a green fill to the knob's centre, notches and labelled ticks on the same travel; three sizes, glyphs at the ends, full width or a set width, and a value readout on the drum. Arrows step, Shift steps large.",
+      "description": "Scalar or range amounts on a clamped track: horizontal/vertical, centred or neutral fill, named independent knobs, step detents, transient value bubble, drum readout and volume/brightness glyphs. Base UI preserves keyboard and form behavior.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/well.json"

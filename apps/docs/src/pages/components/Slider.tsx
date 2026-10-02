@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Slider, Surface, type SliderSize } from '@unlocalhosted/metalui';
-import { ZoomInIcon, ZoomOutIcon } from '@unlocalhosted/metalui/icons';
+import { ZoomInIcon, ZoomOutIcon, VolumeIcon, BrightnessIcon } from '@unlocalhosted/metalui/icons';
 import { SliderXray } from '../../ui/xray/SliderXray';
-import { SPRING_NAMES, springVars } from '../../ui/springTuning';
+import { SPRING_NAMES, springVars, clampSpringCurve } from '../../ui/springTuning';
 import type { SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import reactSource from '../../../../../packages/metalui/src/components/slider/slider.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -61,7 +61,7 @@ function Sizes() {
       {(['compact', 'regular', 'large'] as const).map((size) => (
         <div key={size} className={ROW}>
           <span className={NAME}>{size}</span>
-          <Slider aria-label={`Brightness, ${size}`} size={size} value={v[size]} min={0} max={100} onValueChange={(n) => setV((o) => ({ ...o, [size]: n }))} showValue format={percent} />
+          <Slider aria-label={`Brightness, ${size}`} size={size} value={v[size]} min={0} max={100} onValueChange={(n) => setV((o) => ({ ...o, [size]: n }))} startIcon={<BrightnessIcon />} endIcon={<BrightnessIcon />} showValue format={percent} />
         </div>
       ))}
     </Surface>
@@ -77,7 +77,7 @@ function Scale() {
     <Surface material="raise" radius="card" className={PLATE} style={plate(520)}>
       <div className={ROW_TOP}>
         <span className={NAME_TOP}>Quality</span>
-        <Slider aria-label="Export quality" value={q} min={0} max={5} step={1} largeStep={1} onValueChange={setQ} marks={[1, 2, 3, 4]} ticks={[0, 5].map((n) => ({ value: n, label: QUALITY[n] }))} format={(n) => QUALITY[n]} showValue />
+        <Slider aria-label="Export quality" value={q} min={0} max={5} step={1} largeStep={1} onValueChange={setQ} marks={[1, 2, 3, 4]} ticks={[0, 5].map((n) => ({ value: n, label: QUALITY[n] }))} format={(n) => QUALITY[n]} detents valueBubble showValue />
       </div>
       <div className={ROW_TOP}>
         <span className={NAME_TOP}>Warmth</span>
@@ -94,14 +94,27 @@ function Widths() {
     <Surface material="raise" radius="card" className={PLATE} style={plate(520)}>
       <div className={ROW}>
         <span className={NAME}>full</span>
-        <Slider aria-label="Volume, full width" value={a} min={0} max={100} onValueChange={setA} />
+        <Slider aria-label="Volume, full width" value={a} min={0} max={100} onValueChange={setA} startIcon={<VolumeIcon />} endIcon={<VolumeIcon />} />
       </div>
       <div className={ROW}>
         <span className={NAME}>width 200</span>
-        <Slider aria-label="Volume, 200 wide" width={200} value={b} min={0} max={100} onValueChange={setB} />
+        <Slider aria-label="Volume, 200 wide" width={200} value={b} min={0} max={100} onValueChange={setB} startIcon={<VolumeIcon />} endIcon={<VolumeIcon />} />
       </div>
     </Surface>
   );
+}
+
+function Kinds() {
+  const [range, setRange] = React.useState<readonly number[]>([25, 75]);
+  const [balance, setBalance] = React.useState(0);
+  return <Surface material="raise" radius="card" className={PLATE} style={plate(520)} data-testid="slider-kinds">
+    <div className={ROW}><span className={NAME}>Range</span><Slider value={range} onValueChange={setRange} aria-label="Exposure" thumbs={[{ label: 'Exposure, lower' }, { label: 'Exposure, upper' }]} step={5} largeStep={25} minStepsBetweenValues={2} showValue valueBubble format={percent} /></div>
+    <div className={ROW}><span className={NAME}>Uncontrolled</span><Slider defaultValue={[20, 80]} aria-label="Uncontrolled range" showValue format={percent} /></div>
+    <div className={ROW}><span className={NAME}>Fixed lower</span><Slider defaultValue={[30, 70]} aria-label="Fixed range" thumbs={[{ label: 'Fixed lower', disabled: true }, { label: 'Movable upper' }]} minStepsBetweenValues={5} showValue format={percent} /></div>
+    <div className={ROW}><span className={NAME}>Balance</span><Slider value={balance} onValueChange={setBalance} min={-100} max={100} aria-label="Balance" centered tone="neutral" knobIcon={<VolumeIcon />} showValue valueBubble format={n => n === 0 ? 'Centre' : `${Math.abs(n)}${n < 0 ? ' L' : ' R'}`} /></div>
+    <div className={ROW}><span className={NAME}>Right to left</span><Slider dir="rtl" defaultValue={50} aria-label="RTL amount" tone="neutral" showValue ticks={[0, 50, 100].map(value => ({ value, label: value }))} /></div>
+    <div className={ROW}><span className={NAME}>Vertical</span><Slider defaultValue={40} orientation="vertical" height={240} width={72} aria-label="Vertical level" startIcon={<VolumeIcon />} endIcon={<VolumeIcon />} showValue valueBubble ticks={[0, 50, 100].map(value => ({ value, label: `${value}%` }))} format={percent} /></div>
+  </Surface>;
 }
 
 function States() {
@@ -129,20 +142,39 @@ function Tuner() {
     value: true,
     marks: false,
     ticks: true,
+    range: false,
+    orientation: { type: 'select', options: ['horizontal', 'vertical'], default: 'horizontal' },
+    neutral: false,
+    centered: false,
+    bubble: false,
+    detents: false,
+    knobGlyph: false,
     jump: { type: 'select', options: SPRING_NAMES, default: 'part' },
     slow: [1, 1, 10],
   });
-  const [v, setV] = React.useState(40);
+  const [v, setV] = React.useState<readonly number[]>([20, 40]);
+  const host = React.useRef<HTMLDivElement>(null);
+  React.useLayoutEffect(() => {
+    if (host.current) host.current.style.setProperty('--mu-spring-part-clamped', clampSpringCurve(getComputedStyle(host.current).getPropertyValue('--mu-spring-part')));
+  }, [d.jump]);
   return (
-    <div data-testid="slider-tuner" style={springVars('part', d.jump as SpringName, d.slow) as React.CSSProperties}>
+    <div ref={host} data-testid="slider-tuner" style={springVars('part', d.jump as SpringName, d.slow) as React.CSSProperties}>
       <Surface material="raise" radius="card" className={PLATE} style={plate(d.width + 56)}>
         <Slider
           aria-label="Tuned"
-          value={v}
+          value={d.range ? v : v[1]}
           min={0}
           max={100}
           largeStep={10}
-          onValueChange={setV}
+          onValueChange={next => setV(Array.isArray(next) ? next : [v[0], next as number])}
+          orientation={d.orientation as 'horizontal' | 'vertical'}
+          height={d.orientation === 'vertical' ? 240 : undefined}
+          width={d.orientation === 'vertical' ? 72 : undefined}
+          tone={d.neutral ? 'neutral' : 'green'}
+          centered={d.centered}
+          valueBubble={d.bubble}
+          detents={d.detents}
+          knobIcon={d.knobGlyph ? <BrightnessIcon /> : undefined}
           size={d.size as SliderSize}
           startIcon={d.icons ? <ZoomOutIcon /> : undefined}
           endIcon={d.icons ? <ZoomInIcon /> : undefined}
@@ -169,6 +201,7 @@ export default function SliderPage() {
       more={[
         { id: 'sizes', title: 'Sizes', lede: 'Compact, regular and large set the groove and the knob together. Regular is the default.', node: <Sizes /> },
         { id: 'scale', title: 'Marks and ticks', lede: 'Marks are notches in the groove at steps or events; ticks carry a label. Both sit on the knob\'s travel, so the knob lands exactly on them.', node: <Scale /> },
+        { id: 'kinds', title: 'Ranges, balance and vertical travel', lede: 'Each range knob has its own name and bound; minStepsBetweenValues keeps them apart. A centred fill grows from the middle. A vertical host gives the same travel a height. Detents catch once per accepted value; the value bubble appears while dragging or using keys.', node: <Kinds /> },
         { id: 'states', title: 'States', lede: 'Point at the groove and the knob lifts; press or drag and it presses down. Focus the top slider and push → past the end: it will not go, and says so with a small nudge. A disabled slider dims and takes no pointer or keys.', node: <States /> },
         { id: 'width', title: 'Width', lede: 'A slider fills its container. Give it a width when it sits beside other controls.', node: <Widths /> },
         { id: 'tune', title: 'Tune it', lede: 'The Slider panel steps through its sizes and parts, sets the width, and swaps the spring a jump rides (drag never springs).', node: <Tuner /> },
@@ -195,7 +228,7 @@ export default function SliderPage() {
         { id: "SL2", title: "Marks mean something", body: "A notch in the groove is a step or an event, and a tick has a label. Never scatter them for texture: the knob is what you look at.", origin: 'Ours' },
         { id: "SL3", title: "Say the value in words", body: "Give the knob a value text a person would say, like a date and a time, or a format like 40%.", origin: 'Ours' },
         { id: "SL4", title: "Labels you can read", body: "Tick labels are plain small type at ink2 on a plain surface, never engraved type on a busy backdrop.", origin: 'Ours' },
-        { id: "SL5", title: "The groove holds the knob", body: "The knob travels inside the groove and stops flush at its ends, even when a jump overshoots.", origin: 'Ours' },
+        { id: "SL5", title: "The groove holds the knob", body: "The knob travels inside the groove. Its part spring clips progress at the physical stops, preserving the authored timing. Native geometry clamps every interpolated frame too.", origin: 'Ours' },
       ]}
     />
   );

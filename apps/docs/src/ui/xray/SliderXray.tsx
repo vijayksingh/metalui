@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Slider } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Exploded, IsoCap, IsoTray, XrayFrame, aim, capTop, scalePx, springEasing, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { clampSpringCurve } from '../springTuning';
 import { HintLayer } from '../edit';
 import { SliderSpecimenCard } from './SliderSpecimens';
 
@@ -85,7 +86,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   const ty = ((K - TH) / 2) * S, th = TH * S;
   const kx = (IN + m.v * (L - IN * 2)) * S - (K * S) / 2;
   const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
-  const move = `transform ${ease.ms}ms ${ease.css}, width ${ease.ms}ms ${ease.css}`;
+  const move = `transform ${ease.ms}ms ${clampSpringCurve(ease.css)}`;
 
   const lit = (list: string[], mask: boolean[], k = 1) => list.map((v, i) => (mask[i + 1] ? aim(i === 0 ? v.replace(/rgba\(([^)]*),\s*([\d.]+)\)/, (_, c, a) => `rgba(${c},${Math.min(1, Number(a) * k).toFixed(3)})`) : v, m.lightDeg, m.lightK) : null)).filter(Boolean).join(', ') || 'none';
   const grooveFill = m.track[0] ? well.fill.replace('linear-gradient(', `linear-gradient(${180 + m.lightDeg}deg, `) : 'transparent';
@@ -99,7 +100,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
     ['--mu-r-slider-fill-background' as string]: m.track[4] ? FILL : 'transparent',
     ['--mu-r-slider-knob-background' as string]: metal,
     ['--mu-r-slider-knob-shadow' as string]: KNOB_SH.map((v, i) => (m.knob[i + 1] ? aim(v, m.lightDeg, i === 0 ? m.lightK : 1) : null)).filter(Boolean).join(', ') || 'none',
-    ['--mu-r-slider-self-transition' as string]: `--mu-slider-at ${ease.ms}ms ${ease.css}`,
+    ['--mu-r-slider-self-transition' as string]: move,
   } as React.CSSProperties;
   const wall = Math.round((RP.knob.rise * S) / 1.4);
   const top = capTop(1, wall);
@@ -113,7 +114,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   ) : (
     <>
       <IsoTray y={ty} w={W} h={th} r={th / 2} depth={4 * m.depth} fill={grooveFill} shadow={grooveShadow} colorway={cw} />
-      {m.track[4] && <div className="xr-face is-flat" style={{ top: ty, width: kx + (K * S) / 2, height: th, borderRadius: th / 2, transform: 'translateZ(1px)', background: FILL, transition: move }} />}
+      {m.track[4] && <div className="xr-face is-flat" style={{ top: ty, width: L * S, height: th, borderRadius: th / 2, transformOrigin: 'left', transform: `translateZ(1px) scaleX(${(kx + K * S / 2) / (L * S)})`, background: FILL, transition: move }} />}
       {m.marks && MARKS.map((f) => (
         <i key={f} className="xr-face is-flat" style={{ left: (IN + f * (L - IN * 2)) * S, top: ty, width: RP.mark.w * S, height: th, marginLeft: (-RP.mark.w * S) / 2, borderRadius: RP.mark.radius * S, transform: 'translateZ(1.2px)', background: RP.mark.color[cw] }} />
       ))}

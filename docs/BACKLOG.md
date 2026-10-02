@@ -197,10 +197,10 @@ Direction:
 - [x] **Icons at the ends**: `startIcon` / `endIcon` (volume low / high, dim / bright), the glyphs from the set, playing their acts at the limits; and an optional glyph in or beside the knob.
 - [x] **Sizes and width**: `size` (compact, regular, large: groove thickness and knob size together) and a `width` / full-width option, all from the slider recipe.
 - [x] **Value**: an optional value readout (beside it, or a bubble over the knob while dragging) with the drum; a formatter (%, units).
-- [ ] **More kinds** (see follow-ups): a range (two knobs), a vertical slider, a stepped slider that clicks into detents (part spring), and a centred slider (fill grows from the middle, for balance or offsets).
+- [x] **More kinds**: independently named range knobs with minimum step gap and disabled stops, vertical travel, stepped detents, and centred fill. Base UI keeps controlled/uncontrolled keyboard behavior; native uses the same clamped geometry.
 - [x] **Every state**: rest, hover (the knob lifts), dragging (the knob presses, the fill follows 1:1), focus, disabled, and at the limits (a small refusal nudge when you push past an end).
 - [x] Redo the page: examples for each kind, a DialKit panel, the x-ray card; captures in both colorways.
-- [ ] **Follow-ups**: range (two knobs), vertical, stepped detents, centred; a neutral ink fill; a value bubble over the knob while dragging; volume / brightness glyphs (the set has none; the demo uses zoom); RTL refusal direction; Swift drum for the readout. `e2e/slider.spec.ts` "knob stays inside the groove … graphite" failed once under a full parallel run and passed alone twice: make it robust.
+- [x] **Follow-ups**: range, vertical, detents, centred/neutral fill, transient value bubble, volume/brightness glyphs, physical RTL/vertical refusal and Swift numeric-text drum. Transform-only travel clips the authored part spring at physical stops; native clamps every interpolated frame. Settled geometry polling removes the former parallel-run timing assumption. `e2e/slider.spec.ts` + `slider-kinds.spec.ts` cover 12 feature cases in both colorways and reduced motion; native captures and keyboard host verify parity.
 
 ## Spinner: rethink as waiting, by where it happens
 

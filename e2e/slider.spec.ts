@@ -27,6 +27,13 @@ async function geometry(root: Locator) {
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     await Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished.catch(() => undefined)));
   });
+  await expect.poll(() => root.evaluate(el => {
+    const groove = el.querySelector('.mu-slider-track')!.getBoundingClientRect();
+    const knob = el.querySelector('.mu-slider-knob')!.getBoundingClientRect();
+    const input = el.querySelector('input[aria-valuenow]')!;
+    const fraction = (Number(input.getAttribute('aria-valuenow')) - Number(input.getAttribute('min'))) / (Number(input.getAttribute('max')) - Number(input.getAttribute('min')));
+    return Math.abs(knob.left + knob.width / 2 - (groove.left + knob.width / 2 + fraction * (groove.width - knob.width)));
+  })).toBeLessThan(.5);
   return read();
 }
 
@@ -77,9 +84,7 @@ test('a jump to an end rides the spring but never carries the knob past the groo
   await knobInput(page).focus();
   await page.keyboard.press('Home');
   await geometry(slider);
-  const frames = await slider.evaluate(async (el) => {
-    const input = el.querySelector('input')!;
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+  const sampling = slider.evaluate(async (el) => {
     const out: { over: number; moving: boolean }[] = [];
     const t0 = performance.now();
     await new Promise<void>((done) => {
@@ -93,6 +98,8 @@ test('a jump to an end rides the spring but never carries the knob past the groo
     });
     return out;
   });
+  await page.keyboard.press('End');
+  const frames = await sampling;
   expect(frames.some((f) => f.moving)).toBe(true); // it rode the spring
   expect(Math.max(...frames.map((f) => f.over))).toBeLessThanOrEqual(0.5); // and stopped flush
 });

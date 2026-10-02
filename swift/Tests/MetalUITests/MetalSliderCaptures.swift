@@ -24,6 +24,17 @@ final class MetalSliderCaptures: XCTestCase {
                 slider(0)
                 slider(40)
                 slider(100)
+                MetalSlider(values: .constant([25, 75]), in: 0...100, step: 5, largeStep: 25,
+                            minStepsBetweenValues: 2, thumbLabels: ["Exposure, lower", "Exposure, upper"],
+                            showsValue: true, valueBubble: true, label: "Exposure", valueText: { "\(Int($0))%" })
+                    .frame(height: 32)
+                MetalSlider(value: .constant(-60), in: -100...100, step: 1, largeStep: 10,
+                            knobIcon: .volume, showsValue: true, tone: .neutral, centered: true,
+                            label: "Balance", valueText: { "\(Int($0))" }).frame(height: 32)
+                MetalSlider(value: .constant(40), in: 0...100, step: 1, largeStep: 10,
+                            ticks: ticks, startIcon: .volume, endIcon: .volume, showsValue: true,
+                            orientation: .vertical, label: "Vertical level", valueText: { "\(Int($0))%" })
+                    .frame(width: 72, height: 240)
                 // the playground's zoom: glyphs at the ends, the value beside it, in each size
                 ForEach(MetalSliderSize.allCases, id: \.self) { size in
                     MetalSlider(value: .constant(100), in: 25...200, step: 5, largeStep: 25,

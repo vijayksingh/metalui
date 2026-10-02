@@ -1,0 +1,35 @@
+"""Build a real macOS host and verify native Slider range, disabled, vertical and RTL keys."""
+from pathlib import Path
+import os
+import platform
+import plistlib
+import shutil
+import subprocess
+import tempfile
+
+repo = Path(__file__).resolve().parents[2]
+if not os.environ.get("METALUI_NATIVE_SKIP_BUILD"):
+    subprocess.run(["swift", "build", "-j", "2"], cwd=repo, check=True)
+products = Path(subprocess.check_output(["swift", "build", "--show-bin-path"], cwd=repo, text=True).strip())
+with tempfile.TemporaryDirectory(prefix="metalui-slider-") as temporary:
+    contents = Path(temporary) / "SliderProof.app" / "Contents"
+    (contents / "MacOS").mkdir(parents=True)
+    (contents / "Info.plist").write_bytes(plistlib.dumps({
+        "CFBundleIdentifier": "dev.metalui.sliderproof", "CFBundleName": "SliderProof",
+        "CFBundleExecutable": "SliderProof", "CFBundlePackageType": "APPL",
+        "NSPrincipalClass": "NSApplication", "LSMinimumSystemVersion": "14.0",
+    }))
+    shutil.copytree(products / "MetalUI_MetalUI.bundle", contents / "Resources" / "MetalUI_MetalUI.bundle")
+    subprocess.run(["xcrun", "swiftc", "-parse-as-library", "-target", f"{platform.machine()}-apple-macos14.0",
+                    "-I", str(products), "-L", str(products), "-lMetalUI",
+                    str(Path(__file__).with_name("slider-proof.swift")),
+                    "-o", str(contents / "MacOS" / "SliderProof")], check=True)
+    report = Path(temporary) / "result.txt"
+    command = ["open", "-W", "-n", str(contents.parent), "--env", f"METALUI_NATIVE_REPORT={report}"]
+    if os.environ.get("METALUI_NATIVE_CAPTURE"):
+        command.extend(["--env", f"METALUI_NATIVE_CAPTURE={os.environ['METALUI_NATIVE_CAPTURE']}"])
+    subprocess.run([str(contents / "MacOS" / "SliderProof")], env={**os.environ, "METALUI_NATIVE_REPORT": str(report)}, check=True, timeout=25)
+    result = report.read_text()
+    print(result)
+    if "passed=true" not in result:
+        raise SystemExit("Native Slider keyboard behavior failed")

@@ -1143,7 +1143,7 @@
       "name": "slider",
       "title": "Slider",
       "status": "alpha",
-      "description": "A knob in a groove that never leaves it, a green fill to the knob's centre, notches and labelled ticks on the same travel; three sizes, glyphs at the ends, full width or a set width, and a value readout on the drum. Arrows step, Shift steps large.",
+      "description": "Scalar or range amounts on a clamped track: horizontal/vertical, centred or neutral fill, named independent knobs, step detents, transient value bubble, drum readout and volume/brightness glyphs. Base UI preserves keyboard and form behavior.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Slider",

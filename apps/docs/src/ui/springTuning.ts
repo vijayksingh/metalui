@@ -1,5 +1,8 @@
 import { SPRINGS, type SpringName } from '../../../../packages/metalui/src/motion/springs.generated';
 
+/** Physical hard stops clip sampled progress; they preserve the authored curve's timing. */
+export const clampSpringCurve = (curve: string) => curve.replace(/-?\d*\.?\d+/g, value => String(Math.max(0, Math.min(1, Number(value)))));
+
 /** The system's spring classes, for a DialKit select. */
 export const SPRING_NAMES = Object.keys(SPRINGS) as SpringName[];
 

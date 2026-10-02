@@ -2176,7 +2176,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A track (a well) in three sizes (compact, regular, large: groove and knob together), optional glyphs at its ends and a value readout beside it, a green fill at full strength up to a knurled knob, notches cut across the groove (marks) and labelled ticks under it in the meta type at ink2; arrows step, Shift steps large; hover lifts the knob (settle spring, a longer shadow), pressing or dragging presses it (a tight shadow), a key pushing past an end nudges the groove one nest on the refusal spring; disabled at 40 %; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
+    /// A knob in a groove, using one clamped travel for thumbs, fills, notches and labels. Scalar, range, vertical and centred values share existing size and material recipes. Knobs and fills move only by transform on the part spring; dragging follows the pointer exactly. Stepped values can catch a detent; optional value bubbles use the tooltip plate. Neutral tint reuses ink2. Reduced motion removes travel. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
     public static let slider = MetalObjectRecipe(
         name: "slider",
         layers: [
@@ -2196,7 +2196,7 @@ public enum MetalRecipes {
             .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:slider:13 0 1px 2px rgba(0,0,0,.22)
         ],
         props: [
-            "self.transition": .text("--mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part)"),
+            "self.transition": .text("transform calc(var(--mu-spring-part-d) * var(--mu-travel-part)) var(--mu-spring-part-clamped)"),
             "self.disabled": .text("0.4"),
             "compact.track": .number(6.0),
             "compact.knob": .number(16.0),
