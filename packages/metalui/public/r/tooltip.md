@@ -55,6 +55,10 @@ Button(action: undo) { MetalIcon(.undo, size: 16) }
 
 - The trigger carries `aria-label` (and `aria-keyshortcuts` when it has a key). Keyboard focus shows the tooltip as hover does.
 
+## Escape in a panel
+
+The tooltip closes through Base UI and allows its Escape event to propagate. A surrounding panel can dismiss on the first Escape without a capture listener or synthetic event. Controlled tooltips can handle `onOpenChange(open, details)`; preserve the supplied propagation policy. Swift tooltip overlays take no focus or key events, so their host already owns Escape.
+
 ## Tokens
 
 The tooltip recipe, `--mu-tooltip-delay-ms`, `--mu-tooltip-gap`, `--mu-spring-settle`. Swift: `MetalTooltipMetrics`.

@@ -271,7 +271,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    // ⎋ closes, caught on the way down so a key's own tooltip doesn't take it first; but not from a
+    // ⎋ closes, including from a key with a tooltip; but not from a
     // select's open list (it is portalled: its keys reach here through React, not the DOM).
     if (e.key !== 'Escape' || !onClose || !root.current?.contains(e.target as Node)) return;
     e.preventDefault();
@@ -285,7 +285,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
       <section
         ref={root}
         aria-labelledby={`${ids}-title`}
-        onKeyDownCapture={onKeyDown}
+        onKeyDown={onKeyDown}
         className={`@container grid w-full max-w-[36rem] gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}
       >
         <header className="flex items-start justify-between gap-12">

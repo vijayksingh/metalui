@@ -34,6 +34,8 @@ export interface TooltipProps {
   children: React.ReactElement;
   /** Controlled open state (a docs still, a test). */
   open?: boolean;
+  /** Controlled hosts receive the same Base UI open/close request and reason. */
+  onOpenChange?: BaseTooltip.Root.Props['onOpenChange'];
   /** Keeps the tooltip shut without changing the tree (a sidebar item whose word is showing). */
   disabled?: boolean;
   /** A note that wraps at the max width instead of one line. */
@@ -52,9 +54,12 @@ const POPUP = 'mu-tooltip max-w-tooltip-max-width py-tooltip-pad-y px-tooltip-pa
 const KEY = 'mu-tooltip-key text-tooltip-key-ink';
 
 /** Names an icon-only control and its key, one hover away. */
-function TooltipRoot({ label, shortcut, side = 'top', children, open, disabled, wrap, delay, offset, className }: TooltipProps) {
+function TooltipRoot({ label, shortcut, side = 'top', children, open, onOpenChange, disabled, wrap, delay, offset, className }: TooltipProps) {
   return (
-    <BaseTooltip.Root open={open} disabled={disabled}>
+    <BaseTooltip.Root open={open} disabled={disabled} onOpenChange={(next, details) => {
+      if (details.reason === 'escape-key') details.allowPropagation();
+      onOpenChange?.(next, details);
+    }}>
       <BaseTooltip.Trigger delay={delay} render={children} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner className={POSITIONER} side={side} sideOffset={offset ?? gap()} collisionPadding={8}>

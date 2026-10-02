@@ -4,6 +4,22 @@ import { COLORWAYS, capture, open } from './helpers';
 // Tooltip: after 120 ms a control names itself and its key; within a group the next one shows at once;
 // keyboard focus shows it too; it never takes the pointer.
 for (const colorway of COLORWAYS) {
+  test(`first Escape dismisses a panel around a tooltip in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/tooltip#escape', colorway);
+    const trigger = page.getByRole('button', { name: 'Open hint panel' });
+    await trigger.click();
+    const panel = page.getByRole('dialog', { name: 'Hint panel' });
+    await expect(panel).toBeVisible();
+    await panel.focus();
+    await page.keyboard.press('Tab');
+    await expect(panel.getByRole('button', { name: 'Pin note' })).toBeFocused();
+    await expect(page.locator('.mu-tooltip').filter({ hasText: 'Pin this note' })).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(panel).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+  });
+
   test(`hover, glide and focus in ${colorway}`, async ({ page }) => {
     await open(page, '/components/tooltip', colorway);
     // the playground's tooltips, not the x-ray's specimen (a real tooltip held open in its card)

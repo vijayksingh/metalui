@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Toolbar, ToolButton, ToolbarSeparator, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
+import { Button, Popover, Toolbar, ToolButton, ToolbarSeparator, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { CloseIcon, PinIcon, RegionIcon, SelectIcon, TextIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/tooltip/tooltip.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -51,6 +51,9 @@ export default function TooltipPage() {
       </Section>
       <Section id="x-ray" title="X-ray" lede="See how the tooltip works. Click an icon to learn about one part and change it.">
         <TooltipXray />
+      </Section>
+      <Section id="escape" title="Escape reaches the panel" lede="A tooltip is a label, so its Escape request also reaches the surrounding panel. The first Escape closes this popover and returns focus to its trigger; the tooltip never becomes another step to dismiss.">
+        <Bench><Popover><Popover.Trigger><Button>Open hint panel</Button></Popover.Trigger><Popover.Content><Popover.Title>Hint panel</Popover.Title><Popover.Body><Tooltip label="Pin this note"><Button icon={<PinIcon size={16} />}>Pin note</Button></Tooltip></Popover.Body></Popover.Content></Popover></Bench>
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[
