@@ -31,6 +31,11 @@ public struct MetalCueSelection: Equatable, Sendable {
         self.selection = clamped(selection, in: source)
     }
     private var saved: Saved { Saved(source: source, selection: selection) }
+    // Swift String equality folds canonically equivalent spellings. Source offsets do not:
+    // precomposed and combining accents can occupy different UTF16 ranges.
+    private func sameSource(_ first: String, _ second: String) -> Bool {
+        first.utf16.elementsEqual(second.utf16)
+    }
     private func clamped(_ selection: MetalCueSelection, in source: String) -> MetalCueSelection {
         let count = source.utf16.count
         let start = min(count, max(0, selection.start))
@@ -43,7 +48,7 @@ public struct MetalCueSelection: Equatable, Sendable {
     private func remember(_ saved: Saved) { past.append(saved); past = Array(past.suffix(limit)); future.removeAll() }
     /// Coalesces host typing until commit/begin/history navigation. Equal echoes preserve previews.
     public func setSource(_ source: String, selection: MetalCueSelection? = nil) {
-        guard source != self.source else { return }
+        guard !sameSource(source, self.source) else { return }
         if gesture != nil { commit() }
         if !typing { remember(saved) }
         typing = true
@@ -58,7 +63,7 @@ public struct MetalCueSelection: Equatable, Sendable {
     @discardableResult public func replace(_ words: String) -> Bool {
         guard var active = gesture else { return false }
         let ns = source as NSString, range = active.range
-        guard ns.substring(with: range) != words else { return true }
+        guard !sameSource(ns.substring(with: range), words) else { return true }
         let count = words.utf16.count, end = range.location + range.length, delta = count - range.length
         func move(_ position: Int) -> Int {
             if position <= range.location { return position }
@@ -74,7 +79,7 @@ public struct MetalCueSelection: Equatable, Sendable {
         typing = false
         guard let active = gesture else { return }
         gesture = nil
-        if active.before.source != source { remember(active.before) }
+        if !sameSource(active.before.source, source) { remember(active.before) }
         publish(saved)
     }
     public func cancel() {
