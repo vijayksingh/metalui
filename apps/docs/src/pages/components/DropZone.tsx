@@ -54,6 +54,15 @@ function DropTuner() {
   return <div data-testid="drop-tuner" className="flex w-full justify-center" style={vars}><Region label="Tuned region" /></div>;
 }
 
+function CompactReceiver() {
+  const d = useDialKit('Compact receiver', { width: [240, 180, 480] });
+  const [count, setCount] = React.useState(0);
+  return <div role="region" aria-label="Compact receiver" className="mu-stack max-w-full" style={{ width: d.width }}>
+    <DropZone compact icon={<ImageIcon size={20} />} title="Add images for the Lisbon travel journal" onFiles={(files) => setCount(files.length)} />
+    <span role="status" className="type-meta text-ink2">{count} files chosen</span>
+  </div>;
+}
+
 export default function DropZonePage() {
   return (
     <ComponentPage
@@ -70,7 +79,7 @@ export default function DropZonePage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'tune', title: 'Tune the drop', lede: 'The Drop panel swaps the spring the tray sinks and the glyph rises on, sets how far the tray gives and how wide the edge lights, and stretches time.', node: <DropTuner /> }]}
+      more={[{ id: 'tune', title: 'Tune the drop', lede: 'The Drop panel swaps the spring the tray sinks and the glyph rises on, sets how far the tray gives and how wide the edge lights, and stretches time.', node: <DropTuner /> }, { id: 'compact', title: 'Inside a narrow composer', lede: 'The title truncates before the choose-files words. Its full accessible name stays on the file input. Use the Compact receiver panel to narrow the host.', node: <CompactReceiver /> }]}
       usage={`const [files, setFiles] = React.useState<File[]>([]);
 
 <DropZone

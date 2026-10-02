@@ -24,7 +24,7 @@ import { refuse } from '../../motion/refuse';
  * ───────────────────────────────────────────────────────── */
 
 const ROOT = 'mu-drop-zone relative grid content-center justify-items-center gap-drop-zone-gap min-h-drop-zone-min-height p-drop-zone-pad rounded-drop-zone-radius recipe-well-field text-center cursor-pointer select-none drop-zone-edge drop-zone-sink drop-zone-disabled has-focus-visible:focus-ring';
-const COMPACT = 'mu-drop-zone relative flex items-center gap-drop-zone-compact-gap h-drop-zone-compact-height px-drop-zone-compact-pad-x rounded-drop-zone-radius recipe-well-field text-left cursor-pointer select-none drop-zone-edge drop-zone-sink drop-zone-disabled has-focus-visible:focus-ring';
+const COMPACT = 'mu-drop-zone relative flex min-w-0 max-w-full items-center gap-drop-zone-compact-gap h-drop-zone-compact-height px-drop-zone-compact-pad-x rounded-drop-zone-radius recipe-well-field text-left cursor-pointer select-none drop-zone-edge drop-zone-sink drop-zone-disabled has-focus-visible:focus-ring';
 const WELL = 'mu-drop-zone-well grid flex-none place-items-center size-drop-zone-well-size rounded-drop-zone-well-radius recipe-surface-raise-sm text-ink2 drop-zone-rise [&>svg]:size-drop-zone-well-glyph';
 const TITLE = 'mu-drop-zone-title type-ui text-ink';
 const LINE = 'mu-drop-zone-description type-meta text-ink3';
@@ -181,11 +181,11 @@ export function DropZone({
         onChange={onChange}
       />
       {icon && <span aria-hidden className={WELL}>{icon}</span>}
-      <span className={WORDS}>
-        <span aria-hidden className={TITLE}><SwapText value={line} /></span>
+      <span className={compact ? `${WORDS} flex-1 overflow-hidden` : WORDS}>
+        <span aria-hidden className={compact ? `${TITLE} block min-w-0 truncate` : TITLE}><SwapText value={line} className={compact ? 'max-w-full [&>.mu-swap-layer]:block [&>.mu-swap-layer]:max-w-full [&>.mu-swap-layer]:truncate' : undefined} /></span>
         {description && <span id={descId} className={LINE}>{description}</span>}
       </span>
-      {!disabled && <span aria-hidden className={compact ? `${CHOOSE} ms-auto flex-none` : CHOOSE}>{chooseLabel}</span>}
+      {!disabled && <span aria-hidden className={compact ? `${CHOOSE} ms-auto min-w-0 truncate` : CHOOSE}>{chooseLabel}</span>}
     </label>
   );
 }

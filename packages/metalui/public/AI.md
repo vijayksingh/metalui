@@ -1327,7 +1327,7 @@ A place that receives files, by drop or by picking. React: `DropZone` from `@unl
 - A sunk tray (well look), radius 20, at least 176 tall, padding 24.
 - A 44 raised well with a 20 glyph; the title (ui type); what it takes (meta type, ink3); "or choose files" (meta, ink2, underlined).
 - An edge drawn inside the tray (1.5), clear at rest.
-- Compact: one 56 row: glyph, words, "or choose files" at the end.
+- Compact: one 56 row: glyph, words, "or choose files" at the end. Words can shrink and truncate before the choose-files text; the input keeps the full title as its accessible name. The host owns the width, including a narrow composer.
 
 ## States and motion
 
@@ -1350,7 +1350,7 @@ Reduce Motion: edge and line change at once; nothing sinks, rises or shakes.
 | `onFiles(files, refused)` (refused: `{ file, reason: 'type' \| 'size' \| 'count' }[]`) | `onFiles: ([URL]) -> Void` |
 | `accept` (the input's accept: `"image/*,.pdf"`), `maxSize` (bytes), `multiple` (true) | `accept: [UTType]` |
 | `title`, `description`, `overTitle`, `refusedTitle`, `chooseLabel`, `icon` | `title`, `description`, `systemImage` |
-| `compact`, `disabled` | – |
+| `compact`, `disabled` | `compact:`, `.disabled()` |
 
 While dragging, only the MIME type is known, so an extension pattern (`.pdf`) is checked on drop; size too.
 

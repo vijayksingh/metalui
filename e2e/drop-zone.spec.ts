@@ -24,6 +24,24 @@ async function hold(page: Page, files: { name: string; type: string }[], ms: num
 const pdf = { name: 'Tram map.pdf', type: 'application/pdf' };
 
 for (const colorway of COLORWAYS) {
+  test(`compact long title keeps picking words separate in ${colorway}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/drop-zone#compact', colorway);
+    const receiver = page.getByRole('region', { name: 'Compact receiver' });
+    const words = receiver.locator('.mu-drop-zone-words');
+    const choose = receiver.locator('.mu-drop-zone-choose');
+    const text = (await words.boundingBox())!;
+    const key = (await choose.boundingBox())!;
+    expect(text.x + text.width).toBeLessThanOrEqual(key.x);
+    expect(await words.evaluate((el) => el.scrollWidth > el.clientWidth || el.querySelector('.mu-swap-layer')!.scrollWidth > el.querySelector('.mu-swap-layer')!.clientWidth)).toBe(true);
+    const input = receiver.getByLabel('Add images for the Lisbon travel journal');
+    await input.focus();
+    await expect(input).toBeFocused();
+    await input.setInputFiles({ name: 'Lisbon.png', mimeType: 'image/png', buffer: Buffer.alloc(10) });
+    await expect(receiver.getByRole('status')).toHaveText('1 files chosen');
+    await receiver.screenshot({ path: capture(`drop-zone-compact-${colorway}`) });
+  });
+
   test(`arms, sinks under files and takes what it accepts, in ${colorway}`, async ({ page }) => {
     await open(page, '/components/drop-zone', colorway);
     await drag(page, 'dragover', 'outside', [pdf]);
