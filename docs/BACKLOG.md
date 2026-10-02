@@ -17,7 +17,7 @@ Owner: "no select date range; add option for min legit date, option for max legi
 - [x] **Marked days**: a dot or LED for days with something on them (events).
 - [x] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
 - [x] **Date and time**: single DatePicker adds localized time and an IANA zone. Zone changes preserve the instant; DST gaps refuse typed/selected values and overlaps use the first occurrence. Swift MetalDatePicker mirrors date/time entry and zone display.
-- [ ] Check on the Calendar page: a pill-shaped plate cut off at the left edge of the viewport, level with the playground (seen in the owner's screenshot); find what it is.
+- [x] **Clipped-pill investigation**: inspected the Calendar playground at 390px and 1280px in Bone and Graphite, including visible control bounds and captured pages. No plate crossed the left viewport edge. The page composes only local benches; the DialKit launcher is at the bottom right and SwapText measurement spans are hidden. The original screenshot is unavailable, so its object cannot be identified; the reported state did not reproduce in these checks. Evidence: `e2e/calendar-selection.spec.ts` and `docs/captures/web/calendar-page-left-edge-*.png`.
 
 ## Checkbox (and Checkbox group)
 

@@ -77,3 +77,19 @@ test('calendar wraps two months and has no detached plate on a narrow page', asy
   await expect(trip.locator('.mu-calendar-day[tabindex="0"]')).toHaveCount(1);
   await trip.screenshot({ path: capture('calendar-range-narrow') });
 });
+
+for (const colorway of COLORWAYS) for (const width of [390, 1280]) {
+  test(`calendar page has no visible plate clipped at the left viewport edge at ${width}px in ${colorway}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/calendar', colorway);
+    await page.getByRole('heading', { name: 'Playground', exact: true }).scrollIntoViewIfNeeded();
+    const clipped = await page.locator('button, [role="group"], .mu-surface, .mu-switcher-thumb').evaluateAll((elements) => elements.flatMap((element) => {
+      const box = element.getBoundingClientRect(), style = getComputedStyle(element);
+      const hidden = element.closest('[aria-hidden="true"], [inert]') || style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity) === 0;
+      return !hidden && box.width > 0 && box.left < -1 && box.right > 0 && box.top < innerHeight && box.bottom > 0 ? [{ tag: element.tagName, className: element.className, left: box.left, text: element.textContent?.slice(0, 80) }] : [];
+    }));
+    expect(clipped).toEqual([]);
+    await page.screenshot({ path: capture(`calendar-page-left-edge-${colorway}-${width}`) });
+  });
+}
