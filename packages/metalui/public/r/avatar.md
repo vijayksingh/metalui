@@ -35,6 +35,8 @@ Reduce Motion: the photo appears at once; the group does not spread.
 | React | SwiftUI |
 |---|---|
 | `Avatar` `name`, `aria-label`, `src`, `size` (`small`, `regular`, `large`), `presence` (`live`, `waiting`, `off`) | `MetalAvatar(name:image:accessibilityLabel:)` |
+
+Presence lamps hold steady: `waiting` means the person is away, rather than an operation awaiting completion. Image loading keeps the initials; it does not start a presence clock.
 | `AvatarGroup` `people`, `max` (4), `size`, `aria-label` | – |
 
 ## Keyboard and accessibility

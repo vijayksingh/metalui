@@ -435,6 +435,8 @@ Reduce Motion: the photo appears at once; the group does not spread.
 | React | SwiftUI |
 |---|---|
 | `Avatar` `name`, `aria-label`, `src`, `size` (`small`, `regular`, `large`), `presence` (`live`, `waiting`, `off`) | `MetalAvatar(name:image:accessibilityLabel:)` |
+
+Presence lamps hold steady: `waiting` means the person is away, rather than an operation awaiting completion. Image loading keeps the initials; it does not start a presence clock.
 | `AvatarGroup` `people`, `max` (4), `size`, `aria-label` | – |
 
 ## Keyboard and accessibility
@@ -1892,6 +1894,7 @@ Reduce Motion: settle is a crossfade, so it fades in place.
 - Beside the first line, never under a text block (it would cover the next line of a list).
 - Hidden while selected or writing.
 - Status carries its LED and its words; never colour alone.
+- A waiting lamp runs only while its engraving is presented or its host is hovered. A hidden engraving pauses the inner lamp; visible lamps still sleep off screen or in a hidden tab.
 
 ## Accessibility
 
@@ -2086,6 +2089,10 @@ Reduced motion (OS, html.rm or scoped data-mu-motion=reduce) holds every gesture
 ## API
 
 `Led kind size ("default" | "small") gesture ("steady" | "flicker" | "breathe" | "blink2" | "rise")`
+
+Use `gesture="steady"` when an amber ink names a static fact: an away person's presence, a historical Fixed changelog heading, or a negative weekly comparison. `waiting` defaults to breathing for a currently pending operation; words must make that pending state explicit. A hidden hover engraving pauses its lamp until the host is hovered or the engraving is explicitly presented. Visible lamps still pause off screen or in a hidden tab, and reduced motion removes the loop.
+
+The docs' intentional active examples are auditable: `apps/docs/src/pages/components/LensBar.tsx` mounts one `source="asking"` fixture (the playground starts at model), and `apps/docs/src/pages/components/Status.tsx` mounts a waiting LED and a waiting badge in its five-state gallery. Those are one and two pending lamps respectively; `apps/docs/src/ui/WipNotice.tsx` adds the shared Work in progress lamp while visible. `e2e/led-semantic-idle.spec.ts` checks static consumers, hidden/shown engraving, real LensBar asking-to-model and Status waiting-to-live changes. `e2e/clocks-sleep.spec.ts` covers off-screen pause and wake. These examples justify their specific pending loops; they do not permit other infinite motion at rest.
 
 SwiftUI: `MetalLED(.live, gesture: .flicker)`.
 

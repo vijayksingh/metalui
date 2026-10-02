@@ -52,6 +52,7 @@ Reduce Motion: settle is a crossfade, so it fades in place.
 - Beside the first line, never under a text block (it would cover the next line of a list).
 - Hidden while selected or writing.
 - Status carries its LED and its words; never colour alone.
+- A waiting lamp runs only while its engraving is presented or its host is hovered. A hidden engraving pauses the inner lamp; visible lamps still sleep off screen or in a hidden tab.
 
 ## Accessibility
 

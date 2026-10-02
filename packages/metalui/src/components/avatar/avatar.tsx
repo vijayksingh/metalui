@@ -58,7 +58,7 @@ export function Avatar({ name, 'aria-label': accessibleLabel, src, size = 'regul
     <BaseAvatar.Root role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : label} aria-hidden={decorative || undefined} className={className ? `${own} ${className}` : own}>
       <BaseAvatar.Fallback className={INITIALS}>{initialsOf(name)}</BaseAvatar.Fallback>
       {src && <BaseAvatar.Image src={src} alt="" className={PHOTO} />}
-      {presence && <span className={PRESENCE}><Led kind={presence} size={size === 'large' ? 'default' : 'small'} /></span>}
+      {presence && <span className={PRESENCE}><Led kind={presence} size={size === 'large' ? 'default' : 'small'} gesture="steady" /></span>}
     </BaseAvatar.Root>
   );
 }

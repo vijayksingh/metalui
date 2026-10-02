@@ -311,7 +311,7 @@ function Readouts({ week, last, measure, onMeasureChange, versus }: { week: Week
             </span>
             <span className="type-pixel-small text-ink"><SwapText value={figure(m.id, week.totals[m.id])} /></span>
             <span className="flex min-w-0 items-center gap-6 type-meta text-ink2">
-              <Led kind={c.led} size="small" />
+              <Led kind={c.led} size="small" gesture="steady" />
               <span className="truncate"><SwapText value={c.words} /></span>
             </span>
             <Sparkline size="mini" points={days} aria-hidden />

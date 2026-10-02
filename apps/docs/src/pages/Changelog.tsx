@@ -81,7 +81,7 @@ export default function ChangelogPage() {
             {r.groups.filter((g) => g.notes.length).map((g) => (
               <div key={g.name} className="grid gap-8">
                 <span className="flex items-center gap-8 type-label text-ink3">
-                  <Led kind={GROUP_LED[g.name] ?? 'off'} size="small" />
+                  <Led kind={GROUP_LED[g.name] ?? 'off'} size="small" gesture="steady" />
                   {g.name}
                 </span>
                 <ul className="m-0 grid max-w-measure grid-cols-1 list-none gap-0 break-words p-0">

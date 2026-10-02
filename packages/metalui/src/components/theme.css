@@ -1860,6 +1860,9 @@
 @utility engraving-motion {
   transition: opacity var(--mu-engraving-fade-ms), transform var(--mu-engraving-move-ms) var(--mu-spring-settle);
 }
+@utility engraving-sleep {
+  &[data-open=false] [data-lamp], &:not([data-open=true]):not(:is(.mu-icon-trigger:hover > *)) [data-lamp] { animation-play-state: paused !important; }
+}
 @utility engraving-beside-out {
   transform: translateX(calc((var(--mu-zero-length) - var(--mu-engraving-slide)) * var(--mu-travel-settle)));
 }
