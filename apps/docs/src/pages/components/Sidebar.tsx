@@ -89,7 +89,7 @@ export default function SidebarPage() {
       rules={[
         { id: 'SB1', title: 'Words leave first', body: 'Collapsing, the words fade before the width moves; expanding, the width comes first. Text never squeezes.', origin: 'Ours' },
         { id: 'SB2', title: 'One highlight travels', body: 'The current place\'s highlight glides to the next, on the settle spring.', origin: 'The sliding indicator' },
-        { id: 'SB3', title: 'The rail keeps names', body: 'Every glyph in the rail is named and shows its word as a tooltip.', origin: 'Ours' },
+        { id: 'SB3', title: 'The rail keeps names', body: 'Every item in the rail keeps its name and tooltip. Only the link or toggle takes focus; its glyph never adds a Tab stop.', origin: 'Ours' },
       ]}
     />
   );

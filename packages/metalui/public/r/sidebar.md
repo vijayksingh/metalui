@@ -47,3 +47,5 @@ Reduce Motion: width and words change at once; the highlight moves at once.
 
 - Few sections, short words; the most used places first.
 - Remember whether someone collapsed it.
+
+- Glyph wrappers are inert: only the navigation link or collapse button enters the Tab order, including in Chrome. Icons still act through the enclosing control trigger.

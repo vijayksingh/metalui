@@ -338,7 +338,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
 - [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.
-- [ ] **Sidebar item icons take their own Tab stop in Chrome** (also on /components/sidebar): make the glyph wrapper inert in the Sidebar.
+- [x] **Sidebar glyphs**: inert icon wrappers remove extra Chrome Tab stops in both expanded and collapsed rails; the enclosing link or toggle remains the icon trigger.
 - [ ] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root.
 - [ ] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).
 - [ ] **Tabs has no vertical orientation** (settings sections use Sidebar items instead).

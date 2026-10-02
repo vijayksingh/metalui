@@ -23,7 +23,7 @@ const ROOT = 'mu-sidebar relative flex h-full flex-none flex-col gap-sidebar-gap
 const LIST = 'mu-sidebar-list relative flex flex-1 flex-col gap-sidebar-gap min-h-0 overflow-y-auto overflow-x-hidden';
 const SECTION = 'mu-sidebar-section flex flex-col gap-sidebar-section-gap';
 const TITLE = 'mu-sidebar-title px-sidebar-section-title-pad type-label engraved sidebar-words';
-const ITEM = 'mu-sidebar-item relative z-1 flex items-center overflow-hidden gap-sidebar-item-gap h-sidebar-item-height px-sidebar-item-pad-x rounded-sidebar-item-radius type-ui text-ink2 no-underline outline-none transition-colors duration-settle hover:text-ink aria-[current=page]:text-ink focus-visible:focus-ring [&>svg]:size-sidebar-item-glyph [&>svg]:flex-none';
+const ITEM = 'mu-sidebar-item mu-icon-trigger relative z-1 flex items-center overflow-hidden gap-sidebar-item-gap h-sidebar-item-height px-sidebar-item-pad-x rounded-sidebar-item-radius type-ui text-ink2 no-underline outline-none transition-colors duration-settle hover:text-ink aria-[current=page]:text-ink focus-visible:focus-ring [&>svg]:size-sidebar-item-glyph [&>svg]:flex-none';
 const WORDS = 'mu-sidebar-words min-w-0 sidebar-words';
 const GLIDE = 'rounded-sidebar-item-radius recipe-row-list-hover';
 const EDGE = 'mu-sidebar-edge flex flex-col gap-sidebar-section-gap';
@@ -98,7 +98,7 @@ function Item({ icon, children, active, render, className, ...props }: SidebarIt
       className: className ? `${ITEM} ${className}` : ITEM,
       children: (
         <>
-          <span aria-hidden className="inline-grid flex-none">{icon}</span>
+          <span aria-hidden inert className="inline-grid flex-none">{icon}</span>
           <span className={WORDS}>{children}</span>
         </>
       ),
@@ -119,7 +119,7 @@ function Toggle({ collapsed, onCollapsedChange, icon }: SidebarToggleProps) {
   const label = collapsed ? 'Expand the sidebar' : 'Collapse to a rail';
   const button = (
     <button type="button" aria-label={label} aria-expanded={!collapsed} className={`${ITEM} border-0 bg-transparent cursor-pointer`} onClick={() => onCollapsedChange(!collapsed)}>
-      <span aria-hidden className="inline-grid flex-none">{icon}</span>
+      <span aria-hidden inert className="inline-grid flex-none">{icon}</span>
       <span className={WORDS}>{collapsed ? 'Expand' : 'Collapse'}</span>
     </button>
   );

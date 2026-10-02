@@ -54,3 +54,21 @@ test('collapsing, the words leave before the width moves', async ({ page }) => {
   expect(r.wordsHalf).toBeGreaterThan(0);
   expect(r.widthHalf).toBeGreaterThan(r.wordsHalf);
 });
+
+for (const colorway of COLORWAYS) {
+  test(`one Tab stop per sidebar action in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/sidebar', colorway);
+    const rail = nav(page);
+    const links = rail.getByRole('link');
+    for (const collapsed of [false, true]) {
+      if (collapsed) await rail.getByRole('button', { name: 'Collapse to a rail' }).click();
+      await links.first().focus();
+      for (let index = 1; index < await links.count(); index++) {
+        await page.keyboard.press('Tab');
+        await expect(links.nth(index)).toBeFocused();
+      }
+      await page.keyboard.press('Tab');
+      await expect(rail.getByRole('button', { name: collapsed ? 'Expand the sidebar' : 'Collapse to a rail' })).toBeFocused();
+    }
+  });
+}
