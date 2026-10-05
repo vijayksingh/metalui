@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useLocation } from 'react-router';
 import { BlockSilhouette, CodeCard, LinkCard, Region, SizeReadout, Slider, Swatch, type SilhouetteKind } from '@unlocalhosted/metalui';
 
 /* The Block silhouette playground: a small canvas of real blocks with a zoom. Below 35 % (the
@@ -34,8 +35,10 @@ function Real({ it }: { it: Item }) {
 }
 
 export function FarCanvas({ height = 380 }: { height?: number }) {
-  const [zoom, setZoom] = React.useState(0.5);
-  const [committed, setCommitted] = React.useState(0.5);
+  const { state } = useLocation();
+  const initial = state?.sectionIndex === '/objects' ? 0.25 : 0.5;
+  const [zoom, setZoom] = React.useState(initial);
+  const [committed, setCommitted] = React.useState(initial);
   const far = committed < THRESHOLD;
   return (
     <div className="flex w-full flex-col items-center gap-14">

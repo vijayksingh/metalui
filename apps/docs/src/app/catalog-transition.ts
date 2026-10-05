@@ -13,6 +13,17 @@ export const PLACE_TARGETS: Record<string, string> = {
   'split-pane': '.mu-split-pane',
 };
 
+export const OBJECT_TARGETS: Record<string, string> = {
+  attachment: '.mu-attachment', avatar: '.mu-avatar', 'block-silhouette': '.mu-silhouette',
+  card: '.mu-card', 'code-card': '.mu-codecard', connector: '.snap-canvas',
+  day: '.mu-day', folder: '.mu-folder', 'link-card': '.mu-linkcard', table: '.mu-table', weather: '.mu-weather',
+};
+
+export function catalogTarget(path: string) {
+  const name = path.split('/').at(-1)!;
+  return PLACE_TARGETS[name] ?? OBJECT_TARGETS[name];
+}
+
 /** Only the selected card participates. Names disappear as soon as navigation settles. */
 export function useCatalogTransition(to: string, root: React.RefObject<HTMLElement | null>, label?: string, specimen?: string) {
   const active = useViewTransitionState(to);

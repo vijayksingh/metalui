@@ -50,16 +50,21 @@ function Scene({ name }: { name: string }) {
 
 /** Real components at their recipe dimensions. Scale the entire scene to its window. */
 export function PlaceSpecimen({ name }: { name: string }) {
+  return <SpecimenWindow><Scene name={name} /></SpecimenWindow>;
+}
+
+/** A dormant specimen scales as one object, keeping its control recipe dimensions. */
+export function SpecimenWindow({ children, width = 400, height = 240 }: { children: React.ReactNode; width?: number; height?: number }) {
   const viewport = React.useRef<HTMLDivElement>(null);
   const scene = React.useRef<HTMLDivElement>(null);
   React.useLayoutEffect(() => {
     const view = viewport.current, content = scene.current;
     if (!view || !content) return;
-    const resize = () => { content.style.transform = `scale(${Math.min(1, view.clientWidth / 400, view.clientHeight / 240)})`; };
+    const resize = () => { content.style.transform = `scale(${Math.min(1, view.clientWidth / width, view.clientHeight / height)})`; };
     resize();
     const observer = new ResizeObserver(resize);
     observer.observe(view);
     return () => observer.disconnect();
-  }, []);
-  return <div className="place-preview" ref={viewport} aria-hidden="true" inert><div className="place-scene library-specimen" ref={scene}><Scene name={name} /></div></div>;
+  }, [width, height]);
+  return <div className="place-preview" ref={viewport} aria-hidden="true" inert><div className="place-scene library-specimen" ref={scene} style={{ width, height }}>{children}</div></div>;
 }
