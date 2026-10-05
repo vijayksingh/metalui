@@ -96,3 +96,14 @@ test('reduced motion, both colorways and a phone keep the grid still and in boun
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await expect(page.locator('.icon-toolbar')).toHaveCSS('position', 'static');
 });
+
+test('icons are a first-class section: next to Components in the nav and on the overview', async ({ page }) => {
+  await page.goto('/overview');
+  const nav = page.getByRole('complementary', { name: 'Documentation' });
+  await expect(nav.getByRole('link', { name: 'Icons', exact: true })).toBeVisible();
+  const sections = await nav.getByRole('link').evaluateAll(links => links.map(link => link.textContent?.trim()));
+  expect(sections.indexOf('Icons')).toBe(sections.indexOf('Components') + 1);
+  await page.locator('#explore').getByRole('link', { name: /^Icons/ }).click();
+  await expect(page.getByRole('heading', { name: 'Icons', exact: true, level: 1 })).toBeVisible();
+  await expect(nav.getByRole('link', { name: 'Icons', exact: true })).toHaveAttribute('aria-current', 'page');
+});

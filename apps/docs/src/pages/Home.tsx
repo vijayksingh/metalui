@@ -71,7 +71,7 @@ export default function Home() {
             { to: '/foundations', icon: 'layout', title: 'Foundations', body: 'Colours, text, spacing, corners, materials, shadows and motion.', eng: 'Tokens · live' },
             { to: '/components', icon: 'board', title: 'Components', body: 'Find a control by purpose, try its material and motion, then open its guide.', eng: 'React · SwiftUI' },
             { to: '/components/tool-strip', icon: 'text', title: 'Blocks', body: 'Bigger pieces built from components, like the toolbar, filter bar and cards.', eng: 'Compositions' },
-            { to: '/icons', icon: 'seed', title: 'Icons', body: 'Line icons on a 24 point grid. Each one moves a little when you hover it.', eng: 'Glyphs' },
+            { to: '/icons', icon: 'seed', title: 'Icons', body: 'Product and life glyphs on a 24 grid, each with its own motion. Open one for sizes, code and SVG.', eng: 'Product · Life' },
           ].map((c) => (
             <Link key={c.title} className="card raised obj" to={c.to}>
               <span className="ico"><Icon name={c.icon as never} size={20} /></span>

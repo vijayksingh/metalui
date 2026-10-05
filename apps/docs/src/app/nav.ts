@@ -15,7 +15,7 @@ export interface NavGroup {
 }
 
 /* The part pages, grouped by layer from each part's meta.json (app/parts.ts); nothing is filed by hand.
- * The nav reads from what people reach for to what it is made of: the controls first, then the blocks
+ * The nav reads from what people reach for to what it is made of: the controls and their icons first, then the blocks
  * built from them, then objects, what the hand and the canvas use, and the parts everything is cut
  * from. The build order (LAYERS, docs/COMPOSITION.md) is unchanged; this is only reading order. */
 const READING_ORDER = ['component', 'object', 'instrument', 'place', 'part'] as const;
@@ -65,6 +65,16 @@ export const NAV: NavGroup[] = [
   },
   LAYER_GROUPS[0],
   {
+    label: 'Icons',
+    to: '/icons',
+    description: 'Browse MetalUI product and life icons, then open a glyph for its motion, React and SwiftUI code, and SVG downloads.',
+    items: [
+      { to: '/icons/life', label: 'Life icons' },
+      { to: '/icons/guide', label: 'Product icon guide' },
+      { to: '/icons/life/guide', label: 'Life icon guide' },
+    ],
+  },
+  {
     label: 'Blocks',
     to: '/blocks',
     description: 'Complete interface examples composed from MetalUI: sharing, settings, tasks, and more.',
@@ -78,14 +88,4 @@ export const NAV: NavGroup[] = [
     ],
   },
   ...LAYER_GROUPS.slice(1),
-  {
-    label: 'Icons',
-    to: '/icons',
-    description: 'Browse MetalUI product and life icons, then open a glyph for its motion, React and SwiftUI code, and SVG downloads.',
-    items: [
-      { to: '/icons/life', label: 'Life icons' },
-      { to: '/icons/guide', label: 'Product icon guide' },
-      { to: '/icons/life/guide', label: 'Life icon guide' },
-    ],
-  },
 ];
