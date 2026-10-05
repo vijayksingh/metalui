@@ -28,7 +28,7 @@ export const NAV: NavGroup[] = [
   {
     label: 'Start',
     items: [
-      { to: '/components', label: 'Component library' },
+      { to: '/components', label: 'Components' },
       { to: '/overview', label: 'Overview' },
       { to: '/layers', label: 'How it fits together' },
       { to: '/wip', label: 'Work in progress' },

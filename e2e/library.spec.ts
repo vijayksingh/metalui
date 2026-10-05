@@ -81,7 +81,6 @@ test('browse both colorways on desktop and mobile with reduced motion', async ({
   await page.getByRole('button', { name: 'Overlays', exact: false }).click();
   await expect(page.locator('[data-component="dialog"]')).toBeVisible();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
-  await page.locator('.side summary').filter({ hasText: 'Foundations' }).click();
   await expect(page.getByRole('link', { name: 'Materials', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
   await page.setViewportSize({ width: 1280, height: 900 });
