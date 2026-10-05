@@ -17,9 +17,9 @@
 //   E6  Depth is live. A clearance travels with the part that casts it and its gap lerps, so
 //       parts keep their distance while they move and nothing tears.
 //   E7  Nothing fades and nothing comes from nowhere. A part the next glyph lacks tucks behind a
-//       body that can hide it, or gathers into the nearest point of a wire that stays and ends at
-//       its weight, inside it. A part the next glyph gains emerges from behind a body or buds from
-//       a staying wire.
+//       body that can hide it (one it is in view of where it starts), or gathers into the nearest
+//       point of a wire that stays and ends at its weight, inside it. A part the next glyph gains
+//       emerges from behind a body it will be clear of, or buds from a staying wire.
 //   E8  A mirror pair turns over: when the next glyph is the reflection of this one, the whole
 //       glyph turns on its axis, edge-on at the half turn, instead of every part deforming.
 //   E9  The glyph is one object: every part moves on one settle spring, from the same frame.
@@ -605,6 +605,11 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
       const [bx0, by0, bx1, by1] = bounds(body), area = areaOf(body);
       if (area < 4 || area < TUCK_BOXY * (bx1 - bx0) * (by1 - by0)) continue;
       const r = Math.max(TUCK_R, cast ?? 0), reach = r - weight / 2 - TUCK_MARGIN, bc = areaCentroid(body);
+      // A tuck or emerge is a slide behind a body, so the part must be in view at its other end.
+      // A mark drawn on a card's face is already within the card where it starts (or ends): it has
+      // nowhere to go behind the card and would simply switch off, so it gathers or buds instead.
+      const shown = bodies[t][side === 'A' ? 'B' : 'A'];
+      if (pts.filter((p) => inside(p, shown) || distTo(p, shown) <= r).length * 2 > pts.length) continue;
       for (let s = 1; s >= TUCK_MIN - 1e-9; s -= 0.05) {
         if (best && s <= best.s) break;
         const pose: Point[] = pts.map((p) => [bc[0] + (p[0] - pc[0]) * s, bc[1] + (p[1] - pc[1]) * s]);
