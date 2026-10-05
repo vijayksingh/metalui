@@ -19,12 +19,14 @@ import { SwatchXray } from './SwatchXray';
 import { ToastXray } from './ToastXray';
 import { ToolbarXray } from './ToolbarXray';
 import { TooltipXray } from './TooltipXray';
+import { WordmarkXray } from './WordmarkXray';
 
 /** What the home table's button says; its x-ray lands on a model of the same button. */
 export const BUTTON_LABEL = 'Get started';
 
 /* Every x-ray, by the name the floating table and the overlays use. */
 export const XRAYS = {
+  wordmark: { title: 'MetalUI wordmark', View: WordmarkXray },
   // the table's button is a primary one, so its x-ray is too: it lands on a model of itself, same label
   button: { title: 'Button', View: (p: { startOpen?: boolean }) => <ButtonXray {...p} cap="primary" label={BUTTON_LABEL} /> },
   switcher: { title: 'Switcher', View: SwitcherXray },

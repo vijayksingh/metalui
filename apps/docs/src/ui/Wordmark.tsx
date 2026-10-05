@@ -14,7 +14,7 @@ import type { CSSProperties } from 'react';
  * ───────────────────────────────────────────────────────── */
 
 const CHROME: CSSProperties = {
-  background: 'linear-gradient(180deg, #ffffff 0%, #dfe0e2 24%, #8f9196 46%, #f6f6f7 53%, #bcbec2 72%, #74767b 100%)',
+  backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #dfe0e2 24%, #8f9196 46%, #f6f6f7 53%, #bcbec2 72%, #74767b 100%)',
   WebkitBackgroundClip: 'text',
   backgroundClip: 'text',
   color: 'transparent',
@@ -27,20 +27,30 @@ const CHROME: CSSProperties = {
 const RED = 'linear-gradient(180deg, #e2362b 0%, #c41e17 55%, #9e140f 100%)';
 const GRAPHITE = 'linear-gradient(180deg, #3a3a3e 0%, #232326 60%, #161618 100%)';
 
+export const WORDMARK_LAYERS = [
+  { id: 'fill', name: 'Enamel', why: 'Red and graphite gradients form the two halves of the capsule.' },
+  { id: 'chrome', name: 'Chrome lettering', why: 'Light and dark bands across the letters make them look like polished metal.' },
+  { id: 'highlight', name: 'Top highlight', why: 'One bright window reflection crosses both halves of the capsule.' },
+  { id: 'shadow', name: 'Rim and shadows', why: 'The light rim separates the capsule from the page. The shadows give it weight.' },
+] as const;
+export type WordmarkLayers = Record<typeof WORDMARK_LAYERS[number]['id'], boolean>;
+export const WORDMARK_ALL_LAYERS: WordmarkLayers = { fill: true, chrome: true, highlight: true, shadow: true };
+
 /** One word's half of the pill, its tracking taken back after the last letter. */
-function Half({ text, fill, track, left, right }: { text: string; fill: string; track: number; left: number; right: number }) {
+function Half({ text, fill, track, left, right, layers }: { text: string; fill: string; track: number; left: number; right: number; layers: WordmarkLayers }) {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', height: '100%', background: fill, padding: `0 ${right - track}em 0 ${left}em` }}>
-      <span style={{ ...CHROME, letterSpacing: `${track}em` }}>{text}</span>
+    <span style={{ display: 'inline-flex', alignItems: 'center', height: '100%', background: layers.fill ? fill : 'transparent', padding: `0 ${right - track}em 0 ${left}em` }}>
+      <span style={{ ...CHROME, ...(!layers.chrome ? { backgroundImage: 'none', color: 'var(--ink)', filter: 'none' } : !layers.shadow ? { filter: 'none' } : {}), letterSpacing: `${track}em` }}>{text}</span>
     </span>
   );
 }
 
-export function Wordmark({ size = 13, style, className }: { size?: number; style?: CSSProperties; className?: string }) {
+export function Wordmark({ size = 13, style, className, layers = WORDMARK_ALL_LAYERS }: { size?: number; style?: CSSProperties; className?: string; layers?: WordmarkLayers }) {
   return (
     <span
       role="img"
       aria-label="MetalUI"
+      data-wordmark
       className={className}
       style={{
         position: 'relative',
@@ -52,14 +62,14 @@ export function Wordmark({ size = 13, style, className }: { size?: number; style
         fontFamily: '"Geist Variable", "Geist", system-ui, sans-serif',
         fontSize: size,
         textTransform: 'uppercase',
-        boxShadow: '0 0 0 0.045em rgba(255,255,255,.16), inset 0 0.02em 0 rgba(255,255,255,.35), inset 0 -0.09em 0.2em rgba(0,0,0,.3), 0 0.16em 0.34em rgba(90,20,14,.26), 0 0.03em 0.07em rgba(0,0,0,.2)',
+        boxShadow: layers.shadow ? '0 0 0 0.045em rgba(255,255,255,.16), inset 0 0.02em 0 rgba(255,255,255,.35), inset 0 -0.09em 0.2em rgba(0,0,0,.3), 0 0.16em 0.34em rgba(90,20,14,.26), 0 0.03em 0.07em rgba(0,0,0,.2)' : 'none',
         ...style,
       }}
     >
-      <Half text="Metal" fill={RED} track={0.42} left={0.62} right={0.44} />
-      <Half text="UI" fill={GRAPHITE} track={0.3} left={0.4} right={0.58} />
+      <Half text="Metal" fill={RED} track={0.42} left={0.62} right={0.44} layers={layers} />
+      <Half text="UI" fill={GRAPHITE} track={0.3} left={0.4} right={0.58} layers={layers} />
       {/* One window highlight along the whole top, over both colours. */}
-      <span aria-hidden style={{ position: 'absolute', left: '0.5em', right: '0.5em', top: '0.07em', height: '40%', borderRadius: '999px', background: 'linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0))', pointerEvents: 'none' }} />
+      {layers.highlight && <span aria-hidden style={{ position: 'absolute', left: '0.5em', right: '0.5em', top: '0.07em', height: '40%', borderRadius: '999px', background: 'linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0))', pointerEvents: 'none' }} />}
     </span>
   );
 }
