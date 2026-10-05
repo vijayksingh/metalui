@@ -87,7 +87,7 @@ export default function Library() {
                       <button type="button" className="library-try" aria-pressed={trying} aria-label={`${trying ? 'Stop trying' : 'Try'} ${part.label}`} onClick={() => setActive(trying ? null : part.name)}>{trying ? 'Done' : 'Try it'}<Icon name={trying ? 'check' : 'select'} size={12} /></button>
                     </div>
                     <div className="library-card-copy mu-stack gap-mu-space-6">
-                      <h3><Link to={part.page!}>{part.label}<Icon name="external" size={16} /></Link></h3>
+                      <h3><Link to={part.page!} state={{ librarySearch: params.toString() }}>{part.label}<Icon name="external" size={16} /></Link></h3>
                       <p>{part.summary}</p>
                     </div>
                   </article>

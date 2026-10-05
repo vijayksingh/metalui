@@ -74,18 +74,14 @@ export const NAV: NavGroup[] = [
   },
 ];
 
-/** Discovery uses destinations, while individual docs retain their complete reference index. */
-export const LIBRARY_NAV: NavGroup[] = [
-  { label: 'Explore', items: [
-    { to: '/components', label: 'Components' },
-    { to: '/foundations', label: 'Foundations' },
-    { to: '/layers', label: 'How it fits together' },
-    { to: '/icons', label: 'Icons' },
-  ] },
+// NAV is the complete search/crawl index. Every docs route presents this same sidebar;
+// opening a specimen must not switch back to a second component browsing interface.
+const itemAt = (path: string): NavItem => {
+  const item = NAV.flatMap(group => group.items).find(item => item.to === path)!;
+  return { ...item, label: path === '/foundations' ? NAV.find(group => group.label === 'Foundations')!.label : item.label, meta: undefined };
+};
+export const SIDEBAR_NAV: NavGroup[] = [
+  { label: 'Explore', items: ['/components', '/foundations', '/layers', '/icons', '/icons/life'].map(itemAt) },
   { label: 'In context', items: NAV.find(group => group.label === 'Blocks')!.items },
-  { label: 'About', items: [
-    { to: '/overview', label: 'Overview' },
-    { to: '/wip', label: 'Work in progress' },
-    { to: '/changelog', label: 'Changelog' },
-  ] },
+  { label: 'About', items: NAV.find(group => group.label === 'Start')!.items.filter(item => item.to !== '/components' && item.to !== '/layers') },
 ];

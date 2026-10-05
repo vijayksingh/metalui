@@ -3,7 +3,8 @@ import { WipNotice } from '../ui/WipNotice';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
 import { SlidingIndicator } from '@unlocalhosted/metalui';
-import { NAV, LIBRARY_NAV } from './nav';
+import { SIDEBAR_NAV } from './nav';
+import { PARTS } from './parts';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
@@ -93,8 +94,11 @@ function Toc() {
 
 export function Shell() {
   const { colorway } = useColorway();
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const library = pathname === '/components';
+  const componentGuide = PARTS.some(part => part.page === pathname && part.layer === 'component');
+  const librarySearch = typeof state?.librarySearch === 'string' ? state.librarySearch : '';
+  const libraryDestination = librarySearch ? `/components?${librarySearch}` : '/components';
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);
   React.useEffect(() => setMenuOpen(false), [pathname]);
@@ -134,11 +138,11 @@ export function Shell() {
         <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined} onPointerLeave={() => setHovered(null)}>
           {/* One hover highlight for the whole nav, gliding link to link like a list's (settle spring). */}
           <SlidingIndicator activeSelector="[data-hovered]" watch={['data-hovered']} spring="settle" className="side-glide" />
-          {(library ? LIBRARY_NAV : NAV).map((group) => (
+          {SIDEBAR_NAV.map((group) => (
             <div className="grp" key={group.label}>
               <span className="eng">{group.label}</span>
               {group.items.map((item) => (
-                <NavLink key={item.to} to={item.to} end onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
+                <NavLink key={item.to} to={item.to === '/components' ? libraryDestination : item.to} end={item.to === '/components' ? !componentGuide : item.to !== '/foundations'} aria-current={pathname === item.to ? 'page' : 'location'} onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
                   <span>{item.label}</span>
                   {item.meta && <span className="readout-t">{item.meta}</span>}
                 </NavLink>
@@ -150,6 +154,7 @@ export function Shell() {
         </aside>
         <main id="main" tabIndex={-1}>
           <WipNotice />
+          {componentGuide && <NavLink to={libraryDestination} className="catalog-return">Back to component library</NavLink>}
           <Outlet />
         </main>
         {!library && <Toc />}

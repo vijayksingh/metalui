@@ -19,12 +19,19 @@ test('discover by purpose, recover from empty results, and return from a guide',
   await expect(page.getByRole('heading', { name: 'No components found' })).toBeVisible();
   await page.getByRole('button', { name: 'Reset filters' }).click();
   await page.getByRole('textbox', { name: 'Search components' }).fill('button');
+  const sidebarLabels = await page.locator('.side .grp a').allTextContents();
   await page.locator('[data-component="button"] h3 a').click();
   await expect(page).toHaveURL(/\/components\/button$/);
-  await page.goBack();
+  expect(await page.locator('.side .grp a').allTextContents()).toEqual(sidebarLabels);
+  await expect(page.locator('.side .grp a').first()).toHaveAttribute('aria-current', 'location');
+  await page.screenshot({ path: `${captures}/guide-bone.png` });
+  await page.getByRole('link', { name: 'Back to component library', exact: true }).click();
   await expect(page.getByRole('textbox', { name: 'Search components' })).toHaveValue('button');
   await expect(page.locator('[data-component="button"]')).toBeVisible();
   await expect(page.getByRole('status').filter({ hasText: 'matching' })).toContainText('button');
+  await page.goto('/components/button');
+  await page.getByRole('link', { name: 'Back to component library', exact: true }).click();
+  await expect(page).toHaveURL(/\/components$/);
   expect(errors).toEqual([]);
 });
 

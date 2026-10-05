@@ -1,7 +1,6 @@
 @reference "../styles.css";
 /* The catalog inherits Soft Hardware. Its wells hold the real controls; its labels stay quiet. */
 .shell.library-shell { grid-template-columns: 160px minmax(0, 1fr); gap: var(--mu-space-40); }
-.library-shell .side { padding-top: var(--mu-space-40); }
 .library-shell main { padding-top: var(--mu-space-40); }
 .library-shell .ph-block { margin-bottom: var(--mu-space-32); }
 .library { padding-bottom: var(--mu-space-24); }
