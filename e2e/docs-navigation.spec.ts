@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync } from 'node:fs';
 const captures = 'docs/captures/review/navigation';
 const documentedPaths = [...readFileSync('apps/docs/src/app/routes.tsx', 'utf8').matchAll(/path: '([^']+)'/g)]
   .map(match => match[1]).filter(path => path !== '/' && path !== '*' && !path.includes(':')).map(path => `/${path}`).sort();
-const sections = ['Foundations', 'Components', 'Blocks', 'Objects', 'Instruments', 'Places', 'Parts'];
+const sections = ['Foundations', 'Components', 'Blocks', 'Objects', 'Instruments', 'Places', 'Parts', 'Icons'];
 test.beforeAll(() => mkdirSync(captures, { recursive: true }));
 
 test('section links open indexes and every guide stays discoverable', async ({ page }) => {
@@ -18,12 +18,19 @@ test('section links open indexes and every guide stays discoverable', async ({ p
     await nav.getByRole('link', { name: section, exact: true }).click();
     await expect(page.getByRole('heading', { name: section === 'Components' ? 'Component library' : section, exact: true, level: 1 })).toBeVisible();
     await expect(nav.getByRole('link', { name: section, exact: true })).toHaveAttribute('aria-current', 'page');
-    const links = page.locator('.section-entry, .library-card h3 a');
+    const links = section === 'Icons' ? page.locator('.library-related a') : page.locator('.section-entry, .library-card h3 a');
     await expect(links.first()).toBeVisible();
     reachablePaths.push(...await links.evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
+    if (section === 'Icons') {
+      await page.locator('.library-related').getByRole('link', { name: 'Life icons', exact: false }).click();
+      await expect(page.getByRole('heading', { name: 'Life icons', exact: true, level: 1 })).toBeVisible();
+      reachablePaths.push(...await page.locator('.library-related a').evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
+    }
   }
   expect([...new Set(reachablePaths)].sort()).toEqual(documentedPaths);
   await nav.getByRole('link', { name: 'Objects', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Objects', exact: true, level: 1 })).toBeVisible();
+  await page.screenshot({ path: `${captures}/objects-bone.png` });
   await page.getByRole('textbox', { name: 'Search objects' }).fill('folder');
   await expect(page.locator('.section-entry')).toHaveCount(1);
   await page.locator('.section-entry').click();

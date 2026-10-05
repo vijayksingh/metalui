@@ -16,7 +16,7 @@ const ink = (glyph: Locator) =>
 
 for (const colorway of COLORWAYS) {
   test(`a chevron points four ways and plays its act the way it points in ${colorway}`, async ({ page }) => {
-    await open(page, '/icons', colorway);
+    await open(page, '/icons/guide', colorway);
     const turns = page.getByTestId('chevron-turns');
     await turns.scrollIntoViewIfNeeded();
     const glyphs = turns.locator('svg.mu-icon');
@@ -44,7 +44,7 @@ for (const colorway of COLORWAYS) {
 }
 
 test('a disclosure chevron morphs to its turn: a half turn turns over, a quarter turn carries', async ({ page }) => {
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const disclose = page.getByTestId('chevron-disclose');
   await disclose.scrollIntoViewIfNeeded();
   const glyph = disclose.locator('svg');
@@ -81,7 +81,7 @@ test('a disclosure chevron morphs to its turn: a half turn turns over, a quarter
 
 test('under reduced motion a turned chevron changes in place', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const expand = page.getByTestId('chevron-expand');
   await expand.scrollIntoViewIfNeeded();
   // Sample the glyph's aspect every frame through the change: never an in-between turn.

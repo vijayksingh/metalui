@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { open } from './helpers';
 
 test('a host result plays the authored act once without a synthetic click', async ({ page }) => {
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const icon = page.getByTestId('demand-icon');
   const trigger = page.getByRole('button', { name: 'Play result', exact: true });
   await expect(icon).not.toHaveAttribute('data-playing', '');
@@ -15,7 +15,7 @@ test('a host result plays the authored act once without a synthetic click', asyn
 });
 
 test('on-demand results respect both live motion switches', async ({ page }) => {
-  await open(page, '/icons', 'graphite');
+  await open(page, '/icons/guide', 'graphite');
   const icon = page.getByTestId('demand-icon');
   const trigger = page.getByRole('button', { name: 'Play result', exact: true });
   await trigger.click();

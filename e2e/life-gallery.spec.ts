@@ -5,7 +5,7 @@ import { COLORWAYS, capture, open } from './helpers';
 for (const colorway of COLORWAYS) {
   test(`find, hover and copy a life glyph in ${colorway}`, async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    await open(page, '/icons/life', colorway);
+    await open(page, '/icons/life/guide', colorway);
     await page.getByRole('searchbox').fill('brekkie');
     const results = page.getByTestId('life-results');
     await expect(results.getByRole('button').first()).toHaveText('Breakfast');
@@ -32,7 +32,7 @@ for (const colorway of COLORWAYS) {
 
 test('life glyphs stay still under reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await open(page, '/icons/life', 'bone');
+  await open(page, '/icons/life/guide', 'bone');
   const detail = page.getByTestId('life-detail');
   const white = detail.locator('svg.mu-il-breakfast .w').first();
   const rest = await white.evaluate((el) => getComputedStyle(el).transform);
@@ -43,7 +43,7 @@ test('life glyphs stay still under reduced motion', async ({ page }) => {
 
 // Feelings construction (import plan §3.3): the composer draws every named feeling from its values.
 test('the composer draws every feeling the four variables name', async ({ page }) => {
-  await open(page, '/icons/life', 'bone');
+  await open(page, '/icons/life/guide', 'bone');
   const figures = page.getByTestId('feelings-values').locator('figure');
   await expect(figures).toHaveCount(12);
   for (const fig of await figures.all()) {
@@ -56,7 +56,7 @@ test('the composer draws every feeling the four variables name', async ({ page }
 // Feelings grid (import plan §3.4): every feeling in its cell, tinted; in ink under Increase Contrast.
 for (const colorway of ['bone', 'graphite'] as const) {
   test(`feelings grid in ${colorway}, then under Increase Contrast`, async ({ page }) => {
-    await open(page, '/icons/life', colorway);
+    await open(page, '/icons/life/guide', colorway);
     const grid = page.getByTestId(`feelings-grid-${colorway}`);
     await expect(grid.locator('[data-feeling]')).toHaveCount(23);
     const angry = grid.locator('[data-feeling="angry"] svg');

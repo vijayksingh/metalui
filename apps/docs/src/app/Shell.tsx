@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WipNotice } from '../ui/WipNotice';
-import { Link, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
+import { Link, NavLink, Outlet, ScrollRestoration, useLocation, useMatches } from 'react-router';
 import { DialRoot } from 'dialkit';
 import { Breadcrumbs, SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
@@ -94,15 +94,20 @@ function Toc() {
 export function Shell() {
   const { colorway } = useColorway();
   const { pathname, state } = useLocation();
-  const section = [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pathname));
+  const matchedData = useMatches().at(-1)?.loaderData as { pageTitle?: string } | undefined;
+  const section = NAV.find(group => group.to === state?.sectionIndex && group.items.some(item => item.to === pathname)) ?? [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pathname)) ?? (pathname.startsWith('/icons/') ? NAV.find(group => group.to === '/icons') : undefined);
   const library = NAV.some(group => group.to === pathname) || pathname === '/icons' || pathname === '/icons/life';
   const librarySearch = typeof state?.librarySearch === 'string' ? state.librarySearch : '';
   const libraryDestination = librarySearch ? `/components?${librarySearch}` : '/components';
   const sectionSearch = typeof state?.sectionSearch === 'string' ? state.sectionSearch : '';
-  const sectionDestination = section?.to === '/components' ? libraryDestination : sectionSearch ? `${section?.to}?${sectionSearch}` : section?.to;
-  const pageLabel = section?.to === pathname ? section.label : section?.items.find(item => item.to === pathname)?.label;
+  const iconIndex = state?.iconIndex === '/icons/life' ? '/icons/life' : '/icons';
+  const iconSearch = typeof state?.iconSearch === 'string' ? state.iconSearch : '';
+  const iconDestination = (index: string) => iconIndex === index && iconSearch ? `${index}?${iconSearch}` : index;
+  const sectionDestination = section?.to === '/components' ? libraryDestination : section?.to === '/icons' ? iconDestination('/icons') : sectionSearch ? `${section?.to}?${sectionSearch}` : section?.to;
+  const pageLabel = matchedData?.pageTitle ?? (section?.to === pathname ? section.label : section?.items.find(item => item.to === pathname)?.label);
   const crumbs = [{ id: '/', label: 'MetalUI', href: '/' },
     ...(section?.to && section.to !== pathname ? [{ id: section.to, label: section.label, href: sectionDestination }] : []),
+    ...(pathname.startsWith('/icons/life/') ? [{ id: '/icons/life', label: 'Life icons', href: iconDestination('/icons/life') }] : []),
     { id: pathname, label: pageLabel ?? 'Documentation' }];
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);

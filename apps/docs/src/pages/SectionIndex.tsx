@@ -23,9 +23,9 @@ export default function SectionIndex() {
         <p className="library-result" role="status">{found.length} {found.length === 1 ? 'guide' : 'guides'}</p>
       </div>
       <div className="section-directory mu-auto-grid gap-mu-group">
-        {found.map(item => <Link key={item.to} to={item.to} className="section-entry mu-stack gap-mu-related" state={{ sectionSearch: params.toString() }}>
+        {found.map(item => <Link key={item.to} to={item.to} className="section-entry mu-stack gap-mu-related" state={{ sectionSearch: params.toString(), sectionIndex: pathname }}>
           <div className="mu-cluster gap-mu-related"><h2>{item.label}</h2><Icon name="chevron" turn={270} size={16} animate={false} /></div>
-          <p>{item.description ?? `Open the ${item.label.toLowerCase()} guide for examples and usage.`}</p>
+          <p>{item.description ? `${item.description.split(/[;:]|\.\s/)[0].replace(/\.$/, '')}.` : `Open the ${item.label.toLowerCase()} guide for examples and usage.`}</p>
         </Link>)}
       </div>
       {!found.length && <div className="library-empty mu-stack gap-mu-related"><h2>No guides found</h2><p>Try another name or clear your search.</p><button type="button" className="type-ui text-ink" onClick={() => setParams({})}>Clear search</button></div>}

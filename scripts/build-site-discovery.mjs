@@ -11,6 +11,7 @@ const vite = await createServer({
   appType: 'custom',
 });
 const { NAV } = await vite.ssrLoadModule('/src/app/nav.ts');
+const { ICON_PAGES } = await vite.ssrLoadModule('/src/app/icon-pages.ts');
 await vite.close();
 const dist = resolve(root, 'apps/docs/dist');
 const origin = 'https://metalui.dev';
@@ -67,12 +68,13 @@ const descriptions = {
 
 // A nav item can point at a section of a page (a path ending in #section); the page is the route.
 const pageOf = (to) => to.split('#')[0];
-const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.find(group => group.to === path)?.label ?? NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label;
-const paths = ['/', ...new Set(NAV.flatMap((group) => [...(group.to ? [group.to] : []), ...group.items.map((item) => pageOf(item.to))]))];
+const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.find(group => group.to === path)?.label ?? NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label ?? ICON_PAGES.find(icon => icon.to === path)?.label;
+const paths = ['/', ...new Set([...NAV.flatMap((group) => [...(group.to ? [group.to] : []), ...group.items.map((item) => pageOf(item.to))]), ...ICON_PAGES.map(icon => icon.to)])];
 const routerSource = readFileSync(resolve(root, 'apps/docs/src/app/routes.tsx'), 'utf8');
 const routerPaths = [...routerSource.matchAll(/\bpath:\s*'([^']+)'/g)]
   .map((match) => match[1] === '/' ? '/' : `/${match[1]}`)
-  .filter((path) => path !== '/*');
+  .filter((path) => path !== '/*' && !path.includes(':'));
+routerPaths.push(...ICON_PAGES.map(icon => icon.to));
 if (paths.length !== routerPaths.length || paths.some((path) => !routerPaths.includes(path))) {
   throw new Error('Docs navigation and router routes differ; update both before publishing discovery pages');
 }
@@ -98,11 +100,11 @@ function pageFor(path) {
   const component = path.startsWith('/components/') ? components.get(name) : undefined;
   const label = labelOf(path);
   if (!label) throw new Error(`Missing navigation label for ${path}`);
-  const description = component?.description ?? partDescriptions.get(path) ?? NAV.find(group => group.to === path)?.description ?? descriptions[path === '/foundations/principles' ? '/foundations' : path];
+  const description = component?.description ?? partDescriptions.get(path) ?? NAV.find(group => group.to === path)?.description ?? ICON_PAGES.find(icon => icon.to === path)?.description ?? descriptions[path === '/foundations/principles' ? '/foundations' : path === '/icons/guide' ? '/icons' : path === '/icons/life/guide' ? '/icons/life' : path];
   if (!description) throw new Error(`Missing search description for ${path}`);
   return {
     // A block shares its name with a component (Settings), and two pages must not share a title.
-    title: path === '/' ? 'MetalUI — Soft Hardware for React and SwiftUI' : `${label}${path.startsWith('/blocks/') ? ' block' : ''} — MetalUI`,
+    title: path === '/' ? 'MetalUI — Soft Hardware for React and SwiftUI' : `${label}${path.startsWith('/blocks/') ? ' block' : ICON_PAGES.some(icon => icon.to === path) ? ` ${ICON_PAGES.find(icon => icon.to === path).kind} icon` : ''} — MetalUI`,
     description: fit(description),
     canonical: `${origin}${path}`,
     agent: component ? `${origin}/r/${component.name}.md` : `${origin}/AI.md`,
@@ -112,7 +114,7 @@ function pageFor(path) {
 }
 
 function staticContent(path, page) {
-  const groups = NAV.map((group) => `<section><h2>${escapeHtml(group.label)}</h2><ul>${group.items.map((item) => `<li><a href="${escapeHtml(item.to)}">${escapeHtml(item.label)}</a></li>`).join('')}</ul></section>`).join('');
+  const groups = NAV.map((group) => `<section><h2>${group.to ? `<a href="${escapeHtml(group.to)}">${escapeHtml(group.label)}</a>` : escapeHtml(group.label)}</h2><ul>${[...group.items, ...(group.to === '/icons' ? ICON_PAGES : [])].map((item) => `<li><a href="${escapeHtml(item.to)}">${escapeHtml(item.label)}</a></li>`).join('')}</ul></section>`).join('');
   const guide = page.component ? `<p><a href="${escapeHtml(page.agent)}">Read the ${escapeHtml(page.label)} agent guide</a> · <a href="${origin}/r/${escapeHtml(page.component.name)}.json">Copy registry source</a></p>` : '';
   const guideText = page.component ? readFileSync(resolve(dist, `r/${page.component.name}.md`), 'utf8') : '';
   const excerpts = ['Use it for', "Don't use it for"].map((heading) => {

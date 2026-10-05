@@ -7,6 +7,10 @@ import { NotFound } from '../pages/NotFound';
  * feature slices mount the same table in memory at any route (slices/harness.tsx). */
 
 const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
+const iconDetail = async () => {
+  const page = await import('../pages/IconDetail');
+  return { Component: page.default, loader: page.loader };
+};
 export const routes: RouteObject[] = [
   { path: '/', lazy: lazy(() => import('../pages/Landing')), errorElement: <NotFound /> },
   {
@@ -129,8 +133,12 @@ export const routes: RouteObject[] = [
       { path: 'components/folder', lazy: lazy(() => import('../pages/components/Folder')) },
       { path: 'components/select', lazy: lazy(() => import('../pages/components/Select')) },
       { path: 'components/tabs', lazy: lazy(() => import('../pages/components/Tabs')) },
-      { path: 'icons', lazy: lazy(() => import('../pages/Icons')) },
-      { path: 'icons/life', lazy: lazy(() => import('../pages/IconsLife')) },
+      { path: 'icons', lazy: lazy(() => import('../pages/IconLibrary')) },
+      { path: 'icons/life', lazy: lazy(() => import('../pages/IconLibrary')) },
+      { path: 'icons/guide', lazy: lazy(() => import('../pages/Icons')) },
+      { path: 'icons/life/guide', lazy: lazy(() => import('../pages/IconsLife')) },
+      { path: 'icons/:name', lazy: iconDetail },
+      { path: 'icons/life/:name', lazy: iconDetail },
       { path: '*', Component: NotFound },
     ],
   },

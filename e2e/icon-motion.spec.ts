@@ -11,7 +11,7 @@ const selectKey = (page: Page) => page.locator('button', { has: page.locator('sv
 
 for (const colorway of COLORWAYS) {
   test(`select plays its act through once from a hover in ${colorway}`, async ({ page }) => {
-    await open(page, '/icons', colorway);
+    await open(page, '/icons/guide', colorway);
     const key = selectKey(page);
     const cursor = key.locator('[data-part="cursor"]');
     const click = key.locator('[data-part="click"]');
@@ -47,7 +47,7 @@ for (const colorway of COLORWAYS) {
 }
 
 test('a trigger during the act does not restart it', async ({ page }) => {
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const key = selectKey(page);
   const cursor = key.locator('[data-part="cursor"]');
   await key.hover();
@@ -59,7 +59,7 @@ test('a trigger during the act does not restart it', async ({ page }) => {
 });
 
 test('keyboard focus plays the act', async ({ page }) => {
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const key = selectKey(page);
   await key.focus();
   await page.keyboard.press('Shift+Tab');
@@ -69,7 +69,7 @@ test('keyboard focus plays the act', async ({ page }) => {
 
 test('the act stays still under reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const key = selectKey(page);
   const cursor = key.locator('[data-part="cursor"]');
   await key.hover();

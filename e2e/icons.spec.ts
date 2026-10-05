@@ -11,7 +11,7 @@ const keys = (page: import('@playwright/test').Page) =>
 
 for (const colorway of COLORWAYS) {
   test(`every glyph plays its act from its key in ${colorway}`, async ({ page }) => {
-    await open(page, '/icons', colorway);
+    await open(page, '/icons/guide', colorway);
     const all = keys(page);
     const count = await all.count();
     expect(count).toBe(ICON_NAMES.length);
@@ -29,7 +29,7 @@ for (const colorway of COLORWAYS) {
 
 test('no glyph moves under reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await open(page, '/icons', 'bone');
+  await open(page, '/icons/guide', 'bone');
   const all = keys(page);
   for (let i = 0; i < 6; i++) {
     const key = all.nth(i);
