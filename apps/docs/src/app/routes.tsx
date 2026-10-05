@@ -136,6 +136,7 @@ export const routes: RouteObject[] = [
       { path: 'icons', lazy: lazy(() => import('../pages/IconLibrary')) },
       { path: 'icons/life', lazy: lazy(() => import('../pages/IconLibrary')) },
       { path: 'icons/guide', lazy: lazy(() => import('../pages/Icons')) },
+      { path: 'icons/morph', lazy: lazy(() => import('../pages/IconMorph')) },
       { path: 'icons/life/guide', lazy: lazy(() => import('../pages/IconsLife')) },
       { path: 'icons/:name', lazy: iconDetail },
       { path: 'icons/life/:name', lazy: iconDetail },

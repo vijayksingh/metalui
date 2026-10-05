@@ -59,6 +59,7 @@ const descriptions = {
   '/blocks/task-inbox': 'A live MetalUI task list block: search and views, a tick that settles a task into Done, multi-select with a tool strip to complete, assign, snooze or delete, and Undo.',
   '/blocks/settings': 'A live MetalUI settings block: profile fields validated on blur and save, notification switches, a colorway and density, and a save bar that counts unsaved changes.',
   '/icons': 'Browse MetalUI Soft Hardware icons: animated monoline and duotone glyphs for React, SwiftUI, and SVG.',
+  '/icons/morph': 'MetalUI icon morph: any wire glyph becomes any other when a control changes state, with live controls, filmstrips, strain and rules.',
   '/icons/life': 'Browse MetalUI life icons for meals, feelings, people, places, weather, and everyday moments.',
   '/components/swatch': 'A glossy color chip with a readable color code; click it to choose a new color.',
   '/components/cue': 'Cues mark recognized dates, amounts, tags, and other meaning in text without shifting the letters.',

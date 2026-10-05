@@ -70,6 +70,7 @@ export const NAV: NavGroup[] = [
     description: 'Browse MetalUI product and life icons, then open a glyph for its motion, React and SwiftUI code, and SVG downloads.',
     items: [
       { to: '/icons/life', label: 'Life icons' },
+      { to: '/icons/morph', label: 'Morph' },
       { to: '/icons/guide', label: 'Product icon guide' },
       { to: '/icons/life/guide', label: 'Life icon guide' },
     ],

@@ -107,6 +107,7 @@ export default function IconLibrary() {
     section.querySelector<HTMLElement>('h2')?.focus({ preventScroll: true });
   }
   // Existing guide links with section anchors continue to reach their original content.
+  if (hash === '#morph') return <Navigate to="/icons/morph" replace />;
   if (hash) return <Navigate to={`${life ? '/icons/life/guide' : '/icons/guide'}${hash}`} replace />;
   return <div className="library icon-library mu-stack gap-mu-section">
     <header className="icon-header">
@@ -117,7 +118,7 @@ export default function IconLibrary() {
           <span className="type-readout text-ink3">Guides</span>
           <Link to="/icons/guide">Product</Link>
           <Link to="/icons/life/guide">Life</Link>
-          <Link to="/icons/guide#morph">Morph</Link>
+          <Link to="/icons/morph">Morph</Link>
         </nav>
       </div>
       <IconPlate icons={featured} />
