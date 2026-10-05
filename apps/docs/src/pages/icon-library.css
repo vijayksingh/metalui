@@ -24,30 +24,11 @@
 /* A category: heading, then one tray. */
 .icon-category h2:focus { outline: none; }
 .icon-category h2:focus-visible { outline: var(--mu-focus-width, 2px) solid var(--green-deep); outline-offset: var(--mu-space-4); border-radius: var(--mu-radius-key); }
-.icon-directory { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--icon-tile, 104px), 1fr)); gap: var(--mu-space-2); padding: var(--mu-space-6);
-  border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
 
-/* A glyph cell. Rest is flat in the tray; hover and focus raise a key under it while the glyph plays its act. */
-.icon-entry { position: relative; isolation: isolate; display: grid; grid-template-rows: 1fr auto; justify-items: center; align-items: center; gap: var(--mu-space-8);
-  aspect-ratio: 1; min-width: 0; padding: var(--mu-space-12) var(--mu-space-8) var(--mu-space-8); border-radius: var(--mu-radius-row);
-  color: var(--ink2); text-decoration: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--mu-ease-press); }
-.icon-entry::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--btn-bg); box-shadow: var(--btn-sh); opacity: 0; transition: opacity 160ms var(--mu-ease-press); }
-.icon-entry-specimen { display: grid; place-items: center; color: var(--icon); }
-.icon-entry-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; @apply type-doc-caption; }
-.icon-entry:is(:hover, :focus-visible) { color: var(--ink); }
-.icon-entry:is(:hover, :focus-visible)::before { opacity: 1; }
-.icon-entry:active { transform: translateY(var(--mu-motion-press)); }
-.icon-library .icon-entry:focus-visible { outline-offset: var(--mu-space-2); }
+@media (prefers-reduced-motion: reduce) { .icon-index button::before { transition: none; } }
+.rm .icon-index button::before { transition: none; }
 
-@media (hover: none) { .icon-entry:hover::before { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .icon-entry, .icon-entry::before, .icon-index button::before { transition: none; }
-  .icon-entry:active { transform: none; }
-}
-.rm .icon-entry, .rm .icon-entry::before, .rm .icon-index button::before { transition: none; }
-.rm .icon-entry:active { transform: none; }
-
-/* Narrow screens: the toolbar stops following (it would cover a third of the glyphs); cells shrink a step. */
+/* Narrow screens: the toolbar stops following (it would cover a third of the glyphs); the tray (ui/icon-cell.css) shrinks its cells a step. */
 @media (max-width: 760px) {
   .icon-toolbar { position: static; margin: 0; padding: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
   /* search and count share a line; set and size share one scrolling line under it */
@@ -58,5 +39,4 @@
   .icon-toolbar-controls .library-filters { flex: none; flex-wrap: nowrap; overflow: visible; margin: 0; padding: 0; }
   .icon-toolbar-controls .library-filters button { flex: none; }
   .icon-sizes { padding-inline-start: var(--mu-space-8); box-shadow: inset 1px 0 0 var(--rule); }
-  .icon-directory { grid-template-columns: repeat(auto-fill, minmax(calc(var(--icon-tile, 104px) - 16px), 1fr)); padding: var(--mu-space-4); }
 }

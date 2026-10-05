@@ -2,37 +2,22 @@ import * as React from 'react';
 import { Link, Navigate, useLocation, useSearchParams } from 'react-router';
 import { Field } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { LifeIcon } from '@unlocalhosted/metalui/icons/life';
 import { ICON_PAGES } from '../app/icon-pages';
-import { useCatalogTransition } from '../app/catalog-transition';
+import { IconTray } from '../ui/IconCell';
 import './library.css';
 import './icon-library.css';
 
 /* ─────────────────────────────────────────────────────────
  * ICON LIBRARY
  *
- * Each category is one sunk tray; every glyph sits in a flat cell, big and nameplated.
- *   rest      glyph at the preview size, name in one line
- *   hover     a raised key surface fades up under the cell (opacity), the glyph plays its act
- *   focus     same surface plus the focus ring; the act plays on focus-visible
- *   pressed   the cell sinks to 0.97 (transform)
+ * Each category is one sunk tray of glyph cells (ui/IconCell: rest, hover, focus, pressed).
  * The toolbar holds search, set, preview size and the category index; the index lights the
  * category in view and jumps to it. Reduced motion: no acts, no sink, no smooth scroll.
  * ───────────────────────────────────────────────────────── */
 
 const SIZES = [24, 32, 48] as const;
-type Glyph = typeof ICON_PAGES[number];
 const slug = (category: string) => `icons-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const reduced = () => document.documentElement.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function IconEntry({ icon, size, search, index }: { icon: Glyph; size: number; search: string; index: string }) {
-  const card = React.useRef<HTMLAnchorElement>(null);
-  useCatalogTransition(icon.to, card, '.icon-entry-label', '.icon-entry-specimen > svg');
-  return <Link ref={card} to={icon.to} viewTransition className="icon-entry mu-icon-trigger" state={{ iconSearch: search, iconIndex: index }}>
-    <span className="icon-entry-specimen" aria-hidden="true">{icon.kind === 'life' ? <LifeIcon name={icon.name} size={size} /> : <Icon name={icon.name} size={size} />}</span>
-    <span className="icon-entry-label">{icon.label}</span>
-  </Link>;
-}
 
 /** The category in view: the last section whose top has passed under the toolbar. A jump pins its
  * category until the reader scrolls by hand, because the short trays at the end can't reach the top. */
@@ -102,7 +87,7 @@ export default function IconLibrary() {
   }
   // Existing guide links with section anchors continue to reach their original content.
   if (hash) return <Navigate to={`${life ? '/icons/life/guide' : '/icons/guide'}${hash}`} replace />;
-  return <div className="library icon-library mu-stack gap-mu-section" style={{ '--icon-tile': `${size + 72}px` } as React.CSSProperties}>
+  return <div className="library icon-library mu-stack gap-mu-section">
     <header className="library-heading mu-stack gap-mu-related">
       <div className="library-title-row mu-cluster gap-mu-group"><h1>{life ? 'Life icons' : 'Icons'}</h1><span className="library-count">{total} glyphs</span></div>
       <p>{life ? 'Glyphs for what a day is made of: meals, feelings, people, places, and everyday moments. Hover one to see it move.' : 'Product controls and everyday life, drawn in Soft Hardware. Every glyph has its own motion; hover one to see it, open it for sizes, code and downloads.'}</p>
@@ -121,7 +106,7 @@ export default function IconLibrary() {
     </div>
     {categories.map(category => <section key={category} id={slug(category)} className="icon-category mu-stack gap-mu-related">
       <div className="library-section-heading mu-cluster gap-mu-related"><h2 tabIndex={-1}>{category} <span>{found.filter(icon => icon.category === category).length}</span></h2></div>
-      <div className="icon-directory">{found.filter(icon => icon.category === category).map(icon => <IconEntry key={icon.to} icon={icon} size={size} search={params.toString()} index={pathname} />)}</div>
+      <IconTray icons={found.filter(icon => icon.category === category)} size={size} state={{ iconSearch: params.toString(), iconIndex: pathname }} />
     </section>)}
     {!found.length && <div className="library-empty mu-stack gap-mu-related"><h2>No icons found</h2><p>Try a different name or purpose, or search across both sets.</p><div className="mu-cluster gap-mu-related"><button type="button" className="type-ui text-ink" onClick={() => update('q', '')}>Clear search</button>{set !== 'all' && !life && <button type="button" className="type-ui text-ink" onClick={() => update('set', 'all')}>Search all icons</button>}</div></div>}
   </div>;

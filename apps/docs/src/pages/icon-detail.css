@@ -1,0 +1,49 @@
+@reference "../styles.css";
+/* A glyph's page: the glyph on its stage beside what you need to use it, then sizes, motion, code
+ * and its neighbours. Only opacity and transform move (the glyph's own act). */
+
+.icon-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--mu-space-24); align-items: start; margin-bottom: var(--mu-space-48); }
+
+/* The stage is the glyph's trigger: a sunk plate with the master centered and Play under it. */
+.icon-detail-stage { display: grid; grid-template-rows: 1fr auto; justify-items: center; gap: var(--mu-space-16); min-height: calc(4 * var(--mu-space-80)); padding: var(--mu-space-24);
+  border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.icon-detail-specimen { display: grid; place-items: center; align-self: center; }
+.icon-detail-play { justify-content: center; }
+
+/* What you need to use it: actions, then facts in an engraved list. */
+.icon-hero-use { padding-top: var(--mu-space-4); }
+.icon-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--mu-space-16) var(--mu-space-24); margin: 0; padding-top: var(--mu-space-16); box-shadow: 0 -1px 0 var(--rule); }
+.icon-facts > div { min-width: 0; }
+.icon-facts-wide { grid-column: 1 / -1; }
+.icon-facts dt { @apply type-readout; color: var(--ink3); }
+.icon-facts dd { margin: var(--mu-space-4) 0 0; @apply type-doc-caption; color: var(--ink); overflow-wrap: anywhere; }
+.icon-facts dd a { color: inherit; }
+.icon-facts code { font: inherit; font-family: var(--mono, ui-monospace, monospace); }
+.icon-synonyms { display: flex; flex-wrap: wrap; gap: var(--mu-space-4); }
+.icon-synonyms span { padding: var(--mu-space-2) var(--mu-space-8); border-radius: var(--mu-radius-pill); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); color: var(--ink2); }
+
+/* Size cuts: one tray, each cut in its own cell; hover a cut to see it play at that size. */
+.icon-cuts { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--mu-space-2); padding: var(--mu-space-6); border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.icon-cut { display: grid; grid-template-rows: var(--mu-space-64) auto; justify-items: center; align-items: center; gap: var(--mu-space-8); padding: var(--mu-space-12) var(--mu-space-4) var(--mu-space-8); }
+.icon-cut-glyph { display: grid; place-items: center; }
+
+/* The act, stage by stage. */
+.icon-stages { display: flex; flex-wrap: wrap; gap: var(--mu-space-8); margin: 0; padding: 0; list-style: none; }
+.icon-stages li { display: inline-flex; align-items: baseline; gap: var(--mu-space-8); padding: var(--mu-space-8) var(--mu-space-12); border-radius: var(--mu-radius-row); background: var(--btn-bg); box-shadow: var(--btn-sh); @apply type-ui; }
+
+/* Neighbours: previous and next inside the category. */
+.icon-pager { justify-content: space-between; margin-top: var(--mu-space-16); }
+.icon-pager a { display: inline-flex; align-items: center; gap: var(--mu-space-12); color: var(--ink); text-decoration: none; @apply type-ui; }
+.icon-pager a > span { display: grid; }
+.icon-pager a[rel="next"] { text-align: end; margin-inline-start: auto; }
+.icon-pager a:hover > span > :last-child { text-decoration: underline; }
+.icon-pager a:focus-visible { outline: var(--mu-focus-width, 2px) solid var(--green-deep); outline-offset: var(--mu-space-4); border-radius: var(--mu-radius-key); }
+
+@media (max-width: 900px) {
+  .icon-hero { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .icon-detail-stage { min-height: calc(3 * var(--mu-space-80)); padding: var(--mu-space-16); }
+  .icon-cuts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .icon-facts { grid-template-columns: minmax(0, 1fr); }
+}

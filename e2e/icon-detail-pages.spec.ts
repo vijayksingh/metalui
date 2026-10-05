@@ -54,10 +54,29 @@ test('every glyph has a detail link; search and breadcrumbs preserve browsing co
 });
 
 test('detail motion, mobile layout, and both colorways work with reduced motion', async ({ page }) => {
+  const running = () => page.locator('.icon-detail-specimen').evaluate(node => node.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length);
+  // Life: Play holds the stage's hover for the act, then lets the pose settle back.
   await page.goto('/icons/life/breakfast');
-  const specimen = page.getByRole('img', { name: 'Breakfast motion preview', exact: true });
-  await specimen.focus();
-  await expect(specimen.locator('.w')).not.toHaveCSS('transform', 'none');
+  await page.getByRole('button', { name: 'Play motion', exact: true }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.icon-detail-specimen .w')).not.toHaveCSS('transform', 'none');
+  await expect.poll(running).toBeGreaterThan(0);
+  await expect(page.locator('.icon-detail-stage')).not.toHaveAttribute('data-hover', { timeout: 3000 });
+  // Product: Play runs the act once, and hovering the stage runs it too.
+  await page.goto('/icons/check');
+  await page.getByRole('button', { name: 'Play motion', exact: true }).click();
+  await expect.poll(running).toBeGreaterThan(0);
+  await expect.poll(running, { timeout: 3000 }).toBe(0);
+  await page.mouse.move(0, 0);
+  await page.locator('.icon-detail-stage').hover({ position: { x: 20, y: 20 } });
+  await expect.poll(running).toBeGreaterThan(0);
+  await expect(page.locator('.icon-stages li')).toHaveText([/Touch down/, /Press and flick/, /Ring out/]);
+  // Neighbours: the rest of the category and previous / next stay inside it.
+  const more = page.getByRole('group', { name: 'More in Actions', exact: true });
+  await expect(more.locator('.icon-entry[href="/icons/check"]')).toHaveCount(0);
+  await expect(more.locator('.icon-entry')).toHaveCount(29);
+  await page.getByRole('navigation', { name: 'Neighbouring glyphs' }).getByRole('link', { name: /^Next/ }).click();
+  await expect(page.getByRole('navigation', { name: 'Breadcrumb' }).locator('[aria-current="page"]')).not.toHaveText('Check');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const path of ['/icons', '/icons/check', '/icons/life/breakfast']) {
     await page.goto(path);
@@ -71,8 +90,10 @@ test('detail motion, mobile layout, and both colorways work with reduced motion'
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.setViewportSize({ width: 1280, height: 900 });
   }
-  await page.getByRole('img', { name: 'Breakfast motion preview', exact: true }).hover();
-  expect(await page.locator('.icon-detail-specimen').evaluate(node => node.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)).toBe(0);
+  await page.locator('.icon-detail-stage').hover({ position: { x: 20, y: 20 } });
+  expect(await running()).toBe(0);
+  await expect(page.getByRole('button', { name: 'Play motion', exact: true })).toBeDisabled();
+  await expect(page.getByText('Motion is off', { exact: true })).toBeVisible();
   await page.goto('/icons/life');
   await page.getByRole('textbox', { name: 'Search icons' }).fill('brekkie');
   await expect(page.locator('.icon-entry')).toHaveCount(1);
