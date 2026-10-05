@@ -31,9 +31,11 @@ async function inkIn(glyph: Locator, region: { x: number; y: number; w: number; 
   }, region);
 }
 
-/** The ink in a region on every frame of a morph, under a controlled clock (one sample per 16ms). */
+/** The ink in a region on every frame of a morph, under a paused clock that only this loop advances
+ *  (one sample per 16ms), so rasterising a sample costs the spring no time. The page must have been
+ *  opened with the fake clock installed. */
 async function filmInk(page: Page, glyph: Locator, press: () => Promise<void>, region: { x: number; y: number; w: number; h: number }, ms = 320) {
-  await page.clock.install();
+  await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 10);
   await press();
   const frames: number[] = [];
   for (let t = 0; t <= ms; t += 16) {
@@ -44,6 +46,7 @@ async function filmInk(page: Page, glyph: Locator, press: () => Promise<void>, r
 }
 
 test('removing from a count sinks the plus upright into its bar; it never vanishes between frames', async ({ page }) => {
+  await page.clock.install();
   await page.goto('/icons/morph');
   const control = page.locator('[data-morph-control="count"]');
   const glyph = control.locator('svg[data-glyph]');
@@ -64,11 +67,12 @@ test('removing from a count sinks the plus upright into its bar; it never vanish
 });
 
 test('adding grows the upright back out of the bar, and the sidebar marks bud from the rail', async ({ page }) => {
+  await page.clock.install();
   await page.goto('/icons/morph');
   const count = page.locator('[data-morph-control="count"]');
   await count.click();
   await expect(count.locator('svg[data-glyph]')).toHaveAttribute('data-glyph', 'minus');
-  await page.waitForTimeout(500);
+  await page.clock.runFor(600);
   const top = { x: 10.6, y: 8, w: 2.8, h: 3 };
   const grow = await filmInk(page, count.locator('svg[data-glyph]'), () => count.click(), top);
   const atPlus = grow.at(-1)!;
@@ -81,11 +85,21 @@ test('adding grows the upright back out of the bar, and the sidebar marks bud fr
   const panel = page.locator('[data-morph-control="panel"]');
   await panel.click(); // sidebar → sidebar-collapsed
   await expect(panel.locator('svg[data-glyph]')).toHaveAttribute('data-glyph', 'sidebar-collapsed');
-  await page.waitForTimeout(500);
+  await page.clock.runFor(600);
   const marks = { x: 5, y: 8, w: 1.3, h: 8 };
   const expand = await filmInk(page, panel.locator('svg[data-glyph]'), () => panel.click(), marks);
   const atSidebar = expand.at(-1)!;
   expect(atSidebar).toBeGreaterThan(4);
   prev = 0;
   for (const ink of expand) { expect(ink - prev, `frames ${expand.map((f) => f.toFixed(0)).join(' ')}`).toBeLessThan(atSidebar / 2); prev = Math.max(prev, ink); }
+});
+
+test('the morph page films play → pause as the second stop sliding out from behind the triangle', async ({ page }) => {
+  // The filmstrip prints the plan the transport control runs: its strain and its moves.
+  await page.goto('/icons/morph');
+  const row = page.locator('[data-md="row"]', { hasText: 'play → pause' });
+  await row.scrollIntoViewIfNeeded();
+  // A bud swelling from the triangle's edge scored 1.89; the stop emerging from behind it scores 1.31.
+  await expect(row).toContainText(/strain 1\.[0-4]\d · carry · emerge/);
+  await row.screenshot({ path: `${captures}/filmstrip-play-pause.png` });
 });

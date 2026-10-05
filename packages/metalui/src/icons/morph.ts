@@ -549,7 +549,7 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
   // a staying part), then leaving parts (which tuck behind or gather into a staying or arriving part).
   const tracks: MorphTrack[] = [];
   /** Each staying track's real outline at either end (chord-closed when open), for what it can hide. */
-  const bodies: { A: Point[]; B: Point[] }[] = [];
+  const bodies: { A: Point[]; B: Point[]; ring: { A: boolean; B: boolean } }[] = [];
   const fromTrack = new Array<number>(n).fill(-1), toTrack = new Array<number>(m).fill(-1);
   const leaving: number[] = [];
   for (let i = 0; i < n; i++) {
@@ -558,7 +558,7 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
       const al = align(from[i], target[j], SAMPLES, isBody(i, j));
       const [holesA, holesB] = pairHoles(from[i].holes, target[j].holes);
       fromTrack[i] = toTrack[j] = tracks.length;
-      bodies.push({ A: resample(from[i], COARSE), B: resample(target[j], COARSE) });
+      bodies.push({ A: resample(from[i], COARSE), B: resample(target[j], COARSE), ring: { A: from[i].closed, B: target[j].closed } });
       tracks.push({
         A: al.A, B: al.B, closed: al.closed, holesA, holesB, from: traits(from[i]), to: traits(target[j]),
         carriage: carriageOf(al.A, al.B, holesA, holesB), window: STAY, move: al.move, body: isBody(i, j),
@@ -601,9 +601,10 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
       const cast = castR(t), look = side === 'A' ? tracks[t].from : tracks[t].to;
       if (cast === undefined && !(look.tint > 0 || look.solid > 0)) continue;
       const body = bodies[t][side];
-      // A body is a boxy or round outline, not a bent wire's chord; and it must be there at all.
+      // A body must be there at all, and an open wire's chord is a body only when it is boxy or
+      // round, not a bent wire's chord. A closed ring (a tinted triangle) is a body as drawn.
       const [bx0, by0, bx1, by1] = bounds(body), area = areaOf(body);
-      if (area < 4 || area < TUCK_BOXY * (bx1 - bx0) * (by1 - by0)) continue;
+      if (area < 4 || (!bodies[t].ring[side] && area < TUCK_BOXY * (bx1 - bx0) * (by1 - by0))) continue;
       const r = Math.max(TUCK_R, cast ?? 0), reach = r - weight / 2 - TUCK_MARGIN, bc = areaCentroid(body);
       // A tuck or emerge is a slide behind a body, so the part must be in view at its other end.
       // A mark drawn on a card's face is already within the card where it starts (or ends): it has

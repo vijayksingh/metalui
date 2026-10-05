@@ -82,3 +82,22 @@ minus → plus is the same film backwards: nothing moves until p ⅓, then the u
 Change: `hideBehind` rejects a body that already covers more than half of the part at the part's visible end (outline widened by the clearance r), so the part gathers or buds instead. Engine-wide: 1392 of 6006 ordered pairs re-plan (moves change in 1252); mean strain 1.757 → 1.765 and pairs under 1 go 570 → 578. The rises are honest: every pair that rose was hiding a pop (a part switched off behind a body at one end), and a bud or gather is priced as lone material where a tuck was priced at half. The largest rises (seed ↔ ellipse 1.37 → 2.63, bell ↔ coin 1.25 → 2.22, board ↔ stop .76 → 1.60) are not product pairs; their before-filmstrips show the hidden part appearing in the last frame.
 
 Control pairs: plus ↔ minus .10 → .23, sidebar ↔ sidebar-collapsed .32 → .16 (the marks now travel less than a tuck to the window's centre), info ↔ warning .85/.76 → .76, lock ↔ warning .87 → .91.
+
+### Fix 2 · a closed ring is a body as drawn (E7) — landed
+
+Storyboard, play → pause:
+
+```
+    0ms   the triangle starts shrinking leftward into the first stop (carry, scale .82, 3 u of travel);
+          the second stop is inside it, hidden by the triangle's own area plus a 1 u clearance
+  ~55ms   p ⅓: the second stop starts sliding right out of the triangle, its top and bottom ends
+          showing past the slanted edges first, the middle still covered
+ ~120ms   p .7: the triangle is nearly a bar; the second stop is clear of it, whole
+  440ms   rest: two stops
+```
+
+pause → play: the second stop slides back into the growing triangle and is covered by p ⅔. play → stop keeps its bud: the pad ends on the case's face, so by fix 1 it cannot emerge (it would be hidden at rest) and it buds from the triangle's edge instead; recorded as honest at 1.88.
+
+Change: the 60 % boxiness test in `hideBehind` applies only to an open wire's chord-closed outline; a closed ring that is tinted, solid or casts depth is a body regardless of its shape. Engine-wide: 570 pairs re-plan; mean strain 1.765 → 1.759, pairs under 1 578 → 572. play ↔ pause 1.89 → 1.31, spark ↔ pause 1.97 → 1.33, play ↔ copy 2.53 → 1.37; rises are tucks that now travel to a body's centre instead of gathering into a nearer wire (select ↔ send-away 1.29 → 1.82, eraser ↔ share 1.59 → 1.95), and their filmstrips read fine (a bead slips behind the cursor; the eraser's band slides behind the tray).
+
+The docs' filmstrip list gains play ↔ pause, since it is a control pair on the same page; the slice reads that row's strain and moves.
