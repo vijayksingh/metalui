@@ -112,9 +112,13 @@ test('icons are a first-class section: next to Components in the nav and on the 
   await expect(nav.getByRole('link', { name: 'Icons', exact: true })).toBeVisible();
   const sections = await nav.getByRole('link').evaluateAll(links => links.map(link => link.textContent?.trim()));
   expect(sections.indexOf('Icons')).toBe(sections.indexOf('Components') + 1);
-  await page.locator('#explore').getByRole('link', { name: /^Icons/ }).click();
-  await expect(page.getByRole('heading', { name: 'Icons', exact: true, level: 1 })).toBeVisible();
-  await expect(nav.getByRole('link', { name: 'Icons', exact: true })).toHaveAttribute('aria-current', 'page');
+  // Every Explore card lands on its own section, Icons included.
+  for (const [card, heading] of [['Foundations', 'Foundations'], ['Components', 'Component library'], ['Blocks', 'Blocks'], ['Icons', 'Icons']]) {
+    await page.goto('/overview');
+    await page.locator('#explore').getByRole('link', { name: new RegExp(`^${card}`) }).click();
+    await expect(page.getByRole('heading', { name: heading, exact: true, level: 1 })).toBeVisible();
+    await expect(nav.getByRole('link', { name: card, exact: true })).toHaveAttribute('aria-current', 'page');
+  }
 });
 
 test('the header plate plays its keys once on arrival, then rests; each key opens its glyph', async ({ page }) => {
