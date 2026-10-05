@@ -7,6 +7,8 @@ import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
+import { PLACE_TARGETS, useCatalogTransition } from './catalog-transition';
+import './catalog-transition.css';
 
 /* The shell, ported one to one from the reference design-language site (kds.css):
  *   masthead   brand · search well (⌘K) · colorway pill of pills · MOTION switch · GitHub, X, LinkedIn
@@ -94,6 +96,9 @@ function Toc() {
 export function Shell() {
   const { colorway } = useColorway();
   const { pathname, state } = useLocation();
+  const main = React.useRef<HTMLElement>(null);
+  const placeTarget = PLACE_TARGETS[pathname.split('/').at(-1)!];
+  useCatalogTransition(pathname, main, placeTarget && '.docs-breadcrumbs [aria-current="page"]', placeTarget && `.stage ${placeTarget}`);
   const matchedData = useMatches().at(-1)?.loaderData as { pageTitle?: string } | undefined;
   const section = NAV.find(group => group.to === state?.sectionIndex && group.items.some(item => item.to === pathname)) ?? [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pathname)) ?? (pathname.startsWith('/icons/') ? NAV.find(group => group.to === '/icons') : undefined);
   const library = NAV.some(group => group.to === pathname) || pathname === '/icons' || pathname === '/icons/life';
@@ -162,8 +167,8 @@ export function Shell() {
           {/* on a phone the masthead has no room for them: they live at the foot of the menu, named */}
           <SocialLinks labelled />
         </aside>
-        <main id="main" tabIndex={-1}>
-          <Breadcrumbs items={crumbs} className="docs-breadcrumbs" renderLink={(item, props) => <Link {...props} to={item.href!} />} />
+        <main id="main" tabIndex={-1} ref={main}>
+          <Breadcrumbs items={crumbs} className="docs-breadcrumbs" renderLink={(item, props) => <Link {...props} viewTransition={item.href?.split('?')[0] === '/places'} to={item.href!} />} />
           <WipNotice />
           <Outlet />
         </main>

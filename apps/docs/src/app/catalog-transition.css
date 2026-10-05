@@ -1,0 +1,22 @@
+@layer components {
+  /* The shell stays put. Only the handled item and its name travel together. */
+  html[data-catalog-navigation]::view-transition-old(root), html[data-catalog-navigation]::view-transition-new(root) { animation: none; }
+  html[data-catalog-navigation]::view-transition-old(root) { opacity: 0; }
+  ::view-transition-group(docs-card-label), ::view-transition-group(docs-card-specimen) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+  ::view-transition-old(docs-card-specimen), ::view-transition-new(docs-card-specimen) {
+    animation-duration: 90ms;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+  /* One crisp text snapshot travels; overlapping font sizes make a ghost label. */
+  ::view-transition-old(docs-card-label) { animation: none; opacity: 0; }
+  ::view-transition-new(docs-card-label) { animation: none; }
+  /* A shared snapshot owns arrival; don't also play the component's entrance. */
+  [data-catalog-transition], .docs-breadcrumbs:has([data-catalog-transition]) [data-arrive] { animation: none !important; }
+  html.rm::view-transition-group(*), html.rm::view-transition-old(*), html.rm::view-transition-new(*) { animation: none; }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+  }
+}

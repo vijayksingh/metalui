@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useLocation } from 'react-router';
 import { useDialKit } from 'dialkit';
 import { Attachment, Button, EmptyState } from '@unlocalhosted/metalui';
 import { CommentDemo } from '../../ui/comment/CommentDemo';
@@ -22,7 +23,8 @@ import { ComponentPage } from '../../ui/ComponentPage';
 const FILES = ['Tram map.pdf', 'Receipt.png', 'Itinerary.docx'];
 
 function Place({ label }: { label: string }) {
-  const [files, setFiles] = React.useState(FILES);
+  const { state } = useLocation();
+  const [files, setFiles] = React.useState(state?.sectionIndex === '/places' ? [] : FILES);
   return (
     <div role="region" aria-label={label} className="grid w-full max-w-[360px] gap-12">
       {files.length === 0 ? (
