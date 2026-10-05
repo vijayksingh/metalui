@@ -34,21 +34,29 @@ test('preview size, set and search live in the address and survive a reload', as
   await expect(page.getByRole('status')).toHaveText(`${total} icons`);
   const glyph = tile(page, '/icons/check').locator('.icon-entry-specimen > svg');
   await expect(glyph).toHaveAttribute('width', '32');
-  await page.getByRole('group', { name: 'Preview size' }).getByRole('button', { name: '48' }).click();
+  await page.getByRole('radiogroup', { name: 'Preview size' }).getByRole('radio', { name: '48' }).click();
   await expect(page).toHaveURL(/size=48/);
   await expect(glyph).toHaveAttribute('width', '48');
   await page.reload();
   await expect(tile(page, '/icons/check').locator('.icon-entry-specimen > svg')).toHaveAttribute('width', '48');
-  await expect(page.getByRole('group', { name: 'Preview size' }).getByRole('button', { name: '48' })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('group', { name: 'Preview size' }).getByRole('button', { name: '32' }).click();
+  await expect(page.getByRole('radiogroup', { name: 'Preview size' }).getByRole('radio', { name: '48' })).toBeChecked();
+  await page.getByRole('radiogroup', { name: 'Preview size' }).getByRole('radio', { name: '32' }).click();
   await expect(page).not.toHaveURL(/size=/);
-  await page.getByRole('group', { name: 'Icon sets' }).getByRole('button', { name: 'Product icons' }).click();
+  // The set is the address and keeps the search; the count lives in the search field.
+  await page.getByRole('radiogroup', { name: 'Icon set' }).getByRole('radio', { name: /^Product/ }).click();
+  await expect(page).toHaveURL(/\/icons\?set=product$/);
+  await expect(page.getByRole('textbox', { name: 'Search icons' })).toHaveAttribute('placeholder', `Search ${ICON_NAMES.length} icons…`);
   await page.getByRole('textbox', { name: 'Search icons' }).fill('brekkie');
-  await expect(page.getByRole('status')).toHaveText(`0 of ${total} icons`);
+  await expect(page.getByRole('status')).toHaveText(`0 of ${ICON_NAMES.length} icons`);
+  await expect(page.locator('.icon-search-count')).toHaveText(`0 of ${ICON_NAMES.length}`);
   await expect(page.getByRole('heading', { name: 'No icons found' })).toBeVisible();
   await page.getByRole('button', { name: 'Search all icons' }).click();
   await expect(page.getByRole('status')).toHaveText(`1 of ${total} icons`);
   await expect(page.locator('.icon-entry')).toHaveCount(1);
+  await page.getByRole('radiogroup', { name: 'Icon set' }).getByRole('radio', { name: /^Life/ }).click();
+  await expect(page).toHaveURL(/\/icons\/life\?q=brekkie$/);
+  await expect(page.getByRole('heading', { name: 'Life icons', level: 1 })).toBeVisible();
+  await expect(page.getByRole('status')).toHaveText(`1 of ${LIFE_ICON_NAMES.length} icons`);
   await expect(page.getByRole('navigation', { name: 'Icon categories' })).toHaveCount(0);
 });
 
@@ -106,4 +114,21 @@ test('icons are a first-class section: next to Components in the nav and on the 
   await page.locator('#explore').getByRole('link', { name: /^Icons/ }).click();
   await expect(page.getByRole('heading', { name: 'Icons', exact: true, level: 1 })).toBeVisible();
   await expect(nav.getByRole('link', { name: 'Icons', exact: true })).toHaveAttribute('aria-current', 'page');
+});
+
+test('the header plate plays its keys once on arrival, then rests; each key opens its glyph', async ({ page }) => {
+  await page.goto('/icons');
+  const plate = page.getByRole('group', { name: 'Featured icons' });
+  await expect(plate.getByRole('link')).toHaveCount(8);
+  const playing = () => plate.evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length);
+  await expect.poll(playing).toBeGreaterThan(0);
+  await expect.poll(playing, { timeout: 5000 }).toBe(0);
+  await expect(plate.locator('[data-hover]')).toHaveCount(0);
+  await plate.getByRole('link', { name: 'Check' }).click();
+  await expect(page.getByRole('heading', { name: 'Check', level: 1 })).toBeVisible();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/icons/life');
+  await expect(plate.getByRole('link', { name: 'Breakfast' })).toBeVisible();
+  await page.waitForTimeout(1800);
+  expect(await playing()).toBe(0);
 });

@@ -14,9 +14,10 @@ test('every glyph has a detail link; search and breadcrumbs preserve browsing co
   await expect(page.locator('.icon-entry')).toHaveCount(ICON_NAMES.length + LIFE_ICON_NAMES.length);
   const paths = await page.locator('.icon-entry').evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname));
   expect(paths.sort()).toEqual([...ICON_NAMES.map(name => `/icons/${name}`), ...LIFE_ICON_NAMES.map(name => `/icons/life/${name}`)].sort());
-  await page.getByRole('button', { name: 'Product icons', exact: true }).click();
+  const sets = page.getByRole('radiogroup', { name: 'Icon set' });
+  await sets.getByRole('radio', { name: /^Product/ }).click();
   await expect(page.locator('.icon-entry')).toHaveCount(ICON_NAMES.length);
-  await page.getByRole('button', { name: 'All icons', exact: true }).click();
+  await sets.getByRole('radio', { name: /^All/ }).click();
   await page.getByRole('textbox', { name: 'Search icons' }).fill('not-a-real-glyph');
   await expect(page.getByRole('heading', { name: 'No icons found' })).toBeVisible();
   await page.getByRole('button', { name: 'Clear search', exact: true }).click();

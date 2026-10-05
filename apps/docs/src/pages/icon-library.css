@@ -2,17 +2,25 @@
 /* The icon library: glyphs sit in sunk trays like keys in a deck, one tray per category. The glyph
  * carries the cell; prose lives on the glyph's own page. Only opacity and transform move. */
 
-/* Toolbar: search, set, size and the category index stay in reach while 187 glyphs scroll by. */
-.icon-toolbar { position: sticky; top: 64px; z-index: 30; margin: calc(-1 * var(--mu-space-8)) calc(-1 * var(--mu-space-12)) 0; padding: var(--mu-space-8) var(--mu-space-12) var(--mu-space-12);
+/* Header: title, one line and the guides on the left; the plate of keys on the right. */
+.icon-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--mu-space-32); align-items: center; }
+.icon-header h1 { margin: 0; }
+.icon-guides { align-items: baseline; padding-top: var(--mu-space-4); }
+.icon-guides .type-readout { margin-inline-end: var(--mu-space-4); }
+
+/* Toolbar: one line of search · set · size, the category index under it. It follows the reader,
+ * aligned to the content column, so 187 glyphs stay searchable from anywhere. */
+.icon-toolbar { position: sticky; top: 64px; z-index: 30; padding-block: var(--mu-space-12);
   background: color-mix(in srgb, var(--page) 86%, transparent); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); box-shadow: 0 1px 0 var(--rule); }
-.icon-toolbar-row { flex-wrap: wrap; }
-.icon-toolbar-row .library-search { flex: 1 1 280px; max-width: 420px; }
-.icon-toolbar-controls { margin-inline-start: auto; }
-.icon-sizes button { font-variant-numeric: tabular-nums; }
-.icon-sizes button { gap: 0; }
+.icon-toolbar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--mu-space-16); align-items: center; }
+.icon-toolbar-row .library-search { max-width: none; }
+.icon-search-count { flex: none; margin-inline-start: auto; padding-inline-end: var(--mu-space-4); white-space: nowrap; color: var(--ink3); font-variant-numeric: tabular-nums; @apply type-doc-caption; }
+.icon-set-count { margin-inline-start: var(--mu-space-6); color: var(--ink3); font-variant-numeric: tabular-nums; }
+.icon-size { flex-wrap: nowrap; align-items: center; }
+.icon-size .mu-switcher-option { font-variant-numeric: tabular-nums; }
 
 /* Category index: one line of chips; it scrolls inside itself, the lit chip is the tray in view. */
-.icon-index { display: flex; gap: var(--mu-space-4); overflow-x: auto; scrollbar-width: none; margin: 0 calc(-1 * var(--mu-space-4)); padding: var(--mu-space-2) var(--mu-space-4); }
+.icon-index { display: flex; gap: var(--mu-space-2); overflow-x: auto; scrollbar-width: none; margin: 0 0 0 calc(-1 * var(--mu-space-12)); padding: var(--mu-space-2) 0; }
 .icon-index::-webkit-scrollbar { display: none; }
 .icon-index button { position: relative; flex: none; display: inline-flex; align-items: baseline; gap: var(--mu-space-6); min-height: var(--mu-space-32); padding: var(--mu-space-6) var(--mu-space-12); border-radius: var(--mu-radius-pill); color: var(--ink2); font: var(--mu-type-ui); white-space: nowrap; isolation: isolate; }
 .icon-index button span { font-variant-numeric: tabular-nums; opacity: .7; @apply type-doc-caption; }
@@ -28,15 +36,14 @@
 @media (prefers-reduced-motion: reduce) { .icon-index button::before { transition: none; } }
 .rm .icon-index button::before { transition: none; }
 
-/* Narrow screens: the toolbar stops following (it would cover a third of the glyphs); the tray (ui/icon-cell.css) shrinks its cells a step. */
+/* Narrow screens: the plate drops under the title; the toolbar stops following (it would cover a
+ * third of the glyphs); search takes its own line, set and size share the next. */
+@media (max-width: 900px) {
+  .icon-header { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .icon-header .icon-plate { justify-self: start; }
+}
 @media (max-width: 760px) {
-  .icon-toolbar { position: static; margin: 0; padding: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
-  /* search and count share a line; set and size share one scrolling line under it */
-  .icon-toolbar-row { gap: var(--mu-space-8) var(--mu-space-12); }
-  .icon-toolbar-row .library-search { flex-basis: 0; min-width: 0; max-width: none; }
-  .icon-toolbar-controls { flex: 1 0 100%; flex-wrap: nowrap; gap: var(--mu-space-8); margin: 0 calc(-1 * var(--mu-space-4)); padding: var(--mu-space-2) var(--mu-space-4); overflow-x: auto; scrollbar-width: none; }
-  .icon-toolbar-controls::-webkit-scrollbar { display: none; }
-  .icon-toolbar-controls .library-filters { flex: none; flex-wrap: nowrap; overflow: visible; margin: 0; padding: 0; }
-  .icon-toolbar-controls .library-filters button { flex: none; }
-  .icon-sizes { padding-inline-start: var(--mu-space-8); box-shadow: inset 1px 0 0 var(--rule); }
+  .icon-toolbar { position: static; padding-block: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+  .icon-toolbar-row { display: flex; flex-wrap: wrap; gap: var(--mu-space-12) var(--mu-space-16); }
+  .icon-toolbar-row .library-search { flex: 1 0 100%; }
 }

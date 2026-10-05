@@ -1,0 +1,12 @@
+@reference "../styles.css";
+/* Keycaps in a sunk plate. A key is raised at rest; hover plays its glyph, press sinks it by the
+ * material's travel. Only transform moves here (the glyph's own act moves the glyph). */
+.icon-plate { display: grid; grid-template-columns: repeat(4, var(--mu-space-64)); gap: var(--mu-space-8); padding: var(--mu-space-12);
+  border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.icon-key { display: grid; place-items: center; aspect-ratio: 1; border-radius: var(--mu-radius-plate); background: var(--btn-bg); box-shadow: var(--btn-sh);
+  color: var(--icon); -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--mu-ease-press); }
+.icon-key:active { transform: translateY(var(--mu-motion-press)); }
+.icon-key:focus-visible { outline: var(--mu-focus-width, 2px) solid var(--green-deep); outline-offset: var(--mu-space-2); }
+@media (prefers-reduced-motion: reduce) { .icon-key { transition: none; } .icon-key:active { transform: none; } }
+.rm .icon-key { transition: none; }
+.rm .icon-key:active { transform: none; }

@@ -22,9 +22,10 @@ test('section links open indexes and every guide stays discoverable', async ({ p
     await expect(links.first()).toBeVisible();
     reachablePaths.push(...await links.evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
     if (section === 'Icons') {
-      await page.locator('.library-related').getByRole('link', { name: 'Life icons', exact: false }).click();
+      // The set switcher is the way to Life icons; it moves the address to /icons/life.
+      await page.getByRole('radiogroup', { name: 'Icon set' }).getByRole('radio', { name: /^Life/ }).click();
       await expect(page.getByRole('heading', { name: 'Life icons', exact: true, level: 1 })).toBeVisible();
-      reachablePaths.push(...await page.locator('.library-related a').evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
+      reachablePaths.push(new URL(page.url()).pathname);
     }
   }
   expect([...new Set(reachablePaths)].sort()).toEqual(documentedPaths);

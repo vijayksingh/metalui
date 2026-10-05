@@ -1,21 +1,32 @@
 import * as React from 'react';
-import { Link, Navigate, useLocation, useSearchParams } from 'react-router';
-import { Field } from '@unlocalhosted/metalui';
+import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react-router';
+import { Field, Switcher } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { ICON_PAGES } from '../app/icon-pages';
 import { IconTray } from '../ui/IconCell';
+import { IconPlate } from '../ui/IconPlate';
 import './library.css';
 import './icon-library.css';
 
 /* ─────────────────────────────────────────────────────────
  * ICON LIBRARY
  *
- * Each category is one sunk tray of glyph cells (ui/IconCell: rest, hover, focus, pressed).
- * The toolbar holds search, set, preview size and the category index; the index lights the
- * category in view and jumps to it. Reduced motion: no acts, no sink, no smooth scroll.
+ * header    title, one line, the guides; beside it a plate of keys that play once on arrival (ui/IconPlate)
+ * toolbar   search (the count lives in it) · set switcher with counts · size · the category index,
+ *           which lights the category in view and jumps to it
+ * trays     one sunk tray of glyph cells per category (ui/IconCell: rest, hover, focus, pressed)
+ * The set is the address: All /icons, Product /icons?set=product, Life /icons/life.
+ * Reduced motion: no acts, no sink, no smooth scroll.
  * ───────────────────────────────────────────────────────── */
 
 const SIZES = [24, 32, 48] as const;
+type Set = 'all' | 'product' | 'life';
+const SETS: { value: Set; label: string }[] = [{ value: 'all', label: 'All' }, { value: 'product', label: 'Product' }, { value: 'life', label: 'Life' }];
+const FEATURED: Record<'all' | 'life', string[]> = {
+  all: ['/icons/check', '/icons/copy', '/icons/download', '/icons/palette', '/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music'],
+  life: ['/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music', '/icons/life/happy', '/icons/life/gym', '/icons/life/plants', '/icons/life/flight'],
+};
+const count = (set: Set) => ICON_PAGES.filter(icon => set === 'all' || icon.kind === set).length;
 const slug = (category: string) => `icons-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const reduced = () => document.documentElement.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -53,9 +64,11 @@ export default function IconLibrary() {
   const pendingParams = React.useRef(params);
   React.useEffect(() => { pendingParams.current = params; }, [params]);
   const query = params.get('q') ?? '';
-  const set = life ? 'life' : params.get('set') === 'product' || params.get('set') === 'life' ? params.get('set')! : 'all';
+  const navigate = useNavigate();
+  const set: Set = life || params.get('set') === 'life' ? 'life' : params.get('set') === 'product' ? 'product' : 'all';
   const size = SIZES.find(step => String(step) === params.get('size')) ?? 32;
-  const total = life ? ICON_PAGES.filter(icon => icon.kind === 'life').length : ICON_PAGES.length;
+  const total = count(set);
+  const featured = React.useMemo(() => FEATURED[set === 'life' ? 'life' : 'all'].map(to => ICON_PAGES.find(icon => icon.to === to)!), [set]);
   const found = ICON_PAGES.filter(icon => (set === 'all' || icon.kind === set) && query.trim().toLowerCase().split(/\s+/).every(word => `${icon.label} ${icon.name} ${icon.category} ${icon.description} ${icon.keywords}`.toLowerCase().includes(word)));
   const categories = [...new Set(found.map(icon => icon.category))];
   const toolbar = React.useRef<HTMLDivElement>(null);
@@ -74,6 +87,14 @@ export default function IconLibrary() {
     pendingParams.current = next;
     setParams(next, { replace: true, preventScrollReset: true });
   }
+  // Choosing a set moves the address and keeps the search and size.
+  function chooseSet(next: Set) {
+    const search = new URLSearchParams(pendingParams.current);
+    search.delete('set');
+    if (next === 'product') search.set('set', 'product');
+    pendingParams.current = search;
+    navigate({ pathname: next === 'life' ? '/icons/life' : '/icons', search: search.size ? `?${search}` : '' }, { replace: true, preventScrollReset: true });
+  }
   function jump(category: string) {
     const section = document.getElementById(slug(category));
     if (!section) return;
@@ -88,19 +109,25 @@ export default function IconLibrary() {
   // Existing guide links with section anchors continue to reach their original content.
   if (hash) return <Navigate to={`${life ? '/icons/life/guide' : '/icons/guide'}${hash}`} replace />;
   return <div className="library icon-library mu-stack gap-mu-section">
-    <header className="library-heading mu-stack gap-mu-related">
-      <div className="library-title-row mu-cluster gap-mu-group"><h1>{life ? 'Life icons' : 'Icons'}</h1><span className="library-count">{total} glyphs</span></div>
-      <p>{life ? 'Glyphs for what a day is made of: meals, feelings, people, places, and everyday moments. Hover one to see it move.' : 'Product controls and everyday life, drawn in Soft Hardware. Every glyph has its own motion; hover one to see it, open it for sizes, code and downloads.'}</p>
-      <div className="library-related mu-cluster gap-mu-related"><Link to={life ? '/icons/life/guide' : '/icons/guide'}>Usage & motion guide <Icon name="external" size={12} /></Link><Link to={life ? '/icons' : '/icons/life'}>{life ? 'All icons' : 'Life icons'} <Icon name="chevron" turn={270} size={12} animate={false} /></Link></div>
+    <header className="icon-header">
+      <div className="library-heading mu-stack gap-mu-related">
+        <h1>{set === 'life' ? 'Life icons' : 'Icons'}</h1>
+        <p>{set === 'life' ? 'What a day is made of: meals, feelings, people, places and moments. Each glyph moves in its own way.' : 'Glyphs for product controls and everyday life. Each one has its own motion.'}</p>
+        <nav className="library-related icon-guides mu-cluster gap-mu-related" aria-label="Icon guides">
+          <span className="type-readout text-ink3">Guides</span>
+          <Link to="/icons/guide">Product</Link>
+          <Link to="/icons/life/guide">Life</Link>
+          <Link to="/icons/guide#morph">Morph</Link>
+        </nav>
+      </div>
+      <IconPlate icons={featured} />
     </header>
     <div ref={toolbar} className="icon-toolbar mu-stack gap-mu-related">
-      <div className="icon-toolbar-row mu-cluster gap-mu-group">
-        <Field className="library-search"><Icon name="search" size={16} /><Field.Input aria-label="Search icons" placeholder="Search by name, purpose, or synonym…" value={query} onChange={event => update('q', event.target.value)} /></Field>
-        <p className="library-result" role="status">{found.length === total ? `${total} icons` : `${found.length} of ${total} icons`}</p>
-        <div className="icon-toolbar-controls mu-cluster gap-mu-group">
-          {!life && <div className="library-filters mu-cluster gap-mu-space-4" role="group" aria-label="Icon sets">{(['all', 'product', 'life'] as const).map(kind => <button key={kind} type="button" aria-pressed={set === kind} onClick={() => update('set', kind)}>{kind === 'all' ? 'All icons' : kind === 'product' ? 'Product icons' : 'Life icons'}</button>)}</div>}
-          <div className="library-filters icon-sizes mu-cluster gap-mu-space-4" role="group" aria-label="Preview size">{SIZES.map(step => <button key={step} type="button" aria-pressed={size === step} onClick={() => update('size', String(step))}>{step}<span aria-hidden="true">px</span></button>)}</div>
-        </div>
+      <div className="icon-toolbar-row">
+        <Field className="library-search icon-search"><Icon name="search" size={16} /><Field.Input aria-label="Search icons" placeholder={`Search ${total} icons…`} value={query} onChange={event => update('q', event.target.value)} />{query && <span className="icon-search-count" aria-hidden="true">{found.length} of {total}</span>}</Field>
+        <p className="sr-only" role="status">{found.length === total ? `${total} icons` : `${found.length} of ${total} icons`}</p>
+        <Switcher aria-label="Icon set" value={set} onValueChange={chooseSet} options={SETS.map(option => ({ value: option.value, label: <>{option.label}<span className="icon-set-count">{count(option.value)}</span></> }))} />
+        <div className="icon-size mu-cluster gap-mu-space-8"><span className="type-readout text-ink3" aria-hidden="true">Size</span><Switcher aria-label="Preview size" size="compact" value={String(size)} onValueChange={value => update('size', value)} options={SIZES.map(step => ({ value: String(step), label: String(step) }))} /></div>
       </div>
       {categories.length > 1 && <nav ref={index} className="icon-index" aria-label="Icon categories">{categories.map(category => <button key={category} type="button" aria-current={current === slug(category) || undefined} onClick={() => jump(category)}>{category}<span>{found.filter(icon => icon.category === category).length}</span></button>)}</nav>}
     </div>
@@ -108,6 +135,6 @@ export default function IconLibrary() {
       <div className="library-section-heading mu-cluster gap-mu-related"><h2 tabIndex={-1}>{category} <span>{found.filter(icon => icon.category === category).length}</span></h2></div>
       <IconTray icons={found.filter(icon => icon.category === category)} size={size} state={{ iconSearch: params.toString(), iconIndex: pathname }} />
     </section>)}
-    {!found.length && <div className="library-empty mu-stack gap-mu-related"><h2>No icons found</h2><p>Try a different name or purpose, or search across both sets.</p><div className="mu-cluster gap-mu-related"><button type="button" className="type-ui text-ink" onClick={() => update('q', '')}>Clear search</button>{set !== 'all' && !life && <button type="button" className="type-ui text-ink" onClick={() => update('set', 'all')}>Search all icons</button>}</div></div>}
+    {!found.length && <div className="library-empty mu-stack gap-mu-related"><h2>No icons found</h2><p>Try a different name or purpose, or search across both sets.</p><div className="mu-cluster gap-mu-related"><button type="button" className="type-ui text-ink" onClick={() => update('q', '')}>Clear search</button>{set !== 'all' && <button type="button" className="type-ui text-ink" onClick={() => chooseSet('all')}>Search all icons</button>}</div></div>}
   </div>;
 }
