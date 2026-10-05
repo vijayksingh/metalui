@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react-router';
-import { Field, Switcher } from '@unlocalhosted/metalui';
-import { Icon } from '@unlocalhosted/metalui/icons';
+import { Field, Switcher, Toggle } from '@unlocalhosted/metalui';
+import { Icon, MORPH_NAMES } from '@unlocalhosted/metalui/icons';
 import { ICON_PAGES } from '../app/icon-pages';
 import { IconTray } from '../ui/IconCell';
 import { IconPlate } from '../ui/IconPlate';
@@ -12,7 +12,8 @@ import './icon-library.css';
  * ICON LIBRARY
  *
  * header    title, one line, the guides; beside it a plate of keys that play once on arrival (ui/IconPlate)
- * toolbar   search (the count lives in it) · set switcher with counts · size · the category index,
+ * toolbar   search (the count lives in it) · set switcher with counts · Morphs (a latching filter to the
+ *           glyphs that morph; life glyphs never do) · size · the category index,
  *           which lights the category in view and jumps to it
  * trays     one sunk tray of glyph cells per category (ui/IconCell: rest, hover, focus, pressed)
  * The set is the address: All /icons, Product /icons?set=product, Life /icons/life.
@@ -26,6 +27,7 @@ const FEATURED: Record<'all' | 'life', string[]> = {
   all: ['/icons/check', '/icons/copy', '/icons/download', '/icons/palette', '/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music'],
   life: ['/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music', '/icons/life/happy', '/icons/life/gym', '/icons/life/plants', '/icons/life/flight'],
 };
+const MORPHS = new Set<string>(MORPH_NAMES);
 const count = (set: Set) => ICON_PAGES.filter(icon => set === 'all' || icon.kind === set).length;
 const slug = (category: string) => `icons-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const reduced = () => document.documentElement.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -67,9 +69,10 @@ export default function IconLibrary() {
   const navigate = useNavigate();
   const set: Set = life || params.get('set') === 'life' ? 'life' : params.get('set') === 'product' ? 'product' : 'all';
   const size = SIZES.find(step => String(step) === params.get('size')) ?? 32;
-  const total = count(set);
+  const morphs = set !== 'life' && params.get('morph') === '1';
+  const total = morphs ? MORPHS.size : count(set);
   const featured = React.useMemo(() => FEATURED[set === 'life' ? 'life' : 'all'].map(to => ICON_PAGES.find(icon => icon.to === to)!), [set]);
-  const found = ICON_PAGES.filter(icon => (set === 'all' || icon.kind === set) && query.trim().toLowerCase().split(/\s+/).every(word => `${icon.label} ${icon.name} ${icon.category} ${icon.description} ${icon.keywords}`.toLowerCase().includes(word)));
+  const found = ICON_PAGES.filter(icon => (set === 'all' || icon.kind === set) && (!morphs || (icon.kind === 'product' && MORPHS.has(icon.name))) && query.trim().toLowerCase().split(/\s+/).every(word => `${icon.label} ${icon.name} ${icon.category} ${icon.description} ${icon.keywords}`.toLowerCase().includes(word)));
   const categories = [...new Set(found.map(icon => icon.category))];
   const toolbar = React.useRef<HTMLDivElement>(null);
   const index = React.useRef<HTMLElement>(null);
@@ -83,7 +86,7 @@ export default function IconLibrary() {
   }, [current]);
   function update(key: string, value: string) {
     const next = new URLSearchParams(pendingParams.current);
-    if (!value || value === 'all' || (key === 'size' && value === '32')) next.delete(key); else next.set(key, value);
+    if (!value || value === 'all' || value === '0' || (key === 'size' && value === '32')) next.delete(key); else next.set(key, value);
     pendingParams.current = next;
     setParams(next, { replace: true, preventScrollReset: true });
   }
@@ -92,6 +95,7 @@ export default function IconLibrary() {
     const search = new URLSearchParams(pendingParams.current);
     search.delete('set');
     if (next === 'product') search.set('set', 'product');
+    if (next === 'life') search.delete('morph');
     pendingParams.current = search;
     navigate({ pathname: next === 'life' ? '/icons/life' : '/icons', search: search.size ? `?${search}` : '' }, { replace: true, preventScrollReset: true });
   }
@@ -128,6 +132,7 @@ export default function IconLibrary() {
         <Field className="library-search icon-search"><Icon name="search" size={16} /><Field.Input aria-label="Search icons" placeholder={`Search ${total} icons…`} value={query} onChange={event => update('q', event.target.value)} />{query && <span className="icon-search-count" aria-hidden="true">{found.length} of {total}</span>}</Field>
         <p className="sr-only" role="status">{found.length === total ? `${total} icons` : `${found.length} of ${total} icons`}</p>
         <Switcher aria-label="Icon set" value={set} onValueChange={chooseSet} options={SETS.map(option => ({ value: option.value, label: <>{option.label}<span className="icon-set-count">{count(option.value)}</span></> }))} />
+        <Toggle pressed={morphs} disabled={set === 'life'} onPressedChange={pressed => update('morph', pressed ? '1' : '0')}>Morphs</Toggle>
         <div className="icon-size mu-cluster gap-mu-space-8"><span className="type-readout text-ink3" aria-hidden="true">Size</span><Switcher aria-label="Preview size" size="compact" value={String(size)} onValueChange={value => update('size', value)} options={SIZES.map(step => ({ value: String(step), label: String(step) }))} /></div>
       </div>
       {categories.length > 1 && <nav ref={index} className="icon-index" aria-label="Icon categories">{categories.map(category => <button key={category} type="button" aria-current={current === slug(category) || undefined} onClick={() => jump(category)}>{category}<span>{found.filter(icon => icon.category === category).length}</span></button>)}</nav>}

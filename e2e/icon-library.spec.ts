@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { ICON_NAMES } from '../packages/metalui/src/icons/catalog.generated';
 import { LIFE_ICON_NAMES } from '../packages/metalui/src/icons/life/catalog.generated';
+import { MORPH_NAMES } from '../packages/metalui/src/icons/morph.generated';
 
 const captures = 'docs/captures/review/icon-library';
 const total = ICON_NAMES.length + LIFE_ICON_NAMES.length;
@@ -131,4 +132,22 @@ test('the header plate plays its keys once on arrival, then rests; each key open
   await expect(plate.getByRole('link', { name: 'Breakfast' })).toBeVisible();
   await page.waitForTimeout(1800);
   expect(await playing()).toBe(0);
+});
+
+test('Morphs latches the library to the glyphs that morph, and Life leaves it', async ({ page }) => {
+  await page.goto('/icons');
+  const key = page.getByRole('button', { name: 'Morphs', exact: true });
+  await expect(key).toHaveAttribute('aria-pressed', 'false');
+  await key.click();
+  await expect(key).toHaveAttribute('aria-pressed', 'true');
+  await expect(page).toHaveURL(/morph=1/);
+  await expect(page.locator('.icon-entry')).toHaveCount(MORPH_NAMES.length);
+  await expect(page.locator('.icon-entry[href^="/icons/life/"]')).toHaveCount(0);
+  await expect(page.getByRole('textbox', { name: 'Search icons' })).toHaveAttribute('placeholder', `Search ${MORPH_NAMES.length} icons…`);
+  await page.reload();
+  await expect(page.locator('.icon-entry')).toHaveCount(MORPH_NAMES.length);
+  await page.getByRole('radiogroup', { name: 'Icon set' }).getByRole('radio', { name: /^Life/ }).click();
+  await expect(page).toHaveURL('/icons/life');
+  await expect(page.getByRole('button', { name: 'Morphs', exact: true })).toBeDisabled();
+  await expect(page.locator('.icon-entry')).toHaveCount(LIFE_ICON_NAMES.length);
 });

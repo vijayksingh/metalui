@@ -12,7 +12,7 @@
  * aligned to the content column, so 187 glyphs stay searchable from anywhere. */
 .icon-toolbar { position: sticky; top: 64px; z-index: 30; padding-block: var(--mu-space-12);
   background: color-mix(in srgb, var(--page) 86%, transparent); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); box-shadow: 0 1px 0 var(--rule); }
-.icon-toolbar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--mu-space-16); align-items: center; }
+.icon-toolbar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: var(--mu-space-16); align-items: center; }
 .icon-toolbar-row .library-search { max-width: none; }
 .icon-search-count { flex: none; margin-inline-start: auto; padding-inline-end: var(--mu-space-4); white-space: nowrap; color: var(--ink3); font-variant-numeric: tabular-nums; @apply type-doc-caption; }
 .icon-set-count { margin-inline-start: var(--mu-space-6); color: var(--ink3); font-variant-numeric: tabular-nums; }
