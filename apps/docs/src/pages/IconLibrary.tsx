@@ -4,7 +4,17 @@ import { Field } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { LifeIcon } from '@unlocalhosted/metalui/icons/life';
 import { ICON_PAGES } from '../app/icon-pages';
+import { useCatalogTransition } from '../app/catalog-transition';
 import './library.css';
+
+function IconEntry({ icon, search, index }: { icon: typeof ICON_PAGES[number]; search: string; index: string }) {
+  const card = React.useRef<HTMLAnchorElement>(null);
+  useCatalogTransition(icon.to, card, '.icon-entry-label', '.icon-entry-specimen > svg');
+  return <Link ref={card} to={icon.to} viewTransition className="icon-entry mu-stack gap-mu-related" state={{ iconSearch: search, iconIndex: index }}>
+    <span className="icon-entry-specimen" aria-hidden="true">{icon.kind === 'life' ? <LifeIcon name={icon.name} size={32} animate={false} /> : <Icon name={icon.name} size={32} animate={false} />}</span>
+    <span className="mu-stack gap-mu-space-4"><span className="icon-entry-label type-doc-subheading self-start">{icon.label}</span><span className="type-doc-caption text-ink2">{icon.description}</span></span>
+  </Link>;
+}
 
 export default function IconLibrary() {
   const { pathname, hash } = useLocation();
@@ -38,10 +48,7 @@ export default function IconLibrary() {
       {!life && <div className="library-filters mu-cluster gap-mu-related" role="group" aria-label="Icon sets">{(['all', 'product', 'life'] as const).map(kind => <button key={kind} type="button" aria-pressed={set === kind} onClick={() => update('set', kind)}>{kind === 'all' ? 'All icons' : kind === 'product' ? 'Product icons' : 'Life icons'}</button>)}</div>}
     </div>
     {categories.map(category => <section key={category} className="mu-stack gap-mu-group"><div className="library-section-heading mu-cluster gap-mu-related"><h2>{category} <span>{found.filter(icon => icon.category === category).length}</span></h2></div>
-      <div className="icon-directory mu-auto-grid gap-mu-related">{found.filter(icon => icon.category === category).map(icon => <Link key={icon.to} to={icon.to} className="icon-entry mu-stack gap-mu-related" state={{ iconSearch: params.toString(), iconIndex: pathname }}>
-        <span className="icon-entry-specimen" aria-hidden="true">{icon.kind === 'life' ? <LifeIcon name={icon.name} size={32} animate={false} /> : <Icon name={icon.name} size={32} animate={false} />}</span>
-        <span className="mu-stack gap-mu-space-4"><span className="type-doc-subheading">{icon.label}</span><span className="type-doc-caption text-ink2">{icon.description}</span></span>
-      </Link>)}</div>
+      <div className="icon-directory mu-auto-grid gap-mu-related">{found.filter(icon => icon.category === category).map(icon => <IconEntry key={icon.to} icon={icon} search={params.toString()} index={pathname} />)}</div>
     </section>)}
     {!found.length && <div className="library-empty mu-stack gap-mu-related"><h2>No icons found</h2><p>Try a different name or purpose.</p><button type="button" className="type-ui text-ink" onClick={() => update('q', '')}>Clear search</button></div>}
   </div>;
