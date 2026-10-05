@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router';
 import { Button, Field } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { CATALOG, CATALOG_GROUPS, catalogMatches } from '../app/catalog';
+import { useCatalogTransition } from '../app/catalog-transition';
+import { COMPONENT_TARGETS } from '../app/component-transition';
 import LibrarySpecimen from '../ui/LibrarySpecimen';
 import './library.css';
 
@@ -76,23 +78,7 @@ export default function Library() {
               <p>{section.description}</p>
             </header>
             <div className="library-grid mu-auto-grid gap-mu-group">
-              {entries.map(part => {
-                const trying = active === part.name;
-                return (
-                  <article key={part.name} className="library-card mu-stack gap-mu-space-16" data-component={part.name}>
-                    <div className="library-preview" data-active={trying || undefined}>
-                      <div className="library-specimen" inert={!trying} aria-hidden={!trying || undefined}>
-                        <LibrarySpecimen key={`${part.name}-${trying}`} name={part.name} active={trying} />
-                      </div>
-                      <button type="button" className="library-try" aria-pressed={trying} aria-label={`${trying ? 'Stop trying' : 'Try'} ${part.label}`} onClick={() => setActive(trying ? null : part.name)}>{trying ? 'Done' : 'Try it'}<Icon name={trying ? 'check' : 'select'} size={12} /></button>
-                    </div>
-                    <div className="library-card-copy mu-stack gap-mu-space-6">
-                      <h3><Link to={part.page!} state={{ librarySearch: params.toString() }}>{part.label}<Icon name="external" size={16} /></Link></h3>
-                      <p>{part.summary}</p>
-                    </div>
-                  </article>
-                );
-              })}
+              {entries.map(part => <ComponentCard key={part.name} part={part} trying={active === part.name} search={params.toString()} onTry={() => setActive(active === part.name ? null : part.name)} />)}
             </div>
           </section>
         );
@@ -103,4 +89,24 @@ export default function Library() {
       </footer>
     </div>
   );
+}
+
+
+function ComponentCard({ part, trying, search, onTry }: {
+  part: typeof CATALOG[number]; trying: boolean; search: string; onTry: () => void;
+}) {
+  const root = React.useRef<HTMLElement>(null);
+  useCatalogTransition(part.page!, root, '.library-card-label', `.library-specimen ${COMPONENT_TARGETS[part.name]}`);
+  return <article ref={root} className="library-card mu-stack gap-mu-space-16" data-component={part.name}>
+    <div className="library-preview" data-active={trying || undefined}>
+      <div className="library-specimen" inert={!trying} aria-hidden={!trying || undefined}>
+        <LibrarySpecimen key={`${part.name}-${trying}`} name={part.name} active={trying} />
+      </div>
+      <button type="button" className="library-try" aria-pressed={trying} aria-label={`${trying ? 'Stop trying' : 'Try'} ${part.label}`} onClick={onTry}>{trying ? 'Done' : 'Try it'}<Icon name={trying ? 'check' : 'select'} size={12} /></button>
+    </div>
+    <div className="library-card-copy mu-stack gap-mu-space-6">
+      <h3><Link viewTransition to={part.page!} state={{ librarySearch: search }}><span className="library-card-label">{part.label}</span><Icon name="external" size={16} /></Link></h3>
+      <p>{part.summary}</p>
+    </div>
+  </article>;
 }
