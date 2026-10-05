@@ -97,6 +97,8 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
     else if (ref) ref.current = svg;
   }, [ref]);
   const raf = React.useRef(0);
+  // Reduced motion draws the new glyph in the same commit that names it, never a frame late.
+  const still = React.useMemo(() => (reduced ? morphParts(name, strokeWidth, turn) : null), [reduced, name, strokeWidth, turn]);
 
   React.useEffect(() => {
     const rest = morphParts(name, strokeWidth, turn);
@@ -145,7 +147,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
       {...props}
     >
       {title && <title>{title}</title>}
-      <MorphGlyph frame={frame} />
+      <MorphGlyph frame={still ?? frame} />
     </svg>
   );
 });
