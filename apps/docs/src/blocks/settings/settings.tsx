@@ -321,7 +321,7 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
       data-mu-motion={draft.reduceMotion ? 'reduce' : undefined}
       data-density={draft.density}
       onKeyDown={onKeyDown}
-      className={`@container/block relative grid w-full max-w-[52rem] overflow-clip rounded-surface-radius-hero text-ink recipe-surface-raise ${className ?? ''}`}
+      className={`block-settings @container/block relative grid w-full max-w-[52rem] overflow-clip rounded-surface-radius-hero text-ink recipe-surface-raise ${className ?? ''}`}
     >
       <header className="grid gap-2 border-b border-rule px-20 pt-20 pb-16">
         <h2 id={`${ids}-title`} className="m-0 type-display text-ink">Settings</h2>

@@ -314,7 +314,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   };
 
   return (
-    <section ref={root} aria-label="Assistant" className={`@container/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
+    <section ref={root} aria-label="Assistant" className={`block-ai-composer @container/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
       <header className="flex items-baseline justify-between gap-12 px-20 pt-16 pb-8">
         <h2 className="m-0 type-title text-ink">Assistant</h2>
         <span className="type-meta text-ink3">Sample replies</span>

@@ -257,6 +257,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
   /* The count, said once typing pauses. */
   const said = `${plural(counted.length, 'task', 'tasks')}${query.trim() ? ` matching “${query.trim()}”` : ''}`;
   React.useEffect(() => {
+    if (root.current?.closest('[inert]')) return;
     const t = window.setTimeout(() => setStatus(said), TIMING.announce);
     return () => window.clearTimeout(t);
   }, [said]);
@@ -472,6 +473,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
     return true;
   };
   React.useEffect(() => {
+    if (root.current?.closest('[inert]')) return;
     const onKey = (e: KeyboardEvent) => {
       if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'z' || e.shiftKey || lastActor.current !== ids) return;
       const t = e.target as HTMLElement;
@@ -523,7 +525,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       ref={root}
       aria-labelledby={`${ids}-title`}
       onKeyDown={onRootKey}
-      className={`@container/block grid w-full max-w-[44rem] gap-16 p-20 rounded-surface-radius-hero recipe-surface-raise max-[30rem]:p-12 ${className ?? ''}`}
+      className={`block-task-inbox @container/block grid w-full max-w-[44rem] gap-16 p-20 rounded-surface-radius-hero recipe-surface-raise max-[30rem]:p-12 ${className ?? ''}`}
     >
       <header className="grid gap-12">
         <div className="flex items-baseline gap-8">

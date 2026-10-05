@@ -294,7 +294,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const zoneOptions = ZONES.map((z) => ({ value: z.value, label: `${z.city} (${offsetName(z.value, starts[0] ?? now)})` }));
 
   return (
-    <section ref={setRoot} aria-label={`Book a call with ${host.name}`} className={`@container/block grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
+    <section ref={setRoot} aria-label={`Book a call with ${host.name}`} className={`block-availability-picker @container/block grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
       <div
         inert={booked}
         className={`grid gap-24 p-20 transition-opacity duration-settle ease-settle reduced-motion:transition-none @xl/block:grid-cols-[auto_minmax(0,1fr)] @4xl/block:grid-cols-[minmax(0,17rem)_auto_12rem] @4xl/block:justify-between ${booked ? 'opacity-60' : ''}`}

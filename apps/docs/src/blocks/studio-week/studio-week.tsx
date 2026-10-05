@@ -353,7 +353,7 @@ export function StudioWeek({ studio = 'Lisbon Studio', className }: StudioWeekPr
   const from = previous ? { ...previous.week, grid: { ...week.grid, [measure]: previous.week.grid[previous.measure] } } : null;
 
   return (
-    <section aria-label={`${studio}, ${title.toLowerCase()}`} className={`@container/block grid w-full gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
+    <section aria-label={`${studio}, ${title.toLowerCase()}`} className={`block-studio-week @container/block grid w-full gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
       <header className="flex flex-wrap items-center justify-between gap-12">
         <div className="grid gap-2">
           <h2 className="m-0 type-display text-ink"><SwapText value={title} /></h2>

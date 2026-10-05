@@ -286,7 +286,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
         ref={root}
         aria-labelledby={`${ids}-title`}
         onKeyDown={onKeyDown}
-        className={`@container/block grid w-full max-w-[36rem] gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}
+        className={`block-share-panel @container/block grid w-full max-w-[36rem] gap-20 p-20 rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}
       >
         <header className="flex items-start justify-between gap-12">
           <div className="grid min-w-0 gap-2">
