@@ -73,15 +73,3 @@ export const NAV: NavGroup[] = [
     ],
   },
 ];
-
-// NAV is the complete search/crawl index. Every docs route presents this same sidebar;
-// opening a specimen must not switch back to a second component browsing interface.
-const itemAt = (path: string): NavItem => {
-  const item = NAV.flatMap(group => group.items).find(item => item.to === path)!;
-  return { ...item, label: path === '/foundations' ? NAV.find(group => group.label === 'Foundations')!.label : item.label, meta: undefined };
-};
-export const SIDEBAR_NAV: NavGroup[] = [
-  { label: 'Explore', items: ['/components', '/foundations', '/layers', '/icons', '/icons/life'].map(itemAt) },
-  { label: 'In context', items: NAV.find(group => group.label === 'Blocks')!.items },
-  { label: 'About', items: NAV.find(group => group.label === 'Start')!.items.filter(item => item.to !== '/components' && item.to !== '/layers') },
-];

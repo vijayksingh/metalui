@@ -3,7 +3,7 @@ import { WipNotice } from '../ui/WipNotice';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
 import { SlidingIndicator } from '@unlocalhosted/metalui';
-import { SIDEBAR_NAV } from './nav';
+import { NAV, type NavGroup } from './nav';
 import { PARTS } from './parts';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
@@ -92,6 +92,23 @@ function Toc() {
   );
 }
 
+function NavigationGroup({ group, pathname, onToggle, children }: { group: NavGroup; pathname: string; onToggle: () => void; children: React.ReactNode }) {
+  const disclosure = React.useRef<HTMLDetailsElement>(null);
+  React.useEffect(() => {
+    if (group.items.some(item => item.to === pathname) && disclosure.current) disclosure.current.open = true;
+  }, [group, pathname]);
+  if (group.label === 'Start') return <div className="grp"><span className="eng">{group.label}</span>{children}</div>;
+  return (
+    <details className="grp" ref={disclosure}>
+      <summary className="eng" onClick={onToggle}>
+        <span>{group.label}</span>
+        <svg className="nav-chevron" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="m4 2 4 4-4 4" /></svg>
+      </summary>
+      {children}
+    </details>
+  );
+}
+
 export function Shell() {
   const { colorway } = useColorway();
   const { pathname, state } = useLocation();
@@ -138,16 +155,15 @@ export function Shell() {
         <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined} onPointerLeave={() => setHovered(null)}>
           {/* One hover highlight for the whole nav, gliding link to link like a list's (settle spring). */}
           <SlidingIndicator activeSelector="[data-hovered]" watch={['data-hovered']} spring="settle" className="side-glide" />
-          {SIDEBAR_NAV.map((group) => (
-            <div className="grp" key={group.label}>
-              <span className="eng">{group.label}</span>
+          {NAV.map((group) => (
+            <NavigationGroup key={group.label} group={group} pathname={pathname} onToggle={() => setHovered(null)}>
               {group.items.map((item) => (
-                <NavLink key={item.to} to={item.to === '/components' ? libraryDestination : item.to} end={item.to === '/components' ? !componentGuide : item.to !== '/foundations'} aria-current={pathname === item.to ? 'page' : 'location'} onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
+                <NavLink key={item.to} to={item.to === '/components' ? libraryDestination : item.to} end={item.to === '/components' ? !componentGuide : true} aria-current={pathname === item.to ? 'page' : 'location'} onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
                   <span>{item.label}</span>
                   {item.meta && <span className="readout-t">{item.meta}</span>}
                 </NavLink>
               ))}
-            </div>
+            </NavigationGroup>
           ))}
           {/* on a phone the masthead has no room for them: they live at the foot of the menu, named */}
           <SocialLinks labelled />
