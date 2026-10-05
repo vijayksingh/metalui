@@ -6,13 +6,13 @@ import { XrayOverlay } from '../ui/xray';
 import { useColorway, type Colorway } from '../app/colorway';
 
 /* The front door: nothing but objects hanging in space, one engraved line in each
- * corner, and one way in. "Browse Components" flies every object onto the overview's table. */
+ * corner, and one way into the component catalog. */
 export default function Landing() {
   const navigate = useNavigate();
   const { colorway, setColorway } = useColorway();
   const { open: xray, away, fly, close } = useXrayFlight();
 
-  const enter = React.useCallback(() => navigate('/overview', { viewTransition: true }), [navigate]);
+  const enter = React.useCallback(() => navigate('/components', { viewTransition: true }), [navigate]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

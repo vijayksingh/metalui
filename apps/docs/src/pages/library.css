@@ -1,0 +1,72 @@
+@reference "../styles.css";
+/* The catalog inherits Soft Hardware. Its wells hold the real controls; its labels stay quiet. */
+.shell.library-shell { grid-template-columns: 160px minmax(0, 1fr); gap: var(--mu-space-40); }
+.library-shell .side { padding-top: var(--mu-space-40); }
+.library-shell main { padding-top: var(--mu-space-40); }
+.library-shell .ph-block { margin-bottom: var(--mu-space-32); }
+.library { padding-bottom: var(--mu-space-24); }
+.library-title-row { justify-content: space-between; }
+.library h1 { margin: 0; @apply type-doc-title; text-wrap: balance; }
+.library-heading > p { margin: 0; max-width: 65ch; @apply type-doc-lede; color: var(--ink2); }
+.library-count, .library-result { @apply type-doc-caption; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.library-count { white-space: nowrap; }
+.library-related { @apply type-doc-caption; color: var(--ink2); }
+.library-related a, .library-footer a { display: inline-flex; align-items: center; gap: var(--mu-space-6); text-decoration: none; color: var(--ink); }
+.library-related a:hover, .library-footer a:hover { text-decoration: underline; }
+.library-search-row { justify-content: space-between; }
+.library-search { flex: 1 1 320px; max-width: 480px; }
+.library-search button { display: grid; place-items: center; padding: var(--mu-space-6); color: var(--ink2); border-radius: var(--mu-radius-pill); }
+.library-search button:hover { color: var(--ink); }
+.library-search input { caret-color: var(--green-deep); }
+.library-result { margin: 0; overflow-wrap: anywhere; }
+.library-filters button { display: inline-flex; align-items: center; gap: var(--mu-space-8); min-height: var(--mu-space-40); padding: var(--mu-space-8) var(--mu-space-12); border-radius: var(--mu-radius-row); color: var(--ink2); font: var(--mu-type-ui); }
+.library-filters button span { font-variant-numeric: tabular-nums; opacity: .8; }
+.library-filters button:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); color: var(--ink); }
+.library-filters button[aria-pressed="true"] { background: var(--btn-bg); box-shadow: var(--btn-sh); color: var(--ink); }
+.library-section-heading { justify-content: space-between; align-items: baseline; }
+.library-section-heading h2 { display: flex; align-items: baseline; gap: var(--mu-space-12); margin: 0; @apply type-doc-heading;  }
+.library-section-heading h2 span { color: var(--ink2); @apply type-doc-caption; font-variant-numeric: tabular-nums; }
+.library-section-heading p { margin: 0; color: var(--ink2); @apply type-doc-caption; }
+.library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.library-card { min-width: 0; }
+.library-preview { position: relative; display: grid; place-items: center; min-width: 0; height: 224px; padding: var(--mu-space-24); border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.library-preview[data-active] { outline: 1px solid var(--green-deep); outline-offset: var(--mu-space-4); }
+.library-specimen { display: flex; align-items: center; justify-content: center; min-width: 0; width: 100%; max-height: 100%; }
+.library-specimen[inert] { pointer-events: none; user-select: none; }
+.library-preview:not([data-active]) .library-specimen *, .library-preview:not([data-active]) .library-specimen *::before, .library-preview:not([data-active]) .library-specimen *::after { animation: none !important; transition: none !important; }
+.library-specimen-full { width: 100%; min-width: 0; }
+.library-specimen-full > .mu-slider { width: 100%; }
+.library-specimen-reply { color: var(--ink2); @apply type-doc-caption; }
+.library-sample-line { margin: 0; color: var(--ink2); font: var(--mu-type-ui); }
+.library-scroll-sample { height: var(--mu-space-80); width: 100%; }
+.library-wide-specimen { max-width: 100%; overflow-x: auto; padding: var(--mu-space-8) var(--mu-space-4); scrollbar-width: thin; scrollbar-color: var(--ink3) transparent; }
+.library-try { position: absolute; right: var(--mu-space-12); bottom: var(--mu-space-12); display: inline-flex; align-items: center; gap: var(--mu-space-6); min-height: var(--mu-space-32); padding: var(--mu-space-6) var(--mu-space-12); font: var(--mu-type-ui); color: var(--ink2); border-radius: var(--mu-radius-pill); }
+.library-try:hover, .library-try[aria-pressed="true"] { background: var(--btn-bg); box-shadow: var(--btn-sh); color: var(--ink); }
+.library-card-copy { padding: 0 var(--mu-space-4); }
+.library-card h3 { margin: 0; @apply type-doc-subheading;  }
+.library-card h3 a { display: flex; align-items: center; justify-content: space-between; gap: var(--mu-space-12); padding: var(--mu-space-4) 0; text-decoration: none; }
+.library-card h3 a > svg { flex: none; color: var(--ink2); }
+.library-card h3 a:hover { text-decoration: underline; }
+.library-card-copy p { margin: 0; color: var(--ink2); @apply type-doc-caption; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.library-empty { padding: var(--mu-space-48) 0; }
+.library-empty h2 { margin: 0; @apply type-doc-heading; }
+.library-empty p { margin: 0; color: var(--ink2); @apply type-doc-prose; }
+.library-footer { padding-top: var(--mu-space-24); box-shadow: 0 -1px 0 color-mix(in srgb, var(--ink) 12%, transparent); justify-content: space-between; @apply type-doc-caption; }
+.library-footer p { margin: 0; color: var(--ink2); }
+.library :is(button, a, input):focus-visible { outline: var(--mu-focus-width, 2px) solid var(--green-deep); outline-offset: var(--mu-space-4); }
+.library ::selection { background: color-mix(in srgb, var(--green-deep) 25%, transparent); color: var(--ink); }
+@media (max-width: 1100px) {
+  .library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .shell.library-shell { grid-template-columns: minmax(0, 1fr); }
+  .library-shell main { padding-top: var(--mu-space-24); }
+}
+@media (max-width: 560px) {
+  .library h1 { @apply type-doc-title; }
+  .library-grid { grid-template-columns: minmax(0, 1fr); }
+  .library-filters { flex-wrap: nowrap; overflow-x: auto; padding: var(--mu-space-6) var(--mu-space-4); margin: 0 calc(-1 * var(--mu-space-4)); scrollbar-width: thin; scrollbar-color: var(--ink3) transparent; }
+  .library-filters button { flex: none; }
+  .library-preview { height: 208px; }
+  .library-heading, .library-section { gap: var(--mu-space-16); }
+}

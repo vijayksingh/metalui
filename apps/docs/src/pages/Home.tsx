@@ -69,7 +69,7 @@ export default function Home() {
         <div className="cards">
           {[
             { to: '/foundations', icon: 'layout', title: 'Foundations', body: 'Colours, text, spacing, corners, materials, shadows and motion.', eng: 'Tokens · live' },
-            { to: '/components/button', icon: 'board', title: 'Components', body: 'Small parts that each do one thing, like buttons, sliders, fields, menus and tooltips.', eng: 'React · SwiftUI' },
+            { to: '/components', icon: 'board', title: 'Components', body: 'Find a control by purpose, try its material and motion, then open its guide.', eng: 'React · SwiftUI' },
             { to: '/components/tool-strip', icon: 'text', title: 'Blocks', body: 'Bigger pieces built from components, like the toolbar, filter bar and cards.', eng: 'Compositions' },
             { to: '/icons', icon: 'seed', title: 'Icons', body: 'Line icons on a 24 point grid. Each one moves a little when you hover it.', eng: 'Glyphs' },
           ].map((c) => (

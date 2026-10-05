@@ -3,7 +3,7 @@ import { WipNotice } from '../ui/WipNotice';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
 import { SlidingIndicator } from '@unlocalhosted/metalui';
-import { NAV } from './nav';
+import { NAV, LIBRARY_NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
@@ -94,6 +94,7 @@ function Toc() {
 export function Shell() {
   const { colorway } = useColorway();
   const { pathname } = useLocation();
+  const library = pathname === '/components';
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);
   React.useEffect(() => setMenuOpen(false), [pathname]);
@@ -129,11 +130,11 @@ export function Shell() {
         </div>
       </header>
 
-      <div className="shell">
+      <div className={library ? 'shell library-shell' : 'shell'}>
         <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined} onPointerLeave={() => setHovered(null)}>
           {/* One hover highlight for the whole nav, gliding link to link like a list's (settle spring). */}
           <SlidingIndicator activeSelector="[data-hovered]" watch={['data-hovered']} spring="settle" className="side-glide" />
-          {NAV.map((group) => (
+          {(library ? LIBRARY_NAV : NAV).map((group) => (
             <div className="grp" key={group.label}>
               <span className="eng">{group.label}</span>
               {group.items.map((item) => (
@@ -151,7 +152,7 @@ export function Shell() {
           <WipNotice />
           <Outlet />
         </main>
-        <Toc />
+        {!library && <Toc />}
       </div>
 
       {pathname !== '/components/button' && <DialRoot position="bottom-right" defaultOpen={false} theme={colorway === 'graphite' ? 'dark' : 'light'} productionEnabled />}

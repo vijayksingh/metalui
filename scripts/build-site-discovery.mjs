@@ -33,6 +33,7 @@ for (const family of ['components', 'blocks']) {
 }
 
 const descriptions = {
+  '/components': 'Browse MetalUI controls by purpose, search the component library, try real React specimens, and open their documentation.',
   '/': 'MetalUI makes Soft Hardware components for React and SwiftUI: soft plastic, smoked glass, metal, and controls that respond like physical objects.',
   '/overview': 'Explore MetalUI: Soft Hardware components, material recipes, motion, React and SwiftUI implementations, and guides for coding agents.',
   '/layers': 'See how MetalUI parts, components, objects, instruments, and places fit together.',

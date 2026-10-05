@@ -13,6 +13,7 @@ export const routes: RouteObject[] = [
     Component: Shell,
     errorElement: <NotFound />,
     children: [
+      { path: 'components', lazy: lazy(() => import('../pages/Library')) },
       { path: 'overview', lazy: lazy(() => import('../pages/Home')) },
       { path: 'wip', lazy: lazy(() => import('../pages/Wip')) },
       { path: 'changelog', lazy: lazy(() => import('../pages/Changelog')) },

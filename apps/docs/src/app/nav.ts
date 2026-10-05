@@ -28,6 +28,7 @@ export const NAV: NavGroup[] = [
   {
     label: 'Start',
     items: [
+      { to: '/components', label: 'Component library' },
       { to: '/overview', label: 'Overview' },
       { to: '/layers', label: 'How it fits together' },
       { to: '/wip', label: 'Work in progress' },
@@ -71,4 +72,20 @@ export const NAV: NavGroup[] = [
       { to: '/icons/life', label: 'Life icons', meta: '108' },
     ],
   },
+];
+
+/** Discovery uses destinations, while individual docs retain their complete reference index. */
+export const LIBRARY_NAV: NavGroup[] = [
+  { label: 'Explore', items: [
+    { to: '/components', label: 'Components' },
+    { to: '/foundations', label: 'Foundations' },
+    { to: '/layers', label: 'How it fits together' },
+    { to: '/icons', label: 'Icons' },
+  ] },
+  { label: 'In context', items: NAV.find(group => group.label === 'Blocks')!.items },
+  { label: 'About', items: [
+    { to: '/overview', label: 'Overview' },
+    { to: '/wip', label: 'Work in progress' },
+    { to: '/changelog', label: 'Changelog' },
+  ] },
 ];
