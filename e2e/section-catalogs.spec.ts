@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-for (const section of ['objects', 'instruments']) {
+for (const section of ['objects', 'instruments', 'parts', 'blocks']) {
   test(`${section}: every visual card opens its guide and returns through the breadcrumb`, async ({ page }) => {
     test.setTimeout(90000);
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));

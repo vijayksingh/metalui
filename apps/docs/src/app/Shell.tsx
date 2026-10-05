@@ -7,7 +7,7 @@ import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
-import { catalogDetailTarget, useCatalogTransition } from './catalog-transition';
+import { CATALOG_INDEXES, catalogDetailTarget, useCatalogTransition } from './catalog-transition';
 import './catalog-transition.css';
 
 /* The shell, ported one to one from the reference design-language site (kds.css):
@@ -95,12 +95,13 @@ function Toc() {
 
 export function Shell() {
   const { colorway } = useColorway();
-  const { pathname, state } = useLocation();
+  const { pathname, hash, state } = useLocation();
+  const pageKey = NAV.some(group => group.items.some(item => item.to === pathname + hash)) ? pathname + hash : pathname;
   const main = React.useRef<HTMLElement>(null);
-  const placeTarget = catalogDetailTarget(pathname);
-  useCatalogTransition(pathname, main, placeTarget && '.docs-breadcrumbs [aria-current="page"]', placeTarget);
+  const placeTarget = catalogDetailTarget(pageKey);
+  useCatalogTransition(pageKey, main, placeTarget && '.docs-breadcrumbs [aria-current="page"]', placeTarget);
   const matchedData = useMatches().at(-1)?.loaderData as { pageTitle?: string } | undefined;
-  const section = NAV.find(group => group.to === state?.sectionIndex && group.items.some(item => item.to === pathname)) ?? [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pathname)) ?? (pathname.startsWith('/icons/') ? NAV.find(group => group.to === '/icons') : undefined);
+  const section = NAV.find(group => group.to === state?.sectionIndex && group.items.some(item => item.to === pageKey)) ?? [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pageKey)) ?? (pathname.startsWith('/icons/') ? NAV.find(group => group.to === '/icons') : undefined);
   const library = NAV.some(group => group.to === pathname) || pathname === '/icons' || pathname === '/icons/life';
   const librarySearch = typeof state?.librarySearch === 'string' ? state.librarySearch : '';
   const libraryDestination = librarySearch ? `/components?${librarySearch}` : '/components';
@@ -109,11 +110,11 @@ export function Shell() {
   const iconSearch = typeof state?.iconSearch === 'string' ? state.iconSearch : '';
   const iconDestination = (index: string) => iconIndex === index && iconSearch ? `${index}?${iconSearch}` : index;
   const sectionDestination = section?.to === '/components' ? libraryDestination : section?.to === '/icons' ? iconDestination('/icons') : sectionSearch ? `${section?.to}?${sectionSearch}` : section?.to;
-  const pageLabel = matchedData?.pageTitle ?? (section?.to === pathname ? section.label : section?.items.find(item => item.to === pathname)?.label);
+  const pageLabel = matchedData?.pageTitle ?? (section?.to === pathname ? section.label : section?.items.find(item => item.to === pageKey)?.label);
   const crumbs = [{ id: '/', label: 'MetalUI', href: '/' },
     ...(section?.to && section.to !== pathname ? [{ id: section.to, label: section.label, href: sectionDestination }] : []),
     ...(pathname.startsWith('/icons/life/') ? [{ id: '/icons/life', label: 'Life icons', href: iconDestination('/icons/life') }] : []),
-    { id: pathname, label: pageLabel ?? 'Documentation' }];
+    { id: pageKey, label: pageLabel ?? 'Documentation' }];
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);
   React.useEffect(() => setMenuOpen(false), [pathname]);
@@ -168,7 +169,7 @@ export function Shell() {
           <SocialLinks labelled />
         </aside>
         <main id="main" tabIndex={-1} ref={main}>
-          <Breadcrumbs items={crumbs} className="docs-breadcrumbs" renderLink={(item, props) => <Link {...props} viewTransition={['/places', '/objects', '/instruments'].includes(item.href?.split('?')[0] ?? '')} to={item.href!} />} />
+          <Breadcrumbs items={crumbs} className="docs-breadcrumbs" renderLink={(item, props) => <Link {...props} viewTransition={CATALOG_INDEXES.includes(item.href?.split('?')[0] ?? '')} to={item.href!} />} />
           <WipNotice />
           <Outlet />
         </main>

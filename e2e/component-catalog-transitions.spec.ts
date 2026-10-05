@@ -84,6 +84,21 @@ test('keyboard opens guide, Try it remains local, and motion preferences suppres
   }
 });
 
+test('a resting preview opens its guide while Try it keeps the preview local', async ({ page }) => {
+  await page.goto('/components?q=switch');
+  const card = page.locator('[data-component="switch"]');
+  await expect(card).toBeVisible();
+  await card.click({ position: { x: 80, y: 80 } });
+  await expect(page).toHaveURL('/components/switch');
+  await page.waitForFunction(() => (window as any).catalogTransitions.at(-1)?.finished);
+  await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Components', exact: true }).click();
+  await expect(page).toHaveURL('/components?q=switch');
+  await page.waitForFunction(() => (window as any).catalogTransitions.at(-1)?.finished);
+  await card.getByRole('button', { name: 'Try Switch', exact: true }).click();
+  await card.click({ position: { x: 80, y: 80 } });
+  await expect(page).toHaveURL('/components?q=switch');
+});
+
 test('desktop and mobile retain actual shared flight in both colorways', async ({ page }) => {
   for (const width of [1280, 390]) for (const colorway of ['Bone', 'Graphite']) {
     await page.setViewportSize({ width, height: 900 });

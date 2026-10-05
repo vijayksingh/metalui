@@ -32,8 +32,8 @@ test('section links open indexes and every guide stays discoverable', async ({ p
   await expect(page.getByRole('heading', { name: 'Objects', exact: true, level: 1 })).toBeVisible();
   await page.screenshot({ path: `${captures}/objects-bone.png` });
   await page.getByRole('textbox', { name: 'Search objects' }).fill('folder');
-  await expect(page.locator('.section-entry')).toHaveCount(1);
-  await page.locator('.section-entry').click();
+  await expect(page.locator('.place-card-copy')).toHaveCount(1);
+  await page.locator('.place-card-copy').click();
   await expect(page).toHaveURL(/\/components\/folder$/);
   const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
   await expect(crumbs).toContainText('Objects');

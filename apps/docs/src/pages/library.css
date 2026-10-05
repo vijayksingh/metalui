@@ -16,6 +16,7 @@
 .section-entry svg { flex: none; color: var(--ink2); }
 .section-entry p { margin: 0; @apply type-doc-caption; color: var(--ink2); }
 .places-directory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.section-directory[data-directory="blocks"] .place-preview { height: calc(4 * var(--mu-space-80)); }
 .place-card { position: relative; min-width: 0; }
 .place-preview { position: relative; display: grid; place-items: center; overflow: hidden; height: calc(3 * var(--mu-space-80)); border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); pointer-events: none; user-select: none; }
 .place-preview .place-scene { flex: none; position: absolute; width: 400px; height: 240px; max-height: none; transform-origin: center; }
@@ -72,7 +73,10 @@
 .library-section-heading h2 span { color: var(--ink2); @apply type-doc-caption; font-variant-numeric: tabular-nums; }
 .library-section-heading p { margin: 0; color: var(--ink2); @apply type-doc-caption; }
 .library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.library-card { min-width: 0; }
+.library-card { position: relative; min-width: 0; }
+.library-card h3 a::before { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: var(--mu-radius-card); }
+.library-try { z-index: 2; }
+.library-preview[data-active] { z-index: 2; }
 .library-preview { position: relative; display: grid; place-items: center; min-width: 0; height: 224px; padding: var(--mu-space-24); border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
 .library-preview[data-active] { outline: 1px solid var(--green-deep); outline-offset: var(--mu-space-4); }
 .library-specimen { display: flex; align-items: center; justify-content: center; min-width: 0; width: 100%; max-height: 100%; }
@@ -87,7 +91,7 @@
 .library-try { position: absolute; right: var(--mu-space-12); bottom: var(--mu-space-12); display: inline-flex; align-items: center; gap: var(--mu-space-6); min-height: var(--mu-space-32); padding: var(--mu-space-6) var(--mu-space-12); font: var(--mu-type-ui); color: var(--ink2); border-radius: var(--mu-radius-pill); }
 .library-try:hover, .library-try[aria-pressed="true"] { background: var(--btn-bg); box-shadow: var(--btn-sh); color: var(--ink); }
 .library-card-copy { padding: 0 var(--mu-space-4); }
-.library-card h3 { margin: 0; @apply type-doc-subheading;  }
+.library-card h3 { position: static; margin: 0; @apply type-doc-subheading;  }
 .library-card h3 a { display: flex; align-items: center; justify-content: space-between; gap: var(--mu-space-12); padding: var(--mu-space-4) 0; text-decoration: none; }
 .library-card h3 a > svg { flex: none; color: var(--ink2); }
 .library-card h3 a:hover { text-decoration: underline; }
