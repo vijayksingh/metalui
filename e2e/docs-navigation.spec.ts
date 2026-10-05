@@ -18,7 +18,7 @@ test('section links open indexes and every guide stays discoverable', async ({ p
     await nav.getByRole('link', { name: section, exact: true }).click();
     await expect(page.getByRole('heading', { name: section === 'Components' ? 'Component library' : section, exact: true, level: 1 })).toBeVisible();
     await expect(nav.getByRole('link', { name: section, exact: true })).toHaveAttribute('aria-current', 'page');
-    const links = section === 'Icons' ? page.locator('.library-related a') : page.locator('.section-entry, .library-card h3 a');
+    const links = section === 'Icons' ? page.locator('.library-related a') : page.locator('.section-entry, .library-card h3 a, .place-card-copy');
     await expect(links.first()).toBeVisible();
     reachablePaths.push(...await links.evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
     if (section === 'Icons') {
