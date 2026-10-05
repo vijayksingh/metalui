@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { WipNotice } from '../ui/WipNotice';
-import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
+import { Link, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
-import { SlidingIndicator } from '@unlocalhosted/metalui';
+import { Breadcrumbs, SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
-import { PARTS } from './parts';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
@@ -95,10 +94,16 @@ function Toc() {
 export function Shell() {
   const { colorway } = useColorway();
   const { pathname, state } = useLocation();
-  const library = pathname === '/components';
-  const componentGuide = PARTS.some(part => part.page === pathname && part.layer === 'component');
+  const section = [...NAV].reverse().find(group => group.to === pathname || group.items.some(item => item.to === pathname));
+  const library = NAV.some(group => group.to === pathname) || pathname === '/icons' || pathname === '/icons/life';
   const librarySearch = typeof state?.librarySearch === 'string' ? state.librarySearch : '';
   const libraryDestination = librarySearch ? `/components?${librarySearch}` : '/components';
+  const sectionSearch = typeof state?.sectionSearch === 'string' ? state.sectionSearch : '';
+  const sectionDestination = section?.to === '/components' ? libraryDestination : sectionSearch ? `${section?.to}?${sectionSearch}` : section?.to;
+  const pageLabel = section?.to === pathname ? section.label : section?.items.find(item => item.to === pathname)?.label;
+  const crumbs = [{ id: '/', label: 'MetalUI', href: '/' },
+    ...(section?.to && section.to !== pathname ? [{ id: section.to, label: section.label, href: sectionDestination }] : []),
+    { id: pathname, label: pageLabel ?? 'Documentation' }];
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);
   React.useEffect(() => setMenuOpen(false), [pathname]);
@@ -138,12 +143,11 @@ export function Shell() {
         <aside className="side" id="side" aria-label="Documentation" data-open={menuOpen || undefined} onPointerLeave={() => setHovered(null)}>
           {/* One hover highlight for the whole nav, gliding link to link like a list's (settle spring). */}
           <SlidingIndicator activeSelector="[data-hovered]" watch={['data-hovered']} spring="settle" className="side-glide" />
-          {/* Component discovery belongs to the gallery. Keep the complete NAV for search and crawlable guides. */}
-          {NAV.filter(group => group.label !== 'Components').map((group) => (
+          {NAV.map((group) => (
             <div className="grp" key={group.label}>
-              <span className="eng">{group.label}</span>
-              {group.items.map((item) => (
-                <NavLink key={item.to} to={item.to === '/components' ? libraryDestination : item.to} end={item.to === '/components' ? !componentGuide : true} aria-current={pathname === item.to ? 'page' : 'location'} onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
+              {group.to ? <Link to={group.to === '/components' ? libraryDestination : group.to} aria-current={pathname === group.to ? 'page' : section === group ? 'location' : undefined} onClick={() => setMenuOpen(false)} data-hovered={hovered === group.to || undefined} onPointerEnter={() => setHovered(group.to!)}>{group.label}</Link> : <span className="eng">{group.label}</span>}
+              {!group.to && group.items.map((item) => (
+                <NavLink key={item.to} to={item.to} end aria-current={pathname === item.to ? 'page' : 'location'} onClick={() => setMenuOpen(false)} data-hovered={hovered === item.to || undefined} onPointerEnter={() => setHovered(item.to)}>
                   <span>{item.label}</span>
                   {item.meta && <span className="readout-t">{item.meta}</span>}
                 </NavLink>
@@ -154,8 +158,8 @@ export function Shell() {
           <SocialLinks labelled />
         </aside>
         <main id="main" tabIndex={-1}>
+          <Breadcrumbs items={crumbs} className="docs-breadcrumbs" renderLink={(item, props) => <Link {...props} to={item.href!} />} />
           <WipNotice />
-          {componentGuide && <NavLink to={libraryDestination} className="catalog-return">Back to component library</NavLink>}
           <Outlet />
         </main>
         {!library && <Toc />}

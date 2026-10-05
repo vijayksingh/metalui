@@ -23,14 +23,14 @@ test('discover by purpose, recover from empty results, and return from a guide',
   await page.locator('[data-component="button"] h3 a').click();
   await expect(page).toHaveURL(/\/components\/button$/);
   expect(await page.locator('.side .grp a').allTextContents()).toEqual(sidebarLabels);
-  await expect(page.locator('.side .grp a').first()).toHaveAttribute('aria-current', 'location');
+  await expect(page.locator('.side').getByRole('link', { name: 'Components', exact: true })).toHaveAttribute('aria-current', 'location');
   await page.screenshot({ path: `${captures}/guide-bone.png` });
-  await page.getByRole('link', { name: 'Back to component library', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Components', exact: true }).click();
   await expect(page.getByRole('textbox', { name: 'Search components' })).toHaveValue('button');
   await expect(page.locator('[data-component="button"]')).toBeVisible();
   await expect(page.getByRole('status').filter({ hasText: 'matching' })).toContainText('button');
   await page.goto('/components/button');
-  await page.getByRole('link', { name: 'Back to component library', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Components', exact: true }).click();
   await expect(page).toHaveURL(/\/components$/);
   expect(errors).toEqual([]);
 });
@@ -81,7 +81,7 @@ test('browse both colorways on desktop and mobile with reduced motion', async ({
   await page.getByRole('button', { name: 'Overlays', exact: false }).click();
   await expect(page.locator('[data-component="dialog"]')).toBeVisible();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
-  await expect(page.getByRole('link', { name: 'Materials', exact: true })).toBeVisible();
+  await expect(page.locator('.side').getByRole('link', { name: 'Foundations', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
   await page.setViewportSize({ width: 1280, height: 900 });
   for (const group of ['Input & selection', 'Canvas controls', 'Inline editing']) {

@@ -67,8 +67,8 @@ const descriptions = {
 
 // A nav item can point at a section of a page (a path ending in #section); the page is the route.
 const pageOf = (to) => to.split('#')[0];
-const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label;
-const paths = ['/', ...new Set(NAV.flatMap((group) => group.items.map((item) => pageOf(item.to))))];
+const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.find(group => group.to === path)?.label ?? NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label;
+const paths = ['/', ...new Set(NAV.flatMap((group) => [...(group.to ? [group.to] : []), ...group.items.map((item) => pageOf(item.to))]))];
 const routerSource = readFileSync(resolve(root, 'apps/docs/src/app/routes.tsx'), 'utf8');
 const routerPaths = [...routerSource.matchAll(/\bpath:\s*'([^']+)'/g)]
   .map((match) => match[1] === '/' ? '/' : `/${match[1]}`)
@@ -98,7 +98,7 @@ function pageFor(path) {
   const component = path.startsWith('/components/') ? components.get(name) : undefined;
   const label = labelOf(path);
   if (!label) throw new Error(`Missing navigation label for ${path}`);
-  const description = component?.description ?? partDescriptions.get(path) ?? descriptions[path];
+  const description = component?.description ?? partDescriptions.get(path) ?? NAV.find(group => group.to === path)?.description ?? descriptions[path === '/foundations/principles' ? '/foundations' : path];
   if (!description) throw new Error(`Missing search description for ${path}`);
   return {
     // A block shares its name with a component (Settings), and two pages must not share a title.

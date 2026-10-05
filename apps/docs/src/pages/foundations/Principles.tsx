@@ -26,7 +26,7 @@ export default function Principles() {
   return (
     <>
       <PageHeader
-        title="Foundations"
+        title="Principles"
         lede="The rules every MetalUI object is built from. They are derived from the approved Soft Hardware object sheet, then reduced to a few rules instead of a list of hand-tuned values. Each page shows its rules live; open the dial panel (bottom right) to tune them."
       />
       <Section title="Principles">

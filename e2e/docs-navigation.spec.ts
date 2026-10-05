@@ -3,49 +3,49 @@ import { mkdirSync, readFileSync } from 'node:fs';
 
 const captures = 'docs/captures/review/navigation';
 const documentedPaths = [...readFileSync('apps/docs/src/app/routes.tsx', 'utf8').matchAll(/path: '([^']+)'/g)]
-  .map(match => match[1]).filter(path => path !== '/' && path !== '*').map(path => `/${path}`).sort();
+  .map(match => match[1]).filter(path => path !== '/' && path !== '*' && !path.includes(':')).map(path => `/${path}`).sort();
+const sections = ['Foundations', 'Components', 'Blocks', 'Objects', 'Instruments', 'Places', 'Parts'];
 test.beforeAll(() => mkdirSync(captures, { recursive: true }));
 
-test('every documentation route remains reachable through visible links and the component gallery', async ({ page }) => {
-  await page.goto('/foundations');
+test('section links open indexes and every guide stays discoverable', async ({ page }) => {
+  await page.goto('/components');
   const nav = page.getByRole('complementary', { name: 'Documentation', exact: true });
-  await expect(nav.getByRole('link', { name: 'Materials', exact: true })).toBeVisible();
-  await expect(nav.getByRole('link', { name: 'Sound', exact: true })).toBeVisible();
+  await expect(nav.getByRole('link', { name: 'Components', exact: true })).toBeVisible();
+  const reachablePaths = await nav.locator('.grp a').evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname));
   await expect(nav.locator('details')).toHaveCount(0);
-  await expect(nav.getByRole('link', { name: 'Components', exact: true })).toHaveCount(1);
-  await expect(nav.getByRole('link', { name: 'Button', exact: true })).toHaveCount(0);
-  const links = nav.locator('.grp a');
-  const reachablePaths = await links.evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname));
-  await expect(nav.getByRole('link', { name: 'Cue family', exact: true })).toBeVisible();
-  await nav.getByRole('link', { name: 'Materials', exact: true }).click();
-  await expect(page).toHaveURL(/\/foundations\/materials$/);
-  await expect(nav.getByRole('link', { name: 'Materials', exact: true })).toHaveAttribute('aria-current', 'page');
-  await expect(nav.getByRole('link', { name: 'Principles', exact: true })).not.toHaveAttribute('aria-current');
-  await nav.getByRole('link', { name: 'Components', exact: true }).click();
-  await expect(page).toHaveURL(/\/components$/);
-  await expect(page.locator('.library-card h3 a')).toHaveCount(51);
-  const galleryPaths = await page.locator('.library-card h3 a').evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname));
-  expect([...new Set([...reachablePaths, ...galleryPaths])].sort()).toEqual(documentedPaths);
-  await expect(nav.getByRole('link', { name: 'Sound', exact: true })).toBeVisible();
-  await nav.getByRole('link', { name: 'Sound', exact: true }).click();
-  await expect(page).toHaveURL(/\/foundations\/sound$/);
+  await expect(nav.getByRole('link', { name: 'Switch', exact: true })).toHaveCount(0);
+  for (const section of sections) {
+    await nav.getByRole('link', { name: section, exact: true }).click();
+    await expect(page.getByRole('heading', { name: section === 'Components' ? 'Component library' : section, exact: true, level: 1 })).toBeVisible();
+    await expect(nav.getByRole('link', { name: section, exact: true })).toHaveAttribute('aria-current', 'page');
+    const links = page.locator('.section-entry, .library-card h3 a');
+    await expect(links.first()).toBeVisible();
+    reachablePaths.push(...await links.evaluateAll(nodes => nodes.map(node => new URL((node as HTMLAnchorElement).href).pathname)));
+  }
+  expect([...new Set(reachablePaths)].sort()).toEqual(documentedPaths);
+  await nav.getByRole('link', { name: 'Objects', exact: true }).click();
+  await page.getByRole('textbox', { name: 'Search objects' }).fill('folder');
+  await expect(page.locator('.section-entry')).toHaveCount(1);
+  await page.locator('.section-entry').click();
+  await expect(page).toHaveURL(/\/components\/folder$/);
+  const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
+  await expect(crumbs).toContainText('Objects');
+  await expect(crumbs.locator('[aria-current="page"]')).toHaveText('Folder');
+  await crumbs.getByRole('link', { name: 'Objects', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: 'Search objects' })).toHaveValue('folder');
 });
 
-test('Components opens the gallery with the keyboard and stays consistent on mobile in both colorways', async ({ page }) => {
+test('keyboard and mobile navigation share the section hierarchy in both colorways', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/foundations/materials');
+  await page.goto('/blocks');
   const nav = page.getByRole('complementary', { name: 'Documentation', exact: true });
-  const components = nav.getByRole('link', { name: 'Components', exact: true });
-  await components.focus();
+  await nav.getByRole('link', { name: 'Components', exact: true }).focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/components$/);
-  await expect(components).toHaveAttribute('aria-current', 'page');
-  const buttonGuide = page.locator('[data-component="button"] h3 a');
-  await buttonGuide.focus();
+  await expect(page.locator('[data-component="switch"] h3 a')).toBeVisible();
+  await page.locator('[data-component="switch"] h3 a').focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/components\/button$/);
-  await expect(components).toHaveAttribute('aria-current', 'location');
-  await expect(nav.getByRole('link', { name: 'Button', exact: true })).toHaveCount(0);
+  await expect(page).toHaveURL(/\/components\/switch$/);
+  await expect(page.getByRole('navigation', { name: 'Breadcrumb' }).locator('[aria-current="page"]')).toHaveText('Switch');
   for (const colorway of ['Bone', 'Graphite']) {
     await page.getByRole('radio', { name: colorway, exact: true }).click();
     await page.screenshot({ path: `${captures}/desktop-${colorway.toLowerCase()}.png` });
@@ -56,12 +56,8 @@ test('Components opens the gallery with the keyboard and stays consistent on mob
     await page.getByRole('radio', { name: colorway, exact: true }).click();
     await page.screenshot({ path: `${captures}/mobile-${colorway.toLowerCase()}.png` });
   }
-  await components.click();
-  await expect(page).toHaveURL(/\/components$/);
+  await nav.getByRole('link', { name: 'Foundations', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Menu', exact: true })).toHaveAttribute('aria-expanded', 'false');
-  await page.getByRole('button', { name: 'Menu', exact: true }).click();
-  await nav.getByRole('link', { name: 'Sound', exact: true }).click();
-  await expect(page).toHaveURL(/\/foundations\/sound$/);
-  await expect(page.getByRole('button', { name: 'Menu', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.section-entry').filter({ hasText: 'Materials' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });

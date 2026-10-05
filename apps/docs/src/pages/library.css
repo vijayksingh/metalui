@@ -9,6 +9,12 @@
 .library-heading > p { margin: 0; max-width: 65ch; @apply type-doc-lede; color: var(--ink2); }
 .library-count, .library-result { @apply type-doc-caption; color: var(--ink2); font-variant-numeric: tabular-nums; }
 .library-count { white-space: nowrap; }
+.section-entry { padding: var(--mu-space-24); border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); text-decoration: none; color: var(--ink); }
+.section-entry:hover h2 { text-decoration: underline; }
+.section-entry > div { justify-content: space-between; flex-wrap: nowrap; }
+.section-entry h2 { margin: 0; @apply type-doc-subheading; }
+.section-entry svg { flex: none; color: var(--ink2); }
+.section-entry p { margin: 0; @apply type-doc-caption; color: var(--ink2); }
 .library-related { @apply type-doc-caption; color: var(--ink2); }
 .library-related a, .library-footer a { display: inline-flex; align-items: center; gap: var(--mu-space-6); text-decoration: none; color: var(--ink); }
 .library-related a:hover, .library-footer a:hover { text-decoration: underline; }
