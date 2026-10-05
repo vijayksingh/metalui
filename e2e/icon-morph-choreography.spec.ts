@@ -102,4 +102,9 @@ test('the morph page films play → pause as the second stop sliding out from be
   // A bud swelling from the triangle's edge scored 1.89; the stop emerging from behind it scores 1.31.
   await expect(row).toContainText(/strain 1\.[0-4]\d · carry · emerge/);
   await row.screenshot({ path: `${captures}/filmstrip-play-pause.png` });
+  // send → stop: the plane's crease unfolds into the stop's pad (a fold opening), not a wire curling
+  // round three sides of a square to close into it.
+  const send = page.locator('[data-md="row"]', { hasText: 'send → stop' });
+  await expect(send).toContainText(/strain 1\.[0-3]\d · carry · unfold/);
+  await send.screenshot({ path: `${captures}/filmstrip-send-stop.png` });
 });

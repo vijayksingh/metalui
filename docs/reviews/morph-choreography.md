@@ -101,3 +101,19 @@ pause → play: the second stop slides back into the growing triangle and is cov
 Change: the 60 % boxiness test in `hideBehind` applies only to an open wire's chord-closed outline; a closed ring that is tinted, solid or casts depth is a body regardless of its shape. Engine-wide: 570 pairs re-plan; mean strain 1.765 → 1.759, pairs under 1 578 → 572. play ↔ pause 1.89 → 1.31, spark ↔ pause 1.97 → 1.33, play ↔ copy 2.53 → 1.37; rises are tucks that now travel to a body's centre instead of gathering into a nearer wire (select ↔ send-away 1.29 → 1.82, eraser ↔ share 1.59 → 1.95), and their filmstrips read fine (a bead slips behind the cursor; the eraser's band slides behind the tray).
 
 The docs' filmstrip list gains play ↔ pause, since it is a control pair on the same page; the slice reads that row's strain and moves.
+
+### Fix 3 · a tinted mark may fold (E4) — landed
+
+Storyboard, send → stop:
+
+```
+    0ms   the plane's outline starts rounding into the case (carry, scale 1.32, 3 u of travel);
+          the crease starts opening: a flat loop whose two halves part from the diagonal
+  ~60ms   p .4: a thin diamond stands inside the plane, its tint filling with its area
+ ~120ms   p .7: the diamond squares up as the outline becomes the case; both are nearly in place
+  440ms   rest: the stop's case and pad
+```
+
+stop → send presses the pad flat into the crease, its tint draining as its area goes. Before, the crease *closed* into the pad: the ring opened at the point nearest the crease's ends, and the wire curled round three sides of a square (a hook from 30 % to 70 %).
+
+Change: E4's "a body never presses flat" now means the grammar's body: the glyph's largest part, a solid, or a part that casts depth. A small tinted mark may fold. The engine used to count any tinted part as a body, so the stop's pad could only open or close. Engine-wide: 610 pairs re-plan; mean strain 1.759 → 1.760 (flat), 388 fall and 210 rise. send ↔ stop 1.29 → 1.27 (the number barely moves; the picture does), volume ↔ stop 1.60 → 1.92/1.75 with the first wave unfolding into the pad (a crossing is now counted; the film reads cleaner), minus ↔ stop 1.10 → .57, close ↔ stop 2.49 → 1.92. Rises are rings that opened before and now fold (eye's iris into a wire, the moon's arc into the eye's iris); none is a control pair.

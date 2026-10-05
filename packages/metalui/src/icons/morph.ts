@@ -13,6 +13,7 @@
 //   E4  A ring opens where it is nearest the ends it becomes, and closes the same way (round caps,
 //       no seam); or, when it moves less, the wire is a loop pressed flat and the ring presses flat
 //       into it. Tint is the area a wire encloses: it fills as a loop opens, drains as it flattens.
+//       The glyph's body, a solid or a caster never presses flat; a small tinted mark may fold.
 //   E5  Solid ink is conserved: a solid spreading over more area thins in proportion.
 //   E6  Depth is live. A clearance travels with the part that casts it and its gap lerps, so
 //       parts keep their distance while they move and nothing tears.
@@ -544,6 +545,10 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
   // A body: tinted or solid, or casting depth on another part, in either glyph.
   const casters = new Set([...from.flatMap((p) => p.behind.map((r) => r.part)).map((i) => `A${i}`), ...target.flatMap((p) => p.behind.map((r) => r.part)).map((j) => `B${j}`)]);
   const isBody = (i: number, j: number) => from[i].tint > 0 || from[i].solid > 0 || target[j].tint > 0 || target[j].solid > 0 || casters.has(`A${i}`) || casters.has(`B${j}`);
+  // E4: the glyph's body (its largest part), a solid, or a caster never presses flat: it would lose
+  // its area on the way. A small tinted mark may fold: its tint drains and fills with its area.
+  const largestA = massA.indexOf(Math.max(...massA)), largestB = massB.indexOf(Math.max(...massB));
+  const keepsArea = (i: number, j: number) => from[i].solid > 0 || target[j].solid > 0 || casters.has(`A${i}`) || casters.has(`B${j}`) || (i === largestA && from[i].body) || (j === largestB && target[j].body);
 
   // Tracks run in dependency order: staying parts, then arriving parts (which emerge or bud from
   // a staying part), then leaving parts (which tuck behind or gather into a staying or arriving part).
@@ -555,7 +560,7 @@ export function planFrames(from: MorphFrame, rest: MorphFrame): MorphPlan {
   for (let i = 0; i < n; i++) {
     const j = pick[i];
     if (j < m) {
-      const al = align(from[i], target[j], SAMPLES, isBody(i, j));
+      const al = align(from[i], target[j], SAMPLES, keepsArea(i, j));
       const [holesA, holesB] = pairHoles(from[i].holes, target[j].holes);
       fromTrack[i] = toTrack[j] = tracks.length;
       bodies.push({ A: resample(from[i], COARSE), B: resample(target[j], COARSE), ring: { A: from[i].closed, B: target[j].closed } });
