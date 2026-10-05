@@ -1,0 +1,62 @@
+@reference "../styles.css";
+/* The icon library: glyphs sit in sunk trays like keys in a deck, one tray per category. The glyph
+ * carries the cell; prose lives on the glyph's own page. Only opacity and transform move. */
+
+/* Toolbar: search, set, size and the category index stay in reach while 187 glyphs scroll by. */
+.icon-toolbar { position: sticky; top: 64px; z-index: 30; margin: calc(-1 * var(--mu-space-8)) calc(-1 * var(--mu-space-12)) 0; padding: var(--mu-space-8) var(--mu-space-12) var(--mu-space-12);
+  background: color-mix(in srgb, var(--page) 86%, transparent); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); box-shadow: 0 1px 0 var(--rule); }
+.icon-toolbar-row { flex-wrap: wrap; }
+.icon-toolbar-row .library-search { flex: 1 1 280px; max-width: 420px; }
+.icon-toolbar-controls { margin-inline-start: auto; }
+.icon-sizes button { font-variant-numeric: tabular-nums; }
+.icon-sizes button { gap: 0; }
+
+/* Category index: one line of chips; it scrolls inside itself, the lit chip is the tray in view. */
+.icon-index { display: flex; gap: var(--mu-space-4); overflow-x: auto; scrollbar-width: none; margin: 0 calc(-1 * var(--mu-space-4)); padding: var(--mu-space-2) var(--mu-space-4); }
+.icon-index::-webkit-scrollbar { display: none; }
+.icon-index button { position: relative; flex: none; display: inline-flex; align-items: baseline; gap: var(--mu-space-6); min-height: var(--mu-space-32); padding: var(--mu-space-6) var(--mu-space-12); border-radius: var(--mu-radius-pill); color: var(--ink2); font: var(--mu-type-ui); white-space: nowrap; isolation: isolate; }
+.icon-index button span { font-variant-numeric: tabular-nums; opacity: .7; @apply type-doc-caption; }
+.icon-index button::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); opacity: 0; transition: opacity 160ms var(--mu-ease-press); }
+.icon-index button:hover { color: var(--ink); }
+.icon-index button[aria-current="true"] { color: var(--ink); }
+.icon-index button[aria-current="true"]::before { opacity: 1; }
+
+/* A category: heading, then one tray. */
+.icon-category h2:focus { outline: none; }
+.icon-category h2:focus-visible { outline: var(--mu-focus-width, 2px) solid var(--green-deep); outline-offset: var(--mu-space-4); border-radius: var(--mu-radius-key); }
+.icon-directory { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--icon-tile, 104px), 1fr)); gap: var(--mu-space-2); padding: var(--mu-space-6);
+  border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+
+/* A glyph cell. Rest is flat in the tray; hover and focus raise a key under it while the glyph plays its act. */
+.icon-entry { position: relative; isolation: isolate; display: grid; grid-template-rows: 1fr auto; justify-items: center; align-items: center; gap: var(--mu-space-8);
+  aspect-ratio: 1; min-width: 0; padding: var(--mu-space-12) var(--mu-space-8) var(--mu-space-8); border-radius: var(--mu-radius-row);
+  color: var(--ink2); text-decoration: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--mu-ease-press); }
+.icon-entry::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--btn-bg); box-shadow: var(--btn-sh); opacity: 0; transition: opacity 160ms var(--mu-ease-press); }
+.icon-entry-specimen { display: grid; place-items: center; color: var(--icon); }
+.icon-entry-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; @apply type-doc-caption; }
+.icon-entry:is(:hover, :focus-visible) { color: var(--ink); }
+.icon-entry:is(:hover, :focus-visible)::before { opacity: 1; }
+.icon-entry:active { transform: translateY(var(--mu-motion-press)); }
+.icon-library .icon-entry:focus-visible { outline-offset: var(--mu-space-2); }
+
+@media (hover: none) { .icon-entry:hover::before { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .icon-entry, .icon-entry::before, .icon-index button::before { transition: none; }
+  .icon-entry:active { transform: none; }
+}
+.rm .icon-entry, .rm .icon-entry::before, .rm .icon-index button::before { transition: none; }
+.rm .icon-entry:active { transform: none; }
+
+/* Narrow screens: the toolbar stops following (it would cover a third of the glyphs); cells shrink a step. */
+@media (max-width: 760px) {
+  .icon-toolbar { position: static; margin: 0; padding: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+  /* search and count share a line; set and size share one scrolling line under it */
+  .icon-toolbar-row { gap: var(--mu-space-8) var(--mu-space-12); }
+  .icon-toolbar-row .library-search { flex-basis: 0; min-width: 0; max-width: none; }
+  .icon-toolbar-controls { flex: 1 0 100%; flex-wrap: nowrap; gap: var(--mu-space-8); margin: 0 calc(-1 * var(--mu-space-4)); padding: var(--mu-space-2) var(--mu-space-4); overflow-x: auto; scrollbar-width: none; }
+  .icon-toolbar-controls::-webkit-scrollbar { display: none; }
+  .icon-toolbar-controls .library-filters { flex: none; flex-wrap: nowrap; overflow: visible; margin: 0; padding: 0; }
+  .icon-toolbar-controls .library-filters button { flex: none; }
+  .icon-sizes { padding-inline-start: var(--mu-space-8); box-shadow: inset 1px 0 0 var(--rule); }
+  .icon-directory { grid-template-columns: repeat(auto-fill, minmax(calc(var(--icon-tile, 104px) - 16px), 1fr)); padding: var(--mu-space-4); }
+}

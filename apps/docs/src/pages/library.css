@@ -49,10 +49,6 @@
 .place-note-selected { background: var(--btn-bg); box-shadow: var(--btn-sh); border-radius: var(--mu-radius-row); color: var(--ink); }
 .instrument-scene { position: relative; }
 .instrument-scene .mu-brush-cursor { position: absolute; }
-.icon-entry { padding: var(--mu-space-16); border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); color: var(--ink); text-decoration: none; }
-.icon-entry:hover .type-doc-subheading { text-decoration: underline; }
-.icon-entry-specimen { display: grid; place-items: center; min-height: var(--mu-space-80); color: var(--icon); }
-.icon-entry .type-doc-caption { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .icon-detail-specimen { display: grid; place-items: center; padding: var(--mu-space-24); border-radius: var(--mu-radius-plate); }
 .icon-detail-specimen:focus-visible { outline: 2px solid var(--green-deep); outline-offset: var(--mu-space-4); }
 .library-related { @apply type-doc-caption; color: var(--ink2); }
