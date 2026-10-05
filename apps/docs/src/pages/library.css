@@ -46,6 +46,8 @@
 .place-note-list { padding: var(--mu-space-12); font: var(--mu-type-ui); color: var(--ink2); }
 .place-note-list > span { padding: var(--mu-space-8); }
 .place-note-selected { background: var(--btn-bg); box-shadow: var(--btn-sh); border-radius: var(--mu-radius-row); color: var(--ink); }
+.instrument-scene { position: relative; }
+.instrument-scene .mu-brush-cursor { position: absolute; }
 .icon-entry { padding: var(--mu-space-16); border-radius: var(--mu-radius-plate); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); color: var(--ink); text-decoration: none; }
 .icon-entry:hover .type-doc-subheading { text-decoration: underline; }
 .icon-entry-specimen { display: grid; place-items: center; min-height: var(--mu-space-80); color: var(--icon); }

@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-for (const section of ['objects']) {
+for (const section of ['objects', 'instruments']) {
   test(`${section}: every visual card opens its guide and returns through the breadcrumb`, async ({ page }) => {
     test.setTimeout(90000);
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
@@ -33,7 +33,7 @@ for (const section of ['objects']) {
       await page.goto(`/${section}?q=${encodeURIComponent(entry.label)}`);
       const card = cards.filter({ has: page.getByRole('heading', { name: entry.label, exact: true }) });
       await expect(card).toHaveCount(1);
-      await expect(card.locator('.place-preview')).not.toBeEmpty();
+      await expect(card.locator('.place-scene > *').first()).toBeAttached();
       await card.locator('.place-card-copy').click();
       await expect(page).toHaveURL(entry.to);
       await page.waitForFunction(() => (window as any).catalogTransitions.at(-1)?.finished);

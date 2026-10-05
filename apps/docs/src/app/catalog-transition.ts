@@ -24,6 +24,11 @@ export function catalogTarget(path: string) {
   return PLACE_TARGETS[name] ?? OBJECT_TARGETS[name];
 }
 
+const INSTRUMENTS = new Set(['brush-cursor', 'cue', 'hover-engraving', 'lasso', 'line-handles', 'perfect-preview', 'provenance-tooltip', 'selection-frame', 'size-readout', 'snap-guides', 'suggestion-chip']);
+export function catalogDetailTarget(path: string) {
+  return INSTRUMENTS.has(path.split('/').at(-1)!) ? '.stage' : catalogTarget(path) && `.stage ${catalogTarget(path)}`;
+}
+
 /** Only the selected card participates. Names disappear as soon as navigation settles. */
 export function useCatalogTransition(to: string, root: React.RefObject<HTMLElement | null>, label?: string, specimen?: string) {
   const active = useViewTransitionState(to);
