@@ -117,3 +117,16 @@ Storyboard, send → stop:
 stop → send presses the pad flat into the crease, its tint draining as its area goes. Before, the crease *closed* into the pad: the ring opened at the point nearest the crease's ends, and the wire curled round three sides of a square (a hook from 30 % to 70 %).
 
 Change: E4's "a body never presses flat" now means the grammar's body: the glyph's largest part, a solid, or a part that casts depth. A small tinted mark may fold. The engine used to count any tinted part as a body, so the stop's pad could only open or close. Engine-wide: 610 pairs re-plan; mean strain 1.759 → 1.760 (flat), 388 fall and 210 rise. send ↔ stop 1.29 → 1.27 (the number barely moves; the picture does), volume ↔ stop 1.60 → 1.92/1.75 with the first wave unfolding into the pad (a crossing is now counted; the film reads cleaner), minus ↔ stop 1.10 → .57, close ↔ stop 2.49 → 1.92. Rises are rings that opened before and now fold (eye's iris into a wire, the moon's arc into the eye's iris); none is a control pair.
+
+### Left as recorded
+
+- **sun ↔ moon** (1.64): unchanged. The stub is the right ray carrying into the moon's inner arc; the fix is in the moon's construction (an inner arc that starts inside the sun's disc), one icon's redraw with its act, not a choreography change.
+- **more ↔ close** (1.78): unchanged. The crossing is the assignment's energy choice (middle + right bead over the symmetric left + right); preferring symmetry over energy would be a new rule with set-wide effect for one pair.
+- **play → stop** (1.88): the pad buds from the triangle's edge. By fix 1 it cannot emerge, because it ends on the case's face. Honest; the transport control on the page is play ↔ pause.
+- **Everything → check** (2.1–3.7): the owner's call between giving `check` a body (K2) and declaring these drum pairs in the guides. paste ↔ check stays on the controls bench, printing a strain above the budget the same page explains.
+- **A lead part** (a stagger within the one spring) was considered and not added: after the three fixes no control pair has a part whose timing reads wrong, and E9's single frame for every part is what makes a morph read as one object. The place a lead would help is the pairs above 2, which a lead cannot rescue.
+
+### Where to look
+
+`docs/captures/review/morph-polish/before/` and `after/` hold one PNG per ordered pair (`a--b.png`), `filmstrips.html` for all of them, and `plans.txt` with every plan's tracks. The clearest before/after pairs: `plus--minus`, `minus--plus`, `sidebar-collapsed--sidebar`, `info--warning` (fix 1); `play--pause`, `pause--play` (fix 2); `send--stop`, `stop--send`, `minus--stop` (fix 3). The slice `e2e/icon-morph-choreography.spec.ts` films the real controls on `/icons/morph` under a paused clock and keeps the pops out.
+
