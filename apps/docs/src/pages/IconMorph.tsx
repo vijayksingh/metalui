@@ -5,6 +5,7 @@ import { Button, SwapText } from '@unlocalhosted/metalui';
 import { MORPH_NAMES, MorphIcon, type MorphIconName, type MorphTurn } from '@unlocalhosted/metalui/icons';
 import { MorphFilmstrips, MorphParity, MorphPlayground } from '../demos/MorphGlyphs';
 import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
+import './icon-detail.css';
 
 /* ─────────────────────────────────────────────────────────
  * MORPH · the page for icons that change state
@@ -61,7 +62,7 @@ MetalMorphIcon(.chevron, turn: open ? .up : .down)`;
 
 export default function IconMorph() {
   const d = useDialKit('Morph playground', { size: [96, 48, 160, 8] });
-  return <>
+  return <div className="icon-page">
     <PageHeader title="Morph" kicker="Icons · Morph" lede={`When a control's icon changes state, the glyph becomes the next one: it never swaps. Any of the ${MORPH_NAMES.length} wire glyphs can morph into any other, on one settle spring, and an interrupted morph continues from what is on screen.`} />
 
     <Section id="try" title="Try it" lede="Pick a glyph, or click the large one to step through the family. Each part pairs with the part it takes least energy to become and rides there as one rigid thing.">
@@ -105,5 +106,5 @@ export default function IconMorph() {
         { id: 'I11', title: 'A direction is a turn of one glyph', body: 'The chevron is drawn once, pointing down. turn={90 | 180 | 270} points it left, up or right, act and all, so its thrust always goes the way it points. When a control’s direction is its state (a disclosure opening), MorphIcon’s turn changes and the glyph morphs: a quarter turn rides a rigid carriage, a half turn turns over on its axis. Never rotate a glyph with your own CSS transition.', origin: 'Ours' },
       ]} />
     </Section>
-  </>;
+  </div>;
 }

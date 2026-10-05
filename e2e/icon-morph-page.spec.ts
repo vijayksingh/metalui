@@ -1,5 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
+import { ICON_NAMES } from '../packages/metalui/src/icons/catalog.generated';
+import { MORPH_NAMES } from '../packages/metalui/src/icons/morph.generated';
 
 const captures = 'docs/captures/review/icon-morph';
 test.beforeAll(() => mkdirSync(captures, { recursive: true }));
@@ -67,4 +69,29 @@ test('reduced motion changes glyphs in place; both colorways and a phone stay in
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: `${captures}/mobile.png` });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+test('a glyph page morphs the glyph into the glyphs it becomes most easily', async ({ page }) => {
+  await page.goto('/icons/synced');
+  const keys = page.getByRole('radiogroup', { name: 'Morph into' });
+  // Ranked by the planner's strain: Offline is synced's nearest state.
+  await expect(keys.getByRole('radio')).toHaveCount(7);
+  await expect(keys.getByRole('radio').nth(1)).toHaveAccessibleName('Offline');
+  await expect(keys.getByRole('radio', { name: 'Synced' })).toBeChecked();
+  const stage = page.locator('.icon-morph-stage svg[data-glyph]');
+  await keys.getByRole('radio', { name: 'Offline' }).click();
+  await expect(stage).toHaveAttribute('data-glyph', 'offline');
+  await expect(page.locator('.icon-morph-readout')).toHaveText(/^synced → offline · strain 0\.\d\d · reads as one object changing$/);
+  await expect(page.locator('#morph pre, #morph code').first()).toContainText("on ? 'offline' : 'synced'");
+  await page.locator('#morph').screenshot({ path: 'docs/captures/review/icon-morph/glyph-page-synced.png' });
+  // Outside the family: the solid character glyph rides the drum.
+  const outside = ICON_NAMES.filter(name => !(MORPH_NAMES as readonly string[]).includes(name));
+  expect(outside).toHaveLength(1);
+  await page.goto(`/icons/${outside[0]}`);
+  await expect(page.locator('#morph')).toContainText('changes on the drum');
+  await expect(page.getByRole('radiogroup', { name: 'Morph into' })).toHaveCount(0);
+  // Life glyphs are not controls and do not morph.
+  await page.goto('/icons/life/breakfast');
+  await expect(page.getByRole('heading', { name: 'Breakfast', level: 1 })).toBeVisible();
+  await expect(page.locator('#morph')).toHaveCount(0);
 });

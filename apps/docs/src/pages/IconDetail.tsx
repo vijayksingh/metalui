@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link, useLoaderData, type LoaderFunctionArgs } from 'react-router';
 import { useDialKit } from 'dialkit';
-import { Button, useReducedMotion } from '@unlocalhosted/metalui';
-import { Icon, ICON_CATALOG } from '@unlocalhosted/metalui/icons';
+import { Button, RadioKeys, useReducedMotion } from '@unlocalhosted/metalui';
+import { Icon, ICON_CATALOG, MORPH_NAMES, MorphIcon, morphParts, planMorph, type MorphIconName } from '@unlocalhosted/metalui/icons';
 import { LifeIcon, LIFE_CATALOG } from '@unlocalhosted/metalui/icons/life';
 import { ICON_PAGES } from '../app/icon-pages';
 import { Code, CopyButton, PageHeader, Rules, Section } from '../ui/doc';
@@ -17,12 +17,51 @@ import './icon-detail.css';
  *             · Play motion replays it on demand · beside it, everything needed to use it
  *   sizes     the cuts from 12 to 48; ≤16 draws the tuned cut
  *   motion    the act in words, its stages and its length
+ *   morph     product glyphs of the morph family: the six glyphs it becomes most easily (lowest
+ *             strain, ranked after first paint), picked on latching keys, morphing on a stage
  *   code      React and SwiftUI
  *   more      the rest of its category in the library's tray, then previous and next
  * Reduced motion: the stage stays still and Play says why it is off.
  * ───────────────────────────────────────────────────────── */
 
 const CUTS = [12, 14, 16, 20, 24, 32, 48];
+const reading = (strain: number) => strain < 1 ? 'reads as one object changing' : strain < 2 ? 'an honest transformation' : 'too far to morph directly';
+
+/** The glyphs this one becomes most easily, by the morph planner's own strain. Ranked when the
+ * browser is idle: planning 77 pairs takes tens of milliseconds. */
+function useEasiestMorphs(name: MorphIconName) {
+  const [ranked, setRanked] = React.useState<{ name: MorphIconName; strain: number }[]>([]);
+  React.useEffect(() => {
+    setRanked([]);
+    const idle = window.requestIdleCallback ?? ((run: () => void) => window.setTimeout(run, 1));
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+    const handle = idle(() => {
+      const from = morphParts(name);
+      setRanked(MORPH_NAMES.filter(other => other !== name).map(other => ({ name: other, strain: planMorph(from, other).strain.total })).sort((a, b) => a.strain - b.strain).slice(0, 6));
+    });
+    return () => cancel(handle);
+  }, [name]);
+  return ranked;
+}
+
+function MorphSection({ name, label }: { name: MorphIconName; label: string }) {
+  const partners = useEasiestMorphs(name);
+  const [target, setTarget] = React.useState<MorphIconName>(name);
+  React.useEffect(() => setTarget(name), [name]);
+  const chosen = partners.find(partner => partner.name === target);
+  const code = `// Change the name when the control's state changes; the glyph morphs from what is on screen.\n<MorphIcon name={on ? '${chosen?.name ?? partners[0]?.name ?? name}' : '${name}'} />`;
+  return <Section id="morph" title="Morph" lede={<>When a control's state changes to another glyph, {label} morphs into it rather than being swapped. These are the glyphs it becomes most easily. <Link to="/icons/morph">How morphing works</Link></>}>
+    <div className="icon-morph mu-stack gap-mu-group">
+      <div className="icon-morph-stage text-icon"><MorphIcon name={target} size={96} title={ICON_CATALOG[target].label} /></div>
+      <RadioKeys aria-label="Morph into" value={target} onValueChange={value => setTarget(value as MorphIconName)} className="icon-morph-keys">
+        <RadioKeys.Key value={name} lamp={false}><Icon name={name} size={16} animate={false} />{label}</RadioKeys.Key>
+        {partners.map(partner => <RadioKeys.Key key={partner.name} value={partner.name} lamp={false}><Icon name={partner.name} size={16} animate={false} />{ICON_CATALOG[partner.name].label}</RadioKeys.Key>)}
+      </RadioKeys>
+      <p className="icon-morph-readout type-doc-caption text-ink2" role="status">{chosen ? `${name} → ${chosen.name} · strain ${chosen.strain.toFixed(2)} · ${reading(chosen.strain)}` : partners.length ? 'Pick a glyph to morph into it.' : 'Finding the closest glyphs…'}</p>
+      <Code label="React" code={code} />
+    </div>
+  </Section>;
+}
 const sentence = (text: string) => { const t = text.trim(); return `${t[0].toUpperCase()}${t.slice(1)}${/[.!?]$/.test(t) ? '' : '.'}`; };
 
 export function loader({ params, request }: LoaderFunctionArgs) {
@@ -123,6 +162,10 @@ export default function IconDetail() {
         ? <ol className="icon-stages">{act.stages.map((stage, i) => <li key={stage}><span className="type-readout text-ink3">{String(i + 1).padStart(2, '0')}</span>{stage}</li>)}</ol>
         : <p className="type-doc-prose text-ink2 m-0">{sentence(icon.description)} {duration} ms.</p>}
     </Section>
+
+    {!life && (MORPH_NAMES as readonly string[]).includes(icon.name)
+      ? <MorphSection name={icon.name as MorphIconName} label={icon.label} />
+      : !life && <Section id="morph" title="Morph" lede={<>{icon.label} is a solid character glyph, so it changes on the drum (SwapIcon) instead of morphing. <Link to="/icons/morph">How morphing works</Link></>} />}
 
     <Section id="code" title="Code">
       <div className="mu-stack gap-mu-related"><Code label="React" code={jsx} /><Code label="SwiftUI" code={swift} /></div>

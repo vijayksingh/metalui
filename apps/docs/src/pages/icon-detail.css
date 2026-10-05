@@ -47,3 +47,12 @@
   .icon-cuts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .icon-facts { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Morph: the glyph on a small stage; latching keys choose what it becomes. */
+.icon-morph-stage { display: grid; place-items: center; min-height: calc(2 * var(--mu-space-80)); border-radius: var(--mu-radius-card); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
+.icon-morph-keys { flex-wrap: wrap; }
+.icon-morph-readout { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* A link inside a section's lede reads as a link. */
+.icon-page .sec-sub a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--ink3); text-underline-offset: 3px; }
+.icon-page .sec-sub a:hover { text-decoration-color: currentColor; }
