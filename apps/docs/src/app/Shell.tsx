@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet, ScrollRestoration, useLocation, useMatches } fro
 import { DialRoot } from 'dialkit';
 import { Breadcrumbs, SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
+import { OPEN_SEARCH, SiteSearch } from './SiteSearch';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
 import { SocialLinks } from '../ui/SocialLinks';
@@ -57,7 +58,7 @@ function MotionToggle() {
 }
 
 function openSearch() {
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+  window.dispatchEvent(new Event(OPEN_SEARCH));
 }
 
 function Toc() {
@@ -177,6 +178,7 @@ export function Shell() {
       </div>
 
       {pathname !== '/components/button' && <DialRoot position="bottom-right" defaultOpen={false} theme={colorway === 'graphite' ? 'dark' : 'light'} productionEnabled />}
+      <SiteSearch />
       <ScrollRestoration />
     </>
   );
