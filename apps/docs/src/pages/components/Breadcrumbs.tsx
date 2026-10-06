@@ -52,7 +52,7 @@ export default function BreadcrumbsPage() {
     <ComponentPage
       title="Breadcrumbs"
       lede="Where you are, as a path you can climb. Open a level and it arrives from the right; click a level above and the path shortens. A long path folds its middle into a menu."
-      play={{ lede: 'Open deeper levels, then climb back up, or open the folded middle.', caption: 'a path seven levels deep', node: <Path max={4} label="Breadcrumb" /> }}
+      play={{ lede: 'Open deeper levels, then climb back up, or open the folded middle.', caption: 'a path seven levels deep', node: <Path max={4} label="Trip path" /> }}
       more={[{ id: 'arrival', title: 'Tune the arrival', lede: 'The Crumb arrival panel sets the spring a new level arrives on, how far it comes from, and when the middle folds.', node: <ArrivalTuner /> }]}
       usage={`<Breadcrumbs
   items={[

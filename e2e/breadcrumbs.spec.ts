@@ -3,7 +3,8 @@ import { COLORWAYS, capture, open } from './helpers';
 
 // Breadcrumbs: the current level is not a link; going deeper adds a crumb that arrives from the right;
 // climbing shortens the path; past four levels the middle folds into a menu.
-const nav = (page: import('@playwright/test').Page) => page.getByRole('navigation', { name: 'Breadcrumb', exact: true });
+// The specimen is named for what it is, so it is a different landmark from the site's own Breadcrumb trail.
+const nav = (page: import('@playwright/test').Page) => page.getByRole('navigation', { name: 'Trip path', exact: true });
 
 for (const colorway of COLORWAYS) {
   test(`climbs, deepens and folds in ${colorway}`, async ({ page }) => {

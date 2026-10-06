@@ -20,7 +20,8 @@ for (const colorway of COLORWAYS) {
     await enter.focus();
     await expect(enter).toBeFocused();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/overview$/);
-    await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+    // "Browse Components" opens the component library itself.
+    await expect(page).toHaveURL(/\/components$/);
+    await expect(page.getByRole('heading', { name: 'Component library', level: 1 })).toBeVisible();
   });
 }
