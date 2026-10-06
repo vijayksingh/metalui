@@ -63,6 +63,9 @@ test('quick results skip wait, brief waits keep their minimum, newer requests ca
 });
 
 test('scoped and OS reduced motion remove rotation; an offscreen arc pauses', async ({ page }) => {
+  // The arc lives only while the save is pending (shown after 400ms, done at 1800ms). Own the clock so
+  // the off-screen check always lands mid-save, however slow the machine is; animations are untouched.
+  await page.clock.install();
   await open(page, '/components/button', 'graphite');
   const demo = page.locator('#waiting');
   await demo.scrollIntoViewIfNeeded();
@@ -70,17 +73,20 @@ test('scoped and OS reduced motion remove rotation; an offscreen arc pauses', as
   await demo.getByRole('button', { name: 'Slow save', exact: true }).click();
   const key = demo.locator('button[data-cap=primary]');
   await key.click();
+  await page.clock.runFor(500);
   const arc = key.locator('.spinner-arc');
   await expect(arc).toHaveCount(1);
   expect(await arc.evaluate((el) => getComputedStyle(el).animationName)).toBe('mu-progress-breathe');
   await page.screenshot({ path: capture('button-waiting-reduced'), clip: (await demo.boundingBox())! });
   await page.evaluate(() => scrollTo(0, 0));
   await expect(arc).toHaveCSS('animation-play-state', 'paused');
+  await page.clock.runFor(2000);
   await expect(key).toHaveAccessibleName('Saved');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await demo.evaluate((el) => el.removeAttribute('data-mu-motion'));
   await demo.getByRole('button', { name: 'Slow save', exact: true }).click();
   await key.click();
+  await page.clock.runFor(500);
   await expect(arc).toHaveCount(1);
   expect(await arc.evaluate((el) => getComputedStyle(el).animationName)).toBe('mu-progress-breathe');
 });
