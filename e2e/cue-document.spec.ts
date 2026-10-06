@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { COLORWAYS, open } from './helpers';
+import { COLORWAYS, open, withoutPointerLock } from './helpers';
+
+test.beforeEach(({ page }) => withoutPointerLock(page));
 for (const colorway of COLORWAYS) test(`a scrub is one source transaction with retained UTF16 selection in ${colorway}`, async ({ page }) => {
   await open(page, '/components/cue#source-history', colorway);
   const host = page.getByTestId('cue-document-proof');
