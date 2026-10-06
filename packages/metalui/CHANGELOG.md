@@ -4,6 +4,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+## 0.4.1 - 2026-10-06
+
 ### Fixed
 
 - SwiftUI: the package builds again on Swift toolchains older than 6.4. `MetalButton` used `.map(CGFloat.init)`, which older compilers reject as an ambiguous initialiser, so `swift build` of 0.4.0 failed there (CI's macOS runner included); it now converts explicitly. Nothing changes on screen.

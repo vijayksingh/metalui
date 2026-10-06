@@ -44,7 +44,7 @@ Colorway: set `data-mu-colorway="bone"` or `"graphite"` on any ancestor. Without
 ## SwiftUI
 
 ```swift
-.package(url: "https://github.com/vijayksingh/metalui", from: "0.4.0")
+.package(url: "https://github.com/vijayksingh/metalui", from: "0.4.1")
 ```
 
 ```swift
