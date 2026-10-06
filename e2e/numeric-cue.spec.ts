@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { withoutPointerLock } from './helpers';
 
-test.beforeEach(async ({ page }) => { await page.goto('/components/numeric-cue'); await page.getByRole('spinbutton', { name: 'Sleep', exact: true }).waitFor(); });
+test.beforeEach(async ({ page }) => { await withoutPointerLock(page); await page.goto('/components/numeric-cue'); await page.getByRole('spinbutton', { name: 'Sleep', exact: true }).waitFor(); });
 const sleep = (page: import('@playwright/test').Page) => page.getByRole('spinbutton', { name: 'Sleep', exact: true });
 const face = (page: import('@playwright/test').Page) => page.locator('[data-testid="numeric-document"] .mu-numeric-cue-face');
 async function drag(page: import('@playwright/test').Page, x: number, y: number) {

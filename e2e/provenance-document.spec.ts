@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { COLORWAYS, capture, open } from './helpers';
+import { COLORWAYS, capture, open, withoutPointerLock } from './helpers';
+
+test.beforeEach(({ page }) => withoutPointerLock(page));
 const original = 'Send #poster tomorrow 4pm, slept 6h in #done by #coffee\nPaint #FF6B3D with Sam; open https://metalui.dev.';
 for (const colorway of COLORWAYS) {
   test(`pointer scrub after another focused cue keeps clock face and source together in ${colorway}`, async ({ page }) => {

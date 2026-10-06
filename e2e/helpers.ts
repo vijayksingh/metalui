@@ -20,3 +20,18 @@ export async function emulateMedia(page: Page, features: { name: string; value: 
 }
 
 export const capture = (name: string) => `docs/captures/web/${name}.png`;
+
+/**
+ * Scrubs (Base UI's ScrubArea, the cues' unit scrub, the date cue's hold) ask for pointer lock. Headless
+ * Linux Chromium grants it, but Playwright's synthetic moves under the lock then report bogus movement
+ * (each step swings by the pointer's absolute position and back), so a 7px drag reads as ±400px. Refuse
+ * the lock before the page loads: Base UI catches the refusal and scrubs on ordinary pointer events, a
+ * path real browsers take too (Safari, denied permission), so the gesture under test is unchanged.
+ */
+export async function withoutPointerLock(page: Page) {
+  await page.addInitScript(() => {
+    Element.prototype.requestPointerLock = function () {
+      return Promise.reject(new DOMException('Pointer lock is refused in the browser suite', 'NotSupportedError'));
+    } as typeof Element.prototype.requestPointerLock;
+  });
+}

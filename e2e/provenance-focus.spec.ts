@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { COLORWAYS, open } from './helpers';
+import { COLORWAYS, open, withoutPointerLock } from './helpers';
+
+test.beforeEach(({ page }) => withoutPointerLock(page));
 
 const original = 'Send #poster tomorrow 4pm, slept 6h in #done by #coffee\nPaint #FF6B3D with Sam; open https://metalui.dev.';
 

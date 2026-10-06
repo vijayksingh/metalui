@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { withoutPointerLock } from './helpers';
 const input = (page: import('@playwright/test').Page) => page.getByRole('spinbutton', { name: 'Meeting day', exact: true });
 const source = (page: import('@playwright/test').Page) => page.getByRole('textbox', { name: 'Date source document' });
 async function press(page: import('@playwright/test').Page, y = 0) {
@@ -7,7 +8,7 @@ async function press(page: import('@playwright/test').Page, y = 0) {
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await page.mouse.down();
   if (y) await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 + y, { steps: 3 });
 }
-test.beforeEach(async ({ page }) => { await page.goto('/components/date-cue'); await input(page).waitFor(); });
+test.beforeEach(async ({ page }) => { await withoutPointerLock(page); await page.goto('/components/date-cue'); await input(page).waitFor(); });
 test('civil day and week detents retain relative words, meaningful ARIA and one source undo', async ({ page }) => {
   await input(page).focus(); await input(page).press('9');
   await expect(input(page)).not.toHaveAttribute('readonly');
