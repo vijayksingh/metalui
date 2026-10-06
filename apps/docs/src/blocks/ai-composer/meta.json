@@ -3,7 +3,7 @@
   "title": "AI composer",
   "status": "alpha",
   "description": "A chat block: a composer that grows, attachments, a model choice, and replies that stream in word by word with stop, copy and retry.",
-  "since": "0.3.0",
+  "since": "0.4.0",
   "react": {
     "export": "AiComposer",
     "files": [

@@ -3,7 +3,7 @@
   "title": "Settings",
   "status": "alpha",
   "description": "A settings block: profile fields validated on blur and save, notification switches, a colorway and density, and a save bar that counts unsaved changes.",
-  "since": "0.3.0",
+  "since": "0.4.0",
   "react": {
     "export": "Settings",
     "files": [

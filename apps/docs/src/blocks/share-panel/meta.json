@@ -3,7 +3,7 @@
   "title": "Share panel",
   "status": "alpha",
   "description": "A sharing block: drop files that upload with progress, invite people by email with a permission, and turn on and copy a share link.",
-  "since": "0.3.0",
+  "since": "0.4.0",
   "react": {
     "export": "SharePanel",
     "files": [

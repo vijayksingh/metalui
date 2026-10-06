@@ -73,7 +73,7 @@ const sharedByFile = new Map(Object.entries(shared).flatMap(([name, g]) => g.fil
 // src/app/globals.css), and Next.js fails the build on a wrong one. A package import resolves everywhere.
 // TOKENS_SINCE is the first release whose tokens.css/theme.css the components expect; raise it by hand
 // when a component starts needing newer tokens.
-const TOKENS_SINCE = '0.3.3';
+const TOKENS_SINCE = '0.4.0';
 const tokensItem = {
   $schema: 'https://ui.shadcn.com/schema/registry-item.json',
   name: 'tokens',

@@ -3,7 +3,7 @@
   "title": "Task inbox",
   "status": "alpha",
   "description": "A task list block: search and views, a tick that settles a task into Done, multi-select with a tool strip to complete, assign, snooze or delete, and Undo.",
-  "since": "0.3.0",
+  "since": "0.4.0",
   "react": {
     "export": "TaskInbox",
     "files": [
