@@ -58,7 +58,7 @@ public struct MetalLED: View {
     public var body: some View {
         let recipe = MetalRecipes.status
         let bezel = recipe.points("lamp.bezel")
-        let d = diameter ?? recipe.points(size == .small ? "lamp.size-small" : "lamp.size") + bezel * 2
+        let d: CGFloat = diameter ?? CGFloat(recipe.points(size == .small ? "lamp.size-small" : "lamp.size") + bezel * 2)
         let lensSize = max(CGFloat.zero, d - bezel * 2)
         let ink = recipe.color("ink.\(kind.recipeState)", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink
         let still = motion.duration == 0 || reduceMotion || finished

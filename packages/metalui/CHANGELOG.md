@@ -8,7 +8,7 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ### Fixed
 
-- SwiftUI: the package builds again on Swift toolchains older than 6.4. `MetalButton` used `.map(CGFloat.init)`, which older compilers reject as an ambiguous initialiser, so `swift build` of 0.4.0 failed there (CI's macOS runner included); it now converts explicitly. Nothing changes on screen.
+- **SwiftUI builds again on Xcode 16 (Swift 6.1).** 0.4.0 compiled only with Swift 6.4, so `swift build` and the iOS Simulator build failed on Xcode 16.4, CI's macOS runner included. Four expressions that newer compilers resolve implicitly are now explicit: `MetalButton`'s width conversion, two `Double`/`CGFloat` mixes in `MetalSlider`'s marks and ticks, `MetalStatus`'s lamp diameter, and `MetalEnumCue`'s body, which is split so the type-checker solves it in parts. Nothing changes on screen. Verified with `swift build` and the iOS Simulator build on Xcode 16.4.
 
 ## 0.4.0 - 2026-10-06
 

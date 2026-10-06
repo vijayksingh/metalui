@@ -54,45 +54,52 @@ public struct MetalEnumCue: View {
     private var current: MetalEnumCueChoice { index.map { choices[$0] } ?? .init(value) }
     private var mutable: Bool { Set(choices.map(\.value)).count == choices.count && choices.allSatisfy { !$0.value.isEmpty } && enabled && !readOnly && index != nil && choices.count > 1 }
     private var name: String { current.label.map { $0 == value ? value : "\($0) (\(value))" } ?? value }
-    public var body: some View {
-        Button(action: cycle) {
-            ZStack(alignment: .leading) {
-                if presentation == .surface || gesture != nil {
-                    ForEach(choices, id: \.value) { choice in
-                        Text(choice.value).hidden().accessibilityHidden(true)
-                            .padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero)
-                            .padding(.leading, presentation == .documentLine && choice.glyph != nil ? MetalRecipes.button.points("compact.glyph") + MetalCue.urlGap : .zero)
-                    }
-                }
-                HStack(alignment: .firstTextBaseline, spacing: presentation == .documentLine ? MetalCue.urlGap : .zero) {
-                    if presentation == .documentLine, let glyph = current.glyph {
-                        MetalCueInlineGlyph(side: MetalRecipes.button.points("compact.glyph")) { MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph")) }.opacity(raw ? .zero : .one)
-                    }
-                    if raw { Text(value).padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero) }
-                    else { MetalCueTag(value, tint: current.tint ?? colorway.tokens.ink3) }
-                }.id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
-            }
-            .id(reduceMotion)
-            .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
-            .fixedSize().metalAnimation(.settle, value: value)
-            .transaction { transaction in
-                if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
-            }
-            .overlay(alignment: .topLeading) {
-                if presentation == .surface, !raw, gesture == nil, let glyph = current.glyph {
-                    MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
-                        .offset(y: -(MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)).accessibilityHidden(true)
+    /// The button's face: the reserved widths, the glyph and tag row, and the neighbours shown while held.
+    @ViewBuilder private var face: some View {
+        ZStack(alignment: .leading) {
+            if presentation == .surface || gesture != nil {
+                ForEach(choices, id: \.value) { choice in
+                    Text(choice.value).hidden().accessibilityHidden(true)
+                        .padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero)
+                        .padding(.leading, presentation == .documentLine && choice.glyph != nil ? MetalRecipes.button.points("compact.glyph") + MetalCue.urlGap : .zero)
                 }
             }
-            .overlay(alignment: .topLeading) {
-                if gesture != nil, let index { Text(choices[(index - 1 + choices.count) % choices.count].label ?? choices[(index - 1 + choices.count) % choices.count].value)
-                    .font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).offset(y: -MetalSpace.s24).accessibilityHidden(true) }
-            }
-            .overlay(alignment: .bottomLeading) {
-                if gesture != nil, let index { Text(choices[(index + 1) % choices.count].label ?? choices[(index + 1) % choices.count].value)
-                    .font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).offset(y: MetalSpace.s24).accessibilityHidden(true) }
+            HStack(alignment: .firstTextBaseline, spacing: presentation == .documentLine ? MetalCue.urlGap : .zero) {
+                if presentation == .documentLine, let glyph = current.glyph {
+                    MetalCueInlineGlyph(side: MetalRecipes.button.points("compact.glyph")) { MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph")) }.opacity(raw ? .zero : .one)
+                }
+                if raw { Text(value).padding(.horizontal, presentation == .documentLine ? MetalCue.tagPadX : .zero) }
+                else { MetalCueTag(value, tint: current.tint ?? colorway.tokens.ink3) }
+            }.id(value).transition(reduceMotion ? .opacity : .asymmetric(insertion: .offset(y: MetalSpace.s4).combined(with: .opacity), removal: .offset(y: -MetalSpace.s4).combined(with: .opacity)))
+        }
+        .id(reduceMotion)
+        .font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
+        .fixedSize().metalAnimation(.settle, value: value)
+        .transaction { transaction in
+            if reduceMotion { transaction.animation = nil; transaction.disablesAnimations = true }
+        }
+        .overlay(alignment: .topLeading) {
+            if presentation == .surface, !raw, gesture == nil, let glyph = current.glyph {
+                MetalMorphIcon(glyph, size: MetalRecipes.button.points("compact.glyph"))
+                    .offset(y: -(MetalRecipes.button.points("compact.glyph") + MetalSpace.s2)).accessibilityHidden(true)
             }
         }
+        .overlay(alignment: .topLeading) {
+            if gesture != nil, let index { Text(neighbour(index, -1))
+                .font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).offset(y: -MetalSpace.s24).accessibilityHidden(true) }
+        }
+        .overlay(alignment: .bottomLeading) {
+            if gesture != nil, let index { Text(neighbour(index, 1))
+                .font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).offset(y: MetalSpace.s24).accessibilityHidden(true) }
+        }
+    }
+    /// The label (or value) of the choice `step` places from `index`, wrapping around.
+    private func neighbour(_ index: Int, _ step: Int) -> String {
+        let choice = choices[(index + step + choices.count) % choices.count]
+        return choice.label ?? choice.value
+    }
+    public var body: some View {
+        Button(action: cycle) { face }
         .buttonStyle(.plain).disabled(!mutable).focusable(enabled).focused($focused).focusEffectDisabled()
         .overlay { if focused { Rectangle().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth) } }
         .opacity(enabled ? Double.one : MetalRecipes.field.scalar("state.disabled"))

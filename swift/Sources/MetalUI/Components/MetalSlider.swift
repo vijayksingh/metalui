@@ -220,15 +220,15 @@ public struct MetalSlider: View {
                     let radius = recipe.points("mark.radius")
                     let paint = (recipe.color("mark.color", colorway: finish) ?? colorway.tokens.scrubberMark).color
                     for mark in marks {
-                        let at = along(mark)
-                        let rect = CGRect(x: vertical ? (cross - track) / 2 : at - thickness / 2,
-                                          y: vertical ? at - thickness / 2 : (cross - track) / 2,
-                                          width: vertical ? track : thickness, height: vertical ? thickness : track)
+                        let at = CGFloat(along(mark)), half = CGFloat(thickness) / 2
+                        let inset = (CGFloat(cross) - CGFloat(track)) / 2
+                        let rect = CGRect(x: vertical ? inset : at - half, y: vertical ? at - half : inset,
+                                          width: vertical ? CGFloat(track) : CGFloat(thickness), height: vertical ? CGFloat(thickness) : CGFloat(track))
                         context.fill(Path(roundedRect: rect, cornerRadius: radius), with: .color(paint))
                     }
                 }.allowsHitTesting(false).accessibilityHidden(true)
                 ForEach(ticks) { tick in
-                    let gap = recipe.points("tick.gap")
+                    let gap = CGFloat(recipe.points("tick.gap"))
                     let crossPosition = (cross + track) / 2 + gap
                     let layout = vertical ? AnyLayout(HStackLayout(spacing: gap)) : AnyLayout(VStackLayout(spacing: gap))
                     layout {
