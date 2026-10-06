@@ -788,6 +788,1385 @@
       },
       "layoutsPerS": 0,
       "styleRecalcsPerS": 3
+    },
+    "/blocks": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/components": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/foundations/principles": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/arrow": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/attach": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/bell": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/board": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/brightness": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/calendar": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/capture": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/check": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/chevron": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/clock": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/close": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/coin": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/copy": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/document": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/download": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/draw": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/duplicate": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/ellipse": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/eraser": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/external": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/eye": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/eye-off": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/filter": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/fit": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/group": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/guide": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/image": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/info": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/keeper": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/layout": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/afternoon": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/alcohol": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/angry": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/anxious": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/bad-night": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/bill": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/blocked": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/bored": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/breakfast": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/bug": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/cafe": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/call": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/calm": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/cleaning": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/coffee": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/cold": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/commute": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/cooking": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/curious": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/cycle": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/date": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/deadline": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/deep-work": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/dinner": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/dishes": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/distracted": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/doctor": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/drained": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/drawing": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/dull": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/email": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/energised": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/errands": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/evening": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/excited": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/family": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/fasting": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/flight": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/focused": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/friend": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/frustrated": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/gift": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/grateful": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/groceries": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/guide": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/gym": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/happy": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/headache": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/heart-rate": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/home": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/hopeful": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/hot": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/idea": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/late-night": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/laundry": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/lonely": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/loved": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/lunch": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/medication": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/meeting": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/message": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/morning": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/music": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/nap": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/office": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/one-on-one": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/outdoors": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/overwhelmed": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/party": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/period": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/pet": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/photo": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/plants": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/podcast": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/practice": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/presentation": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/proud": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/rain": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/reading": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/received": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/rested": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/review": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/run": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/sad": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/save": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/shipped": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/sick": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/sleep": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/snack": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/spent": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/steps": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/stressed": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/stretch": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/study": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/subscription": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/sunlight": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/sunny": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/swim": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/takeaway": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/tea": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/tired": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/travel": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/life/walk": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/water": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/life/weekend": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/weight": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/life/woke": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/life/writing": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/life/yoga": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/line": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/link": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/lock": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/marker": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/me": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/minus": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/moon": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/more": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/morph": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/note": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/offline": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/palette": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/paste": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/pause": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/pen": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/person": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/pin": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/play": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/plus": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/rectangle": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/redo": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/region": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/retry": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/save": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/search": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/seed": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/select": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/send": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/send-away": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/settings": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/share": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/sidebar": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/sidebar-collapsed": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/sort": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/spark": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/stop": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/sun": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/sync-error": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/synced": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.8
+    },
+    "/icons/tag": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/task": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/text": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/tidy": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/icons/trash": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/undo": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/ungroup": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/icons/upload": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/volume": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/warning": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/icons/zoom-in": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 3
+    },
+    "/icons/zoom-out": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/instruments": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.5
+    },
+    "/objects": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2.3
+    },
+    "/parts": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
+    },
+    "/places": {
+      "loops": {
+        "span.inline-block.flex-none [mu-led-breathe]": 1
+      },
+      "layoutsPerS": 0,
+      "styleRecalcsPerS": 2
     }
   }
 }

@@ -191,5 +191,12 @@
     "match": "medium",
     "lineIncludes": "weight: .medium",
     "reason": "SwiftUI's Font.Weight.medium is framework syntax."
+  },
+  {
+    "file": "bench/budgets.json",
+    "word": "keeper",
+    "match": "keeper",
+    "lineIncludes": "\"/icons/keeper\"",
+    "reason": "The idle budget for the existing /icons/keeper glyph page; the key follows the icon catalog, and renaming or removing that glyph is pending owner review (remove mascot)."
   }
 ]
