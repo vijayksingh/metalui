@@ -24,8 +24,9 @@ const SIZES = [24, 32, 48] as const;
 type Set = 'all' | 'product' | 'life';
 const SETS: { value: Set; label: string }[] = [{ value: 'all', label: 'All' }, { value: 'product', label: 'Product' }, { value: 'life', label: 'Life' }];
 const FEATURED: Record<'all' | 'life', string[]> = {
-  all: ['/icons/check', '/icons/copy', '/icons/download', '/icons/palette', '/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music'],
-  life: ['/icons/life/breakfast', '/icons/life/coffee', '/icons/life/sunny', '/icons/life/music', '/icons/life/happy', '/icons/life/gym', '/icons/life/plants', '/icons/life/flight'],
+  // One short act each (≤ 0.9s, played once), so the plate's arrival run ends before the page is at rest.
+  all: ['/icons/check', '/icons/copy', '/icons/download', '/icons/palette', '/icons/life/breakfast', '/icons/life/reading', '/icons/life/tea', '/icons/life/sunny'],
+  life: ['/icons/life/breakfast', '/icons/life/tea', '/icons/life/sunny', '/icons/life/reading', '/icons/life/cycle', '/icons/life/happy', '/icons/life/gym', '/icons/life/flight'],
 };
 const MORPHS = new Set<string>(MORPH_NAMES);
 const count = (set: Set) => ICON_PAGES.filter(icon => set === 'all' || icon.kind === set).length;

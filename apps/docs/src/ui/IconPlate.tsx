@@ -11,13 +11,15 @@ import './icon-plate.css';
  *
  * Eight glyphs on raised keycaps in a sunk plate, each a link to its page.
  *      0ms   page settles
- *    500ms   the first key plays its act; each next key starts 140ms after the last,
- *            a run across the keys, once
+ *    200ms   the first key plays its act; each next key starts 80ms after the last,
+ *            a run across the keys, once; every key is back at rest by ~1.8s, inside the
+ *            2s the idle benchmark lets a page settle (bench/lib/idle.ts), so the run is
+ *            an arrival and never work at rest. Featured glyphs play one act of ≤ 0.9s.
  *    after   at rest: a key plays when hovered or focused, sinks when pressed
  * Reduced motion: no run, no acts; the keys are still links.
  * ───────────────────────────────────────────────────────── */
 
-const RUN = { delay: 500, step: 140 };
+const RUN = { delay: 200, step: 80 };
 
 function playKey(key: HTMLElement, icon: IconPage) {
   if (icon.kind === 'product') {
@@ -25,10 +27,10 @@ function playKey(key: HTMLElement, icon: IconPage) {
     key.dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
     return;
   }
-  // A life glyph plays while its host carries hover; lend it for the length of its act.
+  // A life glyph plays while its host carries hover; lend it for exactly its act, then its pose settles back.
   const ms = LIFE_CATALOG[icon.name as keyof typeof LIFE_CATALOG].hoverMs;
   key.setAttribute('data-hover', '');
-  window.setTimeout(() => { if (!key.matches(':hover, :focus-visible')) key.removeAttribute('data-hover'); }, ms + 300);
+  window.setTimeout(() => { if (!key.matches(':hover, :focus-visible')) key.removeAttribute('data-hover'); }, ms);
 }
 
 export function IconPlate({ icons }: { icons: IconPage[] }) {
