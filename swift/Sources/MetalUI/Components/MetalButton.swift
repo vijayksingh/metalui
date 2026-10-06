@@ -68,7 +68,7 @@ private struct MetalButtonBody: View {
         let compact = size == .compact && !strip
         let height = recipe.points(strip ? "strip.height" : compact ? "compact.height" : "self.height")
         let shape = RoundedRectangle(cornerRadius: group != nil ? .zero : strip ? recipe.points("strip.radius") : height / 2, style: .continuous)
-        let width = (groupWidth ?? (iconOnly ? height : nil)).map(CGFloat.init)
+        let width = (groupWidth ?? (iconOnly ? height : nil)).map { CGFloat($0) }
         let part = strip ? "strip" : compact && cap == .standard ? "compact" : cap == .standard ? "self" : cap == .primary ? "primary" : "destructive"
 
         configuration.label
