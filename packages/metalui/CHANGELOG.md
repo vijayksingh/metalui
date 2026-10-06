@@ -4,6 +4,10 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+### Fixed
+
+- Toast: the deck folds again after you dismiss the card under the pointer. Removing that card meant the deck never heard the pointer leave, so it stayed fanned out until hovered again. While it is open, a pointer anywhere outside it now folds it (after any card still animating out); nothing listens while it is folded.
+
 ## 0.4.1 - 2026-10-06
 
 ### Fixed

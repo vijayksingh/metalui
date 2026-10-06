@@ -147,6 +147,22 @@ const DeckViewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithou
     observer.observe(front);
     return () => observer.disconnect();
   }, [frontId]);
+  // The deck expands on hover and folds on mouseleave. Dismissing the card under the pointer removes
+  // it, so the viewport may never get that mouseleave and would stay fanned out. While expanded, a
+  // pointer anywhere outside the deck is handed to Base UI's own leave handler (which still waits for
+  // a card that is animating out). Nothing listens while the deck is folded.
+  const leave = React.useRef(props.onMouseLeave);
+  leave.current = props.onMouseLeave;
+  React.useEffect(() => {
+    if (!expanded) return;
+    const outside = (event: PointerEvent) => {
+      if (event.pointerType === 'touch' || !(event.target instanceof Node) || element.current?.contains(event.target)) return;
+      leave.current?.(event as unknown as React.MouseEvent<HTMLDivElement>);
+    };
+    document.addEventListener('pointermove', outside, { passive: true });
+    document.addEventListener('pointerdown', outside, { passive: true });
+    return () => { document.removeEventListener('pointermove', outside); document.removeEventListener('pointerdown', outside); };
+  }, [expanded]);
   const [folding, setFolding] = React.useState(false);
   const was = React.useRef(expanded);
   // A layout effect, so data-folding lands in the same style change as the fold itself.
