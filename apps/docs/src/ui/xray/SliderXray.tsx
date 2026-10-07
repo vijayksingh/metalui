@@ -1,34 +1,57 @@
 import * as React from 'react';
 import { Slider } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Exploded, IsoCap, IsoTray, XrayFrame, aim, capTop, scalePx, springEasing, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { useColorway, type Colorway } from '../../app/colorway';
+import { Callouts, Exploded, Glyph, aim, alphaK, capTop, springEasing, tones, useFit, type LayerDef, type SpotDef } from './kit';
 import { clampSpringCurve } from '../springTuning';
 import { HintLayer } from '../edit';
+import type { XrayViewProps } from '.';
 import { SliderSpecimenCard } from './SliderSpecimens';
+import { SliderCodePanel } from './SliderCode';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · SLIDER
  *
  *   solid     a slider with marks and labelled ticks
- *   x-ray     a long thin hole (the track), a green fill inside it, a round metal knob
- *             standing on the track, marks inside, ticks and labels on the floor below
+ *   x-ray     a long thin groove pressed into the gridded floor, a green fill and marks inside it,
+ *             the ticks and labels on the floor below, and a round metal knob standing on the
+ *             groove. The floor plane and the knob are the real slider itself, scaled up: two
+ *             copies, one with its knob hidden, one with its groove, marks and ticks turned off.
+ *             Flown in, both start on one plane (the object that landed), then the knob rises.
  *   card      the real slider, handled (SliderSpecimens): turn the knob for its shine,
  *             pull the groove's bottom edge for depth, the knob's rims for the spring,
  *             a sun on an arc for the light, switches for marks, ticks and layers
+ *   code      under the card: the React and SwiftUI for exactly this config (SliderCode.tsx)
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number }; mark: { w: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; gap: number; color: Record<string, string> }; knob: { rise: number } };
-const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string; colorway?: string }[];
+const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number }; knob: { rise: number } };
+const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string; colorway?: string; state?: string }[];
+const WL = tokens.recipes.well.layers as { part: string; prop: string; value: string; colorway?: string; state?: string }[];
 /** The fill in a colorway: full strength, deeper on bone so it reads against the pale groove. */
 const fillOf = (cw: string) => RL.find((l) => l.part === 'fill' && l.prop === 'background' && (!l.colorway || l.colorway === cw))!.value;
+/** The groove: the track well's layers in a colorway, in recipe order (a fill, then its shadows). */
+function trackOf(cw: string) {
+  const ls = WL.filter((l) => l.part === 'self' && l.state === 'track' && (!l.colorway || l.colorway === cw));
+  return { fill: ls.find((l) => l.prop === 'background')?.value ?? 'transparent', shadows: ls.filter((l) => l.prop === 'shadow').map((l) => l.value) };
+}
 const KNOB_BG = RL.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
-const KNOB_SH = RL.filter((l) => l.part === 'knob' && l.prop === 'shadow').map((l) => l.value);
+const KNOB_SH = RL.filter((l) => l.part === 'knob' && l.prop === 'shadow' && !l.state).map((l) => l.value);
+/** Where the metal's bands start: the recipe's conic angle. */
+export const SHINE_FROM = Number(KNOB_BG.match(/from\s+([\d.]+)deg/)?.[1] ?? 0);
 const PART = tokens.springs.part as { stiffness: number; damping: number };
+const OBJECT = tokens.springs.object as { duration: number };
 const S = 2.2;
-const L = 180;
-/** Notches at every large step (a tenth), never loose. */
-export const MARKS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
-export const TICKS = [0, 0.25, 0.5, 0.75, 1];
+const RIM = 5;
+/** The knob's wall: its rise from the recipe, in slices. */
+const SLICES = Math.round((RP.knob.rise * S) / 1.4);
+/** The slider's real props that the x-ray keeps fixed: its range and width, its marks (one at every
+ *  large step) and its labelled ticks. */
+export const MIN = 0;
+export const MAX = 100;
+export const WIDTH = 200;
+export const MARKS = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+export const TICKS = [0, 25, 50, 75, 100].map((value) => ({ value, label: value }));
+export const fraction = (value: number) => (value - MIN) / (MAX - MIN);
 
 export type Spot = 'thumb' | 'well' | 'slide' | 'shape' | 'light' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
@@ -58,108 +81,222 @@ export const KNOB_LAYERS: LayerDef[] = [
   { name: 'Shadow', why: 'A small shadow under the knob. The knob stands up, so it has a shadow. The groove does not.' },
 ];
 
-export interface Model {
-  v: number; shine: number; depth: number; k: number; c: number;
-  marks: boolean; ticks: boolean; lightDeg: number; lightK: number;
-  track: boolean[]; knob: boolean[];
+/** Everything a slider is set to: its real props first, then what the x-ray lets you tune.
+ *  One object, handed from the table to the x-ray and back; the code for it is read off it. */
+export interface SliderConfig {
+  /** props: the value, and whether its marks and its ticks are drawn */
+  value: number; marks: boolean; ticks: boolean;
+  /** the knob's metal, turned: --mu-r-slider-knob-background */
+  shine: number;
+  /** the groove's and the knob's shadow stacks, as a depth, a light and which layers are on */
+  depth: number; lightDeg: number; lightK: number; track: boolean[]; knob: boolean[];
+  /** the jump's spring: --mu-r-slider-self-transition */
+  k: number; c: number;
 }
-export const INITIAL: Model = {
-  v: 0.55, shine: 0, depth: 1, k: PART.stiffness, c: PART.damping,
-  marks: true, ticks: true, lightDeg: 0, lightK: 1,
+export type Model = SliderConfig;
+export const INITIAL: SliderConfig = {
+  value: 62, marks: true, ticks: true,
+  shine: 0, depth: 1, lightDeg: 0, lightK: 1,
   track: TRACK_LAYERS.map(() => true), knob: KNOB_LAYERS.map(() => true),
+  k: PART.stiffness, c: PART.damping,
 };
+/** How long the model takes to close up before it flies home: most of the object spring, past its overshoot. */
+const SETTLE_MS = Math.round(OBJECT.duration * 1000 * 0.55);
+const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
 
-export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
-  const [xray, setXray] = React.useState(startOpen);
-  const [spot, setSpot] = React.useState<Spot>('slide');
-  const [m, setM] = React.useState<Model>(INITIAL);
-  const [focus, setFocus] = React.useState<string | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const well = useStateLayers('well', 'track');
-  const cw = well.colorway;
-  const FILL = fillOf(cw);
-
-  // the knob travels the groove minus itself: half a knob in from each end, like the real slider
-  const K = RP.regular.knob, TH = RP.regular.track, IN = K / 2;
-  const Hp = K + 22;
-  const W = L * S, H = Hp * S;
-  const ty = ((K - TH) / 2) * S, th = TH * S;
-  const kx = (IN + m.v * (L - IN * 2)) * S - (K * S) / 2;
-  const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
-  const move = `transform ${ease.ms}ms ${clampSpringCurve(ease.css)}`;
-
-  const lit = (list: string[], mask: boolean[], k = 1) => list.map((v, i) => (mask[i + 1] ? aim(i === 0 ? v.replace(/rgba\(([^)]*),\s*([\d.]+)\)/, (_, c, a) => `rgba(${c},${Math.min(1, Number(a) * k).toFixed(3)})`) : v, m.lightDeg, m.lightK) : null)).filter(Boolean).join(', ') || 'none';
-  const grooveFill = m.track[0] ? well.fill.replace('linear-gradient(', `linear-gradient(${180 + m.lightDeg}deg, `) : 'transparent';
-  const grooveShadow = scalePx(lit(well.shadows, m.track, m.depth), S);
-  const metal = m.knob[0] ? KNOB_BG.replace('from 200deg', `from ${200 + m.shine}deg`) : 'transparent';
-  const knobShadow = scalePx(KNOB_SH.map((v, i) => (m.knob[i + 1] ? aim(v, m.lightDeg, i === 0 ? m.lightK : 1) : null)).filter(Boolean).join(', ') || 'none', S);
-  // the specimen wears the same model at its own size: the recipe's variables, overridden
-  const face = {
-    ['--mu-r-well-self-track-background' as string]: grooveFill,
-    ['--mu-r-well-self-track-shadow' as string]: lit(well.shadows, m.track, m.depth),
-    ['--mu-r-slider-fill-background' as string]: m.track[4] ? FILL : 'transparent',
-    ['--mu-r-slider-knob-background' as string]: metal,
-    ['--mu-r-slider-knob-shadow' as string]: KNOB_SH.map((v, i) => (m.knob[i + 1] ? aim(v, m.lightDeg, i === 0 ? m.lightK : 1) : null)).filter(Boolean).join(', ') || 'none',
-    ['--mu-r-slider-self-transition' as string]: move,
-  } as React.CSSProperties;
-  const wall = Math.round((RP.knob.rise * S) / 1.4);
-  const top = capTop(1, wall);
-  const exploded = spot === 'layers';
-
-  const scene = exploded ? (
-    <>
-      <Exploded layers={TRACK_LAYERS} on={m.track} fill={grooveFill} shadows={well.shadows} backgrounds={[grooveFill, undefined, undefined, undefined, FILL]} y={ty} w={W} h={th} r={th / 2} z0={2} gap={16} focus={focus} scale={S} />
-      <Exploded layers={KNOB_LAYERS} on={m.knob} fill={metal} shadows={KNOB_SH} x={kx} y={0} w={K * S} h={K * S} r={(K * S) / 2} z0={2 + TRACK_LAYERS.length * 16 + 10} gap={16} focus={focus} scale={S} />
-    </>
-  ) : (
-    <>
-      <IsoTray y={ty} w={W} h={th} r={th / 2} depth={4 * m.depth} fill={grooveFill} shadow={grooveShadow} colorway={cw} />
-      {m.track[4] && <div className="xr-face is-flat" style={{ top: ty, width: L * S, height: th, borderRadius: th / 2, transformOrigin: 'left', transform: `translateZ(1px) scaleX(${(kx + K * S / 2) / (L * S)})`, background: FILL, transition: move }} />}
-      {m.marks && MARKS.map((f) => (
-        <i key={f} className="xr-face is-flat" style={{ left: (IN + f * (L - IN * 2)) * S, top: ty, width: RP.mark.w * S, height: th, marginLeft: (-RP.mark.w * S) / 2, borderRadius: RP.mark.radius * S, transform: 'translateZ(1.2px)', background: RP.mark.color[cw] }} />
-      ))}
-      {m.ticks && TICKS.map((f) => (
-        <span key={f} style={{ position: 'absolute', left: (IN + f * (L - IN * 2)) * S, top: ty + th + RP.tick.gap * S, transform: 'translateX(-50%) translateZ(0.5px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: RP.tick.gap * S }}>
-          <i style={{ width: RP.tick.w * S, height: RP.tick.h * S, background: RP.tick.color[cw] }} />
-          <span className="xr-tick-label type-meta text-ink2" style={{ fontSize: 22 }}>{Math.round(f * 100)}</span>
-        </span>
-      ))}
-      <div className="xr-shadow" style={{ left: 0, top: 0, width: K * S, height: K * S, borderRadius: '50%', filter: 'blur(5px)', opacity: 0.22, transform: `translate(${kx + 6}px, 10px)`, transition: move }} />
-      <IsoCap x={kx} w={K * S} h={K * S} r={(K * S) / 2} z={1} wall={wall} fill={metal} shadow={knobShadow} wallTone={cw === 'graphite' ? '#8d8d89' : '#a9a9a5'} transition={move} />
-    </>
-  );
-
-  const Zk = exploded ? 2 + TRACK_LAYERS.length * 16 + 10 + (KNOB_LAYERS.length - 1) * 16 : top;
-  const anchors: Record<Spot, [number, number, number]> = {
-    thumb: [kx + K * S * 0.5, K * S * 0.3, Zk],
-    well: [W * 0.08, ty + th * 0.5, 1],
-    slide: [kx + K * S, K * S * 0.5, top - 4],
-    shape: [(IN + MARKS[0] * (L - IN * 2)) * S, ty + th * 0.5, 1.2],
-    light: [kx + K * S * 0.3, 2, top],
-    layers: exploded ? [W * 0.9, ty, 2 + (TRACK_LAYERS.length - 1) * 16] : [W * 0.9, ty + th * 0.5, 1],
+/** What a config looks like: the groove's and the knob's fill and shadows for the model's parts, and
+ *  the variables that set the real slider to it. Only what differs from the recipe is set, so a
+ *  default config is the slider exactly as it ships, and the variables are the overrides its code needs. */
+export function sliderLook(m: SliderConfig, colorway: Colorway) {
+  const well = trackOf(colorway);
+  const lit = (list: string[], mask: boolean[], k: number) => list.map((v, i) => (mask[i + 1] ? aim(i === 0 ? alphaK(v, k) : v, m.lightDeg, m.lightK) : null)).filter(Boolean).join(', ') || 'none';
+  const ease = springEasing(m.k, m.c);
+  const look = {
+    colorway, ease,
+    wellRaw: well, knobRaw: KNOB_SH,
+    grooveFill: m.track[0] ? well.fill.replace('linear-gradient(', `linear-gradient(${180 + m.lightDeg}deg, `) : 'transparent',
+    grooveShadow: lit(well.shadows, m.track, m.depth),
+    fill: m.track[4] ? fillOf(colorway) : 'transparent',
+    metal: m.knob[0] ? KNOB_BG.replace(/from\s+[\d.]+deg/, `from ${SHINE_FROM + m.shine}deg`) : 'transparent',
+    knobShadow: KNOB_SH.map((v, i) => (m.knob[i + 1] ? aim(v, m.lightDeg, i === 0 ? m.lightK : 1) : null)).filter(Boolean).join(', ') || 'none',
   };
+  const moved = m.lightDeg !== INITIAL.lightDeg || m.lightK !== INITIAL.lightK;
+  const style: Record<string, string> = {};
+  // a fill changes with the light or its own layer; a shadow stack with the light, its depth or any of its layers
+  if (moved || !m.track[0]) style['--mu-r-well-self-track-background'] = look.grooveFill;
+  if (moved || m.depth !== INITIAL.depth || !same(m.track.slice(1, 4), INITIAL.track.slice(1, 4))) style['--mu-r-well-self-track-shadow'] = look.grooveShadow;
+  if (!m.track[4]) style['--mu-r-slider-fill-background'] = look.fill;
+  if (m.shine !== INITIAL.shine || !m.knob[0]) style['--mu-r-slider-knob-background'] = look.metal;
+  if (moved || !same(m.knob.slice(1), INITIAL.knob.slice(1))) style['--mu-r-slider-knob-shadow'] = look.knobShadow;
+  // the jump rides the part spring clipped at the groove's ends. The recipe bakes the spring into its own
+  // transition variable at the root, so a host sets that variable, in the recipe's form: the duration still
+  // times the travel switch, so reduced motion still lands at once
+  if (m.k !== INITIAL.k || m.c !== INITIAL.c) style['--mu-r-slider-self-transition'] = `transform calc(${ease.ms}ms * var(--mu-travel-part)) ${clampSpringCurve(ease.css)}`;
+  return { ...look, style: style as React.CSSProperties };
+}
+export function useSliderLook(m: SliderConfig) {
+  const { colorway } = useColorway();
+  return React.useMemo(() => sliderLook(m, colorway), [m, colorway]);
+}
+export type Look = ReturnType<typeof useSliderLook>;
 
-  const real = (w = 300) => (
-    <div style={{ width: w, height: 44 }}>
-      <Slider.Root value={Math.round(m.v * 100)} min={0} max={100} step={1} onValueChange={(v) => set({ v: v / 100 })}>
-        <Slider.Track />
-        {m.marks && <Slider.Marks at={MARKS} />}
-        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: Math.round(f * 100) }))} />}
-        <Slider.Knob aria-label="Amount" />
-      </Slider.Root>
+/** The slider set to a config: the object on the table, the model's faces, the specimen in every card.
+ *  Its config reaches it the way the library supports from a host: the recipe's variables on a wrapper. */
+export function SliderObject({ config, onValueChange, label = 'Amount' }: { config: SliderConfig; onValueChange?: (value: number) => void; label?: string }) {
+  const { style } = useSliderLook(config);
+  return (
+    <div className="xr-slider-vars" style={style}>
+      <Slider aria-label={label} width={WIDTH} value={config.value} min={MIN} max={MAX} onValueChange={onValueChange} marks={config.marks ? MARKS : undefined} ticks={config.ticks ? TICKS : undefined} />
     </div>
   );
+}
 
-  const card = <SliderSpecimenCard spot={spot} m={m} set={set} focus={setFocus} face={face} />;
+/** The real slider's boxes in its own points, read off the model's top copy: the whole, its control,
+ *  its groove and its knob's size. The knob's place follows from the value, like the real knob's. */
+interface Box { W: number; H: number; cx: number; cy: number; cw: number; ch: number; tx: number; ty: number; tw: number; th: number; K: number }
+const NO_BOX: Box = { W: 0, H: 0, cx: 0, cy: 0, cw: 0, ch: 0, tx: 0, ty: 0, tw: 0, th: 0, K: RP.regular.knob };
+
+export function SliderXray({ startOpen = false, seed, onSeed, pose = 'open', zoom: oz = 1 }: XrayViewProps<SliderConfig>) {
+  const [xray, setXray] = React.useState(startOpen);
+  const [spot, setSpot] = React.useState<Spot>('slide');
+  const [m, setM] = React.useState<SliderConfig>(() => ({ ...INITIAL, ...seed }));
+  const [focus, setFocus] = React.useState<string | null>(null);
+  const set = React.useCallback((p: Partial<SliderConfig>) => setM((o) => ({ ...o, ...p })), []);
+  const setValue = React.useCallback((value: number) => set({ value }), [set]);
+  // every change goes straight back to where the object came from
+  const onSeedRef = React.useRef(onSeed); onSeedRef.current = onSeed;
+  const seeded = React.useRef(m);
+  React.useEffect(() => { if (seeded.current !== m) { seeded.current = m; onSeedRef.current?.(m); } }, [m]);
+  const look = useSliderLook(m);
+  const exploded = spot === 'layers';
+  const bench = React.useRef<HTMLDivElement>(null);
+  const top = React.useRef<HTMLDivElement>(null);
+  const [box, setBox] = React.useState<Box>(NO_BOX);
+  React.useLayoutEffect(() => {
+    const el = top.current; if (!el) return;
+    const read = () => {
+      // a copy that has just been swapped out (the layers view keeps its own) reports nothing but zeros
+      if (!el.isConnected) return;
+      const root = el.querySelector<HTMLElement>('.mu-slider'), ctl = root?.querySelector<HTMLElement>('.mu-slider-control');
+      const track = ctl?.querySelector<HTMLElement>('.mu-slider-track'), knob = ctl?.querySelector<HTMLElement>('.mu-slider-knob');
+      if (!root || !ctl || !track || !knob) return;
+      setBox({ W: root.offsetWidth, H: root.offsetHeight, cx: ctl.offsetLeft, cy: ctl.offsetTop, cw: ctl.offsetWidth, ch: ctl.offsetHeight, tx: ctl.offsetLeft + track.offsetLeft, ty: ctl.offsetTop + track.offsetTop, tw: track.offsetWidth, th: track.offsetHeight, K: knob.offsetWidth });
+    };
+    read();
+    const ro = new ResizeObserver(read); ro.observe(el);
+    return () => ro.disconnect();
+  }, [xray, exploded, m.marks, m.ticks]);
+
+  // geometry in points, then scaled
+  const W = box.W * S, H = box.H * S;
+  const tx = box.tx * S, ty = box.ty * S, tw = box.tw * S, th = box.th * S;
+  const K = box.K * S;
+  // the knob's centre travels half a knob in from each end of the control, like the real knob
+  const kx = (box.cx + box.cw / 2 + (fraction(m.value) - 0.5) * (box.cw - box.K) - box.K / 2) * S;
+  const ky = (box.cy + box.ch / 2 - box.K / 2) * S;
+  const flat = pose === 'flat';
+  const rimZ = RIM * m.depth * 1.6;
+  const knobZ = 1;
+  const knobTop = capTop(knobZ, SLICES);
+  const fit = useFit(bench, W, H, xray);
+  const t = tones(look.colorway);
+  const knobWall = look.colorway === 'graphite' ? '#8d8d89' : '#a9a9a5';
+
+  const reduced = typeof document !== 'undefined' && document.documentElement.classList.contains('rm');
+  // the knob's wall follows the real knob on the same spring, clipped at the stops like the slider's own
+  const slide = reduced ? 'none' : `${look.ease.ms}ms ${clampSpringCurve(look.ease.css)}`;
+  const move = slide === 'none' ? 'none' : `transform ${slide}`;
+  const rise = 'transform var(--spring-object-d) var(--spring-object)';
+
+  const current = SPOTS.find((x) => x.id === spot)!;
+  const control = (onChange?: (value: number) => void) => <SliderObject config={m} onValueChange={onChange} />;
+  // the model's faces are the slider laid out at the object's own zoom, then scaled: the same boxes, to the pixel
+  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const explodedKnobZ = 2 + TRACK_LAYERS.length * 16 + 10;
 
   return (
-    <HintLayer><XrayFrame
-      xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
-      solid={<div style={{ zoom: 1.6 }} onClick={(e) => e.stopPropagation()}>{real(300)}</div>}
-      W={W} H={H} scene={scene} anchors={anchors}
-      sun={spot === 'light' ? { deg: m.lightDeg, k: m.lightK, z: top + 120 } : undefined}
-      onReset={() => setM(INITIAL)} deps={[spot, m]}
-      card={card}
-    /></HintLayer>
+    <HintLayer><div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+      <div className="xr-bench" ref={bench}>
+        {!xray && <div className="xr-solid" style={{ zoom: 1.6 }}>{control(setValue)}</div>}
+
+        {xray && (
+          <div className="xr-scene is-fitted" style={{ width: W * fit, height: H * fit }} data-settle={SETTLE_MS}>
+            <div className="xr-fit" style={{ width: W, height: H, transform: `scale(${fit})` }}><div className="xr-iso">
+              <div className="xr-floor" />
+
+              {/* the groove on the floor: the real slider with its knob hidden; a rim that rises from the floor around the groove.
+                  Flat, the top copy is the whole object by itself, so the floor copy waits out of sight: its groove's
+                  shadows and labels would paint twice through the top copy's clear parts. */}
+              {!exploded && (
+                <>
+                  <div className="xr-segface is-well" aria-hidden inert style={{ ...face(0.5), visibility: flat ? 'hidden' : undefined }}>{control()}</div>
+                  {Array.from({ length: RIM }, (_, i) => (
+                    <div key={i} className="xr-ring" style={{ width: tw, height: th, borderRadius: th / 2, transform: `translate(${tx}px, ${ty}px) translateZ(${flat ? 0 : ((i + 1) / RIM) * rimZ}px)`, borderColor: i === RIM - 1 ? t.rim : t.wall }} />
+                  ))}
+                </>
+              )}
+
+              {/* the knob's wall and its shadow on the floor, under the real knob */}
+              {!exploded && (
+                <div className="xr-thumb" style={{ transform: `translate(${kx}px, ${ky}px)`, transition: move }}>
+                  {m.knob[3] && <div className="xr-shadow is-drop" style={{ width: K, height: K, borderRadius: '50%', filter: 'blur(5px)', opacity: flat ? 0 : 0.22, transition: 'opacity .3s', transform: 'translate(6px, 10px) translateZ(1px)' }} />}
+                  {Array.from({ length: SLICES }, (_, i) => (
+                    <div key={i} className="xr-slice" style={{ width: K, height: K, borderRadius: '50%', opacity: flat ? 0 : 1, transition: `${rise}, opacity .25s`, transform: `translateZ(${flat ? 0 : knobZ + i * 1.4}px)`, background: i === 0 || !m.knob[0] ? 'transparent' : knobWall }} />
+                  ))}
+                </div>
+              )}
+
+              {/* the top: the real slider, raised; once the groove has gone down its own groove, marks and ticks are turned off, and the knob stands alone */}
+              {!exploded && (
+                <div ref={top} className={flat ? 'xr-segface is-top' : 'xr-segface is-top is-raised'} style={face(flat ? 1 : knobTop)}>{control(setValue)}</div>
+              )}
+
+              {exploded && (
+                <>
+                  <Exploded layers={TRACK_LAYERS} on={m.track} fill={look.grooveFill} shadows={look.wellRaw.shadows} backgrounds={[look.grooveFill, undefined, undefined, undefined, look.fill]} x={tx} y={ty} w={tw} h={th} r={th / 2} z0={2} gap={16} focus={focus} scale={S} />
+                  <Exploded layers={KNOB_LAYERS} on={m.knob} fill={look.metal} shadows={look.knobRaw} x={kx} y={ky} w={K} h={K} r={K / 2} z0={explodedKnobZ} gap={16} focus={focus} scale={S} />
+                  {/* the top copy stays, out of sight, so the layers keep their measure */}
+                  <div ref={top} className="xr-segface is-top" aria-hidden inert style={{ ...face(0), visibility: 'hidden' }}>{control()}</div>
+                </>
+              )}
+
+              {spot === 'light' && (
+                <div className="xr-sun" style={{ transform: `translate3d(${W / 2 + Math.sin((m.lightDeg * Math.PI) / 180) * (W * 0.6)}px, ${H / 2 - Math.cos((m.lightDeg * Math.PI) / 180) * (H * 1.8)}px, ${knobTop + 120}px)`, opacity: 0.35 + 0.65 * Math.min(1, m.lightK) }}>
+                  <span className="xr-bill"><Glyph id="light" /></span>
+                </div>
+              )}
+
+              {SPOTS.map((s) => {
+                const at: Record<Spot, [number, number, number]> = {
+                  thumb: [kx + K * 0.5, ky + K * 0.3, exploded ? explodedKnobZ + (KNOB_LAYERS.length - 1) * 16 : knobTop],
+                  well: [tx + tw * 0.08, ty + th * 0.5, 1],
+                  slide: [kx + K, ky + K * 0.5, knobTop - 4],
+                  shape: [tx + (box.K / 2 + fraction(MARKS[0]) * (box.cw - box.K)) * S, ty + th * 0.5, 1.2],
+                  light: [kx + K * 0.3, ky + 2, knobTop],
+                  layers: exploded ? [tx + tw * 0.9, ty, 2 + (TRACK_LAYERS.length - 1) * 16] : [tx + tw * 0.9, ty + th * 0.5, 1],
+                };
+                const [x, y, z] = at[s.id];
+                return <i key={s.id} className="xr-anchor" data-spot={s.id} style={{ transform: `translate3d(${x}px, ${y}px, ${z}px)` }} />;
+              })}
+            </div></div>
+          </div>
+        )}
+
+        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, box, fit]} />}
+        <div className="xr-hint eng">{xray ? (spot === 'slide' ? 'Click the groove or drag the knob' : 'Pick an icon to learn about that part') : 'Try it, then open the x-ray'}</div>
+        <div className="xr-actions">
+          {xray && <button type="button" className="status" onClick={() => setM((o) => ({ ...INITIAL, value: o.value }))}><span className="led off" />Reset</button>}
+          <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
+        </div>
+      </div>
+
+      {xray && (
+        <div className="xr-card raised" key={spot}>
+          <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
+          <SliderSpecimenCard spot={spot} m={m} set={set} focus={setFocus} look={look} />
+        </div>
+      )}
+      {xray && <SliderCodePanel config={m} />}
+    </div></HintLayer>
   );
 }

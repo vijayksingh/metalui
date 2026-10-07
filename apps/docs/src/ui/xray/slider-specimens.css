@@ -24,3 +24,7 @@ html.rm .ed-slider-knob { transition: none; }
 @media (prefers-reduced-motion: reduce) { .ed-slider-knob { transition: none; } }
 /* the groove's bottom edge runs under the knob, never across it */
 .ed-slider.is-groove .mu-slider-knob { z-index: 3; }
+/* The slider on the bench is the real slider, twice: the floor copy hides its knob, and the raised copy,
+ * once the groove has gone down, turns its groove, marks and ticks off, so only the knob stands up. */
+.xr-segface.is-well .mu-slider-knob { visibility: hidden; }
+.xr-segface.is-raised :is(.mu-slider-track, .mu-slider-marks, .mu-slider-ticks) { visibility: hidden; }

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Row, Slider, Switch } from '@unlocalhosted/metalui';
+import { Row, Switch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { KNOB_LAYERS, MARKS, TICKS, TRACK_LAYERS, type Model, type Spot } from './SliderXray';
+import { KNOB_LAYERS, MAX, MIN, SHINE_FROM, SliderObject, TRACK_LAYERS, WIDTH, fraction, type Look, type Model, type Spot } from './SliderXray';
 import { Outline, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './slider-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
  * THE SLIDER'S SPECIMENS · the x-ray card for each part
  *
- *   The card holds the real slider; the model on the bench reads the same values.
+ *   The card holds the real slider, set to the x-ray's config; the model on the bench reads the same.
  *     knob     the knob itself: drag it sideways to turn the shine of its metal
  *     track    the groove's bottom edge: drag it down to make the groove deeper
  *     move     the knob still moves the value (a click jumps on the spring, a drag follows);
@@ -19,47 +19,34 @@ import './slider-specimens.css';
  *   The slider has no sizes, kinds or states to step through, so nothing here steps.
  * ───────────────────────────────────────────────────────── */
 
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; face: React.CSSProperties };
+type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; look: Look };
 
-// one source per fact: the recipe's numbers
+// one source per fact: the recipe's numbers (SliderXray's constants are read only inside the components)
 const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number } };
 const K = RP.regular.knob;
 const TH = RP.regular.track;
-const KNOB_BG = tokens.recipes.slider.layers.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
-const SHINE_FROM = Number(KNOB_BG.match(/from\s+([\d.]+)deg/)?.[1] ?? 0);
 const PART = tokens.springs.part as { stiffness: number; damping: number };
-/** The specimen's own length (as long as the bench's model) and its box: the knob plus room for the ticks. */
-const SPAN = 180;
-const BOX_H = K + 22;
 
 const round = (v: number) => Math.round(v * 10) / 10;
 const token = (v: number, at: number) => (v === at ? { at, name: 'token' } : undefined);
 
-/** The real slider, as the bench shows it: its marks and ticks follow the model's switches. */
+/** The real slider, as the bench and the table show it: the config's own marks, ticks and variables. */
 function Real({ m, set }: { m: Model; set: Props['set'] }) {
-  return (
-    <div className="ed-slider-real" style={{ width: SPAN, height: BOX_H }}>
-      <Slider.Root value={Math.round(m.v * 100)} min={0} max={100} step={1} onValueChange={(v) => set({ v: v / 100 })}>
-        <Slider.Track />
-        {m.marks && <Slider.Marks at={MARKS} />}
-        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: Math.round(f * 100) }))} />}
-        <Slider.Knob aria-label="Value" />
-      </Slider.Root>
-    </div>
-  );
+  return <SliderObject config={m} onValueChange={(value) => set({ value })} />;
 }
 
 function Well({ well, zoom, light = false, children }: { well: React.RefObject<HTMLDivElement | null>; zoom: number; light?: boolean; children: React.ReactNode }) {
   return <div ref={well} className={`ed-specimen${light ? ' is-light' : ''}`}><div style={{ zoom }}>{children}</div></div>;
 }
 
-/** Where the knob sits on the specimen: a box over it that rides the knob's own spring. */
+/** Where the knob sits on the specimen: a box over it that rides the knob's own spring. The knob's
+ *  centre travels half a knob in from each end of the control, which is the slider's top row. */
 function KnobSpot({ m, children }: { m: Model; children: React.ReactNode }) {
-  return <span className="ed-slider-knob" style={{ ['--mu-slider-at' as string]: m.v, left: `calc(var(--mu-slider-at) * (100% - ${K}px))`, top: `calc(50% - ${K / 2}px)`, width: K, height: K }}>{children}</span>;
+  return <span className="ed-slider-knob" style={{ ['--mu-slider-at' as string]: fraction(m.value), left: `calc(var(--mu-slider-at) * (100% - ${K}px))`, top: 0, width: K, height: K }}>{children}</span>;
 }
 
 /** Knob: the knob is the handle; sideways turns the bands of its metal. */
-function KnobCard({ m, set, face }: Props) {
+function KnobCard({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -77,7 +64,7 @@ function KnobCard({ m, set, face }: Props) {
   return <>
     <p>The knob is a small metal disc whose light and dark bands turn around its centre. Drag the knob sideways to turn the shine.</p>
     <Well well={well} zoom={zoom}>
-      <div className="ed-box ed-slider" data-hint-anchor data-live={live ? 'shine' : undefined} data-peek={peek ? '' : undefined} style={face}>
+      <div className="ed-box ed-slider" data-hint-anchor data-live={live ? 'shine' : undefined} data-peek={peek ? '' : undefined} style={look.style}>
         <Real m={m} set={set} />
         <div className="ed-overlay">
           <KnobSpot m={m}>
@@ -94,7 +81,7 @@ function KnobCard({ m, set, face }: Props) {
 }
 
 /** Track: the groove's bottom edge; down makes it deeper (its inner shadow darker). */
-function TrackCard({ m, set, face }: Props) {
+function TrackCard({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -112,11 +99,11 @@ function TrackCard({ m, set, face }: Props) {
   return <>
     <p>The track is a long thin groove pressed into the page, with the knob standing in it. Drag its bottom edge down to make it deeper.</p>
     <Well well={well} zoom={zoom}>
-      <div className="ed-box ed-slider is-groove" data-hint-anchor data-live={live ? 'depth' : undefined} data-peek={peek ? '' : undefined} style={face}>
+      <div className="ed-box ed-slider is-groove" data-hint-anchor data-live={live ? 'depth' : undefined} data-peek={peek ? '' : undefined} style={look.style}>
         <Real m={m} set={set} />
         <div className="ed-overlay">
-          <div className="ed-slider-groove" style={{ top: (BOX_H - TH) / 2, width: SPAN, height: TH }}>
-            <Outline W={SPAN} h={TH} r={TH / 2} on={live || peek ? ['bottom'] : []} only={['bottom']} segs={segs} />
+          <div className="ed-slider-groove" style={{ top: (K - TH) / 2, width: WIDTH, height: TH }}>
+            <Outline W={WIDTH} h={TH} r={TH / 2} on={live || peek ? ['bottom'] : []} only={['bottom']} segs={segs} />
             <span ref={ref} className="ed-edge is-y" style={{ bottom: -3 }} role="slider" tabIndex={0} aria-label="Depth" aria-valuenow={m.depth} aria-valuemin={0} aria-valuemax={3} {...handle} />
           </div>
         </div>
@@ -129,7 +116,7 @@ function TrackCard({ m, set, face }: Props) {
 }
 
 /** Move: the knob still moves the value; its top rim sets the stiffness, its bottom rim the damping. */
-function MoveCard({ m, set, face }: Props) {
+function MoveCard({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState<null | 'stiffness' | 'damping'>(null);
   const [peek, setPeek] = React.useState<null | 'stiffness' | 'damping'>(null);
@@ -161,7 +148,7 @@ function MoveCard({ m, set, face }: Props) {
   return <>
     <p>Click the track and the knob jumps there on a spring; drag the knob and it follows your finger exactly. Drag the knob's top rim sideways to make the spring firmer, or its bottom rim down to make it settle more calmly.</p>
     <Well well={well} zoom={zoom}>
-      <div className="ed-box ed-slider" data-hint-anchor data-live={live ?? undefined} data-peek={peek ?? undefined} style={face}>
+      <div className="ed-box ed-slider" data-hint-anchor data-live={live ?? undefined} data-peek={peek ?? undefined} style={look.style}>
         <Real m={m} set={set} />
         <div className="ed-overlay">
           <KnobSpot m={m}>
@@ -176,7 +163,7 @@ function MoveCard({ m, set, face }: Props) {
       </div>
     </Well>
     <div className="ed-readouts">
-      <Readout label="Value" value={`${Math.round(m.v * 100)}`} unit="" scrub={(d) => set({ v: clamp(Math.round(m.v * 10 + d) / 10, 0, 1) })} />
+      <Readout label="Value" value={`${m.value}`} unit="" scrub={(d) => set({ value: clamp(Math.round(m.value / 10 + d) * 10, MIN, MAX) })} />
       <Readout label="Stiffness" value={`${m.k}`} unit="" snap={token(m.k, PART.stiffness)} peek={over('stiffness')} pick={() => summon(els.current.stiffness ?? null)} scrub={(d) => stiffness(m.k + d * 10, false)} />
       <Readout label="Damping" value={`${m.c}`} unit="" snap={token(m.c, PART.damping)} peek={over('damping')} pick={() => summon(els.current.damping ?? null)} scrub={(d) => damping(m.c + d, false)} />
     </div>
@@ -184,12 +171,12 @@ function MoveCard({ m, set, face }: Props) {
 }
 
 /** Marks: two things the slider can show or not, so two switches. */
-function MarksCard({ m, set, face }: Props) {
+function MarksCard({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const rows: [keyof Pick<Model, 'marks' | 'ticks'>, string][] = [['marks', 'Marks in the track'], ['ticks', 'Ticks and labels']];
   return <>
     <p>Short marks in the track show moments, like when something happened, and labelled ticks under it show the scale. Turn either off to see the track without it.</p>
-    <Well well={well} zoom={zoom}><div className="ed-slider" style={face}><Real m={m} set={set} /></div></Well>
+    <Well well={well} zoom={zoom}><div className="ed-slider" style={look.style}><Real m={m} set={set} /></div></Well>
     <div className="ed-layers">
       {rows.map(([key, name]) => (
         <Row.Root key={key} variant="list" className="ed-layer" data-off={m[key] ? undefined : ''} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) set({ [key]: !m[key] }); }}>
@@ -202,7 +189,7 @@ function MarksCard({ m, set, face }: Props) {
 }
 
 /** Light: a sun on a faint orbit; around it turns the light, nearer or further sets its strength. */
-function LightCard({ m, set, face }: Props) {
+function LightCard({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -231,7 +218,7 @@ function LightCard({ m, set, face }: Props) {
   return <>
     <p>Light falls from the top, so the groove is darkest along its top edge and the knob casts a small shadow below it. Drag the sun to move the light, or closer to make it stronger.</p>
     <Well light well={well} zoom={zoom}>
-      <div className="ed-lightbox" data-hint-anchor data-lit={live || peek ? '' : undefined} style={face}>
+      <div className="ed-lightbox" data-hint-anchor data-lit={live || peek ? '' : undefined} style={look.style}>
         <Real m={m} set={set} />
         <svg className="ed-orbit" width={reach(0) * 2 + 2} height={reach(0) + 1} viewBox={`${-reach(0) - 1} ${-reach(0) - 1} ${reach(0) * 2 + 2} ${reach(0) + 1}`} style={{ translate: `0 ${-reach(0) / 2}px` }} aria-hidden>
           <path d={`M${-reach(0)} 0A${reach(0)} ${reach(0)} 0 0 1 ${reach(0)} 0`} />
@@ -248,13 +235,13 @@ function LightCard({ m, set, face }: Props) {
 }
 
 /** Layers: a row with a switch per layer; the whole row toggles, and hovering it points at its slice on the bench. */
-function LayersCard({ m, set, focus, face }: Props) {
+function LayersCard({ m, set, focus, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const groups = [['track', TRACK_LAYERS], ['knob', KNOB_LAYERS]] as const;
   const toggle = (group: 'track' | 'knob', i: number, on: boolean) => set({ [group]: m[group].map((v, j) => (j === i ? on : v)) });
   return <>
     <p>The track has five layers and the knob has four. Turn one off to see what it adds.</p>
-    <Well well={well} zoom={zoom}><div className="ed-slider" style={face}><Real m={m} set={set} /></div></Well>
+    <Well well={well} zoom={zoom}><div className="ed-slider" style={look.style}><Real m={m} set={set} /></div></Well>
     <div className="ed-layers">
       {groups.flatMap(([group, list]) => list.map((l, i) => (
         <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m[group][i] ? undefined : ''}

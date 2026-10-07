@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
@@ -10,6 +10,7 @@ import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/Swat
 import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from './xray/StatusXray';
 import { FIELD_WIDTH, INITIAL as FIELD, PLACEHOLDER as FIELD_PLACEHOLDER, useFieldLook, type FieldConfig } from './xray/FieldXray';
 import { INITIAL as LINK, useLinkCardLook, type LinkCardConfig } from './xray/LinkCardXray';
+import { INITIAL as SLIDER, SliderObject, type SliderConfig } from './xray/SliderXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -39,15 +40,12 @@ function Line({ children, task }: { children: React.ReactNode; task?: 'open' | '
   );
 }
 
-function FloatSlider() {
-  const [v, setV] = React.useState(62);
+/** The slider on the table: the real slider set to its config, which its x-ray takes over and hands back.
+ *  A click (the end of a jump or a drag too, as before) opens the x-ray; the value lands first. */
+function TableSlider({ config = SLIDER, onConfig, open }: { config?: SliderConfig; onConfig: (c: SliderConfig) => void; open: () => void }) {
   return (
-    <div style={{ width: 200, height: 40 }}>
-      <Slider.Root value={v} min={0} max={100} step={1} onValueChange={setV}>
-        <Slider.Track />
-        <Slider.Marks at={[0.2, 0.45, 0.8]} />
-        <Slider.Knob aria-label="Amount" />
-      </Slider.Root>
+    <div onClick={open}>
+      <SliderObject config={config} onValueChange={(value) => onConfig({ ...config, value })} />
     </div>
   );
 }
@@ -166,7 +164,7 @@ const ITEMS: Item[] = [
     node: ({ openXray, seeds, onSeed }) => <TableSwitcher config={seeds.switcher} onConfig={(c) => onSeed('switcher', c)} open={() => openXray('switcher')} />,
   },
   { id: 'key', table: ['92.3%', '58.2%'], space: ['88%', '54%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, zoom: 1.4, node: ({ openXray, seeds }) => <TableKbd config={seeds.kbd} open={() => openXray('kbd')} /> },
-  { id: 'slider', table: ['4%', '57.9%'], space: ['31%', '32%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
+  { id: 'slider', table: ['4%', '57.9%'], space: ['31%', '32%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray, seeds, onSeed }) => <TableSlider config={seeds.slider} onConfig={(c) => onSeed('slider', c)} open={() => openXray('slider')} /> },
   {
     id: 'field', table: ['35.1%', '88.2%'], space: ['31%', '72%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
     // typing is typing; a click opens the x-ray, and what is typed is what it starts with

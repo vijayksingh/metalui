@@ -30,10 +30,11 @@ async function openDocs(page: Page, colorway: string) {
   return xray;
 }
 
-// on the bench: the groove is the first flat face, the knob the last raised part
-const benchGroove = (xray: Locator) => xray.locator('.xr-scene .xr-face.is-flat').first();
+// on the bench: the groove is the real slider's track on the floor copy, the knob's wall the last raised
+// part, and the knob's face the real knob on the top copy
+const benchGroove = (xray: Locator) => xray.locator('.xr-scene .xr-segface.is-well .mu-slider-track');
 const benchKnob = (xray: Locator) => xray.locator('.xr-thumb').last();
-const benchKnobFace = (xray: Locator) => benchKnob(xray).locator('.xr-face');
+const benchKnobFace = (xray: Locator) => xray.locator('.xr-scene .xr-segface.is-top .mu-slider-knob-face');
 
 for (const colorway of COLORWAYS) {
   test(`every slider card holds one real specimen and no control panel, in ${colorway}`, async ({ page }) => {
@@ -53,12 +54,12 @@ test('knob: dragging the knob sideways turns its shine on the specimen and the b
   const card = xray.locator('.xr-card');
   await part(xray, 'Knob');
   const start = await value(card, 'Shine').textContent();
-  const bench = await style(benchKnobFace(xray), 'background');
+  const bench = await computed(benchKnobFace(xray), 'background-image');
   const knob = card.locator('.mu-slider-knob-face');
   const metal = await computed(knob, 'background-image');
   await drag(page, card.getByRole('slider', { name: 'Shine' }), 30, 0);
   await expect(value(card, 'Shine')).not.toHaveText(start!);
-  expect(await style(benchKnobFace(xray), 'background')).not.toBe(bench);
+  expect(await computed(benchKnobFace(xray), 'background-image')).not.toBe(bench);
   expect(await computed(knob, 'background-image')).not.toBe(metal);
 });
 
@@ -67,12 +68,12 @@ test('track: dragging the bottom edge down deepens the groove on the specimen an
   const card = xray.locator('.xr-card');
   await part(xray, 'Track');
   const start = Number(await value(card, 'Depth').textContent());
-  const bench = await style(benchGroove(xray), 'box-shadow');
+  const bench = await computed(benchGroove(xray), 'box-shadow');
   const groove = card.locator('.mu-slider-track');
   const shadow = await computed(groove, 'box-shadow');
   await drag(page, card.getByRole('slider', { name: 'Depth' }), 0, 16, 0.15);
   expect(Number(await value(card, 'Depth').textContent())).toBeGreaterThan(start);
-  expect(await style(benchGroove(xray), 'box-shadow')).not.toBe(bench);
+  expect(await computed(benchGroove(xray), 'box-shadow')).not.toBe(bench);
   expect(await computed(groove, 'box-shadow')).not.toBe(shadow);
 });
 
@@ -107,28 +108,29 @@ test('marks: switches take the marks and the ticks off the specimen and the benc
   const xray = await openDocs(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Marks');
-  const flat = await xray.locator('.xr-scene .xr-face.is-flat').count();
+  // the bench's slider is the real one, so its marks and ticks are the slider's own
+  await expect(xray.locator('.xr-scene .xr-segface.is-well .mu-slider-mark')).toHaveCount(9); // a notch at every tenth
   await expect(card.locator('.mu-slider-marks')).toHaveCount(1);
   await card.getByRole('switch', { name: 'Marks in the track' }).click();
   await expect(card.locator('.mu-slider-marks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .xr-face.is-flat')).toHaveCount(flat - 9); // a notch at every tenth
-  const labels = await xray.locator('.xr-scene .xr-tick-label').count();
+  await expect(xray.locator('.xr-scene .mu-slider-mark')).toHaveCount(0);
+  await expect(xray.locator('.xr-scene .xr-segface.is-well .mu-slider-tick')).toHaveCount(5);
   await card.locator('.ed-layer').filter({ hasText: 'Ticks and labels' }).locator('.mu-row-text').click();
   await expect(card.getByRole('switch', { name: 'Ticks and labels' })).toHaveAttribute('aria-checked', 'false');
   await expect(card.locator('.mu-slider-ticks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .xr-tick-label')).toHaveCount(labels - 5);
+  await expect(xray.locator('.xr-scene .mu-slider-tick')).toHaveCount(0);
 });
 
 test('light: dragging the sun moves the light on the specimen and the bench', async ({ page }) => {
   const xray = await openDocs(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Light');
-  const bench = await style(benchGroove(xray), 'background');
+  const bench = await computed(benchGroove(xray), 'background-image');
   const knob = card.locator('.mu-slider-knob-face');
   const shadow = await computed(knob, 'box-shadow');
   await drag(page, card.getByRole('slider', { name: 'Light' }), 30, 4);
   await expect(value(card, 'From')).not.toHaveText('top');
-  expect(await style(benchGroove(xray), 'background')).not.toBe(bench);
+  expect(await computed(benchGroove(xray), 'background-image')).not.toBe(bench);
   expect(await computed(knob, 'box-shadow')).not.toBe(shadow);
 });
 
