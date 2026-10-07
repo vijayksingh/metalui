@@ -14,7 +14,7 @@ import { PaletteXray } from './PaletteXray';
 import { SwitcherXray, type SwitcherConfig } from './SwitcherXray';
 import { SwitchXray } from './SwitchXray';
 import { SliderXray } from './SliderXray';
-import { StatusXray } from './StatusXray';
+import { StatusXray, type StatusConfig } from './StatusXray';
 import { SwatchXray, type SwatchConfig } from './SwatchXray';
 import { ToastXray } from './ToastXray';
 import { ToolbarXray } from './ToolbarXray';
@@ -37,7 +37,7 @@ export const BUTTON_LABEL = 'Get started';
  *          only then opens up; before it flies home it closes up again. With no flight the
  *          model is open from the start.
  * ───────────────────────────────────────────────────────── */
-export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig }
+export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig }
 export type XraySeed<K extends XrayKind> = K extends keyof XraySeeds ? XraySeeds[K] : never;
 export type XrayPose = 'flat' | 'open';
 export interface XrayViewProps<S = never> { startOpen?: boolean; seed?: Partial<S>; onSeed?: (seed: S) => void; pose?: XrayPose; /** the object's zoom where it came from: its face is laid out at it */ zoom?: number }

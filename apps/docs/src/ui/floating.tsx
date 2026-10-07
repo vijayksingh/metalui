@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
 import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
+import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from './xray/StatusXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -62,6 +63,12 @@ function TableSwitcher({ config = SWITCHER, onConfig, open }: { config?: Switche
 function TableSwatch({ config = SWATCH, open }: { config?: SwatchConfig; open: () => void }) {
   const { style } = useSwatchLook(config);
   return <Swatch hex={config.hex} label={config.label} style={style} onClick={open} />;
+}
+
+/** The status badge on the table: the real badge set to its config, which its x-ray takes over and hands back. */
+function TableStatus({ config = STATUS, open }: { config?: StatusConfig; open: () => void }) {
+  const look = useStatusLook(config);
+  return <span onClick={open}><StatusReal m={config} look={look} /></span>;
 }
 
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
@@ -135,7 +142,7 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'status', table: ['45.6%', '7.9%'], space: ['31%', '11%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray }) => <span onClick={() => openXray('status')}><StatusBadge led="live">Sync live</StatusBadge></span> },
+  { id: 'status', table: ['45.6%', '7.9%'], space: ['31%', '11%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray, seeds }) => <TableStatus config={seeds.status} open={() => openXray('status')} /> },
   {
     // a still of the tooltip, drawn with its own recipe classes (the real one lives in a portal)
     id: 'tooltip', table: ['38%', '58.5%'], space: ['70%', '13%', -60, 8], dur: '32s', drift: ['40px', '-10px'], live: true,

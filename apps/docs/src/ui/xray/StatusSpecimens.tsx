@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Led, Row, StatusBadge, Switch, type LedKind } from '@unlocalhosted/metalui';
+import { Led, Row, Switch, type LedKind } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import type { LayerDef } from './kit';
-import type { Model, Spot } from './StatusXray';
+import { StatusReal, withLed, type Look, type Model, type Spot } from './StatusXray';
 import { STEP_AT, Outline, Readout, blip, clamp, snapTo, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg, type Snap } from '../edit';
 import './status-specimens.css';
 
@@ -22,7 +22,7 @@ import './status-specimens.css';
  *   which imports this file).
  * ───────────────────────────────────────────────────────── */
 
-const R = tokens.recipes.status as { props: { lamp: { size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } }; layers: { part: string; prop: string; value: string; state?: string }[] };
+const R = tokens.recipes.status as { props: { lamp: { size: number; 'size-small': number; bezel: number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } }; layers: { part: string; prop: string; value: string; state?: string }[] };
 const P = R.props;
 const FONT = Number(P.badge.font.match(/([\d.]+)px/)![1]);
 const TRACK = parseFloat(P.badge.tracking);
@@ -32,10 +32,9 @@ const [SPOT_X, SPOT_Y] = LIVE_FILL.match(/at ([\d.]+)% ([\d.]+)%/)!.slice(1).map
 const KINDS: LedKind[] = ['live', 'waiting', 'failed', 'link', 'off'];
 const SAY: Record<LedKind, string> = { live: 'live', waiting: 'waiting', failed: 'failed', link: 'linked', off: 'off' };
 
-type Parts = { badgeBg: string; badgeSh: string; lampBg: string; lampSh: string };
 type Props = {
   spot: Spot; m: Model; set: (p: Partial<Model>) => void; focus: (name: string | null) => void;
-  words: Record<LedKind, string>; badgeLayers: LayerDef[]; lampLayers: LayerDef[]; parts: Parts;
+  badgeLayers: LayerDef[]; lampLayers: LayerDef[]; look: Look;
 };
 
 const round = (v: number, k = 10) => Math.round(v * k) / k;
@@ -45,40 +44,29 @@ const reduced = () => document.documentElement.classList.contains('rm') || match
 const pulse = (el: Element | null | undefined, k = 1.5) => { if (el && !reduced()) el.animate([{ scale: 1 }, { scale: k, offset: 0.3 }, { scale: 1 }], { duration: 380, easing: 'cubic-bezier(.3,.7,.3,1)' }); };
 
 /**
- * The real StatusBadge, its recipe variables set from the model, so the specimen and the
- * bench draw the same values. Nothing on it animates: a tunable follows the finger exactly.
+ * The real StatusBadge, set to the config like the table's object and the model's face, so the
+ * specimen and the bench draw the same values. Nothing on it animates: a tunable follows the
+ * finger exactly, and the lamp holds steady while it is handled.
  */
-function Badge({ m, parts, words, children }: { m: Model; parts: Parts; words: Record<LedKind, string>; children?: React.ReactNode }) {
-  const style = {
-    '--mu-r-status-badge-height': `${m.h}px`,
-    '--mu-r-status-badge-pad': `${m.pad}px`,
-    '--ed-status-lamp-size': `${m.led}px`,
-    '--mu-r-status-badge-font': `500 ${m.size}px/1 var(--mu-sans)`,
-    '--mu-r-status-badge-tracking': `${m.track}em`,
-    '--mu-r-status-badge-background': parts.badgeBg,
-    '--mu-r-status-badge-shadow': parts.badgeSh,
-    '--ed-status-lamp-bg': parts.lampBg,
-    '--ed-status-lamp-shadow': parts.lampSh,
-    transition: 'none',
-  } as React.CSSProperties;
-  return <StatusBadge gesture="steady" led={m.kind} className="ed-status-badge" style={style}>{children ?? words[m.kind]}</StatusBadge>;
+function Badge({ m, look, children }: { m: Model; look: Look; children?: React.ReactNode }) {
+  return <StatusReal m={m} look={look} gesture="steady" style={{ transition: 'none' }}>{children}</StatusReal>;
 }
 
 /* ───────────────────────── states ───────────────────────── */
 
-function States({ m, set, parts, words }: Props) {
+function States({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [held, setHeld] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
   const [lean, setLean] = React.useState<LedKind | null>(null);
   const el = React.useRef<HTMLSpanElement>(null);
-  const index = KINDS.indexOf(m.kind);
-  const choose = (i: number) => { const next = KINDS[clamp(i, 0, KINDS.length - 1)]; if (next !== m.kind) set({ kind: next }); };
-  useOnLand(m.kind, () => pulse(el.current?.querySelector('.mu-led'), 1.6));
+  const index = KINDS.indexOf(m.led);
+  const choose = (i: number) => { const next = KINDS[clamp(i, 0, KINDS.length - 1)]; if (next !== m.led) set(withLed(m, next)); };
+  useOnLand(m.led, () => pulse(el.current?.querySelector('.mu-led'), 1.6));
   const handle = useHandle({
     zoom,
-    hint: () => ({ gesture: 'steps', title: 'State', value: held ? (lean ? `→ ${SAY[lean]}` : SAY[m.kind]) : undefined, how: 'drag sideways for the next state' }),
-    keyHint: (): Hint => ({ gesture: 'steps', title: 'State', value: SAY[m.kind], keys: [{ k: '←→', say: 'step' }] }),
+    hint: () => ({ gesture: 'steps', title: 'State', value: held ? (lean ? `→ ${SAY[lean]}` : SAY[m.led]) : undefined, how: 'drag sideways for the next state' }),
+    keyHint: (): Hint => ({ gesture: 'steps', title: 'State', value: SAY[m.led], keys: [{ k: '←→', say: 'step' }] }),
     start: () => { setHeld(true); return { index, at: 0 }; },
     move: (s, dx) => {
       const travel = dx - s.at, d = Math.sign(travel), next = KINDS[s.index + d];
@@ -93,18 +81,18 @@ function States({ m, set, parts, words }: Props) {
       <p>The lamp's colour tells you the state: green is working, amber is waiting, red has failed, blue is linked and grey is off. The words always say it too, so colour is never alone. Drag the badge sideways to step through the states.</p>
       <div ref={well} className="ed-specimen">
         <div className="ed-status-states" style={{ zoom }} data-hint-anchor>
-          <span ref={el} className="ed-status-grab" data-peek={peek || held ? '' : undefined} role="slider" tabIndex={0} aria-label="State" aria-valuetext={SAY[m.kind]} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={KINDS.length} {...handle}>
-            <Badge m={m} parts={parts} words={words} />
+          <span ref={el} className="ed-status-grab" data-peek={peek || held ? '' : undefined} role="slider" tabIndex={0} aria-label="State" aria-valuetext={SAY[m.led]} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={KINDS.length} {...handle}>
+            <Badge m={m} look={look} />
             {lean && <i className="ed-status-lean" aria-hidden />}
           </span>
           {/* the five real states, in order: the one it is ringed, the one it leans to lit */}
           <span className="ed-status-pips" aria-hidden>
-            {KINDS.map((k) => <span key={k} data-at={k === m.kind ? '' : undefined} data-lean={k === lean ? '' : undefined}><Led kind={k} size="small" /></span>)}
+            {KINDS.map((k) => <span key={k} data-at={k === m.led ? '' : undefined} data-lean={k === lean ? '' : undefined}><Led kind={k} size="small" /></span>)}
           </span>
         </div>
       </div>
       <div className="ed-readouts">
-        <Readout label="State" value={SAY[m.kind]} unit="" snap={{ at: index, name: m.kind }} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => choose(index + d)} />
+        <Readout label="State" value={SAY[m.led]} unit="" snap={{ at: index, name: m.led }} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => choose(index + d)} />
       </div>
     </>
   );
@@ -118,7 +106,7 @@ const ORBIT = 22; // the sun's arc around the lamp, in the badge's own units
 // the arc stops short of the words on the right, so the sun never sits on them
 const DEG_MIN = -90, DEG_MAX = 30;
 
-function Lamp({ m, set, parts, words }: Props) {
+function Lamp({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -157,8 +145,8 @@ function Lamp({ m, set, parts, words }: Props) {
       <div ref={well} className="ed-specimen">
         {/* the box reaches up to the arc's top, so the hint tag rides above the sun, never on it */}
         <div className="ed-status-light" data-lit={live || peek ? '' : undefined} style={{ zoom, paddingTop: Math.ceil(big - m.h / 2 + 5) }} data-hint-anchor>
-          <Badge m={m} parts={parts} words={words} />
-          <span className="ed-status-orbit" style={{ left: m.pad + m.led / 2, top: `calc(100% - ${m.h / 2}px)` }}>
+          <Badge m={m} look={look} />
+          <span className="ed-status-orbit" style={{ left: m.pad + P.lamp.bezel + m.lampSize / 2, top: `calc(100% - ${m.h / 2}px)` }}>
             <svg className="ed-orbit" width={big * 2 + 2} height={big * 2 + 2} viewBox={`${-big - 1} ${-big - 1} ${big * 2 + 2} ${big * 2 + 2}`} style={{ left: -big - 1, top: -big - 1 }} aria-hidden>
               {arc(reach(OFF0))}
               {arc(reach(0), 'is-near')}
@@ -177,17 +165,17 @@ function Lamp({ m, set, parts, words }: Props) {
 
 /* ───────────────────────── glow ───────────────────────── */
 
-function Glow({ m, set, parts, words }: Props) {
+function Glow({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
-  const index = KINDS.indexOf(m.kind);
-  // only the green lamp has a glow in the recipe: on any other state the switch has nothing to turn on
-  const has = m.kind === 'live';
+  const index = KINDS.indexOf(m.led);
+  // every lit lamp has the same glow in the recipe; the off lamp is a dull socket with none
+  const has = m.led !== 'off';
   return (
     <>
-      <p>A lamp that is on gives off a little light, so the green lamp has a soft glow in its own colour. That is how you tell a lit lamp from a green dot. {has ? 'Turn the glow off to see the difference.' : 'Only the green lamp glows; step the state back to live to see it.'}</p>
-      <div ref={well} className="ed-specimen"><div style={{ zoom }}><Badge m={m} parts={parts} words={words} /></div></div>
+      <p>A lamp that is on gives off a little light, so it has a soft glow in its own colour. That is how you tell a lit lamp from a coloured dot. {has ? 'Turn the glow off to see the difference.' : 'The off lamp is dark and has no glow; step the state to a lit one to see it.'}</p>
+      <div ref={well} className="ed-specimen"><div style={{ zoom }}><Badge m={m} look={look} /></div></div>
       <div className="ed-readouts">
-        <Readout label="State" value={SAY[m.kind]} unit="" snap={{ at: index, name: m.kind }} pick={() => set({ kind: KINDS[(index + 1) % KINDS.length] })} scrub={(d) => set({ kind: KINDS[clamp(index + d, 0, KINDS.length - 1)] })} />
+        <Readout label="State" value={SAY[m.led]} unit="" snap={{ at: index, name: m.led }} pick={() => set(withLed(m, KINDS[(index + 1) % KINDS.length]))} scrub={(d) => set(withLed(m, KINDS[clamp(index + d, 0, KINDS.length - 1)]))} />
       </div>
       <div className="ed-layers" style={{ marginTop: 8 }}>
         <Row.Root variant="list" className="ed-layer" data-off={m.glow && has ? undefined : ''} onClick={(e) => { if (has && !(e.target as HTMLElement).closest('.mu-switch')) set({ glow: !m.glow }); }}>
@@ -201,7 +189,7 @@ function Glow({ m, set, parts, words }: Props) {
 
 /* ───────────────────────── type ───────────────────────── */
 
-function Type({ m, set, parts, words }: Props) {
+function Type({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState<null | 'size' | 'track'>(null);
   const [over, setOver] = React.useState(false);
@@ -228,11 +216,11 @@ function Type({ m, set, parts, words }: Props) {
   });
   return (
     <>
-      <p>The words are small mono capitals, spaced out, as if stamped into the badge like the labels on a machine. Drag the words sideways to change the space between letters, or up and down to change their size.</p>
+      <p>The words are small capitals, spaced out a little, as if stamped into the badge like the labels on a machine. Drag the words sideways to change the space between letters, or up and down to change their size.</p>
       <div ref={well} className="ed-specimen">
         <div className="ed-typebox" data-show={over || live || peek ? 'label' : undefined} data-live={live ?? undefined} style={{ zoom }} data-hint-anchor>
-          <Badge m={m} parts={parts} words={words}>
-            <span ref={label} className="ed-type-label" role="slider" tabIndex={0} aria-label="Letter size and spacing" aria-valuetext={`${m.size} points, spacing ${m.track} em`} aria-valuenow={m.size} aria-valuemin={7} aria-valuemax={14} {...handle}>{words[m.kind]}</span>
+          <Badge m={m} look={look}>
+            <span ref={label} className="ed-type-label" role="slider" tabIndex={0} aria-label="Letter size and spacing" aria-valuetext={`${m.size} points, spacing ${m.track} em`} aria-valuenow={m.size} aria-valuemin={7} aria-valuemax={14} {...handle}>{m.label}</span>
           </Badge>
         </div>
       </div>
@@ -251,7 +239,7 @@ const H_SNAPS: Snap[] = [{ at: P.badge.height, name: 'badge height' }];
 const PAD_SNAPS: Snap[] = [{ at: P.badge.pad, name: 'badge padding' }];
 const LED_SNAPS: Snap[] = [{ at: P.lamp.size, name: 'lamp' }, { at: P.lamp['size-small'], name: 'small lamp' }];
 
-function Shape({ m, set, parts, words }: Props) {
+function Shape({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const box = React.useRef<HTMLDivElement>(null);
   const [W, setW] = React.useState(0);
@@ -268,8 +256,8 @@ function Shape({ m, set, parts, words }: Props) {
   const [peek, setPeek] = React.useState<ShapeName | null>(null);
   const setH = (v: number, caught = true) => set({ h: caught ? snapTo(clamp(v, 18, 40), H_SNAPS)[0] : Math.round(clamp(v, 18, 40)) });
   const setPad = (v: number, caught = true) => set({ pad: caught ? snapTo(clamp(v, 4, 20), PAD_SNAPS)[0] : Math.round(clamp(v, 4, 20)) });
-  const setLed = (v: number, caught = true) => { const x = Math.round(clamp(v, 3, 10) * 2) / 2; set({ led: caught ? (LED_SNAPS.find((s) => Math.abs(s.at - x) <= 0.3)?.at ?? x) : x }); };
-  const hSnap = H_SNAPS.find((s) => s.at === m.h), padSnap = PAD_SNAPS.find((s) => s.at === m.pad), ledSnap = LED_SNAPS.find((s) => s.at === m.led);
+  const setLed = (v: number, caught = true) => { const x = Math.round(clamp(v, 3, 10) * 2) / 2; set({ lampSize: caught ? (LED_SNAPS.find((s) => Math.abs(s.at - x) <= 0.3)?.at ?? x) : x }); };
+  const hSnap = H_SNAPS.find((s) => s.at === m.h), padSnap = PAD_SNAPS.find((s) => s.at === m.pad), ledSnap = LED_SNAPS.find((s) => s.at === m.lampSize);
   useOnLand(live === 'height' ? hSnap?.name : undefined, () => blip(segs.current.top, segs.current.bottom));
   useOnLand(live === 'ends' ? padSnap?.name : undefined, () => blip(segs.current.left, segs.current.right));
   useOnLand(live === 'lamp' ? ledSnap?.name : undefined, () => pulse(handles.current.lamp, 1.3));
@@ -290,31 +278,31 @@ function Shape({ m, set, parts, words }: Props) {
   });
   const lamp = useHandle({
     zoom,
-    hint: () => ({ gesture: 'corner', title: 'Lamp size', value: live === 'lamp' ? `${m.led}pt` : undefined, how: 'drag the lamp up or right to make it bigger' }),
-    keyHint: (): Hint => ({ gesture: 'corner', title: 'Lamp size', value: `${m.led}pt`, keys: [{ k: '↑↓', say: 'bigger' }] }),
-    start: () => m.led, move: (l0, dx, dy) => { setLive('lamp'); setLed(l0 + (dx - dy) / 4); }, end: () => setLive(null),
-    step: (d) => setLed(m.led + d * 0.5), axis: 'both', over: hover('lamp'), grab: () => pulse(handles.current.lamp, 1.3),
+    hint: () => ({ gesture: 'corner', title: 'Lamp size', value: live === 'lamp' ? `${m.lampSize}pt` : undefined, how: 'drag the lamp up or right to make it bigger' }),
+    keyHint: (): Hint => ({ gesture: 'corner', title: 'Lamp size', value: `${m.lampSize}pt`, keys: [{ k: '↑↓', say: 'bigger' }] }),
+    start: () => m.lampSize, move: (l0, dx, dy) => { setLive('lamp'); setLed(l0 + (dx - dy) / 4); }, end: () => setLive(null),
+    step: (d) => setLed(m.lampSize + d * 0.5), axis: 'both', over: hover('lamp'), grab: () => pulse(handles.current.lamp, 1.3),
   });
   const pointed = over ?? live ?? peek;
   const segOf: Record<ShapeName, Seg[]> = { height: ['top'], ends: ['right'], lamp: [] };
   const holding: Seg[] = live === 'height' ? ['top', 'bottom'] : live === 'ends' ? ['left', 'right'] : [];
   const shown: Seg[] = pointed ? (holding.length ? holding : segOf[pointed]) : ['top', 'right'];
   const lampShown = !pointed || pointed === 'lamp';
-  const ring = m.led + 5;
+  const ring = m.lampSize + 5;
   return (
     <>
       <p>A raised pill, {P.badge.height} pt tall, with the same space on both ends. It looks like a button but you cannot press it. Drag the top edge to change its height, the right end to change the space on the ends, or the lamp to change its size.</p>
       <div ref={well} className="ed-specimen">
         <div style={{ zoom }}>
           <div ref={box} className="ed-box ed-status-box" data-live={live ?? undefined} data-peek={peek ?? undefined} data-shown={shown.join(' ')} data-hint-anchor>
-            <Badge m={m} parts={parts} words={words} />
+            <Badge m={m} look={look} />
             <div className="ed-overlay">
               <Outline W={W} h={m.h} r={m.h / 2} on={pointed ? (holding.length ? holding : segOf[pointed]) : []} only={shown} segs={segs} />
               <span ref={(el) => { handles.current.height = el; }} className="ed-edge is-y" style={{ top: -3 }} role="slider" tabIndex={0} aria-label="Height" aria-valuenow={m.h} aria-valuemin={18} aria-valuemax={40} {...height} />
               <span ref={(el) => { handles.current.ends = el; }} className="ed-edge is-x" style={{ right: -3 }} role="slider" tabIndex={0} aria-label="Space on the ends" aria-valuenow={m.pad} aria-valuemin={4} aria-valuemax={20} {...ends} />
               <span ref={(el) => { handles.current.lamp = el; }} className="ed-status-lamp" data-away={lampShown ? undefined : ''} data-on={pointed === 'lamp' ? '' : undefined}
-                style={{ left: m.pad + m.led / 2 - ring / 2, top: m.h / 2 - ring / 2, width: ring, height: ring }}
-                role="slider" tabIndex={0} aria-label="Lamp size" aria-valuenow={m.led} aria-valuemin={3} aria-valuemax={10} {...lamp} />
+                style={{ left: m.pad + P.lamp.bezel + m.lampSize / 2 - ring / 2, top: m.h / 2 - ring / 2, width: ring, height: ring }}
+                role="slider" tabIndex={0} aria-label="Lamp size" aria-valuenow={m.lampSize} aria-valuemin={3} aria-valuemax={10} {...lamp} />
             </div>
           </div>
         </div>
@@ -322,7 +310,7 @@ function Shape({ m, set, parts, words }: Props) {
       <div className="ed-readouts">
         <Readout label="Height" value={`${m.h}`} snap={hSnap} peek={(y) => setPeek(y ? 'height' : null)} pick={() => summon(handles.current.height ?? null)} scrub={(d) => setH(m.h + d, false)} />
         <Readout label="Space on the ends" value={`${m.pad}`} snap={padSnap} peek={(y) => setPeek(y ? 'ends' : null)} pick={() => summon(handles.current.ends ?? null)} scrub={(d) => setPad(m.pad + d, false)} />
-        <Readout label="Lamp size" value={`${m.led}`} snap={ledSnap} peek={(y) => setPeek(y ? 'lamp' : null)} pick={() => summon(handles.current.lamp ?? null)} scrub={(d) => setLed(m.led + d * 0.5, false)} />
+        <Readout label="Lamp size" value={`${m.lampSize}`} snap={ledSnap} peek={(y) => setPeek(y ? 'lamp' : null)} pick={() => summon(handles.current.lamp ?? null)} scrub={(d) => setLed(m.lampSize + d * 0.5, false)} />
       </div>
     </>
   );
@@ -330,14 +318,14 @@ function Shape({ m, set, parts, words }: Props) {
 
 /* ───────────────────────── layers ───────────────────────── */
 
-function Layers({ m, set, focus, parts, words, badgeLayers, lampLayers }: Props) {
+function Layers({ m, set, focus, look, badgeLayers, lampLayers }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const groups = [['badge', badgeLayers], ['lamp', lampLayers]] as const;
   const toggle = (g: 'badge' | 'lamp', i: number, v: boolean) => set({ [g]: m[g].map((x, j) => (j === i ? v : x)) });
   return (
     <>
       <p>Two parts: the badge is {badgeLayers.length} layers and the lamp is {lampLayers.length}. Turn a layer off to see what it adds.</p>
-      <div ref={well} className="ed-specimen"><div style={{ zoom }}><Badge m={m} parts={parts} words={words} /></div></div>
+      <div ref={well} className="ed-specimen"><div style={{ zoom }}><Badge m={m} look={look} /></div></div>
       <div className="ed-layers">
         {groups.flatMap(([g, list]) => list.map((l, i) => {
           // the lamp's rim and the badge's rim share a name: say whose it is
