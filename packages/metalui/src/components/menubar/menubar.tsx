@@ -21,7 +21,7 @@ import { SlidingIndicator } from '../../motion/indicator';
  * ───────────────────────────────────────────────────────── */
 
 const BAR = 'mu-menubar relative inline-flex items-center gap-menubar-gap p-menubar-pad';
-const KEY = 'mu-menubar-key relative z-1 inline-flex items-center h-menubar-key-height px-menubar-key-pad-x rounded-menubar-key-radius border-0 bg-transparent type-ui text-ink cursor-default outline-none select-none hover:not-data-popup-open:recipe-row-list-hover focus-visible:focus-ring disabled:opacity-button-disabled data-disabled:opacity-button-disabled';
+const KEY = 'mu-menubar-key relative z-1 inline-flex items-center h-menubar-key-height px-menubar-key-pad-x rounded-menubar-key-radius border-0 bg-transparent type-ui text-ink cursor-default outline-none select-none pointer-hover:not-data-popup-open:recipe-row-list-hover focus-visible:focus-ring disabled:opacity-button-disabled data-disabled:opacity-button-disabled';
 const GLIDE = 'rounded-menubar-key-radius recipe-row-list-hover';
 
 export interface MenubarProps extends Omit<BaseMenubar.Props, 'className'> {

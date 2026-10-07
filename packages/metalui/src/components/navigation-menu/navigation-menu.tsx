@@ -21,14 +21,14 @@ import { NavigationMenu as BaseNav } from '@base-ui/react/navigation-menu';
 
 const ROOT = 'mu-navigation-menu relative';
 const LIST = 'm-0 p-menubar-pad list-none flex items-center gap-menubar-gap';
-const KEY = 'mu-navigation-key inline-flex items-center gap-menubar-gap h-menubar-key-height px-menubar-key-pad-x rounded-menubar-key-radius border-0 bg-transparent type-ui text-ink no-underline cursor-default outline-none select-none hover:recipe-row-list-hover data-popup-open:recipe-row-list-hover focus-visible:focus-ring';
+const KEY = 'mu-navigation-key inline-flex items-center gap-menubar-gap h-menubar-key-height px-menubar-key-pad-x rounded-menubar-key-radius border-0 bg-transparent type-ui text-ink no-underline cursor-default outline-none select-none pointer-hover:recipe-row-list-hover data-popup-open:recipe-row-list-hover focus-visible:focus-ring';
 const CHEVRON = 'size-navigation-menu-chevron-size text-ink2';
 const POSITIONER = 'mu-navigation-positioner z-menu-z navigation-menu-positioner';
 // The menu plate's look (frost, radius) without its fade: this plate moves and resizes its own way.
 const POPUP = 'mu-navigation-popup relative overflow-hidden rounded-menu-radius outline-none recipe-menu backdrop-menu-blur reduce-transparency:opaque-frost navigation-menu-popup';
 const VIEWPORT = 'mu-navigation-viewport relative h-full w-full overflow-hidden';
 const CONTENT = 'mu-navigation-content w-max p-navigation-menu-plate-pad navigation-menu-content data-ending-style:absolute data-ending-style:inset-0';
-const PANEL_LINK = 'mu-navigation-link grid gap-navigation-menu-link-gap px-navigation-menu-link-pad-x py-navigation-menu-link-pad-y rounded-navigation-menu-link-radius no-underline outline-none transition-row hover:recipe-row-list-hover focus-visible:recipe-row-list-hover data-active:recipe-row-list-hover';
+const PANEL_LINK = 'mu-navigation-link grid gap-navigation-menu-link-gap px-navigation-menu-link-pad-x py-navigation-menu-link-pad-y rounded-navigation-menu-link-radius no-underline outline-none transition-row pointer-hover:recipe-row-list-hover focus-visible:recipe-row-list-hover data-active:recipe-row-list-hover';
 
 function offset() {
   if (typeof window === 'undefined') return 8;

@@ -53,7 +53,7 @@ export interface DialProps {
 
 const ROOT = 'mu-dial relative touch-none select-none cursor-pointer';
 const SVG = 'mu-dial-track absolute left-0 top-0 overflow-visible pointer-events-none';
-const KNOB = 'mu-dial-knob absolute -translate-1/2 rounded-round recipe-slider-knob cursor-grab outline-none focus-visible:focus-ring transition-slider-knob hover:recipe-slider-knob-hover active:slider-knob-press active:recipe-slider-knob-press';
+const KNOB = 'mu-dial-knob absolute -translate-1/2 rounded-round recipe-slider-knob cursor-grab outline-none focus-visible:focus-ring transition-slider-knob pointer-hover:recipe-slider-knob-hover active:slider-knob-press active:recipe-slider-knob-press';
 const DOT = 'mu-dial-dot absolute left-1/2 -translate-x-1/2 rounded-round pointer-events-none';
 const LABEL = 'mu-dial-tick-label absolute -translate-x-1/2 pointer-events-none type-meta text-ink2 whitespace-nowrap';
 const SAMPLES = 96;

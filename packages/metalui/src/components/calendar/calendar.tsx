@@ -58,7 +58,7 @@ const GRID_WRAP = 'mu-calendar-body relative';
 const TABLE = 'mu-calendar-grid calendar-grid';
 const WEEKDAY = 'mu-calendar-weekday size-calendar-day-size p-0 type-meta text-ink3 text-center';
 const CELL = 'p-0';
-const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 disabled:opacity-calendar-disabled disabled:cursor-default data-today:calendar-today data-unavailable:opacity-calendar-disabled data-unavailable:cursor-not-allowed';
+const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row pointer-hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 disabled:opacity-calendar-disabled disabled:cursor-default data-today:calendar-today data-unavailable:opacity-calendar-disabled data-unavailable:cursor-not-allowed';
 
 export type CalendarMode = 'single' | 'range' | 'multiple';
 export interface DateRange { start: Date | null; end: Date | null }

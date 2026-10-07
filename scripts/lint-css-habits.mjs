@@ -99,7 +99,8 @@ ast.walkRules((r) => {
 const found = [];
 const add = (id, s, d) => found.push({ id, key: `${id}: ${space(s)} ‖ ${d.prop}: ${space(d.value)}` });
 for (const { r, decls, sels } of rules) for (const s of sels) {
-  const hover = pseudo('hover').test(s) && !gated(r);
+  // A hover inside :not() is the rest state, true on touch, so it stays ungated.
+  const hover = pseudo('hover').test(calls(s, 'not').reverse().reduce((t, c) => t.slice(0, c.start) + t.slice(c.end), s)) && !gated(r);
   const scroller = !decls.some((d) => /^overscroll-behavior(?:-|$)/.test(d.prop));
   const shadow = pseudo('focus-visible').test(s) && !decls.some(outline) && !utility(s);
   for (const d of decls) {

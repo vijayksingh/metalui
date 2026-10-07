@@ -59,11 +59,11 @@ const SLOT = 'mu-dimple-slot inline-flex w-max h-max leading-none';
 const WELL = 'mu-dimple relative box-border inline-block p-0 border-0 cursor-pointer tap-highlight-none transition-checkbox focus-visible:focus-ring data-disabled:opacity-checkbox-disabled data-disabled:cursor-default data-doing:checkbox-doing';
 const PRESS = 'not-data-disabled:active:duration-checkbox-press not-data-disabled:not-data-checked:active:recipe-checkbox-on';
 // The key is dark while it is ticked, while a mixed parent shows its dash, and while a tick is still withdrawing.
-const KEY = 'recipe-checkbox hover:not-data-checked:not-data-inked:recipe-checkbox-hover data-checked:recipe-checkbox-on data-indeterminate:not-data-doing:recipe-checkbox-on data-inked:recipe-checkbox-on';
+const KEY = 'recipe-checkbox pointer-hover:not-data-checked:not-data-inked:recipe-checkbox-hover data-checked:recipe-checkbox-on data-indeterminate:not-data-doing:recipe-checkbox-on data-inked:recipe-checkbox-on';
 const LOOKS = {
   margin: `size-checkbox-size rounded-checkbox-radius ${KEY} ${PRESS}`,
   row: `size-checkbox-row-size rounded-checkbox-row-radius ${KEY} ${PRESS}`,
-  ghost: 'size-checkbox-ghost-size rounded-checkbox-ghost-radius recipe-checkbox-ghost hover:recipe-checkbox-ghost-hover',
+  ghost: 'size-checkbox-ghost-size rounded-checkbox-ghost-radius recipe-checkbox-ghost pointer-hover:recipe-checkbox-ghost-hover',
 };
 const TICK_CLASS = 'mu-dimple-tick checkbox-tick';
 

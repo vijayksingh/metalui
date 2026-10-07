@@ -8,8 +8,9 @@ Read [CSS_SYSTEM.md](CSS_SYSTEM.md) for tokens, layout and cascade, and [PERFORM
 
 ## Interaction
 
-1. **Hover only where a fine pointer can hover.** A hover look applies inside `@media (hover: hover) and (pointer: fine)`. On touch a tap leaves `:hover` stuck on until the next tap elsewhere, so a key that was pressed keeps looking hovered. Pressed feedback (`:active`, `[data-pressed]`) is never gated: it is the touch user's only feedback. The x-ray's `[data-preview=hover]` is not a hover and is not gated.
-   *Linted:* `hover-gate`.
+1. **Hover only where a fine pointer can hover.** A hover look applies inside `@media (hover: hover) and (pointer: fine)`. On touch a tap leaves `:hover` stuck on until the next tap elsewhere, so a key that was pressed keeps looking hovered. Pressed feedback (`:active`, `[data-pressed]`) is never gated: it is the touch user's only feedback. The x-ray's `[data-preview=hover]` is not a hover and is not gated, and a hover inside `:not()` is the rest state, which is true on touch, so it stays ungated too.
+   In a component's classes write `pointer-hover:` (and `group-pointer-hover/<name>:`), never `hover:`: Tailwind's `hover:` checks only `(hover: hover)`, and redefining it would change the host's own hovers. In a recipe in `tokens.json`, wrap the hover rule in `@media (hover: hover) and (pointer: fine) { … }`; when a selector list mixes hover with focus or preview, split it so only the hover branch is gated.
+   *Linted:* `hover-gate`. *Slice:* `e2e/hover-pointer.spec.ts` rests a mouse and a finger on the same controls.
 2. **Focus is an outline.** The ring is `focus-ring` / `focus-ring-flush` (an `outline`), never a `box-shadow`, so Windows forced-colors mode can repaint it. A recipe that sets `outline: none` sets an outline again on `:focus-visible` (or `:focus-within` for a field shell) in the same recipe.
    *Linted:* `focus-outline`.
 3. **Inner scrollers keep their scroll.** Anything that scrolls on its own (popups, lists, sheets, panes) sets `overscroll-behavior: contain`, so reaching its end does not scroll the page behind it.

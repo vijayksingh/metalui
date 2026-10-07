@@ -573,6 +573,15 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
     @slot;
   }
 }
+/* Hover where a fine pointer can hover (docs/CSS_HABITS.md). Tailwind's hover: checks (hover: hover) only;
+   a tap on a touch screen still leaves :hover stuck on. Named, so a host's own hover: is untouched. */
+@custom-variant pointer-hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 /* Reduce Motion (the system setting, or data-mu-motion="reduce" on an ancestor). */
 @custom-variant reduced-motion {
   @media (prefers-reduced-motion: reduce) {

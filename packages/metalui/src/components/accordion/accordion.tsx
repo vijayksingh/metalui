@@ -21,7 +21,7 @@ import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
 const ROOT = 'mu-accordion grid';
 const ITEM = 'mu-accordion-item relative [&+&]:before:absolute [&+&]:before:inset-x-accordion-trigger-pad-x [&+&]:before:top-0 [&+&]:before:h-px [&+&]:before:recipe-rule';
 const HEADER = 'mu-accordion-header m-0';
-const TRIGGER = 'mu-accordion-trigger group/acc flex w-full items-center gap-accordion-trigger-gap h-accordion-trigger-height px-accordion-trigger-pad-x rounded-accordion-trigger-radius border-0 bg-transparent type-ui text-ink text-left cursor-pointer outline-none transition-row hover:recipe-row-panel-hover focus-visible:focus-ring data-disabled:opacity-accordion-trigger-disabled data-disabled:cursor-default';
+const TRIGGER = 'mu-accordion-trigger group/acc flex w-full items-center gap-accordion-trigger-gap h-accordion-trigger-height px-accordion-trigger-pad-x rounded-accordion-trigger-radius border-0 bg-transparent type-ui text-ink text-left cursor-pointer outline-none transition-row pointer-hover:recipe-row-panel-hover focus-visible:focus-ring data-disabled:opacity-accordion-trigger-disabled data-disabled:cursor-default';
 const CHEVRON = 'mu-accordion-chevron ml-auto flex-none size-accordion-chevron-size text-ink2';
 const PANEL = 'mu-accordion-panel accordion-panel';
 const BODY = 'mu-accordion-body px-accordion-panel-pad-x pb-accordion-panel-pad-bottom type-body text-ink2';

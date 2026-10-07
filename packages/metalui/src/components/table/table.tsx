@@ -57,7 +57,7 @@ const TH = 'mu-table-th align-middle h-table-head-height px-table-row-pad-x type
 const SORT = 'mu-table-sort inline-flex items-center gap-table-sort-gap border-0 bg-transparent p-0 table-sort-button cursor-pointer outline-none focus-visible:focus-ring';
 // The authored arrow points north-east; a fixed -45 degree alignment puts its axis on the column.
 const ARROW = 'mu-table-arrow size-table-sort-glyph table-sort-arrow -rotate-45';
-const TR = 'mu-table-row transition-row hover:not-data-selected:recipe-switcher data-selected:bg-table-select-tint';
+const TR = 'mu-table-row transition-row pointer-hover:not-data-selected:recipe-switcher data-selected:bg-table-select-tint';
 const TD = 'mu-table-td align-middle h-table-row-height px-table-row-pad-x type-ui text-ink table-rule data-end:text-right data-end:tabular-nums';
 const EMPTY = 'mu-table-empty h-table-row-height px-table-row-pad-x type-body text-ink3 text-center';
 const CHECK = 'mu-table-check w-table-row-height px-table-row-pad-x';

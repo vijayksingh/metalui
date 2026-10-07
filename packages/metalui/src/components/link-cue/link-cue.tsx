@@ -112,7 +112,7 @@ export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(functio
     }}>
       <Popover.Trigger><BaseButton {...editProps} disabled={disabled} focusableWhenDisabled={readOnly} aria-disabled={!mutable || undefined}
         aria-label={`Edit ${label} URL`} aria-description={['Enter opens the URL field. Enter applies; Escape cancels.', editProps?.['aria-description'], linkProps['aria-description']].filter(Boolean).join(' ')}
-        className={`mu-link-cue-edit inline-flex flex-none border-0 p-0 bg-transparent text-ink3 hover:text-ink2 outline-none focus-visible:focus-ring${reading ? '' : ' absolute right-0 bottom-full mb-mu-space-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'}`}>
+        className={`mu-link-cue-edit inline-flex flex-none border-0 p-0 bg-transparent text-ink3 pointer-hover:text-ink2 outline-none focus-visible:focus-ring${reading ? '' : ' absolute right-0 bottom-full mb-mu-space-2 opacity-0 group-pointer-hover:opacity-100 group-focus-within:opacity-100'}`}>
         <Icon name="pen" size={MARK_GLYPH_SIZE} />
       </BaseButton></Popover.Trigger>
       <Popover.Content aria-label={`Edit ${label} URL`} align="start">

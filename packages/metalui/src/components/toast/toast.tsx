@@ -126,7 +126,7 @@ const COUNT = 'mu-toast-count text-toast-sub-ink tabular-nums';
 const CHECK = 'mu-toast-check text-success';
 const ERROR = 'mu-toast-error text-red';
 const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
-const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer hover:recipe-toast-undo hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
+const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer pointer-hover:recipe-toast-undo pointer-hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const MORE = 'mu-toast-more toast-more type-meta text-toast-sub-ink recipe-toast-undo rounded-pill';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
 /** Each kind's glyph (an icon name, not a class), and the ink it is drawn in. */

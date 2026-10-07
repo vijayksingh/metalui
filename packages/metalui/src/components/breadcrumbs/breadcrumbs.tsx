@@ -40,10 +40,10 @@ export interface BreadcrumbsProps {
 const NAV = 'mu-breadcrumbs';
 const LIST = 'm-0 p-0 list-none flex flex-wrap items-center gap-breadcrumbs-gap type-ui';
 const ITEM = 'mu-breadcrumb inline-flex items-center gap-breadcrumbs-gap data-arrive:breadcrumb-arrive';
-const LINK = 'mu-breadcrumb-link text-ink2 no-underline outline-none transition-colors duration-settle hover:text-ink focus-visible:focus-ring';
+const LINK = 'mu-breadcrumb-link text-ink2 no-underline outline-none transition-colors duration-settle pointer-hover:text-ink focus-visible:focus-ring';
 const CURRENT = 'mu-breadcrumb-current text-ink';
 const SEP = 'mu-breadcrumb-sep size-breadcrumbs-sep-size flex-none text-ink3';
-const FOLD = 'mu-breadcrumb-fold mu-icon-trigger inline-grid place-items-center h-breadcrumbs-fold-height px-breadcrumbs-fold-pad rounded-breadcrumbs-fold-radius border-0 bg-transparent text-ink2 cursor-pointer outline-none hover:recipe-row-list-hover hover:text-ink focus-visible:focus-ring data-popup-open:recipe-row-list-hover';
+const FOLD = 'mu-breadcrumb-fold mu-icon-trigger inline-grid place-items-center h-breadcrumbs-fold-height px-breadcrumbs-fold-pad rounded-breadcrumbs-fold-radius border-0 bg-transparent text-ink2 cursor-pointer outline-none pointer-hover:recipe-row-list-hover pointer-hover:text-ink focus-visible:focus-ring data-popup-open:recipe-row-list-hover';
 
 function Sep() {
   return <Icon name="chevron" turn={270} size={16} animate={false} className={SEP} />;

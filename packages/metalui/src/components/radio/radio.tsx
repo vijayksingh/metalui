@@ -44,7 +44,7 @@ const WELL = [
   'recipe-checkbox transition-radio focus-visible:focus-ring',
   'data-checked:recipe-checkbox-on',
   // Hover and press come from the whole row, and only while the option can still be chosen.
-  'not-data-checked:not-data-disabled:not-data-readonly:group-hover/radio:recipe-checkbox-hover',
+  'not-data-checked:not-data-disabled:not-data-readonly:group-pointer-hover/radio:recipe-checkbox-hover',
   'not-data-checked:not-data-disabled:not-data-readonly:group-active/radio:recipe-checkbox-on not-data-checked:not-data-disabled:not-data-readonly:group-active/radio:duration-radio-press',
   'data-invalid:not-data-checked:invalid-ring',
 ].join(' ');
