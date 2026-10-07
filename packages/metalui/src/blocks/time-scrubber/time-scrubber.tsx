@@ -26,9 +26,10 @@ const DAY = 86400000;
 const startOfDay = (t: number) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
 const clamp = (n: number, a: number, b: number) => Math.min(b, Math.max(a, n));
 
-/* Layout from the scrubber group: the readout sits over the slider, which fills the 330 × 50 box (its
- * track on the box's centre line). */
-const BOX = 'mu-scrubber relative w-scrubber-width h-scrubber-height';
+/* Layout from the scrubber group: the readout sits over the slider, which fills the box (its track on
+ * the box's centre line). The box fills its slot up to 330 wide and narrows with it: days and moments
+ * sit at fractions of the track. */
+const BOX = 'mu-scrubber relative w-full min-w-0 max-w-scrubber-width h-scrubber-height';
 const READ = 'mu-scrubber-read pointer-events-none absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
 const GLYPH = 'mu-scrubber-glyph mr-scrubber-glyph-gap';
 const SLIDER = 'mu-scrubber-slider !absolute inset-0';
