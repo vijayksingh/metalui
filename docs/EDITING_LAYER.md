@@ -70,6 +70,18 @@ A starting point, not a spec. Check each value against rule 7 first: if the comp
 | Lasso, Snap guides | – | width, height, where you drag, zoom | still dragging, hold ⌘ |
 | Switch | state (drag the thumb across; a ghost thumb shows the lean); size | gap around the thumb, light | layers |
 
+## The handover and the code
+
+An x-ray opened from the floating table takes the object over as it is, and gives it back. Every x-ray also writes the code for what you tuned. The Switcher is the reference: `SwitcherXray.tsx`, `SwitcherCode.tsx`, and the slices `e2e/xray-switcher-handoff.spec.ts` and `e2e/xray-switcher-code.spec.ts`. Read them before you convert another x-ray.
+
+1. **One config.** `<Name>Config` holds the real props first (value, size, label, checked), then what the x-ray lets you tune. Export `INITIAL` (the component as it ships) and add the kind to `XraySeeds` in `xray/index.tsx`. The view takes `XrayViewProps<Config>`, starts from `{ ...INITIAL, ...seed }` and calls `onSeed` on every change. A docs page opens it with no seed and gets `INITIAL`.
+2. **One look.** A pure `<name>Look(config, colorway)` returns what the model's hand-built parts need, plus `style`: only the library variables (`--mu-r-<name>-*`, springs) that differ from `INITIAL`. At defaults it is `{}`. The table object, the model's face, the specimens and the code all read it.
+3. **The face is the component.** The model's top face is the real component, laid out at the object's table zoom and scaled by transform (`.xr-segface`: `zoom: oz; transform: translateZ(z) scale(S / oz)`). Never re-typeset text at `S`. Lower planes are copies with parts hidden, or stay hand-built. Measure boxes from the real component. Fit the scene with `.xr-fit`, not zoom.
+4. **Land flat, then open.** Give the scene `data-settle` and honour `pose`: `flat` puts every part on one plane (the object that landed); the model opens once the flyer has gone and closes up again before it flies home.
+5. **The table object** is controlled by `seeds.<kind>`, calls `onSeed` on change, and declares `zoom` on its item instead of an inline wrapper.
+6. **The code.** Pure `<name>React(config, colorway)` and `<name>Swift(config, colorway)` feed `SourceTabs` under the card. Real props are props. Tunables are wrapper variables, and only those that differ. Colour values (`-background`, `-shadow`, inks) go to a stylesheet tab with one block per colorway, scoped like `tokens.css` (`:root, [data-mu-colorway="bone"]`, then `[data-mu-colorway="graphite"]`). At defaults the snippet is the agent guide's example. SwiftUI carries only what its API really takes, and says so in one line when tunables do not reach it. Never emit code the library does not support.
+7. **The slices.** Copy the switcher's two specs. Hold the flight at 0.88 and pixel-compare the flyer with the model's face (under 1 % of pixels). Pick a non-default state on the table and see the x-ray start there and hand it back. Tweak and see the code change. Copy and read the clipboard. Compile the snippet under strict TypeScript, render it through `snippet-lab.ts` beside the specimen in both colorways, and pixel-compare. Each slice must fail on the old code.
+
 ## Mistakes the review caught
 
 Each of these shipped in a converted x-ray and had to be fixed. Check for them before you hand anything back.
