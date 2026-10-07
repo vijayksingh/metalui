@@ -17,7 +17,7 @@ import { INITIAL as TOOLBAR, ToolbarObject, type ToolbarConfig } from './xray/To
 import { INITIAL as CHECKBOX, CheckboxFor, useCheckboxLook, type CheckboxConfig, type CheckboxState } from './xray/CheckboxXray';
 import { INITIAL as TOOLTIP, TooltipChip, useTooltipLook, type TooltipConfig } from './xray/TooltipXray';
 import { ToastStill } from './xray/ToastXray';
-import { MenuStill } from './xray/MenuXray';
+import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
 import { FolderStill } from './xray/FolderXray';
@@ -173,6 +173,12 @@ function TableTooltip({ config = TOOLTIP, open }: { config?: TooltipConfig; open
   return <TooltipChip m={config} look={look} onClick={open} />;
 }
 
+/** The menu on the table: the library's own still set to its config, which its x-ray takes over and hands back. */
+function TableMenu({ config = MENU, open }: { config?: MenuConfig; open: () => void }) {
+  const look = useMenuLook(config);
+  return <div onClick={open}><MenuObject m={config} look={look} /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -241,7 +247,7 @@ const ITEMS: Item[] = [
     node: ({ openXray, seeds }) => <TableTooltip config={seeds.tooltip} open={() => openXray('tooltip')} />,
   },
   { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
-  { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },
+  { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray, seeds }) => <TableMenu config={seeds.menu} open={() => openXray('menu')} /> },
   { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
   { id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, zoom: 0.7, node: ({ openXray }) => <div onClick={() => openXray('palette')}><PaletteStill /></div> },
   {

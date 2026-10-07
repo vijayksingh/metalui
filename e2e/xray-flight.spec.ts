@@ -59,7 +59,7 @@ for (const colorway of COLORWAYS) {
 for (const [id, part, face] of [
   ['button', 'button', '.xr-segface.is-top'],
   ['toast', '> *', '.xr-face'],
-  ['menu', '> *', '.xr-face'],
+  ['menu', '> *', '.xr-segface.is-top'],
 ] as const) {
   test(`the ${id} comes down exactly on its model's raised face`, async ({ page }) => {
     await openLanding(page, '/overview', 'bone');
