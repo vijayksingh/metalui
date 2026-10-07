@@ -129,9 +129,13 @@ const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-
 const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer hover:recipe-toast-undo hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const MORE = 'mu-toast-more toast-more type-meta text-toast-sub-ink recipe-toast-undo rounded-pill';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
+/** Each kind's glyph (an icon name, not a class), and the ink it is drawn in. */
+const glyphOf: Record<ToastTone, MorphIconName> = { default: 'info', success: 'check', error: 'sync-error' };
+const GLYPH_INK: Record<ToastTone, string> = { default: 'text-toast-sub-ink', success: CHECK, error: ERROR };
 
-/** The toast's part classes, for stills of it outside the toast region (docs, previews). */
-export const toastParts = { TOAST, TEXT, SUB, UNDO, KEY } as const;
+/** The toast's part classes and glyphs, for stills of it outside the toast region (docs, previews):
+ *  a still built from these is the live card, part for part. */
+export const toastParts = { TOAST, CONTENT, TEXT, SUB, COUNT, UNDO, KEY, CLOSE, GLYPH: glyphOf, GLYPH_INK } as const;
 
 /** The viewport, told when the deck folds: folding plays on the surface spring, like fanning out. */
 const DeckViewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'> & { expanded: boolean; frontId?: string }>(function DeckViewport({ expanded, frontId, ...props }, forwardedRef) {
@@ -213,8 +217,7 @@ function ToastList({ visible }: { visible: number }) {
             <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} aria-live="off" aria-atomic="true" data-type={t.type} data-toast-id={t.id} data-front={t.id === live[0]?.id ? '' : undefined} data-behind={t.id !== live[0]?.id ? '' : undefined} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
               <Toast.Content className={CONTENT}>
                 <span className={TEXT}>
-                  <MorphIcon name={(t.data as ToastData | undefined)?.glyph ?? (t.type === 'success' ? 'check' : t.type === 'error' ? 'sync-error' : 'info')} size={14}
-                    className={t.type === 'success' ? CHECK : t.type === 'error' ? ERROR : 'text-toast-sub-ink'} />
+                  <MorphIcon name={(t.data as ToastData | undefined)?.glyph ?? glyphOf[t.type as ToastTone] ?? glyphOf.default} size={14} className={GLYPH_INK[t.type as ToastTone] ?? GLYPH_INK.default} />
                   <Toast.Title render={<span />}>{typeof t.title === 'string' ? <SwapText value={t.title} /> : t.title}</Toast.Title>
                   {t.description && <Toast.Description render={<span className={SUB} />}>· {t.description}</Toast.Description>}
                   {times > 1 && <span className={COUNT}>×{times}</span>}
