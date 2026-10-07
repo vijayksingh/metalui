@@ -50,7 +50,7 @@ function Line({ children, check, done }: { children: React.ReactNode; check?: Re
 function TableCheckbox({ part, m, away, onState, open }: { part: string; m: CheckboxConfig; away: boolean; onState: (state: CheckboxState) => void; open: () => void }) {
   const look = useCheckboxLook(m);
   return (
-    <span data-part={part} className="xr-checkbox-box" style={away ? { visibility: 'hidden' } : undefined} onClick={open}>
+    <span data-float-part={part} className="xr-checkbox-box" style={away ? { visibility: 'hidden' } : undefined} onClick={open}>
       <CheckboxFor m={m} look={look} aria-label="Task" onCheckedChange={(v) => onState(v ? 'on' : 'rest')} />
     </span>
   );
@@ -169,7 +169,7 @@ function TableButton({ config = BUTTON, open }: { config?: ButtonConfig; open: (
 const PERSPECTIVE = 1600;
 
 interface Ctx {
-  /** Opens an x-ray from this object, or from one `part` of it (a `[data-part]` inside it): then that part is what flies. */
+  /** Opens an x-ray from this object, or from one `part` of it (a `[data-float-part]` inside it): then that part is what flies. */
   openXray: (which: XrayKind, part?: string) => void;
   chip: boolean; setChip: (v: boolean) => void;
   /** Each object's config, shared with its x-ray (see xray/index.tsx, "the handover"). */
@@ -411,7 +411,7 @@ export function useXrayFlight() {
     const gone = cur ? { from: cur.from, part: cur.part } : undefined;
     const item = from ? document.querySelector<HTMLElement>(`[data-float="${from}"]`) : null;
     // the object that flies: the whole item, or the one part of it the x-ray was opened from
-    const object = item && part ? item.querySelector<HTMLElement>(`[data-part="${part}"]`) : item;
+    const object = item && part ? item.querySelector<HTMLElement>(`[data-float-part="${part}"]`) : item;
     const seeded = next && ({ ...next, seed: (seedsRef.current as Partial<Record<XrayKind, unknown>>)[next.kind] } as XrayOpen);
     if (reduced || !from || !object) { setOpen(seeded && { ...seeded, pose: 'open' }); setAway(next ? gone : undefined); return; }
     root.dataset.flight = next ? 'open' : 'close';

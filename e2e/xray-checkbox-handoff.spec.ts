@@ -13,8 +13,8 @@ async function openOverview(page: Page, colorway: string) {
   await page.evaluate(() => document.fonts.ready);
 }
 const settled = (page: Page) => page.waitForFunction(() => !document.documentElement.dataset.flight && !document.querySelector('.xr-flyer'));
-const tableBox = (page: Page, part: string) => page.locator(`[data-float="lines"] [data-part="${part}"] .mu-dimple`);
-const tableLine = (page: Page, part: string) => page.locator(`[data-float="lines"] [data-part="${part}"] + span`);
+const tableBox = (page: Page, part: string) => page.locator(`[data-float="lines"] [data-float-part="${part}"] .mu-dimple`);
+const tableLine = (page: Page, part: string) => page.locator(`[data-float="lines"] [data-float-part="${part}"] + span`);
 /** Clicks a checkbox on the table: the click ticks it, and opens its x-ray. The pointer leaves so nothing is hovered. */
 async function openFromTable(page: Page, part: string) {
   await tableBox(page, part).click({ force: true });

@@ -262,7 +262,7 @@ test('the code panel fits a phone and reduced motion', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('metalui:colorway', 'graphite'));
   await page.goto('/overview');
   // the table's objects overlap at this width, so the checkbox takes the click itself: it ticks, and opens
-  await page.locator('[data-float="lines"] [data-part="open"] .mu-dimple').dispatchEvent('click');
+  await page.locator('[data-float="lines"] [data-float-part="open"] .mu-dimple').dispatchEvent('click');
   await expect(page.locator('.xr-overlay .xr-code pre code')).toContainText('useState(true)');
   await expect(page.evaluate(() => document.documentElement.scrollWidth)).resolves.toBeLessThanOrEqual(375);
 });
