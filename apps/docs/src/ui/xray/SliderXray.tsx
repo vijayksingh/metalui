@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Slider } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, aim, alphaK, capTop, springEasing, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, aim, alphaK, capTop, springEasing, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { clampSpringCurve } from '../springTuning';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
@@ -211,7 +211,7 @@ export function SliderXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
   const current = SPOTS.find((x) => x.id === spot)!;
   const control = (onChange?: (value: number) => void) => <SliderObject config={m} onValueChange={onChange} />;
   // the model's faces are the slider laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const explodedKnobZ = 2 + TRACK_LAYERS.length * 16 + 10;
 
   return (

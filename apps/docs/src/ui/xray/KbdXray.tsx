@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Kbd } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, aim, alphaK, recipeLayers, scalePx, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, aim, alphaK, recipeLayers, scalePx, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { KbdSpecimenCard } from './KbdSpecimens';
@@ -182,7 +182,7 @@ export function KbdXray({ startOpen = false, seed, onSeed, pose = 'open', zoom: 
   const current = SPOTS.find((x) => x.id === spot)!;
   const control = (extra?: Partial<React.ComponentProps<typeof Kbd>>) => <KbdFor m={m} look={look} {...extra} />;
   // the model's face is the keycap laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
 
   const Z = exploded ? 6 + (LAYERS[m.surface].length - 1) * 16 : topZ;
   const at: Record<Spot, [number, number, number]> = {

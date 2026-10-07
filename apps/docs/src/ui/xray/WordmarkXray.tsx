@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Row, Switch } from '@unlocalhosted/metalui';
 import { useColorway, type Colorway } from '../../app/colorway';
 import { Wordmark, WORDMARK_ALL_LAYERS, WORDMARK_LAYERS, type WordmarkLayers } from '../Wordmark';
-import { Callouts, Glyph, tones, useFit, type SpotDef } from './kit';
+import { Callouts, Glyph, tones, useFit, type SpotDef, planeStyle } from './kit';
 import { HintLayer, useSpecimenZoom } from '../edit';
 import type { XrayViewProps } from '.';
 
@@ -94,7 +94,7 @@ export function WordmarkXray({ startOpen = false, seed, onSeed, pose = 'open', z
   const top = WALL + SLICES * 1.4;
   const fit = useFit(bench, W, H, xray);
   const t = tones(look.colorway);
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const px = box.px * S, py = box.py * S, pw = box.pw * S, ph = box.ph * S, split = (box.split / box.pw) * 100 || 0;
   const wall = `linear-gradient(90deg, ${look.wall.left} ${split}%, ${look.wall.right} ${split}%)`;
 

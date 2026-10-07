@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LinkCard, type LinkPreview } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Exploded, Glyph, capTop, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, capTop, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { HOSTS, LINK_TOKENS, LinkCardSpecimenCard, fontAt, frameRadius, hostOf, hrefFor, linkLook, tintFor } from './LinkCardSpecimens';
@@ -149,7 +149,7 @@ export function LinkCardXray({ startOpen = false, seed, onSeed, pose = 'open', z
 
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's face is the card laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (zz: number) => ({ transform: `translateZ(${zz}px) scale(${S / oz})`, zoom: oz });
+  const face = (zz: number) => planeStyle(zz, S, oz);
   // risen, the face keeps the edges that are its own (top edge, inner glow, rim); the shadows it casts go down on the floor
   const faceStyle = flat ? look.style : { ...look.style, ['--mu-r-glass-face-self-shadow' as string]: look.shadow.filter((_, i) => i < 3).join(', ') || 'none' };
   const rise = 'transform var(--spring-object-d) var(--spring-object)';

@@ -3,7 +3,7 @@ import { Button, Kbd, ToastProvider, toastParts as T, useToast, type ToastTone }
 import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, Proof, recipeLayers, scalePx, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, Proof, recipeLayers, scalePx, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { ToastSpecimenCard } from './ToastSpecimens';
@@ -228,7 +228,7 @@ export function ToastXray({ startOpen = false, seed, onSeed, pose = 'open', zoom
   const current = SPOTS.find((x) => x.id === spot)!;
   const still = (down?: boolean) => <ToastObject config={m} down={down} />;
   // the model's faces are the toast laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const explodedCapZ = 4 + PILL.length * 14 + 10;
 
   const replay = () => setCycle((n) => n + 1);

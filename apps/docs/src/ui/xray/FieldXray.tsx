@@ -3,7 +3,7 @@ import { Field, Kbd } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, NARROW, aim, alphaK, recipeLayers, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, NARROW, aim, alphaK, recipeLayers, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { FieldSpecimenCard } from './FieldSpecimens';
@@ -204,7 +204,7 @@ export function FieldXray({ startOpen = false, seed, onSeed, pose = 'open', zoom
 
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's faces are the field laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const setValue = React.useCallback((value: string) => set({ value }), [set]);
 
   const anchors: Record<Spot, [number, number, number]> = {

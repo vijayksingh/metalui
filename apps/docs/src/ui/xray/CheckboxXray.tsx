@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Checkbox } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, aim, alphaK, capTop, scalePx, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, aim, alphaK, capTop, scalePx, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { CheckboxSpecimenCard } from './CheckboxSpecimens';
@@ -196,7 +196,7 @@ export function CheckboxXray({ startOpen = false, seed, onSeed, pose = 'open', z
 
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's face is the checkbox laid out at the object's own zoom, then scaled: the same box, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const Z = exploded ? 2 + (LAYERS[g].length - 1) * 26 : keyed ? keyTop : wellZ;
   const at: Record<Spot, [number, number, number]> = {
     states: [W * 0.85, H * 0.85, Z],

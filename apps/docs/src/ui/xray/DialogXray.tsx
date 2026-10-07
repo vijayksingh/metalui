@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Dialog, Field, Surface } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, scalePx, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, scalePx, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { DialogSpecimenCard, arrive } from './DialogSpecimens';
@@ -222,7 +222,7 @@ export function DialogXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's face is the dialog laid out at the object's own zoom, then scaled: the same box, to the pixel.
   // The zoom scales its height above the floor too, so that is laid out in the zoomed frame (a table zoom under 1 would sink it into the wall)
-  const face = (z: number) => ({ transform: `translateZ(${z / oz}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   // landed flat it is the object as it is; risen, the face keeps the edges that are its own and casts the rest on the sheet
   const faceStyle: React.CSSProperties = flat ? {} : { ['--mu-r-surface-self-plate-shadow' as string]: look.edges };
   const rise = 'transform var(--spring-object-d) var(--spring-object), opacity var(--spring-object-d) var(--spring-object)';

@@ -3,7 +3,7 @@ import { Button, type ButtonCap } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Glyph, alphaK, scalePx, recipeLayers, useFit, type SpotDef } from './kit';
+import { Callouts, Glyph, alphaK, scalePx, recipeLayers, useFit, type SpotDef, planeStyle } from './kit';
 import { ButtonSpecimenCard } from './ButtonSpecimens';
 import { ButtonCodePanel } from './ButtonCode';
 import { HintLayer } from '../edit';
@@ -189,7 +189,7 @@ export function ButtonXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
   const lipX = -Math.sin(lightAt) * 3, lipY = Math.cos(lightAt) * 3;
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's face is the button laid out at the object's own zoom, then scaled: the same box, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const press = {
     onPointerDown: () => setPressed(true), onPointerUp: () => setPressed(false), onPointerCancel: () => setPressed(false), onPointerLeave: () => setPressed(false),
     onKeyDown: (event: React.KeyboardEvent) => { if (event.key === ' ' || event.key === 'Enter') setPressed(true); }, onKeyUp: () => setPressed(false),

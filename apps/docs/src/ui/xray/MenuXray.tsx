@@ -3,7 +3,7 @@ import { Kbd, menuParts as M } from '@unlocalhosted/metalui';
 import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, IsoCap, capTop, recipeLayers, scalePx, tones, useFit, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, IsoCap, capTop, recipeLayers, scalePx, tones, useFit, useRecipeLayers, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { MenuSpecimenCard } from './MenuSpecimens';
@@ -181,7 +181,7 @@ export function MenuXray({ startOpen = false, seed, onSeed, pose = 'open', zoom:
   const exploded = spot === 'layers';
   const fit = useFit(bench, W, Hs, xray);
   const t = tones(look.colorway);
-  const face = (zz: number) => ({ transform: `translate(0px, ${y0}px) translateZ(${zz}px) scale(${S / oz})`, zoom: oz });
+  const face = (zz: number) => planeStyle(zz, S, oz, 0, y0);
   // every shadow but the far one sits on the plate; the far one is drawn beneath it, blurred
   const wallShadow = scalePx(look.plateRaw.shadows.slice(0, 7).filter((_, i) => m.on[i + 1]).join(', ') || 'none', S);
   const rise = 'transform var(--spring-object-d) var(--spring-object), opacity .25s';

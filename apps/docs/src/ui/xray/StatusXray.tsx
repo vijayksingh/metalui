@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StatusBadge, type LedGesture, type LedKind } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, recipeLayers, tones, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, recipeLayers, tones, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { StatusSpecimenCard } from './StatusSpecimens';
@@ -189,7 +189,7 @@ export function StatusXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
   const exploded = spot === 'layers';
   const fit = useFit(bench, W, H, xray);
   const t = tones(look.colorway);
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const lx = box.lx * S, ly = box.ly * S, L = box.lw * S;
   const live = <StatusReal m={m} look={look} />;
 

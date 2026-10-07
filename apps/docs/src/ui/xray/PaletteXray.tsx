@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Exploded, Glyph, capTop, tones, useFit, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, capTop, tones, useFit, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { INITIAL, LAYERS, PaletteFor, PaletteSpecimenCard, usePaletteLook, type PaletteConfig, type Spot } from './PaletteSpecimens';
@@ -110,7 +110,7 @@ export function PaletteXray({ startOpen = false, seed, onSeed, pose = 'open', zo
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's planes are the palette laid out at the object's own zoom, then scaled: the same boxes, to the pixel.
   // The zoom scales the plane's translate too, so its height is given in the plane's own units to stand where it says.
-  const face = (z: number) => ({ transform: `translateZ(${z / oz}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const still = <PaletteFor m={m} look={look} inert />;
   const pt = (r: Rect, fx: number, fy: number): [number, number] => [(r.x + r.w * fx) * S, (r.y + r.h * fy) * S];
 

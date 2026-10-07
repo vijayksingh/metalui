@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Folder, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Glyph, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Glyph, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { FolderSpecimenCard } from './FolderSpecimens';
@@ -186,7 +186,7 @@ export function FolderXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
   const fit = useFit(bench, W, H, xray);
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's planes are the folder laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const plane = (key: string, keep: string, z: number, cls = '') => (
     <div key={key} className={`xr-segface xr-fplane ${cls}`} aria-hidden inert data-keep={keep} style={face(z)}><FolderFace m={m} look={look} still /></div>
   );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Exploded, Glyph, useFit, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, useFit, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { INITIAL, LAYERS, P, STRIP_SH, TOOLS, ToolbarObject, ToolbarSpecimenCard, useToolbarLook, type Spot, type ToolbarConfig } from './ToolbarSpecimens';
@@ -112,7 +112,7 @@ export function ToolbarXray({ startOpen = false, seed, onSeed, pose = 'open', zo
   const current = SPOTS.find((x) => x.id === spot)!;
   const control = (onActive?: (id: string) => void) => <ToolbarObject config={m} onActive={onActive} />;
   // the model's planes are the toolbar laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
   const first = box.tools[0] ?? NONE;
 
   const anchors: Record<Spot, [number, number, number]> = {

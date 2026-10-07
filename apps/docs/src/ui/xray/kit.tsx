@@ -123,6 +123,15 @@ export function SpringPlot({ k, c, ms = 360, w = 220, h = 70 }: { k: number; c: 
 /** Below this bench width the callouts sit in a row under the model. */
 export const NARROW = 560;
 
+/** A plane of the model that is the real component: laid out at the object's own zoom on the table (`oz`), so its
+ *  type and shadows are the object's to the pixel, then scaled to the model's size `S`. Inside a zoomed element every
+ *  length is multiplied by the zoom, a transform's included, so the height `z` and any shift (x, y) are given in
+ *  the plane's own units: the plane stands at `z` in the model whatever the object's zoom. */
+export function planeStyle(z: number, S: number, oz: number, x = 0, y = 0): React.CSSProperties {
+  const shift = x || y ? `translate(${x / oz}px, ${y / oz}px) ` : '';
+  return { transform: `${shift}translateZ(${z / oz}px) scale(${S / oz})`, zoom: oz };
+}
+
 export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number, h: number, active: boolean) {
   const [room, setRoom] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {

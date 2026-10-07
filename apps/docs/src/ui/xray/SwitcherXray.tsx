@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, recipeLayers, type SpotDef } from './kit';
+import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, recipeLayers, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { SwitcherSpecimenCard } from './SwitcherSpecimens';
@@ -188,7 +188,7 @@ export function SwitcherXray({ startOpen = false, seed, onSeed, pose = 'open', z
   const current = SPOTS.find((x) => x.id === spot)!;
   const control = (label: string, extra?: Partial<React.ComponentProps<typeof Switcher>>) => <span className="xr-seg-vars" style={look.style}><Switcher aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} {...extra} /></span>;
   // the model's faces are the control laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const face = (z: number) => planeStyle(z, S, oz);
 
   return (
     <HintLayer><div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>

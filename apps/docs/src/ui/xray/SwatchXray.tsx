@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Swatch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { Callouts, Exploded, Glyph, capTop, useFit, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, capTop, useFit, type LayerDef, type SpotDef, planeStyle } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { SwatchSpecimenCard } from './SwatchSpecimens';
@@ -161,7 +161,7 @@ export function SwatchXray({ startOpen = false, seed, onSeed, pose = 'open', zoo
 
   const current = SPOTS.find((x) => x.id === spot)!;
   // the model's face is the chip laid out at the object's own zoom, then scaled: the same boxes, to the pixel
-  const face = (zz: number) => ({ transform: `translateZ(${zz}px) scale(${S / oz})`, zoom: oz });
+  const face = (zz: number) => planeStyle(zz, S, oz);
   // risen, the face keeps its own edges; the shadows it casts go down on the floor
   const faceStyle = flat ? look.style : { ...look.style, ['--mu-r-swatch-self-shadow' as string]: look.stack.filter((_, i) => i < 3 && m.on[i + 2]).join(', ') || 'none' };
   const rise = 'transform var(--spring-object-d) var(--spring-object)';
