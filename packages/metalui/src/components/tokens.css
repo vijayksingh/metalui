@@ -1211,11 +1211,15 @@
   --mu-r-island-self-title-max: 220px;
   /* dial: Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks */
   --mu-r-dial-self-length: 200px;
-  --mu-r-dial-self-sweep: 320deg;
+  --mu-r-dial-self-sweep: 300deg;
   --mu-r-dial-self-track: 10px;
+  --mu-r-dial-self-groove: 6px;
   --mu-r-dial-self-knob: 22px;
-  --mu-r-dial-self-tick-out: 4px;
-  --mu-r-dial-self-tick: 5px;
+  --mu-r-dial-self-disc-gap: 5px;
+  --mu-r-dial-self-dot: 6px;
+  --mu-r-dial-self-dot-inset: 7px;
+  --mu-r-dial-self-tick-out: 3px;
+  --mu-r-dial-self-tick: 4px;
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;

@@ -589,7 +589,11 @@
   --spacing-island-title-max: var(--mu-r-island-self-title-max);
   --spacing-dial-length: var(--mu-r-dial-self-length);
   --spacing-dial-track: var(--mu-r-dial-self-track);
+  --spacing-dial-groove: var(--mu-r-dial-self-groove);
   --spacing-dial-knob: var(--mu-r-dial-self-knob);
+  --spacing-dial-disc-gap: var(--mu-r-dial-self-disc-gap);
+  --spacing-dial-dot: var(--mu-r-dial-self-dot);
+  --spacing-dial-dot-inset: var(--mu-r-dial-self-dot-inset);
   --spacing-dial-tick-out: var(--mu-r-dial-self-tick-out);
   --spacing-dial-tick: var(--mu-r-dial-self-tick);
   --color-dial-track-color: var(--mu-r-dial-track-color);

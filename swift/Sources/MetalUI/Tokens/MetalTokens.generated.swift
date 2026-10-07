@@ -1200,7 +1200,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A slider wound into a ring: a value you turn. The track is one length that carries a curl from 0 (a straight bar) to 1 (a ring of sweep degrees, its end at twelve o'clock); turning anticlockwise lowers the value, clockwise raises it. Marks sit across the track and day ticks outside it at fractions of its length, so they ride the curl. The knob is the slider's knob; the centre holds a readout. Drag around (or along), wheel, or the slider keys. Curling and uncurling run on the surface spring (no overshoot), the knob on the part spring when it jumps. Reduce Motion: the curl resolves without travel. (Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks)
+    /// A rotary knob for a value with a direction: a knurled disc in a slim groove. The groove is one track that carries a curl from 0 (a straight bar, the slider) to 1 (a ring of sweep degrees, its gap at six o'clock, min at seven and max at five), so turning anticlockwise lowers the value. Winding, the bar's knob travels to the ring's centre and grows into the disc, and the track slims into the groove; marks and ticks ride the track. The disc turns with the value: its knurl and an indicator dot point at it. Drag round (or along), wheel, or the slider keys. Winding runs on the surface spring (no overshoot). Reduce Motion: the curl resolves without travel. (Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks)
     public static let dial = MetalObjectRecipe(
         name: "dial",
         layers: [
@@ -1208,11 +1208,15 @@ public enum MetalRecipes {
         ],
         props: [
             "self.length": .number(200.0),
-            "self.sweep": .text("320deg"),
+            "self.sweep": .text("300deg"),
             "self.track": .number(10.0),
+            "self.groove": .number(6.0),
             "self.knob": .number(22.0),
-            "self.tick-out": .number(4.0),
-            "self.tick": .number(5.0),
+            "self.disc-gap": .number(5.0),
+            "self.dot": .number(6.0),
+            "self.dot-inset": .number(7.0),
+            "self.tick-out": .number(3.0),
+            "self.tick": .number(4.0),
             "track.color": .perColorway(bone: "#E6E5E1", graphite: "#151516"),
             "track.edge": .perColorway(bone: "rgba(60,55,40,.14)", graphite: "rgba(0,0,0,.6)"),
             "fill.color": .perColorway(bone: "#34A86A", graphite: "#3CB273"),

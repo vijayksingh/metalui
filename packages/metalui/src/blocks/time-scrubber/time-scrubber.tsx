@@ -17,9 +17,10 @@ import { Dial } from '../../components/dial/dial';
  *   drag      the knob follows the pointer exactly; within 1 % of now it snaps to now
  *   jump      a click on the track, ← → (an hour), ⇧ ← → (a day): the knob rides the part spring
  *   past      the readout names the moment; NOW returns
- *   dial      where room is short the track winds into a Dial, now at twelve o'clock: turn it
- *             anticlockwise to go back. The readout moves into the ring. Given room again it
- *             unwinds into the bar (the one track, on the surface spring) and the bar takes over
+ *   dial      where room is short the track winds into a Dial (oldest at seven, now at five) and
+ *             the knob grows into its disc: turn it anticlockwise to go back. The readout stands
+ *             beside the knob, or above it where even that is short. Given room again it unwinds
+ *             into the bar (the one track, on the surface spring) and the bar takes over
  * Scrubbing only looks: it changes nothing.
  * ───────────────────────────────────────────────────────── */
 
@@ -37,8 +38,8 @@ const BOX = 'mu-scrubber relative w-full min-w-0 max-w-scrubber-width h-scrubber
 const READ = 'mu-scrubber-read pointer-events-none absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
 const GLYPH = 'mu-scrubber-glyph mr-scrubber-glyph-gap';
 const SLIDER = 'mu-scrubber-slider !absolute inset-0';
-const COIL = 'mu-scrubber mu-scrubber-coil relative';
-const COIL_READ = 'mu-scrubber-coil-read grid justify-items-center';
+const COIL = 'mu-scrubber mu-scrubber-coil relative flex flex-wrap-reverse items-center gap-scrubber-readout-gap min-w-0 max-w-full';
+const COIL_READ = 'mu-scrubber-coil-read grid animate-sf-fade';
 
 export interface TimeScrubberProps {
   /** The first moment (ms): the start of the day of the oldest item. */
@@ -97,8 +98,8 @@ function Coil({ start, end, value, onValueChange, marks = [], format = defaultFo
   for (let d = startOfDay(start); d <= end; d += DAY) days.push(d);
   const bar = cssNumber('--mu-scrubber-width', 330) - cssNumber('--mu-r-dial-self-knob', 22);
   return (
+    <div className={className ? `${COIL} ${className}` : COIL}>
     <Dial
-      className={className ? `${COIL} ${className}` : COIL}
       value={value ?? end}
       min={start}
       max={end}
@@ -113,12 +114,12 @@ function Coil({ start, end, value, onValueChange, marks = [], format = defaultFo
       ticks={days.map((d) => ({ at: clamp(frac(d + DAY / 2), 0.04, 0.96), label: <Label variant="engraved">{startOfDay(end) === d ? 'TODAY' : WD3[new Date(d).getDay()]}</Label> }))}
       aria-label="Scrub through time"
       aria-valuetext={value == null ? 'Now' : read}
-    >
-      <span className={COIL_READ}>
+    />
+      <span className={COIL_READ} aria-hidden>
         <Label variant="small">{title}</Label>
         {read.split(' · ').map((line) => <Label key={line} variant="engraved">{line}</Label>)}
       </span>
-    </Dial>
+    </div>
   );
 }
 

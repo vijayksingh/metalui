@@ -5,21 +5,23 @@ import { SPRINGS } from '../../motion/springs.generated';
 import { motionReduced } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
- * DIAL, a slider wound into a ring: a value you turn
+ * DIAL, a rotary knob: a knurled disc in a slim groove, for a value you turn
  *
- * One track of one length carries a curl: 0 is a straight bar, 1 a ring of `sweep` degrees.
- * Walking the track from min to max turns clockwise, and the max end sits level at twelve
- * o'clock, so turning anticlockwise lowers the value and clockwise raises it.
+ * One track of one length carries a curl: 0 is a straight bar (a slider), 1 a ring of `sweep`
+ * degrees with its gap at six o'clock: min at seven, max at five, as on any rotary control.
+ * Walking the track from min to max turns clockwise, so turning anticlockwise lowers the value.
  *
- *   rest      track (a hairline edge under the track colour), fill to the knob, marks across
- *             the track, ticks outside it, the slider's knob, a readout in the ring's centre
- *   drag      the knob follows the nearest point of the track to the pointer: round the ring,
+ *   rest      the groove (a hairline edge under the track colour) with the fill from min to the
+ *             value, marks across it, ticks on the bezel outside it; in the middle the knob, a
+ *             knurled disc whose knurl and indicator dot point at the value
+ *   drag      the value follows the nearest point of the groove to the pointer: round the ring,
  *             along the bar. It never jumps across the gap between the ends
  *   wheel     down turns back (anticlockwise), up turns on; one step a notch
  *   keys      ← ↓ back, → ↑ on (shift: a large step), PageUp/PageDown large steps, Home, End
  *   curl      a new curl winds or unwinds the one track on the surface spring (no overshoot):
- *             length and curvature move together, so marks, ticks and the knob ride along.
- *             The readout fades in as the ring closes; tick labels show only while it is a bar
+ *             length and curvature move together so marks and ticks ride along, the track slims
+ *             into the groove, and the bar's knob travels to the centre and grows into the disc
+ *             (unwinding, it shrinks back onto the bar). Tick labels show only while it is a bar
  * Reduce Motion: the curl resolves without travel.
  * ───────────────────────────────────────────────────────── */
 
@@ -46,15 +48,13 @@ export interface DialProps {
   ticks?: { at: number; label?: React.ReactNode }[];
   'aria-label': string;
   'aria-valuetext'?: string;
-  /** The readout in the ring's centre. */
-  children?: React.ReactNode;
   className?: string;
 }
 
 const ROOT = 'mu-dial relative touch-none select-none cursor-pointer';
 const SVG = 'mu-dial-track absolute left-0 top-0 overflow-visible pointer-events-none';
-const KNOB = 'mu-dial-knob absolute -translate-1/2 rounded-round recipe-slider-knob cursor-grab outline-none focus-visible:focus-ring transition-slider-knob hover:slider-knob-lift hover:recipe-slider-knob-hover active:slider-knob-press active:recipe-slider-knob-press';
-const READOUT = 'mu-dial-readout absolute -translate-1/2 pointer-events-none grid place-items-center text-center';
+const KNOB = 'mu-dial-knob absolute -translate-1/2 rounded-round recipe-slider-knob cursor-grab outline-none focus-visible:focus-ring transition-slider-knob hover:recipe-slider-knob-hover active:slider-knob-press active:recipe-slider-knob-press';
+const DOT = 'mu-dial-dot absolute left-1/2 -translate-x-1/2 rounded-round pointer-events-none';
 const LABEL = 'mu-dial-tick-label absolute -translate-x-1/2 pointer-events-none type-meta text-ink2 whitespace-nowrap';
 const SAMPLES = 96;
 
@@ -68,7 +68,8 @@ function shape(curl: number, bar: number, ring: number, sweep: number, pad: numb
   const length = bar + (ring - bar) * curl;
   const theta = sweep * curl;
   const k = theta / length;
-  const turn = -theta, cos = Math.cos(turn), sin = Math.sin(turn);
+  // the middle of the track sits level at twelve: the gap is centred at six
+  const turn = -theta / 2, cos = Math.cos(turn), sin = Math.sin(turn);
   const spin = (x: number, y: number): [number, number] => [x * cos - y * sin, x * sin + y * cos];
   const raw = (u: number): [number, number] => {
     const d = u * length;
@@ -83,7 +84,7 @@ function shape(curl: number, bar: number, ring: number, sweep: number, pad: numb
   const ox = pad - minX, oy = pad - minY;
   const at = (u: number): [number, number] => { const [x, y] = raw(Math.min(1, Math.max(0, u))); return [x + ox, y + oy]; };
   const centre = k < 1e-6 ? null : ((): [number, number] => { const [x, y] = spin(0, 1 / k); return [x + ox, y + oy]; })();
-  return { at, centre, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2, length };
+  return { at, centre, radius: k < 1e-6 ? Infinity : 1 / k, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2, length };
 }
 
 function normalAt(at: (u: number) => [number, number], u: number): [number, number] {
@@ -132,17 +133,25 @@ function useCurl(target: number, initial: number, host: React.RefObject<HTMLDivE
 /** A slider wound into a ring: drag round it, wheel it, or use the slider keys. */
 export function Dial({
   value, min, max, onValueChange, step = 1, largeStep, curl: target, initialCurl, onCurlRest, barLength,
-  marks = [], ticks = [], children, className, ...aria
+  marks = [], ticks = [], className, ...aria
 }: DialProps) {
   const root = React.useRef<HTMLDivElement>(null);
   const curl = useCurl(target, initialCurl ?? target, root, onCurlRest);
   const ring = cssPx(root.current, '--mu-r-dial-self-length', 200);
   const sweep = (cssPx(root.current, '--mu-r-dial-self-sweep', 320) * Math.PI) / 180;
-  const track = cssPx(root.current, '--mu-r-dial-self-track', 10);
+  const bar = cssPx(root.current, '--mu-r-dial-self-track', 10);
+  const groove = cssPx(root.current, '--mu-r-dial-self-groove', 6);
   const knob = cssPx(root.current, '--mu-r-dial-self-knob', 22);
-  const tickOut = cssPx(root.current, '--mu-r-dial-self-tick-out', 4);
-  const tickLen = cssPx(root.current, '--mu-r-dial-self-tick', 5);
-  const g = shape(curl, barLength ?? ring, ring, sweep, knob / 2);
+  const discGap = cssPx(root.current, '--mu-r-dial-self-disc-gap', 5);
+  const dot = cssPx(root.current, '--mu-r-dial-self-dot', 6);
+  const dotInset = cssPx(root.current, '--mu-r-dial-self-dot-inset', 7);
+  const tickOut = cssPx(root.current, '--mu-r-dial-self-tick-out', 3);
+  const tickLen = cssPx(root.current, '--mu-r-dial-self-tick', 4);
+  // how far the knob has become the disc: none while it is nearly a bar, all of it as the ring closes
+  const e0 = Math.min(1, Math.max(0, (curl - 0.15) / 0.85));
+  const disc = e0 * e0 * (3 - 2 * e0);
+  const track = bar + (groove - bar) * disc;
+  const g = shape(curl, barLength ?? ring, ring, sweep, knob / 2 + (track / 2 + tickOut + tickLen + 1 - knob / 2) * disc);
   const span = Math.max(Number.EPSILON, max - min);
   const fraction = Math.min(1, Math.max(0, (value - min) / span));
   const last = React.useRef(fraction);
@@ -186,8 +195,15 @@ export function Dial({
     set(move());
   };
 
-  const [kx, ky] = g.at(fraction);
-  const ring01 = Math.min(1, Math.max(0, (curl - 0.6) / 0.4));
+  const [px, py] = g.at(fraction);
+  const [cx, cy] = g.centre ?? [px, py];
+  const kx = px + (cx - px) * disc, ky = py + (cy - py) * disc;
+  // the disc grows into its resting size and never past it (mid-wind the ring is looser than at rest)
+  const rest = 2 * (ring / sweep - groove / 2 - discGap);
+  const discSize = Number.isFinite(g.radius) ? Math.max(knob, Math.min(rest, 2 * (g.radius - track / 2 - discGap))) : knob;
+  const size = knob + (discSize - knob) * disc;
+  // the disc faces the value: its knurl and dot turn to the point on the groove
+  const facing = g.centre ? (Math.atan2(py - cy, px - cx) * 180) / Math.PI + 90 : 0;
   const bar01 = Math.max(0, 1 - curl * 4);
   // ticks sit below a bar and outside a ring; they swap sides while faded out mid-wind
   const side = curl < 0.5 ? 1 : -1;
@@ -219,9 +235,6 @@ export function Dial({
         const [x, y] = g.at(t.at);
         return <span key={`l${i}`} className={LABEL} style={{ left: x, top: y + track / 2 + tickOut + tickLen + 2, opacity: bar01 }}>{t.label}</span>;
       })}
-      {g.centre && ring01 > 0 && (
-        <span className={READOUT} style={{ left: g.centre[0], top: g.centre[1], opacity: ring01 }}>{children}</span>
-      )}
       <span
         role="slider"
         tabIndex={0}
@@ -231,9 +244,11 @@ export function Dial({
         aria-orientation="horizontal"
         {...aria}
         className={KNOB}
-        style={{ left: kx, top: ky, width: knob, height: knob }}
+        style={{ left: kx, top: ky, width: size, height: size, rotate: `${facing * disc}deg` }}
         onKeyDown={onKeyDown}
-      />
+      >
+        <span className={DOT} style={{ top: dotInset, width: dot, height: dot, opacity: disc, background: 'var(--mu-r-dial-fill-color)' }} />
+      </span>
     </div>
   );
 }
