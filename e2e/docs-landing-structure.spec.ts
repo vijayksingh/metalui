@@ -20,8 +20,11 @@ for (const colorway of COLORWAYS) {
     await enter.focus();
     await expect(enter).toBeFocused();
     await page.keyboard.press('Enter');
-    // "Browse Components" opens the component library itself.
-    await expect(page).toHaveURL(/\/components$/);
-    await expect(page.getByRole('heading', { name: 'Component library', level: 1 })).toBeVisible();
+    // "Browse Components" flies the objects onto the overview's table: the same objects, by name, on the other side.
+    await expect(page).toHaveURL(/\/overview$/);
+    await expect(page.getByRole('heading', { name: /UI components that look/, level: 1 })).toBeVisible();
+    const names = await page.locator('.drift-item').evaluateAll((items) => items.map((e) => (e as HTMLElement).style.viewTransitionName));
+    expect(names.length).toBeGreaterThan(0);
+    expect(names.every((n) => n.startsWith('float-'))).toBe(true);
   });
 }
