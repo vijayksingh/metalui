@@ -6,6 +6,8 @@ import { Slider } from '../../components/slider/slider';
 import { Label } from '../../components/label/label';
 import { Glyph } from '../../components/glyph/glyph';
 import { Button } from '../../components/button/button';
+import { Popover } from '../../components/popover/popover';
+import { SizeReadout } from '../../components/size-readout/size-readout';
 
 /* ─────────────────────────────────────────────────────────
  * TIME SCRUBBER (the reference design's #scrub): a composition
@@ -16,6 +18,8 @@ import { Button } from '../../components/button/button';
  *   drag      the knob follows the pointer exactly; within 1 % of now it snaps to now
  *   jump      a click on the track, ← → (an hour), ⇧ ← → (a day): the knob rides the part spring
  *   past      the readout names the moment; NOW returns
+ *   folded    where room is short: a readout pill that says NOW (lit) or the moment (unlit); pressing
+ *             it raises the whole scrubber above it in a popover, and Esc or a click away folds it
  * Scrubbing only looks: it changes nothing.
  * ───────────────────────────────────────────────────────── */
 
@@ -30,9 +34,12 @@ const clamp = (n: number, a: number, b: number) => Math.min(b, Math.max(a, n));
  * the box's centre line). The box fills its slot up to 330 wide and narrows with it: days and moments
  * sit at fractions of the track. */
 const BOX = 'mu-scrubber relative w-full min-w-0 max-w-scrubber-width h-scrubber-height';
+/* Raised in the fold's popover: as wide as the plate lets it be. */
+const RAISED = 'mu-scrubber mu-scrubber-raised relative w-scrubber-width max-w-full h-scrubber-height';
 const READ = 'mu-scrubber-read pointer-events-none absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
 const GLYPH = 'mu-scrubber-glyph mr-scrubber-glyph-gap';
 const SLIDER = 'mu-scrubber-slider !absolute inset-0';
+const FOLD = 'mu-scrubber-fold cursor-pointer focus-visible:focus-ring';
 
 export interface TimeScrubberProps {
   /** The first moment (ms): the start of the day of the oldest item. */
@@ -51,6 +58,8 @@ export interface TimeScrubberProps {
   /** The clock glyph at 10 before the title, e.g. <ClockIcon size={10} />. */
   glyph?: React.ReactNode;
   className?: string;
+  /** Where room is short: a pill that raises the scrubber in a popover when pressed. */
+  folded?: boolean;
 }
 
 const defaultFormat = (t: number) => {
@@ -59,7 +68,23 @@ const defaultFormat = (t: number) => {
 };
 
 /** Time as a dimension of the surface: drag or step back through what was written. */
-export function TimeScrubber({ start, end, value, onValueChange, marks = [], format = defaultFormat, title = 'MEMORY', glyph, className }: TimeScrubberProps) {
+export function TimeScrubber({ folded, className, ...props }: TimeScrubberProps) {
+  if (!folded) return <Scrubber {...props} className={className} />;
+  const { value, format = defaultFormat, title = 'MEMORY' } = props;
+  const read = value == null ? 'NOW' : format(value);
+  return (
+    <Popover.Root>
+      <Popover.Trigger nativeButton={false} aria-label={`${title} · ${read}. Scrub through time`}>
+        <SizeReadout value={read} led={value == null} className={className ? `${FOLD} ${className}` : FOLD} />
+      </Popover.Trigger>
+      <Popover.Content side="top" align="start">
+        <Scrubber {...props} raised />
+      </Popover.Content>
+    </Popover.Root>
+  );
+}
+
+function Scrubber({ start, end, value, onValueChange, marks = [], format = defaultFormat, title = 'MEMORY', glyph, className, raised }: Omit<TimeScrubberProps, 'folded'> & { raised?: boolean }) {
   const span = Math.max(1, end - start);
   const frac = (t: number) => (t - start) / span;
   const read = value == null ? 'NOW' : format(value);
@@ -76,7 +101,7 @@ export function TimeScrubber({ start, end, value, onValueChange, marks = [], for
     .filter((d) => (d === today ? value != null : earlier.length >= 2 || value != null));
 
   return (
-    <div className={className ? `${BOX} ${className}` : BOX}>
+    <div className={raised ? RAISED : className ? `${BOX} ${className}` : BOX}>
       <div className={READ}>
         <Label variant="engraved">
           {glyph && <Glyph size="tiny" tone="inherit" className={GLYPH}>{glyph}</Glyph>}

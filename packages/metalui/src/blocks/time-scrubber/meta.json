@@ -8,7 +8,9 @@
     "slider",
     "label",
     "glyph",
-    "button"
+    "button",
+    "popover",
+    "size-readout"
   ],
   "description": "Time as a dimension of the surface: a Slider (track, moment marks, day ticks, knurled knob) under an engraved readout with NOW as Button(link) while in the past. Formerly MemoryScrubber.",
   "base": "@base-ui/react/slider",
