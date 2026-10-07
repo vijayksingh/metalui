@@ -48,19 +48,22 @@ test('thumb leans toward an option and snaps there; clicking another option stil
   await drag(page, thumb, 35, 0);
   await expect(thumb).toHaveAttribute('aria-valuetext', 'Month');
   await expect(card.locator('.mu-switcher-option[aria-checked="true"]')).toHaveText('Month');
-  await expect(xray.locator('.xr-seglabel[aria-pressed="true"]')).toHaveText('Month');
-  await card.locator('.mu-switcher-option').first().click();
-  await expect(xray.locator('.xr-seglabel[aria-pressed="true"]')).toHaveText('Day');
+  await expect(xray.locator('.xr-segface.is-top [aria-checked="true"]')).toHaveText('Month');
+  // the model's words are the real control's: pick one there and the specimen follows
+  await xray.locator('.xr-segface.is-top .mu-switcher-option').first().click();
+  await expect(card.locator('.mu-switcher-option[aria-checked="true"]')).toHaveText('Day');
 });
 
 test('shape, well, thumb, spring and light handles change specimen and bench', async ({ page }) => {
   const xray = await openDocs(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Shape');
-  const width = await xray.locator('.xr-face.is-flat').evaluate((el) => (el as HTMLElement).style.width);
+  // the bench's tray is the real control: it grows with the space around the thumb
+  const tray = xray.locator('.xr-segface.is-well .mu-switcher');
+  const width = await tray.evaluate((el) => (el as HTMLElement).offsetWidth);
   await drag(page, card.getByRole('slider', { name: 'Space around the thumb' }), 12, 0);
   await expect(value(card, 'Space around the thumb')).not.toHaveText('3');
-  expect(await xray.locator('.xr-face.is-flat').evaluate((el) => (el as HTMLElement).style.width)).not.toBe(width);
+  await expect.poll(() => tray.evaluate((el) => (el as HTMLElement).offsetWidth)).toBeGreaterThan(width);
   const specimenWidth = await card.locator('.mu-switcher').evaluate((el) => el.getBoundingClientRect().width);
   await drag(page, card.getByRole('slider', { name: 'Space beside each word' }), 12, 0);
   await expect(value(card, 'Space beside each word')).not.toHaveText('10');
@@ -73,9 +76,10 @@ test('shape, well, thumb, spring and light handles change specimen and bench', a
   await drag(page, card.getByRole('slider', { name: 'Well depth' }), 0, 14);
   expect(await xray.locator('.xr-ring').last().evaluate((el) => (el as HTMLElement).style.transform)).not.toBe(z);
   await part(xray, 'Thumb');
-  const shadow = await xray.locator('.xr-face').last().evaluate((el) => (el as HTMLElement).style.boxShadow);
+  const benchThumb = xray.locator('.xr-segface.is-top .mu-switcher-thumb');
+  const shadow = await benchThumb.evaluate((el) => getComputedStyle(el).boxShadow);
   await drag(page, card.getByRole('slider', { name: 'Thumb lift' }), 0, -14);
-  expect(await xray.locator('.xr-face').last().evaluate((el) => (el as HTMLElement).style.boxShadow)).not.toBe(shadow);
+  expect(await benchThumb.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe(shadow);
   await part(xray, 'Slide');
   const transition = await xray.locator('.xr-thumb').evaluate((el) => (el as HTMLElement).style.transition);
   await drag(page, card.getByRole('slider', { name: 'Stiffness' }), 24, 0);
@@ -86,9 +90,9 @@ test('shape, well, thumb, spring and light handles change specimen and bench', a
   await card.getByRole('switch', { name: 'No animation' }).click();
   await expect(card.locator('.ed-switcher[data-instant]')).toHaveCount(1);
   await part(xray, 'Light');
-  const fill = await xray.locator('.xr-face.is-flat').evaluate((el) => (el as HTMLElement).style.background);
+  const fill = await tray.evaluate((el) => getComputedStyle(el).backgroundImage);
   await drag(page, card.getByRole('slider', { name: 'Light' }), 30, 4);
-  expect(await xray.locator('.xr-face.is-flat').evaluate((el) => (el as HTMLElement).style.background)).not.toBe(fill);
+  expect(await tray.evaluate((el) => getComputedStyle(el).backgroundImage)).not.toBe(fill);
 });
 
 test('layer switches remove the same layer from specimen and bench', async ({ page }) => {

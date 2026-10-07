@@ -3,7 +3,8 @@ import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { BUTTON_LABEL, type XrayKind } from './xray';
+import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
+import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -46,9 +47,25 @@ function FloatSlider() {
   );
 }
 
+/** The switcher on the table: the real control set to its config, which its x-ray takes over and hands back. */
+function TableSwitcher({ config = SWITCHER, onConfig, open }: { config?: SwitcherConfig; onConfig: (c: SwitcherConfig) => void; open: () => void }) {
+  const { style } = useSwitcherLook(config);
+  return (
+    <div onClick={open}>
+      <span className="xr-seg-vars" style={style}><Switcher aria-label="View" size={config.size} value={config.value} onValueChange={(value) => onConfig({ ...config, value })} options={SWITCHER_OPTIONS} /></span>
+    </div>
+  );
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
+interface Ctx {
+  openXray: (which: XrayKind) => void;
+  chip: boolean; setChip: (v: boolean) => void;
+  /** Each object's config, shared with its x-ray (see xray/index.tsx, "the handover"). */
+  seeds: Partial<XraySeeds>; onSeed: XrayReseed;
+}
 interface Item {
   id: string;
   /** Position on the flat table (percent of the stage). */
@@ -58,7 +75,9 @@ interface Item {
   dur: string;
   drift: [string, string];
   live?: boolean;
-  node: (ctx: { openXray: (which: XrayKind) => void; chip: boolean; setChip: (v: boolean) => void }) => React.ReactNode;
+  /** Drawn larger (or smaller) than life. The x-ray lays its face out at this zoom, so the object lands on itself. */
+  zoom?: number;
+  node: (ctx: Ctx) => React.ReactNode;
 }
 
 const ITEMS: Item[] = [
@@ -82,8 +101,8 @@ const ITEMS: Item[] = [
   },
   {
     // the button, beside the brand: click it and it flies onto its x-ray, the reference one
-    id: 'button', table: ['44%', '32%'], space: ['60%', '42%', -160, -8], dur: '22s', drift: ['30px', '-18px'], live: true,
-    node: ({ openXray }) => <div style={{ zoom: 1.4 }}><Button cap="primary" onClick={() => openXray('button')}>{BUTTON_LABEL}</Button></div>,
+    id: 'button', table: ['44%', '32%'], space: ['60%', '42%', -160, -8], dur: '22s', drift: ['30px', '-18px'], live: true, zoom: 1.4,
+    node: ({ openXray }) => <Button cap="primary" onClick={() => openXray('button')}>{BUTTON_LABEL}</Button>,
   },
   {
     id: 'chip', table: ['4%', '72%'], space: ['11%', '55%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
@@ -91,15 +110,11 @@ const ITEMS: Item[] = [
     node: ({ chip, setChip, openXray }) => chip ? <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openXray('chip'); }}><SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /></span> : null,
   },
   {
-    id: 'seg', table: ['58.4%', '57.6%'], space: ['70%', '51%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
-    // a click picks the option and opens the x-ray, like the button
-    node: ({ openXray }) => (
-      <div style={{ zoom: 1.3 }} onClick={() => openXray('switcher')}>
-        <Switcher aria-label="View" defaultValue="week" options={[{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }]} />
-      </div>
-    ),
+    id: 'seg', table: ['58.4%', '57.6%'], space: ['70%', '51%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true, zoom: 1.3,
+    // a click picks the option and opens the x-ray, like the button; the pick lands before the x-ray opens
+    node: ({ openXray, seeds, onSeed }) => <TableSwitcher config={seeds.switcher} onConfig={(c) => onSeed('switcher', c)} open={() => openXray('switcher')} />,
   },
-  { id: 'key', table: ['92.3%', '58.2%'], space: ['88%', '54%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
+  { id: 'key', table: ['92.3%', '58.2%'], space: ['88%', '54%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, zoom: 1.4, node: ({ openXray }) => <div onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
   { id: 'slider', table: ['4%', '57.9%'], space: ['31%', '32%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
     id: 'field', table: ['35.1%', '88.2%'], space: ['31%', '72%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
@@ -126,7 +141,7 @@ const ITEMS: Item[] = [
   { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
   { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },
   { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
-  { id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, node: ({ openXray }) => <div style={{ zoom: 0.7 }} onClick={() => openXray('palette')}><PaletteStill /></div> },
+  { id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, zoom: 0.7, node: ({ openXray }) => <div onClick={() => openXray('palette')}><PaletteStill /></div> },
   {
     // a widget with no x-ray yet: it opens its own page
     id: 'weather', table: ['4%', '36%'], space: ['10%', '35%', -260, 12], dur: '33s', drift: ['20px', '14px'],
@@ -154,8 +169,8 @@ const ITEMS: Item[] = [
   },
 ];
 
-/** An open x-ray, and the object it was opened from. */
-export interface XrayOpen { kind: XrayKind; from: string }
+/** An open x-ray, the object it was opened from, the config it took from it, and its pose. */
+export type XrayOpen = { [K in XrayKind]: { kind: K; from: string; seed?: XraySeed<K>; pose?: XrayPose; zoom?: number } }[XrayKind];
 
 /* The x-ray flight. A copy of the object (the flyer) leaves the table and lands on its model
  * in the x-ray card:
@@ -164,6 +179,9 @@ export interface XrayOpen { kind: XrayKind; from: string }
  *             x-ray's angle as it goes, so its face lands on the model's face
  *   3 land    it lands exactly on the model's top face (its height included), and only
  *             then hands over: the model comes up under it, then the flyer goes
+ *   4 open    a model that can lie flat (.xr-scene[data-settle]) lands as the object itself,
+ *             every part on one plane, and opens up only once the flyer has gone; before
+ *             the flight home it closes up again, so what lifts off is what landed
  * Meanwhile the card composes around it (kds.css, .xr-overlay.is-flown).
  *
  * It is one timeline on live elements: open plays it forward, close plays it backward, and
@@ -220,10 +238,22 @@ function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'fro
   flyer.className = 'xr-flyer';
   flyer.setAttribute('aria-hidden', 'true');
   item.childNodes.forEach((n) => flyer.appendChild(n.cloneNode(true)));
-  const ow = item.offsetWidth, oh = item.offsetHeight;
+  document.body.appendChild(flyer);
+  // its size to the fraction (offsetWidth rounds, and a zoomed object is not a whole number of px wide),
+  // then pinned, so every pose scales the same box
+  const fr = flyer.getBoundingClientRect(), ow = fr.width, oh = fr.height;
   flyer.style.width = `${ow}px`;
   flyer.style.height = `${oh}px`;
-  document.body.appendChild(flyer);
+  // the copy is a still: a sliding thumb sits under the option that is chosen now, not where the
+  // live one was when the same click chose it (the live thumb only moves after the click)
+  flyer.querySelectorAll<HTMLElement>('.mu-indicator').forEach((thumb) => {
+    const group = thumb.parentElement!, on = group.querySelector<HTMLElement>('[aria-checked="true"],[aria-selected="true"],[aria-current="page"]');
+    if (!on) return;
+    let x = 0, y = 0, node: HTMLElement | null = on;
+    while (node && node !== group) { x += node.offsetLeft; y += node.offsetTop; node = node.offsetParent as HTMLElement | null; }
+    thumb.removeAttribute('data-animate');
+    Object.assign(thumb.style, { width: `${on.offsetWidth}px`, height: `${on.offsetHeight}px`, transform: `translate(${x}px, ${y}px)` });
+  });
   // home: where the object hangs now; land: the model's top face, which the object covers exactly.
   // Every pose has the same functions, so the flight interpolates them one by one.
   const h = item.getBoundingClientRect(), m = model.getBoundingClientRect();
@@ -251,18 +281,47 @@ export function useXrayFlight() {
   const [open, setOpen] = React.useState<XrayOpen | null>(null);
   /** The object that is away from the table: in the air, or in its x-ray. */
   const [away, setAway] = React.useState<string | undefined>();
+  /** The table objects' configs: what each is set to now, whether on the table or in its x-ray. */
+  const [seeds, setSeeds] = React.useState<Partial<XraySeeds>>({});
   const flight = React.useRef<Flight | null>(null);
+  const settling = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const openRef = React.useRef(open);
   openRef.current = open;
+  // written through a ref too, so the open that follows a pick in the same click takes the pick
+  const seedsRef = React.useRef(seeds);
+  const reseed = React.useCallback<XrayReseed>((kind, seed) => {
+    seedsRef.current = { ...seedsRef.current, [kind]: seed };
+    setSeeds(seedsRef.current);
+  }, []);
 
   const land = React.useCallback((f: Flight) => {
     if (flight.current !== f) return;
     flight.current = null;
     delete document.documentElement.dataset.flight;
     f.flyer.remove();
-    if (f.dir === 'open') f.anims.slice(2).forEach((a) => a.cancel());
+    if (f.dir === 'open') { f.anims.slice(2).forEach((a) => a.cancel()); setOpen((o) => o && { ...o, pose: 'open' }); }
     else flushSync(() => { setOpen(null); setAway(undefined); });
   }, []);
+
+  const start = React.useCallback((next: XrayOpen | null) => {
+    const root = document.documentElement;
+    const reduced = root.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const from = next?.from ?? openRef.current?.from;
+    const item = from ? document.querySelector<HTMLElement>(`[data-float="${from}"]`) : null;
+    const seeded = next && ({ ...next, seed: (seedsRef.current as Partial<Record<XrayKind, unknown>>)[next.kind] } as XrayOpen);
+    if (reduced || !from || !item) { setOpen(seeded && { ...seeded, pose: 'open' }); setAway(next?.from); return; }
+    root.dataset.flight = next ? 'open' : 'close';
+    if (seeded) flushSync(() => { setOpen({ ...seeded, pose: 'flat' }); setAway(seeded.from); });
+    const overlay = document.querySelector<HTMLElement>('.xr-overlay');
+    if (!overlay) { delete root.dataset.flight; setOpen(seeded); setAway(next?.from); return; }
+    const built = buildFlight(item, overlay);
+    const nf: Flight = { from, dir: next ? 'open' : 'close', ...built };
+    flight.current = nf;
+    if (!next) nf.anims.forEach((a) => { a.currentTime = OPEN_MS; a.playbackRate = -OPEN_MS / CLOSE_MS; });
+    nf.anims[0].onfinish = () => land(nf);
+    // the flyer is the object: click it mid-air to send it back
+    nf.flyer.addEventListener('click', () => flyRef.current(nf.dir === 'open' ? null : { kind: openRef.current!.kind, from: nf.from } as XrayOpen));
+  }, [land]);
 
   const fly = React.useCallback((next: XrayOpen | null) => {
     const root = document.documentElement;
@@ -276,32 +335,28 @@ export function useXrayFlight() {
       f.anims.forEach((a) => { a.playbackRate = dir === 'open' ? 1 : -OPEN_MS / CLOSE_MS; });
       return;
     }
+    if (settling.current) return;
+    // going home from an opened-up model: it closes up first, then the object lifts off it
+    const scene = !next && openRef.current?.pose === 'open' ? document.querySelector<HTMLElement>('.xr-overlay .xr-scene[data-settle]') : null;
     const reduced = root.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const from = next?.from ?? openRef.current?.from;
-    const item = from ? document.querySelector<HTMLElement>(`[data-float="${from}"]`) : null;
-    if (reduced || !from || !item) { setOpen(next); setAway(next?.from); return; }
-    root.dataset.flight = next ? 'open' : 'close';
-    if (next) flushSync(() => { setOpen(next); setAway(next.from); });
-    const overlay = document.querySelector<HTMLElement>('.xr-overlay');
-    if (!overlay) { delete root.dataset.flight; setOpen(next); setAway(next?.from); return; }
-    const built = buildFlight(item, overlay);
-    const nf: Flight = { from, dir: next ? 'open' : 'close', ...built };
-    flight.current = nf;
-    if (!next) nf.anims.forEach((a) => { a.currentTime = OPEN_MS; a.playbackRate = -OPEN_MS / CLOSE_MS; });
-    nf.anims[0].onfinish = () => land(nf);
-    // the flyer is the object: click it mid-air to send it back
-    nf.flyer.addEventListener('click', () => flyRef.current(nf.dir === 'open' ? null : { kind: openRef.current!.kind, from: nf.from }));
-  }, [land]);
+    if (scene && !reduced) {
+      root.dataset.flight = 'close';
+      setOpen((o) => o && { ...o, pose: 'flat' });
+      settling.current = setTimeout(() => { settling.current = null; start(null); }, Number(scene.dataset.settle));
+      return;
+    }
+    start(next);
+  }, [start]);
   const flyRef = React.useRef(fly);
   flyRef.current = fly;
 
   const close = React.useCallback(() => fly(null), [fly]);
   // leaving the page mid-air: take the flyer with it
-  React.useEffect(() => () => { flight.current?.flyer.remove(); delete document.documentElement.dataset.flight; }, []);
-  return { open, away, fly, close };
+  React.useEffect(() => () => { flight.current?.flyer.remove(); if (settling.current) clearTimeout(settling.current); delete document.documentElement.dataset.flight; }, []);
+  return { open, away, seeds, reseed, fly, close };
 }
 
-export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table'; lifted?: string; onXray: (open: XrayOpen) => void }) {
+export function FloatingTable({ mode, lifted, seeds, onSeed, onXray }: { mode: 'space' | 'table'; lifted?: string; seeds: Partial<XraySeeds>; onSeed: XrayReseed; onXray: (open: XrayOpen) => void }) {
   const [chip, setChip] = React.useState(true);
   const root = React.useRef<HTMLDivElement>(null);
 
@@ -347,7 +402,7 @@ export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table
           } as React.CSSProperties;
           return (
             <div key={it.id} data-float={it.id} className={['drift-item', mode === 'space' ? 'in-space' : '', it.live ? 'is-live' : ''].join(' ')} style={style}>
-              {it.node({ openXray: (kind) => onXray({ kind, from: it.id }), chip, setChip })}
+              <div style={it.zoom ? { zoom: it.zoom } : undefined}>{it.node({ openXray: (kind) => onXray({ kind, from: it.id, zoom: it.zoom } as XrayOpen), chip, setChip, seeds, onSeed })}</div>
             </div>
           );
         })}

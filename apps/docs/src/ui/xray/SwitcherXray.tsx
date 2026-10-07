@@ -3,6 +3,7 @@ import { Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, useRecipeLayers, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
+import type { XrayViewProps } from '.';
 import { SwitcherSpecimenCard } from './SwitcherSpecimens';
 
 /* ─────────────────────────────────────────────────────────
@@ -10,7 +11,10 @@ import { SwitcherSpecimenCard } from './SwitcherSpecimens';
  *
  *   solid       the real control. Try it, then open the x-ray.
  *   x-ray       a tray with a raised rim (the well) on the gridded floor, a raised thumb
- *               inside it, and the labels floating just above the thumb
+ *               inside it, and the labels floating just above the thumb. The tray's floor
+ *               and the thumb-and-labels plane are the real control itself, scaled up: two
+ *               copies, one with its thumb and words hidden, one with its track turned off.
+ *               Flown in, both start on one plane (the object that landed), then part.
  *   play        Shape   size · tray padding · option padding
  *               Well    how deep the tray is
  *               Thumb   how high the thumb sits
@@ -21,10 +25,12 @@ import { SwitcherSpecimenCard } from './SwitcherSpecimens';
 
 const RECIPE = tokens.recipes.switcher;
 const SELF = RECIPE.props.self as { pad: number };
-const SEG = RECIPE.props.option as { height: number; 'height-regular': number; 'pad-x': number; fade: string; ink: Record<string, string>; 'ink-on': Record<string, string> };
+const SEG = RECIPE.props.option as { height: number; 'height-regular': number; 'pad-x': number };
 const PART = tokens.springs.part as { stiffness: number; damping: number };
+const OBJECT = tokens.springs.object as { duration: number };
 const S = 2.4;
 const RIM = 5;
+const SLICES = 5;
 export const OPTIONS = [{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }];
 
 type Spot = 'shape' | 'well' | 'thumb' | 'slide' | 'light' | 'layers';
@@ -56,20 +62,27 @@ export const THUMB_LAYERS = [
   { name: 'Drop', why: 'A bigger, softer shadow. It shows how far the thumb stands above the tray.' },
 ];
 
-export interface Model {
-  size: 'regular' | 'compact'; pad: number; padX: number;
-  depth: number; lift: number;
+/** Everything a switcher is set to: its real props first, then what the x-ray lets you tune.
+ *  One object, handed from the table to the x-ray and back; the code for it is read off it. */
+export interface SwitcherConfig {
+  /** props */
+  value: string; size: 'regular' | 'compact';
+  /** recipe values: --mu-r-switcher-* */
+  pad: number; padX: number;
+  /** the tray's and thumb's shadow stacks, as a depth, a lift, a light and which layers are on */
+  depth: number; lift: number; lightDeg: number; lightK: number; well: boolean[]; thumb: boolean[];
+  /** the thumb's glide: --mu-spring-part */
   k: number; c: number; instant: boolean;
-  lightDeg: number; lightK: number;
-  well: boolean[]; thumb: boolean[];
 }
-export const INITIAL: Model = {
-  size: 'regular', pad: SELF.pad, padX: SEG['pad-x'],
-  depth: 1, lift: 1,
-  k: PART.stiffness, c: PART.damping, instant: false,
-  lightDeg: 0, lightK: 1,
+export type Model = SwitcherConfig;
+export const INITIAL: SwitcherConfig = {
+  value: 'week', size: 'regular', pad: SELF.pad, padX: SEG['pad-x'],
+  depth: 1, lift: 1, lightDeg: 0, lightK: 1,
   well: WELL_LAYERS.map(() => true), thumb: THUMB_LAYERS.map(() => true),
+  k: PART.stiffness, c: PART.damping, instant: false,
 };
+/** How long the model takes to close up before it flies home: most of the object spring, past its overshoot. */
+const SETTLE_MS = Math.round(OBJECT.duration * 1000 * 0.55);
 
 /** Turn a shadow's offset to follow the light (0° is straight above), and scale its strength. */
 function aim(v: string, deg: number, k: number) {
@@ -80,119 +93,132 @@ function aim(v: string, deg: number, k: number) {
     return `${inset}${X.toFixed(2)}px ${Y.toFixed(2)}px`;
   });
 }
+const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
 
-function useParts(m: Model) {
+/** What a config looks like: the tray's and thumb's fill and shadows for the model's parts, and the
+ *  variables that set the real control to it. Only what differs from the recipe is set, so a default
+ *  config is the control exactly as it ships, and the variables are the overrides its code needs. */
+export function useSwitcherLook(m: SwitcherConfig) {
   const well = useRecipeLayers('switcher', 'self');
   const thumb = useRecipeLayers('switcher', 'thumb');
   const grad = (stops: string[]) => `linear-gradient(${180 + m.lightDeg}deg, ${stops.join(', ')})`;
   const wellShadows = well.shadows.map((v, i) => (m.well[i + 1] ? aim(i === 0 ? alphaK(v, m.depth) : v, m.lightDeg, m.lightK) : null));
   const liftK = (v: string, i: number) => (i >= 3 ? alphaK(scalePx(v, 0.4 + m.lift * 0.6), 0.5 + m.lift * 0.5) : v);
   const thumbShadows = thumb.shadows.map((v, i) => (m.thumb[i + 1] ? aim(liftK(v, i), m.lightDeg, i < 2 ? m.lightK : 1) : null));
-  return {
+  const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
+  const look = {
     colorway: well.colorway,
-    wellRaw: well, thumbRaw: thumb,
+    wellRaw: well, thumbRaw: thumb, ease,
     wellFill: m.well[0] ? grad(well.stops) : 'transparent',
     thumbFill: m.thumb[0] ? grad(thumb.stops) : 'transparent',
     wellShadow: wellShadows.filter(Boolean).join(', ') || 'none',
     thumbShadow: thumbShadows.filter(Boolean).join(', ') || 'none',
   };
+  const lit = m.lightDeg !== INITIAL.lightDeg || m.lightK !== INITIAL.lightK;
+  const style: Record<string, string> = {};
+  if (m.pad !== INITIAL.pad) style['--mu-r-switcher-self-pad'] = `${m.pad}px`;
+  if (m.padX !== INITIAL.padX) style['--mu-r-switcher-option-pad-x'] = `${m.padX}px`;
+  if (lit || m.depth !== INITIAL.depth || !same(m.well, INITIAL.well)) { style['--mu-r-switcher-self-background'] = look.wellFill; style['--mu-r-switcher-self-shadow'] = look.wellShadow; }
+  if (lit || m.lift !== INITIAL.lift || !same(m.thumb, INITIAL.thumb)) { style['--mu-r-switcher-thumb-background'] = look.thumbFill; style['--mu-r-switcher-thumb-shadow'] = look.thumbShadow; }
+  if (m.instant) style['--mu-spring-part-d'] = '0s';
+  else if (m.k !== INITIAL.k || m.c !== INITIAL.c) { style['--mu-spring-part'] = ease.css; style['--mu-spring-part-d'] = `${ease.ms}ms`; }
+  return { ...look, style: style as React.CSSProperties };
 }
-type Parts = ReturnType<typeof useParts>;
+export type Look = ReturnType<typeof useSwitcherLook>;
 
-export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
+/** The real control's box and its chosen option, in its own points, read off the model's top copy. */
+interface Box { W: number; H: number; x: number; y: number; w: number; h: number }
+
+export function SwitcherXray({ startOpen = false, seed, onSeed, pose = 'open', zoom: oz = 1 }: XrayViewProps<SwitcherConfig>) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('slide');
-  const [m, setM] = React.useState<Model>(INITIAL);
-  const [sel, setSel] = React.useState('week');
+  const [m, setM] = React.useState<SwitcherConfig>(() => ({ ...INITIAL, ...seed }));
   const [focus, setFocus] = React.useState<string | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const parts = useParts(m);
+  const set = React.useCallback((p: Partial<SwitcherConfig>) => setM((o) => ({ ...o, ...p })), []);
+  const sel = m.value;
+  const setSel = React.useCallback((value: string) => set({ value }), [set]);
+  // every change goes straight back to where the object came from
+  const onSeedRef = React.useRef(onSeed); onSeedRef.current = onSeed;
+  const seeded = React.useRef(m);
+  React.useEffect(() => { if (seeded.current !== m) { seeded.current = m; onSeedRef.current?.(m); } }, [m]);
+  const look = useSwitcherLook(m);
   const bench = React.useRef<HTMLDivElement>(null);
-  const measure = React.useRef<HTMLSpanElement>(null);
-  const [textW, setTextW] = React.useState<number[]>([22, 30, 36]);
+  const top = React.useRef<HTMLDivElement>(null);
+  const [box, setBox] = React.useState<Box>({ W: 0, H: 0, x: 0, y: 0, w: 0, h: 0 });
   React.useLayoutEffect(() => {
-    const el = measure.current; if (!el) return;
-    setTextW([...el.children].map((c) => (c as HTMLElement).offsetWidth));
-  }, []);
+    const el = top.current; if (!el) return;
+    const read = () => {
+      const track = el.querySelector<HTMLElement>('.mu-switcher'), on = track?.querySelector<HTMLElement>('[aria-checked="true"]');
+      if (!track || !on) return;
+      setBox({ W: track.offsetWidth, H: track.offsetHeight, x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight });
+    };
+    read();
+    const ro = new ResizeObserver(read); ro.observe(el);
+    return () => ro.disconnect();
+  }, [xray, sel, m.size, m.pad, m.padX]);
 
   // geometry in points, then scaled
-  const segH = m.size === 'regular' ? SEG['height-regular'] : SEG.height;
-  const segW = textW.map((w) => w + m.padX * 2);
-  const idx = Math.max(0, OPTIONS.findIndex((o) => o.value === sel));
-  const Wp = segW.reduce((a, b) => a + b, 0) + m.pad * 2, Hp = segH + m.pad * 2;
-  const W = Wp * S, H = Hp * S, R = H / 2;
-  const tx = (m.pad + segW.slice(0, idx).reduce((a, b) => a + b, 0)) * S, tw = segW[idx] * S, th = segH * S, ty = m.pad * S;
+  const W = box.W * S, H = box.H * S, R = H / 2;
+  const tx = box.x * S, ty = box.y * S, tw = box.w * S, th = box.h * S;
+  const flat = pose === 'flat';
   const rimZ = RIM * m.depth * 1.6;
   const thumbZ = 1 + m.lift * 3;
-  const thumbTop = thumbZ + 5 * 1.4;
-  const labelZ = thumbTop + 1;
+  const thumbTop = thumbZ + SLICES * 1.4;
   const exploded = spot === 'layers';
   const fit = useFit(bench, W, H, xray);
-  const wallTone = parts.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
-  const rimTone = parts.colorway === 'graphite' ? '#2a2a2d' : '#f4f3ef';
-  const ink = SEG.ink[parts.colorway], inkOn = SEG['ink-on'][parts.colorway];
+  const wallTone = look.colorway === 'graphite' ? '#1c1c1f' : '#d9d7d1';
+  const rimTone = look.colorway === 'graphite' ? '#2a2a2d' : '#f4f3ef';
 
-  const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
   const reduced = typeof document !== 'undefined' && document.documentElement.classList.contains('rm');
-  const move = m.instant || reduced ? 'none' : `transform ${ease.ms}ms ${ease.css}, width ${ease.ms}ms ${ease.css}`;
+  // the thumb's wall follows the real thumb on the same spring; its rise rides the object spring, like every part
+  const slide = m.instant || reduced ? 'none' : `${look.ease.ms}ms ${look.ease.css}`;
+  const move = slide === 'none' ? 'none' : `transform ${slide}, width ${slide}`;
+  const rise = 'transform var(--spring-object-d) var(--spring-object)';
 
   const current = SPOTS.find((x) => x.id === spot)!;
-  const segVars = { ['--mu-r-switcher-self-pad' as string]: `${m.pad}px`, ['--mu-r-switcher-option-pad-x' as string]: `${m.padX}px`, ['--mu-r-switcher-self-shadow' as string]: parts.wellShadow, ['--mu-r-switcher-self-background' as string]: parts.wellFill, ['--mu-r-switcher-thumb-shadow' as string]: parts.thumbShadow, ['--mu-r-switcher-thumb-background' as string]: parts.thumbFill } as React.CSSProperties;
-  const control = (label: string) => <span className="xr-seg-vars" style={segVars}><Switcher aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} /></span>;
+  const control = (label: string, extra?: Partial<React.ComponentProps<typeof Switcher>>) => <span className="xr-seg-vars" style={look.style}><Switcher aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} {...extra} /></span>;
+  // the model's faces are the control laid out at the object's own zoom, then scaled: the same boxes, to the pixel
+  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
 
   return (
     <HintLayer><div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
-      <span ref={measure} aria-hidden className="xr-measure" style={{ font: '500 11.5px/1 var(--sans)' }}>
-        {OPTIONS.map((o) => <span key={o.value} style={{ display: 'inline-block' }}>{o.label}</span>)}
-      </span>
       <div className="xr-bench" ref={bench}>
         {!xray && <div className="xr-solid" style={{ zoom: S }}>{control('View')}</div>}
 
         {xray && (
-          <div className="xr-scene" style={{ width: W, height: H, zoom: fit }}>
-            <div className="xr-iso">
+          <div className="xr-scene is-fitted" style={{ width: W * fit, height: H * fit }} data-settle={SETTLE_MS}>
+            <div className="xr-fit" style={{ width: W, height: H, transform: `scale(${fit})` }}><div className="xr-iso">
               <div className="xr-floor" />
 
-              {/* the well: a tray whose rim rises from the floor */}
+              {/* the well: the real track on the floor, its thumb and words hidden; a rim that rises from the floor around it */}
               {!exploded && (
                 <>
-                  <div className="xr-face is-flat" style={{ width: W, height: H, borderRadius: R, transform: 'translateZ(0.5px)', background: parts.wellFill, boxShadow: scalePx(parts.wellShadow, S) }} />
+                  <div className="xr-segface is-well" aria-hidden inert style={face(0.5)}>{control('View', { onValueChange: undefined })}</div>
                   {Array.from({ length: RIM }, (_, i) => (
-                    <div key={i} className="xr-ring" style={{ width: W, height: H, borderRadius: R, transform: `translateZ(${((i + 1) / RIM) * rimZ}px)`, borderColor: i === RIM - 1 ? rimTone : wallTone }} />
+                    <div key={i} className="xr-ring" style={{ width: W, height: H, borderRadius: R, transform: `translateZ(${flat ? 0 : ((i + 1) / RIM) * rimZ}px)`, borderColor: i === RIM - 1 ? rimTone : wallTone }} />
                   ))}
                 </>
               )}
 
-              {/* the thumb: a raised cap that slides inside the tray */}
+              {/* the thumb's wall and its shadow on the tray floor, under the real thumb */}
               {!exploded && (
                 <div className="xr-thumb" style={{ transform: `translate(${tx}px, ${ty}px)`, transition: move }}>
-                  {m.thumb[5] && <div className="xr-shadow is-drop" style={{ width: tw, height: th, borderRadius: th / 2, transition: move, filter: `blur(${2 + m.lift * 3}px)`, opacity: 0.12 + m.lift * 0.05, transform: `translate(${m.lift * 3}px, ${m.lift * 5}px) translateZ(1px)` }} />}
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <div key={i} className="xr-slice" style={{ width: tw, height: th, borderRadius: th / 2, transition: move, transform: `translateZ(${thumbZ + i * 1.4}px)`, background: i === 0 || !m.thumb[0] ? 'transparent' : wallTone }} />
+                  {m.thumb[5] && <div className="xr-shadow is-drop" style={{ width: tw, height: th, borderRadius: th / 2, transition: move === 'none' ? undefined : `${move}, opacity .3s`, filter: `blur(${2 + m.lift * 3}px)`, opacity: flat ? 0 : 0.12 + m.lift * 0.05, transform: `translate(${m.lift * 3}px, ${m.lift * 5}px) translateZ(1px)` }} />}
+                  {Array.from({ length: SLICES }, (_, i) => (
+                    <div key={i} className="xr-slice" style={{ width: tw, height: th, borderRadius: th / 2, transition: move === 'none' ? rise : `${rise}, width ${slide}`, transform: `translateZ(${flat ? 0 : thumbZ + i * 1.4}px)`, background: i === 0 || !m.thumb[0] ? 'transparent' : wallTone }} />
                   ))}
-                  <div className="xr-face" style={{ width: tw, height: th, borderRadius: th / 2, transition: move, transform: `translateZ(${thumbTop}px)`, background: parts.thumbFill, boxShadow: scalePx(parts.thumbShadow, S) }} />
                 </div>
               )}
 
-              {/* the labels float just above the thumb, so the thumb never covers them */}
+              {/* the top: the real control, raised; once the tray has gone down its own track is turned off, and the thumb and words float */}
               {!exploded && (
-                <div className="xr-labels" style={{ transform: `translateZ(${labelZ}px)` }}>
-                  {OPTIONS.map((o, i) => {
-                    const x = (m.pad + segW.slice(0, i).reduce((a, b) => a + b, 0)) * S;
-                    return (
-                      <button key={o.value} type="button" className="xr-seglabel" onClick={() => setSel(o.value)} aria-pressed={sel === o.value}
-                        style={{ left: x, top: ty, width: segW[i] * S, height: th, color: sel === o.value ? inkOn : ink, transition: `color ${SEG.fade}` }}>
-                        {o.label}
-                      </button>
-                    );
-                  })}
-                </div>
+                <div ref={top} className={flat ? 'xr-segface is-top' : 'xr-segface is-top is-raised'} style={face(flat ? 1 : thumbTop)}>{control('View')}</div>
               )}
 
               {spot === 'shape' && (
                 <svg className="xr-dims" viewBox={`-40 -40 ${W + 80} ${H + 80}`} style={{ width: W + 80, height: H + 80, left: -40, top: -40, transform: `translateZ(${rimZ + 1}px)` }} aria-hidden>
                   <path d={`M-18 0V${H}M-24 0H-12M-24 ${H}H-12`} />
-                  <text x="-28" y={H / 2} textAnchor="end" dominantBaseline="middle">{Hp}</text>
+                  <text x="-28" y={H / 2} textAnchor="end" dominantBaseline="middle">{box.H}</text>
                   <path d={`M${tx} ${H + 16}H${tx + m.padX * S}M${tx} ${H + 10}V${H + 22}M${tx + m.padX * S} ${H + 10}V${H + 22}`} />
                   <text x={tx + (m.padX * S) / 2} y={H + 34} textAnchor="middle">{m.padX}</text>
                   <path d={`M${W - 2} ${H / 2}H${W - m.pad * S}`} />
@@ -203,20 +229,22 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
               {exploded && (
                 <>
                   {WELL_LAYERS.map((l, i) => (
-                    <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', m.well[i] ? '' : 'is-off'].join(' ')} style={{ width: W, height: H, borderRadius: R, transform: `translateZ(${i * 14}px)`, background: i === 0 ? parts.wellFill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(parts.wellRaw.shadows[i - 1] ?? '', S) }}>
+                    <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', m.well[i] ? '' : 'is-off'].join(' ')} style={{ width: W, height: H, borderRadius: R, transform: `translateZ(${i * 14}px)`, background: i === 0 ? look.wellFill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(look.wellRaw.shadows[i - 1] ?? '', S) }}>
                       <span className="xr-tag eng">{l.name}</span>
                     </div>
                   ))}
                   {THUMB_LAYERS.map((l, i) => (
-                    <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', m.thumb[i] ? '' : 'is-off'].join(' ')} style={{ width: tw, height: th, borderRadius: th / 2, transform: `translate(${tx}px, ${ty}px) translateZ(${WELL_LAYERS.length * 14 + 16 + i * 14}px)`, background: i === 0 ? parts.thumbFill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(parts.thumbRaw.shadows[i - 1] ?? '', S) }}>
+                    <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', m.thumb[i] ? '' : 'is-off'].join(' ')} style={{ width: tw, height: th, borderRadius: th / 2, transform: `translate(${tx}px, ${ty}px) translateZ(${WELL_LAYERS.length * 14 + 16 + i * 14}px)`, background: i === 0 ? look.thumbFill : 'transparent', boxShadow: i === 0 ? 'none' : scalePx(look.thumbRaw.shadows[i - 1] ?? '', S) }}>
                       <span className="xr-tag eng">{l.name}</span>
                     </div>
                   ))}
+                  {/* the top copy stays, out of sight, so the layers keep their measure */}
+                  <div ref={top} className="xr-segface is-top" aria-hidden inert style={{ ...face(0), visibility: 'hidden' }}>{control('View', { onValueChange: undefined })}</div>
                 </>
               )}
 
               {spot === 'light' && (
-                <div className="xr-sun" style={{ transform: `translate3d(${W / 2 + Math.sin((m.lightDeg * Math.PI) / 180) * (W * 0.6)}px, ${H / 2 - Math.cos((m.lightDeg * Math.PI) / 180) * (H * 1.8)}px, ${labelZ + 140}px)`, opacity: 0.35 + 0.65 * Math.min(1, m.lightK) }}>
+                <div className="xr-sun" style={{ transform: `translate3d(${W / 2 + Math.sin((m.lightDeg * Math.PI) / 180) * (W * 0.6)}px, ${H / 2 - Math.cos((m.lightDeg * Math.PI) / 180) * (H * 1.8)}px, ${thumbTop + 140}px)`, opacity: 0.35 + 0.65 * Math.min(1, m.lightK) }}>
                   <span className="xr-bill"><Glyph id="light" /></span>
                 </div>
               )}
@@ -228,19 +256,19 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
                   thumb: [tx + tw * 0.5, ty + th * 0.2, thumbTop],
                   slide: [tx + tw, ty + th * 0.5, thumbTop - 2],
                   light: [W * 0.3, 1, rimZ],
-                  layers: exploded ? [tx + tw * 0.8, ty + th * 0.3, WELL_LAYERS.length * 14 + 16 + (THUMB_LAYERS.length - 1) * 14] : [W * 0.8, H * 0.3, labelZ],
+                  layers: exploded ? [tx + tw * 0.8, ty + th * 0.3, WELL_LAYERS.length * 14 + 16 + (THUMB_LAYERS.length - 1) * 14] : [W * 0.8, H * 0.3, thumbTop + 1],
                 };
                 const [x, y, z] = at[s.id];
                 return <i key={s.id} className="xr-anchor" data-spot={s.id} style={{ transform: `translate3d(${x}px, ${y}px, ${z}px)` }} />;
               })}
-            </div>
+            </div></div>
           </div>
         )}
 
-        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, sel, textW, fit]} />}
+        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, box, fit]} />}
         <div className="xr-hint eng">{xray ? (spot === 'slide' ? 'Drag the thumb or click an option' : 'Pick an icon to learn about that part') : 'Try it, then open the x-ray'}</div>
         <div className="xr-actions">
-          {xray && <button type="button" className="status" onClick={() => setM(INITIAL)}><span className="led off" />Reset</button>}
+          {xray && <button type="button" className="status" onClick={() => setM((o) => ({ ...INITIAL, value: o.value }))}><span className="led off" />Reset</button>}
           <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
         </div>
       </div>
@@ -248,7 +276,7 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
       {xray && (
         <div className="xr-card raised" key={spot}>
           <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
-          <SwitcherSpecimenCard spot={spot} m={m} set={set} sel={sel} setSel={setSel} focus={setFocus} parts={parts} />
+          <SwitcherSpecimenCard spot={spot} m={m} set={set} sel={sel} setSel={setSel} focus={setFocus} look={look} />
         </div>
       )}
     </div></HintLayer>

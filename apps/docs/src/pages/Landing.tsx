@@ -10,7 +10,7 @@ import { useColorway, type Colorway } from '../app/colorway';
 export default function Landing() {
   const navigate = useNavigate();
   const { colorway, setColorway } = useColorway();
-  const { open: xray, away, fly, close } = useXrayFlight();
+  const { open: xray, away, seeds, reseed, fly, close } = useXrayFlight();
 
   const enter = React.useCallback(() => navigate('/overview', { viewTransition: true }), [navigate]);
 
@@ -31,7 +31,7 @@ export default function Landing() {
         <Switcher size="compact" aria-label="Colorway" value={colorway} onValueChange={(v) => setColorway(v as Colorway)} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
       </header>
 
-      <FloatingTable mode="space" lifted={away} onXray={fly} />
+      <FloatingTable mode="space" lifted={away} seeds={seeds} onSeed={reseed} onXray={fly} />
 
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
@@ -39,7 +39,7 @@ export default function Landing() {
         <span className="eng">⏎ browse components · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 
-      {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
+      {xray && <XrayOverlay {...xray} onSeed={reseed} onClose={close} />}
     </main>
   );
 }

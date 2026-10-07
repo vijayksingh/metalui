@@ -15,7 +15,7 @@
 .ed-switcher-thumb-line:hover::after, .ed-switcher-thumb-line:focus-visible::after, .ed-switcher-word:hover::after, .ed-switcher-word:focus-visible::after, .ed-switcher-bottom:hover::after, .ed-switcher-bottom:focus-visible::after { border-top-width: 1.2px; opacity: 1; }
 .ed-switcher-thumb:hover, .ed-switcher-thumb:focus-visible { box-shadow: inset 0 0 0 .6px var(--mu-presence-guide); }
 .ed-switcher-lean { position: absolute; display: block; border: .8px solid var(--mu-presence-guide); border-radius: 999px; box-shadow: 0 0 5px var(--mu-presence-guide); pointer-events: none; }
-.ed-switcher .mu-switcher-thumb[data-animate] { transition: transform var(--ed-slide-duration, var(--spring-part-d)) var(--ed-slide-curve, var(--spring-part)), width var(--ed-slide-duration, var(--spring-part-d)) var(--ed-slide-curve, var(--spring-part)); }
+/* the thumb's glide is the library's own: the config sets --mu-spring-part and its duration */
 .ed-switcher[data-size-handle] .mu-switcher-option { transition: var(--ed-step-transition), color var(--mu-r-switcher-option-fade); }
 .ed-switcher[data-instant] .mu-switcher-thumb { transition: none !important; }
 [data-mu-colorway="graphite"] :is(.ed-switcher-thumb-line, .ed-switcher-word, .ed-switcher-bottom)::after { border-color: var(--green-deep); }

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Row, Switch, Switcher } from '@unlocalhosted/metalui';
-import { springEasing } from './kit';
 import { tokens } from '../../lib/tokens';
-import { INITIAL, OPTIONS, THUMB_LAYERS, WELL_LAYERS, type Model } from './SwitcherXray';
+import { INITIAL, OPTIONS, THUMB_LAYERS, WELL_LAYERS, type Look, type Model } from './SwitcherXray';
 import { STEP_AT, Outline, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, useStepMotion, type Hint, type Seg } from '../edit';
 import './switcher-specimens.css';
 
 type Spot = 'shape' | 'well' | 'thumb' | 'slide' | 'light' | 'layers';
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; sel: string; setSel: (value: string) => void; focus: (name: string | null) => void; parts: { wellFill: string; wellShadow: string; thumbFill: string; thumbShadow: string } };
+type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; sel: string; setSel: (value: string) => void; focus: (name: string | null) => void; look: Look };
 type HandleName = 'size' | 'around' | 'beside' | 'depth' | 'lift' | 'choice' | 'stiffness' | 'damping';
 // the two real sizes, from the switcher recipe (one source per fact)
 const OPT = tokens.recipes.switcher.props.option as Record<string, unknown>;
@@ -17,7 +16,7 @@ const names: Record<HandleName, string> = { size: 'Size', around: 'Space around 
 const round = (v: number) => Math.round(v * 10) / 10;
 const token = (v: number, at: number) => v === at ? { at, name: 'token' } : undefined;
 
-function Specimen({ spot, m, set, sel, setSel, parts }: Props) {
+function Specimen({ spot, m, set, sel, setSel, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const box = React.useRef<HTMLDivElement>(null);
   const handleEls = React.useRef<Partial<Record<HandleName, HTMLSpanElement | null>>>({});
@@ -29,7 +28,6 @@ function Specimen({ spot, m, set, sel, setSel, parts }: Props) {
   const [lean, setLean] = React.useState<string | null>(null);
   const stepMotion = useStepMotion();
   const current = OPTIONS.findIndex((o) => o.value === sel);
-  const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
   React.useLayoutEffect(() => {
     const el = box.current;
     if (!el) return;
@@ -91,7 +89,8 @@ function Specimen({ spot, m, set, sel, setSel, parts }: Props) {
   useOnLand(active === 'stiffness' && m.k === INITIAL.k ? 'stiffness' : undefined, () => blip(handleEls.current.stiffness));
   useOnLand(active === 'damping' && m.c === INITIAL.c ? 'damping' : undefined, () => blip(handleEls.current.damping));
   const selected = OPTIONS.find((o) => o.value === sel)?.label ?? sel;
-  const face = { ['--mu-r-switcher-self-pad' as string]: `${m.pad}px`, ['--mu-r-switcher-option-pad-x' as string]: `${m.padX}px`, ['--mu-r-switcher-self-shadow' as string]: parts.wellShadow, ['--mu-r-switcher-self-background' as string]: parts.wellFill, ['--mu-r-switcher-thumb-shadow' as string]: parts.thumbShadow, ['--mu-r-switcher-thumb-background' as string]: parts.thumbFill, ['--ed-slide-duration' as string]: `${ease.ms}ms`, ['--ed-slide-curve' as string]: ease.css } as React.CSSProperties;
+  // the specimen is the control set to the config, like the table object and the model's face
+  const face = look.style;
   const shown: Seg[] = active === 'size' || peek === 'size' ? ['top'] : active === 'around' || peek === 'around' ? ['right'] : active === 'depth' || peek === 'depth' ? ['bottom'] : spot === 'shape' ? ['top', 'right'] : spot === 'well' ? ['bottom'] : [];
   return <>
     <p>{{
@@ -154,10 +153,10 @@ function LightControl({ m, set, face, sel, setSel }: { m: Model; set: Props['set
 }
 
 export function SwitcherSpecimenCard(props: Props) {
-  const { spot, m, set, sel, setSel, focus, parts } = props;
+  const { spot, m, set, sel, setSel, focus, look } = props;
   if (spot !== 'layers') return <Specimen {...props} />;
   const toggle = (group: 'well' | 'thumb', index: number, on: boolean) => set({ [group]: m[group].map((value, i) => i === index ? on : value) });
-  const face = { ['--mu-r-switcher-self-pad' as string]: `${m.pad}px`, ['--mu-r-switcher-option-pad-x' as string]: `${m.padX}px`, ['--mu-r-switcher-self-shadow' as string]: parts.wellShadow, ['--mu-r-switcher-self-background' as string]: parts.wellFill, ['--mu-r-switcher-thumb-shadow' as string]: parts.thumbShadow, ['--mu-r-switcher-thumb-background' as string]: parts.thumbFill } as React.CSSProperties;
+  const face = look.style;
   return <><p>The well and the thumb are each made of layers. Turn a layer off to see what it adds.</p><LayerSpecimen m={m} sel={sel} setSel={setSel} face={face} /><div className="ed-layers">{([['well', WELL_LAYERS], ['thumb', THUMB_LAYERS]] as const).flatMap(([group, list]) => list.map((layer, index) => <Row.Root key={`${group}-${layer.name}`} variant="list" className="ed-layer" data-off={m[group][index] ? undefined : ''} onPointerEnter={() => focus(layer.name)} onPointerLeave={() => focus(null)} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(group, index, !m[group][index]); }}><Row.Text>{layer.name}</Row.Text><Row.Trail><Switch size="small" aria-label={layer.name} checked={m[group][index]} onCheckedChange={(on) => toggle(group, index, on)} onFocus={() => focus(layer.name)} onBlur={() => focus(null)} /></Row.Trail></Row.Root>))}</div></>;
 }
 

@@ -13,7 +13,7 @@ import { FloatingTable, useXrayFlight } from '../ui/floating';
 
 
 export default function Home() {
-  const { open: xray, away, fly, close } = useXrayFlight();
+  const { open: xray, away, seeds, reseed, fly, close } = useXrayFlight();
   React.useEffect(() => {
     if (!xray) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
@@ -33,8 +33,8 @@ export default function Home() {
           </p>
         </div>
 
-        <FloatingTable mode="table" lifted={away} onXray={fly} />
-        {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
+        <FloatingTable mode="table" lifted={away} seeds={seeds} onSeed={reseed} onXray={fly} />
+        {xray && <XrayOverlay {...xray} onSeed={reseed} onClose={close} />}
       </section>
 
       <section className="sec" id="two-halves">
