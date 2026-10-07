@@ -118,7 +118,7 @@ emit('packages/metalui/public/components.json', JSON.stringify({
     status: m.status,
     description: m.description,
     react: { package: '@unlocalhosted/metalui', export: m.react.export, base: m.base },
-    swift: { package: 'MetalUI', symbol: m.swift.symbol },
+    swift: m.swift.status === 'planned' ? { package: 'MetalUI', planned: m.swift.symbol } : { package: 'MetalUI', symbol: m.swift.symbol },
     registry: `${ORIGIN}/r/${m.name}.json`,
     agent: `${ORIGIN}/r/${m.name}.md`,
     sheet: m.sheet,

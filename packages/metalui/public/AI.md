@@ -922,7 +922,7 @@ Footer actions carry their canonical meaning glyph: Share uses `icon={<ShareIcon
 
 # Checkbox
 
-The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/metalui`, on Base UI Checkbox. SwiftUI: `MetalCheckbox` (earlier `MetalDimple`).
+The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/metalui`, on Base UI Checkbox. SwiftUI: `MetalDimple` (in `MetalCue.swift`; it keeps its earlier name there).
 
 ## Use it for
 
@@ -1625,7 +1625,7 @@ Swift uses `MetalFan`, `MetalFanLabel(icon:)`, `MetalFanPicker`, `MetalFanTray`,
 
 # Field and search field
 
-React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trail`; `SearchField`. SwiftUI: `MetalField { icon: … input: … trail: … }`, `MetalSearchField`.
+React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trail`; `SearchField`. SwiftUI: not yet (`MetalField` and `MetalSearchField` are planned). Until then, compose `MetalWell(.field, …)` with a `TextField`, as `MetalFormField` and the tag example do.
 
 ## Field
 
@@ -1633,7 +1633,6 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trai
 - A hint in ink3, a green caret; trailing keycaps in `Field.Trail`.
 - `invalid`: the foundation's invalid ring on the well, and `aria-invalid` on the input. `disabled`: 40 %, and the input is disabled.
 - `Field.Input` is a plain input; pass it as a Base UI combobox input's `render` to join a listbox.
-- SwiftUI: `MetalField` has the large size; the form sizes and the invalid and disabled states are work in progress there.
 
 ## Search field
 
@@ -1645,7 +1644,7 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Input`, `Field.Trai
 
 ## Tag attachment host
 
-The docs' compact Tag field commits one attachment. It normalizes a leading hash, rejects an existing tag or a name over 32 characters, and keeps failures separate from value validation so retry submits the same draft. Enter submits; Escape or Cancel clears only an unlocked draft. Tag's authored glyph becomes check while the label turns Tagged, then the field clears after the shared result beat. Undo restores the tag list captured before that request. The native executable composition is `swift/Examples/MetalTagExample.swift`; it uses the shared compact well recipe rather than claiming the alpha `MetalField` renders compact fields.
+The docs' compact Tag field commits one attachment. It normalizes a leading hash, rejects an existing tag or a name over 32 characters, and keeps failures separate from value validation so retry submits the same draft. Enter submits; Escape or Cancel clears only an unlocked draft. Tag's authored glyph becomes check while the label turns Tagged, then the field clears after the shared result beat. Undo restores the tag list captured before that request. The native executable composition is `swift/Examples/MetalTagExample.swift`; it uses the shared compact well recipe since there is no `MetalField` yet.
 
 ---
 
@@ -1825,7 +1824,7 @@ A glass object in the colorway: pale glass on Bone, dark glass on Graphite. Reac
 
 # Glyph
 
-A static icon at a size in an ink. React: `Glyph` wrapping any MetalUI icon. SwiftUI: `MetalGlyph(.search, size: .small, tone: .ink2)`.
+A static icon at a size in an ink. React: `Glyph` wrapping any MetalUI icon. SwiftUI: not yet (`MetalGlyph` is planned); until then `MetalIcon(.search, size: 14)` with `.foregroundStyle` for the ink.
 
 ## Use it for
 

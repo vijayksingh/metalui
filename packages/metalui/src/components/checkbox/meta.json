@@ -12,8 +12,8 @@
     ]
   },
   "swift": {
-    "symbol": "MetalCheckbox",
-    "file": "swift/Sources/MetalUI/Components/MetalCheckbox.swift"
+    "symbol": "MetalDimple",
+    "file": "swift/Sources/MetalUI/Components/MetalCue.swift"
   },
   "agent": "checkbox.agent.md",
   "page": "/components/checkbox"

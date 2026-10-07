@@ -13,7 +13,8 @@
   },
   "swift": {
     "symbol": "MetalGlyph",
-    "file": "swift/Sources/MetalUI/Components/MetalGlyph.swift"
+    "file": "swift/Sources/MetalUI/Components/MetalGlyph.swift",
+    "status": "planned"
   },
   "agent": "glyph.agent.md"
 }

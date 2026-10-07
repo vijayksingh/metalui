@@ -200,7 +200,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalCheckbox"
+        "symbol": "MetalDimple"
       },
       "registry": "https://metalui.dev/r/checkbox.json",
       "agent": "https://metalui.dev/r/checkbox.md"
@@ -505,7 +505,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalField, MetalSearchField"
+        "planned": "MetalField, MetalSearchField"
       },
       "registry": "https://metalui.dev/r/field.json",
       "agent": "https://metalui.dev/r/field.md"
@@ -539,7 +539,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalFolder"
+        "planned": "MetalFolder"
       },
       "registry": "https://metalui.dev/r/folder.json",
       "agent": "https://metalui.dev/r/folder.md"
@@ -590,7 +590,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalGlyph"
+        "planned": "MetalGlyph"
       },
       "registry": "https://metalui.dev/r/glyph.json",
       "agent": "https://metalui.dev/r/glyph.md"
@@ -709,7 +709,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalLineHandles"
+        "planned": "MetalLineHandles"
       },
       "registry": "https://metalui.dev/r/line-handles.json",
       "agent": "https://metalui.dev/r/line-handles.md"

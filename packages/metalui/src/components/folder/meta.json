@@ -12,7 +12,8 @@
   },
   "swift": {
     "symbol": "MetalFolder",
-    "file": "swift/Sources/MetalUI/Components/MetalFolder.swift"
+    "file": "swift/Sources/MetalUI/Components/MetalFolder.swift",
+    "status": "planned"
   },
   "agent": "folder.agent.md",
   "layer": "object",

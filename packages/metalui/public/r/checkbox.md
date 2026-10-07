@@ -1,6 +1,6 @@
 # Checkbox
 
-The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/metalui`, on Base UI Checkbox. SwiftUI: `MetalCheckbox` (earlier `MetalDimple`).
+The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/metalui`, on Base UI Checkbox. SwiftUI: `MetalDimple` (in `MetalCue.swift`; it keeps its earlier name there).
 
 ## Use it for
 

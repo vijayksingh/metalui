@@ -127,7 +127,7 @@ const items = metas.map((meta) => {
     registryDependencies: [...deps].sort(),
     files: meta.react.files.map((f) => file(`packages/metalui/src/${meta.dir}/${f}`, fileType(f))),
     dir: meta.dir,
-    docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.symbol} in the MetalUI Swift package.`,
+    docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.status === 'planned' ? `not yet (planned: ${meta.swift.symbol})` : `${meta.swift.symbol} in the MetalUI Swift package`}.`,
   };
 });
 

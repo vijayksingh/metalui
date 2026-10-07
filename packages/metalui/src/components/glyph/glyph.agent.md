@@ -1,6 +1,6 @@
 # Glyph
 
-A static icon at a size in an ink. React: `Glyph` wrapping any MetalUI icon. SwiftUI: `MetalGlyph(.search, size: .small, tone: .ink2)`.
+A static icon at a size in an ink. React: `Glyph` wrapping any MetalUI icon. SwiftUI: not yet (`MetalGlyph` is planned); until then `MetalIcon(.search, size: 14)` with `.foregroundStyle` for the ink.
 
 ## Use it for
 

@@ -13,7 +13,8 @@
   },
   "swift": {
     "symbol": "MetalField, MetalSearchField",
-    "file": "swift/Sources/MetalUI/Components/MetalField.swift"
+    "file": "swift/Sources/MetalUI/Components/MetalField.swift",
+    "status": "planned"
   },
   "agent": "field.agent.md",
   "slots": {

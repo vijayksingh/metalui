@@ -479,7 +479,7 @@
           "target": "components/metalui/components/checkbox/checkbox.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalDimple in the MetalUI Swift package."
     },
     {
       "name": "checkbox-group",
@@ -872,7 +872,7 @@
           "target": "components/metalui/components/field/field.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/field.md. SwiftUI: MetalField, MetalSearchField in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/field.md. SwiftUI: not yet (planned: MetalField, MetalSearchField)."
     },
     {
       "name": "filter-bar",
@@ -917,7 +917,7 @@
           "target": "components/metalui/components/folder/folder.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/folder.md. SwiftUI: MetalFolder in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/folder.md. SwiftUI: not yet (planned: MetalFolder)."
     },
     {
       "name": "form-field",
@@ -973,7 +973,7 @@
           "target": "components/metalui/components/glyph/glyph.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: MetalGlyph in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: not yet (planned: MetalGlyph)."
     },
     {
       "name": "hover-engraving",
@@ -1106,7 +1106,7 @@
           "target": "components/metalui/components/line-handles/line-handles.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: MetalLineHandles in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: not yet (planned: MetalLineHandles)."
     },
     {
       "name": "link",
@@ -2121,6 +2121,8 @@
         "https://metalui.dev/r/glyph.json",
         "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/slider.json",
         "https://metalui.dev/r/tokens.json"
       ],

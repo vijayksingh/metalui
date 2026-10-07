@@ -12,7 +12,8 @@
   },
   "swift": {
     "symbol": "MetalLineHandles",
-    "file": "swift/Sources/MetalUI/Components/MetalLineHandles.swift"
+    "file": "swift/Sources/MetalUI/Components/MetalLineHandles.swift",
+    "status": "planned"
   },
   "agent": "line-handles.agent.md",
   "layer": "instrument",
