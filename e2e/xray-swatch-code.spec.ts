@@ -201,6 +201,8 @@ test('copy puts the code on the clipboard', async ({ page }) => {
 
 for (const start of COLORWAYS) {
   test(`the snippet copied in ${start} renders as the specimen does, in every colorway`, async ({ page }) => {
+    // it compiles, renders and compares twice: about 16 s alone, more when the suite runs in parallel
+    test.slow();
     const xray = await openXray(page, start);
     const card = xray.locator('.xr-card');
     await part(xray, 'Type');
