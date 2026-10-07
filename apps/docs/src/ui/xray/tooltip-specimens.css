@@ -1,10 +1,31 @@
 /* TOOLTIP SPECIMENS: a real tool with its real tooltip; the handles ride inside the label */
+
+/* The chip (TooltipChip): the popup's own classes on a block of its own width, so the table's object,
+ * the flying copy and the model's face all measure the chip and nothing else. */
+.xr-tipchip { display: block; width: max-content; box-sizing: border-box; cursor: zoom-in; }
+/* x-ray, tooltip: the label floats high over its tool on the object spring, joined by a dashed stem;
+ * landed flat it sits on the floor as the object itself, and its tool comes once it has risen */
+.xr-tiplift { position: absolute; left: 0; top: 0; transform-style: preserve-3d; transition: transform var(--spring-object-d) var(--spring-object); }
+.xr-tipat { position: absolute; left: 0; top: 0; transform-style: preserve-3d; transition: opacity var(--spring-settle-d, .44s) var(--spring-settle, ease-out); }
+.xr-tiplift:not(.is-shown) .xr-tipat, .xr-tiplift:not(.is-shown) .xr-shadow { opacity: 0; }
+.xr-tipcap { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+.xr-tipcap .xr-slice, .xr-tipcap .xr-face { animation: xr-tipcap-in var(--spring-settle-d, .44s) var(--spring-settle, ease-out) both; }
+@keyframes xr-tipcap-in { from { opacity: 0; } }
+html.rm .xr-tiplift, html.rm .xr-tipat, html.rm .xr-segface.is-tip { transition: none !important; }
+html.rm .xr-tipcap .xr-slice, html.rm .xr-tipcap .xr-face { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .xr-tiplift, .xr-tipat, .xr-segface.is-tip { transition: none !important; }
+  .xr-tipcap .xr-slice, .xr-tipcap .xr-face { animation: none; }
+}
 .ed-tip-well { overflow: visible; }
 /* room for the label on every side of the tool */
 .ed-tip-stage { padding: 40px 0; display: grid; place-items: center; }
 .ed-tip-strip { position: relative; }
 /* the popup (portalled to the page): a box for the overlay */
 .ed-tip { position: relative; }
+/* the specimen's popup floats at the tooltip's own height (70), under the x-ray overlay (kds.css: 100) when the
+ * x-ray is flown in from the table; in its card it has to show above it */
+.mu-tooltip-positioner:has(> .ed-tip) { z-index: 101; }
 .ed-tip-over { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
 .ed-tip-over .ed-outline { opacity: 0; transition: opacity var(--spring-part-d) var(--spring-part); }
 .ed-tip-over:is(:hover, :focus-within, [data-live], [data-peek]) .ed-outline { opacity: 1; }

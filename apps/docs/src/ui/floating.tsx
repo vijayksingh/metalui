@@ -15,6 +15,7 @@ import { INITIAL as CHIP, ChipReal, useChipLook, type ChipConfig } from './xray/
 import { ConfiguredButton, INITIAL as BUTTON, useButtonLook, type ButtonConfig } from './xray/ButtonXray';
 import { INITIAL as TOOLBAR, ToolbarObject, type ToolbarConfig } from './xray/ToolbarXray';
 import { INITIAL as CHECKBOX, CheckboxFor, useCheckboxLook, type CheckboxConfig, type CheckboxState } from './xray/CheckboxXray';
+import { INITIAL as TOOLTIP, TooltipChip, useTooltipLook, type TooltipConfig } from './xray/TooltipXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -165,6 +166,13 @@ function TableButton({ config = BUTTON, open }: { config?: ButtonConfig; open: (
   return <ConfiguredButton m={config} look={look} onClick={open} />;
 }
 
+/** The tooltip on the table: its chip set to its config, which its x-ray takes over and hands back. The real
+ *  popup shows on hover in a portal, so the table holds the chip as the library writes it (TooltipChip). */
+function TableTooltip({ config = TOOLTIP, open }: { config?: TooltipConfig; open: () => void }) {
+  const look = useTooltipLook(config);
+  return <TooltipChip m={config} look={look} onClick={open} />;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -228,13 +236,9 @@ const ITEMS: Item[] = [
   },
   { id: 'status', table: ['45.6%', '7.9%'], space: ['31%', '11%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray, seeds }) => <TableStatus config={seeds.status} open={() => openXray('status')} /> },
   {
-    // a still of the tooltip, drawn with its own recipe classes (the real one lives in a portal)
+    // the tooltip's chip, set to its config; a click opens the x-ray, which lands on the same chip
     id: 'tooltip', table: ['38%', '58.5%'], space: ['70%', '13%', -60, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
-    node: ({ openXray }) => (
-      <span onClick={() => openXray('tooltip')} className="mu-tooltip inline-block py-tooltip-pad-y px-tooltip-pad-x rounded-tooltip-radius type-tooltip text-tooltip-ink recipe-tooltip whitespace-nowrap">
-        Select<span className="mu-tooltip-key text-tooltip-key-ink"> · V</span>
-      </span>
-    ),
+    node: ({ openXray, seeds }) => <TableTooltip config={seeds.tooltip} open={() => openXray('tooltip')} />,
   },
   { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
   { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },

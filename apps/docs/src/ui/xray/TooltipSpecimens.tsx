@@ -2,8 +2,7 @@ import * as React from 'react';
 import { IconButton, Row, Switch, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { scalePx, useRecipeLayers } from './kit';
-import { LAYERS, type Model, type Side } from './TooltipXray';
+import { KEY, LAYERS, NAME, chipLabel, type Look, type Model, type Side } from './TooltipXray';
 import { STEP_AT, CornerArc, Outline, Readout, blip, clamp, snapTo, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './tooltip-specimens.css';
 
@@ -33,34 +32,24 @@ const word = (s: Side) => SIDES.find((x) => x.value === s)!.word;
 const LIFT = 1;
 
 type Spot = 'states' | 'type' | 'surface' | 'shape' | 'shadow' | 'layers';
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; setShown: (on: boolean) => void };
+type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; setShown: (on: boolean) => void; look: Look };
 
 const round = (v: number, places = 1) => Number(v.toFixed(places));
 const token = (v: number, at: number, name = 'token') => (v === at ? { at, name } : undefined);
 
-/** The label's fill and shadow stack from the model: layers switched off drop out, lift scales the drop shadows. */
-function face(m: Model, BG: string, SH: string[]) {
-  const shadow = SH.map((v, i) => (m.on[i + 1] ? (/^inset/.test(v) ? v : scalePx(v, m.lift)) : null)).filter(Boolean).join(', ') || 'none';
-  return { background: m.on[0] ? BG : 'transparent', shadow };
-}
-
 /**
- * The rule that reaches the portalled popup: the well's zoom and the model's recipe values.
- * While a handle is held nothing on the label moves by itself.
+ * The rule that reaches the portalled popup: the well's zoom and the config's recipe variables (the look's
+ * style: only what differs from the recipe, as the code sets them). While a handle is held nothing on
+ * the label moves by itself.
  */
-function TipRule({ cls, m, zoom, live, lifted }: { cls: string; m: Model; zoom: number; live: boolean; lifted?: boolean }) {
-  const { fill, shadows } = useRecipeLayers('tooltip');
-  const f = face(m, fill, shadows);
-  const css = `.${cls}{zoom:${zoom};--mu-r-tooltip-self-pad-x:${m.padX}px;--mu-r-tooltip-self-radius:${m.radius}px;--mu-r-tooltip-self-background:${f.background};--mu-r-tooltip-self-shadow:${f.shadow};${lifted ? `translate:0 ${round(-(m.lift - LIFT) * 3, 2)}px;` : ''}${live ? 'transition:none;' : ''}}`;
+function TipRule({ cls, m, zoom, live, lifted, look }: { cls: string; m: Model; zoom: number; live: boolean; lifted?: boolean; look: Look }) {
+  const vars = Object.entries(look.style).map(([k, v]) => `${k}:${v};`).join('');
+  const css = `.${cls}{zoom:${zoom};${vars}${lifted ? `translate:0 ${round(-(m.lift - LIFT) * 3, 2)}px;` : ''}${live ? 'transition:none;' : ''}}`;
   return <style>{css}</style>;
 }
 
 function useTipClass() {
   return `ed-tip-${React.useId().replace(/[^a-zA-Z0-9]/g, '')}`;
-}
-
-function label(m: Model) {
-  return m.long ? <>Made from a message you sent<Tooltip.Dim> · 2 days ago</Tooltip.Dim></> : 'Select';
 }
 
 /** The chip's own box, in its own (unzoomed) units, read from an element laid over it. */
@@ -89,8 +78,8 @@ function Stage({ m, zoom, well, cls, over, ghost, tipRef }: { m: Model; zoom: nu
       <div className="ed-tip-stage" style={{ zoom }}>
         <TooltipProvider>
           <span ref={tipRef} className="ed-tip-strip inline-flex rounded-pill p-6 material-frost-graphite" data-mu-colorway="graphite">
-            <Tooltip open label={<>{label(m)}{over}</>} shortcut={m.showKey && !m.long ? 'V' : undefined} side={m.side} offset={m.gap * zoom} wrap={m.long} className={`ed-tip ${cls}`}>
-              <IconButton variant="tool" label="Select" icon={<Icon name="select" size={16} />} />
+            <Tooltip open label={<>{chipLabel(m)}{over}</>} shortcut={m.showKey && !m.long ? KEY : undefined} side={m.side} offset={m.gap * zoom} wrap={m.long} className={`ed-tip ${cls}`}>
+              <IconButton variant="tool" label={NAME} icon={<Icon name="select" size={16} />} />
             </Tooltip>
             {ghost}
           </span>
@@ -102,7 +91,7 @@ function Stage({ m, zoom, well, cls, over, ghost, tipRef }: { m: Model; zoom: nu
 
 /* ───────────────────────── Timing ───────────────────────── */
 
-function Timing({ m, set, setShown }: Props) {
+function Timing({ m, set, setShown, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   const strip = React.useRef<HTMLSpanElement>(null);
@@ -120,10 +109,10 @@ function Timing({ m, set, setShown }: Props) {
     <p>Point at a tool and its tooltip waits a moment before it shows, so passing over does nothing. Once one shows, the next tool in the row shows its own at once. Change the wait with the readout.</p>
     <div ref={well} className="ed-specimen ed-tip-well">
       <div className="ed-tip-stage" style={{ zoom }}>
-        <TipRule cls={cls} m={m} zoom={zoom} live={false} />
+        <TipRule cls={cls} m={m} zoom={zoom} live={false} look={look} />
         <TooltipProvider delay={m.delay}>
           <span ref={strip} className="ed-tip-strip inline-flex gap-8 rounded-pill p-6 material-frost-graphite" data-mu-colorway="graphite">
-            <Tooltip label="Select" shortcut={m.showKey ? 'V' : undefined} side={m.side} offset={m.gap * zoom} className={`ed-tip ${cls}`}><IconButton variant="tool" label="Select" icon={<Icon name="select" size={16} />} /></Tooltip>
+            <Tooltip label={chipLabel(m)} shortcut={m.showKey && !m.long ? KEY : undefined} side={m.side} offset={m.gap * zoom} wrap={m.long} className={`ed-tip ${cls}`}><IconButton variant="tool" label={NAME} icon={<Icon name="select" size={16} />} /></Tooltip>
             <Tooltip label="Note" shortcut={m.showKey ? 'N' : undefined} side={m.side} offset={m.gap * zoom} className={`ed-tip ${cls}`}><IconButton variant="tool" label="Note" icon={<Icon name="note" size={16} />} /></Tooltip>
           </span>
         </TooltipProvider>
@@ -137,12 +126,12 @@ function Timing({ m, set, setShown }: Props) {
 
 /* ───────────────────────── Type ───────────────────────── */
 
-function Type({ m, set }: Props) {
+function Type({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   return <>
     <p>It says the tool's name in small mono capitals, then its key in a dimmer grey. Turn the key off to see the name alone.</p>
-    <TipRule cls={cls} m={m} zoom={zoom} live={false} />
+    <TipRule cls={cls} m={m} zoom={zoom} live={false} look={look} />
     <Stage m={m} zoom={zoom} well={well} cls={cls} />
     <div className="ed-layers">
       <Row.Root variant="list" className="ed-layer" data-off={m.showKey ? undefined : ''} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) set({ showKey: !m.showKey }); }}>
@@ -162,7 +151,7 @@ const FACING: Record<Side, { seg: Seg; axis: 'x' | 'y'; away: 1 | -1 }> = {
   left: { seg: 'right', axis: 'x', away: -1 }, right: { seg: 'left', axis: 'x', away: 1 },
 };
 
-function Place({ m, set }: Props) {
+function Place({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   const [chip, box, chipEl] = useChipBox();
@@ -238,7 +227,7 @@ function Place({ m, set }: Props) {
   const index = SIDES.findIndex((s) => s.value === m.side);
   return <>
     <p>The tooltip sits a little way from its tool, above it unless there is no room. Drag the label toward another side of the tool to move it there, or drag its edge nearest the tool to change the gap.</p>
-    <TipRule cls={cls} m={m} zoom={zoom} live={active === 'Gap'} />
+    <TipRule cls={cls} m={m} zoom={zoom} live={active === 'Gap'} look={look} />
     <Stage m={m} zoom={zoom} well={well} cls={cls} over={over} tipRef={strip}
       ghost={lean && box.w ? <i className="ed-tip-ghost" style={{ ...ghostAt(lean), width: box.w, height: box.h, borderRadius: m.radius }} aria-hidden /> : null} />
     <div className="ed-readouts">
@@ -252,7 +241,7 @@ function Place({ m, set }: Props) {
 
 type ShapeName = 'Space on the sides' | 'Corners';
 
-function Shape({ m, set }: Props) {
+function Shape({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   const [chip, box] = useChipBox();
@@ -293,7 +282,7 @@ function Shape({ m, set }: Props) {
   );
   return <>
     <p>A small dark label with round corners. Drag its right end to change the space on the sides, or its corner to round it. A long note wraps instead of running on.</p>
-    <TipRule cls={cls} m={m} zoom={zoom} live={active !== null} />
+    <TipRule cls={cls} m={m} zoom={zoom} live={active !== null} look={look} />
     <Stage m={m} zoom={zoom} well={well} cls={cls} over={over} />
     <div className="ed-readouts">
       <Readout label="Space on the sides" value={`${m.padX}`} snap={token(m.padX, PAD)} peek={on('Space on the sides')} pick={() => summon(refs.current['Space on the sides'] ?? null)} scrub={(d) => pad(m.padX + d * 0.5, false)} />
@@ -310,7 +299,7 @@ function Shape({ m, set }: Props) {
 
 /* ───────────────────────── Shadow ───────────────────────── */
 
-function Shadow({ m, set }: Props) {
+function Shadow({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   const [chip] = useChipBox();
@@ -333,7 +322,7 @@ function Shadow({ m, set }: Props) {
   );
   return <>
     <p>The tooltip floats above everything else on the page, even menus, so its shadows are the softest and widest. Drag the label up to float it higher.</p>
-    <TipRule cls={cls} m={m} zoom={zoom} live={live} lifted />
+    <TipRule cls={cls} m={m} zoom={zoom} live={live} lifted look={look} />
     <Stage m={m} zoom={zoom} well={well} cls={cls} over={over} />
     <div className="ed-readouts">
       <Readout label="Height above the page" value={m.lift.toFixed(1)} unit="" snap={token(m.lift, LIFT)} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => lift(m.lift + d * 0.1, false)} />
@@ -343,13 +332,13 @@ function Shadow({ m, set }: Props) {
 
 /* ───────────────────────── Layers ───────────────────────── */
 
-function Layers({ m, set, focus }: Props) {
+function Layers({ m, set, focus, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const cls = useTipClass();
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
   return <>
     <p>The label is dark glass in eight layers, the same as the toolbar. Turn one off to see what it adds.</p>
-    <TipRule cls={cls} m={m} zoom={zoom} live={false} />
+    <TipRule cls={cls} m={m} zoom={zoom} live={false} look={look} />
     <Stage m={m} zoom={zoom} well={well} cls={cls} />
     <div className="ed-layers">
       {LAYERS.map((layer, i) => (

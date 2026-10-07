@@ -2,7 +2,8 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { COLORWAYS } from './helpers';
 
 // The Tooltip x-ray's cards hold a real tool with its real tooltip; the tooltip is the
-// component's own popup (portalled to the page), and its handles ride inside it.
+// component's own popup (portalled to the page), and its handles ride inside it. The bench's label
+// is the chip itself (the popup's markup), so what a handle changes shows there as computed style.
 const CALLOUTS = ['Timing', 'Type', 'Place', 'Shape', 'Shadow', 'Layers'];
 const SIDES = ['above', 'right', 'below', 'left'];
 
@@ -51,12 +52,12 @@ test('Timing: pointing at the real tool shows its tooltip on the specimen and th
   await part(xray, 'Timing');
   const tool = card.getByRole('button', { name: 'Select' });
   await tool.scrollIntoViewIfNeeded();
-  await expect(xray.locator('.xr-tipwrap')).not.toHaveClass(/is-shown/);
+  await expect(xray.locator('.xr-tiplift')).not.toHaveClass(/is-shown/);
   await tool.hover();
   await expect(page.locator('.ed-tip.mu-tooltip')).toBeVisible();
-  await expect(xray.locator('.xr-tipwrap')).toHaveClass(/is-shown/);
+  await expect(xray.locator('.xr-tiplift')).toHaveClass(/is-shown/);
   await page.mouse.move(5, 5);
-  await expect(xray.locator('.xr-tipwrap')).not.toHaveClass(/is-shown/);
+  await expect(xray.locator('.xr-tiplift')).not.toHaveClass(/is-shown/);
   // the wait has no place on the component: a readout, by drag and by arrows
   const wait = value(card, 'Wait');
   const start = Number(await wait.textContent());
@@ -75,12 +76,12 @@ test('Type: the key switch changes the real tooltip and the bench', async ({ pag
   await part(xray, 'Type');
   const tip = page.locator('.ed-tip.mu-tooltip');
   await expect(tip.locator('.mu-tooltip-key')).toHaveCount(1);
-  await expect(xray.locator('.xr-tipface')).toContainText('· V');
+  await expect(xray.locator('.xr-segface.is-tip .mu-tooltip')).toContainText('· V');
   const key = card.getByRole('switch', { name: 'Show the key' });
   await key.click();
   await expect(key).toHaveAttribute('aria-checked', 'false');
   await expect(tip.locator('.mu-tooltip-key')).toHaveCount(0);
-  await expect(xray.locator('.xr-tipface')).not.toContainText('· V');
+  await expect(xray.locator('.xr-segface.is-tip .mu-tooltip')).not.toContainText('· V');
 });
 
 test('Place: the label steps between its real sides (lean, then snap), and its near edge tunes the gap', async ({ page }) => {
@@ -88,10 +89,10 @@ test('Place: the label steps between its real sides (lean, then snap), and its n
   const card = xray.locator('.xr-card');
   await part(xray, 'Place');
   const side = page.getByRole('slider', { name: 'Side' });
-  const face = xray.locator('.xr-tipwrap .xr-face');
+  const at = xray.locator('.xr-tipat');
   const start = (await side.getAttribute('aria-valuetext'))!;
   expect(SIDES).toContain(start);
-  const bench0 = [await inline(face, 'left'), await inline(face, 'top')].join();
+  const bench0 = await inline(at, 'transform');
   // a short drag only leans: the outline of the target side lights, the tooltip stays put
   await side.scrollIntoViewIfNeeded();
   const box = (await side.boundingBox())!;
@@ -107,7 +108,7 @@ test('Place: the label steps between its real sides (lean, then snap), and its n
   await expect(side).toHaveAttribute('aria-valuetext', 'right');
   expect(SIDES).toContain(await side.getAttribute('aria-valuetext'));
   await expect(page.locator('.ed-tip-ghost')).toHaveCount(0);
-  await expect.poll(async () => [await inline(face, 'left'), await inline(face, 'top')].join()).not.toBe(bench0);
+  await expect.poll(() => inline(at, 'transform')).not.toBe(bench0);
   // the real popup now sits to the right of the tool
   const tool = (await card.getByRole('button', { name: 'Select' }).boundingBox())!;
   await expect.poll(async () => (await page.locator('.ed-tip.mu-tooltip').boundingBox())!.x).toBeGreaterThan(tool.x + tool.width - 1);
@@ -116,12 +117,12 @@ test('Place: the label steps between its real sides (lean, then snap), and its n
   const gap = page.getByRole('slider', { name: 'Gap' });
   const gap0 = Number(await gap.getAttribute('aria-valuenow'));
   const tip0 = (await page.locator('.ed-tip.mu-tooltip').boundingBox())!.x;
-  const benchGap0 = await inline(face, 'left');
+  const benchGap0 = await inline(at, 'transform');
   await drag(page, gap, 24, 0);
   await expect(gap).not.toHaveAttribute('aria-valuenow', `${gap0}`);
   expect(Number(await gap.getAttribute('aria-valuenow'))).toBeGreaterThan(gap0);
   await expect.poll(async () => (await page.locator('.ed-tip.mu-tooltip').boundingBox())!.x).toBeGreaterThan(tip0);
-  expect(await inline(face, 'left')).not.toBe(benchGap0);
+  expect(await inline(at, 'transform')).not.toBe(benchGap0);
 
   // the side readout steps through the real sides only
   await readout(card, 'Side').focus();
@@ -141,20 +142,19 @@ test('Shape: the right end and the corner tune the real label and the bench; lon
   const card = xray.locator('.xr-card');
   await part(xray, 'Shape');
   const tip = page.locator('.ed-tip.mu-tooltip');
-  const face = xray.locator('.xr-tipwrap .xr-face');
-  const label = xray.locator('.xr-tipface');
+  const label = xray.locator('.xr-segface.is-tip .mu-tooltip');
   const pad = page.getByRole('slider', { name: 'Space on the sides' });
   const pad0 = await style(tip, 'padding-right');
-  const benchPad0 = await inline(label, 'padding');
+  const benchPad0 = await style(label, 'padding-right');
   await drag(page, pad, 30, 0);
   expect(await style(tip, 'padding-right')).not.toBe(pad0);
-  expect(await inline(label, 'padding')).not.toBe(benchPad0);
+  expect(await style(label, 'padding-right')).not.toBe(benchPad0);
   const corners = page.getByRole('slider', { name: 'Corners' });
   const r0 = await style(tip, 'border-top-left-radius');
-  const benchR0 = await inline(face, 'border-radius');
+  const benchR0 = await style(label, 'border-top-left-radius');
   await drag(page, corners, -14, -14);
   expect(await style(tip, 'border-top-left-radius')).not.toBe(r0);
-  expect(await inline(face, 'border-radius')).not.toBe(benchR0);
+  expect(await style(label, 'border-top-left-radius')).not.toBe(benchR0);
   // readouts: a drag and the arrows
   const padValue = value(card, 'Space on the sides');
   const before = Number(await padValue.textContent());
@@ -184,12 +184,12 @@ test('Shadow and Layers: lifting the label and switching layers change the real 
   const tip = page.locator('.ed-tip.mu-tooltip');
   const lift = page.getByRole('slider', { name: 'Height above the page' });
   const shadow0 = await style(tip, 'box-shadow');
-  const bench0 = await inline(xray.locator('.xr-tipwrap'), 'transform');
+  const bench0 = await inline(xray.locator('.xr-tiplift'), 'transform');
   const lift0 = Number(await lift.getAttribute('aria-valuenow'));
   await drag(page, lift, 0, -40);
   expect(Number(await lift.getAttribute('aria-valuenow'))).toBeGreaterThan(lift0);
   expect(await style(tip, 'box-shadow')).not.toBe(shadow0);
-  expect(await inline(xray.locator('.xr-tipwrap'), 'transform')).not.toBe(bench0);
+  expect(await inline(xray.locator('.xr-tiplift'), 'transform')).not.toBe(bench0);
   await lift.focus();
   await page.keyboard.press('ArrowDown');
   await expect(page.locator('.ed-tag')).toContainText('Height above the page');
