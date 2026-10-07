@@ -1,8 +1,25 @@
-/* The palette x-ray's specimens: a still of the real palette with hairline handles on it. */
+/* The palette x-ray: the palette as the library writes it (PaletteFor), on the table, on the model's planes and in the card. */
+
+/* The object (PaletteFor): the popup's own classes, set still; on the table a click on it opens the x-ray. */
+.xr-palobj { box-sizing: border-box; }
+[data-float] .xr-palobj { cursor: zoom-in; }
+
+/* x-ray, command palette: three planes are the palette itself. The plate plane hides everything in it; the body
+ * plane turns the plate's paint off and hides the chosen row; the cap plane keeps only the chosen row. */
+.xr-segface.is-pplate .mu-palette > * { visibility: hidden; }
+.xr-segface.is-pbody .mu-palette, .xr-segface.is-pcap .mu-palette { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.xr-segface.is-pbody .mu-palette-row[data-highlighted] { visibility: hidden; }
+.xr-segface.is-pcap .mu-palette > * { visibility: hidden; }
+.xr-segface.is-pcap .mu-palette-row[data-highlighted] { visibility: visible; }
+/* the dimmed page under the plate: it comes once the model opens, and is never part of the object that lands */
+.xr-pscrim { position: absolute; transform: translateZ(0.5px); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); pointer-events: none; animation: xr-pscrim-in var(--spring-settle-d, .44s) var(--spring-settle, ease-out) both; }
+@keyframes xr-pscrim-in { from { opacity: 0; } }
+html.rm .xr-pscrim { animation: none; }
+@media (prefers-reduced-motion: reduce) { .xr-pscrim { animation: none; } }
+
+/* the specimens: a still of the real palette with hairline handles on it */
 .ed-pal-well { overflow: hidden; }
 .ed-pal-box { display: block; }
-/* the still is the component's own classes; the status sits at the right of the footer, as in the palette */
-.ed-pal-still .ed-pal-status { margin-left: auto; }
 .ed-overlay .ed-pal-hit { position: absolute; z-index: 2; outline: none; touch-action: none; }
 .ed-pal-line { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
 .ed-pal-hit:hover .ed-seg, .ed-pal-hit:focus-visible .ed-seg { stroke-width: 1.3; opacity: 1; }

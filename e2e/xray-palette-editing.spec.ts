@@ -5,7 +5,10 @@ const CALLOUTS = ['Field', 'Rows', 'Labels', 'Keys', 'Plate', 'Layers'];
 const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-label^="${name}"]`).click();
 const value = (card: Locator, name: string) => card.locator('.ed-readout').filter({ hasText: name }).locator('.ed-roll > span:not(.is-out)');
 const now = async (handle: Locator) => Number(await handle.getAttribute('aria-valuenow'));
-const inline = (target: Locator, prop: string) => target.evaluate((el, p) => (el as HTMLElement).style.getPropertyValue(p), prop);
+/** The model's planes: the palette itself, laid out at the object's zoom (the plate alone, the body, the chosen row). */
+const platePlane = (xray: Locator) => xray.locator('.xr-segface.is-pplate');
+const bodyPlane = (xray: Locator) => xray.locator('.xr-segface.is-pbody');
+const capPlane = (xray: Locator) => xray.locator('.xr-segface.is-pcap');
 const computed = (target: Locator, prop: string) => target.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
 
 async function drag(page: Page, target: Locator, dx: number, dy: number) {
@@ -46,17 +49,17 @@ test('field: typing refilters specimen and bench; its handles change both', asyn
   const input = card.getByRole('textbox', { name: 'Palette query' });
   await input.fill('delete');
   await expect(card.locator('.mu-palette-row')).toHaveCount(2);
-  await expect(xray.locator('.xr-prow')).toHaveCount(2);
-  await expect(xray.locator('.xr-pfield')).toContainText('delete');
+  await expect(bodyPlane(xray).locator('.mu-palette-row')).toHaveCount(2);
+  await expect(bodyPlane(xray).locator('.mu-palette-input')).toHaveValue('delete');
 
   const field = card.locator('.mu-palette-field');
-  const benchField = xray.locator('.xr-pfield');
+  const benchField = bodyPlane(xray).locator('.mu-palette-field');
   const height = card.getByRole('slider', { name: 'Field height' });
-  const h0 = await now(height), fh0 = await computed(field, 'height'), bh0 = await inline(benchField, 'height');
+  const h0 = await now(height), fh0 = await computed(field, 'height'), bh0 = await computed(benchField, 'height');
   await drag(page, height, 0, -30);
   expect(await now(height)).toBeGreaterThan(h0);
   expect(await computed(field, 'height')).not.toBe(fh0);
-  expect(await inline(benchField, 'height')).not.toBe(bh0);
+  expect(await computed(benchField, 'height')).not.toBe(bh0);
 
   const corners = card.getByRole('slider', { name: 'Field corners' });
   const r0 = await computed(field, 'border-top-left-radius');
@@ -64,10 +67,10 @@ test('field: typing refilters specimen and bench; its handles change both', asyn
   expect(await computed(field, 'border-top-left-radius')).not.toBe(r0);
 
   const left = card.getByRole('slider', { name: 'Space on the left' });
-  const l0 = await computed(field, 'padding-left'), bl0 = await inline(benchField, 'padding-left');
+  const l0 = await computed(field, 'padding-left'), bl0 = await computed(benchField, 'padding-left');
   await drag(page, left, 24, 0);
   expect(await computed(field, 'padding-left')).not.toBe(l0);
-  expect(await inline(benchField, 'padding-left')).not.toBe(bl0);
+  expect(await computed(benchField, 'padding-left')).not.toBe(bl0);
 });
 
 test('rows: the chosen row leans, then snaps to a real row; height and corners change both', async ({ page }) => {
@@ -91,21 +94,22 @@ test('rows: the chosen row leans, then snaps to a real row; height and corners c
   expect(next).toBeGreaterThan(start);
   await expect(card.locator('.mu-palette-row[data-highlighted]')).toHaveCount(1);
   await expect(card.locator('.mu-palette-row[data-highlighted]')).toHaveText(labels[next - 1]);
-  await expect(xray.locator('.xr-prow.is-on')).toContainText(labels[next - 1].replace(/⌘.|⌫/, '').trim());
+  await expect(capPlane(xray).locator('.mu-palette-row[data-highlighted]')).toHaveText(labels[next - 1]);
 
   const height = card.getByRole('slider', { name: 'Row height' });
   const row = card.locator('.mu-palette-row').first();
-  const rh0 = await computed(row, 'height'), bh0 = await inline(xray.locator('.xr-prow').first(), 'height');
+  const rh0 = await computed(row, 'height'), bh0 = await computed(bodyPlane(xray).locator('.mu-palette-row').first(), 'height');
   await drag(page, height, 0, 24);
   expect(await computed(row, 'height')).not.toBe(rh0);
-  expect(await inline(xray.locator('.xr-prow').first(), 'height')).not.toBe(bh0);
+  expect(await computed(bodyPlane(xray).locator('.mu-palette-row').first(), 'height')).not.toBe(bh0);
 
   const corners = card.getByRole('slider', { name: 'Row corners' });
   const on = card.locator('.mu-palette-row[data-highlighted]');
-  const r0 = await computed(on, 'border-top-left-radius'), br0 = await inline(xray.locator('.xr-prow.is-on'), 'border-radius');
+  const benchOn = capPlane(xray).locator('.mu-palette-row[data-highlighted]');
+  const r0 = await computed(on, 'border-top-left-radius'), br0 = await computed(benchOn, 'border-top-left-radius');
   await drag(page, corners, -16, -16);
   expect(await computed(on, 'border-top-left-radius')).not.toBe(r0);
-  expect(await inline(xray.locator('.xr-prow.is-on'), 'border-radius')).not.toBe(br0);
+  expect(await computed(benchOn, 'border-top-left-radius')).not.toBe(br0);
 });
 
 test('labels: section room and the underline change specimen and bench', async ({ page }) => {
@@ -114,17 +118,19 @@ test('labels: section room and the underline change specimen and bench', async (
   await part(xray, 'Labels');
   const sec = card.locator('.mu-palette-sec').first();
   const above = card.getByRole('slider', { name: 'Space above a section' });
-  const s0 = await computed(sec, 'padding-top'), bs0 = await inline(xray.locator('.xr-psec').first(), 'height');
+  const benchSec = bodyPlane(xray).locator('.mu-palette-sec').first();
+  const s0 = await computed(sec, 'padding-top'), bs0 = await computed(benchSec, 'padding-top');
   await drag(page, above, 0, 20);
   expect(await computed(sec, 'padding-top')).not.toBe(s0);
-  expect(await inline(xray.locator('.xr-psec').first(), 'height')).not.toBe(bs0);
+  expect(await computed(benchSec, 'padding-top')).not.toBe(bs0);
 
   const under = card.getByRole('slider', { name: 'Underline' });
   const mark = card.locator('.mu-palette-mark').first();
-  const u0 = await computed(mark, 'text-underline-offset'), bu0 = await inline(xray.locator('.xr-pmark').first(), 'text-underline-offset');
+  const benchMark = bodyPlane(xray).locator('.mu-palette-mark').first();
+  const u0 = await computed(mark, 'text-underline-offset'), bu0 = await computed(benchMark, 'text-underline-offset');
   await drag(page, under, 0, 12);
   expect(await computed(mark, 'text-underline-offset')).not.toBe(u0);
-  expect(await inline(xray.locator('.xr-pmark').first(), 'text-underline-offset')).not.toBe(bu0);
+  expect(await computed(benchMark, 'text-underline-offset')).not.toBe(bu0);
 });
 
 test('keys: gap and room change both; pinning and status switch in both', async ({ page }) => {
@@ -132,17 +138,17 @@ test('keys: gap and room change both; pinning and status switch in both', async 
   const card = xray.locator('.xr-card');
   await part(xray, 'Keys');
   const foot = card.locator('.mu-palette-foot');
-  const benchFoot = xray.locator('.xr-pfoot');
+  const benchFoot = bodyPlane(xray).locator('.mu-palette-foot');
   const gap = card.getByRole('slider', { name: 'Space between keys' });
-  const g0 = await computed(foot, 'column-gap'), bg0 = await inline(benchFoot, 'gap');
+  const g0 = await computed(foot, 'column-gap'), bg0 = await computed(benchFoot, 'column-gap');
   await drag(page, gap, 20, 0);
   expect(await computed(foot, 'column-gap')).not.toBe(g0);
-  expect(await inline(benchFoot, 'gap')).not.toBe(bg0);
+  expect(await computed(benchFoot, 'column-gap')).not.toBe(bg0);
   const top = card.getByRole('slider', { name: 'Space above the keys' });
-  const t0 = await computed(foot, 'padding-top'), bt0 = await inline(benchFoot, 'padding');
+  const t0 = await computed(foot, 'padding-top'), bt0 = await computed(benchFoot, 'padding-top');
   await drag(page, top, 0, 16);
   expect(await computed(foot, 'padding-top')).not.toBe(t0);
-  expect(await inline(benchFoot, 'padding')).not.toBe(bt0);
+  expect(await computed(benchFoot, 'padding-top')).not.toBe(bt0);
 
   await expect(foot).toContainText('PIN');
   await card.getByRole('switch', { name: 'Pin with ⇧↩' }).click();
@@ -159,16 +165,16 @@ test('plate: padding and corners change specimen and bench', async ({ page }) =>
   await part(xray, 'Plate');
   const plate = card.locator('.mu-palette');
   const pad = card.getByRole('slider', { name: 'Padding' });
-  const p0 = await computed(plate, 'padding-left'), bp0 = await inline(xray.locator('.xr-paletteface'), 'padding');
+  const benchPlate = platePlane(xray).locator('.mu-palette');
+  const p0 = await computed(plate, 'padding-left'), bp0 = await computed(benchPlate, 'padding-left');
   await drag(page, pad, -16, 0);
   expect(await computed(plate, 'padding-left')).not.toBe(p0);
-  expect(await inline(xray.locator('.xr-paletteface'), 'padding')).not.toBe(bp0);
+  expect(await computed(benchPlate, 'padding-left')).not.toBe(bp0);
   const corners = card.getByRole('slider', { name: 'Plate corners' });
-  const face = xray.locator('.xr-face:has(> .xr-paletteface)');
-  const r0 = await computed(plate, 'border-top-left-radius'), br0 = await inline(face, 'border-radius');
+  const r0 = await computed(plate, 'border-top-left-radius'), br0 = await computed(benchPlate, 'border-top-left-radius');
   await drag(page, corners, 20, 20);
   expect(await computed(plate, 'border-top-left-radius')).not.toBe(r0);
-  expect(await inline(face, 'border-radius')).not.toBe(br0);
+  expect(await computed(benchPlate, 'border-top-left-radius')).not.toBe(br0);
 });
 
 test('layers: a switch removes the layer from the still and the bench; hover lights the slice', async ({ page }) => {

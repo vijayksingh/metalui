@@ -1,31 +1,43 @@
 import * as React from 'react';
-import { Kbd, paletteParts as P } from '@unlocalhosted/metalui';
-import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { Exploded, IsoCap, IsoTray, XrayFrame, capTop, scalePx, useStateLayers, type SpotDef } from './kit';
+import { Callouts, Exploded, Glyph, capTop, tones, useFit, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
-import { INITIAL, LAYERS, PaletteSpecimenCard, STATUS, chosen, rowsFor, sectionsOf, usePlate, type Model, type Spot } from './PaletteSpecimens';
+import type { XrayViewProps } from '.';
+import { INITIAL, LAYERS, PaletteFor, PaletteSpecimenCard, usePaletteLook, type PaletteConfig, type Spot } from './PaletteSpecimens';
+import { PaletteCodePanel } from './PaletteCode';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · COMMAND PALETTE (a block: a plate, a field, rows and a footer of keys)
  *
- *   solid     a still of the palette
- *   x-ray     a frosted plate high over a dimmed page; a field sunk into its top, rows under it,
- *             the chosen row raised with a green bar, keys along the bottom
- *   card      a still of the real palette (PaletteSpecimens), handled, not slid:
+ *   solid     the palette as the library writes it (PaletteFor), set to the config; the real one opens
+ *             modally from ⌘K, so this still stands for it everywhere: the table, the model, the card
+ *   x-ray     a frosted plate floating high over a dimmed page. Three planes are the palette itself,
+ *             laid out at the object's own zoom and scaled by transform: the plate alone (everything in
+ *             it hidden), the body (the plate's paint turned off: the sunk field, the section names,
+ *             the rows, the keys) and the chosen row alone, raised as the cap it is. Under them, a wall
+ *             of slices and the shadow the plate casts. Flown in, all three start on one plane (the
+ *             object that landed), then the plate lifts and the cap rises once the copy has gone.
+ *   card      the same still, handled, not slid (PaletteSpecimens):
  *             Field   type in it; its top edge, corner and the line before the glass
  *             Rows    drag the chosen row to another (it snaps); its bottom edge and corner
  *             Labels  the line over a section name; the underline under a match
  *             Keys    the gap between keys, the line above them; pinning and status switches
  *             Plate   the line inside its right edge (padding) and its corner
  *             Layers  a switch per layer; hover lights the slice on the bench
+ *   code      under the card: the React, CSS and SwiftUI for exactly this config (PaletteCode.tsx)
  * ───────────────────────────────────────────────────────── */
 
+export { INITIAL, PALETTE_WIDTH, PaletteFor, usePaletteLook, type PaletteConfig } from './PaletteSpecimens';
+
+const OBJECT = tokens.springs.object as { duration: number };
 const S = 1.2;
-const PW = 360;
-const T = tokens.palette;
-/** The bench draws engraved labels and footer keys at these heights (the still measures its own). */
-const LABEL = 10, KEY = 18;
+/** The plate's wall, in slices, and how high it floats once the model opens. */
+const WALL = 3;
+const PLATE_Z = 30;
+/** How far the chosen row's cap stands off the plate. */
+const CAP_Z = 5;
+/** How long the model takes to close up before it flies home: most of the object spring, past its overshoot. */
+const SETTLE_MS = Math.round(OBJECT.duration * 1000 * 0.55);
 
 const SPOTS: SpotDef<Spot>[] = [
   { id: 'well', title: 'Field', word: 'Where you type' },
@@ -40,111 +52,141 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   layers: ['right', 0.2], states: ['right', 0.48], press: ['right', 0.76],
 };
 
-const mark = (text: string, q: string, offset: number) => {
-  const t = q.trim(); if (!t) return text;
-  const i = text.toLowerCase().indexOf(t.toLowerCase()); if (i < 0) return text;
-  const style: React.CSSProperties = { background: 'none', color: 'inherit', fontWeight: T['mark-weight'], textDecoration: 'underline', textDecorationColor: T['mark-color'], textDecorationThickness: T['mark-underline'] * S, textUnderlineOffset: offset * S };
-  return <>{text.slice(0, i)}<mark className="xr-pmark" style={style}>{text.slice(i, i + t.length)}</mark>{text.slice(i + t.length)}</>;
-};
+/** The palette's boxes in its own points, read off the model's body plane: the plate, its field, the first section, the chosen row and the footer. */
+type Rect = { x: number; y: number; w: number; h: number };
+const NONE: Rect = { x: 0, y: 0, w: 0, h: 0 };
+interface Box { plate: Rect; field: Rect; sec: Rect; cap: Rect; foot: Rect }
+const NO_BOX: Box = { plate: NONE, field: NONE, sec: NONE, cap: NONE, foot: NONE };
+/** Where a part sits inside the plane, in the plane's own (unzoomed) units. */
+function within(el: HTMLElement | null, box: HTMLElement): Rect {
+  if (!el) return NONE;
+  let x = 0, y = 0, n: HTMLElement | null = el;
+  while (n && n !== box) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent as HTMLElement | null; }
+  return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+}
 
-export function PaletteXray({ startOpen = false }: { startOpen?: boolean }) {
+export function PaletteXray({ startOpen = false, seed, onSeed, pose = 'open', zoom: oz = 1 }: XrayViewProps<PaletteConfig>) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('well');
-  const [m, setM] = React.useState<Model>(INITIAL);
+  const [m, setM] = React.useState<PaletteConfig>(() => ({ ...INITIAL, ...seed }));
   const [focus, setFocus] = React.useState<string | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const { on } = m;
-  const plate = usePlate(on);
-  const well = useStateLayers('well', 'field');
-  const cw = plate.colorway;
-  const rows = rowsFor(m.q);
-  const s = chosen(m);
+  const set = React.useCallback((p: Partial<PaletteConfig>) => setM((o) => ({ ...o, ...p })), []);
+  // every change goes straight back to where the object came from
+  const onSeedRef = React.useRef(onSeed); onSeedRef.current = onSeed;
+  const seeded = React.useRef(m);
+  React.useEffect(() => { if (seeded.current !== m) { seeded.current = m; onSeedRef.current?.(m); } }, [m]);
+  const look = usePaletteLook(m);
+  const flat = pose === 'flat';
+  // the layers come apart only with the model open: landed or leaving, the palette is one thing
+  const exploded = spot === 'layers' && !flat;
 
-  const sections = sectionsOf(rows);
-  const secH = m.secTop + LABEL + T['sec-pad-bottom'];
-  const footH = T['foot-margin-top'] + m.footTop + KEY + T['foot-pad-bottom'];
-  const PH = m.pad * 2 + m.fieldH + T['list-pad-top'] + sections.length * secH + rows.length * m.rowH + T['list-pad-bottom'] + footH;
-  const W = PW * S, H = PH * S;
-  const z = 40, top = capTop(z, 3);
-  const exploded = spot === 'layers';
-  const shadow = scalePx(plate.all.shadows.slice(0, 7).filter((_, i) => on[i + 1]).join(', ') || 'none', S);
-  const inset = m.pad * S;
+  // the palette's boxes, read off the body plane whenever it changes
+  const bench = React.useRef<HTMLDivElement>(null);
+  const body = React.useRef<HTMLDivElement>(null);
+  const [box, setBox] = React.useState<Box>(NO_BOX);
+  React.useLayoutEffect(() => {
+    const el = body.current; if (!el) return;
+    const read = () => {
+      const plate = el.querySelector<HTMLElement>('.mu-palette');
+      // a plane that has gone, or one not laid out yet, measures nothing
+      if (!plate || !plate.offsetWidth) return;
+      const q = (s: string) => el.querySelector<HTMLElement>(s);
+      setBox({ plate: within(plate, el), field: within(q('.mu-palette-field'), el), sec: within(q('.mu-palette-sec'), el), cap: within(q('.mu-palette-row[data-highlighted]'), el), foot: within(q('.mu-palette-foot'), el) });
+    };
+    read();
+    const ro = new ResizeObserver(read); ro.observe(el);
+    return () => ro.disconnect();
+  }, [xray, exploded, m]);
 
-  const face = (
-    <div className="xr-paletteface" style={{ padding: `${inset}px ${inset}px ${inset}px` }}>
-      <div style={{ height: m.fieldH * S, position: 'relative', flex: 'none' }}>
-        <IsoTray w={W - 2 * inset} h={m.fieldH * S} r={m.fieldR * S} depth={3} fill={well.fill} shadow={scalePx(well.shadows.join(', '), S)} colorway={cw} />
-        <span className="xr-pfield" style={{ height: m.fieldH * S, gap: T['field-gap'] * S, paddingLeft: m.fieldPad * S, paddingRight: T['field-pad-end'] * S, fontSize: 15 * S }}>
-          <span style={{ display: 'grid', color: 'var(--ink3)' }}><Icon name="search" size={T['field-glyph'] * S} /></span>
-          <span>{m.q || <span style={{ color: 'var(--ink3)' }}>Lens or action</span>}</span><i className="xr-caret" style={{ background: '#3FB97A', height: 18 * S }} />
-        </span>
-      </div>
-      <div style={{ paddingTop: T['list-pad-top'] * S, flex: 1 }}>
-        {sections.map((sec) => (
-          <div key={sec.name}>
-            <div className="xr-psec" style={{ height: secH * S, alignItems: 'flex-end', padding: `0 ${T['row-pad'] * S}px ${T['sec-pad-bottom'] * S}px`, boxSizing: 'border-box', fontSize: 9 * S }}><span>{sec.name}</span><span>{sec.rows.length}</span></div>
-            {sec.rows.map((r) => (
-              <div key={r.label} className={r.i === s ? 'xr-prow is-on' : 'xr-prow'} onClick={() => set({ sel: r.i })} style={{ height: m.rowH * S, gap: T['row-gap'] * S, padding: `0 ${T['row-pad'] * S}px`, borderRadius: m.rowR * S, fontSize: 13 * S, color: r.danger ? 'var(--mu-red, #D5392A)' : 'var(--ink)' }}>
-                {r.i === s && <i className="xr-pbar" style={{ width: T['bar-width'] * S, height: (m.rowH - 2 * T['bar-inset']) * S }} />}
-                <span style={{ display: 'grid', color: r.danger ? 'inherit' : 'var(--ink2)' }}><Icon name={r.icon} size={T['row-glyph'] * S} /></span>
-                <span style={{ flex: 1 }}>{mark(r.label, m.q, m.markOffset)}</span>
-                {r.key && <span style={{ font: `500 ${9 * S}px/1 var(--mono)`, color: 'var(--ink3)' }}>{r.key}</span>}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className={spot === 'press' ? 'xr-pfoot is-lit' : 'xr-pfoot'} style={{ marginTop: T['foot-margin-top'] * S, height: 'auto', gap: m.footGap * S, fontSize: 9 * S, padding: `${m.footTop * S}px ${T['row-pad'] * S}px ${T['foot-pad-bottom'] * S}px` }}>
-        <span style={{ lineHeight: `${KEY * S}px` }}>↑ ↓ MOVE</span><span>↩ OPEN</span>{m.pinnable && <span>⇧↩ PIN</span>}{m.status && <span style={{ marginLeft: 'auto' }}>{STATUS}</span>}
-      </div>
-    </div>
-  );
+  // geometry in points, then scaled
+  const W = box.plate.w * S, H = box.plate.h * S, R = m.radius * S;
+  const plateZ = flat ? 0 : PLATE_Z;
+  const plateTop = flat ? 0.5 : capTop(PLATE_Z, WALL);
+  const bodyZ = plateTop + 0.5;
+  const capZ = flat ? bodyZ + 0.05 : bodyZ + CAP_Z;
+  const fit = useFit(bench, W, H, xray);
+  const tone = tones(look.colorway);
+  const rise = 'transform var(--spring-object-d) var(--spring-object)';
+  const current = SPOTS.find((x) => x.id === spot)!;
+  // the model's planes are the palette laid out at the object's own zoom, then scaled: the same boxes, to the pixel.
+  // The zoom scales the plane's translate too, so its height is given in the plane's own units to stand where it says.
+  const face = (z: number) => ({ transform: `translateZ(${z / oz}px) scale(${S / oz})`, zoom: oz });
+  const still = <PaletteFor m={m} look={look} inert />;
+  const pt = (r: Rect, fx: number, fy: number): [number, number] => [(r.x + r.w * fx) * S, (r.y + r.h * fy) * S];
 
-  const scene = (
-    <>
-      <div className="xr-face is-flat" style={{ left: -30 * S, top: -20 * S, width: W + 60 * S, height: H + 40 * S, borderRadius: 18 * S, transform: 'translateZ(0.5px)', background: cw === 'graphite' ? 'rgba(14,14,15,.25)' : 'rgba(243,243,241,.25)', boxShadow: '0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent)' }} />
-      {exploded
-        ? <Exploded layers={LAYERS} on={on} fill={plate.all.fill} shadows={plate.all.shadows} w={W} h={H} r={m.radius * S} z0={10} gap={14} focus={focus} scale={S} />
-        : (
-          <>
-            {on[8] && <div className="xr-shadow" style={{ width: W, height: H, borderRadius: m.radius * S, filter: 'blur(22px)', opacity: 0.2, transform: 'translate(12px, 26px)' }} />}
-            <IsoCap w={W} h={H} r={m.radius * S} z={z} wall={3} fill={plate.fill} shadow={shadow} wallTone={cw === 'graphite' ? '#1c1c1f' : '#e4e2dc'}>{face}</IsoCap>
-          </>
-        )}
-    </>
-  );
-
-  const rowY = (i: number) => { let y = m.pad + m.fieldH + T['list-pad-top']; for (const sec of sections) { y += secH; for (const r of sec.rows) { if (r.i === i) return y + m.rowH / 2; y += m.rowH; } } return y; };
   const anchors: Record<Spot, [number, number, number]> = {
-    well: [40 * S, (m.pad + m.fieldH / 2) * S, top],
-    states: [W - 20 * S, rowY(s) * S, top + 1],
-    type: [30 * S, (m.pad + m.fieldH + T['list-pad-top'] + secH / 2) * S, top + 1],
-    press: [W * 0.7, H - (m.pad + KEY / 2 + T['foot-pad-bottom']) * S, top + 1],
-    surface: [W * 0.05, H * 0.9, top],
-    layers: exploded ? [W * 0.9, 20, 10 + (LAYERS.length - 1) * 14] : [W - 12, 12, top],
+    well: [...pt(box.field, 0.12, 0.5), bodyZ],
+    states: [...pt(box.cap, 0.94, 0.5), capZ],
+    type: [...pt(box.sec, 0.1, 0.6), bodyZ],
+    press: [...pt(box.foot, 0.7, 0.55), bodyZ],
+    surface: [W * 0.05, H * 0.92, plateTop],
+    layers: exploded ? [W * 0.9, 20, 10 + (LAYERS.length - 1) * 14] : [W - 12, 12, plateTop],
   };
 
   return (
-    <HintLayer><XrayFrame
-      xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
-      solid={<div className="xr-palette-solid" style={{ width: W, height: H, borderRadius: m.radius * S, background: plate.all.fill, boxShadow: scalePx(plate.all.shadows.join(', '), S), zoom: 0.75 }}>{face}</div>}
-      W={W} H={H} scene={scene} anchors={anchors}
-      onReset={() => setM(INITIAL)} deps={[spot, m]}
-      card={<PaletteSpecimenCard spot={spot} m={m} set={set} focus={setFocus} />}
-    /></HintLayer>
-  );
-}
+    <HintLayer><div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+      <div className="xr-bench" ref={bench}>
+        {!xray && <div className="xr-solid" onClick={() => setXray(true)}><div className="xr-solid-fit" style={{ zoom: 0.9 }}>{still}</div></div>}
 
-/** A small still of the palette, drawn with its own classes (the live one lives in a dialog). */
-export function PaletteStill() {
-  return (
-    <div className={P.POPUP} style={{ position: 'static', transform: 'none', translate: 'none', margin: 0, width: 300, opacity: 1 }}>
-      <label className={P.FIELD}><span className={P.FIELD_GLYPH}><Icon name="search" size={15} /></span><span className={P.INPUT}>tidy</span></label>
-      <div className={P.LIST} style={{ maxHeight: 'none' }}>
-        <div className={P.SEC}><span className={P.ENG}>ACTIONS</span><span className={P.ENG}>1</span></div>
-        <div className={P.ROW} data-highlighted=""><span className={P.ROW_GLYPH}><Icon name="tidy" size={14} /></span><span className={P.ROW_TEXT}><mark className={P.MARK}>Tidy</mark> the canvas</span><span className={P.ROW_HINT}><Kbd size="small">⌘T</Kbd></span></div>
+        {xray && (
+          <div className="xr-scene is-fitted" style={{ width: W * fit, height: H * fit }} data-settle={SETTLE_MS}>
+            <div className="xr-fit" style={{ width: W, height: H, transform: `scale(${fit})` }}><div className="xr-iso">
+              <div className="xr-floor" />
+
+              {/* the dimmed page the plate floats over; it is not the object that landed, so it comes once the model opens */}
+              {!flat && <div className="xr-pscrim" style={{ left: -30 * S, top: -20 * S, width: W + 60 * S, height: H + 40 * S, borderRadius: 18 * S, background: look.colorway === 'graphite' ? 'rgba(14,14,15,.25)' : 'rgba(243,243,241,.25)' }} />}
+
+              {exploded ? (
+                <>
+                  <Exploded layers={LAYERS} on={m.on} fill={look.raw.fill} shadows={look.raw.shadows} w={W} h={H} r={R} z0={10} gap={14} focus={focus} scale={S} />
+                  {/* the body plane stays, out of sight, so the layers keep their measure */}
+                  <div ref={body} className="xr-segface is-pbody" aria-hidden inert style={{ ...face(0), visibility: 'hidden' }}>{still}</div>
+                </>
+              ) : (
+                <>
+                  {m.on[8] && <div className="xr-shadow" style={{ width: W, height: H, borderRadius: R, filter: 'blur(22px)', opacity: flat ? 0 : 0.2, transform: 'translate(12px, 26px)' }} />}
+
+                  {/* the plate's wall: slices that rise from the floor once the model opens (landed, they lie under the planes) */}
+                  <div className="xr-thumb">
+                    {Array.from({ length: WALL }, (_, i) => (
+                      <div key={i} className="xr-slice" style={{ width: W, height: H, borderRadius: R, transition: rise, transform: `translateZ(${flat ? 0 : plateZ + i * 1.4}px)`, background: i === 0 || !m.on[0] ? 'transparent' : tone.wall }} />
+                    ))}
+                  </div>
+
+                  {/* the plate: the palette with everything in it hidden */}
+                  <div className="xr-segface is-pplate" aria-hidden inert style={face(plateTop)}>{still}</div>
+
+                  {/* the body: the palette with its plate's paint turned off; you can choose a row in it */}
+                  <div ref={body} className="xr-segface is-pbody" style={face(bodyZ)}><PaletteFor m={m} look={look} inert onSelect={(sel) => set({ sel })} /></div>
+
+                  {/* the chosen row: the palette with only its raised cap left, standing off the plate */}
+                  <div className="xr-segface is-pcap" aria-hidden inert style={face(capZ)}>{still}</div>
+                </>
+              )}
+
+              {SPOTS.map((s) => {
+                const [x, y, z] = anchors[s.id];
+                return <i key={s.id} className="xr-anchor" data-spot={s.id} style={{ transform: `translate3d(${x}px, ${y}px, ${z}px)` }} />;
+              })}
+            </div></div>
+          </div>
+        )}
+
+        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, box, fit]} />}
+        <div className="xr-hint eng">{xray ? 'Pick an icon to learn about that part' : 'Try it, then open the x-ray'}</div>
+        <div className="xr-actions">
+          {xray && <button type="button" className="status" onClick={() => setM(INITIAL)}><span className="led off" />Reset</button>}
+          <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
+        </div>
       </div>
-      <div className={P.FOOT}><span className={P.FOOT_KEYS}><Kbd size="small">↩</Kbd><span className={P.ENG}>OPEN</span></span></div>
-    </div>
+
+      {xray && (
+        <div className="xr-card raised" key={spot}>
+          <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
+          <PaletteSpecimenCard spot={spot} m={m} set={set} focus={setFocus} look={look} />
+        </div>
+      )}
+      {xray && <PaletteCodePanel config={m} />}
+    </div></HintLayer>
   );
 }

@@ -2,27 +2,40 @@ import * as React from 'react';
 import { Kbd, Row as ListRow, Switch, paletteParts as P } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { useStateLayers, type LayerDef } from './kit';
+import { useColorway, type Colorway } from '../../app/colorway';
+import { type LayerDef } from './kit';
 import { STEP_AT, CornerArc, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint } from '../edit';
 import './palette-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
- * PALETTE SPECIMENS · the x-ray card holds a still of the real palette
+ * PALETTE SPECIMENS · the palette as the library writes it, changed by handling it
  *
- *   The palette lives in a dialog, so the card shows it the way its own stills do:
- *   the component's part classes (paletteParts), with its --mu-palette-* tokens
- *   overridden by the shared model. The field is a real input: type and the rows
- *   refilter, ↑↓ move the chosen row. Every other value is a handle on the still.
+ *   The real CommandPalette opens modally in a portal from ⌘K, so nothing on a page can
+ *   hold one still. The table's object, the model's planes, the specimen in the card and
+ *   the proof beside the code are all one thing instead: PaletteFor, the popup's own
+ *   markup (paletteParts: the same classes, reading the same --mu-palette-* variables and
+ *   the same frost), set to one PaletteConfig. A slice (e2e/xray-palette-code.spec.ts)
+ *   opens the real one from the code and proves it the same pixels.
  *
- *   This file owns the model (PaletteXray imports it), so nothing here reads the
- *   x-ray at load time.
+ *   In the card the field is a real input: type and the rows refilter as the palette
+ *   filters, ↑↓ move the chosen row. Every other value is a handle on the still.
+ *
+ *   This file owns the config and the look (PaletteXray and PaletteCode import it), so
+ *   nothing here reads the x-ray at load time.
  * ───────────────────────────────────────────────────────── */
 
 const T = tokens.palette;
 const RADIUS = tokens.foundations.radius;
+/** The palette on the floating table is this wide, and the x-ray's planes are laid out at the same width. */
+export const PALETTE_WIDTH = 300;
+/** What the field says before there is anything in it. */
+export const PLACEHOLDER = 'Lens or action';
+/** What the footer says on its right when the answer source is shown. */
+export const STATUS = 'SYNC OFFLINE';
 
 export type Spot = 'well' | 'states' | 'type' | 'press' | 'surface' | 'layers';
 
+/** The plate's frost and the eight shadows of its raise, in the order the tokens give them. */
 export const LAYERS: LayerDef[] = [
   { name: 'Frost', why: 'A light, slightly see-through plate. You can still sense the page under it.' },
   { name: 'Inner glow', why: 'A soft light just inside the edge.' },
@@ -35,60 +48,90 @@ export const LAYERS: LayerDef[] = [
   { name: 'Far shadow', why: 'A very big, very faint shadow. The palette floats as high as a dialog.' },
 ];
 
-export interface Model {
-  q: string; sel: number;
-  fieldH: number; fieldR: number; fieldPad: number;
-  rowH: number; rowR: number;
-  secTop: number; markOffset: number;
-  footGap: number; footTop: number; pinnable: boolean; status: boolean;
-  pad: number; radius: number;
+/** Everything a palette is set to: its real props first, then what the x-ray lets you tune.
+ *  One object, handed from the table to the x-ray and back; the code for it is read off it. */
+export interface PaletteConfig {
+  /** props: the query it opens with, whether ⇧↩ pins, and whether the footer says where answers come from */
+  q: string; pinnable: boolean; status: boolean;
+  /** the chosen row: the palette's own state (the first row when it opens; ↑↓ and hover move it) */
+  sel: number;
+  /** --mu-palette-* variables */
+  fieldH: number; fieldR: number; fieldPad: number; rowH: number; secTop: number; markOffset: number; footGap: number; footTop: number; pad: number;
+  /** the theme's card and row radii, which the plate and its rows round by */
+  radius: number; rowR: number;
+  /** the plate's frost and raise, as which layers are on */
   on: boolean[];
 }
-export const INITIAL: Model = {
-  q: 'tidy', sel: 0,
+export type Model = PaletteConfig;
+export const INITIAL: PaletteConfig = {
+  q: 'tidy', pinnable: true, status: false, sel: 0,
   fieldH: T['field-height'], fieldR: T['field-radius'], fieldPad: T['field-pad-start'],
-  rowH: T['row-height'], rowR: RADIUS.row,
-  secTop: T['sec-pad-top'], markOffset: T['mark-offset'],
-  footGap: T['foot-gap'], footTop: T['foot-pad-top'], pinnable: true, status: false,
-  pad: T.pad, radius: RADIUS.card,
+  rowH: T['row-height'], secTop: T['sec-pad-top'], markOffset: T['mark-offset'],
+  footGap: T['foot-gap'], footTop: T['foot-pad-top'], pad: T.pad,
+  radius: RADIUS.card, rowR: RADIUS.row,
   on: LAYERS.map(() => true),
 };
-/** What the footer says on its right when the answer source is shown. */
-export const STATUS = 'SYNC OFFLINE';
+
+const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
+/** A colorway's frost plate: its fill and the shadows of its raise, split as the tokens list them. */
+export function plateLayers(colorway: Colorway) {
+  const cw = tokens.colorways[colorway] as { 'frost-strong': string; raise: string };
+  return { fill: cw['frost-strong'], shadows: cw.raise.split(/,(?![^(]*\))/).map((s) => s.trim()) };
+}
+
+/** What a config looks like: the plate's fill and shadows for the model's hand-built parts, and the
+ *  variables that set the real palette to it. Only what differs from the tokens is set, so a default
+ *  config is the palette exactly as it ships, and the variables are the overrides its code needs. */
+export function paletteLook(m: PaletteConfig, colorway: Colorway) {
+  const raw = plateLayers(colorway);
+  const fill = m.on[0] ? raw.fill : 'transparent';
+  const shadow = raw.shadows.filter((_, i) => m.on[i + 1]).join(', ') || 'none';
+  const style: Record<string, string> = {};
+  const px = (name: string, v: number, at: number) => { if (v !== at) style[name] = `${v}px`; };
+  px('--mu-palette-pad', m.pad, INITIAL.pad);
+  px('--mu-palette-field-height', m.fieldH, INITIAL.fieldH);
+  px('--mu-palette-field-radius', m.fieldR, INITIAL.fieldR);
+  px('--mu-palette-field-pad-start', m.fieldPad, INITIAL.fieldPad);
+  px('--mu-palette-row-height', m.rowH, INITIAL.rowH);
+  px('--mu-palette-sec-pad-top', m.secTop, INITIAL.secTop);
+  px('--mu-palette-mark-offset', m.markOffset, INITIAL.markOffset);
+  px('--mu-palette-foot-gap', m.footGap, INITIAL.footGap);
+  px('--mu-palette-foot-pad-top', m.footTop, INITIAL.footTop);
+  px('--radius-card', m.radius, INITIAL.radius);
+  px('--radius-row', m.rowR, INITIAL.rowR);
+  // the fill changes with its own layer; the stack with any of its layers
+  if (!m.on[0]) style['--mu-frost-strong'] = fill;
+  if (!same(m.on.slice(1), INITIAL.on.slice(1))) style['--mu-raise'] = shadow;
+  return { colorway, raw, fill, shadow, style: style as React.CSSProperties };
+}
+export function usePaletteLook(m: PaletteConfig) {
+  const { colorway } = useColorway();
+  return React.useMemo(() => paletteLook(m, colorway), [m, colorway]);
+}
+export type Look = ReturnType<typeof usePaletteLook>;
+
+/* ───────────────────────── the rows ───────────────────────── */
 
 export type PRow = { sec: string; label: string; key?: string; icon: 'search' | 'plus' | 'tidy' | 'trash'; danger?: boolean };
-const ACTIONS: PRow[] = [
+/** The actions a page gives the palette, each with its key. */
+export const ACTIONS: PRow[] = [
   { sec: 'ACTIONS', label: 'New canvas', key: '⌘N', icon: 'plus' },
   { sec: 'ACTIONS', label: 'Tidy the canvas', key: '⌘T', icon: 'tidy' },
   { sec: 'ACTIONS', label: 'Delete selection', key: '⌫', icon: 'trash', danger: true },
 ];
+/** Whether a row matches, as the palette filters: every word of the query in its label. */
+const matches = (label: string, q: string) => { const t = q.trim().toLowerCase(); return !t || t.split(/\s+/).every((w) => label.toLowerCase().includes(w)); };
+/** The rows for a query: a lens for what was typed, then the actions that match it. */
 export const rowsFor = (q: string): PRow[] => {
-  const t = q.trim().toLowerCase();
-  const acts = t ? ACTIONS.filter((a) => a.label.toLowerCase().includes(t)) : ACTIONS;
-  return [...(t ? [{ sec: 'LENS', label: `See “${q.trim()}”`, icon: 'search' as const }] : []), ...acts];
+  const t = q.trim();
+  return [...(t ? [{ sec: 'LENS', label: `See “${t}”`, icon: 'search' as const }] : []), ...ACTIONS.filter((a) => matches(a.label, q))];
 };
 export const sectionsOf = (rows: PRow[]) => rows.reduce<{ name: string; rows: (PRow & { i: number })[] }[]>((acc, r, i) => {
   const last = acc[acc.length - 1];
   if (last && last.name === r.sec) last.rows.push({ ...r, i }); else acc.push({ name: r.sec, rows: [{ ...r, i }] });
   return acc;
 }, []);
-export const chosen = (m: Model) => Math.min(m.sel, Math.max(0, rowsFor(m.q).length - 1));
-
-/** The plate's fill and shadows for the colorway, with the layers that are off left out. */
-export function usePlate(on: boolean[]) {
-  const plate = useStateLayers('surface', 'plate');
-  const fill = on[0] ? plate.fill : 'transparent';
-  const shadow = plate.shadows.filter((_, i) => on[i + 1]).join(', ') || 'none';
-  return { fill, shadow, all: plate, colorway: plate.colorway };
-}
-
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void };
-
-const round = (v: number, by = 1) => Math.round(v / by) * by;
-const near = (v: number, at: number, reach: number) => (Math.abs(v - at) <= reach ? at : v);
-const token = (v: number, at: number) => (v === at ? { at, name: 'palette token' } : undefined);
-
-/* ───────────────────────── the still ───────────────────────── */
+export const chosen = (m: PaletteConfig) => Math.min(m.sel, Math.max(0, rowsFor(m.q).length - 1));
 
 /** The query with each typed word marked, as the palette marks it. */
 function Marked({ text, query }: { text: string; query: string }) {
@@ -98,32 +141,30 @@ function Marked({ text, query }: { text: string; query: string }) {
   return <>{parts.map((p, i) => (i % 2 ? <mark key={i} className={P.MARK}>{p}</mark> : p))}</>;
 }
 
-function Still({ m, set, width }: { m: Model; set: Props['set']; width: number }) {
-  const { fill, shadow } = usePlate(m.on);
+/* The two parts the library writes but does not export in paletteParts: the empty note and the status
+ * at the right of the footer (command-palette.tsx, EMPTY and STATUS), the same classes. */
+const EMPTY = 'mu-palette-empty type-ui not-empty:py-palette-empty-pad-y not-empty:px-palette-row-pad not-empty:text-ink3';
+const STATUS_CLASS = 'mu-palette-status palette-eng flex items-center gap-palette-foot-key-gap ml-auto';
+
+/**
+ * The palette set to a config, as the library's own popup writes it (command-palette.tsx): the same
+ * classes, so its plate, its field, its rows, its marks and its keys are the tokens', read through the
+ * same variables. The real one lives in a dialog, so the table, the model's planes and the card hold
+ * this instead. `onQuery` makes the field a field you can type in; `onSelect` lets a click choose a row.
+ */
+export function PaletteFor({ m, look, width = PALETTE_WIDTH, onQuery, onSelect, inert, still, onClick }: { m: PaletteConfig; look: Look; width?: number; onQuery?: (q: string) => void; onSelect?: (i: number) => void; inert?: boolean; still?: boolean; onClick?: () => void }) {
   const rows = rowsFor(m.q);
   const s = chosen(m);
-  const vars = {
-    position: 'static', transform: 'none', translate: 'none', margin: 0, opacity: 1, width,
-    background: fill, boxShadow: shadow, transition: 'none',
-    ['--mu-palette-pad' as string]: `${m.pad}px`,
-    ['--mu-palette-field-height' as string]: `${m.fieldH}px`,
-    ['--mu-palette-field-radius' as string]: `${m.fieldR}px`,
-    ['--mu-palette-field-pad-start' as string]: `${m.fieldPad}px`,
-    ['--mu-palette-row-height' as string]: `${m.rowH}px`,
-    ['--mu-palette-sec-pad-top' as string]: `${m.secTop}px`,
-    ['--mu-palette-mark-offset' as string]: `${m.markOffset}px`,
-    ['--mu-palette-foot-gap' as string]: `${m.footGap}px`,
-    ['--mu-palette-foot-pad-top' as string]: `${m.footTop}px`,
-    ['--radius-card' as string]: `${m.radius}px`,
-    ['--radius-row' as string]: `${m.rowR}px`,
-  } as React.CSSProperties;
-  const move = (d: number) => rows.length && set({ sel: (s + d + rows.length) % rows.length });
+  const move = (d: number) => rows.length && onSelect?.((s + d + rows.length) % rows.length);
+  // the popup's own classes place it over the page and animate it in; a still sits where it is put
+  const style: React.CSSProperties = { position: 'static', transform: 'none', translate: 'none', margin: 0, opacity: 1, transition: 'none', width, ...look.style };
   return (
-    <div className={`${P.POPUP} ed-pal-still`} style={vars}>
+    <div className={`${P.POPUP} xr-palobj${still ? ' ed-pal-still' : ''}`} style={style} onClick={onClick}>
       <label className={P.FIELD}>
         <span aria-hidden className={P.FIELD_GLYPH}><Icon name="search" size={T['field-glyph']} /></span>
-        <input className={P.INPUT} value={m.q} placeholder="Lens or action" aria-label="Palette query" autoComplete="off" spellCheck={false}
-          onChange={(e) => set({ q: e.target.value, sel: 0 })}
+        <input className={P.INPUT} value={m.q} placeholder={PLACEHOLDER} aria-label="Palette query" autoComplete="off" spellCheck={false}
+          readOnly={!onQuery} tabIndex={inert ? -1 : undefined}
+          onChange={(e) => onQuery?.(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); move(e.key === 'ArrowDown' ? 1 : -1); } }} />
         <Kbd size="small" label="Escape closes">⎋</Kbd>
       </label>
@@ -132,7 +173,7 @@ function Still({ m, set, width }: { m: Model; set: Props['set']; width: number }
           <div key={sec.name} className="mu-palette-group">
             <div className={P.SEC}><span className={P.ENG}>{sec.name}</span><span className={P.ENG} aria-hidden>{sec.rows.length}</span></div>
             {sec.rows.map((r) => (
-              <div key={r.label} className={P.ROW} data-highlighted={r.i === s ? '' : undefined} data-danger={r.danger ? '' : undefined} data-row={r.i} onClick={() => set({ sel: r.i })}>
+              <div key={r.label} className={`${P.ROW} mu-icon-trigger`} data-highlighted={r.i === s ? '' : undefined} data-danger={r.danger ? '' : undefined} data-row={r.i} onClick={onSelect ? () => onSelect(r.i) : undefined}>
                 <span aria-hidden className={P.ROW_GLYPH}><Icon name={r.icon} size={T['row-glyph']} /></span>
                 <span className={P.ROW_TEXT}><Marked text={r.label} query={m.q} /></span>
                 {r.key && <span className={P.ROW_HINT}><Kbd size="small">{r.key}</Kbd></span>}
@@ -141,16 +182,22 @@ function Still({ m, set, width }: { m: Model; set: Props['set']; width: number }
           </div>
         ))}
       </div>
-      {!rows.length && <div className="mu-palette-empty type-ui">Nothing matches</div>}
+      {!rows.length && <div className={EMPTY}>Nothing matches</div>}
       <div className={P.FOOT} aria-hidden>
         <span className={P.FOOT_KEYS}><Kbd size="small">↑</Kbd><Kbd size="small">↓</Kbd><span className={P.ENG}>MOVE</span></span>
         <span className={P.FOOT_KEYS}><Kbd size="small">↩</Kbd><span className={P.ENG}>OPEN</span></span>
         {m.pinnable && <span className={P.FOOT_KEYS}><Kbd size="small">⇧↩</Kbd><span className={P.ENG}>PIN</span></span>}
-        {m.status && <span className={`${P.ENG} ed-pal-status`}>{STATUS}</span>}
+        {m.status && <span className={STATUS_CLASS}>{STATUS}</span>}
       </div>
     </div>
   );
 }
+
+type Props = { spot: Spot; m: PaletteConfig; set: (patch: Partial<PaletteConfig>) => void; focus: (name: string | null) => void; look: Look };
+
+const round = (v: number, by = 1) => Math.round(v / by) * by;
+const near = (v: number, at: number, reach: number) => (Math.abs(v - at) <= reach ? at : v);
+const token = (v: number, at: number) => (v === at ? { at, name: 'palette token' } : undefined);
 
 /* ───────────────────────── measuring the still ───────────────────────── */
 
@@ -283,12 +330,17 @@ function Corner({ card, t, tune, at, r }: { card: Card; t: Tune; tune: ReturnTyp
   );
 }
 
-function Specimen({ card, m, set, children }: { card: Card; m: Model; set: Props['set']; children: React.ReactNode }) {
+/** The real palette in the card: type in it, click a row to choose it. */
+function Still({ m, set, look, width }: { m: PaletteConfig; set: Props['set']; look: Look; width: number }) {
+  return <PaletteFor m={m} look={look} width={width} still onQuery={(q) => set({ q, sel: 0 })} onSelect={(sel) => set({ sel })} />;
+}
+
+function Specimen({ card, m, set, look, children }: { card: Card; m: PaletteConfig; set: Props['set']; look: Look; children: React.ReactNode }) {
   return (
     <div ref={card.well} className="ed-specimen ed-pal-well">
       <div style={{ zoom: card.zoom }}>
         <div ref={card.box} className="ed-box ed-pal-box" data-hint-anchor data-live={card.active ?? undefined} data-peek={card.peek ?? undefined} data-shown="corner">
-          <Still m={m} set={set} width={card.width} />
+          <Still m={m} set={set} look={look} width={card.width} />
           <div className="ed-overlay">{children}</div>
         </div>
       </div>
@@ -306,7 +358,7 @@ const ctxOf = (card: Card, name: string) => ({ zoom: card.zoom, active: card.act
 
 /* ───────────────────────── the cards ───────────────────────── */
 
-function Field({ m, set }: Props) {
+function Field({ m, set, look }: Props) {
   const card = useCard();
   const parts = useParts(card.box, [m, card.width]);
   const f = parts.one('field'), g = parts.one('glyph');
@@ -316,7 +368,7 @@ function Field({ m, set }: Props) {
   const th = useTune(height, ctxOf(card, height.name)), tc = useTune(corners, ctxOf(card, corners.name)), tl = useTune(left, ctxOf(card, left.name));
   return <>
     <p>The field is a tray sunk into the top of the plate, and the list changes as soon as you type in it. Drag its top edge to make it taller, its corner to round it, or the line before the search glass to give it room on the left.</p>
-    <Specimen card={card} m={m} set={set}>
+    <Specimen card={card} m={m} set={set} look={look}>
       <Hair card={card} t={height} tune={th} at={{ x: f.x + m.fieldR, y: f.y - 3, w: Math.max(0, f.w - m.fieldR * 2), h: 6 }} d={`M0 4.6H${Math.max(0, f.w - m.fieldR * 2)}`} heavy cursor="ns-resize" />
       <Corner card={card} t={corners} tune={tc} at={{ x: f.x, y: f.y }} r={m.fieldR} />
       <Hair card={card} t={left} tune={tl} at={{ x: g.x - 4, y: f.y + 8, w: 6, h: Math.max(0, f.h - 16) }} d={`M3.5 0V${Math.max(0, f.h - 16)}`} heavy cursor="ew-resize" />
@@ -325,7 +377,7 @@ function Field({ m, set }: Props) {
   </>;
 }
 
-function Rows({ m, set }: Props) {
+function Rows({ m, set, look }: Props) {
   const card = useCard();
   const parts = useParts(card.box, [m, card.width]);
   const rows = rowsFor(m.q);
@@ -357,7 +409,7 @@ function Rows({ m, set }: Props) {
   const lit = card.focused === 'Chosen row';
   return <>
     <p>The chosen row is a raised cap with a short green bar, and it jumps from row to row at once, because you scan a list faster than a highlight could follow. Drag it up or down to choose another row, its bottom edge to make rows taller, or its corner to round it.</p>
-    <Specimen card={card} m={m} set={set}>
+    <Specimen card={card} m={m} set={set} look={look}>
       {ghost && <i className="ed-pal-lean" style={{ left: ghost.x, top: ghost.y, width: ghost.w, height: ghost.h, borderRadius: m.rowR }} aria-hidden />}
       <span ref={(el) => { card.els.current['Chosen row'] = el; }} className="ed-edge ed-pal-cap" style={{ left: cap.x, top: cap.y + 4, width: cap.w, height: Math.max(0, cap.h - 10), borderRadius: m.rowR }}
         data-lit={lit ? '' : undefined} data-away={card.focused && !lit ? '' : undefined}
@@ -372,7 +424,7 @@ function Rows({ m, set }: Props) {
   </>;
 }
 
-function Labels({ m, set }: Props) {
+function Labels({ m, set, look }: Props) {
   const card = useCard();
   const parts = useParts(card.box, [m, card.width]);
   const sec = parts.one('secText'), mk = parts.one('mark');
@@ -383,7 +435,7 @@ function Labels({ m, set }: Props) {
   const ulY = parts.one('baseline').y + m.markOffset + T['mark-underline'] / 2 - 3;
   return <>
     <p>Rows sit under small engraved section names with a count, and the words you typed are underlined in each row. Type in the field to change them, drag the line over a section name to give it room, or drag the underline down to lower it.</p>
-    <Specimen card={card} m={m} set={set}>
+    <Specimen card={card} m={m} set={set} look={look}>
       <Hair card={card} t={above} tune={ta} at={{ x: sec.x - 2, y: sec.y - 5, w: sec.w + 4, h: 5 }} d={`M0 2.5H${sec.w + 4}`} heavy cursor="ns-resize" />
       {mk.w > 0 && <Hair card={card} t={under} tune={tu} at={{ x: mk.x, y: ulY, w: mk.w, h: 6 }} d={`M0 3H${mk.w}`} heavy cursor="ns-resize" />}
     </Specimen>
@@ -391,7 +443,7 @@ function Labels({ m, set }: Props) {
   </>;
 }
 
-function Keys({ m, set }: Props) {
+function Keys({ m, set, look }: Props) {
   const card = useCard();
   const parts = useParts(card.box, [m, card.width]);
   const keys = parts.many('keys'), foot = parts.one('foot');
@@ -402,7 +454,7 @@ function Keys({ m, set }: Props) {
   const gx = a.x + a.w, gw = Math.max(4, b.x - gx);
   return <>
     <p>The bottom line shows every key the palette understands, so you learn them just by using it. Drag the gap between two keys to spread them, or the line above the keys to give them room.</p>
-    <Specimen card={card} m={m} set={set}>
+    <Specimen card={card} m={m} set={set} look={look}>
       <Hair card={card} t={gap} tune={tg} at={{ x: gx, y: a.y, w: gw, h: a.h }} d={`M${gw / 2} 1V${a.h - 1}`} heavy cursor="ew-resize" />
       <Hair card={card} t={top} tune={tt} at={{ x: foot.x + 4, y: a.y - 5, w: Math.max(0, foot.w - 8), h: 5 }} d={`M0 2.5H${Math.max(0, foot.w - 8)}`} heavy cursor="ns-resize" />
     </Specimen>
@@ -423,7 +475,7 @@ function Toggle({ name, on, set, focus }: { name: string; on: boolean; set: (v: 
   );
 }
 
-function Plate({ m, set }: Props) {
+function Plate({ m, set, look }: Props) {
   const card = useCard();
   const parts = useParts(card.box, [m, card.width]);
   const p = parts.one('plate');
@@ -433,7 +485,7 @@ function Plate({ m, set }: Props) {
   const inner = p.x + p.w - m.pad;
   return <>
     <p>The palette is a frosted plate that floats high over a dimmed page, like a dialog. Drag the line inside its right edge to change the padding, or its corner to round it.</p>
-    <Specimen card={card} m={m} set={set}>
+    <Specimen card={card} m={m} set={set} look={look}>
       <Hair card={card} t={pad} tune={tp} at={{ x: inner - 3, y: p.y + m.radius, w: 6, h: Math.max(0, p.h - m.radius * 2) }} d={`M3 0V${Math.max(0, p.h - m.radius * 2)}`} heavy cursor="ew-resize" />
       <Corner card={card} t={corners} tune={tc} at={{ x: p.x, y: p.y }} r={m.radius} />
     </Specimen>
@@ -441,12 +493,12 @@ function Plate({ m, set }: Props) {
   </>;
 }
 
-function Layers({ m, set, focus }: Props) {
+function Layers({ m, set, focus, look }: Props) {
   const { well, zoom, width } = useFit();
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
   return <>
     <p>The plate is made of nine layers, and the field inside it is a tray like any field. Turn a layer off to see what it adds.</p>
-    <div ref={well} className="ed-specimen ed-pal-well"><div style={{ zoom }}><Still m={m} set={set} width={width} /></div></div>
+    <div ref={well} className="ed-specimen ed-pal-well"><div style={{ zoom }}><Still m={m} set={set} look={look} width={width} /></div></div>
     <div className="ed-layers">{LAYERS.map((l, i) => <Toggle key={l.name} name={l.name} on={m.on[i]} set={(v) => toggle(i, v)} focus={focus} />)}</div>
   </>;
 }

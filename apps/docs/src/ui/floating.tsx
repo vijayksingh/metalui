@@ -19,7 +19,7 @@ import { INITIAL as TOOLTIP, TooltipChip, useTooltipLook, type TooltipConfig } f
 import { ToastStill } from './xray/ToastXray';
 import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xray/MenuXray';
 import { DialogFace, INITIAL as DIALOG, useDialogLook, type DialogConfig } from './xray/DialogXray';
-import { PaletteStill } from './xray/PaletteXray';
+import { INITIAL as PALETTE, PaletteFor, usePaletteLook, type PaletteConfig } from './xray/PaletteXray';
 import { INITIAL as FOLDER, FolderFace, useFolderLook, type FolderConfig } from './xray/FolderXray';
 import { INITIAL as WORDMARK, WordmarkObject } from './xray/WordmarkXray';
 
@@ -192,6 +192,13 @@ function TableDialog({ config = DIALOG, open }: { config?: DialogConfig; open: (
   return <div onClick={open} style={{ cursor: 'zoom-in' }}><DialogFace m={config} look={look} /></div>;
 }
 
+/** The command palette on the table: the palette as the library writes it, set to its config, which its x-ray takes
+ *  over and hands back. The real one opens modally in a portal from ⌘K, so the table holds its still (PaletteFor). */
+function TablePalette({ config = PALETTE, open }: { config?: PaletteConfig; open: () => void }) {
+  const look = usePaletteLook(config);
+  return <PaletteFor m={config} look={look} inert onClick={open} />;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -263,7 +270,11 @@ const ITEMS: Item[] = [
   { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray, seeds }) => <TableMenu config={seeds.menu} open={() => openXray('menu')} /> },
   // the dialog's plate, set to its config: its x-ray lands on the plate itself
   { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, zoom: 0.6, node: ({ openXray, seeds }) => <TableDialog config={seeds.dialog} open={() => openXray('dialog')} /> },
-  { id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, zoom: 0.7, node: ({ openXray }) => <div onClick={() => openXray('palette')}><PaletteStill /></div> },
+  {
+    // the palette's still, set to its config; a click opens the x-ray, which lands on the same palette
+    id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, zoom: 0.7,
+    node: ({ openXray, seeds }) => <TablePalette config={seeds.palette} open={() => openXray('palette')} />,
+  },
   {
     // a widget with no x-ray yet: it opens its own page
     id: 'weather', table: ['4%', '36%'], space: ['10%', '35%', -260, 12], dur: '33s', drift: ['20px', '14px'],

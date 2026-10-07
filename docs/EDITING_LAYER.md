@@ -66,7 +66,7 @@ A starting point, not a spec. Check each value against rule 7 first: if the comp
 | Dialog | – | dim, distance from the top, height | open a real dialog |
 | Link card | – | frame width, screen corners | glare, frame corners follow |
 | Suggestion chip | – | how sure, frost, height, space on the left | point at the line, green line |
-| Command palette | – | (it has none today; add from its tokens) | – |
+| Command palette | the chosen row (drag it to another row) | field height, corners, space on the left; row height, corners; space above a section, the underline; the keys' gap and room; padding, plate corners | pin with ⇧↩, where answers come from; a switch per plate layer |
 | Lasso, Snap guides | – | width, height, where you drag, zoom | still dragging, hold ⌘ |
 | Switch | state (drag the thumb across; a ghost thumb shows the lean); size | gap around the thumb, light | layers |
 
