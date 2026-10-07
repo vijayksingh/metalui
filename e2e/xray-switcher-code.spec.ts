@@ -117,6 +117,8 @@ test('at defaults the code is the guide\'s example: props, no overrides', async 
 });
 
 test('every tweak reaches the code: props as props, tunables as the library\'s variables', async ({ page }) => {
+  // compiles or renders the snippet and reads every tweak back: 12-25 s alone, more under a parallel run
+  test.slow();
   const xray = await openXray(page, 'bone');
   const card = xray.locator('.xr-card');
   // the pick is a prop
@@ -186,6 +188,8 @@ test('copy puts the code on the clipboard', async ({ page }) => {
 
 for (const start of COLORWAYS) {
   test(`the snippet copied in ${start} renders as the specimen does, in every colorway`, async ({ page }) => {
+    // compiles or renders the snippet and reads every tweak back: 12-25 s alone, more under a parallel run
+    test.slow();
     const xray = await openXray(page, start);
     const card = xray.locator('.xr-card');
     await card.locator('.mu-switcher-option', { hasText: 'Month' }).click();
