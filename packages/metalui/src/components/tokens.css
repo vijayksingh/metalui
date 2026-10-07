@@ -1209,6 +1209,9 @@
   /* island: Button graphite cap; Led; SwapText (the swap drum); toast plain-ms */
   --mu-r-island-self-gap: 8px;
   --mu-r-island-self-title-max: 220px;
+  --mu-r-island-self-panel-width: 420px;
+  --mu-r-island-self-panel-pad: 14px;
+  --mu-r-island-self-panel-gap: 12px;
   /* dial: Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks */
   --mu-r-dial-self-length: 200px;
   --mu-r-dial-self-sweep: 300deg;

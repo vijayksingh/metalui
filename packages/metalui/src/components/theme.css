@@ -587,6 +587,9 @@
   --color-table-select-tint: var(--mu-r-table-select-tint);
   --spacing-island-gap: var(--mu-r-island-self-gap);
   --spacing-island-title-max: var(--mu-r-island-self-title-max);
+  --spacing-island-panel-width: var(--mu-r-island-self-panel-width);
+  --spacing-island-panel-pad: var(--mu-r-island-self-panel-pad);
+  --spacing-island-panel-gap: var(--mu-r-island-self-panel-gap);
   --spacing-dial-length: var(--mu-r-dial-self-length);
   --spacing-dial-track: var(--mu-r-dial-self-track);
   --spacing-dial-groove: var(--mu-r-dial-self-groove);

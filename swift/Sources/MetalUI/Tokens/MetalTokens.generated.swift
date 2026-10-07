@@ -1188,7 +1188,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact (mono, dim), a chevron. It opens the place's menu. A passing event turns into the fact's place on the swap drum and the capsule's footprint follows it, then turns back after toast-plain-ms; a lasting condition is the fact itself. The tone is said in words too, never by colour alone. A composition of Button (graphite cap), Led, Label, SwapText and the chevron; it paints nothing of its own. (Button graphite cap; Led; SwapText (the swap drum); toast plain-ms)
+    /// Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact (mono, dim), a chevron. With a panel it opens into it: the body's outline grows from the capsule's to the panel's (panel-width, padded panel-pad, its rows panel-gap apart) on the surface spring, the content fading in after. A passing event turns into the fact's place on the swap drum and the capsule's footprint follows it, then turns back after toast-plain-ms; a lasting condition is the fact itself. The tone is said in words too, never by colour alone. A composition of Button (graphite cap), Led, Label, SwapText and the chevron; it paints nothing of its own. (Button graphite cap; Led; SwapText (the swap drum); toast plain-ms)
     public static let island = MetalObjectRecipe(
         name: "island",
         layers: [
@@ -1197,6 +1197,9 @@ public enum MetalRecipes {
         props: [
             "self.gap": .number(8.0),
             "self.title-max": .number(220.0),
+            "self.panel-width": .number(420.0),
+            "self.panel-pad": .number(14.0),
+            "self.panel-gap": .number(12.0),
         ]
     )
 
