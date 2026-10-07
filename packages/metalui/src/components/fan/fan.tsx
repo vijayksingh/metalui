@@ -48,7 +48,7 @@ function FanRoot({ className, children, ...props }: FanProps) {
   const setOpen = React.useCallback((o: Open) => {
     const was = current.current;
     // a fold clears only the cell it was asked to fold, never one opened since
-    morphTo(() => setOpenState((cur) => (o === null && cur !== was ? cur : o)), o ? 'open' : 'close');
+    morphTo(() => setOpenState((cur) => (o === null && cur !== was ? cur : o)), o ? 'open' : 'close', root.current);
   }, []);
   React.useEffect(() => {
     if (!open) return;

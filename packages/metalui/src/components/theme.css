@@ -3266,7 +3266,7 @@
   display: inherit; flex-direction: inherit; flex-wrap: inherit; align-items: inherit; justify-content: inherit; gap: inherit; width: 100%;
 }
 ::view-transition-group(.mu-morph-body) {
-  animation-duration: calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-surface); overflow: clip;
+  animation-duration: calc(var(--mu-spring-part-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-part); overflow: clip;
 }
 :root:active-view-transition-type(close)::view-transition-group(.mu-morph-body) {
   animation-duration: calc(var(--mu-spring-release-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-release);
@@ -3296,13 +3296,13 @@
   background: var(--mu-r-surface-self-pop-background);
 }
 ::view-transition-group(.mu-morph-contents), ::view-transition-group(.mu-morph-part) {
-  animation-duration: calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-surface);
+  animation-duration: calc(var(--mu-spring-part-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-part);
 }
 :root:active-view-transition-type(close)::view-transition-group(.mu-morph-contents), :root:active-view-transition-type(close)::view-transition-group(.mu-morph-part) {
   animation-duration: calc(var(--mu-spring-release-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-release);
 }
 ::view-transition-new(.mu-morph-contents) {
-  animation: var(--mu-spring-surface-d) var(--mu-spring-surface) both mu-morph-arrive;
+  animation: var(--mu-spring-part-d) var(--mu-spring-part) both mu-morph-arrive;
 }
 :root:active-view-transition-type(close)::view-transition-new(.mu-morph-contents) {
   animation: var(--mu-spring-release-d) var(--mu-spring-release) both mu-morph-arrive;

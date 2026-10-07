@@ -116,7 +116,7 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
   React.useEffect(() => {
     if (!out) return;
     const inPopup = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[role="menu"], [role="listbox"], [role="dialog"]');
-    const close = () => morphTo(() => onOpenChange?.(false), 'close');
+    const close = () => morphTo(() => onOpenChange?.(false), 'close', body.current);
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape' && !inPopup(e.target)) { e.stopPropagation(); close(); } };
     const press = (e: MouseEvent) => { if (!body.current?.contains(e.target as Node) && !inPopup(e.target)) close(); };
     // a click outside, not a press: what was clicked handles its own click first, then the island
@@ -144,7 +144,7 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
       data-flush={out ? '' : undefined}
       className={CAP}
       {...props}
-      onClick={hasPanel ? (e) => { props.onClick?.(e); morphTo(() => onOpenChange?.(!open), open ? 'close' : 'open'); } : props.onClick}
+      onClick={hasPanel ? (e) => { props.onClick?.(e); morphTo(() => onOpenChange?.(!open), open ? 'close' : 'open', body.current); } : props.onClick}
     >
       <Led kind={led.kind} gesture={led.gesture} />
       <span className={TITLE}>{title}</span>

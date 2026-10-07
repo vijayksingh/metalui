@@ -20,9 +20,10 @@ import { flushSync } from 'react-dom';
  * --mu-travel-surface, so Reduce Motion leaves only the fades. Without View Transitions the
  * state simply changes.
  *
- * Built on the platform's View Transitions directly: every shape carries its transition name and
- * class at all times, and morphTo starts the transition and commits the change inside it with
- * flushSync. Nothing waits on another render, and no other render can cancel a morph.
+ * Built on the platform's View Transitions directly: a shape carries its transition name and class as
+ * data attributes, and morphTo names only the shape it is given (its scope) for the length of the
+ * morph, so the platform snapshots that shape and nothing else. The change commits inside the
+ * transition with flushSync: nothing waits on another render, and no other render can cancel it.
  * ───────────────────────────────────────────────────────── */
 
 export type MorphMaterial = 'graphite-deep' | 'tool' | 'pop';
@@ -34,12 +35,33 @@ type Transitioning = Document & {
   activeViewTransition?: Running | null;
 };
 
-/** Change a shape's state as a morph: finishes a running one, then commits the change inside a new one. */
-export function morphTo(update: () => void, kind?: MorphKind) {
+const NAMED = '[data-morph-name]';
+
+/** Give the shapes inside `scope` their transition names (or take them away). */
+function name(scope: ParentNode, on: boolean) {
+  const els = [...(scope instanceof Element && scope.matches(NAMED) ? [scope] : []), ...scope.querySelectorAll<HTMLElement>(NAMED)] as HTMLElement[];
+  for (const el of els) {
+    el.style.setProperty('view-transition-name', on ? el.dataset.morphName! : '');
+    el.style.setProperty('view-transition-class', on ? el.dataset.morphClass ?? '' : '');
+  }
+}
+
+/**
+ * Change a shape's state as a morph: finishes a running one, names the shapes inside `scope` (the
+ * shape and the parts beside it; default the whole page), and commits the change inside the
+ * transition. Only what is named is snapshotted, so give the narrowest scope that holds the change.
+ */
+export function morphTo(update: () => void, kind?: MorphKind, scope?: Element | null) {
   const doc = typeof document !== 'undefined' ? (document as Transitioning) : null;
   if (!doc?.startViewTransition) { update(); return; }
   doc.activeViewTransition?.skipTransition();
-  doc.startViewTransition({ update: () => flushSync(update), types: kind ? [kind] : [] });
+  const root: ParentNode = scope ?? doc;
+  name(root, true);
+  const run = doc.startViewTransition({
+    update: () => { flushSync(update); name(root, true); },
+    types: kind ? [kind] : [],
+  });
+  run.finished.finally(() => name(root, false));
 }
 
 /** Run after the morph in flight lands (or now, if none): focus into new contents, a tooltip, a measure. */
@@ -85,13 +107,15 @@ export function MorphShape({ children, material, from = 'top', name }: MorphShap
   const body = name ? css(name) : `mu-${id}-body`;
   const child = children as React.ReactElement<{ style?: React.CSSProperties; children?: React.ReactNode }>;
   const contents = (
-    <span className="mu-morph-contents" style={{ viewTransitionName: `mu-${id}-contents`, viewTransitionClass: `mu-morph-contents mu-morph-from-${from}` } as React.CSSProperties}>
+    <span className="mu-morph-contents" data-morph-name={`mu-${id}-contents`} data-morph-class={`mu-morph-contents mu-morph-from-${from}`}>
       {child.props.children}
     </span>
   );
   return React.cloneElement(child, {
-    style: { ...child.props.style, viewTransitionName: body, viewTransitionClass: `mu-morph-body mu-morph-${material}`, viewTransitionGroup: 'contain' } as React.CSSProperties,
-  }, contents);
+    'data-morph-name': body,
+    'data-morph-class': `mu-morph-body mu-morph-${material}`,
+    style: { ...child.props.style, viewTransitionGroup: 'contain' } as React.CSSProperties,
+  } as Record<string, unknown>, contents);
 }
 
 /**
@@ -99,8 +123,5 @@ export function MorphShape({ children, material, from = 'top', name }: MorphShap
  * it travels with its own group on the body's spring instead of changing with the contents.
  */
 export function MorphPart({ name, children }: { name: string; children: React.ReactElement }) {
-  const child = children as React.ReactElement<{ style?: React.CSSProperties }>;
-  return React.cloneElement(child, {
-    style: { ...child.props.style, viewTransitionName: `mu-${css(name)}`, viewTransitionClass: 'mu-morph-part' } as React.CSSProperties,
-  });
+  return React.cloneElement(children, { 'data-morph-name': `mu-${css(name)}`, 'data-morph-class': 'mu-morph-part' } as Record<string, unknown>);
 }
