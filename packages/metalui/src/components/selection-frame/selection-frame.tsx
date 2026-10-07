@@ -17,9 +17,11 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *     0ms   ring and handles enter from 1.02, opacity 0, on the part spring
  *           (Reduce Motion: part resolves instant)
  *           the readout reads the measured frame: ● W × H
- *   typing  ring, handles and readout re-measure in the same frame as the
- *           host's layout (ResizeObserver runs before paint); the entrance
- *           never replays; the readout sits at .78
+ * writing   the object is being written in, so it is not the object being handled: the ring
+ *           eases to the quiet lite ring, the collar goes, the handles fade and shrink away and
+ *           stop taking the pointer, the readout fades out (all on the settle spring). Leaving
+ *           writing brings them back the same way. The ring still re-measures in the same frame
+ *           as the host's layout (ResizeObserver runs before paint); the entrance never replays
  *   moving  the readout returns to 1
  *   copied  the readout reads COPIED · PNG W × H for 900 ms
  * lite      one quiet 1 pt ring, no collar, no handles, no entrance: a
@@ -34,7 +36,7 @@ export interface SelectionFrameProps extends Omit<React.HTMLAttributes<HTMLDivEl
   state?: 'rest' | 'hover' | 'selected';
   /** ring: the one selection. lite: a quiet ring (multi-selection member, or a selection made by finishing). */
   variant?: 'ring' | 'lite';
-  /** writing dims the readout to .78; moving returns it to 1. */
+  /** writing quiets the frame to the lite ring (no collar, handles or readout); moving shows the readout at 1. */
   mode?: 'idle' | 'writing' | 'moving';
   /** The object's corner radius. The ring's is this plus the selection offset (6). */
   radius?: number;
@@ -67,7 +69,7 @@ export interface SelectionFrameProps extends Omit<React.HTMLAttributes<HTMLDivEl
 const FRAME = 'mu-selection-frame group/sf absolute inset-0 pointer-events-none presence-frame';
 /* 1.25 green at offset 6 and a flat 3.5 collar outside it, never a blur; lite is one quiet ring. It
  * enters once, from 1.02 on the part spring; resizing never replays it. */
-const RING = 'mu-sf-ring absolute presence-ring opacity-0 group-data-[state=selected]/sf:opacity-100 group-data-[variant=lite]/sf:presence-ring-lite group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-in';
+const RING = 'mu-sf-ring absolute presence-ring opacity-0 transition-shadow duration-settle ease-settle group-data-[state=selected]/sf:opacity-100 group-data-[variant=lite]/sf:presence-ring-lite group-data-[mode=writing]/sf:presence-ring-lite group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-in';
 /* Hover: only the faint corner dots, where the handles will be. */
 const DOT = 'mu-sf-dot absolute size-presence-hover-dot -translate-1/2 rounded-round bg-presence-dot opacity-0 transition-opacity duration-settle ease-settle group-data-[state=hover]/sf:opacity-100';
 /* The edge light: the pointer entered the band on one edge. */
@@ -77,7 +79,10 @@ const EDGE_AT = { n: 'presence-edge-n', e: 'presence-edge-e', s: 'presence-edge-
 const GLOW = 'mu-sf-glow absolute -translate-1/2 presence-corner-glow opacity-0 transition-opacity duration-settle ease-settle data-on:opacity-presence-corner-glow';
 /* Handles on the ring line: round caps at the corners, capsules at the edge midpoints, each with a hit
  * area 7 wider; on text the n and s capsules are grips. */
-const HANDLE = 'mu-sf-handle absolute -translate-1/2 rounded-pill pointer-events-auto touch-none after:absolute after:-inset-presence-handle-hit after:rounded-pill group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-fade';
+/* While writing the handles fade (on their layer: their own entrance owns their opacity) and each
+ * shrinks in place, and they stop taking the pointer. */
+const HANDLE_LAYER = 'mu-sf-handles absolute inset-0 transition-opacity duration-settle ease-settle group-data-[mode=writing]/sf:opacity-0';
+const HANDLE = 'mu-sf-handle absolute -translate-1/2 rounded-pill pointer-events-auto touch-none transition-transform duration-settle ease-settle group-data-[mode=writing]/sf:scale-50 group-data-[mode=writing]/sf:pointer-events-none after:absolute after:-inset-presence-handle-hit after:rounded-pill group-data-[state=selected]/sf:group-data-[variant=ring]/sf:group-data-entrance/sf:animate-sf-fade';
 const SHAPE = {
   nw: 'size-presence-handle', ne: 'size-presence-handle', se: 'size-presence-handle', sw: 'size-presence-handle',
   e: 'w-presence-capsule-thickness h-presence-capsule-length', w: 'w-presence-capsule-thickness h-presence-capsule-length',
@@ -90,8 +95,8 @@ const RESIZE = {
   n: 'presence-handle cursor-ns-resize', s: 'presence-handle cursor-ns-resize',
 };
 const GRIP = 'presence-grip cursor-grab';
-/* The readout sits 16 under the object, centred; .78 while writing, 1 while moving. */
-const READOUT = 'absolute presence-readout-at group-data-[mode=writing]/sf:opacity-presence-readout-writing group-data-[mode=moving]/sf:opacity-100';
+/* The readout sits 16 under the object, centred; it fades out while writing, and is 1 while moving. */
+const READOUT = 'absolute presence-readout-at transition-opacity duration-settle ease-settle group-data-[mode=writing]/sf:opacity-presence-readout-writing group-data-[mode=moving]/sf:opacity-100';
 
 const HANDLES: SelectionHandle[] = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
 // Handle centres on the ring line, as fractions of the host box plus the offset outward.
@@ -177,7 +182,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
       {(['n', 'e', 's', 'w'] as SelectionEdge[]).map((e) => (
         <span key={e} className={`${EDGE} ${EDGE_AT[e]}`} data-edge={e} data-on={edge === e && state !== 'selected' ? '' : undefined} />
       ))}
-      {showHandles &&
+      {showHandles && <span className={HANDLE_LAYER}>{
         HANDLES.map((k) => {
           const grip = handles === 'text' && (k === 'n' || k === 's');
           return (
@@ -191,7 +196,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
               onPointerDown={onHandlePointerDown ? (e) => onHandlePointerDown(k, e) : undefined}
             />
           );
-        })}
+        })}</span>}
       {selected && readout && box && <SizeReadout className={READOUT} width={box.width} height={box.height} count={count} copied={copiedShown} />}
     </div>
   );

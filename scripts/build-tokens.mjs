@@ -412,7 +412,7 @@ for (const m of css.matchAll(new RegExp(String.raw`^\s+--mu-((?:${GROUPS.join('|
   if (/^-?[\d.]+px$/.test(v) && n.includes('radius') && !recipeNames.has(`radius-${n}`)) groupVars.push(`  --radius-${n}: var(--mu-${n});`);
   else if (/^(#|rgba?\()/.test(v) && !recipeNames.has(`color-${n}`)) groupVars.push(`  --color-${n}: var(--mu-${n});`);
   else if (/^[\d.]+ms$/.test(v)) groupUtils.push(`@utility duration-${n} {\n  --tw-duration: var(--mu-${n});\n  transition-duration: var(--mu-${n});\n}`);
-  else if (/^0?\.\d+$|^1$/.test(v)) groupUtils.push(`@utility opacity-${n} {\n  opacity: var(--mu-${n});\n}`);
+  else if (/^0$|^0?\.\d+$|^1$/.test(v)) groupUtils.push(`@utility opacity-${n} {\n  opacity: var(--mu-${n});\n}`);
 }
 // A group's $utilities: raw declarations a block needs that no theme value spells (a multi-property
 // transition), emitted verbatim.

@@ -3228,7 +3228,7 @@ public enum MetalPresence {
     /// In em.
     public static let readoutTracking: Double = 0.04
     public static let readoutLed: Double = 5.0
-    public static let readoutWriting: Double = 0.78
+    public static let readoutWriting: Double = 0.0
     public static let copiedMs: Double = 900.0
     public static let guideWidth: Double = 1.0
     public static let guide: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)

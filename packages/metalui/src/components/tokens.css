@@ -172,7 +172,7 @@
   --mu-presence-readout-dim: #7C7D82;
   --mu-presence-readout-tracking: 0.04em;
   --mu-presence-readout-led: 5px;
-  --mu-presence-readout-writing: 0.78;
+  --mu-presence-readout-writing: 0;
   --mu-presence-copied-ms: 900ms;
   --mu-presence-guide-width: 1px;
   --mu-presence-guide: #3FB97A;
