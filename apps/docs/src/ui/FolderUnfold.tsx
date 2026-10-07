@@ -318,7 +318,8 @@ export function FolderUnfold() {
         <Switcher size="compact" aria-label="Speed" value={speed} onValueChange={setSpeed}
           options={[{ value: '1', label: '1×' }, { value: '0.5', label: '½×' }, { value: '0.25', label: '¼×' }]} />
       </div>
-      <DialTimeline defaultOpen />
+      {/* hidden until asked for: the timeline button (bottom right) brings the dock up, expanded */}
+      <DialTimeline defaultVisible={false} defaultOpen />
     </div>
   );
 }
