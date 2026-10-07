@@ -8,8 +8,8 @@ import { COLORWAYS, capture } from './helpers';
 // The palette x-ray is a tweak surface: under its card, the code for exactly the config you have
 // handled, which you can copy, and which opens as the specimen looks. At defaults it is how a page
 // really builds the palette (its rows, a button and ⌘K to open it, the query it opens with) and
-// nothing more. The palette opens in a portal and takes no class of its own, so what you tune reaches
-// it through a stylesheet on its own class, setting the variables it reads.
+// nothing more. What you tune is a stylesheet on the class the palette takes, setting the variables it
+// reads, so only that palette changes.
 
 async function openXray(page: Page, colorway: string) {
   await page.addInitScript((c) => localStorage.setItem('metalui:colorway', c), colorway);
@@ -159,13 +159,15 @@ test('every tweak reaches the code: props as props, the plate\'s recipe through 
   await part(xray, 'Rows');
   await step(page, page.getByRole('slider', { name: 'Chosen row' }), 'ArrowDown');
   await expect(code(xray)).toContainText('chose in the x-ray');
-  // the field's height is a palette variable: the plate is in a portal, so a stylesheet on its own class carries it
+  // the field's height is a palette variable: a stylesheet on the class the palette takes carries it, for this palette only
   await part(xray, 'Field');
   await drag(page, page.getByRole('slider', { name: 'Field height' }), 0, -20);
   await expect(code(xray)).toContainText(`import './canvas-palette.css';`);
-  expect(await text(xray)).not.toMatch(/className=|style=|--mu-/);
+  await expect(code(xray)).toContainText('className="canvas-palette"');
+  expect(await text(xray)).not.toMatch(/style=|--mu-/);
   let sheet = (await files(xray)).CSS!;
-  expect(sheet).toContain('.mu-palette {');
+  expect(sheet).toContain('.canvas-palette {');
+  expect(sheet).not.toContain('.mu-palette');
   expect(sheet.match(/--mu-palette-field-height:/g)).toHaveLength(1);
   expect(sheet).not.toMatch(/--mu-raise|--mu-frost-strong/);
   // the plate's corners are the theme's card radius, one value in every colorway
@@ -178,8 +180,8 @@ test('every tweak reaches the code: props as props, the plate\'s recipe through 
   await card.getByRole('switch', { name: 'Rim' }).click();
   sheet = (await files(xray)).CSS!;
   expect(sheet).toContain('derived from its tokens for rim off');
-  expect(sheet).toContain('.mu-palette, [data-mu-colorway="bone"] .mu-palette {');
-  expect(sheet).toContain('[data-mu-colorway="graphite"] .mu-palette {');
+  expect(sheet).toContain('.canvas-palette, [data-mu-colorway="bone"] .canvas-palette {');
+  expect(sheet).toContain('[data-mu-colorway="graphite"] .canvas-palette {');
   expect(sheet.match(/--mu-raise:/g)).toHaveLength(2);
   expect(sheet).not.toContain('--mu-frost-strong');
   // the frost off is the fill

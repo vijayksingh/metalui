@@ -12,8 +12,8 @@ import { ACTIONS, INITIAL, LAYERS, PLACEHOLDER, STATUS, paletteLook, type Palett
  *   the query is the state it opens with, and pinning and where answers come from are props. The
  *   chosen row is the palette's own state (the first row when it opens; ↑↓ and hover move it), so a
  *   row chosen in the x-ray is said in one line, never faked.
- *   The palette opens in a portal and takes no class or style of its own, so what you tune reaches it
- *   through a stylesheet on its own .mu-palette class, setting only the variables that differ: the
+ *   What you tune is a stylesheet on the class the palette takes (`className`), so only this palette
+ *   changes, setting only the variables that differ: the
  *   --mu-palette-* sizes and the theme radii it is built from, one rule for every colorway; its frost
  *   and raise are colours, one set per colorway, scoped the way the library scopes its own.
  *   SwiftUI's .metalCommandPalette takes the query, the rows and the status, and its sizes come from
@@ -23,6 +23,7 @@ import { ACTIONS, INITIAL, LAYERS, PLACEHOLDER, STATUS, paletteLook, type Palett
 
 const COMPONENT = 'CanvasPalette';
 const SHEET = 'canvas-palette.css';
+const CLASS = 'canvas-palette';
 const q = (s: string) => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 const dq = (s: string) => `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
 /** The variables that hold colours: their values differ per colorway. */
@@ -52,6 +53,7 @@ export function paletteReact(m: PaletteConfig) {
   const props = ['open={open}', 'onOpenChange={setOpen}', 'items={items}', 'query={query}', 'onQueryChange={setQuery}', `placeholder=${dq(PLACEHOLDER)}`, `icon={<Icon name="search" size={${g.field}} />}`];
   if (m.status) props.push(`status=${dq(STATUS)}`);
   if (!m.pinnable) props.push('pinnable={false}');
+  if (styled) props.push(`className="${CLASS}"`);
   const lines = [
     `import { useEffect, useState } from 'react';`,
     `import { Button, CommandPalette, Kbd, type CommandPaletteItem } from '@unlocalhosted/metalui';`,
@@ -81,7 +83,6 @@ export function paletteReact(m: PaletteConfig) {
     '  ];',
   );
   if (m.sel !== INITIAL.sel) lines.push(`  // the row you chose in the x-ray is the palette's own state: it highlights the first row when it opens, and ↑↓ or hover move it`);
-  if (styled) lines.push(`  // the palette opens in a portal and takes no class of its own: ${SHEET} sets the variables it reads, on its own class`);
   lines.push(
     '  return (',
     '    <>',
@@ -100,7 +101,7 @@ export function paletteCss(m: PaletteConfig) {
   if (!plain.length && !sheet.length) return '';
   const lines: string[] = [];
   if (plain.length) {
-    lines.push(`/* the palette reads its sizes through these variables; it opens in a portal and takes no class of its own, so they are set on its own class, for every palette on the page */`, '.mu-palette {');
+    lines.push(`/* the palette reads its sizes through these variables: on the class it takes (className), so only this palette changes */`, `.${CLASS} {`);
     plain.forEach(([k, v]) => lines.push(`  ${k}: ${v};`));
     lines.push('}');
   }
@@ -109,7 +110,7 @@ export function paletteCss(m: PaletteConfig) {
     if (plain.length) lines.push('');
     lines.push(`/* the plate's frost and raise, derived from its tokens${derived ? ` for ${derived}` : ''}; the library sets its own the same way */`);
     for (const c of COLORWAYS) {
-      lines.push(c === COLORWAYS[0] ? `.mu-palette, [data-mu-colorway="${c}"] .mu-palette {` : `[data-mu-colorway="${c}"] .mu-palette {`);
+      lines.push(c === COLORWAYS[0] ? `.${CLASS}, [data-mu-colorway="${c}"] .${CLASS} {` : `[data-mu-colorway="${c}"] .${CLASS} {`);
       sheet.forEach((n) => lines.push(`  ${n}: ${by[c][n]};`));
       lines.push('}');
     }
