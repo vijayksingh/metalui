@@ -83,12 +83,15 @@ function Root<T extends Amount = number>({ value, defaultValue, min = 0, max = 1
   }, [amount, min, max, disabled]); // Values are a projection of the accepted host amount.
   React.useLayoutEffect(() => {
     if (!control) return;
-    const read = () => {
-      const box = control.getBoundingClientRect();
+    // The control's own layout size, never its screen box: in a scaled or turned host (a docs model, a
+    // zoomed preview) the screen box is not the travel. The observer reports the exact border box.
+    const read = (width: number, height: number) => {
       const knob = parseFloat(getComputedStyle(control).getPropertyValue('--mu-slider-knob'));
-      setGeometry(old => old.width === box.width && old.height === box.height && old.knob === knob ? old : { width: box.width, height: box.height, knob });
+      setGeometry(old => old.width === width && old.height === height && old.knob === knob ? old : { width, height, knob });
     };
-    read(); const observer = new ResizeObserver(read); observer.observe(control); return () => observer.disconnect();
+    read(control.offsetWidth, control.offsetHeight);
+    const observer = new ResizeObserver(([entry]) => { const box = entry?.borderBoxSize?.[0]; if (box) read(box.inlineSize, box.blockSize); else read(control.offsetWidth, control.offsetHeight); });
+    observer.observe(control); return () => observer.disconnect();
   }, [control, size, orientation]);
   const pointer = React.useRef<{ id: number; side: number } | null>(null);
   React.useEffect(() => {
