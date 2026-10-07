@@ -6,19 +6,22 @@ import { ViewTransition, addTransitionType, startTransition } from 'react';
 /* ─────────────────────────────────────────────────────────
  * MORPH SHAPE, one shape, many states (docs/ONE-SHAPE.md)
  *
- * Wrap the one shape whose content changes (a capsule that opens into a panel, a trigger that
- * becomes its popover). Change its state with morphTo():
+ * Wrap the one shape whose contents change (a capsule that opens into a panel, a cap that opens
+ * into a tray). Change its state with morphTo():
  *
- *     0 ms   the shell's outline starts travelling from the old box to the new on the surface
- *            spring (close: the release spring), painted with its material, corners true
- *     0 ms   the old content dissolves out (dissolve-out) and shrinks to reveal-scale
- *    ~0 ms   the new content dissolves in (dissolve-in) from reveal-scale, pinned to the top
+ *     0 ms   the body's outline travels from the old box to the new on the surface spring
+ *            (closing: the release spring), painted in its material, corners true
+ *     0 ms   the leaving contents fade on the release spring; they do not travel
+ *     0 ms   the arriving contents rise one nest from the edge the body grows from, at the
+ *            popover's enter scale, on the surface spring (a MetalUI surface arriving)
+ *            a part in both states (MorphPart) travels with the body instead
  *   ~500 ms  rest: the real element is back, nothing runs
- * An interrupt skips the running morph and starts from the state on screen.
- * Reduce Motion: no travel, a cross-dissolve. Without View Transitions the state just changes.
+ * An interrupt skips the running morph and starts from the state on screen. Travel scales by
+ * --mu-travel-surface, so Reduce Motion leaves only the fades. Without View Transitions the
+ * state simply changes.
  * ───────────────────────────────────────────────────────── */
 
-export type MorphMaterial = 'graphite-deep' | 'raise' | 'pop';
+export type MorphMaterial = 'graphite-deep' | 'tool' | 'pop';
 export type MorphKind = 'open' | 'close';
 
 /** Change a shape's state as a morph: skips a running one, then runs the update in a transition. */
@@ -35,37 +38,37 @@ export interface MorphShapeProps {
   children: React.ReactElement;
   /** The shape's material, painted on its outline while it travels. */
   material: MorphMaterial;
-  /** Where the content is pinned while it changes: top (a shape that drops down) or centre. */
-  anchor?: 'top' | 'center';
+  /** The edge the body grows from, where the contents stay pinned: top (drops down) or left (opens sideways). */
+  from?: 'top' | 'left';
   /** A shared name, when the closed and open states are different elements (render one at a time). */
   name?: string;
 }
 
 /**
- * The shell and content boundaries around one shape. The child is the shell; its own children are
- * the content. Give the shell `view-transition-group: contain` (MorphShape does) so the content's
- * group nests inside it and is clipped by the travelling outline.
+ * The body and contents boundaries around one shape. The child is the body; its own children are
+ * the contents. The body gets `view-transition-group: contain` so the contents' group nests inside
+ * it and is clipped by the travelling outline.
  */
-export function MorphShape({ children, material, anchor = 'top', name }: MorphShapeProps) {
-  const shell = { open: `mu-vt-shell mu-vt-${material}`, close: `mu-vt-shell mu-vt-close mu-vt-${material}`, default: `mu-vt-shell mu-vt-${material}` };
-  const content = anchor === 'top' ? 'mu-vt-reveal mu-vt-top' : 'mu-vt-reveal';
+export function MorphShape({ children, material, from = 'top', name }: MorphShapeProps) {
+  const body = { open: `mu-morph-body mu-morph-${material}`, close: `mu-morph-body mu-morph-closing mu-morph-${material}`, default: `mu-morph-body mu-morph-${material}` };
+  const content = `mu-morph-contents mu-morph-from-${from}`;
   const child = children as React.ReactElement<{ style?: React.CSSProperties; children?: React.ReactNode }>;
   const inner = (
     <ViewTransition update={content} enter={content} exit={content}>
-      <span className="mu-morph-shape-content">{child.props.children}</span>
+      <span className="mu-morph-contents">{child.props.children}</span>
     </ViewTransition>
   );
   const shape = React.cloneElement(child, { style: { ...child.props.style, viewTransitionGroup: 'contain' } as React.CSSProperties }, inner);
   return name
-    ? <ViewTransition name={name} share={shell} update={shell}>{shape}</ViewTransition>
-    : <ViewTransition update={shell}>{shape}</ViewTransition>;
+    ? <ViewTransition name={name} share={body} update={body}>{shape}</ViewTransition>
+    : <ViewTransition update={body}>{shape}</ViewTransition>;
 }
 
 /**
  * A part that is in both states (the capsule's own row inside its panel): it travels with its own
- * group on the shell's spring instead of dissolving with the content, so it never ghosts.
+ * group on the body's spring instead of dissolving with the content, so it never ghosts.
  * The name must be unique on the page (useId).
  */
 export function MorphPart({ name, children }: { name: string; children: React.ReactElement }) {
-  return <ViewTransition name={name} update="mu-vt-part" share="mu-vt-part">{children}</ViewTransition>;
+  return <ViewTransition name={name} update="mu-morph-part" share="mu-morph-part">{children}</ViewTransition>;
 }

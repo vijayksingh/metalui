@@ -1228,17 +1228,14 @@ public enum MetalRecipes {
         ]
     )
 
-    /// One shape, many states (docs/ONE-SHAPE.md): the timing of a shape morph's content. The shell's outline rides the surface spring (close: the release spring); inside it the old content dissolves out over dissolve-out and the new dissolves in over dissolve-in while it reveals from reveal-scale, anchored where the shape grows from. Reduce Motion: no travel, old and new cross-dissolve over reduced. A part that stays in both states (MorphPart) travels with its own group on the same spring instead of dissolving. The page itself never cross-fades (:root has no transition name). (Morph UI's nested view-transition boundaries (morph-ui.anmol16.workers.dev), on our springs)
+    /// One shape, many states (docs/ONE-SHAPE.md). A shape that changes what it shows is one body: its outline travels from the old box to the new on the surface spring (closing: the release spring), painted in its own material, corners true. Its contents behave as a MetalUI popover's do: the arriving contents rise one nest from the edge the body grows from, at the popover's enter scale, on the surface spring; the leaving contents fade on the release spring and do not travel. A part in both states travels with the body. Everything scales by --mu-travel-surface, so Reduce Motion leaves only the fades. The page itself never moves. (Ours, on the platform's View Transitions: the popover's arrival (one nest, enter-scale), the surface and release springs, the travel multipliers. The idea of nested boundaries is credited in ONE-SHAPE.md.)
     public static let morphShape = MetalObjectRecipe(
         name: "morph-shape",
         layers: [
 
         ],
         props: [
-            "self.dissolve-out": .text("150ms"),
-            "self.dissolve-in": .text("210ms"),
-            "self.reveal-scale": .text("0.92"),
-            "self.reduced": .text("150ms"),
+            :
         ]
     )
 

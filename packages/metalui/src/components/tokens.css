@@ -1223,11 +1223,7 @@
   --mu-r-dial-self-dot-inset: 7px;
   --mu-r-dial-self-tick-out: 3px;
   --mu-r-dial-self-tick: 4px;
-  /* morph-shape: Morph UI's nested view-transition boundaries (morph-ui.anmol16.workers.dev), on our springs */
-  --mu-r-morph-shape-self-dissolve-out: 150ms;
-  --mu-r-morph-shape-self-dissolve-in: 210ms;
-  --mu-r-morph-shape-self-reveal-scale: 0.92;
-  --mu-r-morph-shape-self-reduced: 150ms;
+  /* morph-shape: Ours, on the platform's View Transitions: the popover's arrival (one nest, enter-scale), the surface and release springs, the travel multipliers. The idea of nested boundaries is credited in ONE-SHAPE.md. */
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;
