@@ -1,0 +1,28 @@
+{
+  "name": "island",
+  "title": "Island",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": [
+    "button",
+    "led",
+    "label",
+    "swap"
+  ],
+  "description": "Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.",
+  "base": "Button (graphite cap)",
+  "react": {
+    "export": "Island",
+    "files": [
+      "island.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalIsland",
+    "status": "planned"
+  },
+  "agent": "island.agent.md",
+  "page": "/components/island",
+  "nav": "Island"
+}

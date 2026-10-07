@@ -53,6 +53,7 @@
 - [Glyph](https://metalui.dev/r/glyph.md): A static icon at a size (10, 14, 16) in an ink (ink, ink2, ink3, inherit); decorative.
 - [Hover engraving](https://metalui.dev/r/hover-engraving.md): A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.
 - [Icon button](https://metalui.dev/r/icon-button.md): A pressable cap with only a glyph: tool (a graphite cap that latches with a green LED), ghost (flat, round) and mini (inside a chip).
+- [Island](https://metalui.dev/r/island.md): Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.
 - [Keycap](https://metalui.dev/r/kbd.md): A key's glyph on a small raised cap, in the readout role: 20 tall (16 in a footer), on a light surface, a graphite strip, or sunk into a toast's Undo.
 - [Label](https://metalui.dev/r/label.md): Text in a set role: engraved, small, title, heading, query, count, cell, value, display, readout, on-graphite and dark; as="input" edits in place.
 - [Lasso](https://metalui.dev/r/lasso.md): The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.

@@ -585,6 +585,8 @@
   --spacing-table-sort-glyph: var(--mu-r-table-sort-glyph);
   --spacing-table-sort-gap: var(--mu-r-table-sort-gap);
   --color-table-select-tint: var(--mu-r-table-select-tint);
+  --spacing-island-gap: var(--mu-r-island-self-gap);
+  --spacing-island-title-max: var(--mu-r-island-self-title-max);
   --spacing-empty-state-gap: var(--mu-r-empty-state-self-gap);
   --spacing-empty-state-action-gap: var(--mu-r-empty-state-self-action-gap);
   --spacing-empty-state-max-width: var(--mu-r-empty-state-self-max-width);

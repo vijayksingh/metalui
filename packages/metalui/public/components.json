@@ -630,6 +630,23 @@
       "agent": "https://metalui.dev/r/icon-button.md"
     },
     {
+      "name": "island",
+      "title": "Island",
+      "status": "alpha",
+      "description": "Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Island",
+        "base": "Button (graphite cap)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "planned": "MetalIsland"
+      },
+      "registry": "https://metalui.dev/r/island.json",
+      "agent": "https://metalui.dev/r/island.md"
+    },
+    {
       "name": "kbd",
       "title": "Keycap",
       "status": "alpha",

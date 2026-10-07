@@ -1188,6 +1188,18 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact (mono, dim), a chevron. It opens the place's menu. A passing event turns into the fact's place on the swap drum and the capsule's footprint follows it, then turns back after toast-plain-ms; a lasting condition is the fact itself. The tone is said in words too, never by colour alone. A composition of Button (graphite cap), Led, Label, SwapText and the chevron; it paints nothing of its own. (Button graphite cap; Led; SwapText (the swap drum); toast plain-ms)
+    public static let island = MetalObjectRecipe(
+        name: "island",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(8.0),
+            "self.title-max": .number(220.0),
+        ]
+    )
+
     /// A place with nothing in it yet: a glyph engraved in a sunk well, what would be here (title type), a line saying how to start (body type, ink2), and the one action that starts it. It arrives when a place empties, rising one nest from below on the settle spring (T9), so it never snaps in; content arriving replaces it. Compact, it is one quiet line and the action, for small places. Reduce Motion: it fades in without travel. (the well (recipe well field); the icon set; Transitions T9)
     public static let emptyState = MetalObjectRecipe(
         name: "empty-state",

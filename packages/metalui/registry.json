@@ -1016,6 +1016,29 @@
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
     },
     {
+      "name": "island",
+      "type": "registry:ui",
+      "title": "Island",
+      "description": "Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/morph-icons.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/island/island.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/island/island.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/island.md. SwiftUI: not yet (planned: MetalIsland)."
+    },
+    {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Keycap",

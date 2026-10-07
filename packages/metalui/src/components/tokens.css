@@ -1206,6 +1206,9 @@
   --mu-r-table-caption-gap: 12px;
   --mu-r-table-sort-glyph: 10px;
   --mu-r-table-sort-gap: 4px;
+  /* island: Button graphite cap; Led; SwapText (the swap drum); toast plain-ms */
+  --mu-r-island-self-gap: 8px;
+  --mu-r-island-self-title-max: 220px;
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;
