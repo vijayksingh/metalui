@@ -1196,6 +1196,8 @@ const rows: CommandPaletteItem[] = [
   onRun={(item, { pin }) => run(item.id, pin)} />
 ```
 
+`className` goes on the palette: set that palette's `--mu-palette-*` variables in a rule for the class, and only that palette changes.
+
 Rows of one section must be adjacent. The palette filters by every query word against `label` and `keywords`; pass `filter={false}` when the host ranks rows itself.
 
 ## Rules
@@ -2382,6 +2384,8 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
   <MenuItem onSelect={remove} danger shortcut="⌫">Delete</MenuItem>
 </Menu>
 ```
+
+`offset` sets its distance from the trigger (by default the recipe's, 6). `className` goes on the plate: set that menu's `--mu-r-menu-*` variables in a rule for the class, and only that menu changes.
 
 ## Rules
 

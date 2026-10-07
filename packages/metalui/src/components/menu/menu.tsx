@@ -45,9 +45,9 @@ function offset() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-menu-offset')) || 6;
 }
 
-function Plate({ heading, children }: { heading?: string; children: React.ReactNode }) {
+function Plate({ heading, className, children }: { heading?: string; className?: string; children: React.ReactNode }) {
   return (
-    <BaseMenu.Popup className={`${PLATE} relative`}>
+    <BaseMenu.Popup className={`${PLATE} relative${className ? ` ${className}` : ''}`}>
       <ListGlide />
       {heading ? (
         <BaseMenu.Group>
@@ -70,18 +70,22 @@ export interface MenuProps {
   children: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Its distance from the trigger. By default the recipe's (--mu-menu-offset, 6). */
+  offset?: number;
+  /** A class on the plate: set this menu's --mu-r-menu-* variables there, and only this menu changes. */
+  className?: string;
 }
 
 /** A menu from a trigger: a frosted plate of rows 6 below it. */
-export function Menu({ trigger, heading, side = 'bottom', align = 'start', children, open, onOpenChange }: MenuProps) {
+export function Menu({ trigger, heading, side = 'bottom', align = 'start', children, open, onOpenChange, offset: gap, className }: MenuProps) {
   const [anchor, setAnchor] = React.useState<HTMLElement | null>(null);
   const colorway = usePortalColorway(anchor);
   return (
     <BaseMenu.Root open={open} onOpenChange={onOpenChange ? (o) => onOpenChange(o) : undefined}>
       <BaseMenu.Trigger ref={setAnchor} render={trigger} />
       <BaseMenu.Portal>
-        <BaseMenu.Positioner data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
-          <Plate heading={heading}>{children}</Plate>
+        <BaseMenu.Positioner data-mu-colorway={colorway} className={POSITIONER} side={side} align={align} sideOffset={gap ?? offset()} collisionPadding={8}>
+          <Plate heading={heading} className={className}>{children}</Plate>
         </BaseMenu.Positioner>
       </BaseMenu.Portal>
     </BaseMenu.Root>

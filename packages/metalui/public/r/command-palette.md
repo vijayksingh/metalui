@@ -50,6 +50,8 @@ const rows: CommandPaletteItem[] = [
   onRun={(item, { pin }) => run(item.id, pin)} />
 ```
 
+`className` goes on the palette: set that palette's `--mu-palette-*` variables in a rule for the class, and only that palette changes.
+
 Rows of one section must be adjacent. The palette filters by every query word against `label` and `keywords`; pass `filter={false}` when the host ranks rows itself.
 
 ## Rules

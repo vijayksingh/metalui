@@ -87,6 +87,8 @@ export interface CommandPaletteProps {
   /** What the list says when nothing matches. */
   empty?: React.ReactNode;
   'aria-label'?: string;
+  /** A class on the palette: set this palette's --mu-palette-* variables there, and only this palette changes. */
+  className?: string;
 }
 
 function escape(s: string) {
@@ -124,6 +126,7 @@ export function CommandPalette({
   pinnable = true,
   empty = 'Nothing matches',
   'aria-label': ariaLabel = 'Lenses and actions',
+  className,
 }: CommandPaletteProps) {
   const [own, setOwn] = React.useState(defaultQuery);
   const query = queryProp ?? own;
@@ -164,7 +167,7 @@ export function CommandPalette({
     <Dialog.Root open={open} onOpenChange={(o) => onOpenChange(o)}>
       <Dialog.Portal>
         <Dialog.Backdrop className={SCRIM} />
-        <Dialog.Popup aria-label={ariaLabel} className={POPUP}>
+        <Dialog.Popup aria-label={ariaLabel} className={className ? `${POPUP} ${className}` : POPUP}>
           <Combobox.Root
             inline
             open

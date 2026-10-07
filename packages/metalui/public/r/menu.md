@@ -50,6 +50,8 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 </Menu>
 ```
 
+`offset` sets its distance from the trigger (by default the recipe's, 6). `className` goes on the plate: set that menu's `--mu-r-menu-*` variables in a rule for the class, and only that menu changes.
+
 ## Rules
 
 - Corrections win and are remembered for that exact text; after one, show a toast with Undo ("Correction remembered · for this exact text").
