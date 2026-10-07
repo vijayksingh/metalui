@@ -384,6 +384,8 @@
   --mu-settings-section-gap: 28px;
   --mu-settings-heading-pad-x: 6px;
   --mu-settings-keys-gap: 4px;
+  --mu-settings-text-min: 180px;
+  --mu-settings-stack-gap: 10px;
   --mu-kbd-height: 20px;
   --mu-kbd-small: 16px;
   --mu-kbd-min: 19px;

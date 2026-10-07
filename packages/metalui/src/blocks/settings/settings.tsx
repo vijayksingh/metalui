@@ -9,7 +9,8 @@ import { Kbd } from '../../components/kbd/kbd';
 /* ─────────────────────────────────────────────────────────
  * SETTINGS (a block): the settings of an app, as sections of rows
  *   Settings.Section  an engraved heading over a raised card (Surface raise-lite, card radius)
- *   Settings.Row      a name and an optional detail on the left, one control on the right
+ *   Settings.Row      a name and an optional detail on the left, one control on the right;
+ *                     when the text would get narrower than text-min the control drops under it
  *                     (a Switch, a Button, a Switcher, a value); rows are split by engraved
  *                     rules inset to the text
  *   Settings.Keys     a shortcut row: what it does, and its keys as keycaps
@@ -20,8 +21,8 @@ import { Kbd } from '../../components/kbd/kbd';
 const SECTION = 'mu-settings-section flex flex-col gap-settings-heading-gap';
 const HEADING = 'px-settings-heading-pad-x';
 const CARD = 'flex flex-col';
-const ROW = 'mu-settings-row flex items-center gap-settings-row-gap min-h-settings-row-min py-settings-row-pad-y px-settings-row-pad-x';
-const TEXT = 'flex min-w-0 flex-1 flex-col gap-settings-detail-gap';
+const ROW = 'mu-settings-row flex flex-wrap items-center gap-x-settings-row-gap gap-y-settings-stack-gap min-h-settings-row-min py-settings-row-pad-y px-settings-row-pad-x';
+const TEXT = 'flex min-w-0 grow basis-settings-text-min flex-col gap-settings-detail-gap';
 const CONTROL = 'flex flex-none items-center gap-settings-keys-gap';
 const RULE = 'mx-settings-row-pad-x';
 

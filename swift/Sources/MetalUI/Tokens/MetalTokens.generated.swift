@@ -3610,7 +3610,7 @@ public enum MetalToolStripMetrics {
     public static let enterRise: Double = 4.0
 }
 
-/// Settings layout: a raised card per section (Surface raise-lite, card radius) under an engraved heading; rows at least row-min tall, row-pad-y by row-pad-x, the name and its detail on the left, the control on the right, row-gap between them; an engraved rule between rows, inset by row-pad-x. Sections sit section-gap apart; the heading sits heading-gap above its card.
+/// Settings layout: a raised card per section (Surface raise-lite, card radius) under an engraved heading; rows at least row-min tall, row-pad-y by row-pad-x, the name and its detail on the left, the control on the right, row-gap between them. The name and detail keep at least text-min; with less room the control drops under them, stack-gap below; an engraved rule between rows, inset by row-pad-x. Sections sit section-gap apart; the heading sits heading-gap above its card.
 public enum MetalSettingsMetrics {
     public static let rowMin: Double = 52.0
     public static let rowPadY: Double = 12.0
@@ -3621,6 +3621,8 @@ public enum MetalSettingsMetrics {
     public static let sectionGap: Double = 28.0
     public static let headingPadX: Double = 6.0
     public static let keysGap: Double = 4.0
+    public static let textMin: Double = 180.0
+    public static let stackGap: Double = 10.0
 }
 
 /// The past banner's layout: a 34 tall pill, padding 0 6 0 14, gap 10; the key sits 7 after Back to Now (the reference's space and 4). Its look is Surface(graphite-plain), Label and Button(graphite); ink, engrave and button-* stay only until the Swift port reads those recipes.

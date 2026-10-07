@@ -12,6 +12,8 @@ import * as React from 'react';
  *   readout, readout-dim  mono on graphite, and the same in its dim ink
  *   on-graphite       sans text on graphite chrome
  *   dark              an engraving on dark chrome
+ *   name, detail      a setting's name and its one line of what it does
+ * The sentences (display, display-quiet, name, detail) wrap to their column; the rest stay on one line.
  * tone="accent" turns it green without a lip (a rule that says what a drop will do).
  * placeholder shows in ink3 at 500 while the label is empty; as="input" makes an editable label that keeps the look.
  * Styled with the theme's utilities (the label recipe). */
@@ -45,14 +47,16 @@ const ROLES: Record<LabelVariant, string> = {
   cell: 'type-label-cell text-label-cell-color',
   value: 'type-label-value text-label-value-color',
   'value-small': 'type-label-value-small text-label-value-small-color',
-  display: 'type-label-display text-label-display-color whitespace-normal',
-  'display-quiet': 'type-label-display-quiet text-label-display-quiet-color whitespace-normal',
+  display: 'type-label-display text-label-display-color',
+  'display-quiet': 'type-label-display-quiet text-label-display-quiet-color',
   readout: 'type-label-readout text-label-readout-color',
   'readout-dim': 'type-label-readout not-italic text-label-readout-dim-color',
   'on-graphite': 'type-label-on-graphite text-label-on-graphite-color',
   name: 'type-label-name text-label-name-color',
   detail: 'type-label-detail text-label-detail-color',
 };
+/* Sentences wrap to their column; every other label stays on one line. */
+const WRAPS: ReadonlySet<LabelVariant> = new Set(['display', 'display-quiet', 'name', 'detail']);
 const ACCENT: Partial<Record<LabelVariant, string>> = {
   engraved: `${ENGRAVED} text-label-accent-color text-shadow-none ${EMPHASIS}`,
   small: `type-label-small text-label-accent-color text-shadow-none ${EMPHASIS}`,
@@ -63,7 +67,7 @@ const INPUT = 'box-content min-w-0 p-0 m-0 border-0 outline-none bg-transparent 
 export const Label = React.forwardRef<HTMLElement, LabelProps>(function Label({ variant = 'engraved', tone, as = 'span', placeholder, className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const role = tone === 'accent' ? ACCENT[variant] ?? `${ROLES[variant]} text-label-accent-color text-shadow-none` : ROLES[variant];
-  const own = `mu-label whitespace-nowrap transition-label ${role}${placeholder !== undefined ? ' label-placeholder' : ''}${as === 'input' ? ` ${INPUT}` : ''}`;
+  const own = `mu-label ${WRAPS.has(variant) ? 'whitespace-normal' : 'whitespace-nowrap'} transition-label ${role}${placeholder !== undefined ? ' label-placeholder' : ''}${as === 'input' ? ` ${INPUT}` : ''}`;
   const hint = as === 'input' ? { placeholder } : { 'data-placeholder': placeholder };
   return <Tag ref={ref} data-variant={variant} data-tone={tone} className={className ? `${own} ${className}` : own} {...hint} {...props} />;
 });

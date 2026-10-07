@@ -3485,6 +3485,8 @@
   --spacing-settings-section-gap: var(--mu-settings-section-gap);
   --spacing-settings-heading-pad-x: var(--mu-settings-heading-pad-x);
   --spacing-settings-keys-gap: var(--mu-settings-keys-gap);
+  --spacing-settings-text-min: var(--mu-settings-text-min);
+  --spacing-settings-stack-gap: var(--mu-settings-stack-gap);
   --spacing-kbd-small: var(--mu-kbd-small);
   --spacing-kbd-min-small: var(--mu-kbd-min-small);
   --spacing-kbd-pad-small: var(--mu-kbd-pad-small);
