@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { MorphPart, MorphShape, morphTo } from '../../motion/morph-shape';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { useReducedMotion } from '../../motion/reduced';
@@ -39,14 +40,23 @@ export interface FanProps {
 function FanRoot({ className, children, ...props }: FanProps) {
   const [open, setOpenState] = React.useState<Open>(null);
   const root = React.useRef<HTMLDivElement>(null);
-  const setOpen = React.useCallback((o: Open) => setOpenState(o), []);
+  // every change of the open cell is a morph (docs/ONE-SHAPE.md): a tray opens and folds as one
+  // shape and the cells beside it travel. All of them go through morphTo, so they queue in order and
+  // a new one starts from the frame on screen; a plain update during a morph would be dropped.
+  const current = React.useRef<Open>(null);
+  current.current = open;
+  const setOpen = React.useCallback((o: Open) => {
+    const was = current.current;
+    // a fold clears only the cell it was asked to fold, never one opened since
+    morphTo(() => setOpenState((cur) => (o === null && cur !== was ? cur : o)), o ? 'open' : 'close');
+  }, []);
   React.useEffect(() => {
     if (!open) return;
-    const fold = () => { const o = open; setOpenState(null); o.restore(); };
+    const fold = () => { const o = open; setOpen(null); o.restore(); };
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.preventDefault(); fold(); } };
     const press = (e: PointerEvent) => {
       if (!root.current?.contains(e.target as Node)) {
-        setOpenState(null);
+        setOpen(null);
         // Pointerdown's default focus move runs after this listener; restore after release.
         window.setTimeout(open.restore, 100);
       }
@@ -54,10 +64,17 @@ function FanRoot({ className, children, ...props }: FanProps) {
     window.addEventListener('keydown', key);
     window.addEventListener('pointerdown', press, true);
     return () => { window.removeEventListener('keydown', key); window.removeEventListener('pointerdown', press, true); };
-  }, [open]);
+  }, [open, setOpen]);
+  // the cells beside a tray are in both states: they travel when it opens or folds, never jump.
+  // A tray is its own shape; the picker names only its cap, so its fan-out stays live.
+  const cellsId = React.useId().replace(/:/g, '');
+  const cells = React.Children.map(children, (child, i) =>
+    React.isValidElement(child) && child.type !== FanTray && child.type !== FanPicker
+      ? <MorphPart name={`${cellsId}-cell-${i}`}>{child}</MorphPart>
+      : child);
   return (
     <FanContext.Provider value={{ open, setOpen }}>
-      <TooltipProvider><div ref={root} role="toolbar" aria-label={props['aria-label']} className={className ? `${ROW} ${className}` : ROW}>{children}</div></TooltipProvider>
+      <TooltipProvider><div ref={root} role="toolbar" aria-label={props['aria-label']} className={className ? `${ROW} ${className}` : ROW}>{cells}</div></TooltipProvider>
     </FanContext.Provider>
   );
 }
@@ -150,6 +167,7 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
           );
         })}
       </div>
+      <MorphPart name={`${id.replace(/:/g, '')}-pick`}>
       <button
         ref={cap}
         type="button"
@@ -162,6 +180,7 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
       >
         {current.icon}
       </button>
+      </MorphPart>
     </div>
   );
 }
@@ -174,75 +193,45 @@ export interface FanTrayProps {
   children: React.ReactNode;
 }
 
-/** An options cap that stretches sideways into a capsule of more controls; ‹ folds it. */
+/** An options cap that opens sideways into a tray of more controls, as one shape (docs/ONE-SHAPE.md); × folds it. */
 function FanTray({ label, icon, children }: FanTrayProps) {
   const { open, setOpen } = useFan();
   const id = React.useId();
   const isOpen = open?.id === id;
   const cap = React.useRef<HTMLButtonElement>(null);
-  const shell = React.useRef<HTMLDivElement>(null);
   const inner = React.useRef<HTMLDivElement>(null);
-  const backing = React.useRef<HTMLDivElement>(null);
-  const previousWidth = React.useRef<number | null>(null);
-  const still = useReducedMotion(shell.current);
-
+  const was = React.useRef(isOpen);
+  // focus follows the shape: into the tray when it opens, back to the cap when it folds
   useIsoLayoutEffect(() => {
-    const el = shell.current;
-    if (!el) return;
-    const width = el.offsetWidth;
-    const previous = previousWidth.current;
-    previousWidth.current = width;
-    const css = getComputedStyle(el);
-    const raw = css.getPropertyValue(still ? '--mu-spring-settle-d' : '--mu-spring-part-d').trim();
-    const duration = parseFloat(raw) * (raw.endsWith('ms') ? 1 : 1000);
-    const easing = css.getPropertyValue(still ? '--mu-spring-settle' : '--mu-spring-part').trim();
-    if (isOpen) inner.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration, easing });
-    if (!still && previous && previous !== width) {
-      backing.current?.animate([{ transform: `scaleX(${previous / width})` }, { transform: 'scaleX(1)' }], { duration, easing });
-    }
-  }, [isOpen, children, still]);
-  React.useEffect(() => {
-    if (!isOpen) return;
-    const first = inner.current?.querySelector<HTMLElement>('button, [tabindex="0"]');
-    first?.focus();
+    if (isOpen) inner.current?.querySelector<HTMLElement>('button, [tabindex="0"]')?.focus();
+    else if (was.current) cap.current?.focus();
+    was.current = isOpen;
   }, [isOpen]);
 
   const toggle = () => { setOpen(isOpen ? null : { id, restore: () => cap.current?.focus() }); };
-  const fold = () => { setOpen(null); requestAnimationFrame(() => cap.current?.focus()); };
-
 
   return (
-    <div
-      ref={shell}
-      className={`mu-fan-tray relative inline-flex items-center min-h-icon-button-tool-size ${!isOpen ? 'w-icon-button-tool-size' : ''}`}
-    >
-      <div ref={backing} aria-hidden className="absolute inset-0 origin-left rounded-icon-button-tool-radius recipe-icon-button-tool" />
-      <button
-        ref={cap}
-        type="button"
-        aria-expanded={isOpen}
-        aria-label={label}
-        title={label}
-        className={`${CAP} absolute left-0 top-0 ${SPRING}`}
-        style={{ opacity: isOpen ? 0 : 1, pointerEvents: isOpen ? 'none' : 'auto', transitionProperty: 'opacity' }}
-        tabIndex={isOpen ? -1 : 0}
-        onClick={toggle}
-      >
-        {icon}
-      </button>
-      <BaseToolbar.Root
-        ref={inner}
-        aria-label={label}
-        aria-hidden={!isOpen}
-        className={`mu-fan-tray-inner relative inline-flex flex-wrap items-center gap-toolbar-gap p-toolbar-pad ${SPRING}`}
-        style={{ maxWidth: 'calc(100vw - var(--mu-r-icon-button-tool-size) * 2 - var(--mu-space-32) * 2)', display: isOpen ? undefined : 'none', opacity: isOpen ? 1 : 0, transitionProperty: 'opacity' }}
-      >
-        {children}
-        <BaseToolbar.Button aria-label={`Fold ${label}`} title="Fold" className={`${CAP} mu-fan-fold`} onClick={fold}>
-          <CloseIcon />
-        </BaseToolbar.Button>
-      </BaseToolbar.Root>
-    </div>
+    <MorphShape material="tool" from="left">
+      <div className={`mu-fan-tray relative inline-flex items-center min-h-icon-button-tool-size rounded-icon-button-tool-radius${isOpen ? ' recipe-icon-button-tool' : ''}`}>
+        {isOpen ? (
+          <BaseToolbar.Root
+            ref={inner}
+            aria-label={label}
+            className="mu-fan-tray-inner relative inline-flex flex-wrap items-center gap-toolbar-gap p-toolbar-pad"
+            style={{ maxWidth: 'calc(100vw - var(--mu-r-icon-button-tool-size) * 2 - var(--mu-space-32) * 2)' }}
+          >
+            {children}
+            <BaseToolbar.Button aria-label={`Fold ${label}`} title="Fold" className={`${CAP} mu-fan-fold`} onClick={() => setOpen(null)}>
+              <CloseIcon />
+            </BaseToolbar.Button>
+          </BaseToolbar.Root>
+        ) : (
+          <button ref={cap} type="button" aria-expanded={false} aria-label={label} title={label} className={CAP} onClick={toggle}>
+            {icon}
+          </button>
+        )}
+      </div>
+    </MorphShape>
   );
 }
 

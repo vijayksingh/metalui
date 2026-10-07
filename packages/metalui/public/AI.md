@@ -1641,7 +1641,7 @@ A canvas tool control that keeps its current tool and context in a compact graph
 
 ## Motion and host layout
 
-Tool caps use the existing icon-button.tool recipe, toolbar gap and part spring. Grid cells travel from behind the cap, staggered by distance. The tray changes natural width once and scales its material backing between widths; it never animates CSS width. Only transforms and opacity move. Reduced motion subscribes to the OS, site switch and scoped motion attribute; cells appear in their final positions with opacity alone. Provide enough canvas area above the cap for four rows; do not place a selection switcher over the choices. The docs include a stroke sample so ink and width have an observable consequence.
+Tool caps use the existing icon-button.tool recipe, toolbar gap and part spring. Grid cells travel from behind the cap, staggered by distance. A tray opens and folds as one shape (`docs/ONE-SHAPE.md`, `MorphShape`): its body travels from the cap's outline to the tray's in the tool material on the surface spring (folding: the release spring), the tray's contents arrive one nest from its leading edge, and the cells beside it travel with it. Every change of the open cell goes through `morphTo`, so changes queue in order and an interrupt starts from the frame on screen; it never animates CSS width or scales a backing. Only transforms and opacity move. Reduced motion subscribes to the OS, site switch and scoped motion attribute; cells appear in their final positions with opacity alone. Provide enough canvas area above the cap for four rows; do not place a selection switcher over the choices. The docs include a stroke sample so ink and width have an observable consequence.
 
 ## Example
 
