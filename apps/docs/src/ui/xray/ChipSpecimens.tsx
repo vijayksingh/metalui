@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Button, Row, SuggestionChip, Switch } from '@unlocalhosted/metalui';
+import { Button, Row, Switch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { LAYERS, QUESTIONS, type Model, type Spot } from './ChipXray';
+import { ChipReal, LAYERS, QUESTIONS, type Look, type Model, type Spot } from './ChipXray';
 import { STEP_AT, Outline, Readout, blip, clamp, snapTo, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './chip-specimens.css';
 
@@ -25,7 +25,7 @@ import './chip-specimens.css';
 
 type Props = {
   spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void;
-  fill: string; shadow: string; gone: null | 'yes' | 'no'; answer: (a: 'yes' | 'no') => void; arrive: () => void;
+  look: Look; gone: null | 'yes' | 'no'; answer: (a: 'yes' | 'no') => void; arrive: () => void;
 };
 
 const P = tokens.recipes.chip.props.suggestion;
@@ -43,18 +43,10 @@ const PAD = { lo: P['pad-right'], hi: P['pad-left'] * 2 };
 const round2 = (v: number) => Math.round(v * 100) / 100;
 const token = (v: number, at: number, name: string) => (v === at ? { at, name } : undefined);
 
-/** The real chip, its recipe variables read from the model (the bench reads the same one). */
-function Face({ m, fill, shadow, host, answer }: { m: Model; fill: string; shadow: string; host?: boolean; answer?: (a: 'yes' | 'no') => void }) {
-  return (
-    <SuggestionChip label={m.label} confidence={m.conf} hostHovered={host ?? m.host}
-      onAccept={() => answer?.('yes')} onDismiss={() => answer?.('no')}
-      style={{
-        ['--mu-r-chip-suggestion-height' as string]: `${m.h}px`,
-        ['--mu-r-chip-suggestion-pad-left' as string]: `${m.padL}px`,
-        ['--mu-r-chip-suggestion-background' as string]: fill,
-        ['--mu-r-chip-suggestion-shadow' as string]: shadow,
-      }} />
-  );
+/** The real chip, set to the config like the table's object and the model's face, so the specimen and the
+ *  bench draw the same values. Nothing on it animates: a tunable follows the finger exactly. */
+function Face({ m, look, host, answer }: { m: Model; look: Look; host?: boolean; answer?: (a: 'yes' | 'no') => void }) {
+  return <ChipReal m={host === undefined ? m : { ...m, host }} look={look} onAnswer={answer} />;
 }
 function Well({ well, zoom, children }: { well: React.RefObject<HTMLDivElement | null>; zoom: number; children: React.ReactNode }) {
   return <div ref={well} className="ed-specimen"><div style={{ zoom }}>{children}</div></div>;
@@ -82,7 +74,7 @@ function usePlace(box: React.RefObject<HTMLElement | null>, selector: string, de
 
 /* ───────────────────────── type: the question and how sure ───────────────────────── */
 
-function Type({ m, set, fill, shadow }: Props) {
+function Type({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const box = React.useRef<HTMLDivElement>(null);
   const qEl = React.useRef<HTMLSpanElement>(null), cEl = React.useRef<HTMLSpanElement>(null);
@@ -120,7 +112,7 @@ function Type({ m, set, fill, shadow }: Props) {
     <p>The chip asks one short question and always says how sure the app is, from 0 to 1. Drag the question sideways to try another one, or drag the number to change how sure it is.</p>
     <Well well={well} zoom={zoom}>
       <div ref={box} className="ed-chip-box" data-hint-anchor>
-        <Face m={m} fill={fill} shadow={shadow} />
+        <Face m={m} look={look} />
         <span ref={qEl} className="ed-chip-word" style={qAt} data-peek={peek === 'q' ? '' : undefined} data-live={live === 'q' ? '' : undefined} data-lean={lean ? '' : undefined}
           role="slider" tabIndex={0} aria-label="Question" aria-valuetext={m.label} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={QUESTIONS.length} {...question} />
         <span ref={cEl} className="ed-chip-word" style={cAt} data-peek={peek === 'c' ? '' : undefined} data-live={live === 'c' ? '' : undefined}
@@ -136,7 +128,7 @@ function Type({ m, set, fill, shadow }: Props) {
 
 /* ───────────────────────── states: quiet until you look ───────────────────────── */
 
-function States({ m, set, fill, shadow, arrive }: Props) {
+function States({ m, set, look, arrive }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [arrivals, setArrivals] = React.useState(0);
   const held = React.useRef(m.host);
@@ -154,7 +146,7 @@ function States({ m, set, fill, shadow, arrive }: Props) {
     <Well well={well} zoom={zoom}>
       <span className="mu-icon-trigger ed-chip-line" data-hint-anchor>
         <span className="ed-chip-host" {...line}>slept 6h · mood 3</span>
-        <Face key={arrivals} m={m} fill={fill} shadow={shadow} />
+        <Face key={arrivals} m={m} look={look} />
       </span>
     </Well>
     <div className="ed-readouts">
@@ -173,13 +165,13 @@ function States({ m, set, fill, shadow, arrive }: Props) {
 
 /* ───────────────────────── answer: ✓ and × ───────────────────────── */
 
-function Answer({ m, fill, shadow, gone, answer }: Props) {
+function Answer({ m, look, gone, answer }: Props) {
   const [well, zoom] = useSpecimenZoom();
   return <>
     <p>✓ says yes: the app makes the change, and you can undo it. × says no: the app remembers and never asks about this line again. Press either one on the chip.</p>
     <Well well={well} zoom={zoom}>
       <span className="ed-chip-answer" data-hint-anchor>
-        {gone ? <span className="eng">{gone === 'yes' ? 'accepted · undo' : 'dismissed · won’t ask again'}</span> : <Face m={m} fill={fill} shadow={shadow} answer={answer} />}
+        {gone ? <span className="eng">{gone === 'yes' ? 'accepted · undo' : 'dismissed · won’t ask again'}</span> : <Face m={m} look={look} answer={answer} />}
       </span>
     </Well>
     <div className="ed-readouts">
@@ -190,7 +182,7 @@ function Answer({ m, fill, shadow, gone, answer }: Props) {
 
 /* ───────────────────────── surface: frost and the green line ───────────────────────── */
 
-function Surface({ m, set, fill, shadow }: Props) {
+function Surface({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const box = React.useRef<HTMLDivElement>(null);
   const el = React.useRef<HTMLSpanElement>(null);
@@ -215,7 +207,7 @@ function Surface({ m, set, fill, shadow }: Props) {
     <p>The chip is frosted, so the page shows through a little and it floats over your text. A thin green line goes around it: green always means the app suggests this. Drag the chip up for more frost or down for less.</p>
     <Well well={well} zoom={zoom}>
       <div ref={box} className="ed-box ed-chip-box" data-hint-anchor data-live={live ? 'frost' : undefined} data-peek={peek ? '' : undefined}>
-        <Face m={m} fill={fill} shadow={shadow} />
+        <Face m={m} look={look} />
         <div className="ed-overlay"><Outline W={width} h={m.h} r={m.h / 2} on={live || peek ? ['top', 'right'] : []} only={['top', 'right']} segs={segs} /></div>
         <span ref={el} className="ed-chip-frost" role="slider" tabIndex={0} aria-label="Frost" aria-valuenow={m.frost} aria-valuemin={0.2} aria-valuemax={1} aria-valuetext={`${Math.round(m.frost * 100)} percent`} {...handle} />
       </div>
@@ -235,7 +227,7 @@ function Surface({ m, set, fill, shadow }: Props) {
 /* ───────────────────────── shape: height and the space on the left ───────────────────────── */
 
 type ShapeName = 'Height' | 'Space on the left';
-function Shape({ m, set, fill, shadow }: Props) {
+function Shape({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const box = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(0);
@@ -269,7 +261,7 @@ function Shape({ m, set, fill, shadow }: Props) {
     <p>A small pill, {P.height} pt tall, with more space on the left than the right because ✓ and × carry their own. Drag the top edge to change its height, or the left end to change the space before the question.</p>
     <Well well={well} zoom={zoom}>
       <div ref={box} className="ed-box ed-chip-box" data-hint-anchor data-live={active ?? undefined} data-peek={peek ?? undefined} data-shown={shown.join(' ')}>
-        <Face m={m} fill={fill} shadow={shadow} />
+        <Face m={m} look={look} />
         <div className="ed-overlay">
           <Outline W={width} h={m.h} r={m.h / 2} on={lit === 'Height' ? ['top'] : lit === 'Space on the left' ? ['left'] : []} only={shown} segs={segs} />
           <span ref={(el) => { refs.current.Height = el; }} className="ed-edge is-y" style={{ top: -3 }} role="slider" tabIndex={0} aria-label="Height" aria-valuenow={m.h} aria-valuemin={HEIGHT.lo} aria-valuemax={HEIGHT.hi} {...hHandle} />
@@ -287,12 +279,12 @@ function Shape({ m, set, fill, shadow }: Props) {
 
 /* ───────────────────────── layers ───────────────────────── */
 
-function Layers({ m, set, focus, fill, shadow }: Props) {
+function Layers({ m, set, focus, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const toggle = (index: number, value: boolean) => set({ on: m.on.map((old, i) => (i === index ? value : old)) });
   return <>
     <p>The chip has seven layers; turn one off to see what it adds.</p>
-    <Well well={well} zoom={zoom}><Face m={m} fill={fill} shadow={shadow} /></Well>
+    <Well well={well} zoom={zoom}><Face m={m} look={look} /></Well>
     <div className="ed-layers">{LAYERS.map((layer, i) => (
       <Row.Root key={layer.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''} onPointerEnter={() => focus(layer.name)} onPointerLeave={() => focus(null)} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(i, !m.on[i]); }}>
         <Row.Text>{layer.name}</Row.Text>

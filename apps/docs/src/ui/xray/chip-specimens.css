@@ -22,3 +22,11 @@
 .ed-chip-actions { display: flex; }
 .ed-chip-box, .ed-chip-line { --ed-chip-guide: var(--mu-presence-guide); }
 [data-mu-colorway="graphite"] :is(.ed-chip-box, .ed-chip-line) { --ed-chip-guide: var(--green-deep); }
+
+/* the model: the real chip is its top, so its arrival is not replayed at handover (the copy that flew in is
+ * a still of the chip as it rests), and the unseen copy that is measured never moves. The chip arrives on the
+ * model only when you ask it to (a key on its face). */
+.xr-flyer .mu-suggestion, .xr-chipmeasure .mu-suggestion { animation: none; }
+.xr-segface.xr-chiptop { transition: transform var(--spring-object-d) var(--spring-object), opacity .3s; }
+.xr-segface.xr-chiptop.is-gone { opacity: 0; }
+.xr-slice.xr-chipwall { transition: transform var(--spring-object-d) var(--spring-object), opacity .3s; }

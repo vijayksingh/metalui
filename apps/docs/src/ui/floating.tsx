@@ -11,6 +11,7 @@ import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from 
 import { FIELD_WIDTH, INITIAL as FIELD, PLACEHOLDER as FIELD_PLACEHOLDER, useFieldLook, type FieldConfig } from './xray/FieldXray';
 import { INITIAL as LINK, useLinkCardLook, type LinkCardConfig } from './xray/LinkCardXray';
 import { INITIAL as SLIDER, SliderObject, type SliderConfig } from './xray/SliderXray';
+import { INITIAL as CHIP, ChipReal, useChipLook, type ChipConfig } from './xray/ChipXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -106,6 +107,12 @@ function TableKbd({ config = KBD, open }: { config?: KbdConfig; open: () => void
   return <div onClick={open}><KbdFor m={config} look={look} /></div>;
 }
 
+/** The suggestion chip on the table: the real chip set to its config, which its x-ray takes over and hands back. Its words open the x-ray; ✓ and × answer. */
+function TableChip({ config = CHIP, open, answered }: { config?: ChipConfig; open: () => void; answered: () => void }) {
+  const look = useChipLook(config);
+  return <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) open(); }}><ChipReal m={config} look={look} onAnswer={answered} /></span>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -156,7 +163,7 @@ const ITEMS: Item[] = [
   {
     id: 'chip', table: ['4%', '72%'], space: ['11%', '55%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
     // the words open the x-ray; ✓ and × still answer
-    node: ({ chip, setChip, openXray }) => chip ? <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openXray('chip'); }}><SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /></span> : null,
+    node: ({ chip, setChip, openXray, seeds }) => chip ? <TableChip config={seeds.chip} open={() => openXray('chip')} answered={() => setChip(false)} /> : null,
   },
   {
     id: 'seg', table: ['58.4%', '57.6%'], space: ['70%', '51%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true, zoom: 1.3,
