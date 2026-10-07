@@ -6,6 +6,8 @@ const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-lab
 const readout = (card: Locator, name: string) => card.locator('.ed-readout').filter({ has: card.page().locator('b', { hasText: new RegExp(`^${name}$`) }) });
 const value = (card: Locator, name: string) => readout(card, name).locator('.ed-roll > span:not(.is-out)');
 const specimen = (card: Locator) => card.locator('.mu-linkcard');
+/** The model on the bench: its top face is the real card, so the bench is read by what the browser computes on it. */
+const model = (xray: Locator, sel = '') => xray.locator(`.xr-segface.is-top .mu-linkcard${sel}`);
 const inline = (target: Locator, prop: string) => target.evaluate((el, p) => (el as HTMLElement).style.getPropertyValue(p), prop);
 const computed = (target: Locator, prop: string) => target.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
 
@@ -48,14 +50,13 @@ test('the frame side sets the frame width on the card and the bench, catching on
   const start = Number(await handle.getAttribute('aria-valuenow'));
   const specimen = card.locator('.mu-linkcard');
   const pad0 = await computed(specimen, 'padding-left');
-  const screen = xray.locator('.xr-linkscreen');
-  const left0 = await inline(screen, 'left');
+  const left0 = await computed(model(xray), 'padding-left');
   // dragging in makes the frame thicker
   await drag(page, handle, -12, 0);
   const now = Number(await handle.getAttribute('aria-valuenow'));
   expect(now).toBeGreaterThan(start);
   expect(await computed(specimen, 'padding-left')).not.toBe(pad0);
-  expect(await inline(screen, 'left')).not.toBe(left0);
+  expect(await computed(model(xray), 'padding-left')).not.toBe(left0);
   await expect(value(card, 'Frame width')).toHaveText(`${now}`);
   // and back out to just short of it (drags are read in the card's units, so scale by its zoom): it catches on the token
   const zoom = Number(await card.locator('.ed-specimen > div').evaluate((el) => (el as HTMLElement).style.zoom));
@@ -71,7 +72,7 @@ test('the glow leans toward the next site and snaps there, never between', async
   const host = card.locator('.mu-linkcard-host');
   const first = await glow.getAttribute('aria-valuetext');
   await expect(host).toHaveText(first!);
-  const bg0 = await inline(xray.locator('.xr-linkscreen'), 'background');
+  const bg0 = await computed(model(xray, '-screen'), 'background-image');
   // a small nudge only leans
   await drag(page, glow, 6, 0);
   await expect(glow).toHaveAttribute('aria-valuetext', first!);
@@ -81,13 +82,12 @@ test('the glow leans toward the next site and snaps there, never between', async
   const next = await glow.getAttribute('aria-valuetext');
   expect(next).not.toBe(first);
   await expect(host).toHaveText(next!);
-  await expect(xray.locator('.xr-linkscreen b')).toHaveText(next!);
-  expect(await inline(xray.locator('.xr-linkscreen'), 'background')).not.toBe(bg0);
+  await expect(model(xray, '-host')).toHaveText(next!);
+  expect(await computed(model(xray, '-screen'), 'background-image')).not.toBe(bg0);
   // the glare switch removes the glare from both
-  const bench = await inline(xray.locator('.xr-linkscreen'), 'background');
   await card.getByRole('switch', { name: 'Glare' }).click();
   await expect(card.getByRole('switch', { name: 'Glare' })).toHaveAttribute('aria-checked', 'false');
-  expect(await inline(xray.locator('.xr-linkscreen'), 'background')).not.toBe(bench);
+  expect(await inline(model(xray), '--mu-r-glass-face-glare-background')).not.toContain('115deg');
   expect(await inline(specimen(card), '--mu-r-glass-face-glare-background')).not.toContain('115deg');
 });
 
@@ -97,16 +97,16 @@ test('the words set their size and spacing on the card and the bench', async ({ 
   await part(xray, 'Type');
   const name = card.getByRole('slider', { name: "Site's name size and spacing" });
   const size0 = await computed(card.locator('.mu-linkcard-host'), 'font-size');
-  const bench0 = await inline(xray.locator('.xr-linkscreen b'), 'font');
+  const bench0 = await computed(model(xray, '-host'), 'font-size');
   await drag(page, name, 0, -15);
   expect(await computed(card.locator('.mu-linkcard-host'), 'font-size')).not.toBe(size0);
-  expect(await inline(xray.locator('.xr-linkscreen b'), 'font')).not.toBe(bench0);
+  expect(await computed(model(xray, '-host'), 'font-size')).not.toBe(bench0);
   const path = card.getByRole('slider', { name: 'Path size and spacing' });
   const track0 = await computed(card.locator('.mu-linkcard-path'), 'letter-spacing');
-  const benchTrack0 = await inline(xray.locator('.xr-linkscreen > span').last(), 'letter-spacing');
+  const benchTrack0 = await computed(model(xray, '-path'), 'letter-spacing');
   await drag(page, path, 20, 0);
   expect(await computed(card.locator('.mu-linkcard-path'), 'letter-spacing')).not.toBe(track0);
-  expect(await inline(xray.locator('.xr-linkscreen > span').last(), 'letter-spacing')).not.toBe(benchTrack0);
+  expect(await computed(model(xray, '-path'), 'letter-spacing')).not.toBe(benchTrack0);
 });
 
 test('the LINK tag sets both chips’ distance from the corner; only OPEN opens', async ({ page }) => {
@@ -116,11 +116,11 @@ test('the LINK tag sets both chips’ distance from the corner; only OPEN opens'
   const tag = card.getByRole('slider', { name: 'Space from the corner' });
   const start = Number(await tag.getAttribute('aria-valuenow'));
   const chip0 = await computed(card.locator('.mu-linkcard-open'), 'right');
-  const bench0 = await inline(xray.locator('.xr-linkchip').first(), 'left');
+  const bench0 = await computed(model(xray, '-tag'), 'left');
   await drag(page, tag, 8, 8);
   expect(Number(await tag.getAttribute('aria-valuenow'))).toBeGreaterThan(start);
   expect(await computed(card.locator('.mu-linkcard-open'), 'right')).not.toBe(chip0);
-  expect(await inline(xray.locator('.xr-linkchip').first(), 'left')).not.toBe(bench0);
+  expect(await computed(model(xray, '-tag'), 'left')).not.toBe(bench0);
   // OPEN is the only way out; on the specimen it says where it would go instead of leaving the page
   const pages = page.context().pages().length;
   await card.locator('.mu-linkcard-open').click();
@@ -135,11 +135,11 @@ test('the screen corner sets its corners; the frame corners follow unless switch
   const corner = card.getByRole('slider', { name: 'Screen corners' });
   const screenR0 = await computed(card.locator('.mu-linkcard-screen'), 'border-top-left-radius');
   const frameR0 = await computed(card.locator('.mu-linkcard'), 'border-top-left-radius');
-  const bench0 = await inline(xray.locator('.xr-linkscreen'), 'border-radius');
+  const bench0 = await computed(model(xray, '-screen'), 'border-top-left-radius');
   await drag(page, corner, 10, 10);
   expect(await computed(card.locator('.mu-linkcard-screen'), 'border-top-left-radius')).not.toBe(screenR0);
   expect(await computed(card.locator('.mu-linkcard'), 'border-top-left-radius')).not.toBe(frameR0);
-  expect(await inline(xray.locator('.xr-linkscreen'), 'border-radius')).not.toBe(bench0);
+  expect(await computed(model(xray, '-screen'), 'border-top-left-radius')).not.toBe(bench0);
   const followed = await computed(card.locator('.mu-linkcard'), 'border-top-left-radius');
   await card.getByRole('switch', { name: 'Frame corners follow the screen' }).click();
   expect(await computed(card.locator('.mu-linkcard'), 'border-top-left-radius')).not.toBe(followed);

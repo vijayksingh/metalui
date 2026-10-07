@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LinkCard, Row, Switch, linkHueDegrees } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { BEZEL, SCREEN, type Model } from './LinkCardXray';
+import { BEZEL, SCREEN, type Look, type Model } from './LinkCardXray';
 import { useColorway, type Colorway } from '../../app/colorway';
 import { STEP_AT, CornerArc, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint } from '../edit';
 import './link-card-specimens.css';
@@ -46,6 +46,10 @@ export const LINK_TOKENS = {
 };
 /** Sites to try: the first wears the recipe's own tint; the others are tinted from their names, as the reference does. */
 export const HOSTS = ['lanterns.photo', 'github.com', 'maps.apple.com', 'figma.com'];
+/** The site a link goes to, as the card names it: its host without www. */
+export const hostOf = (href: string) => { try { return new URL(href).hostname.replace(/^www\./, ''); } catch { return href; } };
+/** A link to a site's night-market page: what stepping through the sites writes into the card's href. */
+export const hrefFor = (host: string) => `https://${host}/night-market`;
 export const tintFor = (host: string, cw: Colorway) => host === HOSTS[0] ? P.screen.tint[cw] : `hsl(${linkHueDegrees(host)} ${P.screen['tint-saturation']} ${P.screen['tint-lightness'][cw]})`;
 /** A font token with its size swapped, in the form the stylesheet writes it. */
 export const fontAt = (font: string, size: number) => font.replace(/[\d.]+px/, `${size}px`).replace(/ (sans|mono)$/, ' var(--mu-$1)');
@@ -66,27 +70,11 @@ const near = (v: number, at: number, reach: number) => Math.abs(v - at) <= reach
 const token = (v: number, at: number) => v === at ? { at, name: 'recipe token' } : undefined;
 
 type Spot = 'surface' | 'light' | 'type' | 'press' | 'shape' | 'layers';
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; opened: string | null; setOpened: (host: string) => void };
+type Props = { spot: Spot; m: Model; look: Look; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; opened: string | null; setOpened: (host: string) => void };
 
-/** The real link card, its recipe variables set from the model, exactly as the bench draws it. */
-function Card({ m }: { m: Model }) {
-  const { colorway } = useColorway();
-  const { bezelBg: BEZEL_BG, bezelSh: BEZEL_SH, glareBg: GLARE_BG, noGlow: NO_GLOW } = linkLook(colorway);
-  const vars: Record<string, string> = {
-    '--mu-r-glass-face-self-pad': `${m.pad}px`,
-    '--mu-r-glass-face-self-radius': `${frameRadius(m)}px`,
-    '--mu-r-glass-face-screen-radius': `${m.screenR}px`,
-    '--mu-r-glass-face-self-background': m.bezel[0] ? BEZEL_BG : 'transparent',
-    '--mu-r-glass-face-self-shadow': BEZEL_SH.filter((_, i) => m.bezel[i + 1]).join(', ') || 'none',
-    '--mu-r-glass-face-glare-background': [m.screen[1] && m.glare ? GLARE_BG[0] : null, m.screen[2] ? GLARE_BG[1] : null].filter(Boolean).join(', ') || 'none',
-    '--mu-r-link-card-host-font': fontAt(P.host.font, m.hostSize),
-    '--mu-r-link-card-host-tracking': `${m.hostTrack}em`,
-    '--mu-r-link-card-path-font': fontAt(P.path.font, m.pathSize),
-    '--mu-r-link-card-path-tracking': `${m.pathTrack}em`,
-    '--mu-r-link-card-chip-inset': `${m.inset}px`,
-    ...(m.screen[0] ? {} : { '--mu-r-link-card-screen-background': NO_GLOW }),
-  };
-  return <LinkCard href={`https://${m.host}/night-market`} hue={m.host === HOSTS[0] ? undefined : tintFor(m.host, colorway)} style={{ ...vars, transition: 'none' } as React.CSSProperties} />;
+/** The real link card, set to the model through its recipe variables (the look the bench and the code read too). */
+function Card({ m, look }: { m: Model; look: Look }) {
+  return <LinkCard href={m.href} preview={m.preview} style={{ ...look.style, transition: 'none' } as React.CSSProperties} />;
 }
 
 /** The well: the card is 250 wide, so it is shown as large as the zoom allows but never wider than the well. */
@@ -129,7 +117,7 @@ function useBox(root: React.RefObject<HTMLDivElement | null>, selector: string, 
 }
 
 /** Bezel: the frame's right side is the handle; drag it in for a thicker frame. */
-function Bezel({ m, set }: Props) {
+function Bezel({ m, set, look }: Props) {
   const [well, zoom] = useCardZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -149,7 +137,7 @@ function Bezel({ m, set }: Props) {
       <p>The card is a small piece of dark glass: a frame with a screen set into it, like a little window that leads out of your page. Drag the frame's right side in to make it thicker.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-lc" data-hint-anchor data-lit={live || peek ? '' : undefined}>
-          <Card m={m} />
+          <Card m={m} look={look} />
           <div className="ed-lc-over">
             <span ref={el} className="ed-lc-frame" style={{ left: W - m.pad - (reach - m.pad) / 2, top: m.pad, width: reach, height: SCREEN_H }} role="slider" tabIndex={0} aria-label="Frame width" aria-valuenow={m.pad} aria-valuemin={2} aria-valuemax={16} {...handle}>
               <i style={{ left: (reach - m.pad) / 2, width: m.pad }} />
@@ -165,28 +153,29 @@ function Bezel({ m, set }: Props) {
 }
 
 /** Screen: the glow's source is the handle; drag it sideways and it steps to the next site's colour. */
-function Screen({ m, set }: Props) {
+function Screen({ m, set, look }: Props) {
   const { colorway } = useColorway();
   const [well, zoom] = useCardZoom();
   const [held, setHeld] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
   const [lean, setLean] = React.useState<{ host: string; k: number } | null>(null);
   const el = React.useRef<HTMLSpanElement>(null);
-  const index = Math.max(0, HOSTS.indexOf(m.host));
-  const choose = (d: number) => { const next = HOSTS[clamp(index + Math.sign(d), 0, HOSTS.length - 1)]; if (next !== m.host) set({ host: next }); };
+  const host = hostOf(m.href);
+  const index = Math.max(0, HOSTS.indexOf(host));
+  const choose = (d: number) => { const next = HOSTS[clamp(index + Math.sign(d), 0, HOSTS.length - 1)]; if (next !== host) set({ href: hrefFor(next) }); };
   const handle = useHandle({
     zoom,
-    hint: () => ({ gesture: 'steps', title: 'Site', value: held ? lean ? `→ ${lean.host}` : m.host : undefined, how: 'drag sideways to try another site' }),
-    keyHint: (): Hint => ({ gesture: 'steps', title: 'Site', value: m.host, keys: [{ k: '←→', say: 'step' }] }),
+    hint: () => ({ gesture: 'steps', title: 'Site', value: held ? lean ? `→ ${lean.host}` : host : undefined, how: 'drag sideways to try another site' }),
+    keyHint: (): Hint => ({ gesture: 'steps', title: 'Site', value: host, keys: [{ k: '←→', say: 'step' }] }),
     start: () => { setHeld(true); return { index, at: 0 }; },
     move: (s, dx) => {
       const delta = dx - s.at, d = Math.sign(delta), next = HOSTS[s.index + d];
-      if (next && Math.abs(delta) >= STEP_AT) { set({ host: next }); s.index += d; s.at = dx; setLean(null); }
+      if (next && Math.abs(delta) >= STEP_AT) { set({ href: hrefFor(next) }); s.index += d; s.at = dx; setLean(null); }
       else setLean(next && Math.abs(delta) > 2 ? { host: next, k: Math.min(1, Math.abs(delta) / STEP_AT) } : null);
     },
     end: () => { setHeld(false); setLean(null); }, step: choose, axis: 'x', over: setPeek, grab: () => blip(el.current),
   });
-  useOnLand(m.host, () => blip(el.current));
+  useOnLand(host, () => blip(el.current));
   const toggle = (v: boolean) => set({ glare: v });
   const x = m.pad + (W - m.pad * 2) * 0.85;
   return (
@@ -194,15 +183,15 @@ function Screen({ m, set }: Props) {
       <p>The screen glows from its top right corner, in a colour worked out from the site's name, so the same site always looks the same. Drag the glow sideways to try another site.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-lc" data-hint-anchor data-lit={held || peek ? '' : undefined}>
-          <Card m={m} />
+          <Card m={m} look={look} />
           <div className="ed-lc-over">
-            <span ref={el} className="ed-lc-glow" style={{ left: x - 5, top: m.pad - 5, ['--lean' as string]: lean?.k ?? 0, ['--lean-tint' as string]: lean ? tintFor(lean.host, colorway) : 'transparent' }} data-lean={lean ? '' : undefined} role="slider" tabIndex={0} aria-label="Site" aria-valuetext={m.host} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={HOSTS.length} {...handle} />
+            <span ref={el} className="ed-lc-glow" style={{ left: x - 5, top: m.pad - 5, ['--lean' as string]: lean?.k ?? 0, ['--lean-tint' as string]: lean ? tintFor(lean.host, colorway) : 'transparent' }} data-lean={lean ? '' : undefined} role="slider" tabIndex={0} aria-label="Site" aria-valuetext={host} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={HOSTS.length} {...handle} />
           </div>
         </div>
       </Well>
       <div className="ed-readouts">
-        <Readout label="Site" value={m.host} unit="" snap={{ at: index, name: m.host }} peek={setPeek} pick={() => summon(el.current)} scrub={choose} />
-        <Readout label="Hue" value={`${hueFor(m.host, colorway)}`} unit="°" snap={m.host === HOSTS[0] ? { at: hueFor(m.host, colorway), name: 'recipe tint' } : undefined} />
+        <Readout label="Site" value={host} unit="" snap={{ at: index, name: host }} peek={setPeek} pick={() => summon(el.current)} scrub={choose} />
+        <Readout label="Hue" value={`${hueFor(host, colorway)}`} unit="°" snap={host === HOSTS[0] ? { at: hueFor(host, colorway), name: 'recipe tint' } : undefined} />
       </div>
       <div className="ed-layers">
         <Row.Root variant="list" className="ed-layer" data-off={m.glare ? undefined : ''} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(!m.glare); }}>
@@ -215,10 +204,10 @@ function Screen({ m, set }: Props) {
 }
 
 /** Type: the site's name and the path are the handles: sideways for spacing, up or down for size. */
-function Type({ m, set }: Props) {
+function Type({ m, set, look }: Props) {
   const [well, zoom] = useCardZoom();
   const root = React.useRef<HTMLDivElement>(null);
-  const deps = [m.hostSize, m.hostTrack, m.pathSize, m.pathTrack, m.pad, m.host, zoom];
+  const deps = [m.hostSize, m.hostTrack, m.pathSize, m.pathTrack, m.pad, m.href, zoom];
   const hostBox = useBox(root, '.mu-linkcard-host', deps);
   const pathBox = useBox(root, '.mu-linkcard-path', deps);
   const els = React.useRef<Partial<Record<'host' | 'path', HTMLSpanElement | null>>>({});
@@ -267,7 +256,7 @@ function Type({ m, set }: Props) {
       <p>The site's name is big and bright, so you know where the link goes; the path under it is small and dim. Drag either one sideways to change the space between letters, or up and down to change its size.</p>
       <Well well={well} zoom={zoom}>
         <div ref={root} className="ed-lc" data-hint-anchor>
-          <Card m={m} />
+          <Card m={m} look={look} />
           <div className="ed-lc-over">
             <span ref={(e) => { els.current.host = e; }} className="ed-lc-type" data-show={lit('host')} style={at(hostBox)} role="slider" tabIndex={0} aria-label="Site's name size and spacing" aria-valuetext={`${m.hostSize} points, spacing ${m.hostTrack} em`} aria-valuenow={m.hostSize} aria-valuemin={10} aria-valuemax={22} {...hostHandle} />
             <span ref={(e) => { els.current.path = e; }} className="ed-lc-type" data-show={lit('path')} style={at(pathBox)} role="slider" tabIndex={0} aria-label="Path size and spacing" aria-valuetext={`${m.pathSize} points, spacing ${m.pathTrack} em`} aria-valuenow={m.pathSize} aria-valuemin={7} aria-valuemax={13} {...pathHandle} />
@@ -285,7 +274,7 @@ function Type({ m, set }: Props) {
 }
 
 /** Open: only OPEN is a button; the LINK tag is the handle for how far both chips sit from their corners. */
-function Open({ m, set, opened, setOpened }: Props) {
+function Open({ m, set, look, opened, setOpened }: Props) {
   const [well, zoom] = useCardZoom();
   const root = React.useRef<HTMLDivElement>(null);
   const tag = useBox(root, '.mu-linkcard-tag', [m.inset, m.pad, zoom]);
@@ -307,8 +296,8 @@ function Open({ m, set, opened, setOpened }: Props) {
       <p>Clicking the card does nothing; only OPEN opens the link, in a new tab, so you can move or select the card without leaving your page. Drag the LINK tag toward or away from its corner to set how far both chips sit from the corners.</p>
       <Well well={well} zoom={zoom}>
         <div ref={root} className="ed-lc" data-hint-anchor data-lit={lit ? '' : undefined}
-          onClickCapture={(e) => { if ((e.target as HTMLElement).closest('.mu-linkcard-open')) { e.preventDefault(); setOpened(m.host); } }}>
-          <Card m={m} />
+          onClickCapture={(e) => { if ((e.target as HTMLElement).closest('.mu-linkcard-open')) { e.preventDefault(); setOpened(hostOf(m.href)); } }}>
+          <Card m={m} look={look} />
           <div className="ed-lc-over">
             {tag && lit && (
               <svg className="ed-lc-inset" width={W} height={SCREEN_H + m.pad * 2} aria-hidden>
@@ -328,7 +317,7 @@ function Open({ m, set, opened, setOpened }: Props) {
 }
 
 /** Shape: the screen's top-left corner is the handle; the frame's corners can follow it. */
-function Shape({ m, set }: Props) {
+function Shape({ m, set, look }: Props) {
   const [well, zoom] = useCardZoom();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -350,7 +339,7 @@ function Shape({ m, set }: Props) {
       <p>The frame's corners are the screen's corners plus the frame's width, so the frame is equally thick all the way round. Drag the screen's top-left corner to round it.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-lc" data-hint-anchor>
-          <Card m={m} />
+          <Card m={m} look={look} />
           <div className="ed-lc-over">
             <div className="ed-lc-screenbox" style={{ left: m.pad, top: m.pad, width: W - m.pad * 2, height: SCREEN_H }}>
               <span ref={el} className="ed-corner" style={{ width: Math.max(m.screenR, 6) + 3, height: Math.max(m.screenR, 6) + 3 }} role="slider" tabIndex={0} aria-label="Screen corners" aria-valuenow={m.screenR} aria-valuemin={0} aria-valuemax={30} {...handle}>
@@ -375,7 +364,7 @@ function Shape({ m, set }: Props) {
 }
 
 /** Layers: a row with a switch per layer; hovering one points at its slice on the bench. */
-function Layers({ m, set, focus }: Props) {
+function Layers({ m, set, look, focus }: Props) {
   const [well, zoom] = useCardZoom();
   const groups = [
     { title: 'The frame', layers: BEZEL, on: m.bezel, toggle: (i: number, v: boolean) => set({ bezel: m.bezel.map((x, j) => (j === i ? v : x)) }) },
@@ -384,7 +373,7 @@ function Layers({ m, set, focus }: Props) {
   return (
     <>
       <p>The frame has seven layers and the screen has three. Turn one off to see what it adds.</p>
-      <Well well={well} zoom={zoom}><Card m={m} /></Well>
+      <Well well={well} zoom={zoom}><Card m={m} look={look} /></Well>
       {groups.map((g) => (
         <div key={g.title} style={{ display: 'contents' }}>
           <b className="eng ed-lc-group">{g.title}</b>

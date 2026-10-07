@@ -8,6 +8,7 @@ import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type
 import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
 import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from './xray/StatusXray';
 import { FIELD_WIDTH, INITIAL as FIELD, PLACEHOLDER as FIELD_PLACEHOLDER, useFieldLook, type FieldConfig } from './xray/FieldXray';
+import { INITIAL as LINK, useLinkCardLook, type LinkCardConfig } from './xray/LinkCardXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -94,6 +95,12 @@ function TableField({ config = FIELD, onConfig, open }: { config?: FieldConfig; 
   );
 }
 
+/** The link card on the table: the real card set to its config, which its x-ray takes over and hands back. A click anywhere on it opens the x-ray, never the link. */
+function TableLinkCard({ config = LINK, open }: { config?: LinkCardConfig; open: () => void }) {
+  const { style } = useLinkCardLook(config);
+  return <div onClickCapture={(e) => { e.preventDefault(); open(); }}><LinkCard href={config.href} preview={config.preview} style={style} /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -129,7 +136,7 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'link', table: ['66.5%', '4.1%'], space: ['50%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
+  { id: 'link', table: ['66.5%', '4.1%'], space: ['50%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray, seeds }) => <TableLinkCard config={seeds.link} open={() => openXray('link')} /> },
   { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray, seeds }) => <TableSwatch config={seeds.swatch} open={() => openXray('swatch')} /> },
   {
     // the brand, front and centre among the things it makes; hung back in the scene like its neighbours.
