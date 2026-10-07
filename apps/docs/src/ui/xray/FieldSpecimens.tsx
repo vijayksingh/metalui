@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Field, Kbd, Row, Switch } from '@unlocalhosted/metalui';
-import { Icon } from '@unlocalhosted/metalui/icons';
+import { Row, Switch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { KEY, TRAY, type Model, type Spot } from './FieldXray';
+import { FieldFace, KEY, TRAY, type Look, type Model, type Spot } from './FieldXray';
 import { CornerArc, Outline, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './field-specimens.css';
 
@@ -22,8 +21,7 @@ const F = tokens.recipes.field.props.field as { height: number; radius: number; 
 const DEPTH = 1;
 const LIMITS = { h: [28, 60], padL: [6, 28], depth: [0, 3] } as const;
 
-type Parts = { trayFill: string; trayShadow: string; keyFill: string; keyShadow: string };
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; parts: Parts };
+type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; look: Look };
 type Name = 'depth' | 'height' | 'corners' | 'padL';
 const NAMES: Record<Name, string> = { depth: 'Well depth', height: 'Height', corners: 'Corners', padL: 'Space on the left' };
 
@@ -33,22 +31,9 @@ const token = (v: number, at: number) => (v === at ? { at, name: 'token' } : und
  *  a step is never caught, or one step off a token would land back on it. */
 const catchOn = (v: number, at: number, reach: number, caught: boolean) => (caught && Math.abs(v - at) <= reach ? at : v);
 
-/** The real field, wearing the model: its tray and key read the same fill and shadows as the bench. */
-function RealField({ m, set, parts, width }: { m: Model; set: Props['set']; parts: Parts; width: number }) {
-  return (
-    <Field
-      className="ed-field"
-      style={{ width, height: m.h, borderRadius: m.radius, paddingLeft: m.padL, background: parts.trayFill, boxShadow: parts.trayShadow, transition: 'none' }}
-    >
-      <Field.Icon><Icon name="search" size={F.glyph} /></Field.Icon>
-      <Field.Input placeholder="Lens or action" value={m.text} onChange={(e) => set({ text: e.target.value })} aria-label="Lens or action" style={m.caret ? undefined : { caretColor: 'transparent' }} />
-      <Field.Trail>
-        {m.keyUp
-          ? <Kbd style={{ background: parts.keyFill, boxShadow: parts.keyShadow, transition: 'none' }}>⌘K</Kbd>
-          : <span className="ed-field-flatkey">⌘K</span>}
-      </Field.Trail>
-    </Field>
-  );
+/** The real field, set to the model's config the way its code sets it: through the library's variables on a wrapper. */
+function RealField({ m, set, look, width }: { m: Model; set: Props['set']; look: Look; width: number }) {
+  return <FieldFace m={m} look={look} width={width} onValue={(value) => set({ value })} still />;
 }
 
 /** How wide the field can be in its well at this zoom (it is a wide part; a narrow card shortens it). */
@@ -66,7 +51,7 @@ function useFieldWidth(well: React.RefObject<HTMLDivElement | null>, zoom: numbe
 
 /* ───────────────────────── Well and Shape: handles on the field's own edges ───────────────────────── */
 
-function Edges({ spot, m, set, parts }: Props) {
+function Edges({ spot, m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const width = useFieldWidth(well, zoom);
   const els = React.useRef<Partial<Record<Name, HTMLSpanElement | null>>>({});
@@ -129,7 +114,7 @@ function Edges({ spot, m, set, parts }: Props) {
       <div ref={well} className="ed-specimen">
         <div style={{ zoom }}>
           <div className="ed-box ed-field-box" data-hint-anchor data-live={active ?? undefined} data-peek={peek ?? undefined} data-shown={shown.join(' ')}>
-            <RealField m={m} set={set} parts={parts} width={width} />
+            <RealField m={m} set={set} look={look} width={width} />
             <div className="ed-overlay">
               <Outline W={width} h={m.h} r={m.radius} on={pointed ? [segOf[pointed]] : []} only={shown.filter((x) => x !== 'left')} segs={segs} />
               {spot === 'well' && (
@@ -162,7 +147,7 @@ function Edges({ spot, m, set, parts }: Props) {
 
 /* ───────────────────────── Light: the sun on its arc ───────────────────────── */
 
-function Light({ m, set, parts }: Props) {
+function Light({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const width = useFieldWidth(well, zoom);
   const [live, setLive] = React.useState(false);
@@ -192,7 +177,7 @@ function Light({ m, set, parts }: Props) {
       <p>One light falls on both parts. The tray is dark at the top and bright at the bottom, and the key the other way round. Drag the sun to move the light, or closer to make it stronger.</p>
       <div ref={well} className="ed-specimen is-light">
         <div className="ed-lightbox" data-hint-anchor data-lit={live || peek ? '' : undefined} style={{ zoom }}>
-          <RealField m={m} set={set} parts={parts} width={width} />
+          <RealField m={m} set={set} look={look} width={width} />
           <svg className="ed-orbit" width={reach(0) * 2 + 2} height={reach(0) + 1} viewBox={`${-reach(0) - 1} ${-reach(0) - 1} ${reach(0) * 2 + 2} ${reach(0) + 1}`} style={{ translate: `0 ${-reach(0) / 2}px` }} aria-hidden>
             <path d={`M${-reach(0)} 0A${reach(0)} ${reach(0)} 0 0 1 ${reach(0)} 0`} />
             <path className="is-near" d={`M${-reach(1.5)} 0A${reach(1.5)} ${reach(1.5)} 0 0 1 ${reach(1.5)} 0`} />
@@ -210,10 +195,10 @@ function Light({ m, set, parts }: Props) {
 
 /* ───────────────────────── Type, Key and Layers: the real field and switches ───────────────────────── */
 
-function Plain({ m, set, parts }: Props) {
+function Plain({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const width = useFieldWidth(well, zoom);
-  return <div ref={well} className="ed-specimen"><div style={{ zoom }}><RealField m={m} set={set} parts={parts} width={width} /></div></div>;
+  return <div ref={well} className="ed-specimen"><div style={{ zoom }}><RealField m={m} set={set} look={look} width={width} /></div></div>;
 }
 
 function Toggle({ label, on, set }: { label: string; on: boolean; set: (v: boolean) => void }) {
@@ -232,10 +217,10 @@ function Layers(props: Props) {
   const toggle = (group: 'tray' | 'key', i: number, on: boolean) => set({ [group]: m[group].map((v, j) => (j === i ? on : v)) });
   return (
     <>
-      <p>Two parts: the tray has four layers and the key has six. Turn one off to see what it adds.</p>
+      <p>{m.showKey ? 'Two parts: the tray has four layers and the key has six. Turn one off to see what it adds.' : 'The tray has four layers. The key is switched off, so its six layers are not drawn. Turn one off to see what it adds.'}</p>
       <Plain {...props} />
       <div className="ed-layers">
-        {([['tray', TRAY], ['key', KEY]] as const).flatMap(([group, list]) => list.map((layer, i) => (
+        {([['tray', TRAY], ['key', KEY]] as const).filter(([group]) => group === 'tray' || m.showKey).flatMap(([group, list]) => list.map((layer, i) => (
           <Row.Root key={layer.name} variant="list" className="ed-layer" data-off={m[group][i] ? undefined : ''}
             onPointerEnter={() => focus(layer.name)} onPointerLeave={() => focus(null)}
             onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(group, i, !m[group][i]); }}>
@@ -261,9 +246,9 @@ export function FieldSpecimenCard(props: Props) {
       <Toggle label="Caret" on={m.caret} set={(caret) => set({ caret })} />
     </>;
     case 'surface': return <>
-      <p>The ⌘K key stands up inside the field, so the tray goes down and the key comes up. Switch the key off and it flattens into printed text you might try to type over.</p>
+      <p>The ⌘K key stands up inside the field, so the tray goes down and the key comes up. Switch the key off and the field has no key at its end.</p>
       <Plain {...props} />
-      <Toggle label="Raised key" on={m.keyUp} set={(keyUp) => set({ keyUp })} />
+      <Toggle label="Key" on={m.showKey} set={(showKey) => set({ showKey })} />
     </>;
   }
 }

@@ -4,7 +4,7 @@ import { ButtonXray } from './ButtonXray';
 import { CheckboxXray } from './CheckboxXray';
 import { ChipXray } from './ChipXray';
 import { DialogXray } from './DialogXray';
-import { FieldXray } from './FieldXray';
+import { FieldXray, type FieldConfig } from './FieldXray';
 import { FolderXray } from './FolderXray';
 import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
@@ -37,7 +37,7 @@ export const BUTTON_LABEL = 'Get started';
  *          only then opens up; before it flies home it closes up again. With no flight the
  *          model is open from the start.
  * ───────────────────────────────────────────────────────── */
-export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig }
+export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig; field: FieldConfig }
 export type XraySeed<K extends XrayKind> = K extends keyof XraySeeds ? XraySeeds[K] : never;
 export type XrayPose = 'flat' | 'open';
 export interface XrayViewProps<S = never> { startOpen?: boolean; seed?: Partial<S>; onSeed?: (seed: S) => void; pose?: XrayPose; /** the object's zoom where it came from: its face is laid out at it */ zoom?: number }

@@ -7,6 +7,7 @@ import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XrayS
 import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
 import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
 import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from './xray/StatusXray';
+import { FIELD_WIDTH, INITIAL as FIELD, PLACEHOLDER as FIELD_PLACEHOLDER, useFieldLook, type FieldConfig } from './xray/FieldXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -71,6 +72,28 @@ function TableStatus({ config = STATUS, open }: { config?: StatusConfig; open: (
   return <span onClick={open}><StatusReal m={config} look={look} /></span>;
 }
 
+/** The field on the table: the real field set to its config, which its x-ray takes over and hands back.
+ *  Typing is typing; a click opens the x-ray, except the one that puts the caret in a field you are not in yet. */
+function TableField({ config = FIELD, onConfig, open }: { config?: FieldConfig; onConfig: (c: FieldConfig) => void; open: () => void }) {
+  const { style } = useFieldLook(config);
+  // a press on the words of a field you are not in yet is for the caret: it takes the focus and the click does nothing more
+  const caret = React.useRef(false);
+  return (
+    <div
+      className="xr-field-vars" style={{ ...style, width: FIELD_WIDTH }}
+      onPointerDownCapture={(e) => { const t = e.target as HTMLElement; caret.current = t.tagName === 'INPUT' && document.activeElement !== t; }}
+      onClick={() => { if (caret.current) { caret.current = false; return; } open(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLElement).tagName === 'INPUT') open(); }}
+    >
+      <Field style={{ width: '100%' }}>
+        <Field.Icon><Icon name="search" size={15} /></Field.Icon>
+        <Field.Input placeholder={FIELD_PLACEHOLDER} aria-label={FIELD_PLACEHOLDER} value={config.value} onChange={(e) => onConfig({ ...config, value: e.target.value })} />
+        {config.showKey && <Field.Trail><Kbd>⌘K</Kbd></Field.Trail>}
+      </Field>
+    </div>
+  );
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -132,15 +155,8 @@ const ITEMS: Item[] = [
   { id: 'slider', table: ['4%', '57.9%'], space: ['31%', '32%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
     id: 'field', table: ['35.1%', '88.2%'], space: ['31%', '72%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
-    node: ({ openXray }) => (
-      <div style={{ width: 230 }} onClick={() => openXray('field')}>
-        <Field style={{ width: '100%' }}>
-          <Field.Icon><Icon name="search" size={15} /></Field.Icon>
-          <Field.Input placeholder="Lens or action" aria-label="Lens or action" readOnly />
-          <Field.Trail><Kbd>⌘K</Kbd></Field.Trail>
-        </Field>
-      </div>
-    ),
+    // typing is typing; a click opens the x-ray, and what is typed is what it starts with
+    node: ({ openXray, seeds, onSeed }) => <TableField config={seeds.field} onConfig={(c) => onSeed('field', c)} open={() => openXray('field')} />,
   },
   { id: 'status', table: ['45.6%', '7.9%'], space: ['31%', '11%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray, seeds }) => <TableStatus config={seeds.status} open={() => openXray('status')} /> },
   {

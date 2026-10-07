@@ -13,5 +13,9 @@
 .ed-field-gap[data-on] { opacity: 1; }
 [data-mu-colorway="graphite"] .ed-field-glyph[data-on], [data-mu-colorway="graphite"] .ed-field-glyph:focus-visible { box-shadow: 0 0 0 .9px var(--green-deep); }
 [data-mu-colorway="graphite"] .ed-field-gap { border-color: var(--green-deep); }
-/* the key switched off: printed text in the trail, where the raised key was */
-.ed-field-flatkey { font: 500 10px/1 var(--mono); color: var(--ink3); padding-inline: 5px; }
+/* the model's three planes are the real field: the tray alone, the glyph and the words, the key alone */
+.xr-field-vars { display: flex; }
+.xr-segface.is-fwell .mu-field > * { visibility: hidden; }
+.xr-segface.is-fwords .mu-field, .xr-segface.is-fkey .mu-field { background: none; box-shadow: none; }
+.xr-segface.is-fwords .mu-field-trail { visibility: hidden; }
+.xr-segface.is-fkey .mu-field-icon, .xr-segface.is-fkey .mu-field-input { visibility: hidden; }
