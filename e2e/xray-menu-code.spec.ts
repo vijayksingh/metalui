@@ -159,30 +159,32 @@ test('every tweak reaches the code: the heading and the line as what is there, t
   await part(xray, 'Line');
   await card.getByRole('switch', { name: 'Line' }).click();
   expect(await text(xray)).not.toContain('MenuSeparator');
-  // the menu opens in a portal and takes no className or style, so a tunable reaches it through a stylesheet, on its own class
+  // a tunable is a stylesheet on the class the menu takes, so only this menu changes
   await part(xray, 'Shape');
   await step(page, card, 'Space around the rows', 'ArrowUp', 2);
   await expect(code(xray)).toContainText(`import './note-actions.css';`);
-  await expect(code(xray)).toContainText('portal');
-  expect(await text(xray)).not.toMatch(/style=|className=|--mu-/);
+  await expect(code(xray)).toContainText('className="note-actions"');
+  expect(await text(xray)).not.toMatch(/style=|--mu-/);
   let sheet = (await files(xray)).CSS!;
-  expect(sheet).toContain('.mu-menu {\n  --mu-r-menu-self-pad: 7px;\n  --mu-r-menu-self-radius: 17px;\n}');
+  expect(sheet).toContain('.note-actions {\n  --mu-r-menu-self-pad: 7px;\n  --mu-r-menu-self-radius: 17px;\n}');
+  expect(sheet).not.toContain('.mu-menu');
   await step(page, card, 'Row corners', 'ArrowUp', 2);
   sheet = (await files(xray)).CSS!;
   expect(sheet).toContain('--mu-r-menu-row-radius: 11px;');
   expect(sheet).toContain('--mu-r-menu-self-radius: 18px;');
-  // the gap to the button is read from the document's root, so it is set there, for every menu
+  // the gap to the button is the menu's offset prop, not a stylesheet
   await part(xray, 'Glass');
   await step(page, card, 'Gap to the button', 'ArrowUp', 2);
+  await expect(code(xray)).toContainText('offset={8}');
   sheet = (await files(xray)).CSS!;
-  expect(sheet).toContain(':root {\n  --mu-menu-offset: 8px;\n}');
+  expect(sheet).not.toContain('--mu-menu-offset');
   // a layer off is the plate's colours: one set per colorway, derived from the recipe and said so
   await part(xray, 'Layers');
   await card.getByRole('switch', { name: 'Rim' }).click();
   sheet = (await files(xray)).CSS!;
   expect(sheet).toContain('derived from its recipe for rim off');
-  expect(sheet).toContain('.mu-menu, [data-mu-colorway="bone"] .mu-menu {');
-  expect(sheet).toContain('[data-mu-colorway="graphite"] .mu-menu {');
+  expect(sheet).toContain('.note-actions, [data-mu-colorway="bone"] .note-actions {');
+  expect(sheet).toContain('[data-mu-colorway="graphite"] .note-actions {');
   expect(sheet.match(/--mu-r-menu-self-shadow:/g)).toHaveLength(2);
   expect(sheet).not.toContain('--mu-r-menu-self-background');
   await card.getByRole('switch', { name: 'Frost' }).click();

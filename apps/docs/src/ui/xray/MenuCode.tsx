@@ -11,10 +11,9 @@ import { HEADING, INITIAL, LAYERS, ROWS, TRIGGER, menuLook, type MenuConfig } fr
  *   and a plate of rows, not the still. What is there is in the code: the heading as the `heading`
  *   prop, the line as a MenuSeparator, each row a MenuItem with its glyph, key and handler, the red
  *   one `danger`. The lit row is where the pointer or the keys are, so it has no code.
- *   A Menu opens in a portal and takes no className or style, so what you tune reaches it only the
- *   way the library supports from a host: its --mu-r-menu-* variables set on its own class in a
- *   stylesheet, for every menu in the document, and the gap to its button from --mu-menu-offset at
- *   the root, where the library reads it. Only what differs from the recipe is written. The plate's
+ *   A Menu opens in a portal and takes no className or style, so the gap to its button is its `offset`
+ *   prop, and the rest is its --mu-r-menu-* variables, set in a stylesheet on the class it takes
+ *   (`className`, on the plate), so only this menu changes. Only what differs from the recipe is written. The plate's
  *   fill and shadow stacks are colours, one set per colorway, scoped the way the library scopes its
  *   own: the default, then [data-mu-colorway="graphite"]. At defaults there is no stylesheet.
  *   SwiftUI takes what is there (heading, rows, a separator) and says so when tunables do not reach it.
@@ -24,6 +23,7 @@ import { HEADING, INITIAL, LAYERS, ROWS, TRIGGER, menuLook, type MenuConfig } fr
 const P = tokens.recipes.menu.props as { row: { glyph: number } };
 const COMPONENT = 'NoteActions';
 const SHEET = 'note-actions.css';
+const CLASS = 'note-actions';
 /** The variables that hold colours: their values differ per colorway. */
 const coloured = (name: string) => /-(background|shadow)$/.test(name);
 const rows = () => ROWS.filter((r) => r !== null);
@@ -33,25 +33,24 @@ function derivedFrom(m: MenuConfig) {
   return LAYERS.filter((_, i) => !m.on[i]).map((l) => `${l.name.toLowerCase()} off`).join(', ');
 }
 
-/** What a config sets, split by where it belongs: the plate's shape (one value everywhere), its colours (per colorway), and the gap at the root. */
+/** What a config sets, split by where it belongs: the plate's shape (one value everywhere), its colours (per colorway), and the gap (a prop). */
 function overrides(m: MenuConfig) {
   const by = Object.fromEntries(COLORWAYS.map((c) => [c, menuLook(m, c).style as Record<string, string>])) as Record<Colorway, Record<string, string>>;
   const names = Object.keys(by[COLORWAYS[0]]);
   const shape = names.filter((n) => !coloured(n)).map((n) => [n, by[COLORWAYS[0]][n]] as const);
   const sheet = names.filter(coloured);
-  const offset = menuLook(m, COLORWAYS[0]).offset;
-  return { shape, sheet, by, offset, any: shape.length > 0 || sheet.length > 0 || offset !== undefined };
+  const offset = m.offset !== INITIAL.offset ? m.offset : undefined;
+  return { shape, sheet, by, offset, styled: shape.length > 0 || sheet.length > 0, any: shape.length > 0 || sheet.length > 0 || offset !== undefined };
 }
 
 /** The React code for a config. */
 export function menuReact(m: MenuConfig) {
-  const { any } = overrides(m);
+  const { styled, offset } = overrides(m);
   const handlers = rows().map((r) => r.act);
   const lines = [`import { Button, Menu, MenuItem${m.sep ? ', MenuSeparator' : ''} } from '@unlocalhosted/metalui';`, `import { Icon } from '@unlocalhosted/metalui/icons';`];
-  if (any) lines.push(`import './${SHEET}';`);
+  if (styled) lines.push(`import './${SHEET}';`);
   lines.push('', `export function ${COMPONENT}({ ${handlers.join(', ')} }: { ${handlers.map((h) => `${h}: () => void`).join('; ')} }) {`, '  return (');
-  if (any) lines.push(`    // the menu opens in a portal and takes no className or style: what you tuned is in ${SHEET}, for every menu`);
-  lines.push(`    <Menu trigger={<Button>${TRIGGER}</Button>}${m.heading ? ` heading="${HEADING}"` : ''}>`);
+  lines.push(`    <Menu trigger={<Button>${TRIGGER}</Button>}${m.heading ? ` heading="${HEADING}"` : ''}${offset !== undefined ? ` offset={${offset}}` : ''}${styled ? ` className="${CLASS}"` : ''}>`);
   ROWS.forEach((r) => {
     if (!r) { if (m.sep) lines.push('      <MenuSeparator />'); return; }
     lines.push(`      <MenuItem onSelect={${r.act}} icon={<Icon name="${r.icon}" size={${P.row.glyph}} />} shortcut="${r.key}"${'danger' in r ? ' danger' : ''}>${r.label}</MenuItem>`);
@@ -60,14 +59,13 @@ export function menuReact(m: MenuConfig) {
   return lines.join('\n');
 }
 
-/** The stylesheet for a config: the gap at the root, the plate's shape on its class, its colour stacks per colorway. */
+/** The stylesheet for a config: the plate's shape on the menu's class, its colour stacks per colorway. */
 export function menuCss(m: MenuConfig) {
-  const { shape, sheet, by, offset, any } = overrides(m);
-  if (!any) return '';
-  const lines = [`/* Menu renders in a portal and takes no className or style, so this reaches it through its own class: every menu in the document */`];
-  if (offset !== undefined) lines.push('/* the gap to the button: the library reads it from the root */', ':root {', `  --mu-menu-offset: ${offset};`, '}');
+  const { shape, sheet, by, styled } = overrides(m);
+  if (!styled) return '';
+  const lines = [`/* on the class the menu takes (className, on its plate): only this menu changes */`];
   if (shape.length) {
-    lines.push('.mu-menu {');
+    lines.push(`.${CLASS} {`);
     shape.forEach(([k, v]) => lines.push(`  ${k}: ${v};`));
     lines.push('}');
   }
@@ -75,7 +73,7 @@ export function menuCss(m: MenuConfig) {
     const derived = derivedFrom(m);
     lines.push(`/* the plate's fill and shadow stacks, derived from its recipe${derived ? ` for ${derived}` : ''}; the library sets its own the same way */`);
     for (const c of COLORWAYS) {
-      lines.push(c === COLORWAYS[0] ? `.mu-menu, [data-mu-colorway="${c}"] .mu-menu {` : `[data-mu-colorway="${c}"] .mu-menu {`);
+      lines.push(c === COLORWAYS[0] ? `.${CLASS}, [data-mu-colorway="${c}"] .${CLASS} {` : `[data-mu-colorway="${c}"] .${CLASS} {`);
       sheet.forEach((n) => lines.push(`  ${n}: ${by[c][n]};`));
       lines.push('}');
     }
