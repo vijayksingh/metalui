@@ -90,7 +90,7 @@ export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from 
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
 export { SpatialFieldCanvas, SpatialFieldController, type SpatialFieldRect, type SpatialFieldRegion, type SpatialFieldScene } from './components/spatial-field/spatial-field';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
-export { MorphShape, MorphPart, morphTo, type MorphShapeProps, type MorphMaterial, type MorphKind } from './motion/morph-shape';
+export { MorphShape, MorphPart, afterMorph, returnFocusAfterMorph, morphTo, type MorphShapeProps, type MorphMaterial, type MorphKind } from './motion/morph-shape';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';
 export { haptic, setHapticBridge, connectWebKitHaptics, type HapticKind, type HapticPath, type HapticBridge } from './motion/haptic';

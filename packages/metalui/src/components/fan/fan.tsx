@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MorphPart, MorphShape, morphTo } from '../../motion/morph-shape';
+import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } from '../../motion/morph-shape';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { useReducedMotion } from '../../motion/reduced';
@@ -54,16 +54,17 @@ function FanRoot({ className, children, ...props }: FanProps) {
     if (!open) return;
     const fold = () => { const o = open; setOpen(null); o.restore(); };
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.preventDefault(); fold(); } };
-    const press = (e: PointerEvent) => {
+    // a click outside folds it after what was clicked has handled the click (docs/ONE-SHAPE.md)
+    const press = (e: MouseEvent) => {
       if (!root.current?.contains(e.target as Node)) {
         setOpen(null);
-        // Pointerdown's default focus move runs after this listener; restore after release.
-        window.setTimeout(open.restore, 100);
+        // focus goes back to the cell only if what was clicked did not take it
+        afterMorph(() => { const now = document.activeElement; if (!now || now === document.body) open.restore(); });
       }
     };
     window.addEventListener('keydown', key);
-    window.addEventListener('pointerdown', press, true);
-    return () => { window.removeEventListener('keydown', key); window.removeEventListener('pointerdown', press, true); };
+    window.addEventListener('click', press, true);
+    return () => { window.removeEventListener('keydown', key); window.removeEventListener('click', press, true); };
   }, [open, setOpen]);
   // the cells beside a tray are in both states: they travel when it opens or folds, never jump.
   // A tray is its own shape; the picker names only its cap, so its fan-out stays live.
@@ -203,8 +204,8 @@ function FanTray({ label, icon, children }: FanTrayProps) {
   const was = React.useRef(isOpen);
   // focus follows the shape: into the tray when it opens, back to the cap when it folds
   useIsoLayoutEffect(() => {
-    if (isOpen) inner.current?.querySelector<HTMLElement>('button, [tabindex="0"]')?.focus();
-    else if (was.current) cap.current?.focus();
+    if (isOpen) afterMorph(() => inner.current?.querySelector<HTMLElement>('button, [tabindex="0"]')?.focus());
+    else if (was.current) returnFocusAfterMorph(() => cap.current);
     was.current = isOpen;
   }, [isOpen]);
 

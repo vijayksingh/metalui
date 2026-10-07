@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ViewTransition, addTransitionType, startTransition } from 'react';
+import { flushSync } from 'react-dom';
 
 /* ─────────────────────────────────────────────────────────
  * MORPH SHAPE, one shape, many states (docs/ONE-SHAPE.md)
@@ -19,19 +19,49 @@ import { ViewTransition, addTransitionType, startTransition } from 'react';
  * An interrupt skips the running morph and starts from the state on screen. Travel scales by
  * --mu-travel-surface, so Reduce Motion leaves only the fades. Without View Transitions the
  * state simply changes.
+ *
+ * Built on the platform's View Transitions directly: every shape carries its transition name and
+ * class at all times, and morphTo starts the transition and commits the change inside it with
+ * flushSync. Nothing waits on another render, and no other render can cancel a morph.
  * ───────────────────────────────────────────────────────── */
 
 export type MorphMaterial = 'graphite-deep' | 'tool' | 'pop';
 export type MorphKind = 'open' | 'close';
 
-/** Change a shape's state as a morph: skips a running one, then runs the update in a transition. */
+type Running = { finished: Promise<void>; skipTransition(): void };
+type Transitioning = Document & {
+  startViewTransition?: (o: { update: () => void; types?: string[] }) => Running;
+  activeViewTransition?: Running | null;
+};
+
+/** Change a shape's state as a morph: finishes a running one, then commits the change inside a new one. */
 export function morphTo(update: () => void, kind?: MorphKind) {
-  if (typeof document !== 'undefined') (document as Document & { activeViewTransition?: { skipTransition(): void } }).activeViewTransition?.skipTransition();
-  startTransition(() => {
-    if (kind) addTransitionType(kind);
-    update();
+  const doc = typeof document !== 'undefined' ? (document as Transitioning) : null;
+  if (!doc?.startViewTransition) { update(); return; }
+  doc.activeViewTransition?.skipTransition();
+  doc.startViewTransition({ update: () => flushSync(update), types: kind ? [kind] : [] });
+}
+
+/** Run after the morph in flight lands (or now, if none): focus into new contents, a tooltip, a measure. */
+export function afterMorph(fn: () => void) {
+  const running = typeof document !== 'undefined' ? (document as Transitioning).activeViewTransition : undefined;
+  if (running) running.finished.finally(fn);
+  else fn();
+}
+
+/**
+ * Give focus back to a morph's trigger once it lands, unless something else has taken focus since
+ * (a dialog the morph opened, a control the person moved to): focus left on nothing is the only
+ * focus that is ours to place.
+ */
+export function returnFocusAfterMorph(el: () => HTMLElement | null | undefined) {
+  afterMorph(() => {
+    const now = typeof document !== 'undefined' ? document.activeElement : null;
+    if (!now || now === document.body) el()?.focus({ preventScroll: true });
   });
 }
+
+const css = (name: string) => name.replace(/[^a-zA-Z0-9_-]/g, '');
 
 export interface MorphShapeProps {
   /** The one element that is the shape (it paints its own surface at rest). */
@@ -40,35 +70,37 @@ export interface MorphShapeProps {
   material: MorphMaterial;
   /** The edge the body grows from, where the contents stay pinned: top (drops down) or left (opens sideways). */
   from?: 'top' | 'left';
-  /** A shared name, when the closed and open states are different elements (render one at a time). */
+  /** A name shared by the closed and open elements when they are different elements (render one at a time). */
   name?: string;
 }
 
 /**
- * The body and contents boundaries around one shape. The child is the body; its own children are
- * the contents. The body gets `view-transition-group: contain` so the contents' group nests inside
- * it and is clipped by the travelling outline.
+ * The body and its contents, named for the platform's view transitions. The child is the body; its
+ * own children are the contents, wrapped once so they change as one (whatever replaces them, a
+ * second page included). The body gets `view-transition-group: contain` so the contents' group
+ * nests inside it and is clipped by the travelling outline.
  */
 export function MorphShape({ children, material, from = 'top', name }: MorphShapeProps) {
-  const body = { open: `mu-morph-body mu-morph-${material}`, close: `mu-morph-body mu-morph-closing mu-morph-${material}`, default: `mu-morph-body mu-morph-${material}` };
-  const content = `mu-morph-contents mu-morph-from-${from}`;
+  const id = css(React.useId());
+  const body = name ? css(name) : `mu-${id}-body`;
   const child = children as React.ReactElement<{ style?: React.CSSProperties; children?: React.ReactNode }>;
-  const inner = (
-    <ViewTransition update={content} enter={content} exit={content}>
-      <span className="mu-morph-contents">{child.props.children}</span>
-    </ViewTransition>
+  const contents = (
+    <span className="mu-morph-contents" style={{ viewTransitionName: `mu-${id}-contents`, viewTransitionClass: `mu-morph-contents mu-morph-from-${from}` } as React.CSSProperties}>
+      {child.props.children}
+    </span>
   );
-  const shape = React.cloneElement(child, { style: { ...child.props.style, viewTransitionGroup: 'contain' } as React.CSSProperties }, inner);
-  return name
-    ? <ViewTransition name={name} share={body} update={body}>{shape}</ViewTransition>
-    : <ViewTransition update={body}>{shape}</ViewTransition>;
+  return React.cloneElement(child, {
+    style: { ...child.props.style, viewTransitionName: body, viewTransitionClass: `mu-morph-body mu-morph-${material}`, viewTransitionGroup: 'contain' } as React.CSSProperties,
+  }, contents);
 }
 
 /**
- * A part that is in both states (the capsule's own row inside its panel): it travels with its own
- * group on the body's spring instead of dissolving with the content, so it never ghosts.
- * The name must be unique on the page (useId).
+ * A part that is in both states (the capsule's own row inside its panel, the cells beside a tray):
+ * it travels with its own group on the body's spring instead of changing with the contents.
  */
 export function MorphPart({ name, children }: { name: string; children: React.ReactElement }) {
-  return <ViewTransition name={name} update="mu-morph-part" share="mu-morph-part">{children}</ViewTransition>;
+  const child = children as React.ReactElement<{ style?: React.CSSProperties }>;
+  return React.cloneElement(child, {
+    style: { ...child.props.style, viewTransitionName: `mu-${css(name)}`, viewTransitionClass: 'mu-morph-part' } as React.CSSProperties,
+  });
 }

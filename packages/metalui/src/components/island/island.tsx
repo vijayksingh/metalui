@@ -8,7 +8,7 @@ import { Label } from '../label/label';
 import { SwapText } from '../../motion/swap';
 import { MorphIcon } from '../../icons/MorphIcon';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
-import { MorphPart, MorphShape, morphTo } from '../../motion/morph-shape';
+import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } from '../../motion/morph-shape';
 
 /* ─────────────────────────────────────────────────────────
  * ISLAND, where you are and how things stand, in one graphite capsule that opens
@@ -103,8 +103,8 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
 
   // focus follows the shape: into the panel when it opens, back to the capsule when it closes
   useIsoLayoutEffect(() => {
-    if (out) panel.current?.querySelector<HTMLElement>('button:not([disabled]), [tabindex="0"], input')?.focus({ preventScroll: true });
-    else if (was.current) inner.current?.focus({ preventScroll: true });
+    if (out) afterMorph(() => panel.current?.querySelector<HTMLElement>('button:not([disabled]), [tabindex="0"], input')?.focus({ preventScroll: true }));
+    else if (was.current) returnFocusAfterMorph(() => inner.current);
     was.current = out;
   }, [out]);
 
@@ -115,10 +115,12 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
     const inPopup = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[role="menu"], [role="listbox"], [role="dialog"]');
     const close = () => morphTo(() => onOpenChange?.(false), 'close');
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape' && !inPopup(e.target)) { e.stopPropagation(); close(); } };
-    const press = (e: PointerEvent) => { if (!body.current?.contains(e.target as Node) && !inPopup(e.target)) close(); };
+    const press = (e: MouseEvent) => { if (!body.current?.contains(e.target as Node) && !inPopup(e.target)) close(); };
+    // a click outside, not a press: what was clicked handles its own click first, then the island
+    // folds (starting a morph on the press would hold the page and lose that click)
     document.addEventListener('keydown', key, true);
-    document.addEventListener('pointerdown', press, true);
-    return () => { document.removeEventListener('keydown', key, true); document.removeEventListener('pointerdown', press, true); };
+    document.addEventListener('click', press, true);
+    return () => { document.removeEventListener('keydown', key, true); document.removeEventListener('click', press, true); };
   }, [out, onOpenChange]);
 
   const shown = passing ?? detail ?? '';
