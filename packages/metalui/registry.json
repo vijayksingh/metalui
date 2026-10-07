@@ -1982,6 +1982,24 @@
       "docs": "Agent guide: https://metalui.dev/r/surface.md. SwiftUI: MetalSurface in the MetalUI Swift package."
     },
     {
+      "name": "swatch",
+      "type": "registry:ui",
+      "title": "Swatch",
+      "description": "A colour as a hard, glossy chip in its own colour: a sheen, an engraved hex in dark or light ink by the colour's luma, a recessed LED dimple. A click hands it to the host's colour picker.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/swatch/swatch.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/swatch/swatch.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/swatch.md. SwiftUI: MetalSwatch in the MetalUI Swift package."
+    },
+    {
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",

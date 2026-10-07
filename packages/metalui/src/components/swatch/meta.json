@@ -1,0 +1,20 @@
+{
+  "name": "swatch",
+  "title": "Swatch",
+  "status": "alpha",
+  "description": "A colour as a hard, glossy chip in its own colour: a sheen, an engraved hex in dark or light ink by the colour's luma, a recessed LED dimple. A click hands it to the host's colour picker.",
+  "base": "none (a div, a button when it has an onClick)",
+  "react": {
+    "export": "Swatch",
+    "files": [
+      "swatch.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSwatch",
+    "file": "swift/Sources/MetalUI/Components/MetalSwatch.swift"
+  },
+  "agent": "swatch.agent.md",
+  "layer": "part",
+  "page": "/components/swatch"
+}

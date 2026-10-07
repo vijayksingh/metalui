@@ -1395,6 +1395,23 @@
       "agent": "https://metalui.dev/r/surface.md"
     },
     {
+      "name": "swatch",
+      "title": "Swatch",
+      "status": "alpha",
+      "description": "A colour as a hard, glossy chip in its own colour: a sheen, an engraved hex in dark or light ink by the colour's luma, a recessed LED dimple. A click hands it to the host's colour picker.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Swatch",
+        "base": "none (a div, a button when it has an onClick)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSwatch"
+      },
+      "registry": "https://metalui.dev/r/swatch.json",
+      "agent": "https://metalui.dev/r/swatch.md"
+    },
+    {
       "name": "switch",
       "title": "Switch",
       "status": "alpha",
