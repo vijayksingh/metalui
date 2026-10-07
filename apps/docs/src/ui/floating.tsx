@@ -5,6 +5,7 @@ import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusB
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
+import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -57,6 +58,12 @@ function TableSwitcher({ config = SWITCHER, onConfig, open }: { config?: Switche
   );
 }
 
+/** The swatch on the table: the real chip set to its config, which its x-ray takes over and hands back. */
+function TableSwatch({ config = SWATCH, open }: { config?: SwatchConfig; open: () => void }) {
+  const { style } = useSwatchLook(config);
+  return <Swatch hex={config.hex} label={config.label} style={style} onClick={open} />;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -93,7 +100,7 @@ const ITEMS: Item[] = [
     ),
   },
   { id: 'link', table: ['66.5%', '4.1%'], space: ['50%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
-  { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray }) => <Swatch hex="#FF6B3D" label="Colour" onClick={() => openXray('swatch')} /> },
+  { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray, seeds }) => <TableSwatch config={seeds.swatch} open={() => openXray('swatch')} /> },
   {
     // the brand, front and centre among the things it makes; hung back in the scene like its neighbours.
     id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
