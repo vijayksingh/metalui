@@ -122,7 +122,8 @@ test('floating table opens switcher x-ray; narrow graphite card has no sideways 
   await page.setViewportSize({ width: 375, height: 812 });
   await page.addInitScript(() => localStorage.setItem('metalui:colorway', 'graphite'));
   await page.goto('/overview');
-  await page.locator('[data-float="seg"] .mu-switcher-option').first().click({ force: true });
+  // at 375 px the table's objects overlap and drift, so a point click can land on a neighbour: the option takes the click itself
+  await page.locator('[data-float="seg"] .mu-switcher-option').first().dispatchEvent('click');
   await expect(page.locator('.xr-overlay .xr-card .ed-specimen .mu-switcher')).toHaveCount(1);
   await expect(page.evaluate(() => document.documentElement.scrollWidth)).resolves.toBeLessThanOrEqual(375);
 });

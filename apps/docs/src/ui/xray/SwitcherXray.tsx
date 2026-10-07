@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, useRecipeLayers, type SpotDef } from './kit';
+import { useColorway, type Colorway } from '../../app/colorway';
+import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, recipeLayers, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
 import type { XrayViewProps } from '.';
 import { SwitcherSpecimenCard } from './SwitcherSpecimens';
+import { SwitcherCodePanel } from './SwitcherCode';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · SWITCHER
@@ -21,6 +23,7 @@ import { SwitcherSpecimenCard } from './SwitcherSpecimens';
  *               Slide   click a label; the thumb slides on a spring you can tune
  *               Light   one light: the thumb gets a bright top, the tray a dark top and a bright bottom
  *               Layers  the tray's four layers and the thumb's six, each switchable
+ *   code        under the card: the React and SwiftUI for exactly this config (SwitcherCode.tsx)
  * ───────────────────────────────────────────────────────── */
 
 const RECIPE = tokens.recipes.switcher;
@@ -98,16 +101,16 @@ const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
 /** What a config looks like: the tray's and thumb's fill and shadows for the model's parts, and the
  *  variables that set the real control to it. Only what differs from the recipe is set, so a default
  *  config is the control exactly as it ships, and the variables are the overrides its code needs. */
-export function useSwitcherLook(m: SwitcherConfig) {
-  const well = useRecipeLayers('switcher', 'self');
-  const thumb = useRecipeLayers('switcher', 'thumb');
+export function switcherLook(m: SwitcherConfig, colorway: Colorway) {
+  const well = recipeLayers('switcher', 'self', colorway);
+  const thumb = recipeLayers('switcher', 'thumb', colorway);
   const grad = (stops: string[]) => `linear-gradient(${180 + m.lightDeg}deg, ${stops.join(', ')})`;
   const wellShadows = well.shadows.map((v, i) => (m.well[i + 1] ? aim(i === 0 ? alphaK(v, m.depth) : v, m.lightDeg, m.lightK) : null));
   const liftK = (v: string, i: number) => (i >= 3 ? alphaK(scalePx(v, 0.4 + m.lift * 0.6), 0.5 + m.lift * 0.5) : v);
   const thumbShadows = thumb.shadows.map((v, i) => (m.thumb[i + 1] ? aim(liftK(v, i), m.lightDeg, i < 2 ? m.lightK : 1) : null));
-  const ease = React.useMemo(() => springEasing(m.k, m.c), [m.k, m.c]);
+  const ease = springEasing(m.k, m.c);
   const look = {
-    colorway: well.colorway,
+    colorway,
     wellRaw: well, thumbRaw: thumb, ease,
     wellFill: m.well[0] ? grad(well.stops) : 'transparent',
     thumbFill: m.thumb[0] ? grad(thumb.stops) : 'transparent',
@@ -118,11 +121,18 @@ export function useSwitcherLook(m: SwitcherConfig) {
   const style: Record<string, string> = {};
   if (m.pad !== INITIAL.pad) style['--mu-r-switcher-self-pad'] = `${m.pad}px`;
   if (m.padX !== INITIAL.padX) style['--mu-r-switcher-option-pad-x'] = `${m.padX}px`;
-  if (lit || m.depth !== INITIAL.depth || !same(m.well, INITIAL.well)) { style['--mu-r-switcher-self-background'] = look.wellFill; style['--mu-r-switcher-self-shadow'] = look.wellShadow; }
-  if (lit || m.lift !== INITIAL.lift || !same(m.thumb, INITIAL.thumb)) { style['--mu-r-switcher-thumb-background'] = look.thumbFill; style['--mu-r-switcher-thumb-shadow'] = look.thumbShadow; }
+  // a fill changes with the light or its own layer; a shadow stack with the light, its depth or lift, or any of its layers
+  if (lit || !m.well[0]) style['--mu-r-switcher-self-background'] = look.wellFill;
+  if (lit || m.depth !== INITIAL.depth || !same(m.well.slice(1), INITIAL.well.slice(1))) style['--mu-r-switcher-self-shadow'] = look.wellShadow;
+  if (lit || !m.thumb[0]) style['--mu-r-switcher-thumb-background'] = look.thumbFill;
+  if (lit || m.lift !== INITIAL.lift || !same(m.thumb.slice(1), INITIAL.thumb.slice(1))) style['--mu-r-switcher-thumb-shadow'] = look.thumbShadow;
   if (m.instant) style['--mu-spring-part-d'] = '0s';
   else if (m.k !== INITIAL.k || m.c !== INITIAL.c) { style['--mu-spring-part'] = ease.css; style['--mu-spring-part-d'] = `${ease.ms}ms`; }
   return { ...look, style: style as React.CSSProperties };
+}
+export function useSwitcherLook(m: SwitcherConfig) {
+  const { colorway } = useColorway();
+  return React.useMemo(() => switcherLook(m, colorway), [m, colorway]);
 }
 export type Look = ReturnType<typeof useSwitcherLook>;
 
@@ -279,6 +289,7 @@ export function SwitcherXray({ startOpen = false, seed, onSeed, pose = 'open', z
           <SwitcherSpecimenCard spot={spot} m={m} set={set} sel={sel} setSel={setSel} focus={setFocus} look={look} />
         </div>
       )}
+      {xray && <SwitcherCodePanel config={m} />}
     </div></HintLayer>
   );
 }

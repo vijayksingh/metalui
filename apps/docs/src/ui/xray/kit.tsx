@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Slider } from '@unlocalhosted/metalui';
-import { useColorway } from '../../app/colorway';
+import { useColorway, type Colorway } from '../../app/colorway';
 import { tokens } from '../../lib/tokens';
 
 /* ─────────────────────────────────────────────────────────
@@ -66,15 +66,19 @@ export function useStateLayers(recipe: keyof typeof tokens.recipes, state: strin
   return { fill, shadows, colorway };
 }
 
-/** One part's layers for the current colorway, in recipe order. */
-export function useRecipeLayers(recipe: keyof typeof tokens.recipes, part = 'self') {
-  const { colorway } = useColorway();
+/** One part's layers for a colorway, in recipe order. */
+export function recipeLayers(recipe: keyof typeof tokens.recipes, part: string, colorway: Colorway) {
   const r = tokens.recipes[recipe] as { layers: { part: string; prop: string; value: string; colorway?: string; state?: string }[] };
   const ls = r.layers.filter((l) => l.part === part && (!l.colorway || l.colorway === colorway) && !l.state);
   const fill = ls.find((l) => l.prop === 'background')?.value ?? 'transparent';
   const shadows = ls.filter((l) => l.prop === 'shadow').map((l) => l.value);
   const stops = (fill.match(/linear-gradient\((.*)\)/)?.[1] ?? fill).split(/,(?![^(]*\))/).map((x) => x.trim());
   return { fill, stops, shadows, colorway };
+}
+/** One part's layers for the current colorway, in recipe order. */
+export function useRecipeLayers(recipe: keyof typeof tokens.recipes, part = 'self') {
+  const { colorway } = useColorway();
+  return React.useMemo(() => recipeLayers(recipe, part, colorway), [recipe, part, colorway]);
 }
 
 export const scalePx = (v: string, k: number) => v.replace(/(-?[\d.]+)px/g, (_, n) => `${(Number(n) * k).toFixed(2)}px`);

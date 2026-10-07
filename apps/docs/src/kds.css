@@ -766,6 +766,10 @@ html.rm .xr-thumb, html.rm .xr-thumb *, html.rm .xr-segface, html.rm .xr-ring { 
 .xr { display: flex; flex-wrap: wrap; align-items: flex-start; }
 .xr > .xr-bench { flex: 1 1 540px; min-width: 0; }
 .xr > .xr-card { flex: 1 1 300px; max-width: 100%; }
+/* the code for the config, under the bench and the card; flown in, it surfaces with the card */
+.xr > .xr-code { flex-basis: 100%; min-width: 0; }
+.xr-overlay.is-flown .xr-code { animation: xr-surface .5s cubic-bezier(.2, .8, .25, 1) .34s both; }
+html.rm .xr-code { animation: none; }
 .xr > .xr-measure { flex: none; }
 /* objects hanging behind the camera's plane must still take the pointer */
 .space, .space-camera { pointer-events: none; }

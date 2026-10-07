@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 export type Colorway = 'bone' | 'graphite';
+/** Every colorway the library ships, the default first. */
+export const COLORWAYS: Colorway[] = ['bone', 'graphite'];
 
 const KEY = 'metalui:colorway';
 
