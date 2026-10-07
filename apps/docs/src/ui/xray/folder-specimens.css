@@ -1,18 +1,9 @@
-/* The folder x-ray: the real folder in the specimen well, its handles, and the bench model. */
+/* The folder x-ray: the real folder in the specimen well, its handles, and the bench model's planes. */
 
 /* The folder rests while you tune it: only the Drop in card lets a pointer pose it. */
 .ed-folder.is-still .mu-folder { pointer-events: none; }
 /* Nothing moves under the finger: while a value is dragged the folder has no transitions. */
 .ed-folder.is-live :is(.mu-folder, .mu-folder *) { transition: none !important; }
-
-/* Layers switched off. */
-.ed-folder[data-off~="shadow"] :is(.folder-shade, .folder-flap-shade) { display: none; }
-.ed-folder[data-off~="back-paper"] .folder-back { opacity: 0; }
-.ed-folder[data-off~="edge"] :is(.folder-edge-line, .folder-edge-light) { display: none; }
-.ed-folder[data-off~="blocks"] .folder-card { display: none; }
-.ed-folder[data-off~="frost"] .folder-frost { display: none; }
-.ed-folder[data-off~="flap-tint"] .folder-flap-fill { display: none; }
-.ed-folder[data-off~="count"] .folder-count { visibility: hidden; }
 
 /* Room above the folder for the blocks to rise into. */
 .ed-folder-well > div { padding-top: 64px; }
@@ -44,11 +35,21 @@
 .ed-folder-block-card .folder-thumb { display: block; }
 @media (prefers-reduced-motion: reduce) { .ed-folder-block { transition: none; } }
 
-/* The bench model's parts. */
-.xr-face.xr-folder-part { place-items: start; }
-.xr-folder-card { display: flex !important; flex-direction: column; padding: 16px; box-sizing: border-box; }
-.xr-folder-card > i { display: block; width: 100%; flex: none; }
-.xr-folder-card > .xr-folder-line { border-radius: 99px; margin-top: 12px; }
-.xr-folder-name { position: absolute; left: 26px; bottom: 22px; display: flex; flex-direction: column; gap: 6px; font: 600 22px/1 var(--sans); color: var(--mu-ink); }
-.xr-folder-name em { font: 500 13px/1 var(--mono); font-style: normal; letter-spacing: .08em; text-transform: uppercase; color: var(--mu-ink3); }
-.xr-folder-count { display: grid !important; place-items: center !important; border-radius: 999px !important; background: var(--mu-r-folder-count-background); box-shadow: var(--mu-r-folder-count-shadow); font: 600 17px/1 var(--mono); color: var(--mu-ink); }
+/* The bench model: every plane is the real folder, keeping only the parts named in data-keep (the
+ * back with its tab and edge on the floor, the blocks above it, the flap highest); landed flat the
+ * first plane keeps all of it and the others nothing, so what lies on the floor is the object itself. */
+.xr-fplane:not([data-keep~="all"]) .mu-folder > * { visibility: hidden; }
+.xr-fplane[data-keep~="shade"] .folder-shade { visibility: visible; }
+.xr-fplane[data-keep~="back"] .folder-back { visibility: visible; }
+.xr-fplane[data-keep~="frame"] .folder-frame { visibility: visible; }
+.xr-fplane[data-keep~="cards"] .folder-card { visibility: visible; }
+.xr-fplane[data-keep~="flapshade"] .folder-flap-shade { visibility: visible; }
+.xr-fplane[data-keep~="frost"] .folder-frost { visibility: visible; }
+.xr-fplane[data-keep~="fill"] .folder-flap-fill { visibility: visible; }
+.xr-fplane[data-keep~="flapedge"] .folder-flap :is(.folder-edge-light, .folder-edge-line) { visibility: visible; }
+.xr-fplane[data-keep~="label"] .folder-label { visibility: visible; }
+.xr-fplane[data-keep~="count"] .folder-count { visibility: visible; }
+/* a layer switched off, pulled apart: faint, like the kit's layers */
+.xr-fplane.is-off { opacity: .18; }
+/* the planes rise and settle on the object spring (.xr-segface); the layer boxes only carry the tags */
+.folder-xray .xr-face.is-layer { background: none; }

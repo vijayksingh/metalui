@@ -1,0 +1,211 @@
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import { COLORWAYS, capture } from './helpers';
+
+// The handover: the folder on the table hands its config to its x-ray. What lands is what you were
+// holding (its name, its blocks, its paper, how it is tuned), the model's plane is that object to the
+// pixel at the moment the copy hands over, and what you tune in the x-ray is what the table shows when
+// it comes home. The folder draws everything from its props and the recipe: nothing here fetches.
+
+async function openOverview(page: Page, colorway: string) {
+  await page.addInitScript((c) => localStorage.setItem('metalui:colorway', c), colorway);
+  await page.goto('/overview');
+  await page.waitForSelector('[data-float="folder"]');
+  await page.evaluate(() => document.fonts.ready);
+}
+const settled = (page: Page) => page.waitForFunction(() => !document.documentElement.dataset.flight && !document.querySelector('.xr-flyer'));
+const table = (page: Page) => page.locator('[data-float="folder"] .mu-folder');
+const openFromTable = (page: Page) => table(page).click({ force: true });
+/** The plane that lands as the whole folder (flat), and holds its back once the model opens. */
+const modelBack = (page: Page) => page.locator('.xr-overlay .xr-segface.is-fback .mu-folder');
+/** The plane that holds the flap, its name and its count once the model opens. */
+const modelFlap = (page: Page) => page.locator('.xr-overlay .xr-segface.is-fflap .mu-folder');
+const part = (page: Page, name: string) => page.locator(`.xr-overlay .xr-callout[aria-label^="${name}"]`).click();
+const readout = (page: Page, name: string) => page.locator('.xr-overlay .xr-card .ed-readout').filter({ has: page.locator('b', { hasText: new RegExp(`^${name}$`) }) });
+const shown = (r: Locator) => r.locator('.ed-roll > span:not(.is-out)').textContent();
+
+/** Steps a readout with the arrow keys, as a keyboard user does. */
+async function step(page: Page, name: string, key: string, times: number) {
+  const r = readout(page, name);
+  await r.focus();
+  for (let i = 0; i < times; i++) await page.keyboard.press(key);
+}
+
+/** Holds the flight at the moment of handover: the copy has landed and is still whole, the model is in under it. */
+async function holdHandover(page: Page) {
+  await page.waitForSelector('.xr-flyer');
+  await page.evaluate(() => {
+    document.getAnimations().forEach((a) => {
+      const t = a.effect!.getComputedTiming();
+      a.pause();
+      if (t.duration === 1100) a.currentTime = 1100 * 0.88;
+      else if (Number.isFinite(t.endTime)) a.currentTime = t.endTime as number;
+    });
+  });
+}
+
+/** The two stills, as a person sees them: the plane with the copy gone, and the copy with the model's body gone. */
+async function stills(page: Page) {
+  const box = (await page.locator('.xr-flyer').boundingBox())!;
+  // the folder casts a soft shadow under the pocket and the flap: the frame holds it
+  const pad = 60;
+  const clip = { x: box.x - pad, y: box.y - pad, width: box.width + pad * 2, height: box.height + pad * 2 };
+  await page.evaluate(() => { document.querySelector<HTMLElement>('.drift')!.style.visibility = 'hidden'; document.querySelector<HTMLElement>('.xr-flyer')!.style.visibility = 'hidden'; });
+  const model = await page.screenshot({ clip });
+  await page.evaluate(() => {
+    document.querySelector<HTMLElement>('.xr-flyer')!.style.visibility = '';
+    document.querySelectorAll<HTMLElement>('.xr-overlay .xr-iso > :not(.xr-floor)').forEach((el) => { el.style.visibility = 'hidden'; });
+  });
+  const flyer = await page.screenshot({ clip });
+  return { model, flyer, clip };
+}
+
+/** How far two stills are apart, measured in the page: the share of pixels that differ clearly, and the mean difference. */
+async function compare(page: Page, a: Buffer, b: Buffer) {
+  return page.evaluate(async ([a, b]) => {
+    const load = (src: string) => new Promise<HTMLImageElement>((ok) => { const im = new Image(); im.onload = () => ok(im); im.src = `data:image/png;base64,${src}`; });
+    const [ia, ib] = await Promise.all([load(a), load(b)]);
+    const px = (im: HTMLImageElement) => { const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d')!; g.drawImage(im, 0, 0); return g.getImageData(0, 0, c.width, c.height).data; };
+    const pa = px(ia), pb = px(ib);
+    let off = 0, sum = 0; const n = ia.width * ia.height;
+    for (let i = 0; i < n * 4; i += 4) {
+      const d = Math.max(Math.abs(pa[i] - pb[i]), Math.abs(pa[i + 1] - pb[i + 1]), Math.abs(pa[i + 2] - pb[i + 2]));
+      sum += d; if (d > 40) off++;
+    }
+    return { off: off / n, mean: sum / n };
+  }, [a.toString('base64'), b.toString('base64')]);
+}
+
+/** The copy and the landed plane, edge for edge: the largest gap between their boxes, their flaps, their counts and their back cards. */
+const miss = (page: Page) => page.evaluate(() => {
+  const r = (el: Element) => el.getBoundingClientRect();
+  const edges = (a: DOMRect, b: DOMRect) => Math.max(Math.abs(a.left - b.left), Math.abs(a.top - b.top), Math.abs(a.right - b.right), Math.abs(a.bottom - b.bottom));
+  return Math.max(...['.mu-folder', '.folder-flap', '.mu-folder-count', '.folder-card'].map((sel) =>
+    edges(r(document.querySelector(`.xr-flyer ${sel}`)!), r(document.querySelector(`.xr-overlay .xr-segface.is-fback ${sel}`)!))));
+});
+
+for (const colorway of COLORWAYS) {
+  test(`the folder lands on its own plane, as it is on the table, in ${colorway}`, async ({ page }) => {
+    test.slow();
+    await openOverview(page, colorway);
+    await openFromTable(page);
+    await holdHandover(page);
+    // the same pixels: the plane with the copy gone, and the copy with the model gone, differ only by the
+    // anti-aliasing of glyph edges
+    const { model, flyer, clip } = await stills(page);
+    await page.screenshot({ path: capture(`xray-handoff-folder-${colorway}`), clip: { x: clip.x - 40, y: clip.y - 40, width: clip.width + 80, height: clip.height + 80 } });
+    const d = await compare(page, model, flyer);
+    console.log(`handover stills in ${colorway}: ${(d.off * 100).toFixed(2)}% of pixels differ, mean ${d.mean.toFixed(2)}/255`);
+    expect(d.off).toBeLessThan(0.01);
+    expect(d.mean).toBeLessThan(2);
+    // the model holds the table's folder, and its plane is where the copy came down, edge for edge
+    await expect(modelBack(page)).toHaveAttribute('aria-label', /^poster refs, folder of 3 blocks/);
+    await expect(modelBack(page)).toHaveAttribute('data-hue', 'neutral');
+    expect(await miss(page)).toBeLessThan(0.25);
+  });
+}
+
+test('a tuned folder lands as it was left: the same pixels, the same boxes', async ({ page }) => {
+  test.slow();
+  await openOverview(page, 'bone');
+  await openFromTable(page);
+  await settled(page);
+  // another paper, the flap tipped further, the blocks raised and leaned, more frost, a layer off, one more block
+  await part(page, 'Paper');
+  await step(page, 'Colour', 'ArrowUp', 2);
+  await part(page, 'Flap');
+  await step(page, 'Tilt', 'ArrowUp', 6);
+  await part(page, 'Fan');
+  await step(page, 'Rise', 'ArrowUp', 5);
+  await step(page, 'Lean', 'ArrowDown', 4);
+  await part(page, 'Glass');
+  await step(page, 'Frost', 'ArrowUp', 4);
+  await part(page, 'Layers');
+  await page.locator('.xr-overlay .xr-card').getByRole('switch', { name: 'Count chip' }).click();
+  await part(page, 'Drop in');
+  await step(page, 'Blocks', 'ArrowUp', 1);
+  await page.keyboard.press('Escape');
+  await settled(page);
+  await expect(table(page)).toHaveAttribute('data-hue', 'amber');
+  await expect(table(page).locator('.mu-folder-count')).toHaveText('4');
+  await openFromTable(page);
+  await holdHandover(page);
+  const { model, flyer, clip } = await stills(page);
+  await page.screenshot({ path: capture('xray-handoff-folder-tuned'), clip: { x: clip.x - 40, y: clip.y - 40, width: clip.width + 80, height: clip.height + 80 } });
+  const d = await compare(page, model, flyer);
+  console.log(`tuned handover stills: ${(d.off * 100).toFixed(2)}% of pixels differ, mean ${d.mean.toFixed(2)}/255`);
+  expect(d.off).toBeLessThan(0.01);
+  expect(d.mean).toBeLessThan(2);
+  expect(await miss(page)).toBeLessThan(0.25);
+  await expect(modelBack(page)).toHaveAttribute('data-hue', 'amber');
+  await expect(modelBack(page)).toHaveAttribute('aria-label', /^poster refs, folder of 4 blocks/);
+});
+
+test('the paper on the table is where the x-ray starts, and the paper in the x-ray is what comes home', async ({ page }) => {
+  await openOverview(page, 'bone');
+  await expect(table(page)).toHaveAttribute('data-hue', 'neutral');
+  await openFromTable(page);
+  await settled(page);
+  const card = page.locator('.xr-overlay .xr-card');
+  await expect(modelFlap(page)).toHaveAttribute('data-hue', 'neutral');
+  await expect(modelFlap(page).locator('.folder-label')).toContainText('poster refs');
+  await part(page, 'Paper');
+  await expect(card.getByRole('slider', { name: 'Colour' })).toHaveAttribute('aria-valuetext', 'Neutral');
+  // another paper on the card: the model follows, and so does the table when it comes home
+  await step(page, 'Colour', 'ArrowUp', 1);
+  await expect(card.getByRole('slider', { name: 'Colour' })).toHaveAttribute('aria-valuetext', 'Red');
+  await expect(modelFlap(page)).toHaveAttribute('data-hue', 'red');
+  await expect(modelBack(page)).toHaveAttribute('data-hue', 'red');
+  await page.keyboard.press('Escape');
+  await settled(page);
+  await expect(table(page)).toHaveAttribute('data-hue', 'red');
+  // and it opens again from there
+  await openFromTable(page);
+  await settled(page);
+  await expect(modelFlap(page)).toHaveAttribute('data-hue', 'red');
+  await part(page, 'Paper');
+  await expect(card.getByRole('slider', { name: 'Colour' })).toHaveAttribute('aria-valuetext', 'Red');
+});
+
+test('a tweak comes home with the object: what lifts off the model is what landed on it', async ({ page }) => {
+  await openOverview(page, 'bone');
+  await openFromTable(page);
+  await settled(page);
+  await part(page, 'Flap');
+  await step(page, 'Tilt', 'ArrowUp', 6);
+  const tilt = await shown(readout(page, 'Tilt'));
+  expect(tilt).not.toBe('15');
+  await part(page, 'Fan');
+  await step(page, 'Rise', 'ArrowUp', 5);
+  const rise = await shown(readout(page, 'Rise'));
+  expect(rise).not.toBe('10');
+  await page.keyboard.press('Escape');
+  await settled(page);
+  // the table's folder is set to it, through the library's own variables
+  await expect(table(page)).toHaveAttribute('style', new RegExp(`--mu-r-folder-flap-rest:\\s*-${tilt}deg`));
+  await expect(table(page)).toHaveAttribute('style', new RegExp(`--mu-r-folder-fan-rest-y-front:\\s*-${rise}px`));
+});
+
+test('an untouched folder carries no variables, and the model starts exactly there', async ({ page }) => {
+  await openOverview(page, 'graphite');
+  expect(await table(page).getAttribute('style')).toBeNull();
+  await openFromTable(page);
+  await settled(page);
+  for (const plane of [modelBack(page), modelFlap(page)]) expect(await plane.getAttribute('style')).toBeNull();
+  await page.keyboard.press('Escape');
+  await settled(page);
+  expect(await table(page).getAttribute('style')).toBeNull();
+});
+
+test('with reduced motion the folder hands over in place', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await openOverview(page, 'graphite');
+  await openFromTable(page);
+  await expect(page.locator('.xr-flyer')).toHaveCount(0);
+  await expect(modelFlap(page)).toHaveAttribute('data-hue', 'neutral');
+  await part(page, 'Paper');
+  await step(page, 'Colour', 'ArrowUp', 3);
+  await expect(modelFlap(page)).toHaveAttribute('data-hue', 'green');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(table(page)).toHaveAttribute('data-hue', 'green');
+});

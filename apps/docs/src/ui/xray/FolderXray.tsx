@@ -2,23 +2,29 @@ import * as React from 'react';
 import { Folder, type FolderHue, type FolderPeek } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway, type Colorway } from '../../app/colorway';
-import { XrayFrame, type LayerDef, type SpotDef } from './kit';
+import { Callouts, Glyph, useFit, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
+import type { XrayViewProps } from '.';
 import { FolderSpecimenCard } from './FolderSpecimens';
+import { FolderCodePanel } from './FolderCode';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · FOLDER (an object: a pocket that holds blocks)
  *
- *   solid     the folder with three blocks peeking out
- *   x-ray     it lies on the floor: the paper back with its tab, the blocks fanned up out of
- *             it, and the frosted flap hinged up off the floor on its bottom edge
+ *   solid     the real folder with three blocks peeking out
+ *   x-ray     the folder taken apart on the gridded floor. Every plane is the real Folder, laid out
+ *             at the table's zoom and scaled by transform, with the parts that are not that plane's
+ *             hidden: the paper back with its tab and edge on the floor, the blocks fanned above
+ *             it, and the frosted flap highest, with the name and the count. Flown in, it lands as
+ *             one whole folder (the object itself), then the blocks and the flap rise off the back.
  *   card      the real folder, handled (FolderSpecimens):
  *             Drop in  point at it, drag a block onto it: it opens, takes it and shuts
  *             Paper    drag the tab sideways through its six colours (steps)
  *             Fan      drag the front block to set how far the blocks rise and lean
  *             Flap     drag the flap's top edge to tilt it
  *             Glass    drag across the flap: sideways for frost, up or down to see through
- *             Layers   a switch per layer
+ *             Layers   a switch per layer of its material
+ *   code      under the card: the React and SwiftUI for exactly this config (FolderCode.tsx)
  * ───────────────────────────────────────────────────────── */
 
 type ByColorway = { bone: string; graphite: string };
@@ -27,15 +33,15 @@ const R = tokens.recipes.folder as unknown as {
     self: { width: number; height: number };
     back: { height: number; radius: number; 'tab-width': number; 'tab-rise': number; taper: number };
     hue: Record<string, ByColorway>;
-    card: { width: number; height: number; radius: number; bottom: number; thumb: number; background: ByColorway; border: ByColorway; 'line-ink': ByColorway };
-    flap: { height: number; radius: number; taper: number; rest: string; hover: string; open: string; frost: string; lift: ByColorway; 'fill-opacity': ByColorway; border: ByColorway };
+    card: { width: number; height: number; radius: number; bottom: number; thumb: number };
+    flap: { height: number; radius: number; taper: number; rest: string; hover: string; open: string; frost: string; 'fill-opacity': ByColorway };
     count: { size: number };
-    shape: { edge: ByColorway; light: ByColorway };
     fan: Record<string, string>;
   };
 };
 export const FP = R.props;
 export const HUES: FolderHue[] = ['neutral', 'red', 'amber', 'green', 'blue', 'violet'];
+const OBJECT = tokens.springs.object as { duration: number };
 const deg = (v: string) => parseFloat(v);
 export const FOLDER_TOKENS = {
   flap: deg(FP.flap.rest), hover: deg(FP.flap.hover), open: deg(FP.flap.open),
@@ -43,35 +49,22 @@ export const FOLDER_TOKENS = {
   frost: Number(FP.flap.frost.match(/blur\(([\d.]+)px\)/)?.[1]),
   see: (cw: Colorway) => Number(FP.flap['fill-opacity'][cw]),
 };
+const S = 1.6;
 
-/* The outline from the recipe's numbers, as the component builds it: the back with its tab, and
- * the flap, both tapering toward the bottom like a pocket. */
-const W = FP.self.width, RAD = FP.back.radius;
-const f2 = (n: number) => +n.toFixed(2);
-export function pocketPath(h: number, d: number, top = 0) {
-  const k = RAD / h, y0 = top, y1 = top + h;
-  return `M${RAD} ${y0}H${W - RAD}Q${W} ${y0} ${f2(W - d * k)} ${y0 + RAD}L${f2(W - d + d * k)} ${y1 - RAD}Q${W - d} ${y1} ${W - d - RAD} ${y1}`
-    + `H${d + RAD}Q${d} ${y1} ${f2(d - d * k)} ${y1 - RAD}L${f2(d * k)} ${y0 + RAD}Q0 ${y0} ${RAD} ${y0}Z`;
-}
-export function backPath() {
-  const h = FP.back.height, d = FP.back.taper, rise = FP.back['tab-rise'], tab = FP.back['tab-width'];
-  const k = RAD / h, y0 = rise, y1 = rise + h, tr = 18;
-  return `M0 ${tr}Q0 0 ${tr} 0H${tab - 14}C${tab - 4} 0 ${tab} ${y0} ${tab + 12} ${y0}`
-    + `H${W - RAD}Q${W} ${y0} ${f2(W - d * k)} ${y0 + RAD}L${f2(W - d + d * k)} ${y1 - RAD}Q${W - d} ${y1} ${W - d - RAD} ${y1}`
-    + `H${d + RAD}Q${d} ${y1} ${f2(d - d * k)} ${y1 - RAD}L0 ${y0 + RAD}Z`;
-}
-const BACK_H = FP.back.height + FP.back['tab-rise'];
-
+/** The layers of the folder's material, each reached through the recipe variables the library reads.
+ *  The blocks are not here: they are what it holds (its peeks), handled on the Drop in card. */
 export const LAYERS: LayerDef[] = [
-  { name: 'Shadow', why: 'A soft shadow in the folder\'s outline, under the whole pocket. It sits on the canvas like paper.' },
+  { name: 'Shadow', why: 'A soft shadow in the folder\'s outline, under the pocket and under the flap. It sits on the canvas like paper.' },
   { name: 'Back paper', why: 'The back of the pocket, with its tab. Soft paper in the folder\'s colour, a little see-through, so the canvas shows softly behind it.' },
-  { name: 'Edge', why: 'A hairline around the paper and a bright line along its top, where the light catches the fold.' },
-  { name: 'Blocks', why: 'The things inside, peeking out as cards. Each leans by its place in the pile, so you can count them at a glance.' },
+  { name: 'Edge', why: 'A hairline around the paper and the flap, and a bright line along their tops, where the light catches the fold.' },
   { name: 'Frost', why: 'The flap is frosted glass: the blocks behind it blur, so the name in front stays easy to read.' },
   { name: 'Flap tint', why: 'A see-through fill in the paper\'s colour over the frost, so the flap belongs to the same folder.' },
-  { name: 'Count', why: 'How many blocks it holds, in a small raised chip on the flap.' },
+  { name: 'Count chip', why: 'A small raised chip the count sits in, on the flap.' },
 ];
+const L = { shadow: 0, paper: 1, edge: 2, frost: 3, tint: 4, count: 5 } as const;
 
+/** The folder's name on the table. */
+export const NAME = 'poster refs';
 export const PEEKS: FolderPeek[] = [
   { id: 'poster', thumb: 'linear-gradient(135deg,#F2A56B,#E0673C 60%,#9E3B25)' },
   { id: 'type', thumb: 'radial-gradient(60% 60% at 30% 30%,#7FA8FF,#2B3F8F)', link: true },
@@ -84,34 +77,79 @@ export const MORE: FolderPeek[] = [
   { thumb: 'linear-gradient(135deg,#9AD8C0,#2E8C6A)' },
 ];
 
-export interface Model {
-  hue: FolderHue; peeks: FolderPeek[]; count: number;
+/** Everything a folder is set to: its real props first, then what the x-ray lets you tune.
+ *  One object, handed from the table to the x-ray and back; the code for it is read off it. */
+export interface FolderConfig {
+  /** props: its name, what it holds (up to six peek out as cards, front last) and how many, its paper */
+  name: string; count: number; peeks: FolderPeek[]; hue: FolderHue;
+  /** recipe values: the flap's tilt at rest, the front block's rise and lean, the frost; how much the tint lets through, or the colorway's own when null */
   flap: number; lift: number; lean: number; frost: number; see: number | null;
+  /** which layers of its material are on */
   on: boolean[];
 }
-export const INITIAL: Model = {
-  hue: 'neutral', peeks: PEEKS, count: PEEKS.length,
+export type Model = FolderConfig;
+export const INITIAL: FolderConfig = {
+  name: NAME, count: PEEKS.length, peeks: PEEKS, hue: 'neutral',
   flap: FOLDER_TOKENS.flap, lift: FOLDER_TOKENS.lift, lean: FOLDER_TOKENS.lean, frost: FOLDER_TOKENS.frost, see: null,
   on: LAYERS.map(() => true),
 };
-export const seeOf = (m: Model, cw: Colorway) => m.see ?? FOLDER_TOKENS.see(cw);
+/** How long the model takes to close up before it flies home: most of the object spring, past its overshoot. */
+const SETTLE_MS = Math.round(OBJECT.duration * 1000 * 0.55);
+export const seeOf = (m: FolderConfig, cw: Colorway) => m.see ?? FOLDER_TOKENS.see(cw);
 
-/** The real Folder with its recipe variables set from the model. Layers that are off are hidden by the wrapper. */
-export function FolderFace({ m, open, landed, className, still }: { m: Model; open?: boolean; landed?: number; className?: string; still?: boolean }) {
+/** What a config looks like: the variables that set the real folder to it, and only the ones that differ
+ *  from the recipe, so a default config is the folder exactly as it ships and the variables are the
+ *  overrides its code needs. A layer off is the recipe value that leaves it out. */
+export function folderLook(m: FolderConfig, colorway: Colorway) {
+  const style: Record<string, string> = {};
+  if (m.flap !== INITIAL.flap) style['--mu-r-folder-flap-rest'] = `${m.flap}deg`;
+  if (m.lift !== INITIAL.lift) style['--mu-r-folder-fan-rest-y-front'] = `${m.lift}px`;
+  if (m.lean !== INITIAL.lean) style['--mu-r-folder-fan-rest-r-front'] = `${m.lean}deg`;
+  if (!m.on[L.frost]) style['--mu-r-folder-flap-frost'] = 'none';
+  else if (m.frost !== INITIAL.frost) style['--mu-r-folder-flap-frost'] = FP.flap.frost.replace(/blur\([\d.]+px\)/, `blur(${m.frost}px)`);
+  if (!m.on[L.tint]) style['--mu-r-folder-flap-fill-opacity'] = '0';
+  else if (m.see !== null) style['--mu-r-folder-flap-fill-opacity'] = `${m.see}`;
+  if (!m.on[L.shadow]) style['--mu-r-folder-shade-ink'] = 'transparent';
+  if (!m.on[L.paper]) style['--mu-r-folder-shape-translucency'] = '0%';
+  if (!m.on[L.edge]) { style['--mu-r-folder-shape-edge'] = 'transparent'; style['--mu-r-folder-shape-light'] = 'transparent'; }
+  if (!m.on[L.count]) { style['--mu-r-folder-count-background'] = 'transparent'; style['--mu-r-folder-count-shadow'] = 'none'; }
+  return { colorway, see: seeOf(m, colorway), top: FP.hue[`${m.hue}-top`][colorway], style: style as React.CSSProperties };
+}
+export function useFolderLook(m: FolderConfig) {
   const { colorway } = useColorway();
-  const off = LAYERS.filter((_, i) => !m.on[i]).map((l) => l.name.toLowerCase().replace(' ', '-')).join(' ');
+  return React.useMemo(() => folderLook(m, colorway), [m, colorway]);
+}
+export type Look = ReturnType<typeof useFolderLook>;
+
+/** The real folder set to a config: the table's object, the flying copy, the model's planes and the specimens
+ *  are all this. A still one takes no pointer (it rests while you handle it) and no focus. */
+export function FolderFace({ m, look, open, landed, className, still }: { m: FolderConfig; look: Look; open?: boolean; landed?: number; className?: string; still?: boolean }) {
   return (
-    <div className={['ed-folder', still ? 'is-still' : '', className].filter(Boolean).join(' ')} data-off={off || undefined}>
-      <Folder name="poster refs" count={m.count} peeks={m.peeks} hue={m.hue} open={open} landed={landed} tabIndex={still ? -1 : 0} style={{
-        ['--mu-r-folder-flap-rest' as string]: `${m.flap}deg`,
-        ['--mu-r-folder-fan-rest-y-front' as string]: `${m.lift}px`,
-        ['--mu-r-folder-fan-rest-r-front' as string]: `${m.lean}deg`,
-        ['--mu-r-folder-flap-frost' as string]: `blur(${m.frost}px) saturate(1.2)`,
-        ['--mu-r-folder-flap-fill-opacity' as string]: `${seeOf(m, colorway)}`,
-      } as React.CSSProperties} />
+    <div className={['ed-folder', still ? 'is-still' : '', className].filter(Boolean).join(' ')}>
+      <Folder name={m.name} count={m.count} peeks={m.peeks} hue={m.hue} open={open} landed={landed} tabIndex={still ? -1 : 0} style={look.style} />
     </div>
   );
 }
+
+/* The planes the model takes the folder apart into, by the parts of the real folder each keeps
+ * (folder-specimens.css hides the rest): the back with its edge on the floor, the blocks above it, and
+ * the flap, its shadow, its frost, its tint, its name and its count highest. */
+const PLANES = [
+  { id: 'back', keep: 'shade back frame', z: 1 },
+  { id: 'cards', keep: 'cards', z: 16 },
+  { id: 'flap', keep: 'flapshade frost fill flapedge label count', z: 34 },
+] as const;
+/** Pulled apart: one plane per layer of its material, and one for the blocks between them. */
+const PARTS: { name: string; keep: string; layer?: number }[] = [
+  { name: LAYERS[L.shadow].name, keep: 'shade flapshade', layer: L.shadow },
+  { name: LAYERS[L.paper].name, keep: 'back', layer: L.paper },
+  { name: LAYERS[L.edge].name, keep: 'frame flapedge', layer: L.edge },
+  { name: 'Blocks', keep: 'cards' },
+  { name: LAYERS[L.frost].name, keep: 'frost', layer: L.frost },
+  { name: LAYERS[L.tint].name, keep: 'fill label', layer: L.tint },
+  { name: LAYERS[L.count].name, keep: 'count', layer: L.count },
+];
+const GAP = 22;
 
 type Spot = 'states' | 'surface' | 'thumb' | 'slide' | 'light' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
@@ -126,121 +164,96 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   surface: ['left', 0.2], thumb: ['left', 0.48], states: ['left', 0.76],
   slide: ['right', 0.2], light: ['right', 0.48], layers: ['right', 0.76],
 };
-const S = 1.6;
 
-export function FolderXray({ startOpen = false }: { startOpen?: boolean }) {
+export function FolderXray({ startOpen = false, seed, onSeed, pose = 'open', zoom: oz = 1 }: XrayViewProps<FolderConfig>) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('states');
-  const [m, setM] = React.useState<Model>(INITIAL);
+  const [m, setM] = React.useState<FolderConfig>(() => ({ ...INITIAL, ...seed }));
   const [focus, setFocus] = React.useState<string | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const { colorway: cw } = useColorway();
+  const set = React.useCallback((p: Partial<FolderConfig>) => setM((o) => ({ ...o, ...p })), []);
+  // every change goes straight back to where the object came from
+  const onSeedRef = React.useRef(onSeed); onSeedRef.current = onSeed;
+  const seeded = React.useRef(m);
+  React.useEffect(() => { if (seeded.current !== m) { seeded.current = m; onSeedRef.current?.(m); } }, [m]);
+  const look = useFolderLook(m);
+  const bench = React.useRef<HTMLDivElement>(null);
 
-  const Wp = W * S, Hp = FP.self.height * S;
-  const top = FP.hue[`${m.hue}-top`][cw], bottom = FP.hue[`${m.hue}-bottom`][cw];
-  const exploded = spot === 'layers';
-  const lift = (i: number) => exploded ? 12 + i * 22 : [0, 2, 4, 8, 10, 14, 16][i];
-  const layer = (i: number) => ['xr-face is-flat xr-folder-part', exploded ? 'is-layer' : '', focus === LAYERS[i].name ? 'is-focus' : '', m.on[i] ? '' : 'is-off'].join(' ');
-  const backY = Hp - BACK_H * S, flapY = Hp - FP.flap.height * S;
-  const cards = m.peeks.slice(-6);
-  const n = cards.length;
-  const k = Math.min(1.35, Math.max(0.8, Math.sqrt(n / 3)));
-  const backLift = parseFloat(FP.fan['rest-y-back']), backLean = deg(FP.fan['rest-r-back']), spread = parseFloat(FP.fan.spread);
-  const cw_ = FP.card.width * S, ch = FP.card.height * S;
-  const svg = (d: string, h: number, fill: string, stroke?: string) => (
-    <svg viewBox={`0 0 ${W} ${h}`} width={Wp} height={h * S} style={{ overflow: 'visible', display: 'block' }} aria-hidden>
-      <path d={d} fill={fill} stroke={stroke ?? 'none'} strokeWidth={stroke ? 1 : 0} />
-    </svg>
-  );
-  const gradId = `xr-folder-${m.hue}-${cw}`;
-
-  const scene = (
-    <>
-      <svg width={0} height={0} style={{ position: 'absolute' }} aria-hidden>
-        <defs><linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={top} /><stop offset="1" stopColor={bottom} /></linearGradient></defs>
-      </svg>
-      {/* shadow */}
-      <div className={layer(0)} style={{ left: 0, top: backY, transform: `translate(${exploded ? 0 : 10}px, ${exploded ? 0 : 16}px) translateZ(${lift(0)}px)`, filter: exploded ? undefined : 'blur(10px)', opacity: exploded ? 1 : 0.35, borderRadius: 0 }}>
-        {svg(backPath(), BACK_H, cw === 'graphite' ? '#000' : 'rgba(24,22,16,.55)')}
-        {exploded && <span className="xr-tag eng">{LAYERS[0].name}</span>}
-      </div>
-      {/* back paper, then its edge */}
-      <div className={layer(1)} style={{ left: 0, top: backY, transform: `translateZ(${lift(1)}px)`, opacity: 0.92, borderRadius: 0 }}>
-        {svg(backPath(), BACK_H, `url(#${gradId})`)}
-        {exploded && <span className="xr-tag eng">{LAYERS[1].name}</span>}
-      </div>
-      <div className={layer(2)} style={{ left: 0, top: backY, transform: `translateZ(${lift(2)}px)`, borderRadius: 0 }}>
-        {svg(backPath(), BACK_H, 'none', FP.shape.edge[cw])}
-        {exploded && <span className="xr-tag eng">{LAYERS[2].name}</span>}
-      </div>
-      {/* blocks, fanned by their place in the pile */}
-      {cards.map((c, i) => {
-        const t = n > 1 ? i / (n - 1) : 1;
-        const y = (backLift + (m.lift - backLift) * t) * S, r = (backLean + (m.lean - backLean) * t) * k;
-        const x = (t - 0.5) * (n - 1) * spread * S;
-        return (
-          <div key={c.id ?? i} className={[layer(3), 'xr-folder-card'].join(' ')} style={{
-            left: (Wp - cw_) / 2, top: Hp - FP.card.bottom * S - ch, width: cw_, height: ch, borderRadius: FP.card.radius * S,
-            background: FP.card.background[cw], boxShadow: `inset 0 0 0 1px ${FP.card.border[cw]}`,
-            transform: `translateZ(${lift(3) + i * 1.5}px) translate(${x}px, ${y}px) rotate(${r}deg)`, transformOrigin: '50% 100%',
-          }}>
-            <i style={{ background: c.thumb, height: FP.card.thumb * S, borderRadius: 10 * S }} />
-            <i className="xr-folder-line" style={{ width: '70%', height: 8 * S, background: FP.card['line-ink'][cw] }} />
-            <i className="xr-folder-line" style={{ height: 6 * S, background: c.link ? '#B9CCF7' : FP.card['line-ink'][cw] }} />
-            <i className="xr-folder-line" style={{ width: '60%', height: 6 * S, background: FP.card['line-ink'][cw] }} />
-            {exploded && i === n - 1 && <span className="xr-tag eng">{LAYERS[3].name}</span>}
-          </div>
-        );
-      })}
-      {/* the flap, hinged on its bottom edge: frost, then its tint, then the count */}
-      {[4, 5].map((li) => (
-        <div key={li} className={[layer(li), 'xr-folder-flap'].join(' ')} style={{
-          left: 0, top: flapY, borderRadius: 0, transformOrigin: '50% 100%',
-          transform: `translateZ(${lift(li)}px) rotateX(${exploded ? 0 : m.flap * 0.9}deg)`,
-          backdropFilter: li === 4 ? `blur(${m.frost}px)` : undefined,
-        }}>
-          {li === 4
-            ? svg(pocketPath(FP.flap.height, FP.flap.taper), FP.flap.height, cw === 'graphite' ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.35)', FP.flap.border[cw])
-            : svg(pocketPath(FP.flap.height, FP.flap.taper), FP.flap.height, `color-mix(in srgb, ${top} 55%, ${FP.flap.lift[cw]})`)}
-          {li === 5 && <span className="xr-folder-name" style={{ opacity: seeOf(m, cw) + 0.3 }}><b>poster refs</b><em>Folder · {m.count} blocks</em></span>}
-          {exploded && <span className="xr-tag eng">{LAYERS[li].name}</span>}
-        </div>
-      ))}
-      <div className={[layer(6), 'xr-folder-count'].join(' ')} style={{
-        left: Wp - (16 + FP.count.size) * S, top: Hp - (14 + FP.count.size) * S, width: FP.count.size * S, height: FP.count.size * S,
-        transformOrigin: `50% ${(14 + FP.count.size) * S}px`,
-        transform: `translateZ(${lift(6)}px) rotateX(${exploded ? 0 : m.flap * 0.9}deg) translateZ(1px)`,
-      }}>
-        <span>{m.count}</span>
-        {exploded && <span className="xr-tag eng">{LAYERS[6].name}</span>}
-      </div>
-    </>
+  const Wp = FP.self.width, Hp = FP.self.height;
+  const W = Wp * S, H = Hp * S;
+  const flat = pose === 'flat';
+  // the layers come apart only with the model open: landed or leaving, the folder is one thing
+  const exploded = spot === 'layers' && !flat;
+  const fit = useFit(bench, W, H, xray);
+  const current = SPOTS.find((x) => x.id === spot)!;
+  // the model's planes are the folder laid out at the object's own zoom, then scaled: the same boxes, to the pixel
+  const face = (z: number) => ({ transform: `translateZ(${z}px) scale(${S / oz})`, zoom: oz });
+  const plane = (key: string, keep: string, z: number, cls = '') => (
+    <div key={key} className={`xr-segface xr-fplane ${cls}`} aria-hidden inert data-keep={keep} style={face(z)}><FolderFace m={m} look={look} still /></div>
   );
 
-  const flapTop = flapY + FP.flap.height * S * (1 - Math.cos((m.flap * Math.PI) / 180));
+  // where the parts are, in the model's points: the tab, the front block, the flap's top edge
+  const backTop = (Hp - FP.back.height - FP.back['tab-rise']) * S;
+  const cardTop = (Hp - FP.card.bottom - FP.card.height + m.lift) * S;
+  const flapTop = (Hp - FP.flap.height * Math.cos((m.flap * Math.PI) / 180)) * S;
+  const zOf = (id: (typeof PLANES)[number]['id']) => (flat ? 1 : PLANES.find((p) => p.id === id)!.z);
   const anchors: Record<Spot, [number, number, number]> = {
-    states: [Wp * 0.5, Hp - ch * 0.8, lift(3) + 6],
-    surface: [FP.back['tab-width'] * S * 0.4, backY + 6, lift(1)],
-    thumb: [Wp * 0.5, Hp - FP.card.bottom * S - ch + 12, lift(3) + 8],
-    slide: [Wp * 0.8, flapTop, lift(5) + Math.sin((-m.flap * Math.PI) / 180) * FP.flap.height * S * 0.9],
-    light: [Wp * 0.3, flapY + FP.flap.height * S * 0.6, lift(5) + 8],
-    layers: exploded ? [Wp * 0.85, backY + 20, lift(6)] : [Wp * 0.9, Hp - 20, lift(6)],
+    states: [W * 0.5, cardTop + FP.card.height * S * 0.5, zOf('cards')],
+    surface: [FP.back['tab-width'] * S * 0.4, backTop + 6, zOf('back')],
+    thumb: [W * 0.5, cardTop + 10, zOf('cards')],
+    slide: [W * 0.8, flapTop, zOf('flap')],
+    light: [W * 0.3, H - FP.flap.height * S * 0.5, zOf('flap')],
+    layers: exploded ? [W * 0.85, backTop + 20, 1 + (PARTS.length - 1) * GAP] : [W * 0.9, H - 20, zOf('flap')],
   };
 
-  const card = <FolderSpecimenCard spot={spot} m={m} set={set} focus={setFocus} />;
-
   return (
-    <HintLayer><XrayFrame
-      xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
-      solid={<div style={{ zoom: 1.4, cursor: 'zoom-in', paddingTop: 40 }}><FolderFace m={m} still /></div>}
-      W={Wp} H={Hp} scene={scene} anchors={anchors}
-      onReset={() => setM(INITIAL)} deps={[spot, m]}
-      card={card}
-    /></HintLayer>
-  );
-}
+    <HintLayer><div className="xr folder-xray" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+      <div className="xr-bench" ref={bench}>
+        {!xray && <div className="xr-solid" onClick={() => setXray(true)}><div className="xr-solid-fit"><div style={{ zoom: 1.4, cursor: 'zoom-in', paddingTop: 40 }}><FolderFace m={m} look={look} still /></div></div></div>}
 
-/** A still of the folder for the home page's table. */
-export function FolderStill() {
-  return <FolderFace m={INITIAL} still />;
+        {xray && (
+          <div className="xr-scene is-fitted" style={{ width: W * fit, height: H * fit }} data-settle={SETTLE_MS}>
+            <div className="xr-fit" style={{ width: W, height: H, transform: `scale(${fit})` }}><div className="xr-iso">
+              <div className="xr-floor" />
+
+              {exploded ? (
+                // each part on its own plane, with a layer box at the same height that carries its tag
+                PARTS.flatMap((p, i) => {
+                  const on = p.layer === undefined || m.on[p.layer];
+                  const cls = ['is-layer', focus === p.name ? 'is-focus' : '', on ? '' : 'is-off'].join(' ');
+                  const z = 1 + i * GAP;
+                  return [
+                    plane(p.name, p.keep, z, cls),
+                    <div key={`${p.name} tag`} className={`xr-face ${cls}`} style={{ width: W, height: H, borderRadius: FP.back.radius * S, transform: `translateZ(${z}px)` }}><span className="xr-tag eng">{p.name}</span></div>,
+                  ];
+                })
+              ) : (
+                // landed flat, the first plane is the whole folder and the others wait inside it; open, each keeps its own parts and rises
+                PLANES.map((p, i) => plane(p.id, flat ? (i === 0 ? 'all' : '') : p.keep, flat ? 1 + i * 0.02 : p.z, `is-f${p.id}`))
+              )}
+
+              {SPOTS.map((s) => {
+                const [x, y, z] = anchors[s.id];
+                return <i key={s.id} className="xr-anchor" data-spot={s.id} style={{ transform: `translate3d(${x}px, ${y}px, ${z}px)` }} />;
+              })}
+            </div></div>
+          </div>
+        )}
+
+        {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, fit, flat]} />}
+        <div className="xr-hint eng">{xray ? 'Pick an icon to learn about that part' : 'Try it, then open the x-ray'}</div>
+        <div className="xr-actions">
+          {xray && <button type="button" className="status" onClick={() => setM((o) => ({ ...INITIAL, name: o.name, count: o.count, peeks: o.peeks, hue: o.hue }))}><span className="led off" />Reset</button>}
+          <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
+        </div>
+      </div>
+
+      {xray && (
+        <div className="xr-card raised" key={spot}>
+          <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
+          <FolderSpecimenCard spot={spot} m={m} set={set} focus={setFocus} look={look} />
+        </div>
+      )}
+      {xray && <FolderCodePanel config={m} />}
+    </div></HintLayer>
+  );
 }

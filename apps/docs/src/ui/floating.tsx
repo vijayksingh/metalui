@@ -20,7 +20,7 @@ import { ToastStill } from './xray/ToastXray';
 import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
-import { FolderStill } from './xray/FolderXray';
+import { INITIAL as FOLDER, FolderFace, useFolderLook, type FolderConfig } from './xray/FolderXray';
 import { INITIAL as WORDMARK, WordmarkObject } from './xray/WordmarkXray';
 
 export type { XrayKind };
@@ -179,6 +179,13 @@ function TableMenu({ config = MENU, open }: { config?: MenuConfig; open: () => v
   return <div onClick={open}><MenuObject m={config} look={look} /></div>;
 }
 
+/** The folder on the table: the real folder set to its config, which its x-ray takes over and hands back. It rests
+ *  (no hover fan), so the copy that flies is the folder as it is; a click anywhere on it opens the x-ray. */
+function TableFolder({ config = FOLDER, open }: { config?: FolderConfig; open: () => void }) {
+  const look = useFolderLook(config);
+  return <div onClick={open}><FolderFace m={config} look={look} still /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -259,7 +266,11 @@ const ITEMS: Item[] = [
       </Link>
     ),
   },
-  { id: 'folder', table: ['39.3%', '65.7%'], space: ['31%', '53%', -200, 8], dur: '37s', drift: ['14px', '-12px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('folder')}><FolderStill /></div> },
+  {
+    // the folder, set to its config; a click opens the x-ray, which lands on the same folder
+    id: 'folder', table: ['39.3%', '65.7%'], space: ['31%', '53%', -200, 8], dur: '37s', drift: ['14px', '-12px'], live: true,
+    node: ({ openXray, seeds }) => <TableFolder config={seeds.folder} open={() => openXray('folder')} />,
+  },
   {
     id: 'toolbar', table: ['4%', '88%'], space: ['12%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap presses that tool and opens the icon button's x-ray; the strip opens the toolbar's, which starts on the pressed tool

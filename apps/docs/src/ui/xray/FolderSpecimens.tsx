@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Row, Switch, type FolderHue } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { useColorway } from '../../app/colorway';
-import { FolderFace, HUES, LAYERS, MORE, seeOf, type Model } from './FolderXray';
+import { FolderFace, HUES, LAYERS, MORE, seeOf, type Look, type Model } from './FolderXray';
 import { Readout, STEP_AT, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom } from '../edit';
 import './folder-specimens.css';
 
@@ -15,14 +15,14 @@ import './folder-specimens.css';
  *   Fan      the front block, dragged: up or down for how far the blocks rise, sideways to lean
  *   Flap     its top edge, dragged: tips the glass back
  *   Glass    the flap, dragged: sideways for frost, up or down for how much you see through
- *   Layers   a switch per layer
+ *   Layers   a switch per layer of its material (the blocks are what it holds: Drop in)
  *
  * Every value is read here from tokens.json (the x-ray file imports this one); values from the
  * x-ray file are used only inside functions.
  * ───────────────────────────────────────────────────────── */
 
 type Spot = 'states' | 'surface' | 'thumb' | 'slide' | 'light' | 'layers';
-type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void };
+type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; look: Look };
 
 type ByColorway = { bone: string; graphite: string };
 const FR = tokens.recipes.folder.props as unknown as {
@@ -54,7 +54,7 @@ function Well({ children, well, zoom }: { children: React.ReactNode; well: React
 
 /* ───────────────────────── drop in ───────────────────────── */
 
-function DropIn({ m, set }: Props) {
+function DropIn({ m, set, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   // the block and the folder side by side: a little smaller again, so both fit the well
   const zoom = zoom0 * SCALE * 0.72;
@@ -93,7 +93,7 @@ function DropIn({ m, set }: Props) {
               <i className="folder-line" style={{ width: '60%' }} />
             </span>
           </button>
-          <div ref={folder}><FolderFace m={m} open={over} landed={landed} /></div>
+          <div ref={folder}><FolderFace m={m} look={look} open={over} landed={landed} /></div>
         </div>
       </Well>
       <div className="ed-readouts">
@@ -106,7 +106,7 @@ function DropIn({ m, set }: Props) {
 
 /* ───────────────────────── paper ───────────────────────── */
 
-function Paper({ m, set }: Props) {
+function Paper({ m, set, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   const zoom = zoom0 * SCALE;
   const { colorway } = useColorway();
@@ -136,7 +136,7 @@ function Paper({ m, set }: Props) {
       <p>The paper comes in six soft colours and the frosted flap takes the colour too. Drag the tab sideways to change it.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-folder-box" data-hint-anchor data-peek={peek || lean ? '' : undefined}>
-          <FolderFace m={m} still />
+          <FolderFace m={m} look={look} still />
           <span
             ref={ref} className="ed-folder-tab" role="slider" tabIndex={0} aria-label="Colour"
             aria-valuetext={hueName(m.hue)} aria-valuenow={at + 1} aria-valuemin={1} aria-valuemax={HUES.length}
@@ -156,7 +156,7 @@ function Paper({ m, set }: Props) {
 
 /* ───────────────────────── fan ───────────────────────── */
 
-function Fan({ m, set }: Props) {
+function Fan({ m, set, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   const zoom = zoom0 * SCALE;
   const ref = React.useRef<HTMLSpanElement>(null);
@@ -181,7 +181,7 @@ function Fan({ m, set }: Props) {
       <p>The blocks inside peek out as cards, each leaning by its place in the pile. Drag the front one up to raise them, or sideways to lean them.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-folder-box" data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
-          <FolderFace m={m} still className={live ? 'is-live' : undefined} />
+          <FolderFace m={m} look={look} still className={live ? 'is-live' : undefined} />
           <span
             ref={ref} className="ed-folder-front" role="slider" tabIndex={0} aria-label="Fan"
             aria-valuetext={`rise ${-m.lift}, lean ${m.lean} degrees`} aria-valuenow={-m.lift} aria-valuemin={-20} aria-valuemax={60}
@@ -200,7 +200,7 @@ function Fan({ m, set }: Props) {
 
 /* ───────────────────────── flap ───────────────────────── */
 
-function Flap({ m, set }: Props) {
+function Flap({ m, set, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   const zoom = zoom0 * SCALE;
   const ref = React.useRef<HTMLSpanElement>(null);
@@ -229,7 +229,7 @@ function Flap({ m, set }: Props) {
       <p>The front is a frosted glass flap hinged at the bottom. It rests tipped back a little, and further when you point at it or bring a block over. Drag its top edge to tip it.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-folder-box" data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
-          <FolderFace m={m} still className={live ? 'is-live' : undefined} />
+          <FolderFace m={m} look={look} still className={live ? 'is-live' : undefined} />
           <span
             ref={ref} className="ed-folder-edge" role="slider" tabIndex={0} aria-label="Tilt"
             aria-valuenow={-m.flap} aria-valuemin={0} aria-valuemax={70}
@@ -247,7 +247,7 @@ function Flap({ m, set }: Props) {
 
 /* ───────────────────────── glass ───────────────────────── */
 
-function Glass({ m, set }: Props) {
+function Glass({ m, set, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   const zoom = zoom0 * SCALE;
   const { colorway } = useColorway();
@@ -275,7 +275,7 @@ function Glass({ m, set }: Props) {
       <p>The flap blurs the blocks behind it, under a see-through fill in the paper's colour, so the name stays easy to read. Drag across it: sideways to frost it more, up to see through it more.</p>
       <Well well={well} zoom={zoom}>
         <div className="ed-folder-box" data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
-          <FolderFace m={{ ...m, lift: Math.max(m.lift, -4) }} still className={live ? 'is-live' : undefined} />
+          <FolderFace m={m} look={look} still className={live ? 'is-live' : undefined} />
           <span
             ref={ref} className="ed-folder-glass" role="slider" tabIndex={0} aria-label="Glass"
             aria-valuetext={`frost ${m.frost}, see through ${Math.round((1 - see) * 100)} percent`} aria-valuenow={m.frost} aria-valuemin={0} aria-valuemax={20}
@@ -294,13 +294,13 @@ function Glass({ m, set }: Props) {
 
 /* ───────────────────────── layers ───────────────────────── */
 
-function Layers({ m, set, focus }: Props) {
+function Layers({ m, set, focus, look }: Props) {
   const [well, zoom0] = useSpecimenZoom();
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((o, j) => (j === i ? v : o)) });
   return (
     <>
-      <p>The folder is a stack of layers. Turn one off to see what it adds.</p>
-      <Well well={well} zoom={zoom0 * SCALE}><FolderFace m={m} still /></Well>
+      <p>The folder is paper, glass and shadow in layers. Turn one off to see what it adds; the blocks are what it holds, not a layer.</p>
+      <Well well={well} zoom={zoom0 * SCALE}><FolderFace m={m} look={look} still /></Well>
       <div className="ed-layers">
         {LAYERS.map((l, i) => (
           <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''}
