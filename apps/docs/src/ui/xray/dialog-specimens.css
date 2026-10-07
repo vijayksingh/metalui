@@ -37,3 +37,16 @@
 [data-mu-colorway="graphite"] .ed-dlg-ring.is-ghost, [data-mu-colorway="graphite"] .ed-dlg-rise[data-live]::after { border-color: var(--green-deep); }
 html.rm .ed-dlg-specimen *, html.rm .ed-dlg-specimen *::after { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .ed-dlg-specimen *, .ed-dlg-specimen *::after { transition: none !important; } }
+
+/* THE DIALOG'S MODEL (DialogXray): the page is a floor (scenery the copy never lands on), the sheet a shade
+ * over it, and the dialog's top face the real plate. The ring of focus is drawn on the face only while the
+ * x-ray shows focus, so the plate that lands is the plate as it is. */
+.xr-floor.xr-dlg-page { left: 0; top: 0; overflow: hidden; background: var(--page); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent); transform: translateZ(.5px); }
+.xr-dlg-lines { position: absolute; inset: 0; display: flex; flex-direction: column; box-sizing: border-box; pointer-events: none; }
+.xr-dlg-lines > i { display: block; border-radius: 99px; background: color-mix(in srgb, var(--ink) 9%, transparent); }
+/* no size of its own, so the copy lands on the plate, never on the wrap */
+.xr-dlg-wrap { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+.xr-dlg-sheet { cursor: pointer; }
+.xr-dlg-face .is-focus { outline: 3px solid var(--mu-focus, #3FB97A); outline-offset: 2px; }
+/* the real dialog opened from inside an x-ray overlay (z 70) must surface over it */
+body:has(.xr-overlay) :is(.mu-dialog-scrim, .mu-dialog) { --mu-r-dialog-scrim-z: 80; }

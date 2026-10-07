@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { ButtonXray, type ButtonConfig } from './ButtonXray';
 import { CheckboxXray, type CheckboxConfig } from './CheckboxXray';
 import { ChipXray, type ChipConfig } from './ChipXray';
-import { DialogXray } from './DialogXray';
+import { DialogXray, type DialogConfig } from './DialogXray';
 import { FieldXray, type FieldConfig } from './FieldXray';
 import { FolderXray, type FolderConfig } from './FolderXray';
 import { IconButtonXray } from './IconButtonXray';
@@ -34,7 +34,7 @@ import { WordmarkXray, type WordmarkConfig } from './WordmarkXray';
  *          only then opens up; before it flies home it closes up again. With no flight the
  *          model is open from the start.
  * ───────────────────────────────────────────────────────── */
-export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig; field: FieldConfig; link: LinkCardConfig; kbd: KbdConfig; slider: SliderConfig; chip: ChipConfig; button: ButtonConfig; toolbar: ToolbarConfig; checkbox: CheckboxConfig; tooltip: TooltipConfig; menu: MenuConfig; wordmark: WordmarkConfig; folder: FolderConfig }
+export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig; field: FieldConfig; link: LinkCardConfig; kbd: KbdConfig; slider: SliderConfig; chip: ChipConfig; button: ButtonConfig; toolbar: ToolbarConfig; checkbox: CheckboxConfig; tooltip: TooltipConfig; menu: MenuConfig; wordmark: WordmarkConfig; folder: FolderConfig; dialog: DialogConfig }
 export type XraySeed<K extends XrayKind> = K extends keyof XraySeeds ? XraySeeds[K] : never;
 export type XrayPose = 'flat' | 'open';
 export interface XrayViewProps<S = never> { startOpen?: boolean; seed?: Partial<S>; onSeed?: (seed: S) => void; pose?: XrayPose; /** the object's zoom where it came from: its face is laid out at it */ zoom?: number }

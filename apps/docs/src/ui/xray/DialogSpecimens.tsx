@@ -1,39 +1,26 @@
 import * as React from 'react';
-import { Button, Field, Row, Surface, Switch } from '@unlocalhosted/metalui';
+import { Button, Row, Switch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { scalePx } from './kit';
 import { STEP_AT, Outline, Readout, blip, clamp, snapTo, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
+import { DIM, DialogFace, FROM, RISE, TOP, focusable, type DialogConfig, type Look } from './DialogXray';
 import './dialog-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
  * THE DIALOG'S SPECIMENS · the x-ray card for each part
  *
- *   The card holds the real dialog (its plate, title, field and actions, with the recipe's
- *   own classes) inside a small window, so where it sits and what it dims can be handled.
+ *   The card holds the real dialog's plate (DialogFace: the popup as the library renders it, set to the
+ *   config) inside a small window, so where it sits and what it dims can be handled.
  *     sheet    drag on the sheet: how much it dims the page
  *     opening  pull the dialog up and let go: how far it drops in from
  *     focus    drag the focus ring: it steps between the things inside (a state, it snaps)
  *     place    drag the dialog up or down: how far down the window it sits
  *     shadow   lift the dialog: how high it floats
  *     layers   a row with a switch per layer
- *   Every number is read from the dialog and surface recipes in tokens.json; nothing here
- *   reads the x-ray at load (it imports this file).
+ *   Every number is read from the dialog recipe in tokens.json; what this file takes from the x-ray
+ *   (which imports it) is read only inside functions, never at load.
  * ───────────────────────────────────────────────────────── */
 
-const D = tokens.recipes.dialog.props as {
-  scrim: { color: Record<string, string> };
-  self: { top: string; 'enter-y': number; 'enter-scale': string; width: number };
-};
-const alphaOf = (c: string) => Number(c.match(/,\s*([\d.]+)\)\s*$/)?.[1] ?? 1);
-/** The scrim's colour with its alpha set to how much it dims. */
-export const withAlpha = (c: string, a: number) => c.replace(/,\s*[\d.]+\)\s*$/, `, ${Math.round(a * 100) / 100})`);
-
-/** The recipe's values, which are also the tokens each handle catches on. */
-export const DIM = alphaOf(D.scrim.color.bone);
-export const TOP = parseFloat(D.self.top);
-export const RISE = Math.abs(D.self['enter-y']);
-export const FROM = Number(D.self['enter-scale']);
-export const FOCUSABLE = ['Name', 'Cancel', 'Rename'];
+const D = tokens.recipes.dialog.props as { self: { width: number } };
 
 /* the window the specimen sits in: a small viewport, in points, shown at K of its size */
 const VW = 400, VH = 300, K = 0.42;
@@ -41,11 +28,10 @@ const WW = VW * K, WH = VH * K;
 const DW = Math.min(D.self.width, VW - 32) * K; // the dialog is never wider than the viewport less a gutter
 const DX = (WW - DW) / 2;
 
-export interface DialogModel { dim: number; top: number; lift: number; rise: number; on: boolean[] }
 type Spot = 'surface' | 'states' | 'press' | 'shape' | 'shadow' | 'layers';
 type Props = {
-  spot: Spot; m: DialogModel; set: (p: Partial<DialogModel>) => void;
-  fill: string; shadows: string[]; cw: string; layers: { name: string }[]; focus: (name: string | null) => void;
+  spot: Spot; m: DialogConfig; set: (p: Partial<DialogConfig>) => void; look: Look;
+  layers: { name: string }[]; focus: (name: string | null) => void;
   open: boolean; setOpen: (v: boolean) => void; focusAt: number; setFocusAt: (i: number) => void; replay: () => void;
   real: boolean; setReal: (v: boolean) => void;
 };
@@ -63,26 +49,9 @@ export function arrive(el: HTMLElement | null, rise: number) {
   el.animate(frames, { duration, easing });
 }
 
-/** The dialog itself: the plate with the recipe's classes, its title, the field and the actions. */
-const Face = React.forwardRef<HTMLDivElement, { m: DialogModel; fill: string; shadows: string[]; refs?: React.MutableRefObject<(HTMLElement | null)[]>; onPick?: (i: number) => void }>(function Face({ m, fill, shadows, refs, onPick }, ref) {
-  const boxShadow = shadows.map((s, i) => (m.on[i + 1] ? (i >= 4 ? scalePx(s, m.lift) : s) : null)).filter(Boolean).join(', ') || 'none';
-  const at = (i: number) => (el: HTMLElement | null) => { if (refs) refs.current[i] = el; };
-  return (
-    <Surface ref={ref} material="plate" radius="card" className="mu-dialog dialog-frame" role="group" aria-label="Rename canvas"
-      style={{ width: Math.min(D.self.width, VW - 32), background: m.on[0] ? fill : 'transparent', boxShadow }}>
-      <span className="mu-dialog-title type-title text-ink">Rename canvas</span>
-      <Field ref={at(0)} onClick={() => onPick?.(0)}><Field.Input defaultValue="Trip notes" aria-label="Name" readOnly tabIndex={-1} /></Field>
-      <div className="mu-dialog-actions dialog-actions">
-        <Button ref={at(1) as React.Ref<HTMLButtonElement>} tabIndex={-1} onClick={() => onPick?.(1)}>Cancel</Button>
-        <Button ref={at(2) as React.Ref<HTMLButtonElement>} tabIndex={-1} cap="primary" onClick={() => onPick?.(2)}>Rename</Button>
-      </div>
-    </Surface>
-  );
-});
-
 /** The window: a page, the sheet over it, and the dialog near the top. */
-function Win({ m, cw, children, sheet, place, lines = true, open = true, winRef }: {
-  m: DialogModel; cw: string; children?: React.ReactNode; open?: boolean; lines?: boolean;
+function Win({ m, look, children, sheet, place, lines = true, open = true, winRef }: {
+  m: DialogConfig; look: Look; children?: React.ReactNode; open?: boolean; lines?: boolean;
   sheet?: React.HTMLAttributes<HTMLDivElement> & Record<string, unknown>;
   place?: { props?: React.HTMLAttributes<HTMLDivElement> & Record<string, unknown>; y?: number; face: React.ReactNode; faceRef?: React.Ref<HTMLDivElement> };
   winRef?: React.Ref<HTMLDivElement>;
@@ -90,7 +59,7 @@ function Win({ m, cw, children, sheet, place, lines = true, open = true, winRef 
   return (
     <div ref={winRef} className="ed-dlg-win" style={{ width: WW, height: WH }} data-hint-anchor>
       {lines && <span className="ed-dlg-lines" aria-hidden>{[0.8, 0.55, 0.7, 0.4, 0.65, 0.5].map((w, i) => <i key={i} style={{ width: `${w * 100}%` }} />)}</span>}
-      {open && <div className="ed-dlg-scrim" style={{ background: withAlpha(D.scrim.color[cw] ?? D.scrim.color.bone, m.dim) }} {...sheet} />}
+      {open && <div className="ed-dlg-scrim" style={{ background: look.scrim }} {...sheet} />}
       {open && place && (
         <div className="ed-dlg-place" style={{ left: DX, top: (WH * m.top) / 100, translate: `0 ${place.y ?? 0}px` }} {...place.props}>
           <div ref={place.faceRef} style={{ zoom: K }}>{place.face}</div>
@@ -105,7 +74,7 @@ function Well({ well, zoom, children }: { well: React.RefObject<HTMLDivElement |
   return <div ref={well} className="ed-specimen ed-dlg-specimen"><div style={{ zoom }}>{children}</div></div>;
 }
 
-/** The last row of every card: the real, modal dialog. */
+/** The last row of every card: the real, modal dialog, which the code under the card builds. */
 function Real({ real, setReal }: { real: boolean; setReal: (v: boolean) => void }) {
   return (
     <div className="ed-layers ed-dlg-real">
@@ -119,7 +88,7 @@ function Real({ real, setReal }: { real: boolean; setReal: (v: boolean) => void 
 
 /* ───────────────────────── sheet: how much it dims ───────────────────────── */
 
-function Sheet({ m, set, fill, shadows, cw }: Props) {
+function Sheet({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
@@ -138,11 +107,11 @@ function Sheet({ m, set, fill, shadows, cw }: Props) {
   const lit = live || over;
   return (
     <>
-      <p>A thin sheet lies over the page and dims it, so your eye goes to the dialog but you can still see where you were. Drag up on the sheet to dim the page more.</p>
+      <p>A thin sheet lies over the page and dims it, so your eye goes to the dialog but you can still see where you were. Drag up on the sheet to dim the page more. The sheet is the page's, not the dialog's: it dims the same under every dialog on the page.</p>
       <Well well={well} zoom={zoom}>
-        <Win m={m} cw={cw}
+        <Win m={m} look={look}
           sheet={{ ref, role: 'slider', tabIndex: 0, 'aria-label': 'Dim', 'aria-valuenow': pct, 'aria-valuemin': 0, 'aria-valuemax': 90, 'data-live': live ? '' : undefined, ...handle } as Record<string, unknown>}
-          place={{ props: { style: { pointerEvents: 'none', left: DX, top: (WH * m.top) / 100 } }, face: <Face m={m} fill={fill} shadows={shadows} /> }}>
+          place={{ props: { style: { pointerEvents: 'none', left: DX, top: (WH * m.top) / 100 } }, face: <DialogFace m={m} look={look} /> }}>
           <Outline W={WW} h={WH} r={10} on={lit ? ['top', 'right'] : []} only={['top', 'right']} segs={segs} />
         </Win>
       </Well>
@@ -155,7 +124,7 @@ function Sheet({ m, set, fill, shadows, cw }: Props) {
 
 /* ───────────────────────── opening: how far it drops in from ───────────────────────── */
 
-function Opening({ m, set, fill, shadows, cw, replay }: Props) {
+function Opening({ m, set, look, replay }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
@@ -177,11 +146,11 @@ function Opening({ m, set, fill, shadows, cw, replay }: Props) {
     <>
       <p>The dialog drops in from a little above and grows to full size, then settles without bouncing. Pull it up and let go to watch it arrive from there.</p>
       <Well well={well} zoom={zoom}>
-        <Win m={m} cw={cw}
+        <Win m={m} look={look}
           place={{
             faceRef: face,
             props: { ref, className: 'ed-dlg-place ed-dlg-grab ed-dlg-rise', role: 'slider', tabIndex: 0, 'aria-label': 'Drop', 'aria-valuenow': m.rise, 'aria-valuemin': 0, 'aria-valuemax': 24, 'data-live': live ? '' : undefined, 'data-peek': over ? '' : undefined, ...handle } as Record<string, unknown>,
-            face: <div className="ed-dlg-pull" style={live ? { transform: `translateY(${-m.rise}px) scale(${FROM})`, opacity: 0.55 } : undefined}><Face m={m} fill={fill} shadows={shadows} /></div>,
+            face: <div className="ed-dlg-pull" style={live ? { transform: `translateY(${-m.rise}px) scale(${FROM})`, opacity: 0.55 } : undefined}><DialogFace m={m} look={look} /></div>,
           }} />
       </Well>
       <div className="ed-readouts">
@@ -195,7 +164,7 @@ function Opening({ m, set, fill, shadows, cw, replay }: Props) {
 /* ───────────────────────── focus: it steps between the things inside ───────────────────────── */
 
 interface Box { x: number; y: number; w: number; h: number; r: number }
-function Focus({ m, fill, shadows, cw, open, setOpen, focusAt, setFocusAt, replay }: Props) {
+function Focus({ m, look, open, setOpen, focusAt, setFocusAt, replay }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const win = React.useRef<HTMLDivElement>(null);
   const opener = React.useRef<HTMLSpanElement>(null);
@@ -205,7 +174,8 @@ function Focus({ m, fill, shadows, cw, open, setOpen, focusAt, setFocusAt, repla
   const [lean, setLean] = React.useState(0);
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
-  const n = FOCUSABLE.length;
+  const stops = focusable(m);
+  const n = stops.length;
   const wrap = (i: number) => ((i % n) + n) % n;
   // where each focusable thing sits, in the window's units
   React.useLayoutEffect(() => {
@@ -227,8 +197,8 @@ function Focus({ m, fill, shadows, cw, open, setOpen, focusAt, setFocusAt, repla
   const to = (i: number) => setFocusAt(wrap(i));
   const handle = useHandle({
     zoom,
-    hint: (): Hint => ({ gesture: 'steps', title: 'Focus', value: live ? (Math.abs(lean) > 0.3 ? `→ ${FOCUSABLE[wrap(focusAt + Math.sign(lean))]}` : FOCUSABLE[focusAt]) : undefined, how: 'drag the ring to the next one' }),
-    keyHint: (): Hint => ({ gesture: 'steps', title: 'Focus', value: FOCUSABLE[focusAt], keys: [{ k: '←→', say: 'move' }, { k: 'esc', say: 'close' }] }),
+    hint: (): Hint => ({ gesture: 'steps', title: 'Focus', value: live ? (Math.abs(lean) > 0.3 ? `→ ${stops[wrap(focusAt + Math.sign(lean))]}` : stops[focusAt]) : undefined, how: 'drag the ring to the next one' }),
+    keyHint: (): Hint => ({ gesture: 'steps', title: 'Focus', value: stops[focusAt], keys: [{ k: '←→', say: 'move' }, { k: 'esc', say: 'close' }] }),
     start: () => ({ base: 0, at: focusAt }),
     move: (st, dx, dy) => {
       setLive(true);
@@ -250,19 +220,19 @@ function Focus({ m, fill, shadows, cw, open, setOpen, focusAt, setFocusAt, repla
     <>
       <p>While the dialog is open, focus only moves between the things inside it, and never out to the page. Drag the focus ring to move it to the next one; close the dialog and focus goes back to the button that opened it.</p>
       <Well well={well} zoom={zoom}>
-        <Win m={m} cw={cw} open={open} winRef={win}
-          place={{ face: <Face m={m} fill={fill} shadows={shadows} refs={targets} onPick={to} /> }}>
-          {!open && <span ref={opener} className="ed-dlg-opener" style={{ zoom: K }}><Button tabIndex={-1} onClick={reopen}>Rename canvas…</Button></span>}
+        <Win m={m} look={look} open={open} winRef={win}
+          place={{ face: <DialogFace m={m} look={look} refs={targets} onPick={to} /> }}>
+          {!open && <span ref={opener} className="ed-dlg-opener" style={{ zoom: K }}><Button tabIndex={-1} onClick={reopen}>{m.title}…</Button></span>}
           {leanAt && <span className="ed-dlg-ring is-ghost" style={{ ...place(leanAt), opacity: Math.abs(lean) }} aria-hidden />}
           {at && at.w > 0 && (open
             ? <span ref={ring} className="ed-dlg-ring" data-live={live ? '' : undefined} data-peek={over ? '' : undefined} style={place(at)}
-                role="slider" tabIndex={0} aria-label="Focus" aria-valuetext={FOCUSABLE[focusAt]} aria-valuenow={focusAt} aria-valuemin={0} aria-valuemax={n - 1}
+                role="slider" tabIndex={0} aria-label="Focus" aria-valuetext={stops[focusAt]} aria-valuenow={focusAt} aria-valuemin={0} aria-valuemax={n - 1}
                 {...handle} onKeyDown={onKeyDown} />
             : <span className="ed-dlg-ring is-rest" style={place(at)} aria-hidden />)}
         </Win>
       </Well>
       <div className="ed-readouts">
-        <Readout label="Focus" value={open ? FOCUSABLE[focusAt] : 'the button'} unit="" snap={{ at: focusAt, name: 'a real stop' }}
+        <Readout label="Focus" value={open ? stops[focusAt] : 'the button'} unit="" snap={{ at: focusAt, name: 'a real stop' }}
           peek={setOver} pick={() => (open ? summon(ring.current) : reopen())} scrub={(d) => { if (open) to(focusAt + d); }} />
       </div>
       <div className="ed-layers">
@@ -277,7 +247,7 @@ function Focus({ m, fill, shadows, cw, open, setOpen, focusAt, setFocusAt, repla
 
 /* ───────────────────────── place: how far down it sits ───────────────────────── */
 
-function Place({ m, set, fill, shadows, cw }: Props) {
+function Place({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
@@ -297,8 +267,8 @@ function Place({ m, set, fill, shadows, cw }: Props) {
     <>
       <p>The dialog sits near the top of the window, not in the middle: closer to where your eyes already are, with room below for a keyboard. Drag it up or down to change how far down it sits.</p>
       <Well well={well} zoom={zoom}>
-        <Win m={m} cw={cw}
-          place={{ props: { ref, className: 'ed-dlg-place ed-dlg-grab', role: 'slider', tabIndex: 0, 'aria-label': 'Distance from the top', 'aria-valuenow': m.top, 'aria-valuemin': 0, 'aria-valuemax': 46, 'data-live': live ? '' : undefined, 'data-peek': over ? '' : undefined, ...handle } as Record<string, unknown>, face: <Face m={m} fill={fill} shadows={shadows} /> }}>
+        <Win m={m} look={look}
+          place={{ props: { ref, className: 'ed-dlg-place ed-dlg-grab', role: 'slider', tabIndex: 0, 'aria-label': 'Distance from the top', 'aria-valuenow': m.top, 'aria-valuemin': 0, 'aria-valuemax': 46, 'data-live': live ? '' : undefined, 'data-peek': over ? '' : undefined, ...handle } as Record<string, unknown>, face: <DialogFace m={m} look={look} /> }}>
           {/* the distance itself: a hairline from the window's top to the dialog's, beside it */}
           <svg className="ed-dlg-measure" data-on={live || over ? '' : undefined} width={6} height={Math.max(y, 1)} style={{ left: DX - 5 }} viewBox={`0 0 6 ${Math.max(y, 1)}`} aria-hidden>
             <path ref={line} d={`M3 0V${y}M1 ${y}H5`} />
@@ -314,7 +284,7 @@ function Place({ m, set, fill, shadows, cw }: Props) {
 
 /* ───────────────────────── shadow: how high it floats ───────────────────────── */
 
-function Shadow({ m, set, fill, shadows, cw }: Props) {
+function Shadow({ m, set, look }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
@@ -332,8 +302,8 @@ function Shadow({ m, set, fill, shadows, cw }: Props) {
     <>
       <p>A dialog floats the highest of the large surfaces, and its shadow falls on the dimmed sheet, not on the page. Drag the dialog up to raise it: its shadow grows bigger and softer.</p>
       <Well well={well} zoom={zoom}>
-        <Win m={m} cw={cw}
-          place={{ y: -(m.lift - 1) * 3, props: { ref, className: 'ed-dlg-place ed-dlg-grab ed-dlg-lift', role: 'slider', tabIndex: 0, 'aria-label': 'Height', 'aria-valuenow': m.lift, 'aria-valuemin': 0, 'aria-valuemax': 3, 'data-live': live ? '' : undefined, 'data-peek': over ? '' : undefined, ...handle } as Record<string, unknown>, face: <Face m={m} fill={fill} shadows={shadows} /> }} />
+        <Win m={m} look={look}
+          place={{ y: -(m.lift - 1) * 3, props: { ref, className: 'ed-dlg-place ed-dlg-grab ed-dlg-lift', role: 'slider', tabIndex: 0, 'aria-label': 'Height', 'aria-valuenow': m.lift, 'aria-valuemin': 0, 'aria-valuemax': 3, 'data-live': live ? '' : undefined, 'data-peek': over ? '' : undefined, ...handle } as Record<string, unknown>, face: <DialogFace m={m} look={look} /> }} />
       </Well>
       <div className="ed-readouts">
         <Readout label="Height" value={m.lift.toFixed(1)} unit="" snap={m.lift === 1 ? { at: 1, name: 'plate shadows' } : undefined} peek={setOver} pick={() => summon(ref.current)} scrub={(d) => setLift(m.lift + d * 0.1, false)} />
@@ -344,13 +314,13 @@ function Shadow({ m, set, fill, shadows, cw }: Props) {
 
 /* ───────────────────────── layers ───────────────────────── */
 
-function Layers({ m, set, fill, shadows, cw, layers, focus }: Props) {
+function Layers({ m, set, look, layers, focus }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const toggle = (i: number, v: boolean) => set({ on: m.on.map((x, j) => (j === i ? v : x)) });
   return (
     <>
       <p>The dialog is a plate with {layers.length} layers, the same stuff as a card lifted off the page. Turn a layer off to see what it adds.</p>
-      <Well well={well} zoom={zoom}><Win m={m} cw={cw} place={{ face: <Face m={m} fill={fill} shadows={shadows} /> }} /></Well>
+      <Well well={well} zoom={zoom}><Win m={m} look={look} place={{ face: <DialogFace m={m} look={look} /> }} /></Well>
       <div className="ed-layers">
         {layers.map((l, i) => (
           <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''}

@@ -55,12 +55,12 @@ test('the sheet dims the specimen and the bench', async ({ page }) => {
   const start = await num(card, 'Dim');
   const sheet = card.locator('.ed-dlg-scrim');
   const before = await style(sheet, 'background');
-  const bench = await style(xray.locator('.xr-sheet3d'), 'background');
+  const bench = await style(xray.locator('.xr-dlg-sheet'), 'background');
   await drag(page, card.getByRole('slider', { name: 'Dim' }), 0, -40);
   await expect(value(card, 'Dim')).not.toHaveText(String(start));
   expect(await num(card, 'Dim')).toBeGreaterThan(start);
   expect(await style(sheet, 'background')).not.toBe(before);
-  expect(await style(xray.locator('.xr-sheet3d'), 'background')).not.toBe(bench);
+  expect(await style(xray.locator('.xr-dlg-sheet'), 'background')).not.toBe(bench);
 });
 
 test('pulling the dialog up sets how far it drops in, on the specimen and the bench', async ({ page }) => {
@@ -100,19 +100,21 @@ test('the focus ring steps between the real stops and never lands between them',
   expect(FOCUSABLE).toContain(next);
   expect(next).not.toBe(first);
   await expect(value(card, 'Focus')).toHaveText(next!);
-  // the bench rings the same thing
-  const benchFocus = xray.locator('.xr-bench .is-focus');
-  await expect(benchFocus).toHaveText(next === 'Name' ? 'Trip notes' : next!);
+  // the bench rings the same thing, on the real plate's face
+  const benchFocus = xray.locator('.xr-bench .xr-dlg-face .is-focus');
+  await expect(benchFocus).toHaveCount(1);
+  if (next === 'Name') await expect(benchFocus.locator('input')).toHaveValue('Trip notes');
+  else await expect(benchFocus).toHaveText(next!);
   // arrows step it too; Escape closes it and focus goes back to the button
   await ring.focus();
   await page.keyboard.press('ArrowRight');
   await expect(ring).not.toHaveAttribute('aria-valuetext', next!);
   await page.keyboard.press('Escape');
   await expect(card.getByRole('switch', { name: 'Dialog open' })).toHaveAttribute('aria-checked', 'false');
-  await expect(xray.locator('.xr-dialogwrap')).toHaveCount(0);
+  await expect(xray.locator('.xr-dlg-wrap .xr-segface')).toHaveCount(0);
   await expect(value(card, 'Focus')).toHaveText('the button');
   await card.getByRole('switch', { name: 'Dialog open' }).click();
-  await expect(xray.locator('.xr-dialogwrap')).toHaveCount(1);
+  await expect(xray.locator('.xr-dlg-wrap .xr-segface')).toHaveCount(1);
   await expect(ring).toHaveAttribute('aria-valuetext', 'Name');
 });
 
@@ -123,20 +125,21 @@ test('place and shadow handles move the specimen and the bench', async ({ page }
   const top = await num(card, 'From the top');
   const place = card.locator('.ed-dlg-place');
   const at = await style(place, 'top');
-  const bench = await style(xray.locator('.xr-dialogwrap .xr-thumb'), 'transform');
+  const bench = await style(xray.locator('.xr-dlg-wrap .xr-thumb'), 'transform');
   await drag(page, card.getByRole('slider', { name: 'Distance from the top' }), 0, 30);
   expect(await num(card, 'From the top')).toBeGreaterThan(top);
   expect(await style(place, 'top')).not.toBe(at);
-  expect(await style(xray.locator('.xr-dialogwrap .xr-thumb'), 'transform')).not.toBe(bench);
+  expect(await style(xray.locator('.xr-dlg-wrap .xr-thumb'), 'transform')).not.toBe(bench);
 
   await part(xray, 'Shadow');
   const lift = await value(card, 'Height').textContent();
-  const shadow = await style(card.locator('.ed-specimen .mu-dialog'), 'box-shadow');
-  const z = await style(xray.locator('.xr-dialogwrap .xr-face').last(), 'transform');
+  const shadow = await style(card.locator('.ed-specimen .mu-dialog'), '--mu-r-surface-self-plate-shadow');
+  const z = await style(xray.locator('.xr-dlg-wrap .xr-segface'), 'transform');
   await drag(page, card.getByRole('slider', { name: 'Height' }), 0, -30);
   await expect(value(card, 'Height')).not.toHaveText(lift!);
-  expect(await style(card.locator('.ed-specimen .mu-dialog'), 'box-shadow')).not.toBe(shadow);
-  expect(await style(xray.locator('.xr-dialogwrap .xr-face').last(), 'transform')).not.toBe(z);
+  // the plate's shadow stack reaches the real plate through its own variable
+  expect(await style(card.locator('.ed-specimen .mu-dialog'), '--mu-r-surface-self-plate-shadow')).not.toBe(shadow);
+  expect(await style(xray.locator('.xr-dlg-wrap .xr-segface'), 'transform')).not.toBe(z);
 });
 
 test('layer switches take the same layer off the specimen and the bench', async ({ page }) => {
@@ -148,11 +151,12 @@ test('layer switches take the same layer off the specimen and the bench', async 
   await expect(plate).not.toHaveClass(/is-off/);
   await card.getByRole('switch', { name: 'Plate' }).click();
   await expect(card.getByRole('switch', { name: 'Plate' })).toHaveAttribute('aria-checked', 'false');
-  expect(await style(dialog, 'background')).toBe('transparent');
+  // the layers reach the real plate through its own variables
+  expect(await style(dialog, '--mu-r-surface-self-plate-background')).toBe('transparent');
   await expect(plate).toHaveClass(/is-off/);
-  const shadow = await style(dialog, 'box-shadow');
+  const shadow = await style(dialog, '--mu-r-surface-self-plate-shadow');
   await card.getByRole('switch', { name: 'Far shadow' }).click();
-  expect(await style(dialog, 'box-shadow')).not.toBe(shadow);
+  expect(await style(dialog, '--mu-r-surface-self-plate-shadow')).not.toBe(shadow);
   await expect(xray.locator('.xr-face.is-layer').filter({ hasText: 'Far shadow' })).toHaveClass(/is-off/);
   // hovering a row points at its slice on the bench
   await card.locator('.ed-layer').filter({ hasText: 'Rim' }).hover();

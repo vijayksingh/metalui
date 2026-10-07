@@ -18,7 +18,7 @@ import { INITIAL as CHECKBOX, CheckboxFor, useCheckboxLook, type CheckboxConfig,
 import { INITIAL as TOOLTIP, TooltipChip, useTooltipLook, type TooltipConfig } from './xray/TooltipXray';
 import { ToastStill } from './xray/ToastXray';
 import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xray/MenuXray';
-import { DialogStill } from './xray/DialogXray';
+import { DialogFace, INITIAL as DIALOG, useDialogLook, type DialogConfig } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
 import { INITIAL as FOLDER, FolderFace, useFolderLook, type FolderConfig } from './xray/FolderXray';
 import { INITIAL as WORDMARK, WordmarkObject } from './xray/WordmarkXray';
@@ -186,6 +186,12 @@ function TableFolder({ config = FOLDER, open }: { config?: FolderConfig; open: (
   return <div onClick={open}><FolderFace m={config} look={look} still /></div>;
 }
 
+/** The dialog on the table: its plate, set to its config, which its x-ray takes over and hands back (a real dialog opens in a portal, so the table shows the plate itself). */
+function TableDialog({ config = DIALOG, open }: { config?: DialogConfig; open: () => void }) {
+  const look = useDialogLook(config);
+  return <div onClick={open} style={{ cursor: 'zoom-in' }}><DialogFace m={config} look={look} /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -255,7 +261,8 @@ const ITEMS: Item[] = [
   },
   { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
   { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray, seeds }) => <TableMenu config={seeds.menu} open={() => openXray('menu')} /> },
-  { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
+  // the dialog's plate, set to its config: its x-ray lands on the plate itself
+  { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, zoom: 0.6, node: ({ openXray, seeds }) => <TableDialog config={seeds.dialog} open={() => openXray('dialog')} /> },
   { id: 'palette', table: ['71.2%', '39.2%'], space: ['69%', '71%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, zoom: 0.7, node: ({ openXray }) => <div onClick={() => openXray('palette')}><PaletteStill /></div> },
   {
     // a widget with no x-ray yet: it opens its own page
