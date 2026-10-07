@@ -601,7 +601,7 @@ td:first-child strong { white-space: nowrap; }
 .xr-slice { position: absolute; left: 0; top: 0; border-radius: 999px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.14); }
 .xr-face { position: absolute; left: 0; top: 0; display: grid; place-items: center; border-radius: 999px; transform-style: preserve-3d; transition: transform var(--spring-object-d) var(--spring-object); }
 .xr-face.is-layer { outline: 1px dashed color-mix(in srgb, var(--green-deep) 70%, transparent); outline-offset: 3px; }
-.xr-label { font: 500 32.5px/1 var(--sans); letter-spacing: -.005em; color: var(--ink); white-space: nowrap; }
+
 .xr-baseline { position: absolute; left: 14%; right: 14%; top: 64%; border-top: 2px solid var(--green-deep); }
 .xr-dims { position: absolute; max-width: none; overflow: visible; pointer-events: none; }
 .xr-dims path { fill: none; stroke: var(--green-deep); stroke-width: 1.6; }
@@ -614,22 +614,17 @@ td:first-child strong { white-space: nowrap; }
 .xr-sun .xr-bill { width: 44px; height: 44px; justify-content: center; border-radius: 50%; background: radial-gradient(circle, rgba(255,214,120,.55), transparent 70%); }
 .xr-sun .xr-bill svg { width: 26px; height: 26px; }
 .xr-bill { display: inline-flex; align-items: center; gap: 6px; transform-origin: 50% 100%; transform: rotateZ(38deg) rotateX(-58deg) translate(-50%, -100%); white-space: nowrap; }
-.xr-hot { position: absolute; left: 0; top: 0; padding: 0; transform-style: preserve-3d; background: none; }
-.xr-hot .xr-bill { height: 28px; padding: 0 11px 0 9px; border-radius: 99px; font: 500 12px/1 var(--sans); color: var(--ink);
-  background: var(--btn-bg); box-shadow: var(--btn-sh), 0 0 0 1.25px color-mix(in srgb, var(--green-deep) 70%, transparent);
-  transition: background .2s, color .2s; animation: xr-pop var(--spring-object-d) var(--spring-object) both; }
-.xr-hot:hover .xr-bill { color: var(--ink); box-shadow: var(--btn-sh), 0 0 0 1.5px var(--green-deep); }
-.xr-hot.is-on .xr-bill { color: #fff; background: var(--green-deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green-deep) 22%, transparent); }
+
 @keyframes xr-pop { from { opacity: 0; } }
 .xr-tag { position: absolute; left: calc(100% + 18px); top: 30%; transform-origin: 0 100%; transform: rotateZ(38deg) rotateX(-58deg); white-space: nowrap; }
 .xr-hint { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; }
-.xr-close { position: absolute; top: 18px; right: 18px; cursor: pointer; }
+
 .xr-card { border-radius: 24px; padding: 18px 20px 20px; animation: rise var(--spring-surface-d) var(--spring-surface) both; }
 .xr-card-head { display: flex; align-items: center; gap: 8px; }
 .xr-card p { margin: 10px 0 0; font: 400 13px/20px var(--sans); color: var(--ink2); }
 .xr-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; padding: 14px; border-radius: 16px; background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
-.xr-chip { width: 22px; height: 22px; border-radius: 7px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.14); }
-html.rm .xr-iso, html.rm .xr-cap, html.rm .xr-face, html.rm .xr-hot .xr-bill, html.rm .xr-card, html.rm .xr-lip { animation: none; transition: none; }
+
+html.rm .xr-iso, html.rm .xr-cap, html.rm .xr-face, html.rm .xr-card, html.rm .xr-lip { animation: none; transition: none; }
 @media (max-width: 900px) { .xr { grid-template-columns: minmax(0, 1fr); } .xr-scene { zoom: .6; } }
 
 /* ============================================================ FLOATING TABLE: real components drifting on the home hero */
@@ -725,14 +720,11 @@ html.rm .xr-leaders path, html.rm .xr-leaders circle { transition: none; }
 .xr-callout-ico { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; color: var(--ink2); background: var(--btn-bg); box-shadow: var(--btn-sh); transition: color .2s, background .2s, box-shadow .2s; }
 .xr-callout:hover .xr-callout-ico { color: var(--ink); }
 .xr-callout.is-on .xr-callout-ico { color: #fff; background: var(--green-deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green-deep) 20%, transparent); }
-.xr-callout-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.xr-callout-txt b { font: 600 12.5px/16px var(--sans); letter-spacing: -.01em; color: var(--ink); }
-.xr-callout-txt small { font: 400 11px/14px var(--sans); color: var(--ink3); }
-.xr-callout.is-on .xr-callout-txt small { color: var(--ink2); }
+
 /* x-ray dials and layer notes */
 .xr-actions { position: absolute; top: 18px; right: 18px; z-index: 4; display: flex; gap: 8px; }
 .xr-actions .status { cursor: pointer; }
-.xr-close { display: none; }
+
 .xr-dials { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
 .xr-dial { display: flex; flex-direction: column; gap: 8px; }
 .xr-dial-head { display: flex; justify-content: space-between; align-items: baseline; font: 500 12px/16px var(--sans); color: var(--ink); }
@@ -774,94 +766,25 @@ html.rm .xr-code { animation: none; }
 /* objects hanging behind the camera's plane must still take the pointer */
 .space, .space-camera { pointer-events: none; }
 .space .drift-item { pointer-events: auto; }
-/* x-ray, checkbox: the tick is the bottom and right edges of a small box, turned; it draws on */
-/* The bench's tick: the check glyph's route, drawn on by its dash (the component's pen, simplified). */
-.xr-tick { position: absolute; left: 0; top: 0; overflow: visible; fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; animation: xr-tick-draw calc(var(--mu-r-checkbox-tick-down) + var(--mu-r-checkbox-tick-pace) + var(--mu-spring-part-d) / 2) var(--mu-ease-press) both; }
-.xr-tick path { stroke-dasharray: 1 1; }
-@keyframes xr-tick-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-html.rm .xr-tick { animation: none; }
-.xr-actions-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.xr-actions-row .status { cursor: pointer; }
+
 .xr-led { position: absolute; border-radius: 50%; animation: xr-pop .2s ease-out both; }
-/* x-ray, chip: quiet at rest (opacity on the parts, since opacity would flatten the 3D group), arriving, answered */
-.xr-chipwrap { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .5s var(--spring-settle, ease-out); }
-.xr-chipwrap .xr-face, .xr-chipwrap .xr-slice, .xr-chipwrap .xr-shadow { transition: opacity .3s; }
-.xr-chipwrap.is-quiet .xr-face, .xr-chipwrap.is-quiet .xr-slice { opacity: .62; }
-.xr-chipwrap.is-arriving { animation: xr-arrive .44s var(--spring-settle, ease-out) both; }
-@keyframes xr-arrive { from { transform: translate3d(0, -9px, 0) scale(.96); } }
-.xr-chipwrap.is-yes { animation: xr-yes .45s ease-in forwards; }
-.xr-chipwrap.is-no { animation: xr-no .35s ease-in forwards; }
-.xr-chipwrap.is-yes > *, .xr-chipwrap.is-no > * { animation: xr-away .35s ease-in forwards; }
-.xr-chipwrap.is-yes .xr-face, .xr-chipwrap.is-yes .xr-slice, .xr-chipwrap.is-no .xr-face, .xr-chipwrap.is-no .xr-slice { animation: xr-away .35s ease-in forwards; }
-@keyframes xr-yes { to { transform: translate3d(0, 0, 40px); } }
-@keyframes xr-no { to { transform: translate3d(0, 20px, 0); } }
-@keyframes xr-away { to { opacity: 0; } }
-.xr-chipface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-weight: 500; letter-spacing: -.5px; white-space: nowrap; }
-.xr-chipface > span:first-child { flex: 1; }
-.xr-chipconf { font-family: var(--mono); color: var(--ink3); }
-.xr-chipbtn { display: grid; place-items: center; border-radius: 999px; }
+
 .xr-floortext { position: absolute; left: 0; transform: translateZ(.5px); font: 500 45px/1 var(--sans); letter-spacing: -.02em; color: var(--ink3); white-space: nowrap; }
-html.rm .xr-chipwrap { animation: none; transition: none; }
-/* x-ray, field: the words lie on the tray floor; the caret blinks */
-.xr-fieldrow { position: absolute; top: 0; display: flex; align-items: center; transform: translateZ(.8px); font-weight: 500; letter-spacing: -.01em; white-space: nowrap; }
-.xr-caret { display: block; width: 3.6px; border-radius: 2px; animation: xr-blink 1.1s steps(1) infinite; }
-@keyframes xr-blink { 50% { opacity: 0; } }
-html.rm .xr-caret { animation: none; }
-.xr-badgeface { display: flex; align-items: center; width: 100%; height: 100%; font-family: var(--mono); font-weight: 500; color: var(--ink2); white-space: nowrap; }
+
 .xr-tool { position: absolute; left: 0; top: 0; transform-style: preserve-3d; cursor: pointer; }
-/* x-ray, tooltip: the label floats high over its tool, joined by a dashed stem */
-.xr-tipwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
-.xr-tipwrap > * { transition: opacity var(--spring-settle-d, .44s) var(--spring-settle, ease-out); }
-.xr-tipwrap:not(.is-shown) > * { opacity: 0; }
-.xr-tipface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .05em; }
+
+/* x-ray, tooltip and menu: the dashed stem from the tool up to what it opens */
 .xr-stem { position: absolute; width: 0; border-left: 2px dashed color-mix(in srgb, var(--green-deep) 60%, transparent); transform-origin: 0 0; transition: opacity .3s; }
 /* x-ray, toast */
 .xr-toastwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
 .xr-toastwrap.is-arriving { animation: xr-toast-in var(--spring-settle-d, .44s) var(--spring-settle, ease-out) both; }
 @keyframes xr-toast-in { from { transform: translate3d(0, 19px, 0) scale(.97); } }
-.xr-toasttext { display: inline-flex; align-items: center; font-weight: 500; letter-spacing: -.012em; white-space: nowrap; }
-.xr-undoface { display: flex; align-items: center; width: 100%; height: 100%; box-sizing: border-box; font-weight: 500; white-space: nowrap; }
+
 html.rm .xr-toastwrap { animation: none; }
-/* x-ray, menu */
-.xr-menuface { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; align-self: stretch; font-weight: 500; }
-.xr-face:has(> .xr-menuface) { place-items: stretch; }
-.xr-menuhead { box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--ink3); }
-.xr-menurow { display: flex; align-items: center; box-sizing: border-box; flex: none; cursor: pointer; transition: background .16s; }
-/* x-ray, dialog: page, dimming sheet, dialog */
-.xr-dialogwrap { position: absolute; inset: 0; transform-style: preserve-3d; }
-.xr-dialogwrap.is-arriving { animation: xr-dialog-in var(--spring-surface-d, .5s) var(--spring-surface, ease-out) both; }
-@keyframes xr-dialog-in { from { transform: translate3d(0, -8px, 0) scale(.985); } }
-.xr-sheet3d { cursor: pointer; }
-.xr-dialogface { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
-.xr-face:has(> .xr-dialogface) { place-items: stretch; }
-.xr-dfield { display: flex; align-items: center; color: var(--ink); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); }
-.xr-dbtn { display: inline-flex; align-items: center; border-radius: 999px; font-weight: 500; color: var(--ink); background: var(--btn-bg); box-shadow: var(--btn-sh); }
-.xr-dfield.is-focus, .xr-dbtn.is-focus { outline: 3px solid var(--mu-focus, #3FB97A); outline-offset: 2px; }
-.xr-pagelines { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
-.xr-face:has(> .xr-pagelines) { place-items: stretch; }
-.xr-pagelines > i { display: block; border-radius: 99px; background: color-mix(in srgb, var(--ink) 9%, transparent); }
-html.rm .xr-dialogwrap { animation: none; }
-/* x-ray, command palette */
-.xr-paletteface { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; transform-style: preserve-3d; }
-.xr-face:has(> .xr-paletteface) { place-items: stretch; }
-.xr-pfield { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; transform: translateZ(1px); font-weight: 500; color: var(--ink); white-space: nowrap; }
-.xr-psec { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--ink3); }
-.xr-prow { position: relative; display: flex; align-items: center; box-sizing: border-box; font-weight: 500; cursor: pointer; }
-.xr-prow.is-on { background: var(--btn-bg); box-shadow: var(--btn-sh); }
-.xr-pbar { position: absolute; left: 3px; border-radius: 2px; background: var(--green-deep); }
-.xr-pmark { background: color-mix(in srgb, var(--green-deep) 22%, transparent); color: inherit; border-radius: 3px; }
-.xr-pfoot { display: flex; align-items: center; flex: none; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--ink3); border-top: 1px solid var(--rule); transition: color .2s; }
-.xr-pfoot.is-lit { color: var(--green-deep); }
+
 .xr-pinput { width: 100%; height: 34px; margin-top: 12px; box-sizing: border-box; padding: 0 12px; border: 0; border-radius: 12px; font: 500 13px var(--sans); color: var(--ink); background: linear-gradient(var(--well-top), var(--well-bot)); box-shadow: var(--well); outline: none; }
 .xr-pinput:focus-visible { box-shadow: var(--well), 0 0 0 2px var(--green-deep); }
-.xr-palette-solid { position: relative; overflow: hidden; }
-/* x-ray, link card: the screen set into the bezel, its chips and type */
-.xr-face.xr-linkscreen { display: flex; flex-direction: column; justify-content: flex-end; box-sizing: border-box; overflow: hidden; }
-.xr-linkchip { position: absolute; display: flex; align-items: center; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--mu-r-chip-glass-ink); background: var(--mu-r-chip-glass-background); white-space: nowrap; }
-.xr-linkchip > i { display: block; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0); }
-.xr-linkchip.is-action { color: var(--mu-r-chip-glass-action-ink); background: var(--mu-r-chip-glass-action-background); cursor: pointer; transition: background .16s; }
-.xr-linkchip.is-action:hover { background: var(--mu-r-chip-glass-action-hover-background); }
-.xr-linkchip.is-lit { outline: 2px solid var(--green-deep); outline-offset: 2px; }
+
 /* x-ray on a narrow bench: callouts in a row under the model; overlays scroll and never hide under the header */
 .xr-bench { container-type: inline-size; }
 @container (max-width: 559px) { .xr-scene { margin-bottom: 120px; } .xr-callout.right { flex-direction: row; } }
