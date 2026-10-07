@@ -162,7 +162,8 @@ export interface XrayOpen { kind: XrayKind; from: string }
  *   1 lift    it rises a little off the table
  *   2 fly     it flies to the model's place, growing to the model's size and tilting to the
  *             x-ray's angle as it goes, so its face lands on the model's face
- *   3 land    it hands over to the model through the end of its flight
+ *   3 land    it lands exactly on the model's top face (its height included), and only
+ *             then hands over: the model comes up under it, then the flyer goes
  * Meanwhile the card composes around it (kds.css, .xr-overlay.is-flown).
  *
  * It is one timeline on live elements: open plays it forward, close plays it backward, and
@@ -179,6 +180,39 @@ const FLY_EASE = 'cubic-bezier(.55, 0, .2, 1)';
 
 interface Flight { from: string; dir: 'open' | 'close'; anims: Animation[]; flyer: HTMLElement }
 
+/** Parts of an x-ray scene that are not the object's body: the floor, labels, light, shadows. */
+const NOT_BODY = '.xr-floor, .xr-anchor, .xr-sun, .xr-shadow, .xr-tag, .xr-measure, .xr-dims, .xr-floortext, .xr-leaders';
+
+/** Where the object lands: the model's top face, as an offset from the scene's centre in the
+ *  iso plane, its height above the floor and its size, all in screen px. The face is the
+ *  model's largest body part, and the highest of those. Read with the iso laid flat (x, y,
+ *  size), then stood on edge (rotateX(-90deg) turns height into screen y). */
+interface Face { x: number; y: number; z: number; w: number; h: number }
+function modelFace(scene: HTMLElement): Face | null {
+  const iso = scene.querySelector<HTMLElement>('.xr-iso');
+  if (!iso) return null;
+  const parts = [...iso.querySelectorAll<HTMLElement>('*')].filter((el) => !el.closest(NOT_BODY));
+  const { transform, animation } = iso.style;
+  const read = (pose: string) => {
+    iso.style.animation = 'none';
+    iso.style.transform = pose;
+    const s = scene.getBoundingClientRect();
+    return { cx: s.left + s.width / 2, cy: s.top + s.height / 2, rects: parts.map((el) => el.getBoundingClientRect()) };
+  };
+  const flat = read('none'), edge = read('rotateX(-90deg)');
+  iso.style.transform = transform;
+  iso.style.animation = animation;
+  let face: Face | null = null;
+  for (const [i, r] of flat.rects.entries()) {
+    const area = r.width * r.height, z = edge.rects[i].top + edge.rects[i].height / 2 - edge.cy;
+    const best = face ? face.w * face.h : 0;
+    if (area > best * 1.02 || (face && area > best * 0.98 && z > face.z)) {
+      face = { x: r.left + r.width / 2 - flat.cx, y: r.top + r.height / 2 - flat.cy, z, w: r.width, h: r.height };
+    }
+  }
+  return face;
+}
+
 /** Builds the flight between an object on the table and its x-ray, parked at the start. */
 function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'from' | 'dir'> {
   const model = overlay.querySelector<HTMLElement>('.xr-scene') ?? overlay.querySelector<HTMLElement>('.xr-bench') ?? overlay;
@@ -190,18 +224,25 @@ function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'fro
   flyer.style.width = `${ow}px`;
   flyer.style.height = `${oh}px`;
   document.body.appendChild(flyer);
-  // home: where the object hangs now; land: the model's flat face, which the object fills
+  // home: where the object hangs now; land: the model's top face, which the object covers exactly.
+  // Every pose has the same functions, so the flight interpolates them one by one.
   const h = item.getBoundingClientRect(), m = model.getBoundingClientRect();
-  const hs = h.width / ow, ls = Math.min(m.width / ow, m.height / oh);
-  const at = (cx: number, cy: number, k: number, turn: string) => `translate(${cx - ow / 2}px, ${cy - oh / 2}px) scale(${k}) ${turn}`;
-  const hx = h.left + h.width / 2, hy = h.top + h.height / 2;
-  const home = at(hx, hy, hs, FLAT), lifted = at(hx, hy - 14, hs * 1.08, FLAT), land = at(m.left + m.width / 2, m.top + m.height / 2, ls, ISO);
+  const face = model.classList.contains('xr-scene') ? modelFace(model) : null;
+  const ls = Math.min(m.width / ow, m.height / oh);
+  const at = (cx: number, cy: number, k: number, turn: string, lift = '0px, 0px, 0px', fit = '1, 1') =>
+    `translate(${cx - ow / 2}px, ${cy - oh / 2}px) scale(${k}) ${turn} translate3d(${lift}) scale(${fit})`;
+  const hs = h.width / ow, hx = h.left + h.width / 2, hy = h.top + h.height / 2, mx = m.left + m.width / 2, my = m.top + m.height / 2;
+  const home = at(hx, hy, hs, FLAT), lifted = at(hx, hy - 14, hs * 1.08, FLAT);
+  const land = face
+    ? at(mx, my, 1, ISO, `${face.x}px, ${face.y}px, ${face.z}px`, `${face.w / ow}, ${face.h / oh}`)
+    : at(mx, my, ls, ISO);
   const opts = { duration: OPEN_MS, fill: 'both' as const };
   const anims = [
     flyer.animate([{ transform: home, easing: LIFT_EASE }, { transform: lifted, offset: 0.2, easing: FLY_EASE }, { transform: land, offset: 0.85 }, { transform: land }], opts),
-    flyer.animate([{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0, offset: 0.92 }, { opacity: 0 }], opts),
+    // the hand-over waits for the landing: the model comes up under the flyer, then the flyer goes
+    flyer.animate([{ opacity: 1 }, { opacity: 1, offset: 0.88 }, { opacity: 0, offset: 0.96 }, { opacity: 0 }], opts),
     overlay.animate([{ opacity: 0, easing: 'ease-out' }, { opacity: 1, offset: 0.4 }, { opacity: 1 }], opts),
-    ...(model.classList.contains('xr-scene') ? [model.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1, offset: 0.9 }, { opacity: 1 }], opts)] : []),
+    ...(model.classList.contains('xr-scene') ? [model.animate([{ opacity: 0 }, { opacity: 0, offset: 0.78 }, { opacity: 1, offset: 0.88 }, { opacity: 1 }], opts)] : []),
   ];
   return { anims, flyer };
 }

@@ -54,6 +54,29 @@ for (const colorway of COLORWAYS) {
   }
 }
 
+// Models stand on the x-ray's floor with their thickness, so the face sits above it. The copy has to come
+// down on that raised face, edge for edge, or the hand-over to the model reads as a last-moment snap.
+for (const [id, part, face] of [
+  ['button', 'button', '.xr-face'],
+  ['toast', '> *', '.xr-face'],
+  ['menu', '> *', '.xr-face'],
+] as const) {
+  test(`the ${id} comes down exactly on its model's raised face`, async ({ page }) => {
+    await openLanding(page, '/overview', 'bone');
+    await page.locator(`[data-float="${id}"]`).locator(part).first().click({ force: true });
+    await expect(page.locator('.xr-flyer')).toHaveCount(1);
+    // own the clock: hold the flight just after touchdown, before the copy hands over
+    const miss = await page.evaluate((face) => {
+      const flight = document.getAnimations().filter((a) => a.effect?.getComputedTiming().duration === 1100);
+      flight.forEach((a) => { a.pause(); a.currentTime = 1100 * 0.86; });
+      const f = document.querySelector('.xr-flyer')!.getBoundingClientRect();
+      const edges = (r: DOMRect) => Math.max(Math.abs(r.left - f.left), Math.abs(r.top - f.top), Math.abs(r.right - f.right), Math.abs(r.bottom - f.bottom));
+      return Math.min(...[...document.querySelectorAll('.xr-overlay .xr-iso ' + face)].map((el) => edges(el.getBoundingClientRect())));
+    }, face);
+    expect(miss).toBeLessThan(1.5);
+  });
+}
+
 test('an opening flight turns around mid-air and goes home', async ({ page }) => {
   await openLanding(page, '/', 'bone');
   const home = await centre(page, '[data-float="swatch"]');
