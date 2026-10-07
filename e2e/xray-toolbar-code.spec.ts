@@ -54,8 +54,8 @@ async function render(page: Page, xray: Locator, snippet: { React: string; CSS?:
     mount.id = 'snippet';
     mount.style.zoom = zoomed.style.zoom;
     zoomed.after(mount);
-    const lab = await import('/src/ui/xray/toolbar-snippet-lab.ts');
-    lab.runSnippet(js, css, mount);
+    const lab = await import('/src/ui/xray/snippet-lab.ts');
+    lab.runSnippet(js, css, mount, 'CanvasTools');
   }, { js, css: snippet.CSS ?? '' });
   // the strip plays its entrance once
   await page.waitForTimeout(700);
@@ -75,7 +75,7 @@ function typeErrors(snippet: { React: string; CSS?: string }) {
     baseUrl: path.resolve('apps/docs'), paths: { '@unlocalhosted/metalui': ['../../packages/metalui/src/index.ts'], '@unlocalhosted/metalui/icons': ['../../packages/metalui/src/icons.ts'] },
   });
   // the snippet's own errors: the library's source is compiled alongside it only to give it its real types
-  return ts.getPreEmitDiagnostics(program).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+  return ts.getPreEmitDiagnostics(program, program.getSourceFile(file)).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
 }
 
 /** Switches the page's colorway through the site's own switch. */

@@ -56,8 +56,8 @@ async function files(xray: Locator) {
 /** Runs the React snippet (and its stylesheet) in the page, beside the specimen: a button that opens the real palette. */
 async function render(page: Page, xray: Locator, snippet: { React: string; CSS?: string }) {
   // the snippet as a browser runs it: types and JSX compiled away, its imports supplied by the page
-  // the lab puts React, useState, the library and the icons in scope; the ⌘K listener needs useEffect too
-  const js = 'const { useEffect } = React;\n' + transformSync(snippet.React, { loader: 'tsx', jsx: 'transform', jsxFactory: 'React.createElement' }).code
+  // the lab puts React, its hooks, the library and the icons in scope
+  const js = transformSync(snippet.React, { loader: 'tsx', jsx: 'transform', jsxFactory: 'React.createElement' }).code
     .replace(/^import .*$/gm, '').replace(/^export /gm, '');
   await xray.locator('.ed-specimen').first().evaluate(async (well, { js, css }) => {
     const mount = document.createElement('div');
@@ -95,7 +95,7 @@ function typeErrors(snippet: { React: string; CSS?: string }) {
     target: ts.ScriptTarget.ES2022, lib: ['lib.es2022.d.ts', 'lib.dom.d.ts', 'lib.dom.iterable.d.ts'], skipLibCheck: true, types: ['vite/client'],
     baseUrl: path.resolve('apps/docs'), paths: { '@unlocalhosted/metalui': ['../../packages/metalui/src/index.ts'], '@unlocalhosted/metalui/icons': ['../../packages/metalui/src/icons.ts'] },
   });
-  return ts.getPreEmitDiagnostics(program).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+  return ts.getPreEmitDiagnostics(program, program.getSourceFile(file)).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
 }
 
 /** Switches the page's colorway through the site's own switch. */

@@ -12,7 +12,7 @@ export function runSnippet(body: string, css: string, mount: HTMLElement, name =
   // beside the mount, not in it: a root's render replaces the mount's children
   if (css) { const sheet = document.createElement('style'); sheet.textContent = css; mount.before(sheet); }
   const valid = (n: string) => /^[A-Za-z_$][\w$]*$/.test(n) && n !== 'default';
-  const scope: Record<string, unknown> = { React, useState: React.useState };
+  const scope: Record<string, unknown> = { React, useState: React.useState, useEffect: React.useEffect, useRef: React.useRef, useMemo: React.useMemo, useCallback: React.useCallback };
   for (const [n, v] of Object.entries(icons)) if (valid(n)) scope[n] = v;
   for (const [n, v] of Object.entries(lib)) if (valid(n)) scope[n] = v;
   const make = new Function(...Object.keys(scope), `${body}\nreturn ${name};`) as (...args: unknown[]) => React.ComponentType<Record<string, unknown>>;

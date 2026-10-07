@@ -56,8 +56,8 @@ async function render(xray: Locator, snippet: { React: string; CSS?: string }) {
     mount.id = 'snippet';
     mount.style.zoom = zoomed.style.zoom;
     zoomed.after(mount);
-    const lab = await import('/src/ui/xray/link-card-lab.ts');
-    lab.runSnippet(js, css, mount);
+    const lab = await import('/src/ui/xray/snippet-lab.ts');
+    lab.runSnippet(js, css, mount, 'BrandLinkCard');
   }, { js, css: snippet.CSS ?? '' });
   return xray.locator('#snippet .mu-linkcard');
 }
@@ -75,7 +75,7 @@ function typeErrors(snippet: { React: string; CSS?: string }) {
     baseUrl: path.resolve('apps/docs'), paths: { '@unlocalhosted/metalui': ['../../packages/metalui/src/index.ts'] },
   });
   // the snippet's own errors: the library's source is compiled alongside it only to give it its real types
-  return ts.getPreEmitDiagnostics(program).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+  return ts.getPreEmitDiagnostics(program, program.getSourceFile(file)).filter((d) => !d.file || path.resolve(d.file.fileName) === file).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
 }
 
 /** Switches the page's colorway through the site's own switch. */
