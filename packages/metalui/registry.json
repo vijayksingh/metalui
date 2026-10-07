@@ -68,6 +68,11 @@
           "target": "components/metalui/motion/leave.ts"
         },
         {
+          "path": "packages/metalui/src/motion/morph-shape.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/morph-shape.tsx"
+        },
+        {
           "path": "packages/metalui/src/motion/reduced.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/reduced.ts"

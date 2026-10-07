@@ -204,6 +204,8 @@ export function buildRecipes(recipes) {
     // a recipe's own drawings (a tick, an LED, a doing mark) and motions, written against its variables
     for (const [u, decls] of Object.entries(r.$utilities ?? {})) utilities.push(`@utility ${u} {\n  ${decls}\n}`);
     for (const [k, frames] of Object.entries(r.$keyframes ?? {})) keyframes.push(`@keyframes ${k} {\n  ${frames}\n}`);
+    // rules no utility can hold (view-transition pseudo-elements): emitted as written, after the keyframes
+    for (const [sel, decls] of Object.entries(r.$rules ?? {})) keyframes.push(`${sel} {\n  ${decls}\n}`);
     for (const [part, props] of Object.entries(r.props ?? {})) {
       const v0 = (v) => (v && typeof v === 'object' ? v.bone ?? v.graphite : v);
       const ref = (k) => `var(--mu-r-${obj}-${part}-${k})`;

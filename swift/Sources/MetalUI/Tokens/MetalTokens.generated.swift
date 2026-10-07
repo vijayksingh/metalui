@@ -1228,6 +1228,20 @@ public enum MetalRecipes {
         ]
     )
 
+    /// One shape, many states (docs/ONE-SHAPE.md): the timing of a shape morph's content. The shell's outline rides the surface spring (close: the release spring); inside it the old content dissolves out over dissolve-out and the new dissolves in over dissolve-in while it reveals from reveal-scale, anchored where the shape grows from. Reduce Motion: no travel, old and new cross-dissolve over reduced. A part that stays in both states (MorphPart) travels with its own group on the same spring instead of dissolving. The page itself never cross-fades (:root has no transition name). (Morph UI's nested view-transition boundaries (morph-ui.anmol16.workers.dev), on our springs)
+    public static let morphShape = MetalObjectRecipe(
+        name: "morph-shape",
+        layers: [
+
+        ],
+        props: [
+            "self.dissolve-out": .text("150ms"),
+            "self.dissolve-in": .text("210ms"),
+            "self.reveal-scale": .text("0.92"),
+            "self.reduced": .text("150ms"),
+        ]
+    )
+
     /// A place with nothing in it yet: a glyph engraved in a sunk well, what would be here (title type), a line saying how to start (body type, ink2), and the one action that starts it. It arrives when a place empties, rising one nest from below on the settle spring (T9), so it never snaps in; content arriving replaces it. Compact, it is one quiet line and the action, for small places. Reduce Motion: it fades in without travel. (the well (recipe well field); the icon set; Transitions T9)
     public static let emptyState = MetalObjectRecipe(
         name: "empty-state",
