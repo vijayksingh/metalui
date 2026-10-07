@@ -19,7 +19,9 @@ export async function emulateMedia(page: Page, features: { name: string; value: 
   await cdp.send('Emulation.setEmulatedMedia', { features });
 }
 
-export const capture = (name: string) => `docs/captures/web/${name}.png`;
+/** Where a slice's capture goes, only when captures are asked for (METALUI_WEB_CAPTURES=1, `npm run test:e2e:captures`):
+ *  otherwise the shot is still taken, as a check that the page renders, but nothing is written. */
+export const capture = (name: string) => (process.env.METALUI_WEB_CAPTURES ? `docs/captures/web/${name}.png` : undefined);
 
 /**
  * Scrubs (Base UI's ScrubArea, the cues' unit scrub, the date cue's hold) ask for pointer lock. Headless
