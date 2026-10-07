@@ -16,7 +16,7 @@ import { ConfiguredButton, INITIAL as BUTTON, useButtonLook, type ButtonConfig }
 import { INITIAL as TOOLBAR, ToolbarObject, type ToolbarConfig } from './xray/ToolbarXray';
 import { INITIAL as CHECKBOX, CheckboxFor, useCheckboxLook, type CheckboxConfig, type CheckboxState } from './xray/CheckboxXray';
 import { INITIAL as TOOLTIP, TooltipChip, useTooltipLook, type TooltipConfig } from './xray/TooltipXray';
-import { ToastStill } from './xray/ToastXray';
+import { INITIAL as TOAST, ToastObject, type ToastConfig } from './xray/ToastXray';
 import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xray/MenuXray';
 import { DialogFace, INITIAL as DIALOG, useDialogLook, type DialogConfig } from './xray/DialogXray';
 import { INITIAL as PALETTE, PaletteFor, usePaletteLook, type PaletteConfig } from './xray/PaletteXray';
@@ -199,6 +199,12 @@ function TablePalette({ config = PALETTE, open }: { config?: PaletteConfig; open
   return <PaletteFor m={config} look={look} inert onClick={open} />;
 }
 
+/** The toast on the table: the toast standing still, set to its config, which its x-ray takes over and hands back.
+ *  A click anywhere on it (its Undo and close keys included: a still answers to nothing) opens the x-ray. */
+function TableToast({ config = TOAST, open }: { config?: ToastConfig; open: () => void }) {
+  return <div onClick={open}><ToastObject config={config} /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -266,7 +272,7 @@ const ITEMS: Item[] = [
     id: 'tooltip', table: ['38%', '58.5%'], space: ['70%', '13%', -60, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     node: ({ openXray, seeds }) => <TableTooltip config={seeds.tooltip} open={() => openXray('tooltip')} />,
   },
-  { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
+  { id: 'toast', table: ['29.6%', '43%'], space: ['50%', '32%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray, seeds }) => <TableToast config={seeds.toast} open={() => openXray('toast')} /> },
   { id: 'menu', table: ['4%', '18.6%'], space: ['89%', '15%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray, seeds }) => <TableMenu config={seeds.menu} open={() => openXray('menu')} /> },
   // the dialog's plate, set to its config: its x-ray lands on the plate itself
   { id: 'dialog', table: ['71.2%', '84.4%'], space: ['89%', '71%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, zoom: 0.6, node: ({ openXray, seeds }) => <TableDialog config={seeds.dialog} open={() => openXray('dialog')} /> },

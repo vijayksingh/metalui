@@ -1,8 +1,9 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { COLORWAYS } from './helpers';
 
-// The toast x-ray is handled, not slid: each card holds the real toast, and every handle
-// changes both the specimen and the model on the bench.
+// The toast x-ray is handled, not slid: each card holds the toast standing still (the live card part
+// for part), and every handle changes both the specimen and the model on the bench, whose pill and
+// cap are that same still, twice.
 
 const PARTS = ['Timing', 'Type', 'Undo', 'Shape', 'Shadow', 'Layers'];
 const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-label^="${name}"]`).click();
@@ -79,17 +80,26 @@ test('type: the space before the detail is dragged in the gap; the detail switch
   await part(xray, 'Type');
   const gap = card.getByRole('slider', { name: 'Space before the detail' });
   const start = await now(gap);
-  const benchGap = await inline(xray.locator('.xr-toasttext'), 'gap');
-  const specimenGap = await css(card.locator('.mu-toast-text'), 'column-gap');
+  const bench = xray.locator('.xr-segface.is-well .mu-toast');
+  const benchGap = await css(bench.locator('.mu-toast-text'), 'column-gap');
+  const specimenGap = await css(card.locator('.ed-specimen .mu-toast-text'), 'column-gap');
   await drag(page, gap, 6 * (await zoomOf(card)), 0);
   expect(await now(gap)).toBeGreaterThan(start);
-  expect(await css(card.locator('.mu-toast-text'), 'column-gap')).not.toBe(specimenGap);
-  expect(await inline(xray.locator('.xr-toasttext'), 'gap')).not.toBe(benchGap);
+  expect(await css(card.locator('.ed-specimen .mu-toast-text'), 'column-gap')).not.toBe(specimenGap);
+  expect(await css(bench.locator('.mu-toast-text'), 'column-gap')).not.toBe(benchGap);
   const detail = card.getByRole('switch', { name: 'Detail' });
   await detail.click();
   await expect(detail).toHaveAttribute('aria-checked', 'false');
   await expect(card.locator('.ed-specimen .mu-toast-sub')).toHaveCount(0);
-  await expect(xray.locator('.xr-toasttext')).not.toContainText('undo it');
+  await expect(bench.locator('.mu-toast-sub')).toHaveCount(0);
+  // the kind steps on the glyph: one of its kinds before and after, never between
+  const kind = card.getByRole('slider', { name: 'Kind' });
+  await expect(kind).toHaveAttribute('aria-valuetext', 'plain');
+  await drag(page, kind, 0, 12);
+  await expect(kind).toHaveAttribute('aria-valuetext', 'success');
+  await expect(value(card, 'kind')).toHaveText('success');
+  await expect(card.locator('.ed-specimen .mu-toast')).toHaveAttribute('data-type', 'success');
+  await expect(bench).toHaveAttribute('data-type', 'success');
 });
 
 test('undo: pressing the cap sinks it on the specimen and the bench; Undo switches off on both', async ({ page }) => {
@@ -97,7 +107,8 @@ test('undo: pressing the cap sinks it on the specimen and the bench; Undo switch
   const card = xray.locator('.xr-card');
   await part(xray, 'Undo');
   const cap = card.getByRole('button', { name: 'Undo' });
-  const benchCap = xray.locator('.xr-toastwrap .xr-thumb .xr-thumb .xr-face');
+  // the cap on the bench is the raised copy of the still: it sinks with the press
+  const benchCap = xray.locator('.xr-segface.is-raised');
   const up = await inline(benchCap, 'transform');
   await grab(page, cap);
   await expect(cap).toHaveAttribute('aria-pressed', 'true');
@@ -110,7 +121,7 @@ test('undo: pressing the cap sinks it on the specimen and the bench; Undo switch
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-checked', 'false');
   await expect(card.locator('.ed-specimen .mu-toast-undo')).toHaveCount(0);
-  await expect(benchCap).toHaveCount(0);
+  await expect(benchCap.locator('.mu-toast-undo')).toHaveCount(0);
   await part(xray, 'Timing');
   await expect(value(card, 'stays')).toHaveText('2.6');
 });
@@ -120,7 +131,8 @@ test('shape: the left end sets the space before the words, the right end the gla
   const card = xray.locator('.xr-card');
   await part(xray, 'Shape');
   const zoom = await zoomOf(card);
-  const pill = xray.locator('.xr-toastwrap > .xr-thumb > .xr-face');
+  // the pill's wall on the bench is as wide as the still
+  const pill = xray.locator('.xr-toastwrap .xr-slice').first();
   const left = card.getByRole('slider', { name: 'Space on the left' });
   const start = await now(left);
   const width = await inline(pill, 'width');

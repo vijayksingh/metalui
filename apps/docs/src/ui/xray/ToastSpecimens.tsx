@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { Kbd, Row, Switch, toastParts as T } from '@unlocalhosted/metalui';
+import { Row, Switch, type ToastTone } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { scalePx, useRecipeLayers, type LayerDef } from './kit';
-import { PILL, UNDO, type Model, type Spot } from './ToastXray';
-import { CornerArc, Outline, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
+import type { LayerDef } from './kit';
+import { PILL, TONES, ToastObject, UNDO, ownStay, type Look, type Model, type Spot } from './ToastXray';
+import { CornerArc, Outline, Readout, STEP_AT, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './toast-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
  * THE TOAST'S SPECIMENS · the x-ray card for each part
  *
- *   The card holds the real toast (its own part classes) to handle; the bench reads the
- *   same model. The toast has one height, one look and no sizes, so nothing here steps:
- *     timing   pull the toast down to where it rises from; let go and it arrives
- *     type     the space before the detail sits between the words; the detail switches
- *     undo     press the cap and it sinks; Undo switches
+ *   The card holds the toast standing still (ToastObject, the live card part for part) to handle;
+ *   the bench reads the same config. The toast has one height and no sizes; only its kind steps:
+ *     timing   pull the toast down to where it rises from; let go and it arrives; scrub how long it stays
+ *     type     the glyph turns through the kinds; the space before the detail sits between the
+ *              words; the detail switches
+ *     undo     press the cap and it sinks; Undo and its key switch
  *     shape    the left end is the space before the words, the right end the glass
  *              around the cap
  *     shadow   lift the toast up or set it down
@@ -29,15 +30,18 @@ type Props = {
   replay: () => void;
   /** The Undo cap is held down. */
   press: (on: boolean) => void;
+  look: Look;
 };
 
+// one source per fact: the recipe's numbers (ToastXray's constants are read only inside the components)
 const RECIPE = tokens.recipes.toast;
 const P = RECIPE.props;
 const RISE = P.self.rise, SCALE = Number(P.self.scale);
 const PAD_L = P.self['pad-left'], PAD_R = P.self['pad-right'], TEXT_GAP = P.text.gap;
 const HEIGHT = P.self.height, CAP_H = P.undo.height;
 const PRESS = parseFloat(tokens.motion.press.value);
-const STAYS = { undo: tokens.toast['undo-ms'] / 1000, plain: tokens.toast['plain-ms'] / 1000 };
+/** The kinds, as a person says them. */
+const KIND: Record<ToastTone, string> = { default: 'plain', success: 'success', error: 'error' };
 
 const round = (v: number) => Math.round(v * 10) / 10;
 const token = (v: number, at: number) => (v === at ? { at, name: 'toast recipe token' } : undefined);
@@ -45,45 +49,6 @@ const catchAt = (v: number, at: number, reach: number) => (Math.abs(v - at) <= r
 const quiet = () => document.documentElement.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
 /** A pulse on a drawn guide (a border, not a stroke), for landing on a token. */
 const pulse = (el: HTMLElement | null) => { if (el && !quiet()) el.animate([{ opacity: 0.8 }, { opacity: 1, borderWidth: '1.6px', offset: 0.3 }, { opacity: 0.8 }], { duration: 380, easing: 'cubic-bezier(.3,.7,.3,1)' }); };
-
-/** The recipe's layers from the model: a layer that is off is gone, and the outer shadows scale with the lift. */
-function look(m: Model, pill: { fill: string; shadows: string[] }, cap: { fill: string; shadows: string[] }): React.CSSProperties {
-  const BG = pill.fill, SH = pill.shadows, CAP_BG = cap.fill, CAP_SH = cap.shadows;
-  // the outer shadows (contact, near, far) follow the lift; the insets and the rim are the glass itself
-  const OUTER_FROM = SH.findIndex((v) => !v.startsWith('inset') && !/^0 0 0 /.test(v));
-  const shadow = SH.map((v, i) => (!m.pill[i + 1] ? null : i >= OUTER_FROM ? (m.lift > 0 ? scalePx(v, m.lift) : null) : v)).filter(Boolean).join(', ') || 'none';
-  return {
-    ['--mu-r-toast-self-pad-left' as string]: `${m.padL}px`,
-    ['--mu-r-toast-self-pad-right' as string]: `${m.padR}px`,
-    ['--mu-r-toast-text-gap' as string]: `${m.textGap}px`,
-    ['--mu-r-toast-self-background' as string]: m.pill[0] ? BG : 'transparent',
-    ['--mu-r-toast-self-shadow' as string]: shadow,
-    ['--mu-r-toast-undo-background' as string]: m.cap[0] ? CAP_BG : 'transparent',
-    ['--mu-r-toast-undo-shadow' as string]: CAP_SH.filter((_, i) => m.cap[i + 1]).join(', ') || 'none',
-    display: 'inline-flex',
-    transition: 'none', // a tunable being dragged never chases the pointer
-  };
-}
-
-/** The real toast, drawn with its own part classes (the live one lives in a portal). */
-const Face = React.forwardRef<HTMLDivElement, { m: Model; gap?: React.ReactNode; cap?: React.HTMLAttributes<HTMLSpanElement> & { ref?: React.Ref<HTMLSpanElement> }; down?: boolean }>(
-  function Face({ m, gap, cap, down }, ref) {
-    const pill = useRecipeLayers('toast'), undo = useRecipeLayers('toast', 'undo');
-    return (
-      <div ref={ref} className={`${T.TOAST} ed-toast`} style={look(m, pill, undo)}>
-        <span className={T.TEXT}>
-          <span>Moved 3 blocks</span>
-          {m.sub && <span className={`${T.SUB} ed-toast-sub`}>{gap}· undo it any time</span>}
-        </span>
-        {m.undo && (
-          <span {...cap} className={`${T.UNDO} ed-toast-cap`} style={{ translate: down ? `0 ${PRESS}px` : undefined }}>
-            Undo <Kbd surface="plain" className={T.KEY}>⌘Z</Kbd>
-          </span>
-        )}
-      </div>
-    );
-  },
-);
 
 /**
  * The specimen's magnification: the shared zoom, or less when the toast (a wide object)
@@ -127,10 +92,12 @@ function Timing({ m, set, hold, replay }: Props) {
     over: setPeek,
   });
   useOnLand(live && m.rise === RISE ? 'rise' : undefined, () => pulse(rest.current));
-  const stays = m.undo ? STAYS.undo : STAYS.plain;
+  // how long it stays: the kind's own unless set, in whole tenths of a second; 0 is until dismissed
+  const own = ownStay(m), stays = m.timeout ?? own;
+  const setStays = (ms: number) => { const v = Math.max(0, Math.round(ms / 100) * 100); set({ timeout: v === own ? null : v }); };
   return (
     <>
-      <p>The toast rises in from just below and settles without bouncing. Pull it down to where it starts, then let go to watch it arrive.</p>
+      <p>The toast rises in from just below and settles without bouncing, then goes by itself. Pull it down to where it starts, then let go to watch it arrive; scrub how long it stays.</p>
       <div ref={well} className="ed-specimen ed-toast-well">
         <div style={{ zoom: fit }}>
           <div className="ed-toast-rise" data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
@@ -138,7 +105,7 @@ function Timing({ m, set, hold, replay }: Props) {
             <span ref={grip} className="ed-toast-grip" role="slider" tabIndex={0} aria-label="Rises from" aria-valuetext={`${m.rise} points below`} aria-valuenow={m.rise} aria-valuemin={0} aria-valuemax={RISE * 3}
               style={live ? { translate: `0 ${m.rise}px`, scale: String(m.scale), opacity: 0.55 } : undefined} {...handle}>
               <span key={cycle} className={cycle ? 'ed-toast-in' : undefined} style={{ ['--rise' as string]: `${m.rise}px`, ['--from' as string]: m.scale }}>
-                <Face ref={face} m={m} />
+                <ToastObject ref={face} config={m} />
               </span>
             </span>
           </div>
@@ -147,7 +114,7 @@ function Timing({ m, set, hold, replay }: Props) {
       <div className="ed-readouts">
         <Readout label="rises from" value={`${m.rise}`} snap={token(m.rise, RISE)} peek={setPeek} pick={() => summon(grip.current)} scrub={(d) => { setRise(m.rise + d, false); arrive(); }} />
         <Readout label="starts at" value={`${Math.round(m.scale * 100)}`} unit="%" snap={token(m.scale, SCALE)} scrub={(d) => { setScale(m.scale + d * 0.01); arrive(); }} />
-        <Readout label="stays" value={`${stays}`} unit="s" snap={{ at: stays, name: m.undo ? 'with Undo' : 'without Undo' }} />
+        <Readout label="stays" value={`${stays / 1000}`} unit="s" snap={stays === own ? { at: own, name: m.tone === 'error' ? 'an error stays until dismissed' : m.undo ? 'with Undo' : 'without Undo' } : undefined} scrub={(d) => setStays(stays + d * 100)} />
       </div>
     </>
   );
@@ -159,7 +126,19 @@ function Type({ m, set }: Props) {
   const { well, face, fit } = useFit();
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
+  const [kindPeek, setKindPeek] = React.useState(false);
   const el = React.useRef<HTMLSpanElement>(null);
+  const glyph = React.useRef<HTMLSpanElement>(null);
+  // the kind steps: the glyph is its handle, and the toast is only ever one of its kinds
+  const at = TONES.indexOf(m.tone);
+  const setKind = (i: number) => set({ tone: TONES[clamp(Math.round(i), 0, TONES.length - 1)] });
+  const kind = useHandle({
+    zoom: fit,
+    hint: (): Hint => ({ gesture: 'steps', title: 'Kind', value: KIND[m.tone], how: 'drag up or down' }),
+    keyHint: (): Hint => ({ gesture: 'steps', title: 'Kind', value: KIND[m.tone], keys: [{ k: '↑↓', say: 'change' }] }),
+    start: () => at, move: (i0, _dx, dy) => setKind(i0 + dy / STEP_AT), end: () => {},
+    step: (d) => setKind(at + d), axis: 'y', over: setKindPeek,
+  });
   const setGap = (v: number, caught = true) => { const x = round(clamp(v, 0, TEXT_GAP * 3)); set({ textGap: caught ? catchAt(x, TEXT_GAP, 0.6) : x }); };
   const handle = useHandle({
     zoom: fit,
@@ -177,11 +156,17 @@ function Type({ m, set }: Props) {
   );
   return (
     <>
-      <p>First what happened, then a quieter detail after a dot. Drag the space before the detail sideways to change it.</p>
+      <p>The kind's glyph, then what happened, then a quieter detail after a dot. Drag the glyph up or down to change the kind, and the space before the detail sideways to change it.</p>
       <div ref={well} className="ed-specimen ed-toast-well">
-        <div style={{ zoom: fit }}><div className="ed-toast-box" data-hint-anchor><Face ref={face} m={m} gap={gap} /></div></div>
+        <div style={{ zoom: fit }}><div className="ed-toast-box" data-hint-anchor>
+          <ToastObject ref={face} config={m} gap={gap} />
+          <div className="ed-overlay">
+            <span ref={glyph} className="ed-toast-kind" data-peek={kindPeek ? '' : undefined} role="slider" tabIndex={0} aria-label="Kind" aria-valuetext={KIND[m.tone]} aria-valuenow={at} aria-valuemin={0} aria-valuemax={TONES.length - 1} style={{ left: m.padL }} {...kind} />
+          </div>
+        </div></div>
       </div>
       <div className="ed-readouts">
+        <Readout label="kind" value={KIND[m.tone]} unit="" snap={m.tone === 'default' ? { at: 0, name: 'the kind a result starts as' } : undefined} peek={setKindPeek} pick={() => summon(glyph.current)} scrub={(d) => setKind(at + d)} />
         <Readout label="space before the detail" value={`${m.textGap}`} snap={token(m.textGap, TEXT_GAP)} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => setGap(m.textGap + d * 0.5, false)} />
       </div>
       <Switches rows={[{ name: 'Detail', on: m.sub, set: (sub) => set({ sub }) }]} />
@@ -202,21 +187,21 @@ function Undo({ m, set, press }: Props) {
     start: () => hold(true), move: () => {}, end: () => hold(false), step: () => {},
   });
   const cap = {
-    ...handle, role: 'button', tabIndex: 0, 'aria-label': 'Undo', 'aria-pressed': down,
-    onKeyDown: (e: React.KeyboardEvent<HTMLSpanElement>) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); hold(true); } handle.onKeyDown(e); },
-    onKeyUp: (e: React.KeyboardEvent<HTMLSpanElement>) => { if (e.key === ' ' || e.key === 'Enter') hold(false); },
-  } as React.HTMLAttributes<HTMLSpanElement>;
+    ...handle, tabIndex: 0, 'aria-hidden': undefined, 'aria-label': 'Undo', 'aria-pressed': down,
+    onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); hold(true); } handle.onKeyDown(e); },
+    onKeyUp: (e: React.KeyboardEvent<HTMLButtonElement>) => { if (e.key === ' ' || e.key === 'Enter') hold(false); },
+  } as React.HTMLAttributes<HTMLButtonElement>;
   return (
     <>
-      <p>Undo is a small raised cap on the glass, the only thing you can press. Press it to feel it sink.</p>
+      <p>Undo is a small raised cap on the glass, the only thing you can press, with its key beside the word. Press it to feel it sink.</p>
       <div ref={well} className="ed-specimen ed-toast-well">
-        <div style={{ zoom: fit }}><div className="ed-toast-box" data-hint-anchor><Face ref={face} m={m} cap={cap} down={down} /></div></div>
+        <div style={{ zoom: fit }}><div className="ed-toast-box" data-hint-anchor><ToastObject ref={face} config={m} cap={cap} down={down} /></div></div>
       </div>
       <div className="ed-readouts">
         <Readout label="cap height" value={`${CAP_H}`} snap={token(CAP_H, CAP_H)} />
         <Readout label="sinks" value={`${PRESS}`} snap={token(PRESS, PRESS)} />
       </div>
-      <Switches rows={[{ name: 'Undo', on: m.undo, set: (undo) => set({ undo }) }]} />
+      <Switches rows={[{ name: 'Undo', on: m.undo, set: (undo) => set({ undo }) }, ...(m.undo ? [{ name: '⌘Z key', on: m.key, set: (key: boolean) => set({ key }) }] : [])]} />
     </>
   );
 }
@@ -267,7 +252,7 @@ function Shape({ m, set }: Props) {
       <div ref={well} className="ed-specimen ed-toast-well">
         <div style={{ zoom: fit }}>
           <div className="ed-box ed-toast-box" data-hint-anchor data-live={live ?? undefined} data-peek={peek ?? undefined}>
-            <Face ref={face} m={m} />
+            <ToastObject ref={face} config={m} />
             <div className="ed-overlay">
               <Outline W={W} h={HEIGHT} r={HEIGHT / 2} on={point ? [point] : []} only={shown} segs={segs} />
               {/* the outline leaves its top-left quarter to a corner handle; the toast has none, so the left end draws it whole */}
@@ -310,7 +295,7 @@ function Shadow({ m, set }: Props) {
         <div style={{ zoom: fit }} data-hint-anchor>
           <span ref={el} className="ed-lift ed-toast-lift" data-live={live ? '' : undefined} data-peek={peek ? '' : undefined} style={{ translate: `0 ${-(m.lift - 1) * 3}px` }}
             role="slider" tabIndex={0} aria-label="Height above the page" aria-valuenow={m.lift} aria-valuemin={0} aria-valuemax={3} {...handle}>
-            <Face ref={face} m={m} />
+            <ToastObject ref={face} config={m} />
           </span>
         </div>
       </div>
@@ -344,7 +329,7 @@ function Layers({ m, set, focus }: Props) {
   return (
     <>
       <p>The pill has eight layers and the Undo cap has three. Turn one off to see what it adds.</p>
-      <div ref={well} className="ed-specimen ed-toast-well"><div style={{ zoom: fit }}><Face ref={face} m={m} /></div></div>
+      <div ref={well} className="ed-specimen ed-toast-well"><div style={{ zoom: fit }}><ToastObject ref={face} config={m} /></div></div>
       {group('The pill', 'pill', PILL)}
       {m.undo && group('The Undo cap', 'cap', UNDO)}
     </>

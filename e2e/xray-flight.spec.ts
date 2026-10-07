@@ -58,7 +58,7 @@ for (const colorway of COLORWAYS) {
 // down on that raised face, edge for edge, or the hand-over to the model reads as a last-moment snap.
 for (const [id, part, face] of [
   ['button', 'button', '.xr-segface.is-top'],
-  ['toast', '> *', '.xr-face'],
+  ['toast', '> *', '.xr-segface.is-top'],
   ['menu', '> *', '.xr-segface.is-top'],
 ] as const) {
   test(`the ${id} comes down exactly on its model's raised face`, async ({ page }) => {

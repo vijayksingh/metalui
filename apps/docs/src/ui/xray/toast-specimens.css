@@ -1,7 +1,22 @@
-/* THE TOAST'S SPECIMENS: the real toast in the card, and its arrival on the bench. */
+/* THE TOAST'S SPECIMENS: the toast standing still in the card, on the table and on the bench, and its arrival. */
+/* the still shrinks to its words, as the live card does (its deck sets width: max-content) */
+.ed-toast { display: inline-flex; }
 .ed-toast-box, .ed-toast-rise { position: relative; display: inline-flex; }
 .ed-toast-box .ed-overlay { z-index: 2; }
 .ed-toast-sub { position: relative; }
+
+/* The toast on the bench is the real toast, twice: the pill copy hides its cap, and the raised copy,
+ * once the pill has gone down, keeps only its cap: no glass, no words, no close key. */
+.xr-segface.is-well .mu-toast-undo { visibility: hidden; }
+.xr-segface.is-raised .mu-toast { background: none; box-shadow: none; backdrop-filter: none; }
+.xr-segface.is-raised :is(.mu-toast-text, .mu-toast-close) { visibility: hidden; }
+
+/* type: the kind's glyph is a handle; a faint ring on hover, up or down steps the kind */
+.ed-toast-kind { position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; cursor: ns-resize; outline: none; touch-action: none; pointer-events: auto; }
+.ed-toast-kind::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: .8px solid var(--mu-presence-guide); opacity: 0; pointer-events: none;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-toast-kind:is(:hover, :focus-visible, [data-peek])::after { opacity: 1; }
+[data-mu-colorway="graphite"] .ed-toast-kind::after { border-color: var(--green-deep); }
 
 /* timing: the toast is the handle; its resting outline shows how far below it starts */
 .ed-toast-grip { display: inline-flex; cursor: ns-resize; outline: none; border-radius: 999px; touch-action: none; }
