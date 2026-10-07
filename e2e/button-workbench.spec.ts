@@ -19,7 +19,7 @@ for (const colorway of COLORWAYS) {
     await expect(workbench.getByText('Automatic padding follows height')).toBeVisible();
     await workbench.getByRole('button', { name: 'X-ray', exact: true }).click();
     await expect(workbench.locator('.button-xray')).toHaveAttribute('data-xray', 'true');
-    await expect(workbench.locator('.xr-label')).toHaveText('Create');
+    await expect(workbench.locator('.xr-segface.is-top .mu-button')).toHaveText('Create');
     await expect(workbench.locator('.xr-card .ed-readout').filter({ hasText: 'size' })).toContainText('34pt');
     await workbench.getByText('Precise values and presets').click();
     await expect(workbench.locator('.dialkit-root')).toBeVisible();

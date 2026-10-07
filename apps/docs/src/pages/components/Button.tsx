@@ -8,7 +8,7 @@ import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalBu
 import { C, CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, Tag, TokenTable } from '../../ui/doc';
 import { Beat, Compare, LayerTrail, SlowSwitch, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
-import { ButtonXray, BUTTON_XRAY_INITIAL, type ButtonXrayModel } from '../../ui/xray/ButtonXray';
+import { ButtonXray, INITIAL as BUTTON, type ButtonConfig } from '../../ui/xray/ButtonXray';
 import { ButtonSmartControls } from './ButtonSmartControls';
 import { useColorway } from '../../app/colorway';
 import { SaveGlyph } from '../../ui/async/SaveGlyph';
@@ -128,35 +128,37 @@ function Hero() {
       disabled: false,
     },
     shape: {
-      height: [BUTTON_XRAY_INITIAL.h, 20, 48, 2],
-      automaticPadding: BUTTON_XRAY_INITIAL.padAuto,
-      padding: [BUTTON_XRAY_INITIAL.pad, 2, 32, 1],
-      corners: [BUTTON_XRAY_INITIAL.corners, 0, 1, 0.05],
+      height: [BUTTON.h, 20, 48, 2],
+      automaticPadding: BUTTON.padAuto,
+      padding: [BUTTON.pad, 2, 32, 1],
+      corners: [BUTTON.corners, 0, 1, 0.05],
     },
-    light: { direction: [0, -90, 90, 5], strength: [1, 0, 1.5, 0.05] },
+    light: { direction: [BUTTON.lightDeg, -90, 90, 5], strength: [BUTTON.lightK, 0, 1.5, 0.05] },
     type: {
-      size: [12.5, 10, 16, 0.5],
-      weight: { type: 'select', options: ['400', '500', '600'], default: '500' },
-      tracking: [-0.005, -0.03, 0.06, 0.005],
-      opticalCenter: true,
+      size: [BUTTON.fontSize, 10, 16, 0.5],
+      weight: { type: 'select', options: ['400', '500', '600'], default: String(BUTTON.weight) },
+      tracking: [BUTTON.track, -0.03, 0.06, 0.005],
     },
-    shadow: { lift: [1, 0, 3, 0.1] },
-    press: { travel: [1, 0, 3, 0.5] },
+    shadow: { lift: [BUTTON.lift, 0, 3, 0.1] },
+    press: { travel: [BUTTON.travel, 0, 3, 0.5] },
     layers: { fill: true, innerGlow: true, topLight: true, rim: true, contact: true, drop: true },
   });
   const d = dial.values;
-  const model: ButtonXrayModel = {
-    h: d.shape.height, padAuto: d.shape.automaticPadding, pad: d.shape.padding, corners: d.shape.corners,
+  // the workbench's values are the x-ray's one config: the same shape the table hands it on the overview
+  const model: ButtonConfig = {
+    label: d.content.label, cap: d.content.cap as ButtonCap, icon: d.content.icon as IconName | 'none', disabled: d.content.disabled,
+    h: d.shape.height, padAuto: d.shape.automaticPadding, pad: d.shape.padding, corners: d.shape.corners, travel: d.press.travel,
     lightDeg: d.light.direction, lightK: d.light.strength,
-    size: d.type.size, weight: Number(d.type.weight), track: d.type.tracking, optical: d.type.opticalCenter,
+    fontSize: d.type.size, weight: Number(d.type.weight), track: d.type.tracking,
     lift: d.shadow.lift,
     on: [d.layers.fill, d.layers.innerGlow, d.layers.topLight, d.layers.rim, d.layers.contact, d.layers.drop],
   };
-  const setModel = (patch: Partial<ButtonXrayModel>) => {
+  const setModel = (patch: Partial<ButtonConfig>) => {
     const paths: Record<string, string> = {
-      h: 'shape.height', padAuto: 'shape.automaticPadding', pad: 'shape.padding', corners: 'shape.corners',
-      lightDeg: 'light.direction', lightK: 'light.strength', size: 'type.size', weight: 'type.weight',
-      track: 'type.tracking', optical: 'type.opticalCenter', lift: 'shadow.lift',
+      label: 'content.label', cap: 'content.cap', icon: 'content.icon', disabled: 'content.disabled',
+      h: 'shape.height', padAuto: 'shape.automaticPadding', pad: 'shape.padding', corners: 'shape.corners', travel: 'press.travel',
+      lightDeg: 'light.direction', lightK: 'light.strength', fontSize: 'type.size', weight: 'type.weight',
+      track: 'type.tracking', lift: 'shadow.lift',
     };
     for (const [key, value] of Object.entries(patch)) {
       if (key === 'on') {
@@ -170,10 +172,7 @@ function Hero() {
   return (
     <section id="hero" className="flex scroll-mt-80 flex-col gap-24">
       <div id="x-ray" className="button-workbench" data-md="skip">
-        <ButtonXray
-          label={d.content.label} cap={d.content.cap as ButtonCap} icon={d.content.icon as IconName | 'none'}
-          disabled={d.content.disabled} travel={d.press.travel} model={model} setModel={setModel} onReset={dial.resetValues}
-        />
+        <ButtonXray model={model} setModel={setModel} onReset={dial.resetValues} />
         <div className="button-workbench-controls">
           <div className="button-workbench-controls-head">
             <div><span className="eng">Customize</span><p>Drag the object and its parts. Changes follow into X-ray.</p></div>

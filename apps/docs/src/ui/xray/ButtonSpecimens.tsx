@@ -1,21 +1,20 @@
 import * as React from 'react';
-import { Button, Row, Switch, type ButtonCap } from '@unlocalhosted/metalui';
-import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
+import { Row, Switch } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { alphaK, scalePx, useRecipeLayers } from './kit';
-import { BUTTON_XRAY_INITIAL, LAYERS, type ButtonXrayModel } from './ButtonXray';
+import { ConfiguredButton, INITIAL, LAYERS, SIZES, autoPad, sizeOf, type Look, type Model, type SizeName } from './ButtonXray';
 import {
-  Z, STEP_AT, snapTo, clamp, useStepMotion, useHandle, Readout, summon, blip, useOnLand, Outline, CornerArc, useSpecimenZoom,
+  STEP_AT, snapTo, clamp, useStepMotion, useHandle, Readout, summon, blip, useOnLand, Outline, CornerArc, useSpecimenZoom,
   type Hint, type Seg, type Snap,
 } from '../edit';
+import './button-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
  * THE BUTTON'S SPECIMENS · the x-ray card for each part
  *
- *   The card holds the real button to handle; the model on the bench reads the same
- *   values. Each part offers its own handles:
+ *   The card holds the real button, set to the config, to handle; the model on the bench
+ *   and the object on the table read the same config. Each part offers its own handles:
  *     shape    top edge steps the size, right end the padding, top-left corner the corners
- *     type     drag the words: sideways spacing, up or down size; weight and centring step
+ *     type     drag the words: sideways spacing, up or down size; weight steps
  *     light    a sun on an arc above the button: around turns it, nearer strengthens it
  *     shadow   lift the button up or set it down
  *     press    press it and pull down for how far it sinks
@@ -23,34 +22,24 @@ import {
  *   Only the standard cap has two sizes, so no other cap gets a size handle.
  * ───────────────────────────────────────────────────────── */
 
-export const P = tokens.recipes.button.props;
-
-/** What the button says: the x-ray's own label and icon, so the specimen is the same button as the model. */
-const Face = React.createContext<{ label: string; icon: IconName | 'none' }>({ label: 'New Canvas', icon: 'none' });
-function Says() {
-  const { label, icon } = React.useContext(Face);
-  return <>{icon !== 'none' && <Icon name={icon} size={14} />}{label}</>;
-}
-export type SizeName = 'compact' | 'default';
-export const SIZES: Record<SizeName, { h: number; pad: number; font: number }> = {
-  compact: { h: Number(P.compact.height), pad: Number(P.compact.pad), font: 12 },
-  default: { h: Number(P.self.height), pad: Number(P.self.pad), font: 12.5 },
-};
-export const other = (s: SizeName): SizeName => (s === 'compact' ? 'default' : 'compact');
+// ButtonXray imports this file back, so its constants are read only inside the components
+const TRAVEL = Number((tokens.recipes.button.props as Record<string, Record<string, unknown>>).self.travel);
+type Props = { spot: string; m: Model; set: (p: Partial<Model>) => void; look: Look; setPressed: (on: boolean) => void; setFocusLayer: (i: number | null) => void };
+type Part = { m: Model; set: (p: Partial<Model>) => void; look: Look };
+const other = (s: SizeName): SizeName => (s === 'compact' ? 'default' : 'compact');
 
 /** Shape, on the specimen: the top line steps the size, the right end sets padding, the arc the corners. */
-export function ShapeSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap }) {
+export function ShapeSpecimen({ m, set, look }: Part) {
   // only the standard cap has two sizes; any other cap has one, so its size is not a handle
-  const steps = cap === 'standard';
+  const steps = m.cap === 'standard';
   const [well, zoom] = useSpecimenZoom();
-  const size: SizeName = steps && m.h <= (SIZES.compact.h + SIZES.default.h) / 2 ? 'compact' : 'default';
-  // the height is the model's own; if something else (the page's workbench) tuned it off a real
+  const size = sizeOf(m);
+  // the height is the config's own; if something else (the page's workbench) tuned it off a real
   // size, the specimen shows that truthfully, with its LED off; stepping lands on real sizes only
   const h = m.h;
   const onSize = h === SIZES[size].h;
-  const auto = h / 2 - 1;
-  const pad = m.padAuto ? auto : m.pad;
-  const radius = (h / 2) * m.corners;
+  const auto = autoPad(m);
+  const pad = look.pad, radius = look.radius;
   const [live, setLive] = React.useState<null | 'size' | 'pad' | 'corners'>(null);
   const [lean, setLean] = React.useState(0);
   const [over, setOver] = React.useState<Seg | null>(null);
@@ -69,7 +58,8 @@ export function ShapeSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
   const padSnaps: Snap[] = [{ at: SIZES.compact.pad, name: 'compact' }, { at: SIZES.default.pad, name: 'default' }, { at: auto, name: 'half the height − 1' }];
   const [, padSnap] = snapTo(pad, padSnaps, 0);
   const radSnap: Snap | undefined = m.corners >= 1 ? { at: h / 2, name: 'pill' } : radius === 0 ? { at: 0, name: 'square' } : undefined;
-  const stepTo = (next: SizeName) => set({ h: SIZES[next].h, size: SIZES[next].font });
+  // a real size brings its own type with it
+  const stepTo = (next: SizeName) => set({ h: SIZES[next].h, ...SIZES[next].type });
   const setPad = (v: number) => { const [p] = snapTo(clamp(v, 4, 24), padSnaps); set(p === auto ? { padAuto: true } : { padAuto: false, pad: p }); };
   const setRad = (v: number) => { const r = clamp(v, 0, h / 2); set({ corners: r >= h / 2 - 0.6 ? 1 : Math.round(r) / (h / 2) }); };
   const hover = (seg: Seg) => (on: boolean) => setOver((o) => (on ? seg : o === seg ? null : o));
@@ -120,7 +110,8 @@ export function ShapeSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
       <div ref={well} className="ed-specimen">
         <div style={{ zoom }}>
           <div ref={box} className="ed-box" data-live={live ?? undefined} data-shown={shown.join(' ')} style={{ ['--lean' as string]: lean }} data-hint-anchor>
-            <Button cap={cap} size={size} style={{ ...(onSize ? {} : { [size === 'compact' ? '--mu-r-button-compact-height' : '--mu-r-button-self-height']: `${h}px` }), paddingLeft: pad, paddingRight: pad, borderRadius: radius, transition: live && live !== 'size' ? 'none' : motion.transition }}><Says /></Button>
+            {/* a step rides the part spring; a tunable being dragged has no transition */}
+            <ConfiguredButton m={m} look={look} style={{ transition: live && live !== 'size' ? 'none' : motion.transition }} />
             <div className="ed-overlay">
               <i className="ed-content" style={{ left: pad, right: pad }} />
               <Outline W={W} h={h} r={radius} on={[...(over ? [over] : []), ...holding, ...peek]} only={shown} segs={segs} />
@@ -144,85 +135,59 @@ export function ShapeSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
   );
 }
 
-/** Type, on the specimen: drag the label (sideways spacing, up or down size); weight and centring step. */
-export function TypeSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap }) {
-  const { label } = React.useContext(Face);
+/** Type, on the specimen: drag the label (sideways spacing, up or down size); the weight steps. */
+export function TypeSpecimen({ m, set, look }: Part) {
   const [well, zoom] = useSpecimenZoom();
-  const SIZE_TOKEN = BUTTON_XRAY_INITIAL.size, TRACK_TOKEN = BUTTON_XRAY_INITIAL.track;
+  // the type the cap ships with at this size: the ui type role, or the compact cap's own
+  const own = SIZES[sizeOf(m)].type;
   const WEIGHTS = [400, 500, 600];
   const [live, setLive] = React.useState<null | 'size' | 'track'>(null);
   const [over, setOver] = React.useState(false);
-  const [peek, setPeek] = React.useState<null | 'label' | 'centre'>(null);
+  const [peek, setPeek] = React.useState(false);
   const labelEl = React.useRef<HTMLSpanElement>(null);
-  const box = React.useRef<HTMLDivElement>(null);
   // tunables catch on their tokens; sizes move in half points, spacing in thousandths
-  const setSize = (v: number) => { const x = Math.round(clamp(v, 10, 16) * 2) / 2; set({ size: Math.abs(x - SIZE_TOKEN) <= 0.3 ? SIZE_TOKEN : x }); };
-  const setTrack = (v: number) => { const x = Math.round(clamp(v, -0.03, 0.08) * 1000) / 1000; set({ track: Math.abs(x - TRACK_TOKEN) <= 0.002 ? TRACK_TOKEN : x }); };
+  const setSize = (v: number) => { const x = Math.round(clamp(v, 10, 16) * 2) / 2; set({ fontSize: Math.abs(x - own.fontSize) <= 0.3 ? own.fontSize : x }); };
+  const setTrack = (v: number) => { const x = Math.round(clamp(v, -0.03, 0.08) * 1000) / 1000; set({ track: Math.abs(x - own.track) <= 0.002 ? own.track : x }); };
   const labelHandle = useHandle({
     zoom,
-    hint: () => live === 'size' ? { gesture: 'type', title: 'Size', value: `${m.size}pt` }
+    hint: () => live === 'size' ? { gesture: 'type', title: 'Size', value: `${m.fontSize}pt` }
       : live === 'track' ? { gesture: 'type', title: 'Letter spacing', value: `${m.track.toFixed(3)}em` }
       : { gesture: 'type', title: 'Label', how: 'drag sideways for spacing, up or down for size' },
-    keyHint: (): Hint => ({ gesture: 'type', title: 'Label', value: `${m.size}pt · ${m.track.toFixed(3)}em`, keys: [{ k: '←→', say: 'spacing' }, { k: '↑↓', say: 'size' }] }),
-    start: () => ({ axis: '' as '' | 'x' | 'y', size: m.size, track: m.track }),
+    keyHint: (): Hint => ({ gesture: 'type', title: 'Label', value: `${m.fontSize}pt · ${m.track.toFixed(3)}em`, keys: [{ k: '←→', say: 'spacing' }, { k: '↑↓', say: 'size' }] }),
+    start: () => ({ axis: '' as '' | 'x' | 'y', size: m.fontSize, track: m.track }),
     move: (st, dx, dy) => {
       if (!st.axis && Math.abs(dx) + Math.abs(dy) > 1.2) st.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
       if (st.axis === 'x') { setLive('track'); setTrack(st.track + dx * 0.0015); }
       if (st.axis === 'y') { setLive('size'); setSize(st.size - dy / 3); }
     },
     end: () => setLive(null),
-    step: (d, e) => (e.key === 'ArrowUp' || e.key === 'ArrowDown' ? setSize(m.size + d * 0.5) : setTrack(m.track + d * 0.005)), axis: 'both',
+    step: (d, e) => (e.key === 'ArrowUp' || e.key === 'ArrowDown' ? setSize(m.fontSize + d * 0.5) : setTrack(m.track + d * 0.005)), axis: 'both',
     over: setOver,
   });
-  const show = over || live || peek === 'label' ? 'label' : peek === 'centre' ? 'centre' : undefined;
+  const show = over || live || peek ? 'label' : undefined;
   const nextWeight = WEIGHTS[(WEIGHTS.indexOf(m.weight) + 1) % WEIGHTS.length];
   return (
     <>
       <p>The label decides how wide the button is. Drag the words sideways to change the space between letters, or up and down to change their size.</p>
       <div ref={well} className="ed-specimen">
-        <div ref={box} className="ed-typebox" data-show={show} data-live={live ?? undefined} style={{ zoom }} data-hint-anchor>
-          <Button cap={cap} style={{ fontSize: m.size, fontWeight: m.weight, letterSpacing: `${m.track}em` }}>
-            <span ref={labelEl} className="ed-type-label" style={{ transform: m.optical ? 'translateY(-.5px)' : 'translateY(1px)' }} role="slider" tabIndex={0} aria-label="Label size and spacing" aria-valuetext={`${m.size} points, spacing ${m.track} em`} aria-valuenow={m.size} aria-valuemin={10} aria-valuemax={16} {...labelHandle}>{label}</span>
-          </Button>
-          {/* the two centres: the box's (grey) and the letters' (green), shown while you look at centring */}
-          <span className="ed-centres" aria-hidden>
-            <i className="is-box" /><i className="is-letters" style={{ top: `calc(50% ${m.optical ? '-' : '+'} ${m.optical ? 1.5 : 0}px)` }} />
-          </span>
+        <div className="ed-typebox" data-show={show} data-live={live ?? undefined} style={{ zoom }} data-hint-anchor>
+          <ConfiguredButton m={m} look={look}>
+            <span ref={labelEl} className="ed-type-label" role="slider" tabIndex={0} aria-label="Label size and spacing" aria-valuetext={`${m.fontSize} points, spacing ${m.track} em`} aria-valuenow={m.fontSize} aria-valuemin={10} aria-valuemax={16} {...labelHandle}>{m.label}</span>
+          </ConfiguredButton>
         </div>
       </div>
       <div className="ed-readouts">
-        <Readout label="size" value={`${m.size}`} snap={m.size === SIZE_TOKEN ? { at: SIZE_TOKEN, name: 'token' } : undefined} peek={(on) => setPeek(on ? 'label' : null)} pick={() => { if (labelEl.current) { labelEl.current.dataset.summoned = ''; labelEl.current.focus(); } }}  scrub={(d) => setSize(m.size + d * 0.5)} />
-        <Readout label="weight" value={`${m.weight}`} unit="" snap={m.weight === BUTTON_XRAY_INITIAL.weight ? { at: 500, name: 'token' } : undefined} peek={(on) => setPeek(on ? 'label' : null)} pick={() => set({ weight: nextWeight })} scrub={(d) => set({ weight: WEIGHTS[clamp(WEIGHTS.indexOf(m.weight) + d, 0, WEIGHTS.length - 1)] })} />
-        <Readout label="spacing" value={m.track.toFixed(3)} unit="em" snap={m.track === TRACK_TOKEN ? { at: TRACK_TOKEN, name: 'token' } : undefined} peek={(on) => setPeek(on ? 'label' : null)} pick={() => { if (labelEl.current) { labelEl.current.dataset.summoned = ''; labelEl.current.focus(); } }}  scrub={(d) => setTrack(m.track + d * 0.005)} />
-        <Readout label="centred on" value={m.optical ? 'letters' : 'box'} unit="" snap={m.optical ? { at: 1, name: 'token' } : undefined} peek={(on) => setPeek(on ? 'centre' : null)} pick={() => set({ optical: !m.optical })} scrub={(d) => set({ optical: d > 0 })} />
+        <Readout label="size" value={`${m.fontSize}`} snap={m.fontSize === own.fontSize ? { at: own.fontSize, name: 'token' } : undefined} peek={setPeek} pick={() => summon(labelEl.current)} scrub={(d) => setSize(m.fontSize + d * 0.5)} />
+        <Readout label="weight" value={`${m.weight}`} unit="" snap={m.weight === own.weight ? { at: own.weight, name: 'token' } : undefined} peek={setPeek} pick={() => set({ weight: nextWeight })} scrub={(d) => set({ weight: WEIGHTS[clamp(WEIGHTS.indexOf(m.weight) + d, 0, WEIGHTS.length - 1)] })} />
+        <Readout label="spacing" value={m.track.toFixed(3)} unit="em" snap={m.track === own.track ? { at: own.track, name: 'token' } : undefined} peek={setPeek} pick={() => summon(labelEl.current)} scrub={(d) => setTrack(m.track + d * 0.005)} />
       </div>
     </>
   );
 }
 
-/**
- * The specimen's face from the model, the same recipe the x-ray draws: the fill turns with
- * the light, the inner lights scale with its strength, the outer shadows with the lift, and
- * a layer that is off is gone.
- */
-export function useSpecimenFace(m: ButtonXrayModel, cap: ButtonCap) {
-  const recipe = useRecipeLayers('button', cap === 'standard' ? 'self' : cap);
-  const sh = recipe.shadows;
-  const fill = m.on[0] ? `linear-gradient(${180 + m.lightDeg}deg, ${recipe.stops.join(', ')})` : 'transparent';
-  const layers = [
-    m.on[1] && sh[0] ? alphaK(sh[0], m.lightK) : null,
-    m.on[2] && sh[1] ? alphaK(sh[1], m.lightK) : null,
-    m.on[3] ? sh[2] ?? null : null,
-    m.on[4] && sh[3] && m.lift > 0 ? scalePx(sh[3], Math.min(m.lift, 1.5)) : null,
-    m.on[5] && sh[4] && m.lift > 0 ? scalePx(sh[4], m.lift) : null,
-  ].filter(Boolean) as string[];
-  return { background: fill, boxShadow: layers.join(', ') || 'none' };
-}
-
 /** Light, on the specimen: a sun on a faint orbit; around it turns the light, nearer or further sets its strength. */
-export function LightSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap }) {
+export function LightSpecimen({ m, set, look }: Part) {
   const [well, zoom] = useSpecimenZoom();
-  const face = useSpecimenFace(m, cap);
   const [live, setLive] = React.useState(false);
   const [over, setOver] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -253,7 +218,7 @@ export function LightSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
       <p>Light falls from the top, so the top edge of the button is brightest. Drag the sun to move the light, or closer to make it stronger.</p>
       <div ref={well} className="ed-specimen is-light">
         <div className="ed-lightbox" data-lit={lit ? '' : undefined} style={{ zoom }} data-hint-anchor>
-          <Button cap={cap} style={face}><Says /></Button>
+          <ConfiguredButton m={m} look={look} />
           {/* the sun's path: the upper half only, from the left, over the top, to the right */}
           <svg className="ed-orbit" width={reach(0) * 2 + 2} height={reach(0) + 1} viewBox={`${-reach(0) - 1} ${-reach(0) - 1} ${reach(0) * 2 + 2} ${reach(0) + 1}`} style={{ translate: `0 ${-reach(0) / 2}px` }} aria-hidden>
             <path d={`M${-reach(0)} 0A${reach(0)} ${reach(0)} 0 0 1 ${reach(0)} 0`} />
@@ -263,7 +228,7 @@ export function LightSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
         </div>
       </div>
       <div className="ed-readouts">
-        <Readout label="from" value={m.lightDeg === 0 ? 'top' : `${Math.abs(m.lightDeg)}`} unit={m.lightDeg === 0 ? '' : m.lightDeg < 0 ? '° left' : '° right'} snap={m.lightDeg === 0 ? { at: 0, name: 'token' } : undefined} peek={setPeek} pick={() => summon(sunEl.current)}  scrub={(d) => set({ lightDeg: clamp(m.lightDeg + d * 5, -90, 90) })} />
+        <Readout label="from" value={m.lightDeg === 0 ? 'top' : `${Math.abs(m.lightDeg)}`} unit={m.lightDeg === 0 ? '' : m.lightDeg < 0 ? '° left' : '° right'} snap={m.lightDeg === 0 ? { at: 0, name: 'token' } : undefined} peek={setPeek} pick={() => summon(sunEl.current)} scrub={(d) => set({ lightDeg: clamp(m.lightDeg + d * 5, -90, 90) })} />
         <Readout label="strength" value={`${Math.round(m.lightK * 100)}`} unit="%" snap={m.lightK === 1 ? { at: 1, name: 'token' } : undefined} peek={setPeek} pick={() => summon(sunEl.current)} scrub={(d) => set({ lightK: clamp(Math.round((m.lightK + d * 0.05) * 20) / 20, 0, 1.5) })} />
       </div>
     </>
@@ -271,10 +236,9 @@ export function LightSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Pa
 }
 
 /** Shadow, on the specimen: lift the button off the well; the shadow spreads under it as it rises. */
-export function ShadowSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap }) {
+export function ShadowSpecimen({ m, set, look }: Part) {
   const [well, zoom] = useSpecimenZoom();
-  const face = useSpecimenFace(m, cap);
-  const token = BUTTON_XRAY_INITIAL.lift;
+  const token = INITIAL.lift;
   const [live, setLive] = React.useState(false);
   const btn = React.useRef<HTMLSpanElement>(null);
   const setLift = (v: number) => { const x = Math.round(clamp(v, 0, 3) * 10) / 10; set({ lift: Math.abs(x - token) < 0.15 ? token : x }); };
@@ -292,7 +256,7 @@ export function ShadowSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: P
       <div ref={well} className="ed-specimen">
         <div style={{ zoom }} data-hint-anchor>
           <span ref={btn} className="ed-lift" data-live={live ? '' : undefined} style={{ translate: `0 ${-(m.lift - token) * 3}px` }} role="slider" tabIndex={0} aria-label="Height above the page" aria-valuenow={m.lift} aria-valuemin={0} aria-valuemax={3} {...lift}>
-            <Button cap={cap} tabIndex={-1} style={face}><Says /></Button>
+            <ConfiguredButton m={m} look={look} tabIndex={-1} />
           </span>
         </div>
       </div>
@@ -305,14 +269,13 @@ export function ShadowSpecimen({ m, set, cap }: { m: ButtonXrayModel; set: (p: P
  * Layers, on the specimen: each layer is a row with a switch, since turning a layer off
  * takes effect at once. The whole row toggles; hovering it points at its slice in the model.
  */
-export function LayersSpecimen({ m, set, focus, cap }: { m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; focus: (i: number | null) => void; cap: ButtonCap }) {
+export function LayersSpecimen({ m, set, look, focus }: Part & { focus: (i: number | null) => void }) {
   const [well, zoom] = useSpecimenZoom();
-  const face = useSpecimenFace(m, cap);
   const toggle = (i: number, on: boolean) => set({ on: m.on.map((v, j) => (j === i ? on : v)) });
   return (
     <>
       <p>The button is six layers stacked on top of each other. Turn a layer off to see what it adds.</p>
-      <div ref={well} className="ed-specimen"><div style={{ zoom }}><Button cap={cap} style={face}><Says /></Button></div></div>
+      <div ref={well} className="ed-specimen"><div style={{ zoom }}><ConfiguredButton m={m} look={look} /></div></div>
       <div className="ed-layers">
         {LAYERS.map((l, i) => (
           <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''}
@@ -330,53 +293,44 @@ export function LayersSpecimen({ m, set, focus, cap }: { m: ButtonXrayModel; set
 }
 
 /** Press, on the specimen: hold it and pull down to set how far it sinks; the model sinks with it. */
-export function PressSpecimen({ travel, setTravel, onPress, cap }: { travel: number; setTravel: (v: number) => void; onPress: (on: boolean) => void; cap: ButtonCap }) {
+export function PressSpecimen({ m, set, look, onPress }: Part & { onPress: (on: boolean) => void }) {
   const [well, zoom] = useSpecimenZoom();
-  const token = Number(P.self.travel);
+  const token = TRAVEL;
+  const travel = m.travel;
   const [held, setHeld] = React.useState(false);
-  const set = (v: number) => setTravel(Math.round(clamp(v, 0.5, 4) * 4) / 4);
+  const setTravel = (v: number) => set({ travel: Math.round(clamp(v, 0.5, 4) * 4) / 4 });
   const press = useHandle({
     zoom,
     hint: () => ({ gesture: 'press', title: 'Press depth', value: held ? `${travel}pt` : undefined, how: 'press and pull down' }),
     keyHint: (): Hint => ({ gesture: 'press', title: 'Press depth', value: `${travel}pt`, keys: [{ k: '↑↓', say: 'deeper' }] }),
-    start: () => { setHeld(true); onPress(true); return travel; }, move: (t0, _dx, dy) => set(t0 + dy / 6), end: () => { setHeld(false); onPress(false); },
-    step: (d) => set(travel - d * 0.25), axis: 'y',
+    start: () => { setHeld(true); onPress(true); return travel; }, move: (t0, _dx, dy) => setTravel(t0 + dy / 6), end: () => { setHeld(false); onPress(false); },
+    step: (d) => setTravel(travel - d * 0.25), axis: 'y',
   });
   return (
     <>
       <p>When you press the button it moves down a little, then springs back when you let go. Press it and pull down to choose how far it moves.</p>
       <div ref={well} className="ed-specimen">
         <div className="ed-press" style={{ zoom }} data-hint-anchor>
-          <Button cap={cap} style={{ ['--mu-r-button-self-travel' as string]: `${travel}px` }} {...press}><Says /></Button>
+          <ConfiguredButton m={m} look={look} {...press} />
           <div className="ed-gauge" aria-hidden data-held={held ? '' : undefined}>
             {[0, 1, 2, 3, 4].map((n) => <i key={n} style={{ top: n * 6 }} data-token={n === token ? '' : undefined} />)}
             <b style={{ top: travel * 6 }} />
           </div>
         </div>
       </div>
-      <div className="ed-readouts"><Readout label="sinks" value={`${travel}`} snap={travel === token ? { at: token, name: 'token' } : undefined} scrub={(d) => set(travel + d * 0.25)} /></div>
+      <div className="ed-readouts"><Readout label="sinks" value={`${travel}`} snap={travel === token ? { at: token, name: 'token' } : undefined} scrub={(d) => setTravel(travel + d * 0.25)} /></div>
     </>
   );
 }
 
 /** The card for a part of the button's x-ray. */
-export function ButtonSpecimenCard({ spot, m, set, cap, label, icon, travel, setTravel, setPressed, setFocusLayer }: {
-  spot: string; m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap; label: string; icon: IconName | 'none';
-  travel: number; setTravel: (v: number) => void; setPressed: (on: boolean) => void; setFocusLayer: (i: number | null) => void;
-}) {
-  return <Face.Provider value={{ label, icon }}><Part spot={spot} m={m} set={set} cap={cap} travel={travel} setTravel={setTravel} setPressed={setPressed} setFocusLayer={setFocusLayer} /></Face.Provider>;
-}
-
-function Part({ spot, m, set, cap, travel, setTravel, setPressed, setFocusLayer }: {
-  spot: string; m: ButtonXrayModel; set: (p: Partial<ButtonXrayModel>) => void; cap: ButtonCap;
-  travel: number; setTravel: (v: number) => void; setPressed: (on: boolean) => void; setFocusLayer: (i: number | null) => void;
-}) {
+export function ButtonSpecimenCard({ spot, m, set, look, setPressed, setFocusLayer }: Props) {
   switch (spot) {
-    case 'shape': return <ShapeSpecimen m={m} set={set} cap={cap} />;
-    case 'type': return <TypeSpecimen m={m} set={set} cap={cap} />;
-    case 'light': return <LightSpecimen m={m} set={set} cap={cap} />;
-    case 'shadow': return <ShadowSpecimen m={m} set={set} cap={cap} />;
-    case 'layers': return <LayersSpecimen m={m} set={set} focus={setFocusLayer} cap={cap} />;
-    default: return <PressSpecimen travel={travel} setTravel={setTravel} onPress={setPressed} cap={cap} />;
+    case 'shape': return <ShapeSpecimen m={m} set={set} look={look} />;
+    case 'type': return <TypeSpecimen m={m} set={set} look={look} />;
+    case 'light': return <LightSpecimen m={m} set={set} look={look} />;
+    case 'shadow': return <ShadowSpecimen m={m} set={set} look={look} />;
+    case 'layers': return <LayersSpecimen m={m} set={set} look={look} focus={setFocusLayer} />;
+    default: return <PressSpecimen m={m} set={set} look={look} onPress={setPressed} />;
   }
 }

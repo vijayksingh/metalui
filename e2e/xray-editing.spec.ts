@@ -42,15 +42,16 @@ test('shape: the primary button has one size; padding and corners are handles th
   // a primary button comes in one size, so its size is not a handle and does not scrub
   await expect(card.locator('.ed-edge.is-y')).toHaveCount(0);
   await expect(card.locator('.ed-readout[data-scrub]').filter({ hasText: 'size' })).toHaveCount(0);
-  const face = xray.locator('.xr-face').first();
-  const width0 = await face.evaluate((el) => parseFloat((el as HTMLElement).style.width));
+  // the model's face is the real button, set to the same config as the specimen
+  const face = xray.locator('.xr-segface.is-top .mu-button');
+  const width0 = (await face.boundingBox())!.width;
   // hover the button, then the right end: the hint tag says what it does, above the button
   await card.locator('.ed-box').hover();
   await card.locator('.ed-edge.is-x').hover();
   await expect(page.locator('.ed-tag')).toContainText('Padding');
   await drag(page, card.locator('.ed-edge.is-x'), 10, 0);
   await expect(readout(card, 'padding')).not.toHaveText('15');
-  expect(await face.evaluate((el) => parseFloat((el as HTMLElement).style.width))).toBeGreaterThan(width0);
+  expect((await face.boundingBox())!.width).toBeGreaterThan(width0);
   // the corner arc squares the corners, on the specimen and the model alike
   await card.locator('.ed-box').hover();
   await drag(page, card.locator('.ed-corner'), -40, -40);
@@ -67,9 +68,9 @@ test('readouts scrub: dragging one up steps its value, and the arrows do the sam
   await card.locator('.ed-readout').filter({ hasText: 'spacing' }).focus();
   await page.keyboard.press('ArrowDown');
   await expect(readout(card, 'spacing')).toHaveText('-0.010');
-  await expect(xray.locator('.xr-label')).toHaveCSS('font-weight', '500');
+  await expect(xray.locator('.xr-segface.is-top .mu-button')).toHaveCSS('font-weight', '500');
   await card.locator('.ed-readout').filter({ hasText: 'weight' }).click();
-  await expect(xray.locator('.xr-label')).toHaveCSS('font-weight', '600');
+  await expect(xray.locator('.xr-segface.is-top .mu-button')).toHaveCSS('font-weight', '600');
 });
 
 test('light, shadow and press are handled on the specimen and felt on the model', async ({ page }) => {

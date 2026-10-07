@@ -57,7 +57,7 @@ for (const colorway of COLORWAYS) {
 // Models stand on the x-ray's floor with their thickness, so the face sits above it. The copy has to come
 // down on that raised face, edge for edge, or the hand-over to the model reads as a last-moment snap.
 for (const [id, part, face] of [
-  ['button', 'button', '.xr-face'],
+  ['button', 'button', '.xr-segface.is-top'],
   ['toast', '> *', '.xr-face'],
   ['menu', '> *', '.xr-face'],
 ] as const) {

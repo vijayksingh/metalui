@@ -3,7 +3,7 @@ import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
+import { type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
 import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
 import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
@@ -12,6 +12,7 @@ import { FIELD_WIDTH, INITIAL as FIELD, PLACEHOLDER as FIELD_PLACEHOLDER, useFie
 import { INITIAL as LINK, useLinkCardLook, type LinkCardConfig } from './xray/LinkCardXray';
 import { INITIAL as SLIDER, SliderObject, type SliderConfig } from './xray/SliderXray';
 import { INITIAL as CHIP, ChipReal, useChipLook, type ChipConfig } from './xray/ChipXray';
+import { ConfiguredButton, INITIAL as BUTTON, useButtonLook, type ButtonConfig } from './xray/ButtonXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -113,6 +114,12 @@ function TableChip({ config = CHIP, open, answered }: { config?: ChipConfig; ope
   return <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) open(); }}><ChipReal m={config} look={look} onAnswer={answered} /></span>;
 }
 
+/** The button on the table: the real button set to its config, which its x-ray takes over and hands back. */
+function TableButton({ config = BUTTON, open }: { config?: ButtonConfig; open: () => void }) {
+  const look = useButtonLook(config);
+  return <ConfiguredButton m={config} look={look} onClick={open} />;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -156,9 +163,9 @@ const ITEMS: Item[] = [
     node: ({ openXray }) => <Button cap="link" aria-label="MetalUI: open the x-ray" aria-haspopup="dialog" style={{ borderRadius: '999px', cursor: 'zoom-in' }} onClick={() => openXray('wordmark')}><Wordmark size={21} /></Button>,
   },
   {
-    // the button, beside the brand: click it and it flies onto its x-ray, the reference one
+    // the button, beside the brand: click it and it flies onto its x-ray, which lands on the button itself
     id: 'button', table: ['44%', '32%'], space: ['60%', '42%', -160, -8], dur: '22s', drift: ['30px', '-18px'], live: true, zoom: 1.4,
-    node: ({ openXray }) => <Button cap="primary" onClick={() => openXray('button')}>{BUTTON_LABEL}</Button>,
+    node: ({ openXray, seeds }) => <TableButton config={seeds.button} open={() => openXray('button')} />,
   },
   {
     id: 'chip', table: ['4%', '72%'], space: ['11%', '55%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,

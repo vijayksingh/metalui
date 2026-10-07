@@ -1,12 +1,12 @@
 import * as React from 'react';
 import type { ButtonCap } from '@unlocalhosted/metalui';
 import type { IconName } from '@unlocalhosted/metalui/icons';
-import type { ButtonXrayModel } from '../../ui/xray/ButtonXray';
+import type { ButtonConfig } from '../../ui/xray/ButtonXray';
 import { useRecipeLayers } from '../../ui/xray/kit';
 
 interface Props {
-  model: ButtonXrayModel;
-  setModel: (patch: Partial<ButtonXrayModel>) => void;
+  model: ButtonConfig;
+  setModel: (patch: Partial<ButtonConfig>) => void;
   content: { label: string; cap: ButtonCap; icon: IconName | 'none'; disabled: boolean };
   setContent: (key: 'label' | 'cap' | 'icon' | 'disabled', value: string | boolean) => void;
   travel: number;
@@ -99,12 +99,11 @@ export function ButtonSmartControls({ model: m, setModel, content, setContent, t
           <div className="bw-readouts"><Meter label="Direction" value={`${m.lightDeg}°`} /><Meter label="Strength" value={`${Math.round(m.lightK * 100)}%`} /></div>
         </section>
         <section className="bw-instrument bw-type" aria-label="Typography instrument">
-          <header><span className="eng">03 / Type</span><p>Shape text inside cap. Compare optical center.</p></header>
-          <div className="bw-type-sample" style={{ fontSize: m.size * 1.55, fontWeight: m.weight, letterSpacing: `${m.track}em`, transform: m.optical ? 'translateY(-2px)' : undefined }}>{content.label || 'Button'}</div>
-          <div className="bw-adjust-row"><span>Size</span><button type="button" aria-label="Decrease type size" onClick={() => setModel({ size: clamp(m.size - .5, 10, 16) })}>−</button><strong>{m.size}px</strong><button type="button" aria-label="Increase type size" onClick={() => setModel({ size: clamp(m.size + .5, 10, 16) })}>+</button></div>
+          <header><span className="eng">03 / Type</span><p>Shape the text inside the cap.</p></header>
+          <div className="bw-type-sample" style={{ fontSize: m.fontSize * 1.55, fontWeight: m.weight, letterSpacing: `${m.track}em` }}>{content.label || 'Button'}</div>
+          <div className="bw-adjust-row"><span>Size</span><button type="button" aria-label="Decrease type size" onClick={() => setModel({ fontSize: clamp(m.fontSize - .5, 10, 16) })}>−</button><strong>{m.fontSize}px</strong><button type="button" aria-label="Increase type size" onClick={() => setModel({ fontSize: clamp(m.fontSize + .5, 10, 16) })}>+</button></div>
           <div className="bw-adjust-row"><span>Weight</span>{[400, 500, 600].map((weight) => <button key={weight} type="button" aria-pressed={m.weight === weight} onClick={() => setModel({ weight })}>{weight}</button>)}</div>
           <div className="bw-adjust-row"><span>Tracking</span><button type="button" aria-label="Decrease tracking" onClick={() => setModel({ track: clamp(round(m.track - .005, .005), -.03, .06) })}>−</button><strong>{m.track.toFixed(3)}em</strong><button type="button" aria-label="Increase tracking" onClick={() => setModel({ track: clamp(round(m.track + .005, .005), -.03, .06) })}>+</button></div>
-          <label className="bw-small-switch"><input type="checkbox" checked={m.optical} onChange={(event) => setModel({ optical: event.target.checked })} /><span>Center on letters</span></label>
         </section>
         <section className="bw-instrument bw-shadow" aria-label="Elevation instrument">
           <header><span className="eng">04 / Elevation</span><p>Pull cap away from floor. Shadow softens with distance.</p></header>

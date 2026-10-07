@@ -1,0 +1,8 @@
+/* x-ray, button: the cap's top face is the real button, standing on a wall of slices. Flown in,
+ * every part lands on one plane; the wall then spreads on the object spring while the cap rises
+ * on the release spring, the spring its press rides. */
+.button-xray .xr-slice { transition: transform var(--spring-object-d) var(--spring-object), opacity .3s; }
+.button-xray .xr-segface.is-top .mu-button { cursor: pointer; }
+.button-xray .xr-baseline { right: auto; }
+html.rm .button-xray .xr-slice { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .button-xray .xr-slice { transition: none !important; } }
