@@ -1,4 +1,16 @@
 /* The toolbar x-ray's specimens: handles drawn on the real graphite strip. */
+/* the object: the real toolbar set to a config through the recipe's variables on this wrapper */
+.xr-tb-vars { display: inline-flex; }
+/* the model's planes are the real toolbar, and a copy of it flies: neither plays the strip's entrance
+   (it would land translated, and a flown copy would fade in mid-air) */
+.xr-segface .mu-toolbar, .xr-flyer .mu-toolbar { animation: none; }
+/* the strip plane: the dark glass and its groove, the caps gone */
+.xr-segface.is-tbstrip .mu-tool { visibility: hidden; }
+/* the caps' planes: the strip turned off, the groove gone; one holds the raised caps, one the pressed cap */
+.xr-segface.is-tbtools .mu-toolbar, .xr-segface.is-tbdown .mu-toolbar { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.xr-segface.is-tbtools .mu-toolbar-sep, .xr-segface.is-tbdown .mu-toolbar-sep { visibility: hidden; }
+.xr-segface.is-tbtools .mu-tool[data-pressed] { visibility: hidden; }
+.xr-segface.is-tbdown .mu-tool:not([data-pressed]) { visibility: hidden; }
 .ed-tb { position: relative; display: inline-flex; }
 .ed-tb .ed-overlay { z-index: 2; }
 /* the strip's right end: a hairline inside its real edge, the grab strip just over it */

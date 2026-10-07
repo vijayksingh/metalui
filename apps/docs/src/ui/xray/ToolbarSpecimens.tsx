@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Row, Switch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
+import { useColorway, type Colorway } from '../../app/colorway';
 import { scalePx, type LayerDef } from './kit';
 import { CornerArc, Outline, Readout, STEP_AT, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './toolbar-specimens.css';
@@ -19,12 +20,13 @@ import './toolbar-specimens.css';
  *   Shadow   the strip itself: drag it up to float it higher       (tunable, 1 = the recipe)
  *   Layers   one row and switch per layer; hover lights it on the bench
  *
- * This file owns the model and the recipe reads, and ToolbarXray imports them from here, so
- * nothing here reads ToolbarXray while it loads (no circular import).
+ * This file owns the config, its look and the object (the real toolbar set to a config), and the
+ * recipe reads. ToolbarXray and the floating table import them from here, so nothing here reads
+ * ToolbarXray while it loads (no circular import).
  * ───────────────────────────────────────────────────────── */
 
 type RL = { part: string; prop: string; value: string; state?: string }[];
-type Props0 = { self: { pad: number; gap: number; radius: number }; tool: { size: number; radius: number; glyph: number; ink: string }; led: { size: number; inset: number }; sep: { width: number; height: number; margin: number } };
+type Props0 = { self: { pad: number; gap: number; radius: number }; tool: { size: number; radius: number; glyph: number; ink: string; press: number }; led: { size: number; inset: number }; sep: { width: number; height: number; margin: number } };
 export const RECIPE = tokens.recipes.toolbar as unknown as { props: Props0; layers: RL };
 export const P = RECIPE.props;
 export const pick = (part: string, prop: string, state?: string) => RECIPE.layers.filter((l) => l.part === part && l.prop === prop && (l.state ?? '') === (state ?? '')).map((l) => l.value);
@@ -45,8 +47,20 @@ export const LAYERS: LayerDef[] = [
   { name: 'Far shadow', why: 'A very big, very soft shadow. Together the three shadows say the toolbar floats higher than anything else on the page.' },
 ];
 
-export interface Model { active: string; pad: number; gap: number; follow: boolean; radius: number; lift: number; sep: boolean; sepMargin: number; on: boolean[] }
-export const INITIAL: Model = { active: 'select', pad: P.self.pad, gap: P.self.gap, follow: true, radius: P.self.radius, lift: 1, sep: true, sepMargin: P.sep.margin, on: LAYERS.map(() => true) };
+/** Everything a toolbar is set to: its real props first (the strip, which tool is pressed, whether the
+ *  groove is there), then what the x-ray lets you tune. One object, handed from the table to the x-ray
+ *  and back; the code for it is read off it. */
+export interface ToolbarConfig {
+  /** props: the graphite strip (the frost strip reads the colorway's frost tokens, not this recipe, so
+   *  nothing tuned here would reach it), the pressed tool, and the groove between the groups */
+  variant: 'graphite'; active: string; sep: boolean;
+  /** recipe values: --mu-r-toolbar-*; the outer corners follow the caps unless you take hold of them */
+  pad: number; gap: number; follow: boolean; radius: number; sepMargin: number;
+  /** the strip's shadow stack, as a height above the page and which layers are on */
+  lift: number; on: boolean[];
+}
+export type Model = ToolbarConfig;
+export const INITIAL: ToolbarConfig = { variant: 'graphite', active: 'select', sep: true, pad: P.self.pad, gap: P.self.gap, follow: true, radius: P.self.radius, sepMargin: P.sep.margin, lift: 1, on: LAYERS.map(() => true) };
 
 /** Outer corner = the cap's corner + the space around it; the recipe's own gap between the two curves keeps it at its token. */
 const FOLLOW = P.self.radius - P.tool.radius - P.self.pad;
@@ -55,9 +69,49 @@ const maxRadius = (m: Model) => (P.tool.size + m.pad * 2) / 2;
 /** How far each tunable reaches (the model's range, not a token). */
 const PAD = [2, 16] as const, GAP = [0, 16] as const, MARGIN = [0, 10] as const, LIFT = [0, 3] as const;
 
-/** The strip's shadow stack as the model has it: layers switched on, the two far shadows spread by the lift. */
+/** The strip's shadow layers as the model has them: switched on or not, the two far shadows spread by the lift. */
+export const stripShadows = (m: Model) => STRIP_SH.map((v, i) => (m.on[i + 1] ? (i >= 5 ? scalePx(v, m.lift) : v) : null));
+/** The strip's shadow stack as the model has it. */
 export function stripShadow(m: Model) {
-  return STRIP_SH.map((v, i) => (m.on[i + 1] ? (i >= 5 ? scalePx(v, m.lift) : v) : null)).filter(Boolean).join(', ') || 'none';
+  return stripShadows(m).filter(Boolean).join(', ') || 'none';
+}
+const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
+
+/** What a config looks like: the strip's fill and shadows for the model's hand-built parts, and the variables
+ *  that set the real toolbar to it. Only what differs from the recipe is set, so a default config is the
+ *  toolbar exactly as it ships, and the variables are the overrides its code needs. The graphite strip is the
+ *  same in both colorways, so the colorway only rides along. */
+export function toolbarLook(m: ToolbarConfig, colorway: Colorway) {
+  const look = { colorway, fill: m.on[0] ? STRIP_BG : 'transparent', shadows: stripShadows(m), shadow: stripShadow(m), radius: outerRadius(m) };
+  const style: Record<string, string> = {};
+  if (m.pad !== INITIAL.pad) style['--mu-r-toolbar-self-pad'] = `${m.pad}px`;
+  if (m.gap !== INITIAL.gap) style['--mu-r-toolbar-self-gap'] = `${m.gap}px`;
+  if (look.radius !== P.self.radius) style['--mu-r-toolbar-self-radius'] = `${look.radius}px`;
+  if (m.sep && m.sepMargin !== INITIAL.sepMargin) style['--mu-r-toolbar-sep-margin'] = `${m.sepMargin}px`;
+  // the fill changes with its own layer; the shadow stack with the height or any of its layers
+  if (!m.on[0]) style['--mu-r-toolbar-self-background'] = look.fill;
+  if (m.lift !== INITIAL.lift || !same(m.on.slice(1), INITIAL.on.slice(1))) style['--mu-r-toolbar-self-shadow'] = look.shadow;
+  return { ...look, style: style as React.CSSProperties };
+}
+export function useToolbarLook(m: ToolbarConfig) {
+  const { colorway } = useColorway();
+  return React.useMemo(() => toolbarLook(m, colorway), [m, colorway]);
+}
+export type Look = ReturnType<typeof useToolbarLook>;
+
+/** The toolbar set to a config: the object on the table, the model's faces, the specimen in every card.
+ *  Its config reaches it the way the library supports from a host: the recipe's variables on a wrapper. */
+export function ToolbarObject({ config: m, onActive, label = 'Tools' }: { config: ToolbarConfig; onActive?: (id: string) => void; label?: string }) {
+  const { style } = useToolbarLook(m);
+  return (
+    <div className="xr-tb-vars" style={style}>
+      <Toolbar variant={m.variant} aria-label={label}>
+        {TOOLS.map((t, i) => (t
+          ? <ToolButton key={t.id} label={t.label} icon={<Icon name={t.id} size={P.tool.glyph} />} pressed={m.active === t.id} onPressedChange={(p) => p && onActive?.(t.id)} />
+          : m.sep ? <ToolbarSeparator key={i} /> : null))}
+      </Toolbar>
+    </div>
+  );
 }
 
 export type Spot = 'surface' | 'press' | 'well' | 'shape' | 'shadow' | 'layers';
@@ -70,26 +124,9 @@ const keys = (k: string): Hint['keys'] => [{ k, say: 'change' }, { k: '⇧', say
 
 /* ───────────────────────── the specimen ───────────────────────── */
 
-function vars(m: Model): React.CSSProperties {
-  return {
-    ['--mu-r-toolbar-self-pad' as string]: `${m.pad}px`,
-    ['--mu-r-toolbar-self-gap' as string]: `${m.gap}px`,
-    ['--mu-r-toolbar-self-radius' as string]: `${outerRadius(m)}px`,
-    ['--mu-r-toolbar-self-background' as string]: m.on[0] ? STRIP_BG : 'transparent',
-    ['--mu-r-toolbar-self-shadow' as string]: stripShadow(m),
-    ['--mu-r-toolbar-sep-margin' as string]: `${m.sepMargin}px`,
-  };
-}
-
-/** The real toolbar: the graphite strip, its latched tools and the groove. */
+/** The real toolbar in a card, set to the config: the graphite strip, its latched tools and the groove. */
 function Strip({ m, set }: { m: Model; set: Props['set'] }) {
-  return (
-    <Toolbar variant="graphite" aria-label="Tools">
-      {TOOLS.map((t, i) => (t
-        ? <ToolButton key={t.id} label={t.label} icon={<Icon name={t.id} size={P.tool.glyph} />} pressed={m.active === t.id} onPressedChange={(p) => p && set({ active: t.id })} />
-        : m.sep ? <ToolbarSeparator key={i} /> : null))}
-    </Toolbar>
-  );
+  return <ToolbarObject config={m} onActive={(active) => set({ active })} />;
 }
 
 type Rect = { x: number; y: number; w: number; h: number };
@@ -160,7 +197,7 @@ function StripCard({ m, set }: Props) {
   return <>
     <p>The strip is a piece of dark glass that holds the tools, and it stays dark in light and dark mode. Drag its right end to change the space around the tools.</p>
     <Well well={well} zoom={zoom}>
-      <div ref={box} className="ed-box ed-tb" style={vars(m)} data-hint-anchor data-live={live ? 'pad' : undefined} data-peek={peek ? '' : undefined} data-shown="right">
+      <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={live ? 'pad' : undefined} data-peek={peek ? '' : undefined} data-shown="right">
         <Strip m={m} set={set} />
         <div className="ed-overlay" style={{ left: g.strip.x, top: g.strip.y, width: g.strip.w, height: g.strip.h, right: 'auto', bottom: 'auto' }}>
           <Outline W={g.strip.w} h={g.strip.h} r={outerRadius(m)} on={lit ? ['right'] : []} only={['right']} segs={segs} />
@@ -215,7 +252,7 @@ function ToolsCard({ m, set }: Props) {
   return <>
     <p>Each tool is a small dark cap, and the one you are using stays down with a green light. Drag the pressed tool onto another one to pick it, or drag the gap between two tools to space them out.</p>
     <Well well={well} zoom={zoom}>
-      <div ref={box} className="ed-box ed-tb" style={vars(m)} data-hint-anchor data-live={active ?? undefined} data-peek={peek ?? undefined}>
+      <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={active ?? undefined} data-peek={peek ?? undefined}>
         <Strip m={m} set={set} />
         <div className="ed-overlay">
           {leanAt && <i className="ed-tb-lean" style={{ left: leanAt.x, top: leanAt.y, width: leanAt.w, height: leanAt.h }} aria-hidden />}
@@ -256,7 +293,7 @@ function GrooveCard({ m, set }: Props) {
   return <>
     <p>A thin groove cut into the strip splits the tools into groups: tools that make things, and a tool that tidies. Drag the groove sideways to change the space beside it, or switch it off.</p>
     <Well well={well} zoom={zoom}>
-      <div ref={box} className="ed-box ed-tb" style={vars(m)} data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
+      <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
         <Strip m={m} set={set} />
         <div className="ed-overlay">
           {m.sep && <span ref={el} className="ed-tb-groove" data-on={live || peek ? '' : undefined} style={frame} role="slider" tabIndex={0} aria-label="Space beside the groove" aria-valuenow={m.sepMargin} aria-valuemin={MARGIN[0]} aria-valuemax={MARGIN[1]} {...handle} />}
@@ -292,7 +329,7 @@ function ShapeCard({ m, set }: Props) {
   return <>
     <p>The outer corners wrap the caps with the same gap all round, so they follow the space around the tools. Drag the corner to round it yourself, or let it follow the caps again.</p>
     <Well well={well} zoom={zoom}>
-      <div ref={box} className="ed-box ed-tb" style={vars(m)} data-hint-anchor data-live={live ? 'corners' : undefined} data-peek={peek ? '' : undefined} data-shown="corner">
+      <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={live ? 'corners' : undefined} data-peek={peek ? '' : undefined} data-shown="corner">
         <Strip m={m} set={set} />
         <div className="ed-overlay" style={{ left: g.strip.x, top: g.strip.y, width: g.strip.w, height: g.strip.h, right: 'auto', bottom: 'auto' }}>
           <span ref={el} className="ed-corner" style={{ width: Math.max(r, 6) + 3, height: Math.max(r, 6) + 3 }} role="slider" tabIndex={0} aria-label="Outer corners" aria-valuenow={r} aria-valuemin={0} aria-valuemax={maxRadius(m)} {...handle}>
@@ -327,7 +364,7 @@ function ShadowCard({ m, set }: Props) {
   return <>
     <p>The toolbar floats higher than anything else on the page, so it casts three shadows: a small one where it would touch, a bigger one, and a very soft one. Drag the strip up to lift it higher.</p>
     <Well well={well} zoom={zoom}>
-      <div ref={box} className="ed-box ed-tb" style={{ ...vars(m), translate: `0 ${-(m.lift - 1) * 3}px` }} data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
+      <div ref={box} className="ed-box ed-tb" style={{ translate: `0 ${-(m.lift - 1) * 3}px` }} data-hint-anchor data-live={live ? '' : undefined} data-peek={peek ? '' : undefined}>
         <Strip m={m} set={set} />
         <div className="ed-overlay">
           <span ref={el} className="ed-tb-lift" data-on={live || peek ? '' : undefined} style={{ left: g.strip.x, top: g.strip.y, width: g.strip.w, height: g.strip.h, borderRadius: outerRadius(m) }}
@@ -346,7 +383,7 @@ function LayersCard({ m, set, focus }: Props) {
   const toggle = (i: number, on: boolean) => set({ on: m.on.map((x, j) => (j === i ? on : x)) });
   return <>
     <p>The strip is made of eight layers; the caps on it have their own, which the icon button shows. Turn a layer off to see what it adds.</p>
-    <Well well={well} zoom={zoom}><div className="ed-tb" style={vars(m)}><Strip m={m} set={set} /></div></Well>
+    <Well well={well} zoom={zoom}><div className="ed-tb"><Strip m={m} set={set} /></div></Well>
     <div className="ed-layers">{LAYERS.map((l, i) => (
       <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''} onPointerEnter={() => focus(l.name)} onPointerLeave={() => focus(null)} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(i, !m.on[i]); }}>
         <Row.Text>{l.name}</Row.Text>

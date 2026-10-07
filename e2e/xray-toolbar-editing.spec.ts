@@ -8,8 +8,11 @@ const SPOTS = ['Strip', 'Tools', 'Groove', 'Shape', 'Shadow', 'Layers'];
 const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-label^="${name}"]`).click();
 const value = (card: Locator, name: string) => card.locator('.ed-readout').filter({ hasText: name }).locator('.ed-roll > span:not(.is-out)');
 const num = async (l: Locator) => Number(await l.textContent());
-const benchStrip = (xray: Locator) => xray.locator('.xr-iso > .xr-thumb').first().locator('> .xr-face');
-const style = (l: Locator, prop: string) => l.evaluate((el, p) => (el as HTMLElement).style.getPropertyValue(p), prop);
+// the bench's body is the real toolbar: its strip plane, and the groove on it
+const benchStrip = (xray: Locator) => xray.locator('.xr-iso .xr-segface.is-tbstrip .mu-toolbar');
+const benchGroove = (xray: Locator) => xray.locator('.xr-iso .xr-segface.is-tbstrip .mu-toolbar-sep');
+const style = (l: Locator, prop: string) => l.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
+const left = (l: Locator) => l.evaluate((el) => el.getBoundingClientRect().left);
 
 async function drag(page: Page, target: Locator, dx: number, dy: number) {
   // the card can sit below the fold: bring the handle into view before taking hold of it
@@ -104,16 +107,16 @@ test('strip, gap, groove, corners and lift handles change the specimen and the b
 
   await part(xray, 'Groove');
   const m0 = await num(value(card, 'Space beside the groove'));
-  const groove0 = await style(xray.locator('[data-part="groove"]'), 'left');
+  const groove0 = await left(benchGroove(xray));
   const w2 = await width();
   await card.locator('.ed-tb').hover();
   await drag(page, card.getByRole('slider', { name: 'Space beside the groove' }), 14, 0);
   await expect(value(card, 'Space beside the groove')).not.toHaveText(String(m0));
   expect(await width()).toBeGreaterThan(w2);
-  expect(await style(xray.locator('[data-part="groove"]'), 'left')).not.toBe(groove0);
+  expect(await left(benchGroove(xray))).not.toBe(groove0);
   await card.getByRole('switch', { name: 'Groove' }).click();
   await expect(card.locator('.mu-toolbar-sep')).toHaveCount(0);
-  await expect(xray.locator('[data-part="groove"]')).toHaveCount(0);
+  await expect(benchGroove(xray)).toHaveCount(0);
   await card.getByRole('switch', { name: 'Groove' }).click();
   await expect(card.locator('.mu-toolbar-sep')).toHaveCount(1);
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
@@ -13,6 +13,7 @@ import { INITIAL as LINK, useLinkCardLook, type LinkCardConfig } from './xray/Li
 import { INITIAL as SLIDER, SliderObject, type SliderConfig } from './xray/SliderXray';
 import { INITIAL as CHIP, ChipReal, useChipLook, type ChipConfig } from './xray/ChipXray';
 import { ConfiguredButton, INITIAL as BUTTON, useButtonLook, type ButtonConfig } from './xray/ButtonXray';
+import { INITIAL as TOOLBAR, ToolbarObject, type ToolbarConfig } from './xray/ToolbarXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -100,6 +101,17 @@ function TableField({ config = FIELD, onConfig, open }: { config?: FieldConfig; 
 function TableLinkCard({ config = LINK, open }: { config?: LinkCardConfig; open: () => void }) {
   const { style } = useLinkCardLook(config);
   return <div onClickCapture={(e) => { e.preventDefault(); open(); }}><LinkCard href={config.href} preview={config.preview} style={style} /></div>;
+}
+
+/** The toolbar on the table: the real graphite toolbar set to its config, which its x-ray takes over and hands back.
+ *  A click on a cap presses that tool (the press lands first, so the x-ray starts there) and opens the icon
+ *  button's x-ray, as before; a click on the strip opens the toolbar's. */
+function TableToolbar({ config = TOOLBAR, onConfig, open }: { config?: ToolbarConfig; onConfig: (c: ToolbarConfig) => void; open: (kind: 'toolbar' | 'icon-button') => void }) {
+  return (
+    <div onClick={(e) => open((e.target as HTMLElement).closest('.mu-tool') ? 'icon-button' : 'toolbar')}>
+      <ToolbarObject config={config} onActive={(active) => onConfig({ ...config, active })} />
+    </div>
+  );
 }
 
 /** The keycap on the table: the real keycap set to its config, which its x-ray takes over and hands back. */
@@ -210,18 +222,8 @@ const ITEMS: Item[] = [
   { id: 'folder', table: ['39.3%', '65.7%'], space: ['31%', '53%', -200, 8], dur: '37s', drift: ['14px', '-12px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('folder')}><FolderStill /></div> },
   {
     id: 'toolbar', table: ['4%', '88%'], space: ['12%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
-    // a tool cap opens the icon button's x-ray; the strip opens the toolbar's
-    node: ({ openXray }) => (
-      <div onClick={(e) => { openXray((e.target as HTMLElement).closest('.mu-tool') ? 'icon-button' : 'toolbar'); }}>
-      <Toolbar aria-label="Tools">
-        <ToolButton label="Select" icon={<Icon name="select" size={16} />} pressed />
-        <ToolButton label="Note" icon={<Icon name="note" size={16} />} />
-        <ToolButton label="Draw" icon={<Icon name="draw" size={16} />} />
-        <ToolbarSeparator />
-        <ToolButton label="Tidy" icon={<Icon name="tidy" size={16} />} />
-      </Toolbar>
-      </div>
-    ),
+    // a tool cap presses that tool and opens the icon button's x-ray; the strip opens the toolbar's, which starts on the pressed tool
+    node: ({ openXray, seeds, onSeed }) => <TableToolbar config={seeds.toolbar} onConfig={(c) => onSeed('toolbar', c)} open={openXray} />,
   },
 ];
 
