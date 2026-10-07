@@ -1200,6 +1200,27 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A slider wound into a ring: a value you turn. The track is one length that carries a curl from 0 (a straight bar) to 1 (a ring of sweep degrees, its end at twelve o'clock); turning anticlockwise lowers the value, clockwise raises it. Marks sit across the track and day ticks outside it at fractions of its length, so they ride the curl. The knob is the slider's knob; the centre holds a readout. Drag around (or along), wheel, or the slider keys. Curling and uncurling run on the surface spring (no overshoot), the knob on the part spring when it jumps. Reduce Motion: the curl resolves without travel. (Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks)
+    public static let dial = MetalObjectRecipe(
+        name: "dial",
+        layers: [
+
+        ],
+        props: [
+            "self.length": .number(200.0),
+            "self.sweep": .text("320deg"),
+            "self.track": .number(10.0),
+            "self.knob": .number(22.0),
+            "self.tick-out": .number(4.0),
+            "self.tick": .number(5.0),
+            "track.color": .perColorway(bone: "#E6E5E1", graphite: "#151516"),
+            "track.edge": .perColorway(bone: "rgba(60,55,40,.14)", graphite: "rgba(0,0,0,.6)"),
+            "fill.color": .perColorway(bone: "#34A86A", graphite: "#3CB273"),
+            "mark.color": .perColorway(bone: "rgba(40,38,32,.22)", graphite: "rgba(255,255,255,.14)"),
+            "tick.color": .perColorway(bone: "rgba(40,38,32,.3)", graphite: "rgba(255,255,255,.22)"),
+        ]
+    )
+
     /// A place with nothing in it yet: a glyph engraved in a sunk well, what would be here (title type), a line saying how to start (body type, ink2), and the one action that starts it. It arrives when a place empties, rising one nest from below on the settle spring (T9), so it never snaps in; content arriving replaces it. Compact, it is one quiet line and the action, for small places. Reduce Motion: it fades in without travel. (the well (recipe well field); the icon set; Transitions T9)
     public static let emptyState = MetalObjectRecipe(
         name: "empty-state",

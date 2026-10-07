@@ -1209,6 +1209,13 @@
   /* island: Button graphite cap; Led; SwapText (the swap drum); toast plain-ms */
   --mu-r-island-self-gap: 8px;
   --mu-r-island-self-title-max: 220px;
+  /* dial: Slider (track, fill, knob, marks, ticks) wound on a circle; the scrubber's day ticks */
+  --mu-r-dial-self-length: 200px;
+  --mu-r-dial-self-sweep: 320deg;
+  --mu-r-dial-self-track: 10px;
+  --mu-r-dial-self-knob: 22px;
+  --mu-r-dial-self-tick-out: 4px;
+  --mu-r-dial-self-tick: 5px;
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;
@@ -2216,6 +2223,11 @@
   --mu-r-avatar-ring-ink: #F6F5F2;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(40,34,24,.28);
   --mu-r-table-select-tint: rgba(63,185,122,.08);
+  --mu-r-dial-track-color: #E6E5E1;
+  --mu-r-dial-track-edge: rgba(60,55,40,.14);
+  --mu-r-dial-fill-color: #34A86A;
+  --mu-r-dial-mark-color: rgba(40,38,32,.22);
+  --mu-r-dial-tick-color: rgba(40,38,32,.3);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2711,6 +2723,11 @@
   --mu-r-avatar-ring-ink: #252527;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
   --mu-r-table-select-tint: rgba(63,185,122,.12);
+  --mu-r-dial-track-color: #151516;
+  --mu-r-dial-track-edge: rgba(0,0,0,.6);
+  --mu-r-dial-fill-color: #3CB273;
+  --mu-r-dial-mark-color: rgba(255,255,255,.14);
+  --mu-r-dial-tick-color: rgba(255,255,255,.22);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -3207,6 +3224,11 @@
     --mu-r-avatar-ring-ink: #252527;
     --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
     --mu-r-table-select-tint: rgba(63,185,122,.12);
+    --mu-r-dial-track-color: #151516;
+    --mu-r-dial-track-edge: rgba(0,0,0,.6);
+    --mu-r-dial-fill-color: #3CB273;
+    --mu-r-dial-mark-color: rgba(255,255,255,.14);
+    --mu-r-dial-tick-color: rgba(255,255,255,.22);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

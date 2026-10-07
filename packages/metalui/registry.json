@@ -678,6 +678,25 @@
       "docs": "Agent guide: https://metalui.dev/r/day.md. SwiftUI: MetalDay, MetalDayTile in the MetalUI Swift package."
     },
     {
+      "name": "dial",
+      "type": "registry:ui",
+      "title": "Dial",
+      "description": "A slider wound into a ring: one track that carries a curl from a straight bar to a ring, its max end level at twelve o'clock, so turning anticlockwise lowers the value. Marks and ticks ride the track; the slider's knob turns round it; the centre holds a readout. Drag round or along, wheel, or the slider keys. Winding runs on the surface spring.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/dial/dial.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/dial/dial.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/dial.md. SwiftUI: not yet (planned: MetalDial)."
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -2159,11 +2178,10 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/dial.json",
         "https://metalui.dev/r/glyph.json",
         "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/label.json",
-        "https://metalui.dev/r/popover.json",
-        "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/slider.json",
         "https://metalui.dev/r/tokens.json"
       ],

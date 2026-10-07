@@ -587,6 +587,16 @@
   --color-table-select-tint: var(--mu-r-table-select-tint);
   --spacing-island-gap: var(--mu-r-island-self-gap);
   --spacing-island-title-max: var(--mu-r-island-self-title-max);
+  --spacing-dial-length: var(--mu-r-dial-self-length);
+  --spacing-dial-track: var(--mu-r-dial-self-track);
+  --spacing-dial-knob: var(--mu-r-dial-self-knob);
+  --spacing-dial-tick-out: var(--mu-r-dial-self-tick-out);
+  --spacing-dial-tick: var(--mu-r-dial-self-tick);
+  --color-dial-track-color: var(--mu-r-dial-track-color);
+  --color-dial-track-edge: var(--mu-r-dial-track-edge);
+  --color-dial-fill-color: var(--mu-r-dial-fill-color);
+  --color-dial-mark-color: var(--mu-r-dial-mark-color);
+  --color-dial-tick-color: var(--mu-r-dial-tick-color);
   --spacing-empty-state-gap: var(--mu-r-empty-state-self-gap);
   --spacing-empty-state-action-gap: var(--mu-r-empty-state-self-action-gap);
   --spacing-empty-state-max-width: var(--mu-r-empty-state-self-max-width);

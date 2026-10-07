@@ -359,6 +359,23 @@
       "agent": "https://metalui.dev/r/day.md"
     },
     {
+      "name": "dial",
+      "title": "Dial",
+      "status": "alpha",
+      "description": "A slider wound into a ring: one track that carries a curl from a straight bar to a ring, its max end level at twelve o'clock, so turning anticlockwise lowers the value. Marks and ticks ride the track; the slider's knob turns round it; the centre holds a readout. Drag round or along, wheel, or the slider keys. Winding runs on the surface spring.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Dial",
+        "base": "none (a div with a role=slider knob)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "planned": "MetalDial"
+      },
+      "registry": "https://metalui.dev/r/dial.json",
+      "agent": "https://metalui.dev/r/dial.md"
+    },
+    {
       "name": "dialog",
       "title": "Dialog",
       "status": "alpha",
