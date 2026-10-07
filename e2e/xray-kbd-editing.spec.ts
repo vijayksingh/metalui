@@ -17,7 +17,10 @@ async function open(page: Page, colorway: string) {
   await xray.getByRole('button', { name: 'X-ray' }).click();
   return xray;
 }
-const inline = (target: Locator, property: string) => target.evaluate((el, key) => (el as HTMLElement).style.getPropertyValue(key), property);
+// the keycap is the real one everywhere (the card and the model's face), so what it looks like is what it computes to
+const inline = (target: Locator, property: string) => target.evaluate((el, key) => getComputedStyle(el).getPropertyValue(key), property);
+const modelKey = (xray: Locator) => xray.locator('.xr-segface.is-top .mu-kbd');
+const modelFace = (xray: Locator) => xray.locator('.xr-segface.is-top');
 
 for (const colorway of COLORWAYS) {
   test(`each Kbd card holds real key and no dials in ${colorway}`, async ({ page }) => {
@@ -44,17 +47,20 @@ test('shape handles change the key and bench; size leans then snaps to a real op
   expect(options).toContain(after);
   expect(after).not.toBe(before);
   await expect(card.locator('.mu-kbd')).toHaveCSS('height', `${after}px`);
+  await expect(modelKey(xray)).toHaveAttribute('data-size', after === Math.max(...options) ? 'default' : 'small');
   await expect(xray.locator('.xr-dims text').first()).toHaveText(`${after}`);
   const key = card.locator('.mu-kbd');
-  const padBefore = await inline(key, 'padding-inline');
-  const benchBefore = await inline(xray.locator('.xr-face').first(), 'width');
+  const padBefore = await inline(key, 'padding-left');
+  const benchBefore = await inline(modelKey(xray), 'padding-left');
   await drag(page, card.getByRole('slider', { name: 'Space beside the glyph' }), 22, 0);
-  expect(await inline(key, 'padding-inline')).not.toBe(padBefore);
-  expect(await inline(xray.locator('.xr-face').first(), 'width')).not.toBe(benchBefore);
-  const radiusBefore = await inline(key, 'border-radius');
+  expect(await inline(key, 'padding-left')).not.toBe(padBefore);
+  expect(await inline(modelKey(xray), 'padding-left')).not.toBe(benchBefore);
+  const radiusBefore = await inline(key, 'border-top-left-radius');
+  const benchRadius = await inline(modelKey(xray), 'border-top-left-radius');
   await drag(page, card.getByRole('slider', { name: 'Corners' }), -20, -20);
-  expect(await inline(key, 'border-radius')).not.toBe(radiusBefore);
-  await expect(xray.locator('.xr-face').first()).toHaveCSS('border-radius', '0px');
+  expect(await inline(key, 'border-top-left-radius')).not.toBe(radiusBefore);
+  expect(await inline(modelKey(xray), 'border-top-left-radius')).not.toBe(benchRadius);
+  await expect(modelKey(xray)).toHaveCSS('border-top-left-radius', '0px');
 });
 
 test('type, surface, light, shadow and layer handles change specimen and bench', async ({ page }) => {
@@ -65,47 +71,49 @@ test('type, surface, light, shadow and layer handles change specimen and bench',
   // the glyph is one handle: up for a bigger glyph
   await drag(page, card.getByRole('slider', { name: 'Glyph size and letter spacing' }), 0, -18);
   expect(await inline(key, 'font-size')).not.toBe(font);
-  await expect(xray.locator('.xr-face span').first()).toHaveCSS('font-size', `${Number(await value(card, 'Glyph size').textContent()) * 5}px`);
+  await expect(key).toHaveCSS('font-size', `${await value(card, 'Glyph size').textContent()}px`);
+  await expect(modelKey(xray)).toHaveCSS('font-size', `${await value(card, 'Glyph size').textContent()}px`);
   const spacing = await inline(key, 'letter-spacing');
-  const benchSpacing = await inline(xray.locator('.xr-face span').first(), 'letter-spacing');
+  const benchSpacing = await inline(modelKey(xray), 'letter-spacing');
   // …and sideways for more space between letters
   await drag(page, card.getByRole('slider', { name: 'Glyph size and letter spacing' }), 20, 0);
   expect(await inline(key, 'letter-spacing')).not.toBe(spacing);
-  expect(await inline(xray.locator('.xr-face span').first(), 'letter-spacing')).not.toBe(benchSpacing);
+  expect(await inline(modelKey(xray), 'letter-spacing')).not.toBe(benchSpacing);
   await part(xray, 'Surface');
   const surface = card.getByRole('slider', { name: 'Surface' });
   const first = await surface.getAttribute('aria-valuetext');
   await drag(page, surface, 8, 0);
   await expect(surface).toHaveAttribute('aria-valuetext', first!);
-  const benchSurface = await inline(xray.locator('.xr-face').first(), 'background');
+  const benchSurface = await inline(modelKey(xray), 'background-image');
   await drag(page, surface, 36, 0);
   await expect(surface).toHaveAttribute('aria-valuetext', 'On a dark strip');
   await expect(card.locator('.mu-kbd')).toHaveAttribute('data-surface', 'strip');
-  expect(await inline(xray.locator('.xr-face').first(), 'background')).not.toBe(benchSurface);
+  await expect(modelKey(xray)).toHaveAttribute('data-surface', 'strip');
+  expect(await inline(modelKey(xray), 'background-image')).not.toBe(benchSurface);
   await drag(page, surface, -36, 0);
   await expect(card.locator('.mu-kbd')).toHaveAttribute('data-surface', 'default');
   await part(xray, 'Light');
-  const fill = await inline(xray.locator('.xr-face').first(), 'background');
-  const keyFill = await inline(card.locator('.mu-kbd'), 'background');
+  const fill = await inline(modelKey(xray), 'background-image');
+  const keyFill = await inline(card.locator('.mu-kbd'), 'background-image');
   await drag(page, card.getByRole('slider', { name: 'Light' }), 25, 4);
-  expect(await inline(xray.locator('.xr-face').first(), 'background')).not.toBe(fill);
-  expect(await inline(card.locator('.mu-kbd'), 'background')).not.toBe(keyFill);
+  expect(await inline(modelKey(xray), 'background-image')).not.toBe(fill);
+  expect(await inline(card.locator('.mu-kbd'), 'background-image')).not.toBe(keyFill);
   await part(xray, 'Shadow');
   const shadow = await inline(card.locator('.mu-kbd'), 'box-shadow');
-  const z = await inline(xray.locator('.xr-face').first(), 'transform');
+  const z = await modelFace(xray).evaluate((el) => (el as HTMLElement).style.transform);
   await drag(page, card.getByRole('slider', { name: 'Height above the page' }), 0, -24);
   expect(await inline(card.locator('.mu-kbd'), 'box-shadow')).not.toBe(shadow);
-  expect(await inline(xray.locator('.xr-face').first(), 'transform')).not.toBe(z);
+  expect(await modelFace(xray).evaluate((el) => (el as HTMLElement).style.transform)).not.toBe(z);
   await part(xray, 'Layers');
   for (const name of ['Fill', 'Inner glow', 'Top light', 'Rim', 'Contact', 'Drop']) {
     const row = card.locator('.ed-layer').filter({ hasText: name });
     const layer = row.getByRole('switch');
-    const faceBefore = await card.locator('.mu-kbd').evaluate((el) => `${(el as HTMLElement).style.background}|${(el as HTMLElement).style.boxShadow}`);
+    const faceBefore = await card.locator('.mu-kbd').evaluate((el) => `${getComputedStyle(el).backgroundImage}|${getComputedStyle(el).boxShadow}`);
     await row.hover();
     await expect(xray.locator('.xr-face.is-layer.is-focus')).toHaveCount(1);
     await layer.click();
     await expect(layer).toHaveAttribute('aria-checked', 'false');
-    const faceAfter = await card.locator('.mu-kbd').evaluate((el) => `${(el as HTMLElement).style.background}|${(el as HTMLElement).style.boxShadow}`);
+    const faceAfter = await card.locator('.mu-kbd').evaluate((el) => `${getComputedStyle(el).backgroundImage}|${getComputedStyle(el).boxShadow}`);
     expect(faceAfter).not.toBe(faceBefore);
     await expect(xray.locator('.xr-face.is-layer.is-off')).toHaveCount(1);
     await layer.click();

@@ -1,3 +1,6 @@
+/* the keycap's box: the keycap's own size and nothing more, wherever it sits (the table, the model's face, a specimen) */
+.xr-kbd-box { display: flex; }
+.xr-kbd-measure { position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none; }
 .ed-kbd-box .ed-overlay { z-index: 2; }
 .ed-kbd-box .ed-edge.is-x { right: -3px; }
 .ed-kbd-box .ed-edge.is-y { top: -3px; }

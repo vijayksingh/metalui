@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { BUTTON_LABEL, type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
+import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
 import { INITIAL as SWITCHER, OPTIONS as SWITCHER_OPTIONS, useSwitcherLook, type SwitcherConfig } from './xray/SwitcherXray';
 import { INITIAL as SWATCH, useSwatchLook, type SwatchConfig } from './xray/SwatchXray';
 import { INITIAL as STATUS, StatusReal, useStatusLook, type StatusConfig } from './xray/StatusXray';
@@ -101,6 +102,12 @@ function TableLinkCard({ config = LINK, open }: { config?: LinkCardConfig; open:
   return <div onClickCapture={(e) => { e.preventDefault(); open(); }}><LinkCard href={config.href} preview={config.preview} style={style} /></div>;
 }
 
+/** The keycap on the table: the real keycap set to its config, which its x-ray takes over and hands back. */
+function TableKbd({ config = KBD, open }: { config?: KbdConfig; open: () => void }) {
+  const look = useKbdLook(config);
+  return <div onClick={open}><KbdFor m={config} look={look} /></div>;
+}
+
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
 const PERSPECTIVE = 1600;
 
@@ -158,7 +165,7 @@ const ITEMS: Item[] = [
     // a click picks the option and opens the x-ray, like the button; the pick lands before the x-ray opens
     node: ({ openXray, seeds, onSeed }) => <TableSwitcher config={seeds.switcher} onConfig={(c) => onSeed('switcher', c)} open={() => openXray('switcher')} />,
   },
-  { id: 'key', table: ['92.3%', '58.2%'], space: ['88%', '54%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, zoom: 1.4, node: ({ openXray }) => <div onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
+  { id: 'key', table: ['92.3%', '58.2%'], space: ['88%', '54%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, zoom: 1.4, node: ({ openXray, seeds }) => <TableKbd config={seeds.kbd} open={() => openXray('kbd')} /> },
   { id: 'slider', table: ['4%', '57.9%'], space: ['31%', '32%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
     id: 'field', table: ['35.1%', '88.2%'], space: ['31%', '72%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
