@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
+import { Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
@@ -21,7 +21,7 @@ import { INITIAL as MENU, MenuObject, useMenuLook, type MenuConfig } from './xra
 import { DialogStill } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
 import { FolderStill } from './xray/FolderXray';
-import { Wordmark } from './Wordmark';
+import { INITIAL as WORDMARK, WordmarkObject } from './xray/WordmarkXray';
 
 export type { XrayKind };
 
@@ -216,7 +216,7 @@ const ITEMS: Item[] = [
   {
     // the brand, front and centre among the things it makes; hung back in the scene like its neighbours.
     id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
-    node: ({ openXray }) => <Button cap="link" aria-label="MetalUI: open the x-ray" aria-haspopup="dialog" style={{ borderRadius: '999px', cursor: 'zoom-in' }} onClick={() => openXray('wordmark')}><Wordmark size={21} /></Button>,
+    node: ({ openXray, seeds }) => <WordmarkObject m={seeds.wordmark ?? WORDMARK} onClick={() => openXray('wordmark')} />,
   },
   {
     // the button, beside the brand: click it and it flies onto its x-ray, which lands on the button itself
