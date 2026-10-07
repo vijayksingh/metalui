@@ -3,7 +3,7 @@
   "title": "Island",
   "status": "alpha",
   "layer": "component",
-  "kind": "composed",
+  "kind": "custom",
   "uses": [
     "button",
     "led",

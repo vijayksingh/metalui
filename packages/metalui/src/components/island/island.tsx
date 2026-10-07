@@ -35,7 +35,9 @@ import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } fro
  *              The tone is also said in words, never by colour alone
  * Reduce Motion: no travel, a cross-dissolve. Without View Transitions it simply opens.
  * Graphite hardware in both colorways: a graphite-deep Surface with the graphite cap on it, both
- * reading the graphite tokens. Without children it stays a capsule (a menu's trigger, say).
+ * reading the graphite tokens. Open, it is one surface: the capsule lies flush as the panel's title
+ * row (its wash only on hover), and the panel's controls should be flat too (strip buttons, ghost
+ * icons), never caps on caps. Without children it stays a capsule (a menu's trigger, say).
  * ───────────────────────────────────────────────────────── */
 
 export type IslandTone = 'live' | 'working' | 'offline' | 'quiet';
@@ -49,7 +51,8 @@ const lights: Record<IslandTone, { kind: LedKind; gesture: LedGesture }> = {
 
 const SHELL = 'mu-island inline-flex flex-col items-center';
 const SHELL_OPEN = 'mu-island inline-flex flex-col items-center w-island-panel-width pb-island-panel-pad';
-const CAP = 'mu-island-cap gap-island-gap';
+/* Open, the capsule is the panel's title row: flush with the body, its wash only on hover. */
+const CAP = 'mu-island-cap gap-island-gap data-flush:not-hover:bg-transparent';
 const TITLE = 'mu-island-title max-w-island-title-max truncate';
 const DETAIL = 'mu-island-detail';
 const CHEVRON = 'mu-island-chevron select-chevron';
@@ -138,6 +141,7 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
       aria-label={name}
       aria-expanded={hasPanel ? open : undefined}
       aria-controls={out ? panelId : undefined}
+      data-flush={out ? '' : undefined}
       className={CAP}
       {...props}
       onClick={hasPanel ? (e) => { props.onClick?.(e); morphTo(() => onOpenChange?.(!open), open ? 'close' : 'open'); } : props.onClick}

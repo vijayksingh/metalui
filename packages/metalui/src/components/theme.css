@@ -3298,8 +3298,14 @@
 ::view-transition-group(.mu-morph-contents), ::view-transition-group(.mu-morph-part) {
   animation-duration: calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-surface);
 }
+:root:active-view-transition-type(close)::view-transition-group(.mu-morph-contents), :root:active-view-transition-type(close)::view-transition-group(.mu-morph-part) {
+  animation-duration: calc(var(--mu-spring-release-d) * var(--mu-travel-surface)); animation-timing-function: var(--mu-spring-release);
+}
 ::view-transition-new(.mu-morph-contents) {
   animation: var(--mu-spring-surface-d) var(--mu-spring-surface) both mu-morph-arrive;
+}
+:root:active-view-transition-type(close)::view-transition-new(.mu-morph-contents) {
+  animation: var(--mu-spring-release-d) var(--mu-spring-release) both mu-morph-arrive;
 }
 ::view-transition-old(.mu-morph-contents) {
   animation: var(--mu-spring-release-d) var(--mu-spring-release) both mu-morph-leave;

@@ -28,7 +28,7 @@ The platform's View Transitions API, used directly: every shape carries its `vie
 | M4b | **After it lands** (`afterMorph`) | Focus moves, tooltips and anything else that follows a morph run once it has landed. A render scheduled while the morph is starting makes React skip it. |
 | M4b′ | **Focus comes back only to nothing** (`returnFocusAfterMorph`) | When a morph lands, focus returns to its trigger only if nothing else has taken it since (a dialog it opened, a control the person moved to). |
 | M4c | **Fold on the outside click, not the press** | Starting a morph holds the page for a frame; on a press, the click that follows is lost. Folding on the click lets what was clicked act first. |
-| M5 | **Timing** | Our springs, never ad hoc: the body rides the surface spring; `close` rides the release spring; durations scale by `--mu-travel-surface`. |
+| M5 | **Timing** | Our springs, never ad hoc: the body rides the surface spring; `close` rides the release spring; durations scale by `--mu-travel-surface`. **One spring per morph:** the body, its contents and its parts always share the spring and duration, or the inside drifts against the outline (a shake). |
 | M5b | **The page holds still** | `:root { view-transition-name: none }`: only the named shapes move; the page never cross-fades behind them. |
 | M6 | **Fallback** | Without View Transitions the state simply changes. No polyfill, no JS-driven size animation to imitate it. |
 
