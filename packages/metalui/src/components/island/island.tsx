@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Button } from '../button/button';
+import { Surface } from '../surface/surface';
 import { Led, type LedKind, type LedGesture } from '../led/led';
 import { Label } from '../label/label';
 import { SwapText } from '../../motion/swap';
@@ -26,8 +27,9 @@ import { MorphIcon } from '../../icons/MorphIcon';
  *   tone       the LED: live (steady), working (breathes), offline (failed), quiet (off).
  *              The tone is also said in words, never by colour alone
  * Reduce Motion: the swap and the chevron resolve without travel (their own rules).
- * A composition of Button(graphite), Led, Label, SwapText and the chevron MorphIcon: it paints
- * nothing of its own.
+ * It is graphite hardware in both colorways: a graphite-deep Surface with the graphite cap on it,
+ * both reading the graphite tokens. A composition of Surface, Button(graphite), Led, Label,
+ * SwapText and the chevron MorphIcon: it paints nothing of its own.
  * ───────────────────────────────────────────────────────── */
 
 export type IslandTone = 'live' | 'working' | 'offline' | 'quiet';
@@ -39,7 +41,8 @@ const lights: Record<IslandTone, { kind: LedKind; gesture: LedGesture }> = {
   quiet: { kind: 'off', gesture: 'steady' },
 };
 
-const ROOT = 'mu-island gap-island-gap';
+const SHELL = 'mu-island inline-flex';
+const CAP = 'mu-island-cap gap-island-gap';
 const TITLE = 'mu-island-title max-w-island-title-max truncate';
 const DETAIL = 'mu-island-detail';
 const CHEVRON = 'mu-island-chevron select-chevron';
@@ -82,6 +85,7 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
   const led = lights[tone];
   const name = [title, detail, toneLabel].filter(Boolean).join('. ');
   return (
+    <Surface as="span" material="graphite-deep" radius="pill" data-mu-colorway="graphite" className={className ? `${SHELL} ${className}` : SHELL}>
     <Button
       ref={(el: HTMLElement | null) => {
         inner.current = el;
@@ -90,7 +94,7 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
       }}
       cap="graphite"
       aria-label={name}
-      className={className ? `${ROOT} ${className}` : ROOT}
+      className={CAP}
       {...props}
     >
       <Led kind={led.kind} gesture={led.gesture} />
@@ -99,5 +103,6 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
       <MorphIcon name="chevron" turn={open ? 180 : 0} className={CHEVRON} />
       <span className={SPOKEN} role="status" aria-live="polite">{passing ?? ''}</span>
     </Button>
+    </Surface>
   );
 });
