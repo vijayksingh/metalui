@@ -7,6 +7,8 @@ const sizes = [recipe.props.row.size, recipe.props.self.size];
 
 const part = (xray: Locator, name: string) => xray.locator(`.xr-callout[aria-label^="${name}"]`).click();
 const value = (card: Locator, name: string) => card.locator('.ed-readout').filter({ hasText: name }).locator('.ed-roll > span:not(.is-out)');
+/** The model's face on the bench: the real checkbox, which every handle must change along with the specimen. */
+const bench = (xray: Locator) => xray.locator('.xr-segface.is-top .mu-dimple');
 
 async function openDocs(page: Page, colorway: string) {
   await page.addInitScript((name) => localStorage.setItem('metalui:colorway', name), colorway);
@@ -45,7 +47,7 @@ test('state and size handles lean, then snap to real options on specimen and ben
   const options = ['Rest', 'Hover', 'Done', 'Doing', 'Suggested'];
   const before = await state.getAttribute('aria-valuetext');
   expect(options).toContain(before);
-  const fill = await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.background);
+  const fill = await bench(xray).evaluate((el) => getComputedStyle(el).backgroundImage);
   const specimenFill = await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).backgroundImage);
   await drag(page, state, 0, 6);
   await expect(state).toHaveAttribute('aria-valuetext', before!);
@@ -53,7 +55,7 @@ test('state and size handles lean, then snap to real options on specimen and ben
   const after = await state.getAttribute('aria-valuetext');
   expect(options).toContain(after);
   expect(after).not.toBe(before);
-  expect(await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.background)).not.toBe(fill);
+  expect(await bench(xray).evaluate((el) => getComputedStyle(el).backgroundImage)).not.toBe(fill);
   expect(await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).backgroundImage)).not.toBe(specimenFill);
 
   await part(xray, 'Shape');
@@ -75,33 +77,33 @@ test('corners, tick, depth and light handles change specimen and bench', async (
   await part(xray, 'Shape');
   const specimen = card.locator('.mu-dimple');
   const corner0 = await specimen.evaluate((el) => getComputedStyle(el).borderRadius);
-  const benchCorner0 = await xray.locator('.xr-face').first().evaluate((el) => getComputedStyle(el).borderRadius);
+  const benchCorner0 = await bench(xray).evaluate((el) => getComputedStyle(el).borderRadius);
   await drag(page, card.getByRole('slider', { name: 'Corners' }), -12, -12);
   await expect.poll(() => specimen.evaluate((el) => getComputedStyle(el).borderRadius)).not.toBe(corner0);
-  expect(await xray.locator('.xr-face').first().evaluate((el) => getComputedStyle(el).borderRadius)).not.toBe(benchCorner0);
+  expect(await bench(xray).evaluate((el) => getComputedStyle(el).borderRadius)).not.toBe(benchCorner0);
 
   await part(xray, 'Tick');
   const angle = card.getByRole('slider', { name: 'Tick angle' });
   const oldAngle = Number(await angle.getAttribute('aria-valuenow'));
-  const oldTick = await xray.locator('.xr-tick').evaluate((el) => (el as HTMLElement).style.transform);
+  const oldTick = await xray.locator('.xr-segface.is-top .mu-dimple-tick').evaluate((el) => getComputedStyle(el).transform);
   const oldSpecimenTick = await card.locator('.mu-dimple-tick').evaluate((el) => getComputedStyle(el).transform);
   await drag(page, angle, 18, 0);
   expect(Number(await angle.getAttribute('aria-valuenow'))).not.toBe(oldAngle);
-  expect(await xray.locator('.xr-tick').evaluate((el) => (el as HTMLElement).style.transform)).not.toBe(oldTick);
+  expect(await xray.locator('.xr-segface.is-top .mu-dimple-tick').evaluate((el) => getComputedStyle(el).transform)).not.toBe(oldTick);
   expect(await card.locator('.mu-dimple-tick').evaluate((el) => getComputedStyle(el).transform)).not.toBe(oldSpecimenTick);
 
   await part(xray, 'Well');
   const wellShadow = await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).boxShadow);
-  const benchShadow = await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.boxShadow);
+  const benchShadow = await bench(xray).evaluate((el) => getComputedStyle(el).boxShadow);
   await drag(page, card.getByRole('slider', { name: 'Well depth' }), 0, 18);
   expect(await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe(wellShadow);
-  expect(await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.boxShadow)).not.toBe(benchShadow);
+  expect(await bench(xray).evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe(benchShadow);
 
   await part(xray, 'Light');
-  const lightFill = await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.background);
+  const lightFill = await bench(xray).evaluate((el) => getComputedStyle(el).backgroundImage);
   const specimenFill = await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).backgroundImage);
   await drag(page, card.getByRole('slider', { name: 'Light' }), 28, 3);
-  expect(await xray.locator('.xr-face').first().evaluate((el) => (el as HTMLElement).style.background)).not.toBe(lightFill);
+  expect(await bench(xray).evaluate((el) => getComputedStyle(el).backgroundImage)).not.toBe(lightFill);
   expect(await card.locator('.mu-dimple').evaluate((el) => getComputedStyle(el).backgroundImage)).not.toBe(specimenFill);
 });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
+import { Button, Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
@@ -14,6 +14,7 @@ import { INITIAL as SLIDER, SliderObject, type SliderConfig } from './xray/Slide
 import { INITIAL as CHIP, ChipReal, useChipLook, type ChipConfig } from './xray/ChipXray';
 import { ConfiguredButton, INITIAL as BUTTON, useButtonLook, type ButtonConfig } from './xray/ButtonXray';
 import { INITIAL as TOOLBAR, ToolbarObject, type ToolbarConfig } from './xray/ToolbarXray';
+import { INITIAL as CHECKBOX, CheckboxFor, useCheckboxLook, type CheckboxConfig, type CheckboxState } from './xray/CheckboxXray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -34,11 +35,43 @@ export type { XrayKind };
  *   one of them from where it hangs in space to its place on the table.
  * ───────────────────────────────────────────────────────── */
 
-function Line({ children, task }: { children: React.ReactNode; task?: 'open' | 'done' }) {
+function Line({ children, check, done }: { children: React.ReactNode; check?: React.ReactNode; done?: boolean }) {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, font: '500 15px/22px var(--sans)', letterSpacing: '-.015em' }}>
-      {task && <Checkbox defaultChecked={task === 'done'} aria-label="Task" />}
-      <span style={task === 'done' ? { color: 'var(--ink3)', textDecoration: 'line-through' } : undefined}>{children}</span>
+      {check}
+      <span style={done ? { color: 'var(--ink3)', textDecoration: 'line-through' } : undefined}>{children}</span>
+    </div>
+  );
+}
+
+/** A checkbox on the table: the real checkbox set to its config, which its x-ray takes over and hands back.
+ *  It is one part of the note lines, so it is its own flight source: a click ticks it (the state lands
+ *  first), then opens the x-ray on exactly this one. */
+function TableCheckbox({ part, m, away, onState, open }: { part: string; m: CheckboxConfig; away: boolean; onState: (state: CheckboxState) => void; open: () => void }) {
+  const look = useCheckboxLook(m);
+  return (
+    <span data-part={part} className="xr-checkbox-box" style={away ? { visibility: 'hidden' } : undefined} onClick={open}>
+      <CheckboxFor m={m} look={look} aria-label="Task" onCheckedChange={(v) => onState(v ? 'on' : 'rest')} />
+    </span>
+  );
+}
+
+/** The note lines on the table, with a checkbox in the margin of two of them. The checkboxes share the
+ *  recipe tunables (corners, light, depth), as they share the recipe; each keeps its own state. The one
+ *  in its x-ray shows the config's state, and keeps it when it comes home. */
+const CHECK_STATES: Record<string, CheckboxState> = { open: 'rest', done: 'on' };
+function TableLines({ config = CHECKBOX, onConfig, open, away }: { config?: CheckboxConfig; onConfig: (c: CheckboxConfig) => void; open: (part: string) => void; away?: string }) {
+  const kept = React.useRef({ ...CHECK_STATES });
+  const [, bump] = React.useReducer((n: number) => n + 1, 0);
+  // read during render: the checkbox that is away takes the x-ray's state as its own, so it is still its own when it lands
+  const stateOf = (part: string) => (away === part ? (kept.current[part] = config.state) : kept.current[part]);
+  const tick = (part: string, state: CheckboxState) => { kept.current[part] = state; bump(); onConfig({ ...config, state }); };
+  const check = (part: string) => <TableCheckbox part={part} m={{ ...config, state: stateOf(part) }} away={away === part} onState={(s) => tick(part, s)} open={() => open(part)} />;
+  return (
+    <div className="hero-frags" style={{ gap: 12, maxWidth: 270 }}>
+      <Line check={check('open')} done={stateOf('open') === 'on'}>call printer about paper stock <Mark kind="date" resolved="Fri 25 Sep · 16:00">tomorrow 4pm</Mark></Line>
+      <Line check={check('done')} done={stateOf('done') === 'on'}>pick the grotesk <Mark kind="tag">#type</Mark></Line>
+      <Line><Mark kind="measurement">slept 6h</Mark> · <Mark kind="measurement">mood 3</Mark></Line>
     </div>
   );
 }
@@ -136,10 +169,13 @@ function TableButton({ config = BUTTON, open }: { config?: ButtonConfig; open: (
 const PERSPECTIVE = 1600;
 
 interface Ctx {
-  openXray: (which: XrayKind) => void;
+  /** Opens an x-ray from this object, or from one `part` of it (a `[data-part]` inside it): then that part is what flies. */
+  openXray: (which: XrayKind, part?: string) => void;
   chip: boolean; setChip: (v: boolean) => void;
   /** Each object's config, shared with its x-ray (see xray/index.tsx, "the handover"). */
   seeds: Partial<XraySeeds>; onSeed: XrayReseed;
+  /** The part of this object that is away in its x-ray, if one is. */
+  away?: string;
 }
 interface Item {
   id: string;
@@ -158,14 +194,8 @@ interface Item {
 const ITEMS: Item[] = [
   {
     id: 'lines', table: ['4%', '3.7%'], space: ['11%', '14%', -260, 14], dur: '26s', drift: ['30px', '18px'], live: true,
-    // a checkbox opens its x-ray
-    node: ({ openXray }) => (
-      <div className="hero-frags" style={{ gap: 12, maxWidth: 270 }} onClick={(e) => { if ((e.target as HTMLElement).closest('.mu-dimple')) openXray('checkbox'); }}>
-        <Line task="open">call printer about paper stock <Mark kind="date" resolved="Fri 25 Sep · 16:00">tomorrow 4pm</Mark></Line>
-        <Line task="done">pick the grotesk <Mark kind="tag">#type</Mark></Line>
-        <Line><Mark kind="measurement">slept 6h</Mark> · <Mark kind="measurement">mood 3</Mark></Line>
-      </div>
-    ),
+    // a checkbox opens its x-ray, and is what flies: the lines stay on the table
+    node: ({ openXray, seeds, onSeed, away }) => <TableLines config={seeds.checkbox} onConfig={(c) => onSeed('checkbox', c)} open={(part) => openXray('checkbox', part)} away={away} />,
   },
   { id: 'link', table: ['66.5%', '4.1%'], space: ['50%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray, seeds }) => <TableLinkCard config={seeds.link} open={() => openXray('link')} /> },
   { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray, seeds }) => <TableSwatch config={seeds.swatch} open={() => openXray('swatch')} /> },
@@ -227,8 +257,10 @@ const ITEMS: Item[] = [
   },
 ];
 
-/** An open x-ray, the object it was opened from, the config it took from it, and its pose. */
-export type XrayOpen = { [K in XrayKind]: { kind: K; from: string; seed?: XraySeed<K>; pose?: XrayPose; zoom?: number } }[XrayKind];
+/** An open x-ray, the object it was opened from (and the part of it that is the object, if one is), the config it took from it, and its pose. */
+export type XrayOpen = { [K in XrayKind]: { kind: K; from: string; part?: string; seed?: XraySeed<K>; pose?: XrayPose; zoom?: number } }[XrayKind];
+/** An object away from the table, in the air or in its x-ray: the item, or one part of it. */
+export interface XrayAway { from: string; part?: string }
 
 /* The x-ray flight. A copy of the object (the flyer) leaves the table and lands on its model
  * in the x-ray card:
@@ -254,7 +286,7 @@ const FLAT = 'rotateX(0deg) rotateZ(0deg)';
 const LIFT_EASE = 'cubic-bezier(.3, 0, .2, 1)';
 const FLY_EASE = 'cubic-bezier(.55, 0, .2, 1)';
 
-interface Flight { from: string; dir: 'open' | 'close'; anims: Animation[]; flyer: HTMLElement }
+interface Flight { from: string; part?: string; dir: 'open' | 'close'; anims: Animation[]; flyer: HTMLElement }
 
 /** Parts of an x-ray scene that are not the object's body: the floor, labels, light, shadows. */
 const NOT_BODY = '.xr-floor, .xr-anchor, .xr-sun, .xr-shadow, .xr-tag, .xr-measure, .xr-dims, .xr-floortext, .xr-leaders';
@@ -289,8 +321,8 @@ function modelFace(scene: HTMLElement): Face | null {
   return face;
 }
 
-/** Builds the flight between an object on the table and its x-ray, parked at the start. */
-function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'from' | 'dir'> {
+/** Builds the flight between an object on the table (an item, or the part of it that is the object) and its x-ray, parked at the start. */
+function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'from' | 'part' | 'dir'> {
   const model = overlay.querySelector<HTMLElement>('.xr-scene') ?? overlay.querySelector<HTMLElement>('.xr-bench') ?? overlay;
   const flyer = document.createElement('div');
   flyer.className = 'xr-flyer';
@@ -312,6 +344,16 @@ function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'fro
     thumb.removeAttribute('data-animate');
     Object.assign(thumb.style, { width: `${on.offsetWidth}px`, height: `${on.offsetHeight}px`, transform: `translate(${x}px, ${y}px)` });
   });
+  // and a still of whatever the object's own script is still moving (a tick the pen is drawing, since the
+  // click that opened the x-ray ticked it): each such motion is shown where it comes to rest
+  const live = [...item.querySelectorAll<Element>('*')], copies = [...flyer.querySelectorAll<HTMLElement>('*')];
+  live.forEach((el, i) => el.getAnimations().forEach((a) => {
+    if (a instanceof CSSTransition || a instanceof CSSAnimation || !(a.effect instanceof KeyframeEffect)) return;
+    const end = a.effect.getKeyframes().at(-1) ?? {};
+    for (const [k, v] of Object.entries(end)) if (!['offset', 'computedOffset', 'easing', 'composite'].includes(k)) copies[i].style.setProperty(k.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`), String(v));
+  }));
+  // a checkbox's key is held dark only while its pen is still at work; at rest its look is its state's
+  flyer.querySelectorAll('[data-inked]').forEach((key) => key.removeAttribute('data-inked'));
   // home: where the object hangs now; land: the model's top face, which the object covers exactly.
   // Every pose has the same functions, so the flight interpolates them one by one.
   const h = item.getBoundingClientRect(), m = model.getBoundingClientRect();
@@ -338,7 +380,7 @@ function buildFlight(item: HTMLElement, overlay: HTMLElement): Omit<Flight, 'fro
 export function useXrayFlight() {
   const [open, setOpen] = React.useState<XrayOpen | null>(null);
   /** The object that is away from the table: in the air, or in its x-ray. */
-  const [away, setAway] = React.useState<string | undefined>();
+  const [away, setAway] = React.useState<XrayAway | undefined>();
   /** The table objects' configs: what each is set to now, whether on the table or in its x-ray. */
   const [seeds, setSeeds] = React.useState<Partial<XraySeeds>>({});
   const flight = React.useRef<Flight | null>(null);
@@ -364,21 +406,25 @@ export function useXrayFlight() {
   const start = React.useCallback((next: XrayOpen | null) => {
     const root = document.documentElement;
     const reduced = root.classList.contains('rm') || matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const from = next?.from ?? openRef.current?.from;
+    const cur = next ?? openRef.current;
+    const from = cur?.from, part = cur?.part;
+    const gone = cur ? { from: cur.from, part: cur.part } : undefined;
     const item = from ? document.querySelector<HTMLElement>(`[data-float="${from}"]`) : null;
+    // the object that flies: the whole item, or the one part of it the x-ray was opened from
+    const object = item && part ? item.querySelector<HTMLElement>(`[data-part="${part}"]`) : item;
     const seeded = next && ({ ...next, seed: (seedsRef.current as Partial<Record<XrayKind, unknown>>)[next.kind] } as XrayOpen);
-    if (reduced || !from || !item) { setOpen(seeded && { ...seeded, pose: 'open' }); setAway(next?.from); return; }
+    if (reduced || !from || !object) { setOpen(seeded && { ...seeded, pose: 'open' }); setAway(next ? gone : undefined); return; }
     root.dataset.flight = next ? 'open' : 'close';
-    if (seeded) flushSync(() => { setOpen({ ...seeded, pose: 'flat' }); setAway(seeded.from); });
+    if (seeded) flushSync(() => { setOpen({ ...seeded, pose: 'flat' }); setAway(gone); });
     const overlay = document.querySelector<HTMLElement>('.xr-overlay');
-    if (!overlay) { delete root.dataset.flight; setOpen(seeded); setAway(next?.from); return; }
-    const built = buildFlight(item, overlay);
-    const nf: Flight = { from, dir: next ? 'open' : 'close', ...built };
+    if (!overlay) { delete root.dataset.flight; setOpen(seeded); setAway(next ? gone : undefined); return; }
+    const built = buildFlight(object, overlay);
+    const nf: Flight = { from, part, dir: next ? 'open' : 'close', ...built };
     flight.current = nf;
     if (!next) nf.anims.forEach((a) => { a.currentTime = OPEN_MS; a.playbackRate = -OPEN_MS / CLOSE_MS; });
     nf.anims[0].onfinish = () => land(nf);
     // the flyer is the object: click it mid-air to send it back
-    nf.flyer.addEventListener('click', () => flyRef.current(nf.dir === 'open' ? null : { kind: openRef.current!.kind, from: nf.from } as XrayOpen));
+    nf.flyer.addEventListener('click', () => flyRef.current(nf.dir === 'open' ? null : { kind: openRef.current!.kind, from: nf.from, part: nf.part } as XrayOpen));
   }, [land]);
 
   const fly = React.useCallback((next: XrayOpen | null) => {
@@ -414,7 +460,7 @@ export function useXrayFlight() {
   return { open, away, seeds, reseed, fly, close };
 }
 
-export function FloatingTable({ mode, lifted, seeds, onSeed, onXray }: { mode: 'space' | 'table'; lifted?: string; seeds: Partial<XraySeeds>; onSeed: XrayReseed; onXray: (open: XrayOpen) => void }) {
+export function FloatingTable({ mode, lifted, seeds, onSeed, onXray }: { mode: 'space' | 'table'; lifted?: XrayAway; seeds: Partial<XraySeeds>; onSeed: XrayReseed; onXray: (open: XrayOpen) => void }) {
   const [chip, setChip] = React.useState(true);
   const root = React.useRef<HTMLDivElement>(null);
 
@@ -455,12 +501,12 @@ export function FloatingTable({ mode, lifted, seeds, onSeed, onXray }: { mode: '
             ['--dy' as string]: it.drift[1],
             ['--delay' as string]: `-${parseFloat(it.dur) / 3}s`,
             viewTransitionName: `float-${it.id}`,
-            // while it is in the air or in its x-ray, the object is away from the table
-            visibility: it.id === lifted ? 'hidden' : undefined,
+            // while it is in the air or in its x-ray, the object is away from the table (a part away hides itself)
+            visibility: lifted?.from === it.id && !lifted.part ? 'hidden' : undefined,
           } as React.CSSProperties;
           return (
             <div key={it.id} data-float={it.id} className={['drift-item', mode === 'space' ? 'in-space' : '', it.live ? 'is-live' : ''].join(' ')} style={style}>
-              <div style={it.zoom ? { zoom: it.zoom } : undefined}>{it.node({ openXray: (kind) => onXray({ kind, from: it.id, zoom: it.zoom } as XrayOpen), chip, setChip, seeds, onSeed })}</div>
+              <div style={it.zoom ? { zoom: it.zoom } : undefined}>{it.node({ openXray: (kind, part) => onXray({ kind, from: it.id, part, zoom: it.zoom } as XrayOpen), chip, setChip, seeds, onSeed, away: lifted?.from === it.id ? lifted.part : undefined })}</div>
             </div>
           );
         })}

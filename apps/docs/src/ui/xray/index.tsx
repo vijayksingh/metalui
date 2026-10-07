@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { ButtonXray, type ButtonConfig } from './ButtonXray';
-import { CheckboxXray } from './CheckboxXray';
+import { CheckboxXray, type CheckboxConfig } from './CheckboxXray';
 import { ChipXray, type ChipConfig } from './ChipXray';
 import { DialogXray } from './DialogXray';
 import { FieldXray, type FieldConfig } from './FieldXray';
@@ -34,7 +34,7 @@ import { WordmarkXray } from './WordmarkXray';
  *          only then opens up; before it flies home it closes up again. With no flight the
  *          model is open from the start.
  * ───────────────────────────────────────────────────────── */
-export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig; field: FieldConfig; link: LinkCardConfig; kbd: KbdConfig; slider: SliderConfig; chip: ChipConfig; button: ButtonConfig; toolbar: ToolbarConfig }
+export interface XraySeeds { switcher: SwitcherConfig; swatch: SwatchConfig; status: StatusConfig; field: FieldConfig; link: LinkCardConfig; kbd: KbdConfig; slider: SliderConfig; chip: ChipConfig; button: ButtonConfig; toolbar: ToolbarConfig; checkbox: CheckboxConfig }
 export type XraySeed<K extends XrayKind> = K extends keyof XraySeeds ? XraySeeds[K] : never;
 export type XrayPose = 'flat' | 'open';
 export interface XrayViewProps<S = never> { startOpen?: boolean; seed?: Partial<S>; onSeed?: (seed: S) => void; pose?: XrayPose; /** the object's zoom where it came from: its face is laid out at it */ zoom?: number }

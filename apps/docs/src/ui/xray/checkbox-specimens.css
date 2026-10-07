@@ -19,3 +19,7 @@
 .ed-checkbox-light .ed-sun { position: absolute; left: calc(50% - 3.5px); top: calc(50% - 3.5px); }
 [data-mu-colorway="graphite"] :is(.ed-checkbox-state-handle::after, .ed-checkbox-bottom::after) { background: var(--green-deep); }
 [data-mu-colorway="graphite"] :is(.ed-checkbox-lean, .ed-checkbox-tick-handle::after) { border-color: var(--green-deep); }
+/* The checkbox set to a config (CheckboxFor) keeps its layout to its own box: the table's object, the
+ * model's face, the specimens and the flown copy are all this box, so they measure the same. */
+.xr-checkbox-box { display: inline-flex; }
+.xr-checkbox-measure { position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none; }
