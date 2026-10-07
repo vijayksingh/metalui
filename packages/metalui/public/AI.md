@@ -39,7 +39,7 @@ SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import Me
 
 MetalUI uses Tailwind v4. The shared CSS foundation adds named spacing and three layout utilities to that system. It keeps approved material, typography, and spacing values, and does not change a consumer's Tailwind scale or fonts.
 
-Read this before adding layout rules, introducing a token, or changing a shared type role. Read [COMPOSITION.md](https://github.com/vijayksingh/metalui/blob/main/docs/COMPOSITION.md) to place UI in the six composition layers and [PERFORMANCE.md](https://github.com/vijayksingh/metalui/blob/main/docs/PERFORMANCE.md) for motion constraints. The running reference is `/foundations/spacing` in the docs site.
+Read this before adding layout rules, introducing a token, or changing a shared type role. Read [COMPOSITION.md](https://github.com/vijayksingh/metalui/blob/main/docs/COMPOSITION.md) to place UI in the six composition layers, [PERFORMANCE.md](https://github.com/vijayksingh/metalui/blob/main/docs/PERFORMANCE.md) for motion constraints, and [CSS_HABITS.md](https://github.com/vijayksingh/metalui/blob/main/docs/CSS_HABITS.md) for the habits every component inherits (hover gating, focus outlines, motion tokens, logical sides), which `npm run lint:habits` enforces. The running reference is `/foundations/spacing` in the docs site.
 
 ## Sources and generated output
 

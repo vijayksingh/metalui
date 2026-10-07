@@ -8,7 +8,7 @@ const list = components();
 const icons = JSON.parse(readFileSync(root('packages/metalui/public/icons.json'), 'utf8'));
 // Repository and public agents read the same CSS contract; do not maintain a second summary.
 const cssSystem = readFileSync(root('docs/CSS_SYSTEM.md'), 'utf8').trim()
-  .replace(/\]\((COMPOSITION|PERFORMANCE)\.md\)/g, (_, name) => `](https://github.com/vijayksingh/metalui/blob/main/docs/${name}.md)`);
+  .replace(/\]\((COMPOSITION|PERFORMANCE|CSS_HABITS)\.md\)/g, (_, name) => `](https://github.com/vijayksingh/metalui/blob/main/docs/${name}.md)`);
 
 const intro = `# MetalUI: agent integration guide
 

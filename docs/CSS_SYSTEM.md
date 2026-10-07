@@ -2,7 +2,7 @@
 
 MetalUI uses Tailwind v4. The shared CSS foundation adds named spacing and three layout utilities to that system. It keeps approved material, typography, and spacing values, and does not change a consumer's Tailwind scale or fonts.
 
-Read this before adding layout rules, introducing a token, or changing a shared type role. Read [COMPOSITION.md](COMPOSITION.md) to place UI in the six composition layers and [PERFORMANCE.md](PERFORMANCE.md) for motion constraints. The running reference is `/foundations/spacing` in the docs site.
+Read this before adding layout rules, introducing a token, or changing a shared type role. Read [COMPOSITION.md](COMPOSITION.md) to place UI in the six composition layers, [PERFORMANCE.md](PERFORMANCE.md) for motion constraints, and [CSS_HABITS.md](CSS_HABITS.md) for the habits every component inherits (hover gating, focus outlines, motion tokens, logical sides), which `npm run lint:habits` enforces. The running reference is `/foundations/spacing` in the docs site.
 
 ## Sources and generated output
 
