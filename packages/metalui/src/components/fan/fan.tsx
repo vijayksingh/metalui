@@ -118,14 +118,15 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
     const gap = bar ? parseFloat(getComputedStyle(bar).columnGap) || 0 : 0;
     setStep(el.offsetHeight + gap);
   };
-  React.useEffect(() => { if (isOpen) items.current[0]?.focus(); }, [isOpen]);
+  // focus moves to the chosen option once the morph lands; a focus set while it starts is lost (ONE-SHAPE M4b)
+  React.useEffect(() => { if (isOpen) afterMorph(() => items.current[Math.max(0, choices.indexOf(current))]?.focus()); }, [isOpen]);
 
   const cell = (k: number) => {
     const row = Math.floor(k / 3);
     const centre = Math.ceil(rows / 2);
     return { x: (k % 3 - 1) * step, y: (direction === 'up' ? row - rows : row - centre + (row >= centre ? 1 : 0)) * step };
   };
-  const choose = (v: V) => { onValueChange(v); setOpen(null); cap.current?.focus(); };
+  const choose = (v: V) => { onValueChange(v); setOpen(null); afterMorph(() => cap.current?.focus()); };
   const toggle = () => { if (!isOpen) measure(); setOpen(isOpen ? null : { id, restore: () => cap.current?.focus() }); };
   const move = (e: React.KeyboardEvent, k: number) => {
     const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 }[e.key];
