@@ -27,7 +27,7 @@ const FIELD_GLYPH = 'mu-palette-field-glyph inline-grid flex-none text-ink3 [&>s
 const INPUT = 'mu-palette-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent text-ink caret-green-deep placeholder:text-ink3 type-content';
 /* The list: sections of 36 rows; scrolls past 52 % of the window. The selected row's bar sits 2 outside
  * the row: room for it inside the scroll clip. */
-const LIST = 'mu-palette-list palette-list-max overflow-auto mx-palette-bar-left pt-palette-list-pad-top px-palette-bar-outset pb-palette-list-pad-bottom scroll-py-palette-list-pad-top scroll-px-0 outline-none empty:hidden';
+const LIST = 'mu-palette-list palette-list-max overflow-auto overscroll-contain mx-palette-bar-left pt-palette-list-pad-top px-palette-bar-outset pb-palette-list-pad-bottom scroll-py-palette-list-pad-top scroll-px-0 outline-none empty:hidden';
 const ENG = 'mu-palette-eng palette-eng';
 const SEC = 'mu-palette-sec flex justify-between pt-palette-sec-pad-top px-palette-row-pad pb-palette-sec-pad-bottom type-label';
 /* Selected: a raised cap with a green-deep bar at the left. Instant: the list is scanned, not watched. */

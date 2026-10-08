@@ -20,8 +20,8 @@ import * as React from 'react';
  * ───────────────────────────────────────────────────────── */
 
 const ROOT = 'mu-split-pane relative flex h-full w-full min-h-0 min-w-0 data-[orientation=vertical]:flex-col';
-const FIRST = 'mu-split-pane-first relative flex-none min-w-0 min-h-0 overflow-auto split-pane-size';
-const SECOND = 'mu-split-pane-second relative flex-1 min-w-0 min-h-0 overflow-auto';
+const FIRST = 'mu-split-pane-first relative flex-none min-w-0 min-h-0 overflow-auto split-pane-size overscroll-contain';
+const SECOND = 'mu-split-pane-second relative flex-1 min-w-0 min-h-0 overflow-auto overscroll-contain';
 const DIVIDER = 'mu-split-pane-divider relative z-1 flex-none grid place-items-center outline-none touch-none split-pane-divider split-pane-line focus-visible:focus-ring';
 const GRIP = 'mu-split-pane-grip relative rounded-pill recipe-switch-thumb split-pane-grip reduced-motion:transition-none';
 

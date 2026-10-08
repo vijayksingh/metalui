@@ -33,7 +33,7 @@ const CLEAR = 'mu-combobox-clear mu-icon-trigger inline-grid place-items-center 
 const POSITIONER = 'mu-menu-positioner z-menu-z';
 const POP = `${menuParts.PLATE} relative mu-combobox-pop combobox-pop-width`;
 const FIT = 'mu-combobox-fit combobox-fit';
-const LIST = 'mu-combobox-list overflow-y-auto outline-none';
+const LIST = 'mu-combobox-list overflow-y-auto overscroll-contain outline-none';
 const EMPTY = 'mu-combobox-empty px-menu-row-pad py-menu-heading-pad-bottom type-ui text-ink3 empty:hidden';
 
 function offset() {

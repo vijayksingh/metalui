@@ -24,8 +24,8 @@ const SideCtx = React.createContext<Side>('right');
 const SCRIM = 'mu-sheet-scrim fixed inset-0 z-dialog-scrim-z bg-dialog-scrim-color backdrop-dialog-scrim-blur reduce-transparency:bg-dialog-scrim-opaque reduce-transparency:backdrop-blur-none transition-opacity ease-surface duration-surface data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:ease-release data-ending-style:duration-release';
 const VIEWPORT = 'mu-sheet-viewport fixed inset-0 z-dialog-scrim-z pointer-events-none';
 const POPUP = {
-  right: 'mu-sheet pointer-events-auto fixed top-0 right-0 bottom-0 box-border flex flex-col gap-sheet-gap sheet-width p-sheet-pad rounded-l-sheet-radius outline-none overflow-y-auto sheet-motion',
-  bottom: 'mu-sheet pointer-events-auto fixed inset-x-0 bottom-0 box-border flex flex-col gap-sheet-gap sheet-max-height p-sheet-pad pt-0 rounded-t-sheet-radius outline-none overflow-y-auto sheet-motion',
+  right: 'mu-sheet pointer-events-auto fixed top-0 right-0 bottom-0 box-border flex flex-col gap-sheet-gap sheet-width p-sheet-pad rounded-l-sheet-radius outline-none overflow-y-auto overscroll-contain sheet-motion',
+  bottom: 'mu-sheet pointer-events-auto fixed inset-x-0 bottom-0 box-border flex flex-col gap-sheet-gap sheet-max-height p-sheet-pad pt-0 rounded-t-sheet-radius outline-none overflow-y-auto overscroll-contain sheet-motion',
 };
 const GRIP = 'mu-sheet-grip self-center mt-sheet-grip-gap w-sheet-grip-width h-sheet-grip-height rounded-pill recipe-switch';
 

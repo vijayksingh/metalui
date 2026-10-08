@@ -3,11 +3,11 @@
 // and flags the habits marked Linted in docs/CSS_HABITS.md, with nesting resolved in every selector.
 // Existing ones are listed in lint-css-habits.allow.json by their selector and declaration; a new one fails.
 // Fix one and --ratchet to drop it. --rule <id> lists every current break of that habit.
-import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { root } from './lib/emit.mjs';
 
 const require = createRequire(root('package.json'));
@@ -108,7 +108,7 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     const p = d.prop, v = d.value, plain = withoutVars(v);
     if (hover) add('hover-gate', s, d);
     if (!utility(s) && (outline(d) && none(v) && !rings.has(s.replace(focus, '')) || shadow && p === 'box-shadow')) add('focus-outline', s, d);
-    if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)(auto|scroll)($|\s)/i.test(v) && scroller) add('overscroll-contain', s, d);
+    if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)(auto|scroll)($|\s)/i.test(v) && scroller && !/^\.overflow(-[xy])?-(auto|scroll)$/.test(s)) add('overscroll-contain', s, d);
     if (!p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain)) add('motion-tokens', s, d);
     if (/^transition(-property)?$/.test(p) && /(^|[\s,])all($|[\s,)])/i.test(v)) add('transition-all', s, d);
     if (/^(transition|animation)(-|$)/.test(p) && /(^|[\s,])ease-in($|[\s,])/i.test(v)) add('ease-in', s, d);
@@ -117,6 +117,15 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     if (calls(v, 'env').some((c) => /^safe-area-inset-[\w-]+\s*$/i.test(c.args))) add('safe-area-fallback', s, d);
     if (p === 'z-index' && /^[+-]?\d+$/.test(v) && +v > 1) add('z-index', s, d);
     if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)hidden($|\s)/i.test(v)) add('overflow-clip', s, d);
+  }
+}
+
+// A Tailwind scroller pairs its overflow-*-auto with an overscroll-* class in the same class string.
+const tsx = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? tsx(join(dir, e.name)) : e.name.endsWith('.tsx') ? [join(dir, e.name)] : []);
+for (const file of ['components', 'blocks'].flatMap((d) => tsx(root(`packages/metalui/src/${d}`)))) {
+  for (const [, str] of readFileSync(file, 'utf8').matchAll(/['"`]([^'"`]*\boverflow(?:-[xy])?-(?:auto|scroll)\b[^'"`]*)['"`]/g)) {
+    if (/(^|[\s:])overscroll-/.test(str)) continue;
+    for (const [token] of str.matchAll(/\S*overflow(?:-[xy])?-(?:auto|scroll)\b/g)) found.push({ id: 'overscroll-contain', key: `overscroll-contain: ${relative(root(), file)} ‖ ${token}` });
   }
 }
 
