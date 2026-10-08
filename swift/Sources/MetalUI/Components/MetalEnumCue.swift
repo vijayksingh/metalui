@@ -98,12 +98,9 @@ public struct MetalEnumCue: View {
         let choice = choices[(index + step + choices.count) % choices.count]
         return choice.label ?? choice.value
     }
-    public var body: some View {
-        Button(action: cycle) { face }
-        .buttonStyle(.plain).disabled(!mutable).focusable(enabled).focused($focused).focusEffectDisabled()
-        .overlay { if focused { Rectangle().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth) } }
-        .opacity(enabled ? Double.one : MetalRecipes.field.scalar("state.disabled"))
-        .highPriorityGesture(DragGesture(minimumDistance: .zero).onChanged { drag in
+    /// Hold and drag vertically: each stop is one choice; a press without travel cycles.
+    private var hold: some SwiftUI.Gesture {
+        DragGesture(minimumDistance: .zero).onChanged { drag in
             guard begin(.pointer) else { return }
             let stops = Int((-drag.translation.height / MetalSpace.s24).rounded())
             if stops != 0 { gesture?.moved = true }
@@ -111,7 +108,15 @@ public struct MetalEnumCue: View {
         }.onEnded { _ in
             guard gesture?.kind == .pointer else { return }
             if gesture?.moved == false { step(1) }; commit()
-        })
+        }
+    }
+    // Split in two so the type checker keeps up: the control, then what cancels a held edit.
+    private var control: some View {
+        Button(action: cycle) { face }
+        .buttonStyle(.plain).disabled(!mutable).focusable(enabled).focused($focused).focusEffectDisabled()
+        .overlay { if focused { Rectangle().strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth) } }
+        .opacity(enabled ? Double.one : MetalRecipes.field.scalar("state.disabled"))
+        .highPriorityGesture(hold)
         .onKeyPress(keys: [.space, .upArrow, .downArrow, .escape], phases: [.down, .repeat, .up]) { key in
             if key.key == .escape, gesture != nil { cancel(); return .handled }
             guard mutable, key.key != .escape else { return .ignored }
@@ -126,6 +131,9 @@ public struct MetalEnumCue: View {
             guard begin(.keyboard) else { return }
             step(direction == .increment ? 1 : -1); commit()
         }
+    }
+    public var body: some View {
+        control
         .onChange(of: value) { _, next in if let gesture, next != gesture.current { cancel(restore: false) } }
         .onChange(of: choices) { _, _ in cancel(restore: false) }
         .onChange(of: editing) { _, next in if next == false { cancel(restore: false) } }
