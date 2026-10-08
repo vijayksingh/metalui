@@ -36,7 +36,8 @@ for (const colorway of COLORWAYS) {
     await expect(readout).toHaveText(await size());
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`selection-frame-${colorway}`) });
 
-    // Write: the readout dims and re-measures in the same frame as each keystroke; drift 0.
+    // Write: nothing around the text but the caret. The whole frame fades out and its handles stop
+    // taking the pointer, but it still re-measures in the same frame as each keystroke; drift 0.
     await block.click();
     await expect(frame).toHaveAttribute('data-mode', 'writing');
     await page.keyboard.press('End');
@@ -49,8 +50,10 @@ for (const colorway of COLORWAYS) {
       return Math.abs(c.width - a.width - 12) + Math.abs(c.height - a.height - 12);
     });
     expect(drift).toBeLessThan(0.01);
-    await readout.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
-    expect(Number(await readout.evaluate((el) => getComputedStyle(el).opacity))).toBeCloseTo(0.78, 2);
+    await frame.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    expect(await frame.evaluate((el) => getComputedStyle(el).opacity)).toBe('0');
+    expect(await readout.evaluate((el) => getComputedStyle(el).opacity)).toBe('0');
+    expect(await frame.locator('.mu-sf-handle').first().evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`selection-frame-writing-${colorway}`) });
 
     // ⎋ finishes and selects quietly: the lite ring, no handles.
