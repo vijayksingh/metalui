@@ -22,16 +22,16 @@
     "@unlocalhosted/metalui": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "remotion": "4.0.529",
-    "@remotion/cli": "4.0.529",
+    "remotion": "4.0.533",
+    "@remotion/cli": "4.0.533",
     "tailwindcss": "^4.3.3",
     "@tailwindcss/webpack": "^4.3.3",
-    "@remotion/bundler": "4.0.529",
+    "@remotion/bundler": "4.0.533",
     "@fontsource-variable/doto": "^5.3.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
     "typescript": "^5.8.0",
-    "esbuild": "^0.27.0"
+    "esbuild": "^0.28.2"
   }
 }
