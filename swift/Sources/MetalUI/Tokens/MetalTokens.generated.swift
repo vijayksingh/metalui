@@ -2748,6 +2748,7 @@ public enum MetalRecipes {
             "self.size": .number(28.0),
             "self.bead": .number(14.0),
             "self.gap": .number(2.0),
+            "self.fade": .text("120ms"),
             "ink.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "ink.red": .text("#D8453B"),
             "ink.blue": .text("#2457F2"),
@@ -2760,6 +2761,7 @@ public enum MetalRecipes {
             "bead.gloss": .perColorway(bone: "inset 0 1px 1px rgba(255,255,255,.45), inset 0 -1.5px 2px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.18), 0 1px 2px rgba(0,0,0,.12)", graphite: "inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1.5px 2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35)"),
             "bead.hover": .text("1.14"),
             "bead.press": .text("0.88"),
+            "bead.press-time": .text("80ms"),
         ]
     )
 
@@ -2865,6 +2867,7 @@ public enum MetalRecipes {
             "card.line-ink": .perColorway(bone: "#D4D4D4", graphite: "#3C3C40"),
             "card.line-lg-ink": .perColorway(bone: "#C9C9C9", graphite: "#46464A"),
             "card.line-blue": .perColorway(bone: "#B9CCF7", graphite: "#34466E"),
+            "card.fade": .text("300ms"),
             "flap.height": .number(106.0),
             "flap.radius": .number(26.0),
             "flap.pad-x": .number(16.0),
@@ -2943,11 +2946,14 @@ public enum MetalRecipes {
             "compact.min-width": .number(112.0),
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
+            "chevron.fade": .text("160ms"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
+            "veil.fade": .text("160ms"),
             "mark.glyph": .number(12.0),
             "mark.slot": .number(14.0),
             "pop.scale": .text("0.97"),
             "pop.offset": .number(6.0),
+            "pop.close": .text("120ms"),
         ]
     )
 

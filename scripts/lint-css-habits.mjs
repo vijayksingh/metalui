@@ -109,7 +109,7 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     if (hover) add('hover-gate', s, d);
     if (!utility(s) && (outline(d) && none(v) && !rings.has(s.replace(focus, '')) || shadow && p === 'box-shadow')) add('focus-outline', s, d);
     if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)(auto|scroll)($|\s)/i.test(v) && scroller && !/^\.overflow(-[xy])?-(auto|scroll)$/.test(s)) add('overscroll-contain', s, d);
-    if (!p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain)) add('motion-tokens', s, d);
+    if (!p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain.replace(/(?<![\w.])[-+]?0*\.?0+(?:ms|s)\b/g, ''))) add('motion-tokens', s, d);
     if (/^transition(-property)?$/.test(p) && /(^|[\s,])all($|[\s,)])/i.test(v)) add('transition-all', s, d);
     if (/^(transition|animation)(-|$)/.test(p) && /(^|[\s,])ease-in($|[\s,])/i.test(v)) add('ease-in', s, d);
     if (/^(margin|padding)-(left|right)$|^border-(left|right)(-|$)|^(left|right)$/.test(p) || p === 'text-align' && /^(left|right)$/i.test(v)) add('logical-inline', s, d);

@@ -98,6 +98,14 @@
   --mu-motion-hop-land: 200ms; /* the landing after a far hop: it squashes on its base, rebounds and settles (the table is a stop, so it may bounce) */
   --mu-motion-hop-squash: 0.95; /* how flat a far hop lands (its height; the width grows by half as much) */
   --mu-motion-hop-arc-ratio: 0.8; /* the fraction of a hop's distance that bounds its control point before the lift cap */
+  --mu-led-flicker-d: 800ms;
+  --mu-led-flicker-ease: linear;
+  --mu-led-breathe-d: 2400ms;
+  --mu-led-breathe-ease: ease-in-out;
+  --mu-led-blink2-d: 460ms;
+  --mu-led-blink2-ease: linear;
+  --mu-led-rise-d: 1200ms;
+  --mu-led-rise-ease: cubic-bezier(.22,1,.36,1);
   --mu-swap-spring: var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-swap-turn: var(--mu-motion-step);
   --mu-swap-focus: var(--mu-motion-focus-step);
@@ -1983,6 +1991,7 @@
   --mu-r-draw-self-size: 28px;
   --mu-r-draw-self-bead: 14px;
   --mu-r-draw-self-gap: 2px;
+  --mu-r-draw-self-fade: 120ms;
   --mu-r-draw-ink-red: #D8453B;
   --mu-r-draw-ink-blue: #2457F2;
   --mu-r-draw-ink-green: #3FB97A;
@@ -1993,6 +2002,7 @@
   --mu-r-draw-width-bold: 10px;
   --mu-r-draw-bead-hover: 1.14;
   --mu-r-draw-bead-press: 0.88;
+  --mu-r-draw-bead-press-time: 80ms;
   /* connector: DRAWING.md DR-07 and §6; the presence language (guide green, handles) */
   --mu-r-connector-halo-width: 9px;
   --mu-r-connector-end-size: 4.5px;
@@ -2042,6 +2052,7 @@
   --mu-r-folder-card-thumb-radius: 10px;
   --mu-r-folder-card-line: 6px;
   --mu-r-folder-card-line-lg: 8px;
+  --mu-r-folder-card-fade: 300ms;
   --mu-r-folder-flap-height: 106px;
   --mu-r-folder-flap-radius: 26px;
   --mu-r-folder-flap-pad-x: 16px;
@@ -2089,10 +2100,13 @@
   --mu-r-select-compact-font: 500 12.5px/1.3 var(--mu-sans);
   --mu-r-select-compact-min-width: 112px;
   --mu-r-select-chevron-size: 12px;
+  --mu-r-select-chevron-fade: 160ms;
+  --mu-r-select-veil-fade: 160ms;
   --mu-r-select-mark-glyph: 12px;
   --mu-r-select-mark-slot: 14px;
   --mu-r-select-pop-scale: 0.97;
   --mu-r-select-pop-offset: 6px;
+  --mu-r-select-pop-close: 120ms;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */
   --mu-r-tabs-panel-drift: 6px;
   /* dot-display: the weather widget and tiles design (Bone and Graphite), sky() and its 8 px pitch */
