@@ -12,7 +12,7 @@ import { root } from './lib/emit.mjs';
 
 const require = createRequire(root('package.json'));
 const postcss = require('postcss');
-const RULES = ['hover-gate', 'focus-outline', 'overscroll-contain', 'motion-tokens', 'transition-all', 'ease-in', 'logical-inline', 'viewport-units', 'safe-area-fallback', 'z-index', 'overflow-clip', 'title-balance'];
+const RULES = ['hover-gate', 'focus-outline', 'overscroll-contain', 'motion-tokens', 'transition-all', 'ease-in', 'logical-inline', 'viewport-units', 'safe-area-fallback', 'z-index', 'overflow-clip', 'title-balance', 'ellipsis-complete'];
 const allowPath = root('scripts/lint-css-habits.allow.json');
 const option = (flag) => process.argv.includes(flag) ? process.argv[process.argv.indexOf(flag) + 1] : null;
 const only = option('--rule'), input = option('--css');
@@ -145,6 +145,14 @@ for (const file of ['components', 'blocks'].flatMap((d) => tsx(root(`packages/me
   for (const [, str] of readFileSync(file, 'utf8').matchAll(/['"`]([^'"`]*\bmu-[\w-]+-title\b[^'"`]*)['"`]/g)) {
     if (/\btext-balance\b|truncate|nowrap|clamp|-words\b/.test(str)) continue;
     found.push({ id: 'title-balance', key: `title-balance: ${relative(root(), file)} ‖ ${str.match(/\bmu-[\w-]+-title\b/)[0]}` });
+  }
+}
+
+// An ellipsis shows only on one clipped line: text-ellipsis needs whitespace-nowrap and an overflow clip beside it.
+for (const file of ['components', 'blocks'].flatMap((d) => tsx(root(`packages/metalui/src/${d}`)))) {
+  for (const [, str] of readFileSync(file, 'utf8').matchAll(/['"`]([^'"`]*\btext-ellipsis\b[^'"`]*)['"`]/g)) {
+    if (/\bwhitespace-nowrap\b/.test(str) && /\boverflow(-x)?-(clip|hidden)\b/.test(str)) continue;
+    found.push({ id: 'ellipsis-complete', key: `ellipsis-complete: ${relative(root(), file)} ‖ ${space(str).slice(0, 80)}` });
   }
 }
 
