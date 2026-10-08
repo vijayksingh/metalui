@@ -1365,6 +1365,7 @@
   --mu-r-hover-engraving-self-below-gap: 8px;
   --mu-r-hover-engraving-self-fade: 160ms;
   --mu-r-hover-engraving-self-move: 200ms;
+  --mu-r-hover-engraving-self-z: 2;
   --mu-r-hover-engraving-emphasis-weight: 500;
   --mu-r-hover-engraving-tag-font: 400 9px/15px var(--mu-mono);
   --mu-r-hover-engraving-tag-tracking: 0.06em;
@@ -1622,6 +1623,7 @@
   --mu-r-mark-match-offset: 2.5px;
   --mu-r-mark-chip-font: 500 9.5px/1.3 var(--mu-mono);
   --mu-r-mark-chip-tracking: 0.08em;
+  --mu-r-mark-chip-z: 30;
   --mu-r-mark-inferred-font: 500 10.5px/17px var(--mu-mono);
   --mu-r-mark-inferred-tracking: 0.06em;
   /* icon-button: reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button */
@@ -1891,6 +1893,7 @@
   --mu-r-link-card-path-font: 400 9.5px/1.4 var(--mu-mono);
   --mu-r-link-card-path-tracking: 0.06em;
   --mu-r-link-card-chip-inset: 10px;
+  --mu-r-link-card-chip-z: 2;
   --mu-r-link-card-title-font: 620 14px/1.3 var(--mu-sans);
   --mu-r-link-card-title-tracking: -0.01em;
   --mu-r-link-card-title-lines: 2;
@@ -1975,6 +1978,7 @@
   /* brush: the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring */
   --mu-r-brush-self-min: 6px;
   --mu-r-brush-self-ring: 0.5px;
+  --mu-r-brush-self-z: 50;
   --mu-r-brush-eraser-width: 1px;
   --mu-r-brush-eraser-dash: 3 2;
   --mu-r-brush-cross-arm: 7px;
@@ -2062,11 +2066,13 @@
   --mu-r-folder-flap-open: -55deg;
   --mu-r-folder-flap-taper: 12px;
   --mu-r-folder-flap-frost: blur(6px) saturate(1.2);
+  --mu-r-folder-flap-z: 20;
   --mu-r-folder-count-size: 24px;
   --mu-r-folder-count-pad: 7px;
   --mu-r-folder-name-gap: 4px;
   --mu-r-folder-shape-translucency: 80%;
   --mu-r-folder-shape-shadow-blur: blur(14px);
+  --mu-r-folder-shade-z: 19;
   --mu-r-folder-fan-rest-y-back: -10px;
   --mu-r-folder-fan-rest-y-front: -10px;
   --mu-r-folder-fan-rest-r-back: 10deg;

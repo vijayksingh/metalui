@@ -1921,6 +1921,9 @@
 @utility engraving-led-lift {
   vertical-align: var(--mu-engraving-led-lift);
 }
+@utility z-hover-engraving-z {
+  z-index: var(--mu-r-hover-engraving-self-z);
+}
 @utility backdrop-hover-engraving-blur {
   -webkit-backdrop-filter: var(--mu-r-hover-engraving-self-blur);
   backdrop-filter: var(--mu-r-hover-engraving-self-blur);
@@ -1936,6 +1939,9 @@
 @utility duration-hover-engraving-move {
   --tw-duration: var(--mu-r-hover-engraving-self-move);
   transition-duration: var(--mu-r-hover-engraving-self-move);
+}
+@utility z-hover-engraving-z {
+  z-index: var(--mu-r-hover-engraving-self-z);
 }
 @utility weight-hover-engraving-emphasis-weight {
   font-weight: var(--mu-r-hover-engraving-emphasis-weight);
@@ -2316,7 +2322,7 @@
   display: inline-block; width: var(--mu-cue-swatch); height: var(--mu-cue-swatch); border-radius: var(--mu-cue-swatch-radius); transform: translateY(1px); background: var(--mu-cue-hex); box-shadow: var(--mu-r-mark-swatch-shadow);
 }
 @utility mark-chip {
-  @media (hover: hover) and (pointer: fine) { &[data-chip]:hover::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: 30; font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; } } &[data-chip]:focus-visible::after, &[data-chip][data-reveal]:not([data-raw])::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: 30; font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; } &:has(> .mu-mark-meaning)::after { bottom: calc(100% + var(--mu-r-button-compact-glyph) + var(--mu-space-2) + var(--mu-cue-chip-gap)); }
+  @media (hover: hover) and (pointer: fine) { &[data-chip]:hover::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: var(--mu-r-mark-chip-z); font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; } } &[data-chip]:focus-visible::after, &[data-chip][data-reveal]:not([data-raw])::after { content: attr(data-chip); position: absolute; left: 50%; bottom: calc(100% + var(--mu-cue-chip-gap)); transform: translateX(-50%); padding: var(--mu-cue-chip-pad-y) var(--mu-cue-chip-pad-x); border-radius: var(--mu-radius-pill); white-space: nowrap; pointer-events: none; z-index: var(--mu-r-mark-chip-z); font: var(--mu-r-mark-chip-font); letter-spacing: var(--mu-r-mark-chip-tracking); text-transform: uppercase; text-decoration: none; color: var(--mu-cue-chip-ink); background: var(--mu-frost-graphite-fill); box-shadow: var(--mu-frost-graphite-shadow); animation: mu-cue-chip var(--mu-spring-part-d) var(--mu-spring-part) both; } &:has(> .mu-mark-meaning)::after { bottom: calc(100% + var(--mu-r-button-compact-glyph) + var(--mu-space-2) + var(--mu-cue-chip-gap)); }
 }
 @utility mark-url {
   display: inline-flex; align-items: center; gap: var(--mu-cue-url-gap); height: var(--mu-cue-url-height); padding: 0 var(--mu-cue-url-pad-end) 0 var(--mu-cue-url-pad-start); border-radius: var(--mu-radius-pill); vertical-align: 1px; color: var(--mu-cue-url-ink); text-decoration: none; background: var(--mu-r-mark-url-background); box-shadow: var(--mu-r-mark-url-shadow); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); @media (hover: hover) and (pointer: fine) { &:hover { background: var(--mu-r-mark-url-hover-background); } } & > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
@@ -2369,6 +2375,9 @@
 @utility type-mark-chip {
   font: var(--mu-r-mark-chip-font);
   letter-spacing: var(--mu-r-mark-chip-tracking);
+}
+@utility z-mark-chip-z {
+  z-index: var(--mu-r-mark-chip-z);
 }
 @utility type-mark-inferred {
   font: var(--mu-r-mark-inferred-font);
@@ -2787,6 +2796,9 @@
 @utility link-card-grow {
   transition: height var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
+@utility z-link-card-chip-z {
+  z-index: var(--mu-r-link-card-chip-z);
+}
 @utility stroke-width-link-card-width {
   stroke-width: var(--mu-r-link-card-self-width);
 }
@@ -2797,6 +2809,9 @@
 @utility type-link-card-path {
   font: var(--mu-r-link-card-path-font);
   letter-spacing: var(--mu-r-link-card-path-tracking);
+}
+@utility z-link-card-chip-z {
+  z-index: var(--mu-r-link-card-chip-z);
 }
 @utility type-link-card-title {
   font: var(--mu-r-link-card-title-font);
@@ -2923,6 +2938,12 @@
 }
 @utility brush-pencil {
   opacity: var(--mu-r-brush-pencil-ink);
+}
+@utility z-brush-z {
+  z-index: var(--mu-r-brush-self-z);
+}
+@utility z-brush-z {
+  z-index: var(--mu-r-brush-self-z);
 }
 @utility stroke-width-brush-eraser-width {
   stroke-width: var(--mu-r-brush-eraser-width);
@@ -3070,7 +3091,7 @@
   background: var(--mu-r-folder-card-line-blue);
 }
 @utility folder-flap {
-  position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); @media (hover: hover) and (pointer: fine) { .mu-folder:hover & { --fx: var(--mu-r-folder-flap-hover); } } .mu-folder:focus-visible & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
+  position: absolute; z-index: var(--mu-r-folder-flap-z); left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); box-sizing: border-box; padding: 0 var(--mu-r-folder-flap-pad-x) var(--mu-r-folder-flap-pad-bottom); display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; transform-origin: 50% 100%; transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); transition: transform var(--mu-spring-hinge-d) var(--mu-spring-hinge); @media (hover: hover) and (pointer: fine) { .mu-folder:hover & { --fx: var(--mu-r-folder-flap-hover); } } .mu-folder:focus-visible & { --fx: var(--mu-r-folder-flap-hover); } .mu-folder[data-open] & { --fx: var(--mu-r-folder-flap-open); } @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility folder-land {
   animation: mu-folder-land var(--mu-spring-hinge-d) var(--mu-spring-hinge);
@@ -3088,7 +3109,7 @@
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--mu-r-folder-back-height) + var(--mu-r-folder-back-tab-rise)); filter: var(--mu-r-folder-shape-shadow-blur); transform: translateY(14px) scale(.96, .92); transform-origin: 50% 100%; pointer-events: none;
 }
 @utility folder-flap-shade {
-  position: absolute; z-index: 19; left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); filter: blur(8px); transform: translateY(6px) scale(.97, .9); transform-origin: 50% 100%; pointer-events: none; opacity: .7;
+  position: absolute; z-index: var(--mu-r-folder-shade-z); left: 0; right: 0; bottom: 0; height: var(--mu-r-folder-flap-height); filter: blur(8px); transform: translateY(6px) scale(.97, .9); transform-origin: 50% 100%; pointer-events: none; opacity: .7;
 }
 @utility folder-shade-body {
   position: absolute; inset: 0; background: var(--mu-r-folder-shade-ink);
@@ -3140,9 +3161,15 @@
   -webkit-backdrop-filter: var(--mu-r-folder-flap-frost);
   backdrop-filter: var(--mu-r-folder-flap-frost);
 }
+@utility z-folder-flap-z {
+  z-index: var(--mu-r-folder-flap-z);
+}
 @utility backdrop-folder-shape-shadow-blur {
   -webkit-backdrop-filter: var(--mu-r-folder-shape-shadow-blur);
   backdrop-filter: var(--mu-r-folder-shape-shadow-blur);
+}
+@utility z-folder-shade-z {
+  z-index: var(--mu-r-folder-shade-z);
 }
 @utility duration-folder-fan-stagger {
   --tw-duration: var(--mu-r-folder-fan-stagger);

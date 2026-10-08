@@ -37,7 +37,7 @@ export interface BrushCursorProps {
   className?: string;
 }
 
-const ROOT = 'mu-brush-cursor pointer-events-none fixed left-0 top-0 z-50 overflow-visible';
+const ROOT = 'mu-brush-cursor pointer-events-none fixed left-0 top-0 z-brush-z overflow-visible';
 
 /** A value from the theme. */
 function css(name: string, fallback: number) {

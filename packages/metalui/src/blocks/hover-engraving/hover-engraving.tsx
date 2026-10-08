@@ -20,7 +20,7 @@ import { Led } from '../../components/led/led';
 
 /* Layout and timing from the engraving group. Hidden until a dwell; leaving is immediate (the delay
  * only applies on the way in). A dwell, not a pass: the host must stay hovered for 420 ms. */
-const PILL = 'mu-engraving absolute z-2 flex items-center gap-engraving-gap h-engraving-height px-engraving-pad whitespace-nowrap pointer-events-none opacity-0 engraving-motion engraving-sleep [@media(hover:hover)_and_(pointer:fine)]:[.mu-icon-trigger:hover>&]:not-data-[open=false]:engraving-shown data-[open=true]:engraving-shown data-[open=true]:data-immediate:delay-0';
+const PILL = 'mu-engraving absolute z-hover-engraving-z flex items-center gap-engraving-gap h-engraving-height px-engraving-pad whitespace-nowrap pointer-events-none opacity-0 engraving-motion engraving-sleep [@media(hover:hover)_and_(pointer:fine)]:[.mu-icon-trigger:hover>&]:not-data-[open=false]:engraving-shown data-[open=true]:engraving-shown data-[open=true]:data-immediate:delay-0';
 /* Beside the first line of a text block, so a stacked list below stays readable; under a material block. */
 const PLACEMENT = {
   beside: 'left-full ml-engraving-beside-gap top-engraving-beside-top engraving-beside-out',
