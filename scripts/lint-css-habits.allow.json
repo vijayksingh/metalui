@@ -61,7 +61,6 @@
   "logical-inline: .presence-edge-n ‖ left: 0": 1,
   "logical-inline: .presence-edge-n ‖ right: 0": 1,
   "logical-inline: .presence-edge-w ‖ left: calc(var(--mu-presence-edge-light-width) / -2)": 1,
-  "viewport-units: .palette-at ‖ top: calc(var(--mu-palette-top) * 100vh)": 1,
   "logical-inline: .palette-at ‖ left: 50%": 1,
   "logical-inline: .presence-readout-at ‖ left: 50%": 1,
   "logical-inline: .presence-edge-s ‖ left: 0": 1,
@@ -99,7 +98,6 @@
   "motion-tokens: .select-chevron ‖ transition: color .16s ease": 1,
   "overflow-clip: .accordion-panel ‖ overflow: hidden": 1,
   "motion-tokens: .select-pop[data-ending-style] ‖ transition: opacity .12s ease": 1,
-  "viewport-units: .palette-list-max ‖ max-height: calc(var(--mu-palette-list-max) * 100vh)": 1,
   "motion-tokens: .mu-draw-pick:active:not([data-disabled]) > .draw-lift ‖ transition-duration: 80ms": 1,
   "motion-tokens: .animate-led-blink2 ‖ animation: mu-led-blink2 460ms linear both": 1,
   "motion-tokens: .animate-led-breathe ‖ animation: mu-led-breathe 2400ms ease-in-out infinite": 1,
@@ -150,7 +148,5 @@
   "logical-inline: .\\[\\&\\>\\.mu-led\\]\\:mr-engraving-led-gap > .mu-led ‖ margin-right: var(--mu-engraving-led-gap)": 1,
   "logical-inline: .\\[\\&\\>\\.mu-led\\]\\:mr-lensbar-note-led-gap > .mu-led ‖ margin-right: var(--mu-lensbar-note-led-gap)": 1,
   "overflow-clip: .\\[\\&\\>\\.mu-swap-layer\\]\\:truncate > .mu-swap-layer ‖ overflow: hidden": 1,
-  "logical-inline: .mu-kbd + .\\[\\.mu-kbd\\+\\&\\]\\:ml-kbd-gap ‖ margin-left: var(--mu-r-kbd-self-gap)": 1,
-  "viewport-units: :root ‖ --mu-r-sheet-self-max-height: 85vh": 1,
-  "viewport-units: :root ‖ --mu-r-dialog-self-top: 16vh": 1
+  "logical-inline: .mu-kbd + .\\[\\.mu-kbd\\+\\&\\]\\:ml-kbd-gap ‖ margin-left: var(--mu-r-kbd-self-gap)": 1
 }

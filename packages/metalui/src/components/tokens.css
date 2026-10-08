@@ -1070,7 +1070,7 @@
   --mu-r-meter-zone-danger: 0.9;
   /* sheet: the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer */
   --mu-r-sheet-self-width: 380px;
-  --mu-r-sheet-self-max-height: 85vh;
+  --mu-r-sheet-self-max-height: 85dvh;
   --mu-r-sheet-self-pad: 20px;
   --mu-r-sheet-self-gap: 14px;
   --mu-r-sheet-self-radius: 22px;
@@ -1723,7 +1723,7 @@
   /* dialog: reference style.css #palette */
   --mu-r-dialog-scrim-blur: blur(4px);
   --mu-r-dialog-scrim-z: 50;
-  --mu-r-dialog-self-top: 16vh;
+  --mu-r-dialog-self-top: 16svh;
   --mu-r-dialog-self-enter-y: -6px;
   --mu-r-dialog-self-enter-scale: 0.985;
   --mu-r-dialog-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface);

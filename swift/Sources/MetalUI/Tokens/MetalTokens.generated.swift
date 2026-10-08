@@ -891,7 +891,7 @@ public enum MetalRecipes {
         ],
         props: [
             "self.width": .number(380.0),
-            "self.max-height": .text("85vh"),
+            "self.max-height": .text("85dvh"),
             "self.pad": .number(20.0),
             "self.gap": .number(14.0),
             "self.radius": .number(22.0),
@@ -2217,7 +2217,7 @@ public enum MetalRecipes {
             "scrim.opaque": .perColorway(bone: "rgba(236,235,231,.9)", graphite: "rgba(10,10,11,.9)"),
             "scrim.blur": .text("blur(4px)"),
             "scrim.z": .text("50"),
-            "self.top": .text("16vh"),
+            "self.top": .text("16svh"),
             "self.enter-y": .number(-6.0),
             "self.enter-scale": .text("0.985"),
             "self.transition": .text("opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface)"),
