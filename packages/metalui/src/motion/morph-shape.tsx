@@ -35,11 +35,11 @@ type Transitioning = Document & {
   activeViewTransition?: Running | null;
 };
 
-const NAMED = '[data-morph-name]';
+const namedShapes = '[data-morph-name]';
 
 /** Give the shapes inside `scope` their transition names (or take them away). */
 function name(scope: ParentNode, on: boolean) {
-  const els = [...(scope instanceof Element && scope.matches(NAMED) ? [scope] : []), ...scope.querySelectorAll<HTMLElement>(NAMED)] as HTMLElement[];
+  const els = [...(scope instanceof Element && scope.matches(namedShapes) ? [scope] : []), ...scope.querySelectorAll<HTMLElement>(namedShapes)] as HTMLElement[];
   for (const el of els) {
     el.style.setProperty('view-transition-name', on ? el.dataset.morphName! : '');
     el.style.setProperty('view-transition-class', on ? el.dataset.morphClass ?? '' : '');
