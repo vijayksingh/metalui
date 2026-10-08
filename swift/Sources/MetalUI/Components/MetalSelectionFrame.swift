@@ -17,7 +17,7 @@ public enum MetalSelectionState: Sendable {
 /// The one selection, or its quiet form (a multi-selection member, or a selection made by finishing).
 public enum MetalSelectionVariant: Sendable { case ring, lite }
 
-/// Writing dims the readout to .78; moving returns it to 1.
+/// Writing fades the entire frame away, leaving the object's caret alone.
 public enum MetalSelectionMode: Sendable { case idle, writing, moving }
 
 /// Eight handles on the ring line.
@@ -93,11 +93,16 @@ private struct MetalSelectionFrameModifier: ViewModifier {
                     if state == .selected, readout { readoutView(size) }
                 }
             }
-            .allowsHitTesting(state == .selected && handles != .none)
+            .opacity(mode == .writing ? MetalPresence.readoutWriting : Double.one)
+            .metalAnimation(.settle, value: mode)
+            .allowsHitTesting(mode != .writing && state == .selected && variant == .ring && handles != .none)
+            .accessibilityHidden(true)
         }
         .onChange(of: state == .selected, initial: true) { _, selected in
             // Entrance: 1.02 → 1 on the part spring, once per selection; resizing never replays it.
-            guard selected, variant == .ring else { entered = selected; return }
+            // A frame selected while writing is already entered when writing ends. Do not
+            // start a hidden entrance transaction around the object or its caret.
+            guard selected, variant == .ring, mode != .writing else { entered = selected; return }
             entered = false
             withMetalAnimation(.part, reduceMotion: reduceMotion) { entered = true }
         }
@@ -192,8 +197,6 @@ private struct MetalSelectionFrameModifier: ViewModifier {
 
     private func readoutView(_ size: CGSize) -> some View {
         MetalSizeReadout(size: size, count: count, copied: copied)
-            .opacity(mode == .writing ? MetalPresence.readoutWriting : MetalPresence.guide.alpha)
-            .metalAnimation(.settle, value: mode)
             .position(x: size.width / 2, y: size.height + MetalPresence.readoutGap + MetalPresence.readoutHeight / 2)
             .accessibilityHidden(true)
     }

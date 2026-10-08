@@ -1,6 +1,6 @@
 # Island
 
-Where you are and how things stand, in one graphite capsule. React: `Island` from `@unlocalhosted/metalui`. A composition of `Button` (graphite cap), `Led`, `Label`, `SwapText` and the chevron `MorphIcon`. It paints nothing of its own.
+Where you are and how things stand, in one graphite capsule. React: `Island` from `@unlocalhosted/metalui`. SwiftUI: `MetalIsland`. A composition of the graphite button cap, `Led` / `MetalLED`, `Label`, the detail swap and the chevron. It paints nothing of its own.
 
 ## Use it for
 
@@ -22,13 +22,15 @@ Where you are and how things stand, in one graphite capsule. React: `Island` fro
 |---|---|---|
 | rest | LED, title, detail, chevron | none |
 | hover, pressed, focus | the graphite cap's own | the cap's press travel |
-| open | its menu below | the chevron turns over on the part spring |
+| open | capsule becomes one graphite-deep panel; row stays inside | outline travels on surface; row travels as a shared part; panel arrives one nest from top at popover enter-scale; chevron turns on part |
+| close | panel becomes the original capsule | release spring; panel fades; Esc, outside press, or capsule closes it |
 | announce | the event in the detail's place | the swap drum turns; the capsule's footprint grows first and shrinks after; it turns back after `toast-plain-ms` |
 | condition | the condition is the detail (Offline, a past moment) | stays until it ends |
 
-Reduce Motion: the swap and the chevron resolve without travel.
+Reduce Motion: the swap and the chevron resolve without travel; the body cross-dissolves without resizing travel.
 
 ## Accessibility
 
-- One button: its name is title, detail and the tone in words. Pair it with `Menu` (`trigger={<Island … open={open} />}`).
+- One button: its name is title, detail and the tone in words. With no panel it can trigger the host's menu. With a panel it becomes the panel instead of leaving a trigger behind.
+- SwiftUI: `MetalIsland("Today", detail: "8 blocks", tone: .live, open: $open) { panel }`. The panel builder owns row arrangement, using `island.self.panel-gap`. Omit `open` for internally owned state. Closing returns focus to the capsule; the host's controls retain their normal keyboard navigation inside the panel.
 - A passing event is also read out through a polite live region.

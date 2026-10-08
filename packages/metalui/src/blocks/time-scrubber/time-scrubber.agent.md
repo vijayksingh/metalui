@@ -1,5 +1,7 @@
 # Time scrubber
 
+SwiftUI: `MetalTimeScrubber(..., shape: .bar)` or `.dial`. `MetalDial` takes over the bar while winding/unwinding on the surface spring; at curl 0 the original `MetalSlider` resumes, retaining its jump spring and host drag callbacks. Selection and marks stay bound through the handoff. The ring's readout stands beside the disc, or above in a narrow slot; Reduce Motion resolves the curl immediately. A nil selection means Now, including after shape changes. The native Now action remains available in either shape. Hosts choose the shape for available room.
+
 Time as a dimension of the surface: drag or step back through what was written. A composition block. React: `TimeScrubber` (earlier `MemoryScrubber`) from `@unlocalhosted/metalui`. SwiftUI: `MetalTimeScrubber` (earlier `MetalMemoryScrubber`).
 
 ## Use it for
@@ -26,6 +28,7 @@ Time as a dimension of the surface: drag or step back through what was written. 
 | a click on the track, ← →, ⇧ ← → | the knob jumps an hour, or a day | part spring (instant under Reduce Motion) |
 | past | the readout names the moment; `NOW` shows | – |
 | focus | the 2 pt focus ring around the knob | – |
+| dial | the same moments in a ring; readout beside disc, or above if narrow | winds/unwinds on surface; anticlockwise goes back |
 
 The knob is the one place the scrubber's own arrows win over selection nudges: the host must not nudge while it has focus.
 
@@ -38,7 +41,8 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 | `marks` | `marks:` | block and edit moments |
 | drag state | `onScrubChange:`, `isScrubbing:` | host can defer heavy analysis until release; an active drag has no jump spring |
 | `format` | `format:` | the readout for a past moment |
-| `title` | `title:` | the word before the moment, default MEMORY |
+| `title` | (MEMORY built in) | the word before the moment, default MEMORY |
+| `shape` | `shape:` | `bar` / `.bar`, `dial` / `.dial` |
 | `glyph` | (MetalIcon built in) | the clock at 10 |
 
 ## Rules

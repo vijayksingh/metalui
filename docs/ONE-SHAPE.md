@@ -7,7 +7,7 @@ Each rule is tagged with its origin, as `MORPH.md` does. The idea that a morphin
 ## 1. The rule
 
 1. **The outline morphs.** The shape's size, position and corner radius travel from the old state to the new one on one spring. Corners stay true the whole way; nothing stretches, nothing is scaled to fake a size.
-2. **The contents change inside it, the way a MetalUI surface arrives.** The arriving contents rise one nest (`--mu-motion-nest`) from the edge the body grows from, at the popover's enter scale, on the surface spring, clipped by the moving outline. The leaving contents fade on the release spring and do not travel. *(Ours: the popover's arrival.)*
+2. **The contents change inside it, the way a MetalUI surface arrives.** The arriving contents rise one nest (`--mu-motion-nest`) from the edge the body grows from, at the popover's enter scale, on the part spring, clipped by the moving outline. The leaving contents fade on the release spring and do not travel. *(Ours: the popover's arrival.)*
 3. **One thing on screen.** The trigger does not stay behind while a panel hangs off it. The trigger *is* the panel's closed state.
 4. **Interrupts start from now.** A new state change during a morph starts from the frame on screen.
 5. **Closing is quicker than opening** (the release spring), and goes back into the exact shape it came from; focus returns to it.
@@ -20,7 +20,7 @@ The platform's View Transitions API, used directly: every shape carries its `vie
 | | Boundary | What it does |
 |---|---|---|
 | M1 | **Body** (`mu-morph-body`, `mu-morph-<material>`) | Names the shape. Its `::view-transition-group` is painted in the shape's own material (background, shadow, radius: graphite-deep, the tool cap, pop) while the body's snapshots are hidden, so the platform moves a true outline and nothing is stretched. |
-| M2 | **Contents** (`mu-morph-contents`, `mu-morph-from-top` / `-left`) | Inside the body, clipped by it. Arriving: one nest from the growing edge at the popover's enter scale, surface spring. Leaving: a fade on the release spring. The contents keep their size, pinned to the edge the body grows from. |
+| M2 | **Contents** (`mu-morph-contents`, `mu-morph-from-top` / `-left`) | Inside the body, clipped by it. Arriving: one nest from the growing edge at the popover's enter scale, part spring. Leaving: a fade on the release spring. The contents keep their size, pinned to the edge the body grows from. |
 | M3 | **Shared name** | When the closed and open states are different elements (a button and a dialog), both render under the same `name` with `share`, and only one exists at a time. React pairs them. |
 | M3b | **Parts that stay** (`MorphPart`) | A part present in both states (the capsule's own row inside its panel) gets its own named group and travels on the body's spring instead of dissolving, so it never ghosts. |
 | M3c | **Contents replaced** | The contents are one named group, so whatever replaces them (a panel's second page) leaves and arrives inside the body, even when the outline does not change. |
@@ -28,11 +28,15 @@ The platform's View Transitions API, used directly: every shape carries its `vie
 | M4b | **After it lands** (`afterMorph`) | Focus moves, tooltips and anything else that follows a morph run once it has landed. A render scheduled while the morph is starting makes React skip it. |
 | M4b′ | **Focus comes back only to nothing** (`returnFocusAfterMorph`) | When a morph lands, focus returns to its trigger only if nothing else has taken it since (a dialog it opened, a control the person moved to). |
 | M4c | **Fold on the outside click, not the press** | Starting a morph holds the page for a frame; on a press, the click that follows is lost. Folding on the click lets what was clicked act first. |
-| M5 | **Timing** | Our springs, never ad hoc: the body rides the surface spring; `close` rides the release spring; durations scale by `--mu-travel-surface`. **One spring per morph:** the body, its contents and its parts always share the spring and duration, or the inside drifts against the outline (a shake). |
+| M5 | **Timing** | Our springs, never ad hoc: the body opens on the part spring (most of the way in a third of its time, a small give; the surface spring read as lag); `close` rides the release spring; durations scale by `--mu-travel-surface`. **One spring per morph:** the body, its contents and its parts always share the spring and duration, or the inside drifts against the outline (a shake). |
 | M5b | **The page holds still** | `:root { view-transition-name: none }`: only the named shapes move; the page never cross-fades behind them. |
 | M6 | **Fallback** | Without View Transitions the state simply changes. No polyfill, no JS-driven size animation to imitate it. |
 
-SwiftUI: `matchedGeometryEffect` on the body, the contents' transition built from the same tokens (one nest of offset from the growing edge, the popover enter scale, opacity), inside one animation on the surface spring (release when closing).
+**SwiftUI.** `matchedGeometryEffect` on the body, the contents' transition built from the same tokens (one nest of offset from the growing edge, the popover enter scale, opacity), inside one animation: the part spring to open, the release spring to close, shared by the body, its contents and its parts.
+
+**SwiftUI check:** match the body's geometry before applying its material recipe so the surface paints in the travelling box with true corners. Match a retained capsule row separately with `properties: .position`; its typography and cap must not stretch or dissolve with the outline. `MetalIsland` uses the generated part spring to open (quick off the mark, a small give), release to close, and an asymmetric panel transition: insertion fades from one nest toward the top at `MetalRecipes.popover`'s `self.enter-scale`; removal only fades. Disable geometry matching under `@MetalMotionPreference`, keeping the generated crossfade instead. The generic content reveal reads `MetalRecipes.morphShape`'s `self.reveal-scale`, never a local scale literal. Hosts arrange panel rows using the island panel-gap token and retain the controls' keyboard navigation; closing returns focus to the capsule.
+
+For the bar ↔ dial, interpolate `MetalDial`'s curl through `Animatable` geometry on the surface spring (it is a slow wind, not an opening): the curve, marks, ticks, knob position and disc diameter come from the same fraction. A path is redrawn while winding, rather than stretching a snapshot or animating a CSS box. No clock runs at rest; Reduce Motion resolves the curl immediately. `MetalTimeScrubber` hands the bar to this curve at curl 0, then restores the bar's slider only after unwinding reaches 0, preserving its existing jump spring and the host's bound moment.
 
 ## 3. Never
 

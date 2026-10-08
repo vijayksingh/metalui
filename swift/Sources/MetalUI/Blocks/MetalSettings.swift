@@ -53,20 +53,15 @@ public struct MetalSettings: View {
         }
 
         public var body: some View {
-            HStack(spacing: MetalSettingsMetrics.rowGap) {
+            MetalSettingsRowLayout {
                 VStack(alignment: .leading, spacing: MetalSettingsMetrics.detailGap) {
                     MetalLabel(name, style: .name)
-                    // One line, cut in the middle like a Finder path: a long detail (a data
-                    // folder) must never widen the row or run under its control.
                     if let detail, !detail.isEmpty {
                         MetalLabel(detail, style: .detail)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
                             .help(detail)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .layoutPriority(-1)
                 control.fixedSize()
             }
             .padding(.horizontal, MetalSettingsMetrics.rowPadX)

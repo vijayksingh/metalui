@@ -28,9 +28,12 @@ public struct MetalLabel: View {
             default: return nil
             }
         }
-        var wraps: Bool { self == .display || self == .displayQuiet }
-        /// A detail line gives way: it is cut, never widens its row.
-        var truncates: Bool { self == .detail }
+        var wraps: Bool {
+            switch self {
+            case .display, .displayQuiet, .name, .detail: return true
+            default: return false
+            }
+        }
     }
 
     public enum Tone: Sendable { case accent }
@@ -85,7 +88,7 @@ public struct MetalLabel: View {
             .shadow(color: lip?.color.color ?? .clear,
                     radius: lip?.blur ?? .zero, x: lip?.x ?? .zero, y: lip?.y ?? .zero)
             .lineLimit(style.wraps ? nil : 1)
-            .fixedSize(horizontal: !style.wraps && !style.truncates, vertical: true)
+            .fixedSize(horizontal: !style.wraps, vertical: true)
             .frame(height: style.wraps ? nil : ceil(recipe.lineHeight("\(part).font")))
             .metalAnimation(.settle, value: tone == .accent)
             .accessibilityLabel(raw)

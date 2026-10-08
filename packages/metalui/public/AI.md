@@ -1327,7 +1327,7 @@ The day recipe: sizes, the tear timing, and the per-colorway inks (off, left, ho
 
 # Dial
 
-A slider wound into a ring: a value you turn. React: `Dial` from `@unlocalhosted/metalui`. It draws its own track (the `dial` recipe's colours) and wears the slider's knob.
+A slider wound into a ring: a value you turn. React: `Dial` from `@unlocalhosted/metalui`. SwiftUI: `MetalDial`. It draws its own track (the `dial` recipe's colours) and wears the slider's knob.
 
 ## Use it for
 
@@ -1340,25 +1340,26 @@ A slider wound into a ring: a value you turn. React: `Dial` from `@unlocalhosted
 
 ## Anatomy
 
-- One track of one length. `curl` 0 is a straight bar; 1 is a ring of `sweep` degrees with the max end level at twelve o'clock.
+- One track carries the curl. `curl` 0 is a straight bar; 1 is a ring of `sweep` degrees with the gap at six o'clock, min at seven, max at five. `barLength` optionally supplies the unwound length; otherwise the length stays fixed.
 - Fill from min to the knob; marks across the track; ticks outside it (labels only while it is a bar).
-- The slider's knob, a `role="slider"` element. A readout in the ring's centre (`children`).
+- The bar's slider knob travels to the centre and grows into a knurled disc; the disc and indicator dot face the value. The host places its readout beside the dial (there is no `children` slot).
 
 ## States and motion
 
 | State | Look | Motion |
 |---|---|---|
 | rest | track, fill, knob, readout | none |
-| drag | the knob at the track's nearest point to the pointer | follows exactly; never jumps across the gap |
+| drag | value at the track's nearest point; disc faces it | follows exactly; never jumps across the gap |
 | wheel | one step a notch; down turns back | follows |
 | keys | ← ↓ back, → ↑ on, shift for a large step, PageUp/PageDown, Home, End | follows |
-| curl | the one track winds or unwinds; marks, ticks and knob ride it | surface spring, no overshoot; the readout fades in as the ring closes |
+| curl | the one track winds or unwinds; marks and ticks ride it; knob grows into centre disc | surface spring, no overshoot; labels fade out while winding |
 
 Reduce Motion: the curl resolves without travel.
 
 ## Accessibility
 
 - The knob is the slider: give `aria-label` and `aria-valuetext` (the value in words).
+- SwiftUI: `MetalDial(value: $value, in: min...max, step: step, curl: curl, label: "Level", valueText: formatter)`; supports slider keys and VoiceOver adjustable actions. `onFocusChange` and `onDragChange` tell the host when it is being handled. Scroll is scoped to its bounds, on macOS and iPad with a pointing device.
 
 ---
 
@@ -1965,7 +1966,7 @@ A pressable cap with only a glyph. React: `IconButton`. SwiftUI: `MetalIconButto
 
 # Island
 
-Where you are and how things stand, in one graphite capsule. React: `Island` from `@unlocalhosted/metalui`. A composition of `Button` (graphite cap), `Led`, `Label`, `SwapText` and the chevron `MorphIcon`. It paints nothing of its own.
+Where you are and how things stand, in one graphite capsule. React: `Island` from `@unlocalhosted/metalui`. SwiftUI: `MetalIsland`. A composition of the graphite button cap, `Led` / `MetalLED`, `Label`, the detail swap and the chevron. It paints nothing of its own.
 
 ## Use it for
 
@@ -1987,15 +1988,17 @@ Where you are and how things stand, in one graphite capsule. React: `Island` fro
 |---|---|---|
 | rest | LED, title, detail, chevron | none |
 | hover, pressed, focus | the graphite cap's own | the cap's press travel |
-| open | its menu below | the chevron turns over on the part spring |
+| open | capsule becomes one graphite-deep panel; row stays inside | outline travels on surface; row travels as a shared part; panel arrives one nest from top at popover enter-scale; chevron turns on part |
+| close | panel becomes the original capsule | release spring; panel fades; Esc, outside press, or capsule closes it |
 | announce | the event in the detail's place | the swap drum turns; the capsule's footprint grows first and shrinks after; it turns back after `toast-plain-ms` |
 | condition | the condition is the detail (Offline, a past moment) | stays until it ends |
 
-Reduce Motion: the swap and the chevron resolve without travel.
+Reduce Motion: the swap and the chevron resolve without travel; the body cross-dissolves without resizing travel.
 
 ## Accessibility
 
-- One button: its name is title, detail and the tone in words. Pair it with `Menu` (`trigger={<Island … open={open} />}`).
+- One button: its name is title, detail and the tone in words. With no panel it can trigger the host's menu. With a panel it becomes the panel instead of leaving a trigger behind.
+- SwiftUI: `MetalIsland("Today", detail: "8 blocks", tone: .live, open: $open) { panel }`. The panel builder owns row arrangement, using `island.self.panel-gap`. Omit `open` for internally owned state. Closing returns focus to the capsule; the host's controls retain their normal keyboard navigation inside the panel.
 - A passing event is also read out through a polite live region.
 
 ---
@@ -2059,6 +2062,7 @@ Text in a set role. React: `Label`. SwiftUI: `MetalLabel`.
 
 ## Behaviour
 
+- `display`, `display-quiet`, `name`, and `detail` wrap to their column in React and SwiftUI; every other role stays on one line.
 - Plain text: no role. An engraving that is the only name of a control is not an accessible name; give the control an `aria-label`.
 - `as="input"`: an editable label (a region's name) that keeps the look, with the green caret and no field, sized to its content; give it an `aria-label`.
 
@@ -3439,11 +3443,11 @@ the object sheet: the one selection for every kind of object. React: `SelectionF
 | rest | nothing | – |
 | hover | corner dots; edge light on one edge | fade on settle |
 | selected | ring, collar, handles, readout | ring and handles enter from 1.02 on the part spring, once |
-| selected · writing | the same; readout at .78 | re-measures in the same frame as each keystroke; never replays its entrance |
+| selected · writing | nothing but the object's caret; handles take no hits | entire frame fades out on settle; still re-measures with each keystroke; leaving writing fades it back without replaying entrance |
 | selected · moving | readout at 1 | – |
 | lite | a 1 pt quiet ring, no collar, no handles | none |
 
-Reduce Motion: part resolves instant, so the ring appears without its entrance; the dots and readout still fade (settle crossfades).
+Reduce Motion: part resolves instant, so the ring appears without its entrance; the dots and writing frame still fade (settle crossfades).
 
 ## API
 
@@ -3514,7 +3518,7 @@ An app's settings as sections of rows. React: `Settings` with `Settings.Section`
 ## Anatomy
 
 - Section: the heading engraved 8 above a raised card; sections 28 apart.
-- Row: at least 52 tall, 12 / 18 padding; the name (`Label name`, 13.5 at weight 500) and one short detail line (`Label detail`, 12) on the left; one control on the right, 16 away.
+- Row: at least 52 tall, 12 / 18 padding; the name (`Label name`, 13.5 at weight 500) and one short detail sentence (`Label detail`, 12) on the left; one control on the right, 16 away. Both sentences wrap; the control moves below when the text would be narrower than text-min.
 - Engraved rules between rows, inset 18 so they align with the text.
 - Keys: a shortcut row: what it does, then one keycap per key.
 
@@ -3528,8 +3532,9 @@ An app's settings as sections of rows. React: `Settings` with `Settings.Section`
 ## Rules
 
 - One control per row. A row never raises on hover; only its control acts.
+- Name and detail wrap. Keep their column at least `settings.text-min` (180); when text, `row-gap`, and control cannot fit, place the control below with `settings.stack-gap` (10). Below 180, the text uses the available row width. React and SwiftUI retain the same control while rearranging.
 - The name says what is on, in plain words: "Sync this canvas", not "Enable sync".
-- The detail says what it does or what it is now, in one line.
+- The detail says what it does or what it is now, in one short sentence.
 
 ---
 
@@ -4524,6 +4529,8 @@ Regular and compact match Field’s 12.5px UI text. The default large size prese
 
 # Time scrubber
 
+SwiftUI: `MetalTimeScrubber(..., shape: .bar)` or `.dial`. `MetalDial` takes over the bar while winding/unwinding on the surface spring; at curl 0 the original `MetalSlider` resumes, retaining its jump spring and host drag callbacks. Selection and marks stay bound through the handoff. The ring's readout stands beside the disc, or above in a narrow slot; Reduce Motion resolves the curl immediately. A nil selection means Now, including after shape changes. The native Now action remains available in either shape. Hosts choose the shape for available room.
+
 Time as a dimension of the surface: drag or step back through what was written. A composition block. React: `TimeScrubber` (earlier `MemoryScrubber`) from `@unlocalhosted/metalui`. SwiftUI: `MetalTimeScrubber` (earlier `MetalMemoryScrubber`).
 
 ## Use it for
@@ -4550,6 +4557,7 @@ Time as a dimension of the surface: drag or step back through what was written. 
 | a click on the track, ← →, ⇧ ← → | the knob jumps an hour, or a day | part spring (instant under Reduce Motion) |
 | past | the readout names the moment; `NOW` shows | – |
 | focus | the 2 pt focus ring around the knob | – |
+| dial | the same moments in a ring; readout beside disc, or above if narrow | winds/unwinds on surface; anticlockwise goes back |
 
 The knob is the one place the scrubber's own arrows win over selection nudges: the host must not nudge while it has focus.
 
@@ -4562,7 +4570,8 @@ The knob is the one place the scrubber's own arrows win over selection nudges: t
 | `marks` | `marks:` | block and edit moments |
 | drag state | `onScrubChange:`, `isScrubbing:` | host can defer heavy analysis until release; an active drag has no jump spring |
 | `format` | `format:` | the readout for a past moment |
-| `title` | `title:` | the word before the moment, default MEMORY |
+| `title` | (MEMORY built in) | the word before the moment, default MEMORY |
+| `shape` | `shape:` | `bar` / `.bar`, `dial` / `.dial` |
 | `glyph` | (MetalIcon built in) | the clock at 10 |
 
 ## Rules

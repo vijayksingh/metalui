@@ -28,11 +28,11 @@ the object sheet: the one selection for every kind of object. React: `SelectionF
 | rest | nothing | – |
 | hover | corner dots; edge light on one edge | fade on settle |
 | selected | ring, collar, handles, readout | ring and handles enter from 1.02 on the part spring, once |
-| selected · writing | the same; readout at .78 | re-measures in the same frame as each keystroke; never replays its entrance |
+| selected · writing | nothing but the object's caret; handles take no hits | entire frame fades out on settle; still re-measures with each keystroke; leaving writing fades it back without replaying entrance |
 | selected · moving | readout at 1 | – |
 | lite | a 1 pt quiet ring, no collar, no handles | none |
 
-Reduce Motion: part resolves instant, so the ring appears without its entrance; the dots and readout still fade (settle crossfades).
+Reduce Motion: part resolves instant, so the ring appears without its entrance; the dots and writing frame still fade (settle crossfades).
 
 ## API
 

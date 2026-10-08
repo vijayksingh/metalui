@@ -686,7 +686,7 @@
       "name": "dial",
       "type": "registry:ui",
       "title": "Dial",
-      "description": "A slider wound into a ring: one track that carries a curl from a straight bar to a ring, its max end level at twelve o'clock, so turning anticlockwise lowers the value. Marks and ticks ride the track; the slider's knob turns round it; the centre holds a readout. Drag round or along, wheel, or the slider keys. Winding runs on the surface spring.",
+      "description": "A slider wound into a ring: one track carries a curl from a straight bar to a ring with its gap at six o'clock, min at seven and max at five. Turning anticlockwise lowers the value. Marks and ticks ride the track; the knob travels to the centre and grows into a knurled disc whose dot faces the value. Drag round or along, wheel, or use the slider keys. Winding runs on the surface spring.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/motion.json",
@@ -699,7 +699,7 @@
           "target": "components/metalui/components/dial/dial.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/dial.md. SwiftUI: not yet (planned: MetalDial)."
+      "docs": "Agent guide: https://metalui.dev/r/dial.md. SwiftUI: MetalDial in the MetalUI Swift package."
     },
     {
       "name": "dialog",
@@ -1061,7 +1061,7 @@
           "target": "components/metalui/components/island/island.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/island.md. SwiftUI: not yet (planned: MetalIsland)."
+      "docs": "Agent guide: https://metalui.dev/r/island.md. SwiftUI: MetalIsland in the MetalUI Swift package."
     },
     {
       "name": "kbd",

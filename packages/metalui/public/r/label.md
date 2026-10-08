@@ -21,5 +21,6 @@ Text in a set role. React: `Label`. SwiftUI: `MetalLabel`.
 
 ## Behaviour
 
+- `display`, `display-quiet`, `name`, and `detail` wrap to their column in React and SwiftUI; every other role stays on one line.
 - Plain text: no role. An engraving that is the only name of a control is not an accessible name; give the control an `aria-label`.
 - `as="input"`: an editable label (a region's name) that keeps the look, with the green caret and no field, sized to its content; give it an `aria-label`.
