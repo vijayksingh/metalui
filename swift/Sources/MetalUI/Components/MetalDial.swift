@@ -197,6 +197,12 @@ private struct MetalDialBody: View, Animatable {
 }
 
 
+extension MetalDial {
+    /// The fully wound disc's footprint, for a host laying out a row around it.
+    public static var woundSize: CGSize { MetalDialGeometry(curl: .one, barLength: nil).size }
+}
+
+
 /// The web dial's constant-curvature construction, sampled for drawing and pointer projection.
 /// Numbers here are mathematical fractions/sample counts; all physical dimensions are recipes.
 struct MetalDialGeometry {
