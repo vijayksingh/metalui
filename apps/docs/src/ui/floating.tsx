@@ -241,7 +241,7 @@ const ITEMS: Item[] = [
   { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray, seeds }) => <TableSwatch config={seeds.swatch} open={() => openXray('swatch')} /> },
   {
     // the brand, front and centre among the things it makes; hung back in the scene like its neighbours.
-    id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
+    id: 'wordmark', table: ['48.8%', '22.9%'], space: ['43%', '42%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
     node: ({ openXray, seeds }) => <WordmarkObject m={seeds.wordmark ?? WORDMARK} onClick={() => openXray('wordmark')} />,
   },
   {

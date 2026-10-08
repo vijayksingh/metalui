@@ -8,7 +8,7 @@ import { COLORWAYS, capture } from './helpers';
 async function openLanding(page: Page, path: string, colorway: string) {
   await page.addInitScript((c) => localStorage.setItem('metalui:colorway', c), colorway);
   await page.goto(path);
-  await page.waitForSelector('[data-float="button"]');
+  await page.waitForSelector('[data-float]');
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -26,7 +26,7 @@ const gap = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.h
 
 for (const colorway of COLORWAYS) {
   for (const [path, id, part, title] of [
-    ['/', 'button', 'button', 'Button, x-ray'],
+    ['/overview', 'button', 'button', 'Button, x-ray'],
     ['/overview', 'swatch', '> *', 'Swatch, x-ray'],
   ] as const) {
     test(`${title.split(',')[0].toLowerCase()} flies onto its x-ray model and back on ${path} in ${colorway}`, async ({ page }) => {
@@ -111,7 +111,7 @@ test('a closing flight turns around when you click the object in the air', async
 
 test('with reduced motion the x-ray opens and closes in place', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await openLanding(page, '/', 'bone');
+  await openLanding(page, '/overview', 'bone');
   await page.locator('[data-float="button"] button').click({ force: true });
   const sheet = page.getByRole('dialog', { name: 'Button, x-ray' });
   await expect(sheet).toBeVisible();

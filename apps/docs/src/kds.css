@@ -653,6 +653,22 @@ html.rm .drift-item { animation: none; }
 .landing-foot { position: absolute; z-index: 5; left: 0; right: 0; bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; pointer-events: none; }
 .landing-foot > * { pointer-events: auto; }
 .landing-foot .mu-button { zoom: 1.25; }
+/* The way in wears the wordmark's red enamel, with a soft halo so it reads as the one thing to press. It
+   re-points the Button's own primary tokens, so press travel, focus ring and springs stay the Button's. */
+.landing-cta {
+  --mu-r-button-primary-ink: #FFFFFF;
+  --mu-r-button-primary-background: linear-gradient(180deg, #e2362b 0%, #c41e17 55%, #9e140f 100%);
+  --mu-r-button-primary-shadow: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1px 2px rgba(80,0,0,.35), 0 0 0 .5px rgba(110,10,0,.6), 0 2px 4px rgba(120,10,0,.25), 0 0 0 5px rgba(226,54,43,.14), 0 10px 28px -6px rgba(226,54,43,.55);
+  --mu-r-button-primary-pressed-background: linear-gradient(180deg, #b81a14 0%, #a3150f 100%);
+  --mu-r-button-primary-pressed-shadow: inset 0 1px 3px rgba(60,0,0,.55), 0 0 0 .5px rgba(110,10,0,.7), 0 0 0 4px rgba(226,54,43,.12);
+}
+@media (hover: hover) and (pointer: fine) {
+  .landing-cta:hover { --mu-r-button-primary-shadow: inset 0 1px 1px rgba(255,255,255,.4), inset 0 -1px 2px rgba(80,0,0,.35), 0 0 0 .5px rgba(110,10,0,.6), 0 2px 4px rgba(120,10,0,.25), 0 0 0 7px rgba(226,54,43,.2), 0 14px 34px -6px rgba(226,54,43,.7); }
+}
+/* The wordmark is the brand: on the front door it hangs a size up from its place on the overview table. */
+.drift-item.in-space[data-float="wordmark"] { zoom: 1.4; }
+/* The front door has one way in: the Button specimen stays on the overview table, not in the space beside it. */
+.drift-item.in-space[data-float="button"] { display: none; }
 .landing-line { margin: 0; font: 600 28px/34px var(--sans); letter-spacing: -.03em; color: var(--ink); }
 .landing-line span { color: var(--ink3); }
 .space { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 40%; }
@@ -666,7 +682,7 @@ html.rm .drift-item { animation: none; }
   to { transform: translate3d(var(--dx, 40px), var(--dy, -24px), var(--z, 0px)) rotateY(calc(var(--turn, 0deg) * .6)) rotateX(-2deg); }
 }
 html.rm .drift-item.in-space { animation: none; transform: translate3d(0, 0, var(--z, 0px)) rotateY(var(--turn, 0deg)); }
-@media (max-width: 700px) { .drift-item.in-space { zoom: .72; } .landing-line { font-size: 22px; line-height: 28px; } }
+@media (max-width: 700px) { .drift-item.in-space { zoom: .72; } .drift-item.in-space[data-float="wordmark"] { zoom: 1; } .landing-line { font-size: 22px; line-height: 28px; } }
 
 /* "Browse Components": each object flies from space to its place on the table */
 ::view-transition-group(*) { animation-duration: .75s; animation-timing-function: var(--mu-spring-surface, cubic-bezier(.2,.7,.2,1)); }
@@ -747,6 +763,9 @@ html.rm .xr-leaders path, html.rm .xr-leaders circle { transition: none; }
 .xr-segface { position: absolute; left: 0; top: 0; width: max-content; transform-origin: 0 0; transition: transform var(--spring-object-d) var(--spring-object); }
 /* a fitted scene scales by transform, never by zoom, so the faces keep the object's own layout */
 .xr-scene.is-fitted { zoom: 1; }
+/* An exploded stack rises off the floor: the scene drops by half its rise (useFit sets --xr-lift) so the stack stays on the bench. */
+.xr-bench > .xr-scene.is-fitted { transform: translateY(var(--xr-lift, 0px)); transition: transform var(--spring-object-d) var(--spring-object); }
+html.rm .xr-bench > .xr-scene.is-fitted { transition: none; }
 .xr-fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .xr-segface.is-well .mu-switcher-thumb, .xr-segface.is-well .mu-switcher-option { visibility: hidden; }
 .xr-segface.is-raised .mu-switcher { background: none; box-shadow: none; }

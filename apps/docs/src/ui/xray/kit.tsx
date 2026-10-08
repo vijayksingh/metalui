@@ -134,21 +134,31 @@ export function planeStyle(z: number, S: number, oz: number, x = 0, y = 0): Reac
 
 export function useFit(bench: React.RefObject<HTMLDivElement | null>, w: number, h: number, active: boolean) {
   const [room, setRoom] = React.useState<[number, number]>([0, 0]);
+  // how high the tallest exploded layer stands (Exploded marks each with data-z), so the stack fits too
+  const [lift, setLift] = React.useState(0);
   React.useLayoutEffect(() => {
     if (!active) return;
     const el = bench.current; if (!el) return;
     const read = () => setRoom([el.clientWidth, el.clientHeight]);
-    read();
+    const climb = () => setLift(Math.max(0, ...[...el.querySelectorAll<HTMLElement>('.xr-face.is-layer[data-z]')].map((f) => Number(f.dataset.z) || 0)));
+    read(); climb();
     const ro = new ResizeObserver(read); ro.observe(el);
-    return () => ro.disconnect();
+    const mo = new MutationObserver(climb); mo.observe(el, { childList: true, subtree: true });
+    return () => { ro.disconnect(); mo.disconnect(); };
   }, [bench, active]);
-  // the tilted model's footprint: rotateZ(-38°) then rotateX(58°) squashes its height by cos 58°
+  // the tilted model's footprint: rotateZ(-38°) then rotateX(58°) squashes its height by cos 58°, and a layer
+  // standing z off the floor rises z·sin 58° on screen, plus room for its engraved tag
+  const rise = lift ? lift * RISE + 28 : 0;
   const wide = w * 0.79 + h * 0.62;
-  const tall = (w * 0.62 + h * 0.79) * 0.53 + 40;
+  const tall = (w * 0.62 + h * 0.79) * 0.53 + 40 + rise;
   // narrow benches put the callouts in a row under the model, so the model can use the full width
   const narrow = room[0] > 0 && room[0] < NARROW;
-  return room[0] ? Math.min(1, (room[0] - (narrow ? 40 : 150)) / wide, (room[1] - (narrow ? 250 : 150)) / tall) : 1;
+  const fit = room[0] ? Math.min(1, (room[0] - (narrow ? 40 : 150)) / wide, (room[1] - (narrow ? 250 : 150)) / tall) : 1;
+  // the scene drops by half the rise, so model and stack are centred together on the bench (a transform: no layout)
+  React.useLayoutEffect(() => { bench.current?.style.setProperty('--xr-lift', `${(rise * fit) / 2}px`); }, [bench, rise, fit]);
+  return fit;
 }
+const RISE = Math.sin((58 * Math.PI) / 180);
 
 export type Side = Record<string, ['left' | 'right', number]>;
 
@@ -276,7 +286,7 @@ export function Exploded({ layers, on, fill, shadows, backgrounds, x = 0, y = 0,
   return (
     <>
       {layers.map((l, i) => (
-        <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', on[i] ? '' : 'is-off'].join(' ')}
+        <div key={l.name} className={['xr-face is-layer', focus === l.name ? 'is-focus' : '', on[i] ? '' : 'is-off'].join(' ')} data-z={z0 + i * gap}
           style={{ width: w, height: h, borderRadius: r, transform: `translate(${x}px, ${y}px) translateZ(${z0 + i * gap}px)`, background: backgrounds?.[i] ?? (i === 0 ? fill : 'transparent'), boxShadow: i === 0 ? 'none' : scalePx(shadows[i - 1] ?? '', scale) }}>
           <span className="xr-tag eng">{l.name}</span>
         </div>
