@@ -102,7 +102,8 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
   // A hover inside :not() is the rest state, true on touch, so it stays ungated.
   const hover = pseudo('hover').test(calls(s, 'not').reverse().reduce((t, c) => t.slice(0, c.start) + t.slice(c.end), s)) && !gated(r);
   const scroller = !decls.some((d) => /^overscroll-behavior(?:-|$)/.test(d.prop));
-  const shadow = pseudo('focus-visible').test(s) && !decls.some(outline) && !utility(s);
+  // A shadow on a ::before/::after is that layer's own (a revealed chip), not the focus ring.
+  const shadow = pseudo('focus-visible').test(s) && !/::?(before|after)$/.test(s) && !decls.some(outline) && !utility(s);
   for (const d of decls) {
     const p = d.prop, v = d.value, plain = withoutVars(v);
     if (hover) add('hover-gate', s, d);

@@ -46,7 +46,10 @@ export interface ButtonProps extends BaseButton.Props {
 /* Styled with the theme's utilities: the button recipe's sizes, type and layered looks
  * (recipe-button[-<part>][-pressed]). While held it sinks by the recipe's travel in the press time,
  * linear, into its pressed look; it springs back on release. */
-const FRAME = 'box-border inline-flex items-center justify-center m-0 border-0 whitespace-nowrap cursor-pointer select-none antialiased tap-highlight-none [&>svg]:flex-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep data-disabled:cursor-default data-disabled:opacity-button-disabled';
+const BODY = 'box-border inline-flex items-center justify-center m-0 border-0 whitespace-nowrap cursor-pointer select-none antialiased tap-highlight-none [&>svg]:flex-none data-disabled:cursor-default data-disabled:opacity-button-disabled';
+/** The cap's own focus ring; a strip key shows focus as a fill instead (button-strip-focus). */
+const RING = 'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep';
+const FRAME = `${BODY} ${RING}`;
 const PRESS = 'not-data-disabled:active:translate-y-button-travel not-data-disabled:active:duration-button-press not-data-disabled:active:ease-linear';
 const REGULAR = 'gap-button-gap h-button-height px-button-pad rounded-pill type-ui transition-button [&>svg]:size-button-glyph';
 
@@ -56,8 +59,8 @@ const CAPS: Record<ButtonCap, string> = {
   destructive: `${REGULAR} text-button-destructive-ink recipe-button-destructive ${PRESS} not-data-disabled:active:recipe-button-destructive-pressed`,
   link: 'gap-button-gap [&>svg]:size-button-compact-glyph h-auto p-0 rounded-none bg-transparent type-button-link text-button-link-ink transition-button',
   graphite: `[&>svg]:size-button-compact-glyph gap-button-gap h-button-graphite-height px-button-graphite-pad rounded-pill type-button-graphite text-button-graphite-ink recipe-button-graphite transition-button ${PRESS}`,
-  strip: `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button pointer-hover:text-button-strip-ink-hover pointer-hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
-  'strip-danger': `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button pointer-hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
+  strip: `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button pointer-hover:text-button-strip-ink-hover pointer-hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:button-strip-focus`,
+  'strip-danger': `[&>svg]:size-button-compact-glyph gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button pointer-hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:button-strip-focus`,
 };
 const COMPACT = `gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact text-ink2 pointer-hover:text-ink recipe-button-compact transition-button-compact [&>svg]:size-button-compact-glyph ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`;
 
@@ -71,7 +74,7 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
     const dimensions = 'gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact [&>svg]:size-button-compact-glyph transition-button';
     return `${FRAME} ${dimensions} ${cap === 'primary' ? 'text-button-primary-ink recipe-button-primary not-data-disabled:active:recipe-button-primary-pressed' : 'text-button-destructive-ink recipe-button-destructive not-data-disabled:active:recipe-button-destructive-pressed'} ${PRESS}`;
   }
-  return `${FRAME} ${compact ? COMPACT : CAPS[cap]}`;
+  return `${cap === 'strip' || cap === 'strip-danger' ? BODY : FRAME} ${compact ? COMPACT : CAPS[cap]}`;
 }
 
 /**

@@ -623,6 +623,24 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
   outline: var(--mu-focus-width) solid var(--mu-focus);
   outline-offset: var(--mu-zero);
 }
+/* A focus shown as a fill (a row, a strip key) still carries a ring: transparent, inside the edge, so it
+   is unseen until forced colors paints it in the system's highlight, where fills and shadows are dropped. */
+@utility focus-ring-forced {
+  outline: var(--mu-focus-width) solid transparent;
+  outline-offset: calc(var(--mu-focus-width) * -1);
+}
+@utility row-list-focus {
+  @apply recipe-row-list-hover focus-ring-forced;
+}
+@utility row-panel-focus {
+  @apply recipe-row-panel-hover focus-ring-forced;
+}
+@utility row-option-focus {
+  @apply recipe-row-option-on focus-ring-forced;
+}
+@utility button-strip-focus {
+  @apply recipe-button-strip-focus focus-ring-forced;
+}
 /* The invalid ring (foundations): a hairline in the invalid ink inside the control's edge, drawn on its
    own layer so it never replaces the control's shadow stack, and never the focus ring's job. */
 @utility invalid-ring {

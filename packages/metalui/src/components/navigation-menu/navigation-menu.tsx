@@ -28,7 +28,7 @@ const POSITIONER = 'mu-navigation-positioner z-menu-z navigation-menu-positioner
 const POPUP = 'mu-navigation-popup relative overflow-hidden rounded-menu-radius outline-none recipe-menu backdrop-menu-blur reduce-transparency:opaque-frost navigation-menu-popup';
 const VIEWPORT = 'mu-navigation-viewport relative h-full w-full overflow-hidden';
 const CONTENT = 'mu-navigation-content w-max p-navigation-menu-plate-pad navigation-menu-content data-ending-style:absolute data-ending-style:inset-0';
-const PANEL_LINK = 'mu-navigation-link grid gap-navigation-menu-link-gap px-navigation-menu-link-pad-x py-navigation-menu-link-pad-y rounded-navigation-menu-link-radius no-underline outline-none transition-row pointer-hover:recipe-row-list-hover focus-visible:recipe-row-list-hover data-active:recipe-row-list-hover';
+const PANEL_LINK = 'mu-navigation-link grid gap-navigation-menu-link-gap px-navigation-menu-link-pad-x py-navigation-menu-link-pad-y rounded-navigation-menu-link-radius no-underline outline-none transition-row pointer-hover:recipe-row-list-hover focus-visible:row-list-focus data-active:recipe-row-list-hover';
 
 function offset() {
   if (typeof window === 'undefined') return 8;
