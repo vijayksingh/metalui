@@ -179,9 +179,16 @@ public struct MetalSpring: Equatable, Sendable {
         self.native = native
     }
 
-    /// The system's own motion for this role (`.snappy`, `.smooth`, `.bouncy`), so every
-    /// MetalUI view moves the way native SwiftUI does and interrupts the way it does.
-    public var animation: Animation { native.animation }
+    /// The token's own physics (unit mass, this stiffness and damping), the same spring the web
+    /// samples into its `linear()` curve, so a MetalUI view moves alike on both platforms. A
+    /// SwiftUI spring keeps its velocity when interrupted, so a new state starts from the frame
+    /// on screen. (`native` names the closest Apple preset; it no longer drives motion.)
+    public var animation: Animation { .spring(response: response, dampingFraction: dampingFraction) }
+
+    /// The undamped period, 2π/√k: what SwiftUI and Core Animation call response.
+    public var response: Double { 2 * .pi / stiffness.squareRoot() }
+    /// c / 2√k: 1 settles without overshoot, below 1 gives at the stop (part ≈ 0.61, ~9 %).
+    public var dampingFraction: Double { damping / (2 * stiffness.squareRoot()) }
 }
 
 /// A named timing curve (`--mu-ease-*`): the CSS cubic-bezier's control points.

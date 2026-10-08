@@ -30,7 +30,6 @@ public struct MetalIsland: View {
     private let action: (() -> Void)?
     @State private var ownOpen = false
     @State private var passing: String?
-    @Namespace private var bodyGeometry
     @FocusState private var capFocused: Bool
     @MetalMotionPreference private var reduceMotion
     @Environment(\.metalSnapshot) private var snapshot
@@ -58,13 +57,28 @@ public struct MetalIsland: View {
     private var spoken: String { [title, detail, toneLabel ?? tone.rawValue].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ". ") }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            if out { shell(expanded: true, focused: snapshot ? false : capFocused, focus: snapshot ? nil : $capFocused) }
-            else { shell(expanded: false, focused: snapshot ? false : capFocused, focus: snapshot ? nil : $capFocused) }
+        let recipe = MetalRecipes.island
+        // One body in every state (MetalMorphShape): closed it is the capsule, open the capsule
+        // lies flush as the panel's title row. Its outline, the row and the panel move on one spring.
+        MetalMorphShape(open: out, material: .graphiteDeep, from: .top,
+                        closedRadius: MetalRecipes.button.points("graphite.height") / 2,
+                        openRadius: MetalRecipes.surface.points("radius.card"),
+                        openWidth: recipe.points("self.panel-width")) {
+            capsule(focused: snapshot ? false : capFocused, focus: snapshot ? nil : $capFocused)
+        } contents: {
+            if let panel {
+                panel
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, recipe.points("self.panel-pad"))
+                    .padding(.top, recipe.points("self.panel-gap"))
+                    .padding(.bottom, recipe.points("self.panel-pad"))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel(title)
+            }
         }
         .metalColorway(.graphite)
-        .animation(reduceMotion ? MetalSpringClass.crossfade.spring.animation
-                   : (out ? MetalSprings.part : MetalSprings.release).animation, value: out)
+        // A change made without a morph (a host setting the binding) still rides the right spring.
+        .animation(MetalMotion.resolve(out ? .part : .release, reduceMotion: reduceMotion).animation, value: out)
         .onKeyPress(.escape) {
             guard out else { return .ignored }
             setOpen(false)
@@ -79,61 +93,31 @@ public struct MetalIsland: View {
         .task(id: announce) { await showAnnouncement() }
     }
 
-    private func shell(expanded: Bool, focused: Bool, focus: FocusState<Bool>.Binding?) -> some View {
+    private func capsule(focused: Bool, focus: FocusState<Bool>.Binding?) -> some View {
         let recipe = MetalRecipes.island
-        let corner = MetalRecipes.surface.points("radius.card")
-        let shape = RoundedRectangle(cornerRadius: corner, style: .continuous)
-        return VStack(spacing: .zero) {
-            Button(action: activate) {
-                HStack(spacing: recipe.points("self.gap")) {
-                    MetalLED(tone.lamp, gesture: tone == .working ? .breathe : .steady)
-                    Text(title).lineLimit(1).truncationMode(.tail)
-                        .frame(maxWidth: recipe.points("self.title-max"))
-                        .fixedSize(horizontal: true, vertical: false)
-                    if let shown = passing ?? detail, !shown.isEmpty {
-                        MetalLabel(shown, style: .readoutDim)
-                            .id(shown)
-                            .transition(reduceMotion ? .opacity : .asymmetric(
-                                insertion: .offset(y: MetalMotionTokens.nest).combined(with: .opacity),
-                                removal: .offset(y: -MetalMotionTokens.nest).combined(with: .opacity)))
-                    }
-                    MetalIcon(.chevron, size: MetalRecipes.button.points("compact.glyph"))
-                        .rotationEffect(.degrees(open ? 180 : .zero))
-                        .animation(reduceMotion ? nil : MetalSprings.part.animation, value: open)
+        return Button(action: activate) {
+            HStack(spacing: recipe.points("self.gap")) {
+                MetalLED(tone.lamp, gesture: tone == .working ? .breathe : .steady)
+                Text(title).lineLimit(1).truncationMode(.tail)
+                    .frame(maxWidth: recipe.points("self.title-max"))
+                    .fixedSize(horizontal: true, vertical: false)
+                if let shown = passing ?? detail, !shown.isEmpty {
+                    MetalLabel(shown, style: .readoutDim)
+                        .id(shown)
+                        .transition(reduceMotion ? .opacity : .asymmetric(
+                            insertion: .offset(y: MetalMotionTokens.nest).combined(with: .opacity),
+                            removal: .offset(y: -MetalMotionTokens.nest).combined(with: .opacity)))
                 }
-                .clipped()
-                .metalAnimation(.settle, value: passing)
+                MetalIcon(.chevron, size: MetalRecipes.button.points("compact.glyph"))
+                    .rotationEffect(.degrees(open ? 180 : .zero))
             }
-            .buttonStyle(MetalIslandCapStyle(focused: focused, flush: expanded))
-            .modifier(MetalIslandFocus(focus: focus))
-            .accessibilityLabel(spoken)
-            .accessibilityValue(panel != nil ? (open ? "Expanded" : "Collapsed") : "")
-            // Match only the row's position: its type and cap never stretch with the shell.
-            .matchedGeometryEffect(id: "capsule", in: bodyGeometry, properties: reduceMotion ? [] : .position)
-            if expanded, let panel {
-                panel
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, recipe.points("self.panel-pad"))
-                    .padding(.top, recipe.points("self.panel-gap"))
-                    .padding(.bottom, recipe.points("self.panel-pad"))
-                    .accessibilityElement(children: .contain)
-                    .accessibilityLabel(title)
-                    .transition(reduceMotion ? .opacity : .asymmetric(
-                        insertion: .opacity.combined(with: .offset(y: -MetalMotionTokens.nest))
-                            .combined(with: .scale(scale: MetalRecipes.popover.scalar("self.enter-scale"), anchor: .top)),
-                        removal: .opacity))
-            }
+            .clipped()
+            .metalAnimation(.settle, value: passing)
         }
-        .frame(width: expanded ? recipe.points("self.panel-width") : nil)
-        .clipShape(shape)
-        .background {
-            // Geometry precedes paint. The recipe draws in the moving box with true corners;
-            // neither a surface snapshot nor the row is scaled to imitate a new body size.
-            Color.clear
-                .matchedGeometryEffect(id: "body", in: bodyGeometry, properties: reduceMotion ? [] : .frame, anchor: .top)
-                .metalObjectRecipe(MetalRecipes.surface, part: "self", state: "graphite-deep", in: shape)
-        }
-        .transition(reduceMotion ? .opacity : .identity)
+        .buttonStyle(MetalIslandCapStyle(focused: focused, flush: out))
+        .modifier(MetalIslandFocus(focus: focus))
+        .accessibilityLabel(spoken)
+        .accessibilityValue(panel != nil ? (open ? "Expanded" : "Collapsed") : "")
     }
 
     private func activate() {
@@ -142,8 +126,7 @@ public struct MetalIsland: View {
     }
 
     private func setOpen(_ next: Bool) {
-        withAnimation(reduceMotion ? MetalSpringClass.crossfade.spring.animation
-                      : (next ? MetalSprings.part : MetalSprings.release).animation) {
+        withMetalMorph(next ? .open : .close, reduceMotion: reduceMotion) {
             if let openBinding { openBinding.wrappedValue = next }
             else { ownOpen = next }
         }
