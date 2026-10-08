@@ -58,8 +58,9 @@ function FanRoot({ className, children, ...props }: FanProps) {
     const press = (e: MouseEvent) => {
       if (!root.current?.contains(e.target as Node)) {
         setOpen(null);
-        // focus goes back to the cell only if what was clicked did not take it
-        afterMorph(() => { const now = document.activeElement; if (!now || now === document.body) open.restore(); });
+        // focus goes back to the cell only if what was clicked did not take it: focus on nothing,
+        // or still inside the fan it folded (an option that is hidden now)
+        afterMorph(() => { const now = document.activeElement; if (!now || now === document.body || root.current?.contains(now)) open.restore(); });
       }
     };
     window.addEventListener('keydown', key);
