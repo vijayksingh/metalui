@@ -15,7 +15,7 @@ const ROOT = 'mu-progress grid min-w-progress-min-width gap-progress-gap progres
 const HEAD = 'mu-progress-head mu-cluster justify-between gap-progress-gap';
 const LABEL = 'mu-progress-label type-ui text-ink';
 const VALUE = 'mu-progress-value type-meta tabular-nums text-ink2';
-const TRACK = 'mu-progress-track relative block h-progress-height rounded-pill overflow-hidden recipe-switch';
+const TRACK = 'mu-progress-track relative block h-progress-height rounded-pill overflow-clip recipe-switch';
 const FILL = 'mu-progress-fill block h-full rounded-pill recipe-switch-on transition-progress-fill';
 export interface ProgressProps extends Omit<BaseProgress.Root.Props, 'className' | 'children'> {
   children?: React.ReactNode;

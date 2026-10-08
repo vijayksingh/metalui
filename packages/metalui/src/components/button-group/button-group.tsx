@@ -19,7 +19,7 @@ import { SwapText } from '../../motion/swap';
  * ───────────────────────────────────────────────────────── */
 const BAR = 'mu-button-group inline-flex items-stretch rounded-pill recipe-button button-group-bar text-ink';
 const SEGMENT = 'inline-flex button-group-seam';
-const CLIP = 'inline-flex items-stretch overflow-hidden rounded-pill';
+const CLIP = 'inline-flex items-stretch overflow-clip rounded-pill';
 const CHEVRON = 'size-button-group-chevron-glyph';
 
 export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {

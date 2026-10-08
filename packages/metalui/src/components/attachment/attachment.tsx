@@ -29,7 +29,7 @@ const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachme
 const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
 const META = 'mu-attachment-meta flex min-w-0 items-start gap-mu-space-4 type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
-const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
+const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-clip recipe-switch';
 const FILL = 'block h-full rounded-pill recipe-switch-on transition-progress-fill';
 
 /** "12.4 MB" from bytes. */

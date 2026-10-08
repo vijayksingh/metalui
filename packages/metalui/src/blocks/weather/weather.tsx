@@ -441,8 +441,8 @@ function Header({ place, summary, live = true, clock, className, ...props }: Wea
 }
 
 const SKY: Record<Size, string> = {
-  large: 'mu-weather-sky overflow-hidden flex-none h-weather-screen-height rounded-weather-screen-radius',
-  tile: 'mu-weather-sky overflow-hidden h-weather-tile-screen rounded-weather-screen-radius',
+  large: 'mu-weather-sky overflow-clip flex-none h-weather-screen-height rounded-weather-screen-radius',
+  tile: 'mu-weather-sky overflow-clip h-weather-tile-screen rounded-weather-screen-radius',
 };
 const GRID: Record<Size, { cols: number; rows: number; horizon: number }> = {
   large: { cols: 46, rows: 28, horizon: 21 },

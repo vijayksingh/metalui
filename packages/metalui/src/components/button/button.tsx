@@ -165,7 +165,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
     </span>}
   </>;
   const square = iconOnly ? ['strip', 'strip-danger'].includes(cap) ? 'w-button-strip-height px-0!' : cap === 'graphite' ? 'w-button-graphite-height px-0!' : size === 'compact' ? 'w-button-compact-height px-0!' : 'w-button-height px-0!' : '';
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${square} ${pressed} ${face === 'waiting' ? 'translate-y-button-travel cursor-default' : ''} ${holdEnabled ? `relative overflow-hidden data-holding:translate-y-button-travel ${cap === 'strip-danger' ? 'data-holding:recipe-button-strip-pressed' : 'data-holding:recipe-button-destructive-pressed'} data-holding:duration-button-press data-holding:ease-linear` : ''}`;
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)} ${square} ${pressed} ${face === 'waiting' ? 'translate-y-button-travel cursor-default' : ''} ${holdEnabled ? `relative overflow-clip data-holding:translate-y-button-travel ${cap === 'strip-danger' ? 'data-holding:recipe-button-strip-pressed' : 'data-holding:recipe-button-destructive-pressed'} data-holding:duration-button-press data-holding:ease-linear` : ''}`;
   return (
     <>
     <BaseButton

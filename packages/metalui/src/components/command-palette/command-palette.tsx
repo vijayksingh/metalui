@@ -33,7 +33,7 @@ const SEC = 'mu-palette-sec flex justify-between pt-palette-sec-pad-top px-palet
 /* Selected: a raised cap with a green-deep bar at the left. Instant: the list is scanned, not watched. */
 const ROW = 'mu-palette-row group/prow relative flex items-center gap-palette-row-gap h-palette-row-height px-palette-row-pad rounded-row text-ink cursor-pointer outline-none select-none type-ui data-highlighted:palette-row-on data-highlighted:before:palette-row-bar data-danger:text-red data-disabled:opacity-40 data-disabled:cursor-default';
 const ROW_GLYPH = 'mu-palette-row-glyph inline-grid flex-none text-ink2 group-data-danger/prow:text-red [&>svg]:size-palette-row-glyph';
-const ROW_TEXT = 'mu-palette-row-text min-w-0 overflow-hidden text-ellipsis whitespace-nowrap';
+const ROW_TEXT = 'mu-palette-row-text min-w-0 overflow-clip text-ellipsis whitespace-nowrap';
 const ROW_HINT = 'mu-palette-row-hint flex flex-none items-center gap-palette-hint-gap ml-auto';
 const HINT_TEXT = 'mu-palette-eng palette-eng type-label';
 const MARK = 'mu-palette-mark palette-mark';

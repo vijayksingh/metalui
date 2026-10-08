@@ -21,11 +21,11 @@ import { Tooltip } from '../tooltip/tooltip';
  * Slots: Sidebar.Root, Sidebar.Header, Sidebar.Section, Sidebar.Item, Sidebar.Footer, Sidebar.Toggle.
  * ───────────────────────────────────────────────────────── */
 
-const ROOT = 'mu-sidebar relative flex h-full flex-none flex-col gap-sidebar-gap p-sidebar-pad overflow-hidden sidebar-width';
+const ROOT = 'mu-sidebar relative flex h-full flex-none flex-col gap-sidebar-gap p-sidebar-pad overflow-clip sidebar-width';
 const LIST = 'mu-sidebar-list relative flex flex-1 flex-col gap-sidebar-gap min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain';
 const SECTION = 'mu-sidebar-section flex flex-col gap-sidebar-section-gap';
 const TITLE = 'mu-sidebar-title px-sidebar-section-title-pad type-label engraved sidebar-words';
-const ITEM = 'mu-sidebar-item mu-icon-trigger relative z-1 flex items-center overflow-hidden gap-sidebar-item-gap h-sidebar-item-height px-sidebar-item-pad-x rounded-sidebar-item-radius type-ui text-ink2 no-underline outline-none transition-colors duration-settle pointer-hover:text-ink aria-[current=page]:text-ink focus-visible:focus-ring [&>svg]:size-sidebar-item-glyph [&>svg]:flex-none';
+const ITEM = 'mu-sidebar-item mu-icon-trigger relative z-1 flex items-center overflow-clip gap-sidebar-item-gap h-sidebar-item-height px-sidebar-item-pad-x rounded-sidebar-item-radius type-ui text-ink2 no-underline outline-none transition-colors duration-settle pointer-hover:text-ink aria-[current=page]:text-ink focus-visible:focus-ring [&>svg]:size-sidebar-item-glyph [&>svg]:flex-none';
 const WORDS = 'mu-sidebar-words min-w-0 sidebar-words';
 const GLIDE = 'rounded-sidebar-item-radius recipe-row-list-hover';
 const EDGE = 'mu-sidebar-edge flex flex-col gap-sidebar-section-gap';

@@ -116,7 +116,8 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     if (/(?<![\w.])[-+]?(?:\d*\.)?\d+vh\b/i.test(v)) add('viewport-units', s, d);
     if (calls(v, 'env').some((c) => /^safe-area-inset-[\w-]+\s*$/i.test(c.args))) add('safe-area-fallback', s, d);
     if (p === 'z-index' && /^[+-]?\d+$/.test(v) && +v > 1) add('z-index', s, d);
-    if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)hidden($|\s)/i.test(v)) add('overflow-clip', s, d);
+    // Tailwind's own utilities are checked where they are used (the TSX scan below); truncate and sr-only stay Tailwind's.
+    if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)hidden($|\s)/i.test(v) && !/^\.overflow(-[xy])?-hidden$|(^\.|:)(truncate|sr-only)\b/.test(s)) add('overflow-clip', s, d);
   }
 }
 
@@ -126,6 +127,13 @@ for (const file of ['components', 'blocks'].flatMap((d) => tsx(root(`packages/me
   for (const [, str] of readFileSync(file, 'utf8').matchAll(/['"`]([^'"`]*\boverflow(?:-[xy])?-(?:auto|scroll)\b[^'"`]*)['"`]/g)) {
     if (/(^|[\s:])overscroll-/.test(str)) continue;
     for (const [token] of str.matchAll(/\S*overflow(?:-[xy])?-(?:auto|scroll)\b/g)) found.push({ id: 'overscroll-contain', key: `overscroll-contain: ${relative(root(), file)} ‖ ${token}` });
+  }
+}
+// A Tailwind clip is overflow-clip; overflow-*-hidden is kept only beside a scrolling axis, where it computes the same.
+for (const file of ['components', 'blocks'].flatMap((d) => tsx(root(`packages/metalui/src/${d}`)))) {
+  for (const [, str] of readFileSync(file, 'utf8').matchAll(/['"`]([^'"`]*\boverflow(?:-[xy])?-hidden\b[^'"`]*)['"`]/g)) {
+    if (/\boverflow-[xy]-(auto|scroll)\b/.test(str)) continue;
+    for (const [token] of str.matchAll(/\S*overflow(?:-[xy])?-hidden\b/g)) found.push({ id: 'overflow-clip', key: `overflow-clip: ${relative(root(), file)} ‖ ${token}` });
   }
 }
 

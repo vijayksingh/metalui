@@ -59,7 +59,7 @@ export interface ToggleGroupProps extends Omit<BaseToggleGroup.Props, 'className
 export function ToggleGroup({ className, joined = false, children, ...props }: ToggleGroupProps) {
   const own = joined ? 'mu-toggle-group mu-button-group inline-flex items-stretch rounded-pill recipe-button button-group-bar text-ink' : GROUP;
   return <BaseToggleGroup className={className ? `${own} ${className}` : own} {...props}>
-    {joined ? <span className="inline-flex items-stretch rounded-pill overflow-hidden">{React.Children.toArray(children).map((child, index) => <span key={index} className="inline-flex button-group-seam">{child}</span>)}</span> : children}
+    {joined ? <span className="inline-flex items-stretch rounded-pill overflow-clip">{React.Children.toArray(children).map((child, index) => <span key={index} className="inline-flex button-group-seam">{child}</span>)}</span> : children}
   </BaseToggleGroup>;
 }
 

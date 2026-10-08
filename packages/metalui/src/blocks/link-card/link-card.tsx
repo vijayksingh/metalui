@@ -26,14 +26,14 @@ const SCREEN = 'mu-linkcard-screen box-border flex flex-col justify-end h-link-c
 const TAG = 'mu-linkcard-tag !absolute left-link-card-chip-inset top-link-card-chip-inset';
 const OPEN = 'mu-linkcard-open mu-icon-trigger focus-visible:focus-ring !absolute right-link-card-chip-inset top-link-card-chip-inset z-link-card-chip-z';
 const HOST = 'mu-linkcard-host type-link-card-host text-link-card-host-ink';
-const PATH = 'mu-linkcard-path overflow-hidden text-ellipsis whitespace-nowrap uppercase type-link-card-path text-link-card-path-ink';
+const PATH = 'mu-linkcard-path overflow-clip text-ellipsis whitespace-nowrap uppercase type-link-card-path text-link-card-path-ink';
 const TALL = '!h-link-card-preview-height';
 const IMAGE = 'mu-linkcard-image pointer-events-none absolute inset-0 size-full object-cover opacity-link-card-preview-image-opacity link-card-preview-in';
 const SHADE = 'pointer-events-none absolute inset-0 link-card-image-shade';
 const TITLE = 'mu-linkcard-title relative link-card-title-clamp type-link-card-title text-link-card-title-ink link-card-preview-in';
 const META = 'mu-linkcard-meta relative flex min-w-0 items-center gap-link-card-meta-gap text-link-card-meta-ink link-card-preview-in';
 const ICON = 'size-link-card-meta-icon flex-none rounded-round';
-const META_TEXT = 'min-w-0 overflow-hidden text-ellipsis whitespace-nowrap uppercase type-link-card-path';
+const META_TEXT = 'min-w-0 overflow-clip text-ellipsis whitespace-nowrap uppercase type-link-card-path';
 
 /** What the backend found at the link (GET /preview): all optional. */
 export interface LinkPreview {

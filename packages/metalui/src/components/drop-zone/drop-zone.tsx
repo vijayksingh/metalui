@@ -202,7 +202,7 @@ export function DropZone({
       />
       <span aria-hidden className={WELL}>{icon ?? <MorphIcon name={refused || result === 'refused' ? 'close' : result === 'accepted' ? 'check' : glyph} />}</span>
       <span className="sr-only" role="status">{announcement}</span>
-      <span className={compact ? `${WORDS} flex-1 overflow-hidden` : WORDS}>
+      <span className={compact ? `${WORDS} flex-1 overflow-clip` : WORDS}>
         <span aria-hidden className={compact ? `${TITLE} block min-w-0 truncate` : TITLE}><SwapText value={line} className={compact ? 'max-w-full [&>.mu-swap-layer]:block [&>.mu-swap-layer]:max-w-full [&>.mu-swap-layer]:truncate' : undefined} /></span>
         {description && <span id={descId} className={LINE}>{description}</span>}
       </span>

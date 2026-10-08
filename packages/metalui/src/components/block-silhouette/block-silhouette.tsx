@@ -34,7 +34,7 @@ export interface BlockSilhouetteProps extends Omit<React.HTMLAttributes<HTMLDivE
   lines?: number;
 }
 
-const ROOT = 'mu-silhouette relative box-border overflow-hidden animate-silhouette-in reduced-motion:animate-none';
+const ROOT = 'mu-silhouette relative box-border overflow-clip animate-silhouette-in reduced-motion:animate-none';
 const LOOK: Record<SilhouetteKind, string> = {
   text: 'rounded-silhouette-text-radius',
   code: 'rounded-silhouette-code-radius recipe-silhouette-code p-silhouette-code-pad',
@@ -46,7 +46,7 @@ const LOOK: Record<SilhouetteKind, string> = {
 };
 const TEXT_BARS = 'silhouette-text-bars w-full';
 const CODE_BARS = 'silhouette-code-bars w-full';
-const REGION_LABEL = 'block type-silhouette-region text-silhouette-region-ink whitespace-nowrap overflow-hidden text-ellipsis';
+const REGION_LABEL = 'block type-silhouette-region text-silhouette-region-ink whitespace-nowrap overflow-clip text-ellipsis';
 
 /** A block drawn from far away: one flat shape that still says what the block is. */
 export const BlockSilhouette = React.forwardRef<HTMLDivElement, BlockSilhouetteProps>(function BlockSilhouette(

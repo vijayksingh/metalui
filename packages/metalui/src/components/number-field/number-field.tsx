@@ -31,7 +31,7 @@ const ROOT = 'mu-number-field inline-grid gap-number-field-gap';
 const LABEL = 'mu-number-field-label type-ui text-ink cursor-ew-resize select-none w-max';
 const GROUP = 'mu-number-field-group group/nf inline-flex items-center h-number-field-height w-number-field-width p-number-field-pad box-border rounded-pill recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-number-field-disabled relative data-invalid:invalid-ring';
 const KEY = `${buttonClasses('standard', 'compact')} mu-number-field-key flex-none size-number-field-key-size px-0! justify-center type-ui group-data-disabled/nf:opacity-100!`;
-const WINDOW = 'mu-number-field-window relative grid flex-1 min-w-0 h-full place-items-center overflow-hidden';
+const WINDOW = 'mu-number-field-window relative grid flex-1 min-w-0 h-full place-items-center overflow-clip';
 const INPUT = 'mu-number-field-input col-start-1 row-start-1 w-full min-w-0 h-full p-0 border-0 outline-none bg-transparent text-center type-lead tabular-nums text-ink caret-field-field-caret data-[turning]:text-transparent';
 const DRUM = 'mu-number-field-drum col-start-1 row-start-1 pointer-events-none type-lead tabular-nums text-ink';
 
