@@ -14,7 +14,7 @@
   "swift": {
     "symbol": "MetalEmptyState",
     "file": "swift/Sources/MetalUI/Components/MetalEmptyState.swift",
-    "status": "wip"
+    "status": "alpha"
   },
   "agent": "empty-state.agent.md",
   "page": "/components/empty-state"

@@ -1546,7 +1546,7 @@ Native drag-over and refusal words settle within their reserved label window. Re
 
 # Empty state
 
-A place with nothing in it yet. React: `EmptyState` from `@unlocalhosted/metalui`. SwiftUI: `MetalEmptyState` (work in progress; `ContentUnavailableView` is the system's). A place: the glyph sits in a `well`; the `empty-state` recipe adds the layout and the arrival.
+A place with nothing in it yet. React: `EmptyState` from `@unlocalhosted/metalui`. SwiftUI: `MetalEmptyState`. A place: the glyph sits in a `well`; the `empty-state` recipe adds the layout and the arrival.
 
 ## Use it for
 
@@ -1576,8 +1576,8 @@ Reduce Motion: it fades in without travel.
 
 | React | SwiftUI |
 |---|---|
-| `title`, `description`, `icon`, `action` | `ContentUnavailableView(title, systemImage:, description:)` |
-| `compact` | – |
+| `title`, `description`, `icon`, `action` | `MetalEmptyState(title, description:, icon: MetalIconName) { action }`, or `icon: { any view }` |
+| `compact` | `compact: true` |
 
 ## Keyboard and accessibility
 
