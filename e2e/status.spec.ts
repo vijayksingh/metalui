@@ -10,8 +10,9 @@ for (const colorway of COLORWAYS) {
     await expect(badges.first()).not.toHaveText('');
     await page.locator('section', { hasText: 'LEDs and badges' }).first().screenshot({ path: capture(`status-${colorway}`) });
     await open(page, '/components/kbd', colorway);
-    await expect(page.locator('kbd[aria-label="Command K"]').first()).toBeVisible();
-    await page.locator('section', { hasText: 'Where keys sit' }).first().screenshot({ path: capture(`kbd-${colorway}`) });
+    const keys = page.locator('section', { hasText: 'Where keys sit' }).first();
+    await expect(keys.locator('kbd[aria-label="Command K"]').first()).toBeVisible();
+    await keys.screenshot({ path: capture(`kbd-${colorway}`) });
   });
 }
 
