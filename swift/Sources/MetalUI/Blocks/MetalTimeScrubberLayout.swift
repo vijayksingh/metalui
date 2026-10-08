@@ -25,7 +25,9 @@ struct MetalTimeScrubberLayout: Layout {
         let stacked = shape == .bar || bounds.width < dial.width + gap + read.width
         let stackedOrigin = read.height + gap
         let centeredOrigin = (bounds.height - dial.height) / 2
-        let dialY = shape == .bar ? max(stackedOrigin, centeredOrigin)
+        // As a bar the track is centred in the scrubber's height (the tools' centre line) with the
+        // readout over its top, as the bar has always sat.
+        let dialY = shape == .bar ? centeredOrigin
             : stacked ? stackedOrigin : centeredOrigin
         subviews[0].place(at: CGPoint(x: bounds.minX, y: bounds.minY + dialY), anchor: .topLeading, proposal: ProposedViewSize(dial))
         subviews[1].place(at: CGPoint(x: bounds.minX + (stacked ? .zero : dial.width + gap),

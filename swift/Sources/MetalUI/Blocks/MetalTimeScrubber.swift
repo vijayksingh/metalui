@@ -59,15 +59,8 @@ public struct MetalTimeScrubber: View {
             guard let next = calendar.date(byAdding: .day, value: 1, to: day) else { break }
             day = next
         }
-        if shape == .dial {
-            return starts.map { date in
-                let noon = calendar.date(byAdding: .hour, value: 12, to: date) ?? date
-                let formatter = DateFormatter()
-                formatter.dateFormat = "EEE"
-                return MetalSliderTick(at: min(0.96, max(0.04, fraction(noon))),
-                    label: calendar.isDate(date, inSameDayAs: range.upperBound) ? "TODAY" : formatter.string(from: date).uppercased())
-            }
-        }
+        // One set for both shapes: the dial takes the bar's track over at curl 0, so its ticks are
+        // the bar's (the dial fades tick labels as it winds).
         let earlier = starts.filter { !calendar.isDate($0, inSameDayAs: range.upperBound) }
         let step = max(1, Int((Double(earlier.count) / 6).rounded(.up)))
         // One earlier day is only the range's margin, not history: no lone "SAT" on a new canvas.
@@ -93,42 +86,47 @@ public struct MetalTimeScrubber: View {
                     ? nil : min(max(date, range.lowerBound), range.upperBound)
             }
         )
-        Group {
-          if wound {
-            MetalTimeScrubberLayout(shape: shape) {
-            MetalDial(
-                value: value,
-                in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
-                step: MetalScrubberMetrics.stepMs / 1000,
-                largeStep: MetalScrubberMetrics.largeStepMs / 1000,
-                curl: shape == .dial ? .one : .zero,
-                initialCurl: initialCurl,
-                barLength: MetalScrubberMetrics.width - MetalRecipes.dial.points("self.knob"),
-                marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
-                label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
-                onCurlRest: { curl in
-                    if curl == .zero && shape == .bar { wound = false; initialCurl = nil }
-                },
-                onFocusChange: onFocusChange,
-                onDragChange: onScrubChange
-            )
+        // One layout and one readout in both shapes (docs/ONE-SHAPE.md): the bar hands its track to
+        // the dial at curl 0 and takes it back there, and the readout is the same view throughout,
+        // so the wind moves things instead of swapping them. Positions travel on the surface spring,
+        // the dial's own wind.
+        MetalTimeScrubberLayout(shape: shape) {
+            Group {
+                if wound {
+                    MetalDial(
+                        value: value,
+                        in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
+                        step: MetalScrubberMetrics.stepMs / 1000,
+                        largeStep: MetalScrubberMetrics.largeStepMs / 1000,
+                        curl: shape == .dial ? .one : .zero,
+                        initialCurl: initialCurl,
+                        barLength: MetalScrubberMetrics.width - MetalRecipes.dial.points("self.knob"),
+                        marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
+                        label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
+                        onCurlRest: { curl in
+                            if curl == .zero && shape == .bar { wound = false; initialCurl = nil }
+                        },
+                        onFocusChange: onFocusChange,
+                        onDragChange: onScrubChange
+                    )
+                } else {
+                    MetalSlider(value: value,
+                        in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
+                        step: MetalScrubberMetrics.stepMs / 1000,
+                        largeStep: MetalScrubberMetrics.largeStepMs / 1000,
+                        marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
+                        label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
+                        onFocusChange: onFocusChange, onDragChange: onScrubChange,
+                        isExternallyDragging: isScrubbing)
+                    .frame(width: MetalScrubberMetrics.width)
+                }
+            }
+            // As a bar the track sits in a slot one dial knob tall: the dial at curl 0 is exactly
+            // that, its track centred, so the hand-off from slider to dial cannot move the line.
+            .frame(height: wound ? nil : MetalRecipes.dial.points("self.knob"))
             readoutView(readout, shape: shape)
-            }
-          } else {
-            ZStack(alignment: .topLeading) {
-                MetalSlider(value: value,
-                    in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
-                    step: MetalScrubberMetrics.stepMs / 1000,
-                    largeStep: MetalScrubberMetrics.largeStepMs / 1000,
-                    marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
-                    label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
-                    onFocusChange: onFocusChange, onDragChange: onScrubChange,
-                    isExternallyDragging: isScrubbing)
-                readoutView(readout, shape: .bar)
-            }
-            .frame(width: MetalScrubberMetrics.width, height: MetalScrubberMetrics.height)
-          }
         }
+        .animation(MetalMotion.resolve(.surface, reduceMotion: reduceMotion).animation, value: shape)
         .onChange(of: shape) { _, next in
             if next == .dial && !wound { initialCurl = .zero; wound = true }
         }
@@ -144,6 +142,7 @@ public struct MetalTimeScrubber: View {
                         }
                     }
                     .allowsHitTesting(false)
+                    .transition(.opacity)
                 } else {
                     HStack(spacing: MetalScrubberMetrics.glyphGap) {
                         MetalIcon(.clock, size: MetalScrubberMetrics.readoutGlyph)
@@ -151,6 +150,7 @@ public struct MetalTimeScrubber: View {
                         MetalLabel("MEMORY · \(readout)", style: .engraved)
                     }
                     .allowsHitTesting(false)
+                    .transition(.opacity)
                 }
                 if selection != nil {
                     Button {
