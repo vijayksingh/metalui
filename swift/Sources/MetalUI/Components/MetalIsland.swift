@@ -64,7 +64,7 @@ public struct MetalIsland: View {
         }
         .metalColorway(.graphite)
         .animation(reduceMotion ? MetalSpringClass.crossfade.spring.animation
-                   : (out ? MetalSprings.surface : MetalSprings.release).animation, value: out)
+                   : (out ? MetalSprings.part : MetalSprings.release).animation, value: out)
         .onKeyPress(.escape) {
             guard out else { return .ignored }
             setOpen(false)
@@ -104,7 +104,7 @@ public struct MetalIsland: View {
                 .clipped()
                 .metalAnimation(.settle, value: passing)
             }
-            .buttonStyle(MetalIslandCapStyle(focused: focused))
+            .buttonStyle(MetalIslandCapStyle(focused: focused, flush: expanded))
             .modifier(MetalIslandFocus(focus: focus))
             .accessibilityLabel(spoken)
             .accessibilityValue(panel != nil ? (open ? "Expanded" : "Collapsed") : "")
@@ -143,7 +143,7 @@ public struct MetalIsland: View {
 
     private func setOpen(_ next: Bool) {
         withAnimation(reduceMotion ? MetalSpringClass.crossfade.spring.animation
-                      : (next ? MetalSprings.surface : MetalSprings.release).animation) {
+                      : (next ? MetalSprings.part : MetalSprings.release).animation) {
             if let openBinding { openBinding.wrappedValue = next }
             else { ownOpen = next }
         }
@@ -179,15 +179,19 @@ private struct MetalIslandFocus: ViewModifier {
 /// Island wears the web button's graphite cap, with no independent material recipe.
 struct MetalIslandCapStyle: ButtonStyle {
     let focused: Bool
+    /// Open, the capsule is the panel's title row: flush with the body, its cap only on hover.
+    var flush = false
 
     func makeBody(configuration: Configuration) -> some View {
-        MetalIslandCapBody(configuration: configuration, focused: focused)
+        MetalIslandCapBody(configuration: configuration, focused: focused, flush: flush)
     }
 }
 
 private struct MetalIslandCapBody: View {
     let configuration: ButtonStyleConfiguration
     let focused: Bool
+    let flush: Bool
+    @State private var hovering = false
     @Environment(\.isEnabled) private var enabled
     @MetalMotionPreference private var reduceMotion
 
@@ -201,7 +205,12 @@ private struct MetalIslandCapBody: View {
             .frame(height: recipe.points("graphite.height"))
             .fixedSize(horizontal: true, vertical: false)
             .contentShape(shape)
-            .metalObjectRecipe(recipe, part: "graphite", in: shape)
+            .background {
+                Color.clear.metalObjectRecipe(recipe, part: "graphite", in: shape)
+                    .opacity(flush && !hovering && !configuration.isPressed ? .zero : .one)
+                    .animation(reduceMotion ? nil : MetalSprings.release.animation, value: flush)
+            }
+            .onHover { hovering = $0 }
             .overlay {
                 if focused {
                     shape.inset(by: -(recipe.points("self.focus-offset") + recipe.points("self.focus-width") / 2))
