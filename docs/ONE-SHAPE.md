@@ -28,7 +28,9 @@ The View Transitions API, through React's `<ViewTransition>` (React 19.2+), with
 | M5b | **The page holds still** | `:root { view-transition-name: none }`: only the named shapes move; the page never cross-fades behind them. |
 | M6 | **Fallback** | Without View Transitions the state simply changes. No polyfill, no JS-driven size animation to imitate it. |
 
-SwiftUI: `matchedGeometryEffect` on the shell and a `.transition(.opacity.combined(with: .scale(0.92)))` on the content, inside one `withAnimation(.metalSurface)`.
+**SwiftUI check:** match the body's geometry before applying its material recipe so the surface paints in the travelling box with true corners. Match a retained capsule row separately with `properties: .position`; its typography and cap must not stretch or dissolve with the outline. `MetalIsland` uses the generated surface spring to open, release to close, and an asymmetric panel transition: insertion fades from one nest toward the top at `MetalRecipes.popover`'s `self.enter-scale`; removal only fades. Disable geometry matching under `@MetalMotionPreference`, keeping the generated crossfade instead. The generic content reveal reads `MetalRecipes.morphShape`'s `self.reveal-scale`, never a local scale literal. Hosts arrange panel rows using the island panel-gap token and retain the controls' keyboard navigation; closing returns focus to the capsule.
+
+For the bar ↔ dial, interpolate `MetalDial`'s curl through `Animatable` geometry on the surface spring: the curve, marks, ticks, knob position and disc diameter come from the same fraction. A path is redrawn while winding, rather than stretching a snapshot or animating a CSS box. No clock runs at rest; Reduce Motion resolves the curl immediately. `MetalTimeScrubber` hands the bar to this curve at curl 0, then restores the bar's slider only after unwinding reaches 0, preserving its existing jump spring and the host's bound moment.
 
 ## 3. Never
 

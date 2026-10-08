@@ -1,5 +1,14 @@
 # Swift parity requests
 
+## October 7 parity verification and commit environment
+
+- **Commits blocked:** the worktree's Git metadata lives at `/Users/vijaysingh/unlocalhosted/metalui/.git/worktrees/metalui-swift-parity`, outside this session's writable roots. `git add` and `git commit` fail creating `index.lock` with `Operation not permitted`. Changes remain unstaged; no push attempted. Each parity item is kept as a separate file slice for later commits with the requested Codex trailer.
+- **Build environment:** plain `swift build` fails because its manifest sandbox cannot nest (`sandbox_apply: Operation not permitted`). Build with `swift build --disable-sandbox --cache-path /tmp/metalui-parity-swift-cache -Xswiftc -module-cache-path -Xswiftc /tmp/metalui-parity-module-cache` instead.
+- **iOS verification:** the CI `xcodebuild` command cannot access CoreSimulatorService and reports no Xcode project, workspace or package in this checkout. Use SwiftPM's iOS 17 simulator cross-build with the installed SDK and writable caches; simulator interaction still needs an unrestricted host.
+- **Web docs build blocked:** `npm run build` passes generation freshness, visual/recipe/layer/composition/slot/host checks, the package build, and Vite compilation, then fails `scripts/build-site-discovery.mjs`: navigation includes `/components/dial` and `/components/island`, but `apps/docs/src/app/routes.tsx` has neither route (311 navigation paths versus 309 router paths). Navigation and router sources are unchanged by this Swift slice. Add real web documentation routes in the web workstream before publishing; no placeholder routes added here.
+- **Native interaction receipt pending:** render captures cover both colorways and reduced-motion states. Live interruption, outside dismissal, keyboard focus return, VoiceOver, and iPad pointer scrolling still need a running host; iOS simulator services are inaccessible here. The Swift panel builder owns its controls' normal keyboard navigation rather than probing private SwiftUI view internals to force the first arbitrary control into focus.
+- **Verified October 8:** final macOS and iOS simulator cross-builds pass; Mach-O object minimums are macOS 14.0 and iOS 17.0. All five targeted rendering feature slices pass across their final runs (label roles, settings widths, writing frame, island states, dial/time shapes). `npm run check` passes; `npm run generate` changes only registry/agent outputs, with zero token/icon/morph output changes. Native captures are in `/tmp/metalui-parity-captures`. Writing selected at initial mount now skips the hidden part entrance, so the object's text remains visible while the frame is absent.
+
 ## Cue recipe for inferred values and life glyph
 
 - **Object:** `cue` recipe parts for `MetalCueInferred` and `MetalCueLife`, with the in-flow text marks documented as metric-neutral.

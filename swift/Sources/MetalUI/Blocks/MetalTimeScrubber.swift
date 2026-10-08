@@ -1,8 +1,9 @@
 import SwiftUI
 
 /// Time as a dimension of the canvas. A nil selection means Now.
-/// The track, fill, marks, ticks and knob all come from MetalSlider's recipe.
+/// The bar hands its track to MetalDial while winding, then takes it back at rest.
 public struct MetalTimeScrubber: View {
+    public enum Shape: Sendable { case bar, dial }
     let range: ClosedRange<Date>
     @Binding var selection: Date?
     let marks: [Date]
@@ -10,6 +11,9 @@ public struct MetalTimeScrubber: View {
     let onFocusChange: ((Bool) -> Void)?
     let onScrubChange: ((Bool) -> Void)?
     let isScrubbing: Bool
+    let shape: Shape
+    @State private var wound: Bool
+    @State private var initialCurl: Double?
 
     @Environment(\.metalColorway) private var colorway
     @MetalMotionPreference private var reduceMotion
@@ -19,7 +23,8 @@ public struct MetalTimeScrubber: View {
                 format: @escaping (Date) -> String = MetalTimeScrubber.defaultFormat,
                 onFocusChange: ((Bool) -> Void)? = nil,
                 onScrubChange: ((Bool) -> Void)? = nil,
-                isScrubbing: Bool = false) {
+                isScrubbing: Bool = false,
+                shape: Shape = .bar) {
         self.range = range
         _selection = selection
         self.marks = marks
@@ -27,6 +32,8 @@ public struct MetalTimeScrubber: View {
         self.onFocusChange = onFocusChange
         self.onScrubChange = onScrubChange
         self.isScrubbing = isScrubbing
+        self.shape = shape
+        _wound = State(initialValue: shape == .dial)
     }
 
     public static func defaultFormat(_ date: Date) -> String {
@@ -51,6 +58,15 @@ public struct MetalTimeScrubber: View {
             starts.append(day)
             guard let next = calendar.date(byAdding: .day, value: 1, to: day) else { break }
             day = next
+        }
+        if shape == .dial {
+            return starts.map { date in
+                let noon = calendar.date(byAdding: .hour, value: 12, to: date) ?? date
+                let formatter = DateFormatter()
+                formatter.dateFormat = "EEE"
+                return MetalSliderTick(at: min(0.96, max(0.04, fraction(noon))),
+                    label: calendar.isDate(date, inSameDayAs: range.upperBound) ? "TODAY" : formatter.string(from: date).uppercased())
+            }
         }
         let earlier = starts.filter { !calendar.isDate($0, inSameDayAs: range.upperBound) }
         let step = max(1, Int((Double(earlier.count) / 6).rounded(.up)))
@@ -77,25 +93,65 @@ public struct MetalTimeScrubber: View {
                     ? nil : min(max(date, range.lowerBound), range.upperBound)
             }
         )
-        ZStack(alignment: .topLeading) {
-            MetalSlider(
+        Group {
+          if wound {
+            MetalTimeScrubberLayout(shape: shape) {
+            MetalDial(
                 value: value,
                 in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
                 step: MetalScrubberMetrics.stepMs / 1000,
                 largeStep: MetalScrubberMetrics.largeStepMs / 1000,
+                curl: shape == .dial ? .one : .zero,
+                initialCurl: initialCurl,
+                barLength: MetalScrubberMetrics.width - MetalRecipes.dial.points("self.knob"),
                 marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
                 label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
+                onCurlRest: { curl in
+                    if curl == .zero && shape == .bar { wound = false; initialCurl = nil }
+                },
                 onFocusChange: onFocusChange,
-                onDragChange: onScrubChange,
-                isExternallyDragging: isScrubbing
+                onDragChange: onScrubChange
             )
-            HStack(spacing: MetalScrubberMetrics.readoutGap) {
-                HStack(spacing: MetalScrubberMetrics.glyphGap) {
-                    MetalIcon(.clock, size: MetalScrubberMetrics.readoutGlyph)
-                        .offset(y: MetalScrubberMetrics.glyphDrop)
-                    MetalLabel("MEMORY · \(readout)", style: .engraved)
+            readoutView(readout, shape: shape)
+            }
+          } else {
+            ZStack(alignment: .topLeading) {
+                MetalSlider(value: value,
+                    in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
+                    step: MetalScrubberMetrics.stepMs / 1000,
+                    largeStep: MetalScrubberMetrics.largeStepMs / 1000,
+                    marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
+                    label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
+                    onFocusChange: onFocusChange, onDragChange: onScrubChange,
+                    isExternallyDragging: isScrubbing)
+                readoutView(readout, shape: .bar)
+            }
+            .frame(width: MetalScrubberMetrics.width, height: MetalScrubberMetrics.height)
+          }
+        }
+        .onChange(of: shape) { _, next in
+            if next == .dial && !wound { initialCurl = .zero; wound = true }
+        }
+    }
+
+    private func readoutView(_ readout: String, shape: Shape) -> some View {
+        HStack(spacing: MetalScrubberMetrics.readoutGap) {
+                if shape == .dial {
+                    VStack(alignment: .leading, spacing: MetalScrubberMetrics.glyphGap) {
+                        MetalLabel("MEMORY", style: .small)
+                        ForEach(Array(readout.components(separatedBy: " · ").enumerated()), id: \.offset) { _, line in
+                            MetalLabel(line, style: .engraved)
+                        }
+                    }
+                    .allowsHitTesting(false)
+                } else {
+                    HStack(spacing: MetalScrubberMetrics.glyphGap) {
+                        MetalIcon(.clock, size: MetalScrubberMetrics.readoutGlyph)
+                            .offset(y: MetalScrubberMetrics.glyphDrop)
+                        MetalLabel("MEMORY · \(readout)", style: .engraved)
+                    }
+                    .allowsHitTesting(false)
                 }
-                .allowsHitTesting(false)
                 if selection != nil {
                     Button {
                         withMetalAnimation(.part, reduceMotion: reduceMotion) { selection = nil }
@@ -109,9 +165,7 @@ public struct MetalTimeScrubber: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("Back to Now")
                 }
-            }
         }
-        .frame(width: MetalScrubberMetrics.width, height: MetalScrubberMetrics.height)
     }
 }
 

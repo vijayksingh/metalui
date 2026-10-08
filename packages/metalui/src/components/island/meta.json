@@ -20,7 +20,8 @@
   },
   "swift": {
     "symbol": "MetalIsland",
-    "status": "planned"
+    "file": "swift/Sources/MetalUI/Components/MetalIsland.swift",
+    "status": "alpha"
   },
   "agent": "island.agent.md",
   "page": "/components/island",
