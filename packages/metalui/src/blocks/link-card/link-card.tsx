@@ -23,8 +23,8 @@ import { Chip } from '../../components/chip/chip';
  * glass face's, and its type is the recipe's. The tag and action sit at the chip inset. */
 const CARD = 'mu-linkcard w-link-card-width link-card-tint';
 const SCREEN = 'mu-linkcard-screen box-border flex flex-col justify-end h-link-card-screen-height py-link-card-screen-pad-y px-link-card-screen-pad-x !recipe-link-card-screen link-card-grow reduced-motion:transition-none';
-const TAG = 'mu-linkcard-tag !absolute left-link-card-chip-inset top-link-card-chip-inset';
-const OPEN = 'mu-linkcard-open mu-icon-trigger focus-visible:focus-ring !absolute right-link-card-chip-inset top-link-card-chip-inset z-link-card-chip-z';
+const TAG = 'mu-linkcard-tag !absolute start-link-card-chip-inset top-link-card-chip-inset';
+const OPEN = 'mu-linkcard-open mu-icon-trigger focus-visible:focus-ring !absolute end-link-card-chip-inset top-link-card-chip-inset z-link-card-chip-z';
 const HOST = 'mu-linkcard-host type-link-card-host text-link-card-host-ink';
 const PATH = 'mu-linkcard-path overflow-clip text-ellipsis whitespace-nowrap uppercase type-link-card-path text-link-card-path-ink';
 const TALL = '!h-link-card-preview-height';

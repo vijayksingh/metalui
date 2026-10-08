@@ -17,7 +17,7 @@ import type { Ref } from 'react';
 
 const ROOT = 'mu-scroll-area relative min-h-0 overflow-hidden';
 const VIEWPORT = 'mu-scroll-area-viewport scroll-area-fill overscroll-contain outline-none focus-visible:focus-ring-flush scroll-area-fade';
-const BAR = 'mu-scroll-area-bar absolute top-0 right-0 bottom-0 flex justify-center p-scroll-area-bar-inset data-[orientation=vertical]:w-scroll-area-bar-size scroll-area-bar';
+const BAR = 'mu-scroll-area-bar absolute top-0 end-0 bottom-0 flex justify-center p-scroll-area-bar-inset data-[orientation=vertical]:w-scroll-area-bar-size scroll-area-bar';
 const THUMB = 'mu-scroll-area-thumb scroll-area-thumb reduced-motion:transition-none';
 
 export interface ScrollAreaProps extends Omit<BaseScrollArea.Root.Props, 'className' | 'onScroll'> {

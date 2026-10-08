@@ -21,9 +21,9 @@ import { IconButton } from '../../components/icon-button/icon-button';
  * ───────────────────────────────────────────────────────── */
 
 /* Layout from the lensbar group; it drops one step from above, from .98, on the surface spring. */
-const BAR = 'mu-filterbar inline-flex items-center gap-lensbar-gap h-lensbar-height pl-lensbar-pad-start pr-lensbar-pad-end animate-filterbar-in';
+const BAR = 'mu-filterbar inline-flex items-center gap-lensbar-gap h-lensbar-height ps-lensbar-pad-start pe-lensbar-pad-end animate-filterbar-in';
 const QUERY = 'mu-filterbar-query max-w-lensbar-query-max overflow-clip text-ellipsis';
-const NOTE = 'mu-filterbar-note [&>.mu-led]:mr-lensbar-note-led-gap';
+const NOTE = 'mu-filterbar-note [&>.mu-led]:me-lensbar-note-led-gap';
 
 export type FilterView = 'place' | 'list' | 'table' | 'timeline' | 'gallery';
 

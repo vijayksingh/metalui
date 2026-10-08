@@ -14,7 +14,7 @@ export interface KbdProps extends React.HTMLAttributes<HTMLElement> {
 const NAMES: Record<string, string> = { '⌘': 'Command', '⌥': 'Option', '⇧': 'Shift', '⌃': 'Control', '⎋': 'Escape', '↩': 'Return', '⌫': 'Delete', '↑': 'Up', '↓': 'Down', '←': 'Left', '→': 'Right' };
 
 /* Styled with the theme's utilities (the kbd recipe). A cap after a cap sits the recipe's gap away. */
-const FRAME = 'mu-kbd box-border inline-flex items-center justify-center whitespace-nowrap align-middle type-kbd [.mu-kbd+&]:ml-kbd-gap';
+const FRAME = 'mu-kbd box-border inline-flex items-center justify-center whitespace-nowrap align-middle type-kbd [.mu-kbd+&]:ms-kbd-gap';
 const SIZES = {
   default: 'min-w-kbd-min h-kbd-height px-kbd-pad',
   small: 'min-w-kbd-small-min h-kbd-small-height px-kbd-small-pad',

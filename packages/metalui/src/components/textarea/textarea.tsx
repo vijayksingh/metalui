@@ -43,7 +43,7 @@ const TYPE: Record<FieldSize, string> = { large: 'type-content', regular: 'type-
 const INPUT = `mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
 const MIRROR = `mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none ${TEXT}`;
 const COUNT_ROW = 'mu-textarea-count-row textarea-count-row';
-const COUNT = 'mu-textarea-count pt-textarea-count-gap text-right type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';
+const COUNT = 'mu-textarea-count pt-textarea-count-gap text-end type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';
 
 /* Base UI's field control rendered as a textarea: inside a FormField it takes the label, description,
  * error and the field's states. Typed as the textarea it renders. */

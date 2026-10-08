@@ -18,19 +18,19 @@ export type FieldSize = 'large' | 'regular' | 'compact';
 /* Styled with the theme's utilities (the field recipe on the well recipe). */
 const FRAME = 'mu-field relative flex items-center cursor-text data-disabled:opacity-field-state-disabled data-disabled:cursor-default data-invalid:invalid-ring has-[input[data-invalid]]:invalid-ring has-[input[data-disabled]]:opacity-field-state-disabled';
 const SIZES: Record<FieldSize, string> = {
-  large: 'gap-field-field-gap h-field-field-height pl-field-field-pad-left pr-field-field-pad-right rounded-field-field-radius text-field-field-hint [&>.mu-field-icon>svg]:size-field-field-glyph',
-  regular: 'gap-field-regular-gap h-field-regular-height pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius text-field-field-hint focus-within:focus-ring-flush [&>.mu-field-icon>svg]:size-field-regular-glyph',
-  compact: 'gap-field-compact-gap h-field-compact-height pl-field-compact-pad-left pr-field-compact-pad-right rounded-field-compact-radius text-field-field-hint focus-within:focus-ring-flush [&>.mu-field-icon>svg]:size-field-compact-glyph',
+  large: 'gap-field-field-gap h-field-field-height ps-field-field-pad-left pe-field-field-pad-right rounded-field-field-radius text-field-field-hint [&>.mu-field-icon>svg]:size-field-field-glyph',
+  regular: 'gap-field-regular-gap h-field-regular-height ps-field-regular-pad-left pe-field-regular-pad-right rounded-field-regular-radius text-field-field-hint focus-within:focus-ring-flush [&>.mu-field-icon>svg]:size-field-regular-glyph',
+  compact: 'gap-field-compact-gap h-field-compact-height ps-field-compact-pad-left pe-field-compact-pad-right rounded-field-compact-radius text-field-field-hint focus-within:focus-ring-flush [&>.mu-field-icon>svg]:size-field-compact-glyph',
 };
 const ICON = 'mu-field-icon inline-grid flex-none';
 const INPUT = {
   large: 'mu-field-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent type-field-field text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
   form: 'mu-field-input flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
 };
-const TRAIL = 'mu-field-trail inline-flex items-center ml-auto';
+const TRAIL = 'mu-field-trail inline-flex items-center ms-auto';
 const SEARCH = {
-  graphite: 'mu-search-field box-border flex items-center gap-field-search-gap h-field-search-height min-w-field-search-min-width pl-field-search-pad-left pr-field-search-pad-right border-0 rounded-field-search-radius type-field-search cursor-text [&>.mu-field-icon>svg]:size-field-search-glyph [&>.mu-kbd]:ml-auto focus-visible:focus-ring-flush text-field-search-ink recipe-well-graphite',
-  light: 'mu-search-field box-border flex items-center gap-field-search-gap h-field-search-height min-w-field-search-min-width pl-field-search-pad-left pr-field-search-pad-right border-0 rounded-field-search-radius type-field-search cursor-text [&>.mu-field-icon>svg]:size-field-search-glyph [&>.mu-kbd]:ml-auto focus-visible:focus-ring-flush text-field-field-hint recipe-well-field',
+  graphite: 'mu-search-field box-border flex items-center gap-field-search-gap h-field-search-height min-w-field-search-min-width ps-field-search-pad-left pe-field-search-pad-right border-0 rounded-field-search-radius type-field-search cursor-text [&>.mu-field-icon>svg]:size-field-search-glyph [&>.mu-kbd]:ms-auto focus-visible:focus-ring-flush text-field-search-ink recipe-well-graphite',
+  light: 'mu-search-field box-border flex items-center gap-field-search-gap h-field-search-height min-w-field-search-min-width ps-field-search-pad-left pe-field-search-pad-right border-0 rounded-field-search-radius type-field-search cursor-text [&>.mu-field-icon>svg]:size-field-search-glyph [&>.mu-kbd]:ms-auto focus-visible:focus-ring-flush text-field-field-hint recipe-well-field',
 };
 
 const FieldCtx = React.createContext<{ size: FieldSize; invalid?: boolean; disabled?: boolean }>({ size: 'large' });

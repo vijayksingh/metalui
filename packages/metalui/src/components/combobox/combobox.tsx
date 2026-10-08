@@ -25,8 +25,8 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 const GROUP = 'mu-combobox relative flex items-center min-w-combobox-min-width box-border recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
 const SIZE = {
-  regular: 'gap-field-regular-gap h-field-regular-height pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius',
-  compact: 'gap-field-compact-gap h-field-compact-height pl-field-compact-pad-left pr-field-compact-pad-right rounded-field-compact-radius',
+  regular: 'gap-field-regular-gap h-field-regular-height ps-field-regular-pad-left pe-field-regular-pad-right rounded-field-regular-radius',
+  compact: 'gap-field-compact-gap h-field-compact-height ps-field-compact-pad-left pe-field-compact-pad-right rounded-field-compact-radius',
 };
 const INPUT = 'mu-combobox-input flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint';
 const CLEAR = 'mu-combobox-clear mu-icon-trigger inline-grid place-items-center flex-none size-combobox-clear-size rounded-full border-0 bg-transparent text-ink3 pointer-hover:text-ink cursor-pointer transition-opacity duration-settle ease-settle data-starting-style:opacity-0 data-ending-style:opacity-0 focus-visible:focus-ring';

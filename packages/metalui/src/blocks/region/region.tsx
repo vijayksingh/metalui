@@ -28,8 +28,8 @@ const ROOT = 'mu-region !region-motion data-dim:opacity-region-dim data-past:opa
 const HEAD = 'mu-region-head absolute inset-x-0 top-0 bottom-auto box-border h-region-head-height pt-region-head-pad-top px-region-head-pad-x pb-0 flex items-baseline gap-region-head-gap cursor-grab';
 const NAME = 'mu-region-name min-w-region-name-min';
 const RULE = 'mu-region-rule flex-1 min-w-0 overflow-clip text-ellipsis';
-const BODY = 'mu-region-body absolute left-region-body-inset right-region-body-inset top-region-body-top bottom-region-body-inset overflow-clip';
-const ROW_META = 'mu-region-row-meta ml-auto pt-region-row-meta-top';
+const BODY = 'mu-region-body absolute start-region-body-inset end-region-body-inset top-region-body-top bottom-region-body-inset overflow-clip';
+const ROW_META = 'mu-region-row-meta ms-auto pt-region-row-meta-top';
 
 export interface RegionRootProps extends React.HTMLAttributes<HTMLDivElement> {
   over?: boolean;

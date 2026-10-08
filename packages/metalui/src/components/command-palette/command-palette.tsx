@@ -22,7 +22,7 @@ import { Kbd } from '../kbd/kbd';
 const SCRIM = 'mu-palette-scrim fixed inset-0 palette-scrim transition-opacity duration-surface ease-surface data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:duration-release data-ending-style:ease-release';
 const POPUP = 'mu-palette fixed palette-at p-palette-pad rounded-card outline-none material-frost-plate palette-motion data-starting-style:palette-away data-ending-style:palette-away data-ending-style:palette-motion-release';
 /* The field: a 44 well in the content role, caret green-deep. */
-const FIELD = 'mu-palette-field flex items-center gap-palette-field-gap h-palette-field-height pl-palette-field-pad-start pr-palette-field-pad-end rounded-palette-field-radius material-well cursor-text';
+const FIELD = 'mu-palette-field flex items-center gap-palette-field-gap h-palette-field-height ps-palette-field-pad-start pe-palette-field-pad-end rounded-palette-field-radius material-well cursor-text';
 const FIELD_GLYPH = 'mu-palette-field-glyph inline-grid flex-none text-ink3 [&>svg]:size-palette-field-glyph';
 const INPUT = 'mu-palette-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent text-ink caret-green-deep placeholder:text-ink3 type-content';
 /* The list: sections of 36 rows; scrolls past 52 % of the window. The selected row's bar sits 2 outside
@@ -34,14 +34,14 @@ const SEC = 'mu-palette-sec flex justify-between pt-palette-sec-pad-top px-palet
 const ROW = 'mu-palette-row group/prow relative flex items-center gap-palette-row-gap h-palette-row-height px-palette-row-pad rounded-row text-ink cursor-pointer outline-none select-none type-ui data-highlighted:palette-row-on data-highlighted:before:palette-row-bar data-danger:text-red data-disabled:opacity-40 data-disabled:cursor-default';
 const ROW_GLYPH = 'mu-palette-row-glyph inline-grid flex-none text-ink2 group-data-danger/prow:text-red [&>svg]:size-palette-row-glyph';
 const ROW_TEXT = 'mu-palette-row-text min-w-0 overflow-clip text-ellipsis whitespace-nowrap';
-const ROW_HINT = 'mu-palette-row-hint flex flex-none items-center gap-palette-hint-gap ml-auto';
+const ROW_HINT = 'mu-palette-row-hint flex flex-none items-center gap-palette-hint-gap ms-auto';
 const HINT_TEXT = 'mu-palette-eng palette-eng type-label';
 const MARK = 'mu-palette-mark palette-mark';
 const EMPTY = 'mu-palette-empty type-ui not-empty:py-palette-empty-pad-y not-empty:px-palette-row-pad not-empty:text-ink3';
 /* The footer: keys above an engraved rule. */
 const FOOT = 'mu-palette-foot flex items-center gap-palette-foot-gap mt-palette-foot-margin-top pt-palette-foot-pad-top px-palette-row-pad pb-palette-foot-pad-bottom palette-foot-rule type-label';
 const FOOT_KEYS = 'flex items-center gap-palette-foot-key-gap';
-const STATUS = 'mu-palette-status palette-eng flex items-center gap-palette-foot-key-gap ml-auto';
+const STATUS = 'mu-palette-status palette-eng flex items-center gap-palette-foot-key-gap ms-auto';
 
 /** The palette's part classes, for stills of it outside its dialog (docs, previews). */
 export const paletteParts = { POPUP, FIELD, FIELD_GLYPH, INPUT, LIST, ENG, SEC, ROW, ROW_GLYPH, ROW_TEXT, ROW_HINT, MARK, FOOT, FOOT_KEYS } as const;

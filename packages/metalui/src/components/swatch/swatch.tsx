@@ -29,10 +29,10 @@ export function swatchInk(hex: string): 'dark' | 'light' {
 /* Styled with the theme's utilities (the swatch recipe, in the object's own colour, --mu-self). */
 const SWATCH = 'mu-swatch relative box-border size-swatch-size rounded-swatch-radius recipe-swatch cursor-pointer focus-visible:focus-ring';
 const LABEL = {
-  dark: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-dark',
-  light: 'mu-swatch-label absolute left-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-light',
+  dark: 'mu-swatch-label absolute start-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-dark',
+  light: 'mu-swatch-label absolute start-swatch-label-x bottom-swatch-label-y type-swatch-label whitespace-nowrap text-swatch-label-ink-light',
 };
-const LED = 'mu-swatch-led absolute right-swatch-led-inset top-swatch-led-inset size-swatch-led-size rounded-round recipe-swatch-led';
+const LED = 'mu-swatch-led absolute end-swatch-led-inset top-swatch-led-inset size-swatch-led-size rounded-round recipe-swatch-led';
 
 export const Swatch = React.forwardRef<HTMLDivElement, SwatchProps>(function Swatch({ hex, label, className, style, ...props }, ref) {
   const ink = swatchInk(hex);

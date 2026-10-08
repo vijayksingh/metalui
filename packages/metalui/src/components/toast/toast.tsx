@@ -117,7 +117,7 @@ export function useToast() {
 /* Styled with the theme's utilities (the toast recipe): a glass pill in the colorway; DECK stacks the pills in
  * depth, fans them out, follows a swipe, and moves them in and out; the Undo cap presses by the material's travel. */
 const VIEWPORT = 'mu-toast-viewport fixed inset-x-0 bottom-toast-bottom z-toast-z h-0 outline-none toast-deck-viewport';
-const TOAST = 'mu-toast group/toast flex items-center gap-toast-gap min-h-toast-height pl-toast-pad-left pr-toast-pad-right not-has-[button]:pr-toast-pad-left rounded-pill whitespace-nowrap type-toast text-toast-ink recipe-toast backdrop-toast-blur reduce-transparency:opaque-frost';
+const TOAST = 'mu-toast group/toast flex items-center gap-toast-gap min-h-toast-height ps-toast-pad-left pe-toast-pad-right not-has-[button]:pe-toast-pad-left rounded-pill whitespace-nowrap type-toast text-toast-ink recipe-toast backdrop-toast-blur reduce-transparency:opaque-frost';
 const DECK = 'toast-deck transition-toast toast-bump outline-none focus-visible:toast-undo-focus touch-none select-none';
 const CONTENT = 'mu-toast-content toast-content';
 const TEXT = 'mu-toast-text inline-flex items-center gap-toast-text-gap';
@@ -125,7 +125,7 @@ const SUB = 'mu-toast-sub text-toast-sub-ink';
 const COUNT = 'mu-toast-count text-toast-sub-ink tabular-nums';
 const CHECK = 'mu-toast-check text-success';
 const ERROR = 'mu-toast-error text-red';
-const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
+const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height ps-toast-undo-pad-left pe-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer pointer-hover:recipe-toast-undo pointer-hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const MORE = 'mu-toast-more toast-more type-meta text-toast-sub-ink recipe-toast-undo rounded-pill';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';

@@ -569,7 +569,7 @@ function Week({ days, scale = [10, 30], now, className, ...props }: WeatherWeekP
       <li aria-hidden className="flex items-center gap-weather-week-col h-weather-week-row">
         <span className="w-weather-week-day type-label engraved">{days.length} days</span>
         <span className="size-weather-week-glyph" />
-        <span className="w-weather-week-value text-right type-label engraved">Low</span>
+        <span className="w-weather-week-value text-end type-label engraved">Low</span>
         <span className="flex justify-between w-weather-week-bar type-readout text-ink2">
           <span>{deg(lo)}</span>
           <span>{deg(lo + span / 2)}</span>
@@ -589,7 +589,7 @@ function Week({ days, scale = [10, 30], now, className, ...props }: WeatherWeekP
           <li key={`${d.name}-${i}`} aria-label={`${d.name}: low ${deg(d.low)}, high ${deg(d.high)}`} className="flex items-center gap-weather-week-col h-weather-week-row">
             <span className={`w-weather-week-day ${today ? 'type-title' : 'type-ui'} text-ink`}>{d.name}</span>
             <WeatherGlyph kind={d.kind} className="size-weather-week-glyph" />
-            <span className="w-weather-week-value text-right type-ui text-ink2">{deg(d.low)}</span>
+            <span className="w-weather-week-value text-end type-ui text-ink2">{deg(d.low)}</span>
             <svg aria-hidden shapeRendering="crispEdges" viewBox={`0 0 ${(span + 1) * PITCH} ${DOT}`} className="block flex-none w-weather-week-bar h-weather-week-bar-height">
               <path d={off} className="fill-weather-ink-off" />
               <path data-part="range" d={lit} className={DAY_PAINT[d.kind]} />

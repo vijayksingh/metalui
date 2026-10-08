@@ -28,7 +28,7 @@ const SIZE: Record<AvatarSize, string> = {
 };
 const INITIALS = 'mu-avatar-initials text-ink2 uppercase';
 const PHOTO = 'mu-avatar-photo absolute inset-0 size-full rounded-full object-cover avatar-photo';
-const PRESENCE = 'mu-avatar-presence absolute right-0 bottom-0 inline-grid place-items-center leading-none rounded-full avatar-ring';
+const PRESENCE = 'mu-avatar-presence absolute end-0 bottom-0 inline-grid place-items-center leading-none rounded-full avatar-ring';
 
 /** The first letters of the first and last words: "Ana Rocha" → "AR". */
 export function initialsOf(name: string) {

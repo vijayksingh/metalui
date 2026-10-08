@@ -265,7 +265,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
   </div>;
 }
 
-const PICKER = 'mu-date-picker relative inline-flex items-center gap-field-regular-gap min-h-field-regular-height min-w-calendar-picker-min-width pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius box-border border-0 recipe-well-field type-ui text-field-field-ink text-left focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
+const PICKER = 'mu-date-picker relative inline-flex items-center gap-field-regular-gap min-h-field-regular-height min-w-calendar-picker-min-width ps-field-regular-pad-left pe-field-regular-pad-right rounded-field-regular-radius box-border border-0 recipe-well-field type-ui text-field-field-ink text-start focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
 const ENTRY = 'mu-date-picker-entry min-w-0 flex-1 p-0 h-field-regular-height border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret date-picker-entry';
 const PICKER_KEY = 'inline-grid place-items-center h-field-regular-height w-field-regular-height border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring disabled:cursor-default';
 

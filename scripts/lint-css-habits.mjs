@@ -112,7 +112,10 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     if (!p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain.replace(/(?<![\w.])[-+]?0*\.?0+(?:ms|s)\b/g, ''))) add('motion-tokens', s, d);
     if (/^transition(-property)?$/.test(p) && /(^|[\s,])all($|[\s,)])/i.test(v)) add('transition-all', s, d);
     if (/^(transition|animation)(-|$)/.test(p) && /(^|[\s,])ease-in($|[\s,])/i.test(v)) add('ease-in', s, d);
-    if (/^(margin|padding)-(left|right)$|^border-(left|right)(-|$)|^(left|right)$/.test(p) || p === 'text-align' && /^(left|right)$/i.test(v)) add('logical-inline', s, d);
+    // Centring on the middle (left: 50%, calc(50% …)) reads the same in either direction.
+    if ((/^(margin|padding)-(left|right)$|^border-(left|right)(-|$)|^(left|right)$/.test(p) && !/^(calc\()?\s*(50%|1 \/ 2 \* 100%)/.test(v)) || p === 'text-align' && /^(left|right)$/i.test(v)) add('logical-inline', s, d);
+    // A four-value shorthand with different right and left sides is physical too: use padding-inline / margin-inline.
+    if (/^(padding|margin|inset)$/.test(p)) { const parts = postcss.list.space(v); if (parts.length === 4 && parts[1] !== parts[3]) add('logical-inline', s, d); }
     if (/(?<![\w.])[-+]?(?:\d*\.)?\d+vh\b/i.test(v)) add('viewport-units', s, d);
     if (calls(v, 'env').some((c) => /^safe-area-inset-[\w-]+\s*$/i.test(c.args))) add('safe-area-fallback', s, d);
     if (p === 'z-index' && /^[+-]?\d+$/.test(v) && +v > 1) add('z-index', s, d);

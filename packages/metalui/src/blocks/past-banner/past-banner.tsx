@@ -17,7 +17,7 @@ import { Kbd } from '../../components/kbd/kbd';
 
 /* Layout from the pastbanner group; it drops one nest from above on the surface spring. The key sits
  * the group's key gap after Back to Now (important: it overrides the cap's own gap). */
-const BANNER = 'mu-pastbanner inline-flex items-center gap-pastbanner-gap h-pastbanner-height pl-pastbanner-pad-start pr-pastbanner-pad-end whitespace-nowrap animate-pastbanner-in';
+const BANNER = 'mu-pastbanner inline-flex items-center gap-pastbanner-gap h-pastbanner-height ps-pastbanner-pad-start pe-pastbanner-pad-end whitespace-nowrap animate-pastbanner-in';
 const BACK = 'mu-pastbanner-back !gap-pastbanner-key-gap';
 
 export interface PastBannerProps {

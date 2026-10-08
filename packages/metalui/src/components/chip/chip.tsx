@@ -20,7 +20,7 @@ export interface ChipRootProps extends React.HTMLAttributes<HTMLElement> {
 const FRAME = 'group/chip box-border inline-flex items-center whitespace-nowrap no-underline';
 const GLASS = 'gap-chip-glass-gap h-chip-glass-height px-chip-glass-pad-x rounded-chip-glass-radius type-chip-glass';
 const VARIANTS = {
-  suggestion: 'gap-chip-suggestion-gap h-chip-suggestion-height pl-chip-suggestion-pad-left pr-chip-suggestion-pad-right rounded-pill type-chip-suggestion text-chip-suggestion-ink recipe-chip-suggestion',
+  suggestion: 'gap-chip-suggestion-gap h-chip-suggestion-height ps-chip-suggestion-pad-left pe-chip-suggestion-pad-right rounded-pill type-chip-suggestion text-chip-suggestion-ink recipe-chip-suggestion',
   glass: `${GLASS} text-chip-glass-ink recipe-chip-glass backdrop-chip-glass-blur`,
   'glass-action': `${GLASS} text-chip-glass-action-ink recipe-chip-glass-action cursor-pointer pointer-hover:recipe-chip-glass-action-hover`,
   tag: 'px-chip-tag-pad-x rounded-pill type-chip-tag text-chip-tag-ink recipe-chip-tag',

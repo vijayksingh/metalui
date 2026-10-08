@@ -174,8 +174,8 @@ const useDay = (part: string) => {
 
 const CARD = 'mu-day flex flex-col w-day-width h-day-height p-day-pad gap-day-gap';
 const PAGE = 'mu-day-page overflow-clip flex-none h-day-page-height rounded-day-page-radius';
-const TEAR = 'mu-day-tear absolute top-day-page-tear-top left-day-page-tear-left w-day-page-tear-width h-day-page-tear-height m-0 p-0 border-0 bg-transparent cursor-pointer rounded-day-page-tear-radius focus-visible:focus-ring';
-const SIDE = 'absolute top-day-page-side-top right-day-page-side-right w-day-page-side flex flex-col items-center';
+const TEAR = 'mu-day-tear absolute top-day-page-tear-top start-day-page-tear-left w-day-page-tear-width h-day-page-tear-height m-0 p-0 border-0 bg-transparent cursor-pointer rounded-day-page-tear-radius focus-visible:focus-ring';
+const SIDE = 'absolute top-day-page-side-top end-day-page-side-right w-day-page-side flex flex-col items-center';
 const PIX = 'type-day-clock';
 
 export interface DayRootProps extends React.HTMLAttributes<HTMLElement> {

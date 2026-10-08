@@ -148,8 +148,8 @@ export const EnumCue = React.forwardRef<HTMLElement, EnumCueProps>(function Enum
     <span className="col-start-1 row-start-1 justify-self-start"><Mark kind="tag" raw={raw} meaningGlyph={reading && current.glyph ? <Icon name={current.glyph} size={MARK_GLYPH_SIZE} /> : undefined} style={{ '--mu-cue-identity': current.tint ?? 'var(--mu-ink3)' } as React.CSSProperties}>{value.startsWith('#') ? <><span className="mu-mark-hash">#</span><SwapText value={value.slice(1)} /></> : <SwapText value={value} />}</Mark></span>
     {!reading && !raw && !held && current.glyph && <span aria-hidden className="mark-semantic-glyph"><Icon name={current.glyph} size={MARK_GLYPH_SIZE} /></span>}
     {held && choices.length > 1 && <span data-enum-instrument aria-hidden className="pointer-events-none absolute inset-0 type-meta text-ink2 whitespace-nowrap">
-      <span className="absolute left-0 bottom-full mb-mu-space-8">{choices[(index - 1 + choices.length) % choices.length]?.label ?? choices[(index - 1 + choices.length) % choices.length]?.value}</span>
-      <span className="absolute left-0 top-full mt-mu-space-8">{choices[(index + 1) % choices.length]?.label ?? choices[(index + 1) % choices.length]?.value}</span>
+      <span className="absolute start-0 bottom-full mb-mu-space-8">{choices[(index - 1 + choices.length) % choices.length]?.label ?? choices[(index - 1 + choices.length) % choices.length]?.value}</span>
+      <span className="absolute start-0 top-full mt-mu-space-8">{choices[(index + 1) % choices.length]?.label ?? choices[(index + 1) % choices.length]?.value}</span>
     </span>}
   </BaseButton>;
   return <Tooltip label="Space cycles · Up/Down steps · Focus to scroll · Hold and drag" disabled={!hint || held || !mutable} wrap>{control}</Tooltip>;

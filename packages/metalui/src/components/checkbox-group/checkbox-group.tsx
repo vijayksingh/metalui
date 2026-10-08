@@ -25,7 +25,7 @@ import { Checkbox } from '../checkbox/checkbox';
 
 const ROOT = 'mu-checkbox-group grid gap-checkbox-group-gap';
 const ROW = 'mu-checkbox-group-row inline-flex items-center gap-checkbox-group-row-gap min-h-checkbox-group-row-height type-ui text-ink cursor-pointer select-none w-max checkbox-group-cascade checkbox-group-press has-data-disabled:opacity-checkbox-group-disabled has-data-disabled:cursor-default';
-const CHILD = 'pl-checkbox-group-indent';
+const CHILD = 'ps-checkbox-group-indent';
 
 const CascadeCtx = React.createContext<{ step: (value: string) => number; hasParent: boolean }>({ step: () => 0, hasParent: false });
 

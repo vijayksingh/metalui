@@ -29,7 +29,7 @@ const ROW = `${ROW_BASE} data-highlighted:recipe-menu-row-hover`;
 const LIVE_ROW = `${ROW_BASE} relative z-1`;
 const GLYPH = 'mu-menu-glyph inline-grid flex-none text-ink2 in-data-danger:text-red [&>svg]:size-menu-row-glyph';
 const LABEL = 'mu-menu-label flex-1 min-w-0 overflow-clip text-ellipsis whitespace-nowrap';
-const KEY = 'mu-menu-key ml-menu-row-key-gap';
+const KEY = 'mu-menu-key ms-menu-row-key-gap';
 const SEP = 'mu-menu-sep h-menu-sep-thickness my-menu-sep-inset-y mx-menu-sep-inset-x recipe-menu-sep';
 
 /** The menu's part classes, for stills of it outside a popup (docs, previews). */

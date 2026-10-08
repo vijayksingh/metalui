@@ -23,11 +23,11 @@ import { Led } from '../../components/led/led';
 const PILL = 'mu-engraving absolute z-hover-engraving-z flex items-center gap-engraving-gap h-engraving-height px-engraving-pad whitespace-nowrap pointer-events-none opacity-0 engraving-motion engraving-sleep [@media(hover:hover)_and_(pointer:fine)]:[.mu-icon-trigger:hover>&]:not-data-[open=false]:engraving-shown data-[open=true]:engraving-shown data-[open=true]:data-immediate:delay-0';
 /* Beside the first line of a text block, so a stacked list below stays readable; under a material block. */
 const PLACEMENT = {
-  beside: 'left-full ml-engraving-beside-gap top-engraving-beside-top engraving-beside-out',
-  below: 'left-0 top-full mt-engraving-below-gap engraving-below-out',
+  beside: 'start-full ms-engraving-beside-gap top-engraving-beside-top engraving-beside-out',
+  below: 'start-0 top-full mt-engraving-below-gap engraving-below-out',
 };
 const TAGS = 'mu-engraving-tags flex gap-engraving-tag-gap';
-const STATUS = 'mu-engraving-status [&>.mu-led]:inline-block [&>.mu-led]:mr-engraving-led-gap [&>.mu-led]:engraving-led-lift';
+const STATUS = 'mu-engraving-status [&>.mu-led]:inline-block [&>.mu-led]:me-engraving-led-gap [&>.mu-led]:engraving-led-lift';
 
 export type EngravingStatus = 'live' | 'waiting' | 'failed' | 'off';
 

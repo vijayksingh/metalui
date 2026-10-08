@@ -31,7 +31,7 @@ const STRIP = {
 };
 const TOOL = 'mu-tool mu-icon-trigger relative grid place-items-center p-0 border-0 cursor-pointer tap-highlight-none toolbar-frost-tool group-data-[variant=graphite]/toolbar:toolbar-graphite-tool data-disabled:opacity-button-disabled data-disabled:cursor-default';
 const SEP = 'mu-toolbar-sep toolbar-frost-sep group-data-[variant=graphite]/toolbar:toolbar-graphite-sep';
-const SEARCH = 'mu-toolbar-search flex items-center border-0 cursor-text [&>.mu-kbd]:ml-auto toolbar-frost-search group-data-[variant=graphite]/toolbar:toolbar-graphite-search';
+const SEARCH = 'mu-toolbar-search flex items-center border-0 cursor-text [&>.mu-kbd]:ms-auto toolbar-frost-search group-data-[variant=graphite]/toolbar:toolbar-graphite-search';
 
 /** A strip of tools: 48 tall, a capsule. */
 export function Toolbar({ variant = 'frost', className, children, ...props }: ToolbarProps) {

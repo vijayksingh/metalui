@@ -22,7 +22,7 @@ import { IconButton } from '../../components/icon-button/icon-button';
 /* Faint until its block (the host, .mu-icon-trigger) is hovered or it holds focus; it arrives on settle
  * from 3 above and .96. Layout from the suggestion group. */
 const CHIP = 'mu-suggestion opacity-suggestion-rest-opacity transition-opacity ease-settle duration-settle animate-suggestion-in [@media(hover:hover)_and_(pointer:fine)]:in-[.mu-icon-trigger:hover]:opacity-100 pointer-hover:opacity-100 focus-within:opacity-100 data-host-hover:opacity-100';
-const CONF = 'mu-suggestion-conf ml-suggestion-conf-margin-start mr-suggestion-conf-margin-end';
+const CONF = 'mu-suggestion-conf ms-suggestion-conf-margin-start me-suggestion-conf-margin-end';
 
 export interface SuggestionChipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   /** The question, as a person would ask it: "Task?", "Date friday?", "Track as sleep?", "Move to Done?". */

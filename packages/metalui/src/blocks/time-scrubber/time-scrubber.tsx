@@ -36,7 +36,7 @@ const clamp = (n: number, a: number, b: number) => Math.min(b, Math.max(a, n));
  * sit at fractions of the track. */
 const BOX = 'mu-scrubber relative w-full min-w-0 max-w-scrubber-width h-scrubber-height';
 const READ = 'mu-scrubber-read pointer-events-none absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
-const GLYPH = 'mu-scrubber-glyph mr-scrubber-glyph-gap';
+const GLYPH = 'mu-scrubber-glyph me-scrubber-glyph-gap';
 const SLIDER = 'mu-scrubber-slider !absolute inset-0';
 const COIL = 'mu-scrubber mu-scrubber-coil relative flex flex-wrap-reverse items-center gap-scrubber-readout-gap min-w-0 max-w-full';
 const COIL_READ = 'mu-scrubber-coil-read grid animate-sf-fade';

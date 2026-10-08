@@ -29,7 +29,7 @@ export interface SizeReadoutProps extends Omit<React.HTMLAttributes<HTMLSpanElem
   led?: boolean;
 }
 
-const READOUT = 'mu-readout inline-flex items-center gap-presence-readout-gap-inner h-presence-readout-height pl-presence-readout-pad-start pr-presence-readout-pad-end whitespace-nowrap transition-opacity ease-settle duration-settle';
+const READOUT = 'mu-readout inline-flex items-center gap-presence-readout-gap-inner h-presence-readout-height ps-presence-readout-pad-start pe-presence-readout-pad-end whitespace-nowrap transition-opacity ease-settle duration-settle';
 
 // Each figure and mark is its own flex item, 6 apart, as the reference's text runs are.
 const V = ({ children }: { children: React.ReactNode }) => <Label variant="readout">{children}</Label>;

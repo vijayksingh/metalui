@@ -98,7 +98,7 @@ export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(functio
     onKeyDown: (event: React.KeyboardEvent<HTMLAnchorElement>) => { if ((disabled || !url) && event.key === 'Enter') event.preventDefault(); else linkProps.onKeyDown?.(event); },
   };
   return <span ref={root} className={`mu-link-cue group relative ${reading ? 'inline-flex items-center gap-mu-space-4' : 'inline-grid'} align-baseline type-content text-ink${className ? ` ${className}` : ''}`} data-value={value} data-editing={open || undefined}>
-    <span ref={reserve} aria-hidden className={`invisible col-start-1 row-start-1 inline-grid whitespace-nowrap${reading ? ' absolute right-0 pointer-events-none' : ''}`}>
+    <span ref={reserve} aria-hidden className={`invisible col-start-1 row-start-1 inline-grid whitespace-nowrap${reading ? ' absolute end-0 pointer-events-none' : ''}`}>
       {footprint.map((words, index) => [<span key={`${index}-source-${words}`} className="col-start-1 row-start-1">{words}</span>, <span key={`${index}-host-${words}`} className="col-start-1 row-start-1"><MarkUrl tabIndex={-1} host={destination(words)?.hostname ?? words} glyph={<Icon name="link" size={MARK_GLYPH_SIZE} />} /></span>])}
     </span>
     <span className="col-start-1 row-start-1 justify-self-start">
@@ -112,7 +112,7 @@ export const LinkCue = React.forwardRef<HTMLAnchorElement, LinkCueProps>(functio
     }}>
       <Popover.Trigger><BaseButton {...editProps} disabled={disabled} focusableWhenDisabled={readOnly} aria-disabled={!mutable || undefined}
         aria-label={`Edit ${label} URL`} aria-description={['Enter opens the URL field. Enter applies; Escape cancels.', editProps?.['aria-description'], linkProps['aria-description']].filter(Boolean).join(' ')}
-        className={`mu-link-cue-edit inline-flex flex-none border-0 p-0 bg-transparent text-ink3 pointer-hover:text-ink2 outline-none focus-visible:focus-ring${reading ? '' : ' absolute right-0 bottom-full mb-mu-space-2 opacity-0 group-pointer-hover:opacity-100 group-focus-within:opacity-100'}`}>
+        className={`mu-link-cue-edit inline-flex flex-none border-0 p-0 bg-transparent text-ink3 pointer-hover:text-ink2 outline-none focus-visible:focus-ring${reading ? '' : ' absolute end-0 bottom-full mb-mu-space-2 opacity-0 group-pointer-hover:opacity-100 group-focus-within:opacity-100'}`}>
         <Icon name="pen" size={MARK_GLYPH_SIZE} />
       </BaseButton></Popover.Trigger>
       <Popover.Content aria-label={`Edit ${label} URL`} align="start">
