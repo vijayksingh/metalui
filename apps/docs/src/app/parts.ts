@@ -7,7 +7,6 @@ const FROM_META = Object.values(import.meta.glob<PartMeta>('../../../../packages
 
 /** Doc pages whose part has no meta.json yet; they move into FROM_META when it lands. */
 const WITHOUT_META: PartMeta[] = [
-  { name: 'swatch', title: 'Swatch', layer: 'part', page: '/components/swatch' },
   { name: 'cue', title: 'Cue family', layer: 'instrument', page: '/components/cue' },
 ];
 
