@@ -64,7 +64,7 @@ function Popup({ className, children, ...props }: BaseDrawer.Popup.Props & { cla
 }
 
 function Title({ className, ...props }: BaseDrawer.Title.Props & { className?: string }) {
-  return <BaseDrawer.Title className={className ? `mu-sheet-title m-0 type-title text-ink ${className}` : 'mu-sheet-title m-0 type-title text-ink'} {...props} />;
+  return <BaseDrawer.Title className={className ? `mu-sheet-title m-0 type-title text-ink text-balance ${className}` : 'mu-sheet-title m-0 type-title text-ink text-balance'} {...props} />;
 }
 
 function Description({ className, ...props }: BaseDrawer.Description.Props & { className?: string }) {

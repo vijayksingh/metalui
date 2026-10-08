@@ -47,7 +47,7 @@ function Popup({ material = 'plate', radius = 'card', className, children, ...pr
 
 /** What the dialog is for, in the title role; it names the dialog for assistive tech. */
 function Title({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <BaseDialog.Title {...props} className={className ? `mu-dialog-title type-title text-ink ${className}` : 'mu-dialog-title type-title text-ink'} />;
+  return <BaseDialog.Title {...props} className={className ? `mu-dialog-title type-title text-ink text-balance ${className}` : 'mu-dialog-title type-title text-ink text-balance'} />;
 }
 
 /** The buttons, at the end: the one that does the thing last. */

@@ -52,7 +52,7 @@ export interface TableProps<Row> {
 }
 
 const TABLE = 'mu-table w-full table-reset';
-const CAPTION = 'mu-table-caption caption-top text-start pb-table-caption-gap type-title text-ink';
+const CAPTION = 'mu-table-caption caption-top text-start pb-table-caption-gap type-title text-ink text-balance';
 const TH = 'mu-table-th align-middle h-table-head-height px-table-row-pad-x type-label engraved text-start font-normal table-rule data-end:text-end';
 const SORT = 'mu-table-sort inline-flex items-center gap-table-sort-gap border-0 bg-transparent p-0 table-sort-button cursor-pointer outline-none focus-visible:focus-ring';
 // The authored arrow points north-east; a fixed -45 degree alignment puts its axis on the column.

@@ -28,7 +28,7 @@ import type { MorphIconName } from '../../icons/morph.generated';
 const ROOT = 'mu-drop-zone relative grid content-center justify-items-center gap-drop-zone-gap min-h-drop-zone-min-height p-drop-zone-pad rounded-drop-zone-radius recipe-well-field text-center cursor-pointer select-none drop-zone-edge drop-zone-sink drop-zone-disabled has-focus-visible:focus-ring';
 const COMPACT = 'mu-drop-zone relative flex min-w-0 max-w-full items-center gap-drop-zone-compact-gap h-drop-zone-compact-height px-drop-zone-compact-pad-x rounded-drop-zone-radius recipe-well-field text-start cursor-pointer select-none drop-zone-edge drop-zone-sink drop-zone-disabled has-focus-visible:focus-ring';
 const WELL = 'mu-drop-zone-well grid flex-none place-items-center size-drop-zone-well-size rounded-drop-zone-well-radius recipe-surface-raise-sm text-ink2 drop-zone-rise [&>svg]:size-drop-zone-well-glyph';
-const TITLE = 'mu-drop-zone-title type-ui text-ink';
+const TITLE = 'mu-drop-zone-title type-ui text-ink text-balance';
 const LINE = 'mu-drop-zone-description type-meta text-ink3';
 const CHOOSE = 'mu-drop-zone-choose type-meta text-ink2 underline underline-offset-2';
 const WORDS = 'mu-drop-zone-words grid min-w-0 gap-drop-zone-words-gap';

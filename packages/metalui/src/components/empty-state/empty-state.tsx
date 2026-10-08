@@ -15,7 +15,7 @@ import * as React from 'react';
 
 const ROOT = 'mu-empty-state grid justify-items-center gap-empty-state-gap max-w-empty-state-max-width mx-auto p-empty-state-pad text-center empty-state-arrive';
 const WELL = 'mu-empty-state-well grid place-items-center size-empty-state-well-size rounded-empty-state-well-radius recipe-well-field text-ink3 [&>svg]:size-empty-state-well-glyph';
-const TITLE = 'mu-empty-state-title m-0 type-title text-ink';
+const TITLE = 'mu-empty-state-title m-0 type-title text-ink text-balance';
 const LINE = 'mu-empty-state-description m-0 type-body text-ink2';
 const ACTION = 'mu-empty-state-action mt-empty-state-action-gap flex flex-wrap justify-center gap-empty-state-gap';
 const COMPACT = 'mu-empty-state flex flex-wrap items-center justify-center gap-empty-state-gap py-empty-state-gap type-body text-ink3 empty-state-arrive';

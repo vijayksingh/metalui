@@ -21,7 +21,7 @@ import { useRender } from '@base-ui/react/use-render';
 
 const ROOT = 'mu-card relative grid gap-card-gap p-card-pad rounded-surface-radius-card recipe-surface-raise card-lift has-[.mu-card-link:focus-visible]:focus-ring data-selected:card-selected';
 const MEDIA = 'mu-card-media h-card-media card-media-bleed';
-const TITLE = 'mu-card-title static m-0 type-title text-ink';
+const TITLE = 'mu-card-title static m-0 type-title text-ink text-balance';
 const LINK = 'mu-card-link static text-inherit no-underline outline-none card-stretch';
 const HEADINGS = { 2: 'h2', 3: 'h3', 4: 'h4' } as const;
 const DESCRIPTION = 'mu-card-description m-0 type-body text-ink2';

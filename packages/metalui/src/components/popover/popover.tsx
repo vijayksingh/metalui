@@ -25,7 +25,7 @@ const PLATE = [
   'recipe-menu backdrop-menu-blur reduce-transparency:opaque-frost',
   'popover-origin transition-popover data-starting-style:popover-away data-ending-style:popover-gone',
 ].join(' ');
-const TITLE = 'mu-popover-title m-0 type-title text-ink';
+const TITLE = 'mu-popover-title m-0 type-title text-ink text-balance';
 const DESCRIPTION = 'mu-popover-description m-0 mt-popover-gap type-body text-ink2';
 const BODY = 'mu-popover-body mt-popover-body-gap';
 

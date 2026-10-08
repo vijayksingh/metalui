@@ -61,7 +61,7 @@ function Popup({ className, children, ...props }: AlertDialogPopupProps) {
 
 /** The question, in the title role: "Delete 3 regions?" */
 function Title({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <BaseAlertDialog.Title {...props} className={className ? `mu-dialog-title type-title text-ink ${className}` : 'mu-dialog-title type-title text-ink'} />;
+  return <BaseAlertDialog.Title {...props} className={className ? `mu-dialog-title type-title text-ink text-balance ${className}` : 'mu-dialog-title type-title text-ink text-balance'} />;
 }
 
 /** What happens if you say yes: "Their notes move to the past for 30 days." */

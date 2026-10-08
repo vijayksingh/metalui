@@ -52,7 +52,7 @@ function weekStartOf(locale?: string) {
 
 const ROOT = 'mu-calendar inline-grid max-w-full gap-calendar-head-gap p-calendar-pad select-none';
 const HEAD = 'mu-calendar-head flex items-center justify-between gap-calendar-head-gap h-calendar-head-height';
-const TITLE = 'mu-calendar-title type-title text-ink';
+const TITLE = 'mu-calendar-title type-title text-ink text-balance';
 const STEP = `${buttonClasses('standard', 'compact')} mu-calendar-step px-0! w-calendar-head-height justify-center`;
 const GRID_WRAP = 'mu-calendar-body relative';
 const TABLE = 'mu-calendar-grid calendar-grid';
