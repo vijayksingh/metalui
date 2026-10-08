@@ -105,7 +105,7 @@ async function compare(page: Page, a: Buffer, b: Buffer) {
 test('at defaults the code is the guide\'s example: props, no overrides', async ({ page }) => {
   const xray = await openXray(page, 'bone');
   const react = await text(xray);
-  expect(react).toContain(`<Toolbar aria-label="Tools" variant="graphite">`);
+  expect(react).toContain(`<Toolbar aria-label="Tools" variant="frost">`);
   expect(react).toContain(`<ToolButton label="Select" icon={<SelectIcon size={16} />} pressed={tool === 'select'} onPressedChange={() => setTool('select')} />`);
   expect(react).toContain(`<ToolbarSeparator />`);
   expect(react).toContain(`import { DrawIcon, NoteIcon, SelectIcon, TidyIcon } from '@unlocalhosted/metalui/icons';`);
@@ -114,7 +114,7 @@ test('at defaults the code is the guide\'s example: props, no overrides', async 
   await expect(xray.getByRole('tab', { name: 'CSS' })).toHaveCount(0);
   await xray.getByRole('tab', { name: 'SwiftUI' }).click();
   const swift = await text(xray);
-  expect(swift).toContain('MetalToolbar("Tools", variant: .graphite) {');
+  expect(swift).toContain('MetalToolbar("Tools", variant: .frost) {');
   expect(swift).toContain('MetalToolButton("Select", icon: .select, latched: tool == "select") { tool = "select" }');
   expect(swift).toContain('MetalToolbarSeparator()');
   expect(swift).not.toMatch(/recipe/);
@@ -144,35 +144,35 @@ test('every tweak reaches the code: props as props, tunables as the library\'s v
   await expect(code(xray)).toContainText(`import { useState, type CSSProperties } from 'react';`);
   await part(xray, 'Strip');
   await drag(page, card.getByRole('slider', { name: 'Space around the tools' }), 6, 0);
-  await expect(code(xray)).toContainText(`'--mu-r-toolbar-self-pad': '`);
+  await expect(code(xray)).toContainText(`'--mu-toolbar-pad': '`);
   // the corners follow the caps: a wider space moves them, and the variable says so
-  await expect(code(xray)).toContainText(`'--mu-r-toolbar-self-radius': '`);
+  await expect(code(xray)).toContainText(`'--mu-radius-card': '`);
   await part(xray, 'Tools');
   await drag(page, card.getByRole('slider', { name: 'Space between tools' }), 14, 0);
-  await expect(code(xray)).toContainText(`'--mu-r-toolbar-self-gap': '`);
+  await expect(code(xray)).toContainText(`'--mu-toolbar-gap': '`);
   await expect(xray.getByRole('tab', { name: 'CSS' })).toHaveCount(0);
   // the height above the page is the strip's shadow stack: colours, so a stylesheet, derived from the recipe and said so;
-  // the graphite strip is the same in both colorways, so one block
+  // the frost strip takes the colorway, so one block per colorway
   await part(xray, 'Shadow');
   await drag(page, card.getByRole('slider', { name: 'Height above the page' }), 0, -24);
   await expect(code(xray)).toContainText(`import './canvas-tools.css';`);
   await expect(code(xray)).toContainText('className="canvas-tools"');
-  expect(await text(xray)).not.toContain('--mu-r-toolbar-self-shadow');
+  expect(await text(xray)).not.toContain('--mu-raise');
   let sheet = (await files(xray)).CSS!;
   expect(sheet).toMatch(/derived from the toolbar recipe for height [\d.]+/);
-  expect(sheet).toContain('.canvas-tools {');
-  expect(sheet).not.toContain('data-mu-colorway');
-  expect(sheet.match(/--mu-r-toolbar-self-shadow:/g)).toHaveLength(1);
-  // the fill is still the recipe's, so it is not set
-  expect(sheet).not.toContain('--mu-r-toolbar-self-background');
+  expect(sheet).toContain('.canvas-tools, [data-mu-colorway="bone"] .canvas-tools {');
+  expect(sheet).toContain('[data-mu-colorway="graphite"] .canvas-tools {');
+  expect(sheet.match(/--mu-raise:/g)).toHaveLength(2);
+  // the fill is still the colorway's, so it is not set
+  expect(sheet).not.toContain('--mu-frost');
   // a layer off is in the stack; the glass itself off is the fill
   await part(xray, 'Layers');
   await card.getByRole('switch', { name: 'Far shadow' }).click();
-  await card.getByRole('switch', { name: 'Dark glass' }).click();
+  await card.getByRole('switch', { name: 'Frosted glass' }).click();
   sheet = (await files(xray)).CSS!;
-  expect(sheet).toContain('dark glass, far shadow off');
-  expect(sheet).toContain('--mu-r-toolbar-self-background: transparent;');
-  await card.getByRole('switch', { name: 'Dark glass' }).click();
+  expect(sheet).toContain('frosted glass, far shadow off');
+  expect(sheet).toContain('--mu-frost: transparent;');
+  await card.getByRole('switch', { name: 'Frosted glass' }).click();
   // and the whole thing type-checks as a strict module
   expect(typeErrors(await files(xray) as { React: string; CSS?: string })).toEqual([]);
   // SwiftUI: the props, and one line about what the recipe keeps

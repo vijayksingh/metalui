@@ -8,7 +8,8 @@ import { CornerArc, Outline, Readout, STEP_AT, blip, clamp, summon, useHandle, u
 import './toolbar-specimens.css';
 
 /* ─────────────────────────────────────────────────────────
- * THE TOOLBAR X-RAY'S CARDS · the real graphite toolbar, changed by handling it
+ * THE TOOLBAR X-RAY'S CARDS · the real toolbar, changed by handling it: the frost strip, which follows
+ *   the colorway (pale on bone, smoky on graphite), or the graphite strip, dark in both
  *
  *   Strip    its right end: the space around the tools            (tunable, token pad)
  *   Tools    the pressed cap: drag it onto another tool            (step, the real tools)
@@ -36,7 +37,20 @@ export const STRIP_SH = pick('self', 'shadow');
 export const TOOLS = [{ id: 'select', label: 'Select' }, { id: 'note', label: 'Note' }, { id: 'draw', label: 'Draw' }, null, { id: 'tidy', label: 'Tidy' }] as const;
 const OPTIONS = TOOLS.filter(Boolean) as { id: string; label: string }[];
 
-export const LAYERS: LayerDef[] = [
+/** The frost strip's layers: its fill over the blur, then the colorway's raise stack (tokens.colorways.*.raise). */
+export const LAYERS_FROST: LayerDef[] = [
+  { name: 'Frosted glass', why: 'A see-through fill over a blur of whatever is behind it, in the colorway: pale on bone, smoky on graphite. The toolbar belongs to the page it floats over.' },
+  { name: 'Inner glow', why: 'A soft light just inside the edge, like light caught in thick glass.' },
+  { name: 'Top light', why: 'A bright edge along the top left, where the light falls.' },
+  { name: 'Bottom shade', why: 'A faint dark edge along the bottom right, where the glass turns away from the light.' },
+  { name: 'Rim', why: 'A hairline outline that keeps the edge crisp on any background.' },
+  { name: 'Contact', why: 'A small shadow right under the strip.' },
+  { name: 'Near shadow', why: 'A soft shadow, a bit bigger.' },
+  { name: 'Far shadow', why: 'A big, soft shadow.' },
+  { name: 'Farthest shadow', why: 'A very big, very faint shadow. Together the four shadows say the toolbar floats higher than anything else on the page.' },
+];
+/** The graphite strip's layers: the toolbar recipe (tokens.recipes.toolbar), dark in both colorways. */
+export const LAYERS_GRAPHITE: LayerDef[] = [
   { name: 'Dark glass', why: 'A dark, almost solid fill. The toolbar is dark in both light and dark mode, so it always looks like the same object.' },
   { name: 'Inner glow', why: 'A faint light just inside the edge, like light caught in thick glass.' },
   { name: 'Top light', why: 'A soft bright edge along the top left.' },
@@ -47,50 +61,78 @@ export const LAYERS: LayerDef[] = [
   { name: 'Far shadow', why: 'A very big, very soft shadow. Together the three shadows say the toolbar floats higher than anything else on the page.' },
 ];
 
+export type Variant = 'frost' | 'graphite';
+export const layersOf = (v: Variant) => (v === 'frost' ? LAYERS_FROST : LAYERS_GRAPHITE);
+/** One switch per layer, enough for either strip. */
+export const ALL_ON = LAYERS_FROST.map(() => true);
+const TB = tokens.toolbar as unknown as { tool: number; pad: number; gap: number };
+const CARD = (tokens.foundations.radius as unknown as { card: number }).card;
+/** Each strip's own measures: the frost strip reads the shared toolbar tokens (round caps, the card radius),
+ *  the graphite strip its recipe. The groove is the same in both. */
+export function geom(v: Variant) {
+  return v === 'frost'
+    ? { pad: TB.pad, gap: TB.gap, radius: CARD, tool: TB.tool, toolRadius: TB.tool / 2 }
+    : { pad: P.self.pad, gap: P.self.gap, radius: P.self.radius, tool: P.tool.size, toolRadius: P.tool.radius };
+}
+const split = (stack: string) => stack.split(/,(?![^(]*\))/).map((x) => x.trim());
+/** Each strip's fill and shadow stack, and the tone of its walls on the model, in a colorway. */
+export function recipe(v: Variant, colorway: Colorway) {
+  if (v === 'graphite') return { fill: STRIP_BG, shadows: STRIP_SH, wall: '#161618', toolWall: '#141416' };
+  const cw = (tokens.colorways as unknown as Record<Colorway, { frost: string; raise: string }>)[colorway];
+  return { fill: cw.frost, shadows: split(cw.raise), wall: colorway === 'bone' ? '#d6d4ce' : '#1b1b1e', toolWall: colorway === 'bone' ? '#cfcdc6' : '#18181b' };
+}
+
 /** Everything a toolbar is set to: its real props first (the strip, which tool is pressed, whether the
  *  groove is there), then what the x-ray lets you tune. One object, handed from the table to the x-ray
  *  and back; the code for it is read off it. */
 export interface ToolbarConfig {
-  /** props: the graphite strip (the frost strip reads the colorway's frost tokens, not this recipe, so
-   *  nothing tuned here would reach it), the pressed tool, and the groove between the groups */
-  variant: 'graphite'; active: string; sep: boolean;
+  /** props: the strip (frost follows the colorway; graphite is dark in both), the pressed tool, and the
+   *  groove between the groups */
+  variant: Variant; active: string; sep: boolean;
   /** recipe values: --mu-r-toolbar-*; the outer corners follow the caps unless you take hold of them */
   pad: number; gap: number; follow: boolean; radius: number; sepMargin: number;
   /** the strip's shadow stack, as a height above the page and which layers are on */
   lift: number; on: boolean[];
 }
 export type Model = ToolbarConfig;
-export const INITIAL: ToolbarConfig = { variant: 'graphite', active: 'select', sep: true, pad: P.self.pad, gap: P.self.gap, follow: true, radius: P.self.radius, sepMargin: P.sep.margin, lift: 1, on: LAYERS.map(() => true) };
+/** A strip as it ships: its own measures, every layer on. */
+export const initialFor = (v: Variant): ToolbarConfig => { const g = geom(v); return { variant: v, active: 'select', sep: true, pad: g.pad, gap: g.gap, follow: true, radius: g.radius, sepMargin: P.sep.margin, lift: 1, on: ALL_ON }; };
+export const INITIAL: ToolbarConfig = initialFor('frost');
 
 /** Outer corner = the cap's corner + the space around it; the recipe's own gap between the two curves keeps it at its token. */
-const FOLLOW = P.self.radius - P.tool.radius - P.self.pad;
-export const outerRadius = (m: Model) => (m.follow ? P.tool.radius + m.pad + FOLLOW : m.radius);
-const maxRadius = (m: Model) => (P.tool.size + m.pad * 2) / 2;
+const follow = (g: ReturnType<typeof geom>) => g.radius - g.toolRadius - g.pad;
+export const outerRadius = (m: Model) => { const g = geom(m.variant); return m.follow ? g.toolRadius + m.pad + follow(g) : m.radius; };
+const maxRadius = (m: Model) => (geom(m.variant).tool + m.pad * 2) / 2;
 /** How far each tunable reaches (the model's range, not a token). */
 const PAD = [2, 16] as const, GAP = [0, 16] as const, MARGIN = [0, 10] as const, LIFT = [0, 3] as const;
 
-/** The strip's shadow layers as the model has them: switched on or not, the two far shadows spread by the lift. */
-export const stripShadows = (m: Model) => STRIP_SH.map((v, i) => (m.on[i + 1] ? (i >= 5 ? scalePx(v, m.lift) : v) : null));
+/** The strip's shadow layers as the model has them: switched on or not, the far shadows spread by the lift. */
+export const stripShadows = (m: Model, colorway: Colorway) => recipe(m.variant, colorway).shadows.map((v, i) => (m.on[i + 1] ? (i >= 5 ? scalePx(v, m.lift) : v) : null));
 /** The strip's shadow stack as the model has it. */
-export function stripShadow(m: Model) {
-  return stripShadows(m).filter(Boolean).join(', ') || 'none';
+export function stripShadow(m: Model, colorway: Colorway) {
+  return stripShadows(m, colorway).filter(Boolean).join(', ') || 'none';
 }
 const same = (a: boolean[], b: boolean[]) => a.every((v, i) => v === b[i]);
 
 /** What a config looks like: the strip's fill and shadows for the model's hand-built parts, and the variables
  *  that set the real toolbar to it. Only what differs from the recipe is set, so a default config is the
- *  toolbar exactly as it ships, and the variables are the overrides its code needs. The graphite strip is the
- *  same in both colorways, so the colorway only rides along. */
+ *  toolbar exactly as it ships, and the variables are the overrides its code needs. The frost strip's fill and
+ *  shadows come from the colorway; the graphite strip's are the same in both. */
 export function toolbarLook(m: ToolbarConfig, colorway: Colorway) {
-  const look = { colorway, fill: m.on[0] ? STRIP_BG : 'transparent', shadows: stripShadows(m), shadow: stripShadow(m), radius: outerRadius(m) };
+  const r = recipe(m.variant, colorway), base = initialFor(m.variant), frost = m.variant === 'frost';
+  const look = { colorway, fill: m.on[0] ? r.fill : 'transparent', allShadows: r.shadows, shadows: stripShadows(m, colorway), shadow: stripShadow(m, colorway), radius: outerRadius(m), wall: r.wall, toolWall: r.toolWall };
+  // each strip reads its own variables: the frost strip the shared toolbar tokens, the graphite one its recipe
+  const v = frost
+    ? { pad: '--mu-toolbar-pad', gap: '--mu-toolbar-gap', radius: '--mu-radius-card', background: '--mu-frost', shadow: '--mu-raise' }
+    : { pad: '--mu-r-toolbar-self-pad', gap: '--mu-r-toolbar-self-gap', radius: '--mu-r-toolbar-self-radius', background: '--mu-r-toolbar-self-background', shadow: '--mu-r-toolbar-self-shadow' };
   const style: Record<string, string> = {};
-  if (m.pad !== INITIAL.pad) style['--mu-r-toolbar-self-pad'] = `${m.pad}px`;
-  if (m.gap !== INITIAL.gap) style['--mu-r-toolbar-self-gap'] = `${m.gap}px`;
-  if (look.radius !== P.self.radius) style['--mu-r-toolbar-self-radius'] = `${look.radius}px`;
-  if (m.sep && m.sepMargin !== INITIAL.sepMargin) style['--mu-r-toolbar-sep-margin'] = `${m.sepMargin}px`;
+  if (m.pad !== base.pad) style[v.pad] = `${m.pad}px`;
+  if (m.gap !== base.gap) style[v.gap] = `${m.gap}px`;
+  if (look.radius !== base.radius) style[v.radius] = `${look.radius}px`;
+  if (m.sep && m.sepMargin !== base.sepMargin) style['--mu-r-toolbar-sep-margin'] = `${m.sepMargin}px`;
   // the fill changes with its own layer; the shadow stack with the height or any of its layers
-  if (!m.on[0]) style['--mu-r-toolbar-self-background'] = look.fill;
-  if (m.lift !== INITIAL.lift || !same(m.on.slice(1), INITIAL.on.slice(1))) style['--mu-r-toolbar-self-shadow'] = look.shadow;
+  if (!m.on[0]) style[v.background] = look.fill;
+  if (m.lift !== base.lift || !same(m.on.slice(1), base.on.slice(1))) style[v.shadow] = look.shadow;
   return { ...look, style: style as React.CSSProperties };
 }
 export function useToolbarLook(m: ToolbarConfig) {
@@ -124,7 +166,7 @@ const keys = (k: string): Hint['keys'] => [{ k, say: 'change' }, { k: '⇧', say
 
 /* ───────────────────────── the specimen ───────────────────────── */
 
-/** The real toolbar in a card, set to the config: the graphite strip, its latched tools and the groove. */
+/** The real toolbar in a card, set to the config: the strip, its latched tools and the groove. */
 function Strip({ m, set }: { m: Model; set: Props['set'] }) {
   return <ToolbarObject config={m} onActive={(active) => set({ active })} />;
 }
@@ -184,7 +226,7 @@ function StripCard({ m, set }: Props) {
   const handleEl = React.useRef<HTMLSpanElement>(null);
   const [live, setLive] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
-  const pad = (v: number, caught = true) => { const n = round(clamp(v, PAD[0], PAD[1])); set({ pad: caught ? near(n, P.self.pad, 0.6) : n }); };
+  const pad = (v: number, caught = true) => { const n = round(clamp(v, PAD[0], PAD[1])); set({ pad: caught ? near(n, geom(m.variant).pad, 0.6) : n }); };
   const handle = useHandle({
     zoom, axis: 'x',
     hint: () => ({ gesture: 'sides', title: 'Space around the tools', value: live ? `${m.pad}pt` : undefined, how: 'drag the end sideways', keys: keys('←→') }),
@@ -192,10 +234,10 @@ function StripCard({ m, set }: Props) {
     start: () => m.pad, move: (s, dx) => { setLive(true); pad(s + dx); }, end: () => setLive(false),
     step: (d) => pad(m.pad + d), over: setPeek, grab: () => blip(segs.current.right),
   });
-  useOnLand(live && m.pad === P.self.pad ? 'pad' : undefined, () => blip(segs.current.right));
+  useOnLand(live && m.pad === geom(m.variant).pad ? 'pad' : undefined, () => blip(segs.current.right));
   const lit = live || peek;
   return <>
-    <p>The strip is a piece of dark glass that holds the tools, and it stays dark in light and dark mode. Drag its right end to change the space around the tools.</p>
+    <p>{m.variant === 'frost' ? 'The strip is a piece of frosted glass that holds the tools: it blurs what is behind it and takes the colorway, pale on bone and smoky on graphite.' : 'The strip is a piece of dark glass that holds the tools, and it stays dark in light and dark mode.'} Drag its right end to change the space around the tools.</p>
     <Well well={well} zoom={zoom}>
       <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={live ? 'pad' : undefined} data-peek={peek ? '' : undefined} data-shown="right">
         <Strip m={m} set={set} />
@@ -205,7 +247,7 @@ function StripCard({ m, set }: Props) {
         </div>
       </div>
     </Well>
-    <div className="ed-readouts"><Readout label="Space around the tools" value={`${m.pad}`} snap={token(m.pad, P.self.pad)} peek={setPeek} pick={() => summon(handleEl.current)} scrub={(d) => pad(m.pad + d, false)} /></div>
+    <div className="ed-readouts"><Readout label="Space around the tools" value={`${m.pad}`} snap={token(m.pad, geom(m.variant).pad)} peek={setPeek} pick={() => summon(handleEl.current)} scrub={(d) => pad(m.pad + d, false)} /></div>
   </>;
 }
 
@@ -221,7 +263,7 @@ function ToolsCard({ m, set }: Props) {
   const [lean, setLean] = React.useState<number | null>(null);
   const current = Math.max(0, OPTIONS.findIndex((t) => t.id === m.active));
   const choose = (i: number) => { const next = OPTIONS[clamp(i, 0, OPTIONS.length - 1)]; if (next.id !== m.active) set({ active: next.id }); };
-  const gap = (v: number, caught = true) => { const n = round(clamp(v, GAP[0], GAP[1])); set({ gap: caught ? near(n, P.self.gap, 0.6) : n }); };
+  const gap = (v: number, caught = true) => { const n = round(clamp(v, GAP[0], GAP[1])); set({ gap: caught ? near(n, geom(m.variant).gap, 0.6) : n }); };
   const tool = useHandle<{ index: number; traveled: number }>({
     zoom, axis: 'x',
     hint: () => ({ gesture: 'steps', title: 'Tool', value: active === 'tool' ? (lean !== null ? `→ ${OPTIONS[lean].label}` : OPTIONS[current].label) : undefined, how: 'drag it onto another tool', keys: [{ k: '←→', say: 'choose' }] }),
@@ -246,11 +288,11 @@ function ToolsCard({ m, set }: Props) {
     start: () => m.gap, move: (s, dx) => { setActive('gap'); gap(s + dx / 2); }, end: () => setActive(null),
     step: (d) => gap(m.gap + d), over: (on) => setPeek(on ? 'gap' : null), grab: () => blip(els.current.gap),
   });
-  useOnLand(active === 'gap' && m.gap === P.self.gap ? 'gap' : undefined, () => blip(els.current.gap));
+  useOnLand(active === 'gap' && m.gap === geom(m.variant).gap ? 'gap' : undefined, () => blip(els.current.gap));
   const cap = g.tools[current] ?? NONE, a = g.tools[0] ?? NONE, b = g.tools[1] ?? NONE;
   const leanAt = lean !== null ? g.tools[lean] : undefined;
   return <>
-    <p>Each tool is a small dark cap, and the one you are using stays down with a green light. Drag the pressed tool onto another one to pick it, or drag the gap between two tools to space them out.</p>
+    <p>Each tool is a small {m.variant === 'frost' ? 'round' : 'dark'} cap, and the one you are using stays down with a green light. Drag the pressed tool onto another one to pick it, or drag the gap between two tools to space them out.</p>
     <Well well={well} zoom={zoom}>
       <div ref={box} className="ed-box ed-tb" data-hint-anchor data-live={active ?? undefined} data-peek={peek ?? undefined}>
         <Strip m={m} set={set} />
@@ -265,7 +307,7 @@ function ToolsCard({ m, set }: Props) {
     </Well>
     <div className="ed-readouts">
       <Readout label="Tool" value={OPTIONS[current].label} unit="" snap={{ at: current, name: OPTIONS[current].label }} peek={(on) => setPeek(on ? 'tool' : null)} pick={() => summon(els.current.tool ?? null)} scrub={(d) => choose(current + d)} />
-      <Readout label="Space between tools" value={`${m.gap}`} snap={token(m.gap, P.self.gap)} peek={(on) => setPeek(on ? 'gap' : null)} pick={() => summon(els.current.gap ?? null)} scrub={(d) => gap(m.gap + d, false)} />
+      <Readout label="Space between tools" value={`${m.gap}`} snap={token(m.gap, geom(m.variant).gap)} peek={(on) => setPeek(on ? 'gap' : null)} pick={() => summon(els.current.gap ?? null)} scrub={(d) => gap(m.gap + d, false)} />
     </div>
   </>;
 }
@@ -317,7 +359,7 @@ function ShapeCard({ m, set }: Props) {
   const [peek, setPeek] = React.useState(false);
   const r = outerRadius(m);
   // taking hold of the corner lets go of the rule: the corners are now yours
-  const corners = (v: number, caught = true) => { const n = round(clamp(v, 0, maxRadius(m))); set({ follow: false, radius: caught ? near(n, P.self.radius, 0.8) : n }); };
+  const corners = (v: number, caught = true) => { const n = round(clamp(v, 0, maxRadius(m))); set({ follow: false, radius: caught ? near(n, geom(m.variant).radius, 0.8) : n }); };
   const handle = useHandle({
     zoom, axis: 'both',
     hint: () => ({ gesture: 'corner', title: 'Outer corners', value: live ? `${r}pt` : undefined, how: 'drag the corner in or out', keys: keys('←→') }),
@@ -325,7 +367,7 @@ function ShapeCard({ m, set }: Props) {
     start: () => r, move: (s, dx, dy) => { setLive(true); corners(s + (dx + dy) / 2); }, end: () => setLive(false),
     step: (d) => corners(r + d), over: setPeek, grab: () => blip(arc.current),
   });
-  useOnLand(live && r === P.self.radius ? 'corners' : undefined, () => blip(arc.current));
+  useOnLand(live && r === geom(m.variant).radius ? 'corners' : undefined, () => blip(arc.current));
   return <>
     <p>The outer corners wrap the caps with the same gap all round, so they follow the space around the tools. Drag the corner to round it yourself, or let it follow the caps again.</p>
     <Well well={well} zoom={zoom}>
@@ -338,7 +380,7 @@ function ShapeCard({ m, set }: Props) {
         </div>
       </div>
     </Well>
-    <div className="ed-readouts"><Readout label="Outer corners" value={`${r}`} snap={token(r, P.self.radius)} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => corners(r + d, false)} /></div>
+    <div className="ed-readouts"><Readout label="Outer corners" value={`${r}`} snap={token(r, geom(m.variant).radius)} peek={setPeek} pick={() => summon(el.current)} scrub={(d) => corners(r + d, false)} /></div>
     <div className="ed-layers"><Row.Root variant="list" className="ed-layer" data-off={m.follow ? undefined : ''} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) set({ follow: !m.follow }); }}><Row.Text>Corners follow the caps</Row.Text><Row.Trail><Switch size="small" aria-label="Corners follow the caps" checked={m.follow} onCheckedChange={(follow) => set({ follow })} /></Row.Trail></Row.Root></div>
   </>;
 }
@@ -382,9 +424,9 @@ function LayersCard({ m, set, focus }: Props) {
   const [well, zoom] = useFit();
   const toggle = (i: number, on: boolean) => set({ on: m.on.map((x, j) => (j === i ? on : x)) });
   return <>
-    <p>The strip is made of eight layers; the caps on it have their own, which the icon button shows. Turn a layer off to see what it adds.</p>
+    <p>The strip is made of {layersOf(m.variant).length === 9 ? 'nine' : 'eight'} layers; the caps on it have their own, which the icon button shows. Turn a layer off to see what it adds.</p>
     <Well well={well} zoom={zoom}><div className="ed-tb"><Strip m={m} set={set} /></div></Well>
-    <div className="ed-layers">{LAYERS.map((l, i) => (
+    <div className="ed-layers">{layersOf(m.variant).map((l, i) => (
       <Row.Root key={l.name} variant="list" className="ed-layer" data-off={m.on[i] ? undefined : ''} onPointerEnter={() => focus(l.name)} onPointerLeave={() => focus(null)} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(i, !m.on[i]); }}>
         <Row.Text>{l.name}</Row.Text>
         <Row.Trail><Switch size="small" aria-label={l.name} checked={m.on[i]} onCheckedChange={(on) => toggle(i, on)} onFocus={() => focus(l.name)} onBlur={() => focus(null)} /></Row.Trail>

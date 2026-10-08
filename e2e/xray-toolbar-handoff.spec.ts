@@ -136,7 +136,7 @@ test('a tweak comes home with the object: what lifts off the model is what lande
   await page.keyboard.press('Escape');
   await settled(page);
   // the table's toolbar is set to it, through the library's own variable
-  await expect(page.locator('[data-float="toolbar"] .xr-tb-vars')).toHaveAttribute('style', new RegExp(`--mu-r-toolbar-self-pad:\\s*${value}px`));
+  await expect(page.locator('[data-float="toolbar"] .xr-tb-vars')).toHaveAttribute('style', new RegExp(`--mu-toolbar-pad:\\s*${value}px`));
   await expect(tableStrip(page)).toHaveCSS('padding-left', `${value}px`);
 });
 

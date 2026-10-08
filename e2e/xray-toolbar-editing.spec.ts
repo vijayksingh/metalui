@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { COLORWAYS } from './helpers';
 
-// The toolbar x-ray's editing layer: each card holds the real graphite toolbar, changed by
+// The toolbar x-ray's editing layer: each card holds the real toolbar (the frost strip, in the colorway), changed by
 // handling it. Its handles, readouts and switches change the same model the bench draws.
 
 const SPOTS = ['Strip', 'Tools', 'Groove', 'Shape', 'Shadow', 'Layers'];

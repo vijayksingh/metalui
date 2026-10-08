@@ -57,7 +57,7 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
 };
 
 export const LAYERS: LayerDef[] = [
-  { name: 'Dark glass', why: 'The same dark glass as the toolbar. Tooltips name tools, so they are made of the same stuff.' },
+  { name: 'Dark glass', why: 'The same dark glass as the graphite toolbar. Tooltips name tools, so they are made of the same stuff.' },
   { name: 'Inner glow', why: 'A faint light just inside the edge.' },
   { name: 'Top light', why: 'A soft bright edge along the top left.' },
   { name: 'Bottom shade', why: 'A soft dark edge along the bottom right.' },

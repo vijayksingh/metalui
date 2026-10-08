@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { COLORWAYS, type Colorway } from '../../app/colorway';
 import { SourceTabs } from '../doc';
-import { INITIAL, LAYERS, P, TOOLS, toolbarLook, type ToolbarConfig } from './ToolbarSpecimens';
+import { initialFor, layersOf, P, TOOLS, toolbarLook, type ToolbarConfig } from './ToolbarSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · TOOLBAR · THE CODE
@@ -21,7 +21,7 @@ const NAME = 'CanvasTools';
 const CLASS = 'canvas-tools';
 const SHEET = `${CLASS}.css`;
 /** The variables that hold colours: their values can differ per colorway. */
-const coloured = (name: string) => /-(background|shadow)$/.test(name);
+const coloured = (name: string) => /-(background|shadow)$|^--mu-(frost|raise)$/.test(name);
 const q = (s: string) => `'${s.replace(/'/g, "\\'")}'`;
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 /** The icon component for a tool, as the icon set exports it. */
@@ -30,8 +30,8 @@ const iconOf = (id: string) => `${cap(id)}Icon`;
 /** The values the shadow stack was derived from, for the one line that says where it came from. */
 function derivedFrom(m: ToolbarConfig) {
   const parts: string[] = [];
-  if (m.lift !== INITIAL.lift) parts.push(`height ${m.lift}`);
-  const off = LAYERS.filter((_, i) => !m.on[i]).map((l) => l.name.toLowerCase());
+  if (m.lift !== initialFor(m.variant).lift) parts.push(`height ${m.lift}`);
+  const off = layersOf(m.variant).filter((_, i) => !m.on[i]).map((l) => l.name.toLowerCase());
   if (off.length) parts.push(`${off.join(', ')} off`);
   return parts.join(', ');
 }
@@ -85,7 +85,7 @@ export function toolbarCss(m: ToolbarConfig) {
   if (!sheet.length) return '';
   const derived = derivedFrom(m);
   const lines = [`/* the strip's fill and shadow stack, derived from the toolbar recipe${derived ? ` for ${derived}` : ''}; the library sets its own the same way */`];
-  // the graphite strip's colours are the same in every colorway, so one block; a colorway that differed would get its own
+  // a strip whose colours are the same in every colorway (graphite) gets one block; frost gets one per colorway
   const alike = sheet.every((n) => COLORWAYS.every((c) => by[c][n] === by[COLORWAYS[0]][n]));
   const blocks = alike ? [[COLORWAYS[0], `.${CLASS} {`] as const] : COLORWAYS.map((c) => [c, c === COLORWAYS[0] ? `.${CLASS}, [data-mu-colorway="${c}"] .${CLASS} {` : `[data-mu-colorway="${c}"] .${CLASS} {`] as const);
   for (const [c, open] of blocks) {
