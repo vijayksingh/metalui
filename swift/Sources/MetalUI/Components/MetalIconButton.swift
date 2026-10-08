@@ -82,6 +82,10 @@ private struct MetalIconButtonStyle: ButtonStyle {
         let inkKey = tool ? "tool.ink" : hovering ? (mini && accept ? "mini.accept-ink" : "\(part).ink-hover") : "\(part).ink"
         let ink = recipe.color(inkKey, colorway: cw)?.color ?? .clear
         let travel = MetalMotion.resolve(.release, reduceMotion: reduceMotion).allowsTravel
+        // Under a pointer a tool key lifts one point toward the finger and its top edge catches
+        // light; a key that is held (latched or pressed) does not. Settle spring in, release out.
+        let lifted = tool && hovering && !down && isEnabled
+        let liftMotion = MetalMotion.resolve(lifted ? .settle : .release, reduceMotion: reduceMotion)
         configuration.label
             .font(mini ? recipe.font("mini.font") : nil)
             .foregroundColor(ink)
@@ -108,8 +112,20 @@ private struct MetalIconButtonStyle: ButtonStyle {
                     shape.strokeBorder(MetalShared.focus.color, lineWidth: MetalRing.focusWidth)
                 }
             }
-            .offset(y: down && travel ? recipe.points("tool.press") : .zero)
+            .overlay {
+                if tool {
+                    shape.inset(by: MetalRing.focusWidth / 4)
+                        .stroke(recipe.color("tool.glint", colorway: cw)?.color ?? .clear, lineWidth: MetalRing.focusWidth / 2 + MetalRing.focusWidth / 4)
+                        .mask(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .center))
+                        .opacity(lifted ? .one : .zero)
+                        .allowsHitTesting(false)
+                        .animation(liftMotion.animation, value: lifted)
+                }
+            }
+            .offset(y: down && travel ? recipe.points("tool.press")
+                    : lifted && liftMotion.allowsTravel ? recipe.points("tool.lift") : .zero)
             .animation(.linear(duration: recipe.durationSeconds("tool.press-time")), value: down)
+            .animation(liftMotion.animation, value: lifted)
             .onHover { hovering = $0 }
             .opacity(isEnabled ? .one : MetalRecipes.button.scalar("self.disabled"))
     }

@@ -861,6 +861,8 @@
   --spacing-icon-button-tool-glyph: var(--mu-r-icon-button-tool-glyph);
   --color-icon-button-tool-ink: var(--mu-r-icon-button-tool-ink);
   --spacing-icon-button-tool-press: var(--mu-r-icon-button-tool-press);
+  --spacing-icon-button-tool-lift: var(--mu-r-icon-button-tool-lift);
+  --color-icon-button-tool-glint: var(--mu-r-icon-button-tool-glint);
   --spacing-icon-button-led-size: var(--mu-r-icon-button-led-size);
   --spacing-icon-button-led-inset: var(--mu-r-icon-button-led-inset);
   --spacing-icon-button-ghost-size: var(--mu-r-icon-button-ghost-size);
@@ -2409,6 +2411,9 @@
 }
 @utility recipe-icon-button-mini-hover {
   background: var(--mu-r-icon-button-mini-hover-background);
+}
+@utility icon-button-tool-hover {
+  position: relative; &::before { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 1px 0 var(--mu-r-icon-button-tool-glint); opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); pointer-events: none; } @media (hover: hover) and (pointer: fine) { &:hover:not(:active):not([data-pressed]):not(:disabled) { transform: translateY(var(--mu-r-icon-button-tool-lift)); transition: translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press), transform var(--mu-spring-settle-d) var(--mu-spring-settle); } &:hover:not([data-pressed]):not(:disabled)::before { opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); } } @media (prefers-reduced-motion: reduce) { &:hover { transform: none; } }
 }
 @utility icon-button-mini-hit {
   &::after { content: ""; position: absolute; left: 50%; top: 50%; width: var(--mu-r-icon-button-mini-hit); height: var(--mu-r-icon-button-mini-hit); translate: -50% -50%; }

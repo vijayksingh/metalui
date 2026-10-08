@@ -25,7 +25,7 @@ const useFan = () => {
 
 /* Styled with the theme's utilities: the icon-button tool cap for cells, the toolbar recipe for the tray. */
 const ROW = 'mu-fan relative inline-flex items-end gap-toolbar-gap';
-const CAP = 'disabled:opacity-button-disabled disabled:cursor-default mu-icon-trigger box-border inline-grid place-items-center flex-none p-0 border-0 cursor-pointer tap-highlight-none size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed focus-visible:focus-ring-flush';
+const CAP = 'disabled:opacity-button-disabled disabled:cursor-default mu-icon-trigger box-border inline-grid place-items-center flex-none p-0 border-0 cursor-pointer tap-highlight-none size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool icon-button-tool-hover [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed focus-visible:focus-ring-flush';
 const LABEL = 'mu-fan-label box-border inline-flex items-center h-icon-button-tool-size px-toolbar-pad rounded-icon-button-tool-radius recipe-icon-button-tool type-toolbar-search text-icon-button-tool-ink whitespace-nowrap';
 /** The part spring, from the theme (duration and curve). */
 const SPRING = 'duration-part ease-part';

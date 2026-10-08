@@ -2039,7 +2039,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A pressable cap with only a glyph: tool (a graphite cap that latches pressed with a green LED), ghost (a flat round button that fills on hover) and mini (a small flat pill inside a chip). (reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button)
+    /// A pressable cap with only a glyph: tool (a graphite cap that latches pressed with a green LED; under a pointer it lifts one point toward the finger and its top edge catches light, on the settle spring, never while held), ghost (a flat round button that fills on hover) and mini (a small flat pill inside a chip). (reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button)
     public static let iconButton = MetalObjectRecipe(
         name: "icon-button",
         layers: [
@@ -2068,7 +2068,9 @@ public enum MetalRecipes {
             "tool.press": .number(1.0),
             "tool.press-time": .text("50ms"),
             "tool.shadow-time": .text("90ms"),
-            "tool.transition": .text("translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press)"),
+            "tool.lift": .number(-1.0),
+            "tool.glint": .text("rgba(255,255,255,.16)"),
+            "tool.transition": .text("translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press), transform var(--mu-spring-release-d) var(--mu-spring-release)"),
             "led.size": .number(4.0),
             "led.inset": .number(5.0),
             "ghost.size": .number(28.0),

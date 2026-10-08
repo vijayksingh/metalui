@@ -1652,7 +1652,9 @@
   --mu-r-icon-button-tool-press: 1px;
   --mu-r-icon-button-tool-press-time: 50ms;
   --mu-r-icon-button-tool-shadow-time: 90ms;
-  --mu-r-icon-button-tool-transition: translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press);
+  --mu-r-icon-button-tool-lift: -1px;
+  --mu-r-icon-button-tool-glint: rgba(255,255,255,.16);
+  --mu-r-icon-button-tool-transition: translate var(--mu-r-icon-button-tool-press-time) linear, box-shadow var(--mu-r-icon-button-tool-shadow-time) var(--mu-ease-press), transform var(--mu-spring-release-d) var(--mu-spring-release);
   --mu-r-icon-button-led-size: 4px;
   --mu-r-icon-button-led-inset: 5px;
   --mu-r-icon-button-ghost-size: 28px;
