@@ -384,6 +384,15 @@
   outline: var(--mu-focus-width) solid var(--mu-focus);
   outline-offset: var(--mu-zero);
 }
+/* A text entry on a touch screen is at least 16px: Safari zooms the page into a smaller one on focus and
+   leaves it zoomed (docs/CSS_HABITS.md). The doubled class outranks the entry's own type role. */
+@utility text-entry {
+  @media (pointer: coarse) {
+    && {
+      font-size: max(16px, 1em);
+    }
+  }
+}
 /* A focus shown as a fill (a row, a strip key) still carries a ring: transparent, inside the edge, so it
    is unseen until forced colors paints it in the system's highlight, where fills and shadows are dropped. */
 @utility focus-ring-forced {

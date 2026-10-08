@@ -218,7 +218,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
       </Mark>
     </BaseNumberField.ScrubArea></Tooltip></TooltipProvider>
     <BaseNumberField.Input {...inputAria} ref={input} role="spinbutton" aria-label={label} aria-valuemin={min / unit.factor} aria-valuemax={max / unit.factor} aria-valuenow={value.value / unit.factor} aria-valuetext={resolved ? `${formatted}, ${resolved}` : `${formatted}, ${unit.label}`} title={hint ? help : undefined}
-      className="mu-numeric-cue-input absolute inset-0 w-full bg-transparent p-0 border-0 rounded-none text-inherit font-inherit focus-visible:focus-ring"
+      className="mu-numeric-cue-input text-entry absolute inset-0 w-full bg-transparent p-0 border-0 rounded-none text-inherit font-inherit focus-visible:focus-ring"
       onFocus={() => { if (!held) { cancelledInput.current = false; if (begin()) setTyping(allowTyping); } }} onBlur={() => { setTyping(false); finish(); }}
 
       onBeforeInput={event => { if (!allowTyping) event.preventDefault(); }} onPaste={event => { if (!allowTyping) event.preventDefault(); }}

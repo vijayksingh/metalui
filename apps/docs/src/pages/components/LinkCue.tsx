@@ -18,7 +18,7 @@ export function LinkCueDocument() {
     <MarkLine><span>{match ? doc.source.slice(0, match.index) : doc.source}</span>{match && d.mounted ? <ProvenanceTooltip source="You" detail={["linked words"]}><LinkCue value={match[0]} label="Reference" footprint={FOOTPRINT} raw={d.raw} readOnly={d.readOnly} disabled={d.disabled} editing={doc.editing}
       onBegin={() => doc.begin({ start: match.index, end: match.index + match[0].length })} onChange={doc.replace} onCommit={doc.commit} onCancel={doc.cancel} /></ProvenanceTooltip> : match?.[0]}<span data-link-tail>{match ? doc.source.slice(match.index + match[0].length) : ''}</span></MarkLine>
     <label className="mu-stack gap-mu-related type-label text-ink2">Editable document source
-      <textarea ref={editor} aria-label="Link document source" className="type-content material-well rounded-field p-mu-space-12 w-full text-ink" value={doc.source}
+      <textarea ref={editor} aria-label="Link document source" className="text-entry type-content material-well rounded-field p-mu-space-12 w-full text-ink" value={doc.source}
         onChange={event => doc.setSource(event.target.value, { start: event.target.selectionStart, end: event.target.selectionEnd, direction: event.target.selectionDirection })}
         onSelect={retain} onKeyUp={retain} onPointerUp={retain}
         onKeyDown={event => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); if (event.shiftKey) doc.redo(); else doc.undo(); } }} />

@@ -233,7 +233,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
       <Popover open={jump} onOpenChange={setJump}>
         <Popover.Trigger><button type="button" aria-label={`Choose month and year: ${titleFormat.format(month)}`} className="border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring"><span id={titleId} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={titleFormat.format(month)} /></span></button></Popover.Trigger>
         <Popover.Content><div className="mu-stack p-mu-space-12">
-          <label className="mu-cluster type-ui text-ink">Year <input aria-label="Calendar year" type="number" value={month.getFullYear()} min={min?.getFullYear() ?? 1} max={max?.getFullYear() ?? 9999} className="recipe-well-field rounded-field-regular-radius h-field-regular-height p-mu-space-8 type-ui text-ink" onChange={(e) => { const year = Number(e.currentTarget.value); if (year >= (min?.getFullYear() ?? 1) && year <= (max?.getFullYear() ?? 9999)) showMonth(localDate(year, month.getMonth(), 1)); }} /></label>
+          <label className="mu-cluster type-ui text-ink">Year <input aria-label="Calendar year" type="number" value={month.getFullYear()} min={min?.getFullYear() ?? 1} max={max?.getFullYear() ?? 9999} className="recipe-well-field rounded-field-regular-radius h-field-regular-height p-mu-space-8 type-ui text-ink text-entry" onChange={(e) => { const year = Number(e.currentTarget.value); if (year >= (min?.getFullYear() ?? 1) && year <= (max?.getFullYear() ?? 9999)) showMonth(localDate(year, month.getMonth(), 1)); }} /></label>
           <div className="mu-auto-grid gap-mu-space-4">{Array.from({ length: 12 }, (_, i) => { const d = localDate(month.getFullYear(), i, 1); return <button type="button" className={buttonClasses('standard', 'compact')} key={i} disabled={!!min && monthKey(d) < monthKey(min) || !!max && monthKey(d) > monthKey(max)} onClick={() => { showMonth(d); setFocused(d); setJump(false); }}>{new Intl.DateTimeFormat(locale, { month: 'long' }).format(d)}</button>; })}</div>
         </div></Popover.Content>
       </Popover>
@@ -266,7 +266,7 @@ export function Calendar<M extends CalendarMode = 'single'>({ mode = 'single' as
 }
 
 const PICKER = 'mu-date-picker relative inline-flex items-center gap-field-regular-gap min-h-field-regular-height min-w-calendar-picker-min-width ps-field-regular-pad-left pe-field-regular-pad-right rounded-field-regular-radius box-border border-0 recipe-well-field type-ui text-field-field-ink text-start focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
-const ENTRY = 'mu-date-picker-entry min-w-0 flex-1 p-0 h-field-regular-height border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret date-picker-entry';
+const ENTRY = 'mu-date-picker-entry text-entry min-w-0 flex-1 p-0 h-field-regular-height border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret date-picker-entry';
 const PICKER_KEY = 'inline-grid place-items-center h-field-regular-height w-field-regular-height border-0 bg-transparent p-0 cursor-pointer rounded-calendar-day-radius focus-visible:focus-ring disabled:cursor-default';
 
 function PickerEntry({ fieldDisabled, onDisabledChange, ...props }: React.ComponentPropsWithRef<'input'> & { fieldDisabled: boolean; onDisabledChange: (disabled: boolean) => void }) {
@@ -426,7 +426,7 @@ export function DatePicker<M extends CalendarMode = 'single'>({ mode = 'single' 
       </Popover.Content>
     </Popover>
     {timed && <div className="mu-cluster gap-mu-space-8">
-      <input type="time" aria-label={`${label} time`} disabled={disabled || fieldDisabled} readOnly={readOnly} value={time} className={`${ENTRY} recipe-well-field rounded-field-regular-radius p-mu-space-8`} onChange={(e) => { const next = e.currentTarget.value; setTime(next); if (draft[0]) { const instant = zonedDate(draft[0], next, zone); if (instant) apply(instant as CalendarValue<M>, false); else setError('This local time does not exist in the selected time zone'); } }} />
+      <input type="time" aria-label={`${label} time`} disabled={disabled || fieldDisabled} readOnly={readOnly} value={time} className={`${ENTRY} recipe-well-field rounded-field-regular-radius p-mu-space-8 text-entry`} onChange={(e) => { const next = e.currentTarget.value; setTime(next); if (draft[0]) { const instant = zonedDate(draft[0], next, zone); if (instant) apply(instant as CalendarValue<M>, false); else setError('This local time does not exist in the selected time zone'); } }} />
       <BaseField.Root><Select aria-label={`${label} time zone`} size="compact" value={zone} disabled={disabled || fieldDisabled || readOnly} onValueChange={(next) => { if (controlledZone === undefined) setOwnZone(next); onTimeZoneChange?.(next); }} options={(timeZones ?? [...new Set([zone, 'UTC'])]).map((value) => ({ value, label: value.replaceAll('_', ' ') }))} /></BaseField.Root>
       {name && <input type="hidden" name={`${name}.timeZone`} value={zone} disabled={disabled || fieldDisabled} />}
     </div>}

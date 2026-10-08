@@ -50,7 +50,7 @@ function DocumentHost() {
       onBegin={() => { const match = document.source.match(/([\d.]+)(h|min)/); if (match?.index != null) document.begin({ start: match.index, end: match.index + match[0].length }); setBegin(n => n + 1); }}
       onSourceChange={words => document.replace(words)} onCommit={() => { document.commit(); setCommit(n => n + 1); }}
       onCancel={reason => { if (reason !== 'external') document.cancel(); else document.commit(); setCancel(n => n + 1); }} /> after work</MarkLine>
-    <textarea ref={editor} aria-label="Source document" value={document.source} className="w-full h-mu-space-80 material-well rounded-row p-mu-space-12 type-content text-ink"
+    <textarea ref={editor} aria-label="Source document" value={document.source} className="text-entry w-full h-mu-space-80 material-well rounded-row p-mu-space-12 type-content text-ink"
       onChange={event => { document.setSource(event.target.value, { start: event.target.selectionStart, end: event.target.selectionEnd, direction: event.target.selectionDirection }); sync(event.target.value); }}
       onSelect={event => { if (!document.editing && globalThis.document.activeElement === event.currentTarget) document.setSelection({ start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd, direction: event.currentTarget.selectionDirection }); }} />
     <div className="mu-cluster gap-mu-related">

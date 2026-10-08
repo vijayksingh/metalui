@@ -24,7 +24,7 @@ const POPUP = 'mu-palette fixed palette-at p-palette-pad rounded-card outline-no
 /* The field: a 44 well in the content role, caret green-deep. */
 const FIELD = 'mu-palette-field flex items-center gap-palette-field-gap h-palette-field-height ps-palette-field-pad-start pe-palette-field-pad-end rounded-palette-field-radius material-well cursor-text';
 const FIELD_GLYPH = 'mu-palette-field-glyph inline-grid flex-none text-ink3 [&>svg]:size-palette-field-glyph';
-const INPUT = 'mu-palette-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent text-ink caret-green-deep placeholder:text-ink3 type-content';
+const INPUT = 'mu-palette-input text-entry flex-1 min-w-0 p-0 border-0 outline-none bg-transparent text-ink caret-green-deep placeholder:text-ink3 type-content';
 /* The list: sections of 36 rows; scrolls past 52 % of the window. The selected row's bar sits 2 outside
  * the row: room for it inside the scroll clip. */
 const LIST = 'mu-palette-list palette-list-max overflow-auto overscroll-contain mx-palette-bar-left pt-palette-list-pad-top px-palette-bar-outset pb-palette-list-pad-bottom scroll-py-palette-list-pad-top scroll-px-0 outline-none empty:hidden';

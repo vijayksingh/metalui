@@ -40,7 +40,7 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
 const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring has-[textarea[data-invalid]]:invalid-ring has-[textarea[data-disabled]]:opacity-textarea-disabled data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
 const TEXT = 'px-textarea-pad-x py-textarea-pad-y whitespace-pre-wrap break-words';
 const TYPE: Record<FieldSize, string> = { large: 'type-content', regular: 'type-ui', compact: 'type-ui' };
-const INPUT = `mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
+const INPUT = `mu-textarea-input text-entry block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
 const MIRROR = `mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none ${TEXT}`;
 const COUNT_ROW = 'mu-textarea-count-row textarea-count-row';
 const COUNT = 'mu-textarea-count pt-textarea-count-gap text-end type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';

@@ -24,8 +24,8 @@ const SIZES: Record<FieldSize, string> = {
 };
 const ICON = 'mu-field-icon inline-grid flex-none';
 const INPUT = {
-  large: 'mu-field-input flex-1 min-w-0 p-0 border-0 outline-none bg-transparent type-field-field text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
-  form: 'mu-field-input flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
+  large: 'mu-field-input text-entry flex-1 min-w-0 p-0 border-0 outline-none bg-transparent type-field-field text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
+  form: 'mu-field-input text-entry flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint focus-visible:outline-none disabled:cursor-default',
 };
 const TRAIL = 'mu-field-trail inline-flex items-center ms-auto';
 const SEARCH = {
