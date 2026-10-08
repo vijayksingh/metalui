@@ -230,7 +230,7 @@ export const NumericCue = React.forwardRef<HTMLSpanElement, NumericCueProps>(fun
         else if (!allowTyping && event.key.length === 1 && !event.ctrlKey && !event.metaKey) event.preventDefault();
         else { cancelledInput.current = false; begin(); }
       }} />
-    {held && <span aria-hidden className="mu-numeric-cue-scale absolute start-0 bottom-full mb-mu-space-2 rounded-tooltip-radius px-tooltip-pad-x py-tooltip-pad-y recipe-tooltip text-tooltip-ink type-tooltip whitespace-nowrap">
+    {held && <span aria-hidden className="mu-numeric-cue-scale absolute start-0 bottom-full mb-mu-space-2 rounded-tooltip-radius px-tooltip-pad-x py-tooltip-pad-y recipe-tooltip text-tooltip-ink type-tooltip tabular-nums whitespace-nowrap">
       <span className="inline-flex gap-mu-related"><span>−</span><span>│</span><span>{formatted}</span><span>│</span><span>+</span></span>
     </span>}
   </BaseNumberField.Root>;
