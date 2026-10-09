@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cssMs } from '../../motion/duration';
 import { Toast } from '@base-ui/react/toast';
 import { MorphIcon } from '../../icons/MorphIcon';
 import type { MorphIconName } from '../../icons/morph.generated';
@@ -68,12 +69,7 @@ export interface ToastPromiseOptions<Value> {
 }
 
 const cssValue = (name: string) => (typeof window === 'undefined' ? '' : getComputedStyle(document.documentElement).getPropertyValue(name).trim());
-const ms = (name: string, fallback: number) => {
-  const v = cssValue(name);
-  const n = parseFloat(v);
-  if (!Number.isFinite(n)) return fallback;
-  return v.endsWith('ms') ? n : v.endsWith('s') ? n * 1000 : n;
-};
+const ms = (name: string, fallback: number) => cssMs(name, fallback);
 const count = (name: string, fallback: number) => Math.max(1, Math.round(parseFloat(cssValue(name))) || fallback);
 
 /** One mapping serves new cards, retained updates and async results. */

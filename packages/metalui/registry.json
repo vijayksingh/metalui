@@ -43,6 +43,11 @@
           "target": "components/metalui/motion/awake.ts"
         },
         {
+          "path": "packages/metalui/src/motion/duration.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/duration.ts"
+        },
+        {
           "path": "packages/metalui/src/motion/haptic.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/haptic.ts"
@@ -2305,6 +2310,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

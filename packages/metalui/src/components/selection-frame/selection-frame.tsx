@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cssMs } from '../../motion/duration';
 import { flushSync } from 'react-dom';
 import { SizeReadout } from '../size-readout/size-readout';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
@@ -153,7 +154,7 @@ export const SelectionFrame = React.forwardRef<HTMLDivElement, SelectionFramePro
   React.useEffect(() => {
     if (!copied) return;
     setCopiedShown(copied);
-    const ms = parseFloat(getComputedStyle(ref.current ?? document.documentElement).getPropertyValue('--mu-presence-copied-ms')) || 900;
+    const ms = cssMs('--mu-presence-copied-ms', 900, ref.current);
     const t = setTimeout(() => setCopiedShown(null), ms);
     return () => clearTimeout(t);
   }, [copied]);

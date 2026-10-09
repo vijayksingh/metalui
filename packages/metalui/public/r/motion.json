@@ -13,6 +13,12 @@
       "content": "import * as React from 'react';\n\n/**\n * Whether the thing on screen is worth running a clock for: the tab is visible and the node is in view.\n * Returns a ref callback to put on the node and the answer. Anything that ticks on a timer while nobody can\n * see it should gate on this, so a page at rest costs nothing.\n */\nexport function useAwake(): [(el: Element | null) => void, boolean] {\n  const [el, setEl] = React.useState<Element | null>(null);\n  const [seen, setSeen] = React.useState(true);\n  const [shown, setShown] = React.useState(() => typeof document === 'undefined' || !document.hidden);\n  React.useEffect(() => {\n    if (!el) return;\n    const watch = new IntersectionObserver((entries) => setSeen(entries[entries.length - 1]?.isIntersecting ?? true)); // the latest entry is the current truth\n    const visibility = () => setShown(!document.hidden);\n    watch.observe(el);\n    document.addEventListener('visibilitychange', visibility);\n    visibility();\n    return () => { watch.disconnect(); document.removeEventListener('visibilitychange', visibility); };\n  }, [el]);\n  return [setEl, seen && shown];\n}\n"
     },
     {
+      "path": "packages/metalui/src/motion/duration.ts",
+      "type": "registry:ui",
+      "target": "components/metalui/motion/duration.ts",
+      "content": "/** A duration token read as milliseconds. Tokens arrive as CSS times (\"2.6s\", \".12s\", \"900ms\");\n *  a bare number is taken as milliseconds. Unset, unparsable or server-side: the fallback. */\nexport function cssMs(name: string, fallback: number, el?: Element | null): number {\n  if (typeof window === 'undefined') return fallback;\n  const value = getComputedStyle(el ?? document.documentElement).getPropertyValue(name).trim();\n  const n = parseFloat(value);\n  if (!Number.isFinite(n)) return fallback;\n  return value.endsWith('ms') ? n : value.endsWith('s') ? n * 1000 : n;\n}\n"
+    },
+    {
       "path": "packages/metalui/src/motion/haptic.ts",
       "type": "registry:ui",
       "target": "components/metalui/motion/haptic.ts",

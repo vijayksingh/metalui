@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cssMs } from '../../motion/duration';
 import { Button } from '../button/button';
 import { Surface } from '../surface/surface';
 import { Led, type LedKind, type LedGesture } from '../led/led';
@@ -29,6 +30,7 @@ import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } fro
  *   close      Esc, a press outside, or the capsule again: the same shape travels back into the
  *              capsule on the release spring, focus returns to the capsule
  *   announce   a passing event takes the detail's place: the words turn on the swap drum
+ *              (events arriving together take turns, each for its own hold)
  *              and the capsule's footprint follows them, then after toast-plain-ms turn back
  *   condition  a lasting state (offline, the past) is the detail itself: it stays until it ends
  *   tone       the LED: live (steady), working (breathes), offline (failed), quiet (off).
@@ -78,10 +80,7 @@ export interface IslandProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonE
   children?: React.ReactNode;
 }
 
-function holdMs(el: Element | null) {
-  if (!el || typeof window === 'undefined') return 2600;
-  return parseFloat(getComputedStyle(el).getPropertyValue('--mu-toast-plain-ms')) || 2600;
-}
+const holdMs = (el: Element | null) => cssMs('--mu-toast-plain-ms', 2600, el);
 
 /** Where you are and how things stand: one capsule that opens into the place's panel. */
 export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function Island(
@@ -94,15 +93,21 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
   const panelId = React.useId();
   const hasPanel = children != null;
   const out = open && hasPanel;
-  const [passing, setPassing] = React.useState<string | null>(null);
+  // Passing events take turns: one arriving while another passes waits for it, so two at once
+  // (a status change and a new mood) are both seen. The newest three are kept.
+  const [queue, setQueue] = React.useState<string[]>([]);
+  const passing = queue[0] ?? null;
   const was = React.useRef(out);
 
   React.useEffect(() => {
     if (!announce) return;
-    setPassing(announce);
-    const t = window.setTimeout(() => setPassing(null), holdMs(inner.current));
-    return () => window.clearTimeout(t);
+    setQueue((q) => (q.at(-1) === announce ? q : [...q, announce].slice(-3)));
   }, [announce]);
+  React.useEffect(() => {
+    if (passing == null) return;
+    const t = window.setTimeout(() => setQueue((q) => q.slice(1)), holdMs(inner.current));
+    return () => window.clearTimeout(t);
+  }, [passing]);
 
   // focus follows the shape: into the panel when it opens, back to the capsule when it closes
   useIsoLayoutEffect(() => {

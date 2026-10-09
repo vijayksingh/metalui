@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cssMs } from '../../motion/duration';
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 
 /* ─────────────────────────────────────────────────────────
@@ -14,10 +15,7 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
  * wrap: a longer note (where a thing came from) wraps at 280, its detail in Tooltip.Dim.
  * ───────────────────────────────────────────────────────── */
 
-const delayMs = () => {
-  if (typeof window === 'undefined') return 120;
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-tooltip-delay-ms')) || 120;
-};
+const delayMs = () => cssMs('--mu-tooltip-delay-ms', 120);
 const gap = () => {
   if (typeof window === 'undefined') return 10;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-tooltip-gap')) || 10;
