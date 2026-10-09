@@ -35,7 +35,7 @@ export default function Landing() {
 
       <footer className="landing-foot">
         <p className="landing-line">UI components that feel like real objects. <span>For React and SwiftUI.</span></p>
-        <Button cap="primary" className="landing-cta" onClick={enter}>Browse Components</Button>
+        <Button cap="primary" className="landing-cta" onClick={enter}><span className="cta-rim" aria-hidden><span /></span><span className="cta-rim cta-rim-glow" aria-hidden><span /></span>Browse Components</Button>
         <span className="eng">⏎ browse components · click a part to see inside it · <Kbd size="small">esc</Kbd> back</span>
       </footer>
 

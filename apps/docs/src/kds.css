@@ -653,17 +653,46 @@ html.rm .drift-item { animation: none; }
 .landing-foot { position: absolute; z-index: 5; left: 0; right: 0; bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; pointer-events: none; }
 .landing-foot > * { pointer-events: auto; }
 .landing-foot .mu-button { zoom: 1.25; }
-/* The way in wears the wordmark's red enamel, with a soft halo so it reads as the one thing to press. It
-   re-points the Button's own primary tokens, so press travel, focus ring and springs stay the Button's. */
+/* The way in wears the wordmark's red enamel, grounded like a key on the table: no halo, no red
+   bloom (a glow reads as a sticker, not an object). Light, not colour, marks it as the one thing to
+   press: a warm glint travels its rim the way light slides over glossy plastic (a crisp line and a
+   blurred copy, masked to the rim, turned by transform so it stays on the compositor). Under a
+   pointer the key lifts a point and the glint brightens. It re-points the Button's own primary
+   tokens, so press travel, focus ring and springs stay the Button's. */
 .landing-cta {
+  position: relative;
+  isolation: isolate;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  text-shadow: 0 -1px 0 rgba(90, 10, 0, .35);
   --mu-r-button-primary-ink: #FFFFFF;
-  --mu-r-button-primary-background: linear-gradient(180deg, #e2362b 0%, #c41e17 55%, #9e140f 100%);
-  --mu-r-button-primary-shadow: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1px 2px rgba(80,0,0,.35), 0 0 0 .5px rgba(110,10,0,.6), 0 2px 4px rgba(120,10,0,.25), 0 0 0 5px rgba(226,54,43,.14), 0 10px 28px -6px rgba(226,54,43,.55);
-  --mu-r-button-primary-pressed-background: linear-gradient(180deg, #b81a14 0%, #a3150f 100%);
-  --mu-r-button-primary-pressed-shadow: inset 0 1px 3px rgba(60,0,0,.55), 0 0 0 .5px rgba(110,10,0,.7), 0 0 0 4px rgba(226,54,43,.12);
+  --mu-r-button-primary-background: linear-gradient(180deg, #dc3b2f 0%, #c72b21 52%, #ad2018 100%);
+  --mu-r-button-primary-shadow: inset 0 1px 0 rgba(255,255,255,.3), inset 0 -1px 1px rgba(70,0,0,.35), 0 0 0 .5px rgba(90,8,0,.7), 0 1px 1px rgba(40,0,0,.22), 0 6px 14px -7px rgba(60,6,0,.5);
+  --mu-r-button-primary-pressed-background: linear-gradient(180deg, #b9241b 0%, #a51d15 100%);
+  --mu-r-button-primary-pressed-shadow: inset 0 1px 3px rgba(60,0,0,.55), 0 0 0 .5px rgba(90,8,0,.75);
+  transition: transform var(--mu-spring-release-d) var(--mu-spring-release);
 }
+.cta-rim {
+  position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1.25px; overflow: hidden; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .75; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release);
+}
+.cta-rim > span {
+  position: absolute; left: 50%; top: 50%; width: 260%; aspect-ratio: 1; margin: -130% 0 0 -130%;
+  background: conic-gradient(from 0deg, transparent 0 60%, rgba(255,236,222,.18) 65%, rgba(255,246,238,.75) 69%, #fff 70.5%, rgba(255,240,228,.45) 72.5%, transparent 77% 100%);
+  animation: cta-glint 6s linear infinite;
+}
+.cta-rim-glow { padding: 3px; filter: blur(3px); opacity: .35; }
+@keyframes cta-glint { to { transform: rotate(360deg); } }
 @media (hover: hover) and (pointer: fine) {
-  .landing-cta:hover { --mu-r-button-primary-shadow: inset 0 1px 1px rgba(255,255,255,.4), inset 0 -1px 2px rgba(80,0,0,.35), 0 0 0 .5px rgba(110,10,0,.6), 0 2px 4px rgba(120,10,0,.25), 0 0 0 7px rgba(226,54,43,.2), 0 14px 34px -6px rgba(226,54,43,.7); }
+  .landing-cta:hover:not(:active) { transform: translateY(-1px); transition: transform var(--mu-spring-settle-d) var(--mu-spring-settle); }
+  .landing-cta:hover .cta-rim { opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); }
+  .landing-cta:hover .cta-rim-glow { opacity: .55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-rim > span { animation: none; transform: rotate(-35deg); }
+  .landing-cta:hover:not(:active) { transform: none; }
 }
 /* The wordmark is the brand: on the front door it hangs a size up from its place on the overview table. */
 .drift-item.in-space[data-float="wordmark"] { zoom: 1.4; }
