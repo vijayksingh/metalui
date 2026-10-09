@@ -62,7 +62,17 @@ const SAMPLES = 96;
 
 function cssPx(el: Element | null, name: string, fallback: number) {
   if (!el || typeof window === 'undefined') return fallback;
-  return parseFloat(getComputedStyle(el).getPropertyValue(name)) || fallback;
+  const raw = getComputedStyle(el).getPropertyValue(name).trim();
+  if (!raw) return fallback;
+  const plain = Number(raw.replace(/px$/, ''));
+  if (Number.isFinite(plain)) return plain;
+  // an unregistered custom property keeps its calc() as text: let layout resolve it
+  const probe = document.createElement('span');
+  probe.style.cssText = `position:absolute;visibility:hidden;width:var(${name})`;
+  el.appendChild(probe);
+  const width = probe.getBoundingClientRect().width;
+  probe.remove();
+  return width || fallback;
 }
 
 /** The track at a curl: points by fraction, in a box padded by the knob's radius.
@@ -170,7 +180,16 @@ export function Dial({
   const e0 = Math.min(1, Math.max(0, reel ? (curl - 0.55) / 0.45 : (curl - 0.15) / 0.85));
   const disc = e0 * e0 * (3 - 2 * e0);
   const track = bar + (groove - bar) * disc;
-  const below = reel ? (cssPx(root.current, '--mu-scrubber-height', 50) / 2 - knob / 2) * (1 - disc) : 0;
+  // the bar's line sits this far above the coil's foot; a host whose slot centres the bar on a
+  // shorter row says so with --mu-scrubber-line (default: the scrubber's own centre)
+  // resolved once per dial, before its first paint: it may need a layout probe, which must not run
+  // every frame of a wind
+  const [resolvedLine, setResolvedLine] = React.useState<number | null>(null);
+  React.useLayoutEffect(() => {
+    if (root.current) setResolvedLine(cssPx(root.current, '--mu-scrubber-line', cssPx(root.current, '--mu-scrubber-height', 50) / 2));
+  }, []);
+  const line = resolvedLine ?? 25;
+  const below = reel ? Math.max(0, line - knob / 2) * (1 - disc) : 0;
   const g = shape(curl, barLength ?? ring, ring, sweep, knob / 2 + (track / 2 + tickOut + tickLen + 1 - knob / 2) * disc, reel, below);
   const span = Math.max(Number.EPSILON, max - min);
   const fraction = Math.min(1, Math.max(0, (value - min) / span));
