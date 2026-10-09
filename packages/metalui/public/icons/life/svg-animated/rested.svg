@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .b1{transform-origin:5.8px 12px} svg.mu-life .b2{transform-origin:9.7px 12px;--dl:.08s} svg.mu-life .b3{transform-origin:13.6px 12px;--dl:.16s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .br{animation:mu-il-rested .5s cubic-bezier(.2,.7,.3,1) var(--dl) both} @keyframes mu-il-rested{0%{transform:scaleX(0)}100%{transform:none}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .br{animation:mu-il-rested .5s cubic-bezier(.2,.7,.3,1) var(--dl) both}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .br{animation:mu-il-rested .5s cubic-bezier(.2,.7,.3,1) var(--dl) both}}@keyframes mu-il-rested{0%{transform:scaleX(0)}100%{transform:none}}}</style>
 <rect class="f" style="--duo:.06" x="3.2" y="7.4" width="15.6" height="9.2" rx="3"/><path d="M21 10.6v2.8"/><rect class="br b1 s" x="5.8" y="10" width="2.6" height="4" rx="1"/><rect class="br b2 s" x="9.7" y="10" width="2.6" height="4" rx="1"/><rect class="br b3 s" x="13.6" y="10" width="2.6" height="4" rx="1"/>
 </svg>

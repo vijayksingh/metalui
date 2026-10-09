@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .hn{transform-origin:12px 6px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .hn{animation:mu-il-takeaway .8s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-takeaway{25%{transform:rotate(14deg)}55%{transform:rotate(-8deg)}80%{transform:rotate(3deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .hn{animation:mu-il-takeaway .8s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .hn{animation:mu-il-takeaway .8s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-takeaway{25%{transform:rotate(14deg)}55%{transform:rotate(-8deg)}80%{transform:rotate(3deg)}}}</style>
 <path class="f" style="--duo:.12" d="M5.2 9h13.6l-1.5 9.6a1.7 1.7 0 0 1-1.7 1.4H8.4a1.7 1.7 0 0 1-1.7-1.4Z"/><path d="M5.2 9 6.8 6h10.4L18.8 9"/><g class="hn"><path d="M9.2 6c0-3 5.6-3 5.6 0"/></g>
 </svg>

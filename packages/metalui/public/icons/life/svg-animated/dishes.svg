@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .b2{--dl:.1s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .b1,svg.mu-life:is(:hover,[data-state~="hover"]) .b2{animation:mu-il-dishes .9s cubic-bezier(.3,0,.2,1) var(--dl)} @keyframes mu-il-dishes{50%{transform:translateY(-1.4px);opacity:.4}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .b1,svg.mu-life[data-state~="hover"] .b2{animation:mu-il-dishes .9s cubic-bezier(.3,0,.2,1) var(--dl)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .b1,svg.mu-life:hover .b2{animation:mu-il-dishes .9s cubic-bezier(.3,0,.2,1) var(--dl)}}@keyframes mu-il-dishes{50%{transform:translateY(-1.4px);opacity:.4}}}</style>
 <circle class="f" style="--duo:.06" cx="10.4" cy="13" r="7"/><circle cx="10.4" cy="13" r="3.8" style="opacity:.5"/><circle class="b1" cx="18.4" cy="5.8" r="2"/><circle class="b2" cx="20.1" cy="10" r="1.05"/>
 </svg>

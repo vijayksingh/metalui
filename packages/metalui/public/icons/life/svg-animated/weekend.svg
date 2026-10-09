@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .we{transform-origin:12.6px 14.2px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .we{fill-opacity:.6;animation:mu-il-weekend .5s cubic-bezier(.2,.7,.3,1)} @keyframes mu-il-weekend{0%{transform:scaleX(.3)}100%{transform:none}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .we{fill-opacity:.6;animation:mu-il-weekend .5s cubic-bezier(.2,.7,.3,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .we{fill-opacity:.6;animation:mu-il-weekend .5s cubic-bezier(.2,.7,.3,1)}}@keyframes mu-il-weekend{0%{transform:scaleX(.3)}100%{transform:none}}}</style>
 <rect class="f" style="--duo:.05" x="3.6" y="5" width="16.8" height="15" rx="3"/><path d="M8.4 3.4v3.2M15.6 3.4v3.2M3.6 9.6h16.8"/><circle class="s" cx="7.2" cy="14.2" r=".9" style="opacity:.55"/><circle class="s" cx="10.2" cy="14.2" r=".9" style="opacity:.55"/><rect class="we f" style="--duo:.28" x="12.6" y="12.6" width="5.4" height="3.2" rx="1.6"/>
 </svg>

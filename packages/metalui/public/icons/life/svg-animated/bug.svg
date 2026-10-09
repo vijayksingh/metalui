@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .lL{transform-origin:7.4px 14.6px} svg.mu-life .lR{transform-origin:16.6px 14.6px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .lL{animation:mu-il-bug .18s linear 3} svg.mu-life:is(:hover,[data-state~="hover"]) .lR{animation:mu-il-bug2 .18s linear 3} @keyframes mu-il-bug{50%{transform:rotate(8deg)}} @keyframes mu-il-bug2{50%{transform:rotate(-8deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .lL{animation:mu-il-bug .18s linear 3}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .lL{animation:mu-il-bug .18s linear 3}}svg.mu-life[data-state~="hover"] .lR{animation:mu-il-bug2 .18s linear 3}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .lR{animation:mu-il-bug2 .18s linear 3}}@keyframes mu-il-bug{50%{transform:rotate(8deg)}}@keyframes mu-il-bug2{50%{transform:rotate(-8deg)}}}</style>
 <ellipse class="f" style="--duo:.14" cx="12" cy="13.8" rx="4.6" ry="5.8"/><path d="M9.6 8.6a2.4 2.4 0 0 1 4.8 0"/><path d="M12 10.8v8.6" style="opacity:.5"/><path d="M10.2 6.6 8.8 4.8M13.8 6.6l1.4-1.8"/><g class="lL"><path d="M7.4 11.6 4.6 10.4M7.4 14.6H4.2M7.8 17.4l-2.6 1.6"/></g><g class="lR"><path d="M16.6 11.6l2.8-1.2M16.6 14.6h3.2M16.2 17.4l2.6 1.6"/></g>
 </svg>

@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .mc{transform-origin:12px 16px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .mc{transform:scaleY(1.45)}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .mc{transform:scaleY(1.45)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .mc{transform:scaleY(1.45)}}}</style>
 <path class="f" style="--duo:.06" d="M10 14.2V5.6a2 2 0 0 1 4 0v8.6a3.8 3.8 0 1 1-4 0Z"/><circle class="s" cx="12" cy="17.2" r="1.7"/><path class="mc" d="M12 16V10"/><path d="M16.8 6.4h1.6M16.8 9.2h1.6M16.8 12h1.6" style="opacity:.5"/>
 </svg>

@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .l{stroke-dasharray:1 2} svg.mu-life .l2{--dl:.08s} svg.mu-life .l3{--dl:.16s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .l{animation:mu-il-bill .4s cubic-bezier(.3,0,.2,1) var(--dl) both} @keyframes mu-il-bill{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .l{animation:mu-il-bill .4s cubic-bezier(.3,0,.2,1) var(--dl) both}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .l{animation:mu-il-bill .4s cubic-bezier(.3,0,.2,1) var(--dl) both}}@keyframes mu-il-bill{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
 <path class="f" style="--duo:.06" d="M6 3.6h12v16.8l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4Z"/><path class="l l1" pathLength="1" d="M9 8h6"/><path class="l l2" pathLength="1" d="M9 11.2h6"/><path class="l l3" pathLength="1" d="M9 14.4h3.4"/>
 </svg>

@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ar{animation:mu-il-received .6s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-received{45%{transform:translateY(2.4px);opacity:0}46%{transform:translateY(-1.6px);opacity:0}100%{transform:none;opacity:1}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .ar{animation:mu-il-received .6s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ar{animation:mu-il-received .6s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-received{45%{transform:translateY(2.4px);opacity:0}46%{transform:translateY(-1.6px);opacity:0}100%{transform:none;opacity:1}}}</style>
 <path class="f" style="--duo:.1" d="M20.4 12.2V11a2.6 2.6 0 0 0-2.6-2.6H6A2.6 2.6 0 0 0 3.4 11v6.4A2.6 2.6 0 0 0 6 20h11.8a2.6 2.6 0 0 0 2.6-2.6v-1.2"/><path d="M15.2 12.2h5.4v4h-5.4a2 2 0 0 1 0-4Z"/><g class="ar"><path d="M9.6 2.8v3.4M7.6 4.6l2 2 2-2"/></g>
 </svg>

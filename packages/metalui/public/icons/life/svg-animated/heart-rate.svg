@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .tr{stroke-dasharray:1 2}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .tr{animation:mu-il-heart-rate .7s cubic-bezier(.4,0,.2,1) both} @keyframes mu-il-heart-rate{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .tr{animation:mu-il-heart-rate .7s cubic-bezier(.4,0,.2,1) both}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .tr{animation:mu-il-heart-rate .7s cubic-bezier(.4,0,.2,1) both}}@keyframes mu-il-heart-rate{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
 <path class="tr" pathLength="1" d="M3 12.4h3.8l1.8-4 3 9.2 2.6-7.4 1.6 2.2H21"/>
 </svg>

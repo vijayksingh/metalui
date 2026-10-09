@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .b{--dl:.15s} svg.mu-life .c{--dl:.3s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .a,svg.mu-life:is(:hover,[data-state~="hover"]) .b,svg.mu-life:is(:hover,[data-state~="hover"]) .c{animation:mu-il-bored 1.2s ease-in-out var(--dl)} @keyframes mu-il-bored{50%{transform:translateY(.7px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .a,svg.mu-life[data-state~="hover"] .b,svg.mu-life[data-state~="hover"] .c{animation:mu-il-bored 1.2s ease-in-out var(--dl)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .a,svg.mu-life:hover .b,svg.mu-life:hover .c{animation:mu-il-bored 1.2s ease-in-out var(--dl)}}@keyframes mu-il-bored{50%{transform:translateY(.7px)}}}</style>
 <circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/><circle class="a s" cx="8.4" cy="13.2" r="1.1"/><circle class="b s" cx="12" cy="13.2" r="1.1" style="opacity:.6"/><circle class="c s" cx="15.6" cy="13.2" r="1.1" style="opacity:.3"/>
 </svg>

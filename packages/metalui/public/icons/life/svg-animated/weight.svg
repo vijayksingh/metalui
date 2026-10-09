@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .nd{transform-origin:12px 11.4px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .nd{animation:mu-il-weight 1s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-weight{25%{transform:rotate(-46deg)}55%{transform:rotate(14deg)}80%{transform:rotate(-5deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .nd{animation:mu-il-weight 1s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .nd{animation:mu-il-weight 1s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-weight{25%{transform:rotate(-46deg)}55%{transform:rotate(14deg)}80%{transform:rotate(-5deg)}}}</style>
 <rect class="f" style="--duo:.06" x="3.6" y="3.6" width="16.8" height="16.8" rx="5"/><path d="M7.8 10.2a5 5 0 0 1 8.4 0"/><path class="nd" d="M12 11.4 13.4 8.2"/>
 </svg>

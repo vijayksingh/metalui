@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .ln{stroke-dasharray:1 2;stroke-dashoffset:0}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .nb{transform:translate(.6px,-.3px)} svg.mu-life:is(:hover,[data-state~="hover"]) .ln{animation:mu-il-writing .6s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-writing{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .nb{transform:translate(.6px,-.3px)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .nb{transform:translate(.6px,-.3px)}}svg.mu-life[data-state~="hover"] .ln{animation:mu-il-writing .6s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ln{animation:mu-il-writing .6s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-writing{0%{stroke-dashoffset:1}100%{stroke-dashoffset:0}}}</style>
 <g class="nb"><g transform="rotate(40 12 12)"><path class="f" style="--duo:.14" d="M12 19.8 8.4 13.4l1.2-4.8h4.8l1.2 4.8Z"/><path d="M12 19.4v-4"/><path d="M9.6 8.6V5.4a1.2 1.2 0 0 1 1.2-1.2h2.4a1.2 1.2 0 0 1 1.2 1.2v3.2"/></g></g><path class="ln" pathLength="1" d="M3.2 20.4c1.2-.9 2.2-.9 3.6 0"/>
 </svg>

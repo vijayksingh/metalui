@@ -1,11 +1,12 @@
 // icons/src/life.mjs → the life set: React catalog + components + CSS, static and animated SVGs,
-// and icons-life.json. The motion engine and static bake are Kamui's life builder
-// (design/medium-icons/src/build.mjs) with MetalUI class names; geometry and motion are verbatim,
-// so the SVG exports match Kamui's byte for byte apart from the id prefix.
+// and icons-life.json. The motion engine and static bake are the source life builder (CREDITS.md)
+// with MetalUI class names; geometry and motion are verbatim, so the SVG exports match the source's
+// byte for byte apart from the id prefix.
 import { readFileSync } from 'node:fs';
 import { GLYPHS, CATS } from '../../packages/metalui/icons/src/life.mjs';
 import { T16 } from '../../packages/metalui/icons/src/life-tuned16.mjs';
 import { emit, root } from './emit.mjs';
+import { gateHover, MARK } from './icon-css.mjs';
 
 const T = JSON.parse(readFileSync(root('tokens/tokens.json'), 'utf8'));
 const SW = 1.7, SW16 = 1.85;
@@ -19,7 +20,7 @@ for (const [family, t] of Object.entries(TINT)) {
 }
 for (const n of Object.keys(TINT_OF)) if (!GLYPHS.some((g) => g.name === n)) throw new Error(`tokens.json tint names ${n}, which is not a life glyph`);
 
-// ---------- spring easing as CSS linear() (identical to the Kamui life builder) ----------
+// ---------- spring easing as CSS linear() (identical to the source life builder) ----------
 function spring(z, T, n = 44) {
   const w = 4.6 / (z * T), wd = w * Math.sqrt(1 - z * z), pts = [];
   for (let i = 0; i <= n; i++) {
@@ -45,14 +46,15 @@ const BASE_CSS = `
 function expand(css, name, target) {
   const cls = `mu-il-${name}`;
   const rootSel = target === 'svg' ? 'svg.mu-life' : `.mu-life.${cls}`;
+  // :hover only under a fine pointer; data-hover (lent on keyboard focus) and data-state on any device.
   const H = target === 'svg'
-    ? 'svg.mu-life:is(:hover,[data-state~="hover"])'
-    : `:is(.mu-icon-trigger:is(:hover,[data-hover]) .${cls},.${cls}:is(:hover,[data-hover])):not([data-static])`;
-  return css.replace(/@H/g, H).replace(/&(?=[\s.{,:])/g, rootSel).replace(/\bKF(\d?)\b/g, `mu-il-${name}$1`).replace(/\s+/g, ' ');
+    ? { any: 'svg.mu-life[data-state~="hover"]', hover: 'svg.mu-life:hover' }
+    : { any: `:is(.mu-icon-trigger[data-hover] .${cls},.${cls}[data-hover]):not([data-static])`, hover: `:is(.mu-icon-trigger:hover .${cls},.${cls}:hover):not([data-static])` };
+  return gateHover(css.replace(/@H/g, MARK).replace(/&(?=[\s.{,:])/g, rootSel).replace(/\bKF(\d?)\b/g, `mu-il-${name}$1`).replace(/\s+/g, ' '), H);
 }
 const iconCss = (g, target) => `${g.base ? expand(g.base, g.name, target) : ''}\n@media (prefers-reduced-motion:no-preference){${g.mo ? expand(g.mo, g.name, target) : ''}}`;
 
-// ---------- static bake (identical to the Kamui life builder) ----------
+// ---------- static bake (identical to the source life builder) ----------
 const DROP = { snack: ['cr'], cooking: ['pf'], reading: ['pg'], cycle: ['sp'], idea: ['rs'], podcast: ['sw'], grateful: ['dp'] };
 const BAKE = { td: 'opacity=".4"' };
 export function lifeStaticSvg(g, sw = SW, body = g.body, extraDrop = []) {
@@ -137,7 +139,7 @@ export interface LifeIconRecord {
   hoverMs: number;
   /** Words and phrasings that mean this glyph ("brekkie" is breakfast). */
   synonyms: readonly string[];
-  /** How recognition reaches it: a Layer 1 rule or a Jev choice. */
+  /** How recognition reaches it: a Layer 1 rule or a recognizer choice. */
   hook: string;
   defs: string;
   body: string;

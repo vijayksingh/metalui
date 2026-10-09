@@ -15,7 +15,7 @@ export interface LifeIconRecord {
   hoverMs: number;
   /** Words and phrasings that mean this glyph ("brekkie" is breakfast). */
   synonyms: readonly string[];
-  /** How recognition reaches it: a Layer 1 rule or a Jev choice. */
+  /** How recognition reaches it: a Layer 1 rule or a recognizer choice. */
   hook: string;
   defs: string;
   body: string;

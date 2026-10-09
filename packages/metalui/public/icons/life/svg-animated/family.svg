@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ch{animation:mu-il-family .5s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-family{40%{transform:translateY(-1.4px)}70%{transform:translateY(.2px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .ch{animation:mu-il-family .5s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ch{animation:mu-il-family .5s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-family{40%{transform:translateY(-1.4px)}70%{transform:translateY(.2px)}}}</style>
 <circle cx="7.2" cy="7" r="2.4"/><circle cx="16.8" cy="7" r="2.4"/><path d="M3.2 19.4v-2.4a4 4 0 0 1 4-4 4 4 0 0 1 2.6 1M20.8 19.4v-2.4a4 4 0 0 0-4-4 4 4 0 0 0-2.6 1"/><g class="ch"><circle class="s" cx="12" cy="12.6" r="1.7"/><path class="f" style="--duo:.2" d="M9.4 19.4v-.6a2.6 2.6 0 0 1 5.2 0v.6"/></g>
 </svg>

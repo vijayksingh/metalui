@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .p2{--dl:.12s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .p1,svg.mu-life:is(:hover,[data-state~="hover"]) .p2{animation:mu-il-steps .7s cubic-bezier(.3,0,.2,1) var(--dl)} @keyframes mu-il-steps{40%{transform:translateY(-1.4px);opacity:.5}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .p1,svg.mu-life[data-state~="hover"] .p2{animation:mu-il-steps .7s cubic-bezier(.3,0,.2,1) var(--dl)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .p1,svg.mu-life:hover .p2{animation:mu-il-steps .7s cubic-bezier(.3,0,.2,1) var(--dl)}}@keyframes mu-il-steps{40%{transform:translateY(-1.4px);opacity:.5}}}</style>
 <g class="p1"><ellipse class="f" style="--duo:.22" cx="8.4" cy="7" rx="2.4" ry="3.2"/><ellipse class="f" style="--duo:.22" cx="8.8" cy="13.5" rx="1.7" ry="1.4"/></g><g class="p2"><ellipse class="f" style="--duo:.22" cx="15.6" cy="10.4" rx="2.4" ry="3.2"/><ellipse class="f" style="--duo:.22" cx="15.2" cy="16.9" rx="1.7" ry="1.4"/></g>
 </svg>

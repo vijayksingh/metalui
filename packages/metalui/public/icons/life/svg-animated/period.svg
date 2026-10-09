@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .rg{transform-origin:12px 12px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .rg{transform:rotate(36deg)}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .rg{transform:rotate(36deg)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .rg{transform:rotate(36deg)}}}</style>
 <path class="f" style="--duo:.26" d="M12 6.6c2.4 2.8 3.8 4.8 3.8 6.8a3.8 3.8 0 0 1-7.6 0c0-2 1.4-4 3.8-6.8Z"/><g class="rg"><circle class="s" cx="12" cy="3.4" r="1.2"/><circle class="s" cx="17.05" cy="5.04" r="0.75" style="opacity:.55"/><circle class="s" cx="20.18" cy="9.34" r="0.75" style="opacity:.55"/><circle class="s" cx="20.18" cy="14.66" r="0.75" style="opacity:.55"/><circle class="s" cx="17.05" cy="18.96" r="0.75" style="opacity:.55"/><circle class="s" cx="12" cy="20.6" r="0.75" style="opacity:.55"/><circle class="s" cx="6.95" cy="18.96" r="0.75" style="opacity:.55"/><circle class="s" cx="3.82" cy="14.66" r="0.75" style="opacity:.55"/><circle class="s" cx="3.82" cy="9.34" r="0.75" style="opacity:.55"/><circle class="s" cx="6.95" cy="5.04" r="0.75" style="opacity:.55"/></g>
 </svg>

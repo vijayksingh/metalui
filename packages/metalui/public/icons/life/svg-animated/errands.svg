@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .rt{animation:mu-il-errands .8s linear} svg.mu-life:is(:hover,[data-state~="hover"]) .pn{animation:mu-il-errands2 .6s cubic-bezier(.3,0,.2,1) .2s} @keyframes mu-il-errands{to{stroke-dashoffset:-5.8}} @keyframes mu-il-errands2{40%{transform:translateY(-1.2px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .rt{animation:mu-il-errands .8s linear}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .rt{animation:mu-il-errands .8s linear}}svg.mu-life[data-state~="hover"] .pn{animation:mu-il-errands2 .6s cubic-bezier(.3,0,.2,1) .2s}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .pn{animation:mu-il-errands2 .6s cubic-bezier(.3,0,.2,1) .2s}}@keyframes mu-il-errands{to{stroke-dashoffset:-5.8}}@keyframes mu-il-errands2{40%{transform:translateY(-1.2px)}}}</style>
 <path class="rt" d="M6.4 16.4c0-2.8 2.6-3.6 5.4-3.6s5.8-.6 5.8-3" style="stroke-dasharray:.01 2.9"/><circle class="f" style="--duo:.2" cx="6.4" cy="18" r="1.8"/><g class="pn"><path class="f" style="--duo:.2" d="M17.6 10.2c-2-2.1-3.4-3.6-3.4-5.4a3.4 3.4 0 0 1 6.8 0c0 1.8-1.4 3.3-3.4 5.4Z"/><circle class="s" cx="17.6" cy="4.8" r="1"/></g>
 </svg>

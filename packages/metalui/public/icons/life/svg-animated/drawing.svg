@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .p1{transform-origin:7.8px 11px} svg.mu-life .p2{transform-origin:10.6px 7.4px;--dl:.06s} svg.mu-life .p3{transform-origin:15px 7.8px;--dl:.12s} svg.mu-life .p4{transform-origin:8.4px 15.2px;--dl:.18s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .p{animation:mu-il-drawing .5s cubic-bezier(.3,0,.2,1) var(--dl)} @keyframes mu-il-drawing{40%{transform:scale(1.35)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .p{animation:mu-il-drawing .5s cubic-bezier(.3,0,.2,1) var(--dl)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .p{animation:mu-il-drawing .5s cubic-bezier(.3,0,.2,1) var(--dl)}}@keyframes mu-il-drawing{40%{transform:scale(1.35)}}}</style>
 <path class="f" style="--duo:.08" d="M12 3.6c-4.8 0-8.4 3.6-8.4 8.2 0 4.8 3.8 8.6 8.6 8.6 1.2 0 1.8-.8 1.8-1.6 0-1.4-1.4-1.8-1.4-3.2 0-1 .8-1.8 1.8-1.8h2.2c2.2 0 3.8-1.6 3.8-3.8 0-3.6-3.8-6.4-8.6-6.4Z"/><circle class="p p1 s" cx="7.8" cy="11" r="1.2"/><circle class="p p2 s" cx="10.6" cy="7.4" r="1.2"/><circle class="p p3 s" cx="15" cy="7.8" r="1.2"/><circle class="p p4 s" cx="8.4" cy="15.2" r="1.2"/>
 </svg>

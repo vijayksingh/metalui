@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .s2{--dl:.12s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .st{animation:mu-il-coffee 1.1s cubic-bezier(.4,0,.4,1) var(--dl,0s) 2} @keyframes mu-il-coffee{0%{transform:none;opacity:1}55%{transform:translateY(-2.2px);opacity:0}56%{transform:translateY(1.2px);opacity:0}100%{transform:none;opacity:1}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .st{animation:mu-il-coffee 1.1s cubic-bezier(.4,0,.4,1) var(--dl,0s) 2}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .st{animation:mu-il-coffee 1.1s cubic-bezier(.4,0,.4,1) var(--dl,0s) 2}}@keyframes mu-il-coffee{0%{transform:none;opacity:1}55%{transform:translateY(-2.2px);opacity:0}56%{transform:translateY(1.2px);opacity:0}100%{transform:none;opacity:1}}}</style>
 <path class="f" style="--duo:.14" d="M4.8 9.4h10.6v6a4.2 4.2 0 0 1-4.2 4.2H9a4.2 4.2 0 0 1-4.2-4.2Z"/><path d="M15.4 10.8h1.2a2.5 2.5 0 0 1 0 5h-1.2"/><path class="st s1" d="M8.6 6.9c-.9-.9.9-1.8 0-2.8"/><path class="st s2" d="M11.8 6.9c-.9-.9.9-1.8 0-2.8"/>
 </svg>

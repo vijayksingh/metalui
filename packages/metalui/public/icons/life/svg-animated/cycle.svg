@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .bk{transform-origin:12px 15px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .bk{transform:translateX(1.2px)} svg.mu-life:is(:hover,[data-state~="hover"]) .sp{animation:mu-il-cycle .6s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-cycle{30%{opacity:.6}100%{opacity:0;transform:translateX(-1px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .bk{transform:translateX(1.2px)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .bk{transform:translateX(1.2px)}}svg.mu-life[data-state~="hover"] .sp{animation:mu-il-cycle .6s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .sp{animation:mu-il-cycle .6s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-cycle{30%{opacity:.6}100%{opacity:0;transform:translateX(-1px)}}}</style>
 <g class="bk"><circle cx="6.2" cy="15.4" r="3.6"/><circle cx="17.8" cy="15.4" r="3.6"/><path d="M6.2 15.4 9.4 9.4h5.4M9.4 9.4l2.6 6h-5.8M14.8 9.4l3 6M14.8 9.4l-1-2.6h2.2M8 7.2h2.8"/></g><path class="sp" d="M1.6 12.4h1.6" style="opacity:0"/>
 </svg>

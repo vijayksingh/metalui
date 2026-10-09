@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .ld{transform-origin:4.6px 8.4px} svg.mu-life .pf{opacity:0}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ld{transform:translateY(-1.5px) rotate(-7deg)} svg.mu-life:is(:hover,[data-state~="hover"]) .pf{animation:mu-il-cooking .9s cubic-bezier(.3,0,.2,1) .1s} @keyframes mu-il-cooking{0%{opacity:0;transform:translateY(1.4px)}40%{opacity:1}100%{opacity:0;transform:translateY(-1.6px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .ld{transform:translateY(-1.5px) rotate(-7deg)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ld{transform:translateY(-1.5px) rotate(-7deg)}}svg.mu-life[data-state~="hover"] .pf{animation:mu-il-cooking .9s cubic-bezier(.3,0,.2,1) .1s}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .pf{animation:mu-il-cooking .9s cubic-bezier(.3,0,.2,1) .1s}}@keyframes mu-il-cooking{0%{opacity:0;transform:translateY(1.4px)}40%{opacity:1}100%{opacity:0;transform:translateY(-1.6px)}}}</style>
 <path class="f" style="--duo:.12" d="M5.4 10.6h13.2v6a3 3 0 0 1-3 3H8.4a3 3 0 0 1-3-3Z"/><path d="M5.4 12.6H3.6M18.6 12.6h1.8"/><g class="ld"><path d="M4.6 8.4h14.8"/><path d="M10.6 8.4a1.4 1.4 0 0 1 2.8 0"/></g><path class="pf" d="M8.4 5.6c-.7-.7.7-1.4 0-2.2M15.6 5.6c-.7-.7.7-1.4 0-2.2"/>
 </svg>

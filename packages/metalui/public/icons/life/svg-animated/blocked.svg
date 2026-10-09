@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .br{transform-origin:12px 12.8px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .br{animation:mu-il-blocked .6s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-blocked{25%{transform:rotate(-3deg)}55%{transform:rotate(2deg)}80%{transform:rotate(-.6deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .br{animation:mu-il-blocked .6s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .br{animation:mu-il-blocked .6s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-blocked{25%{transform:rotate(-3deg)}55%{transform:rotate(2deg)}80%{transform:rotate(-.6deg)}}}</style>
 <defs><clipPath id="mu-life-blocked-b"><rect x="3" y="7.4" width="18" height="5.4" rx="1.7"/></clipPath></defs><g class="br"><rect class="f" style="--duo:.08" x="3" y="7.4" width="18" height="5.4" rx="1.7"/><g clip-path="url(#mu-life-blocked-b)"><path d="M9.2 6.6 6.4 13.6M14.2 6.6l-2.8 7M19.2 6.6l-2.8 7" style="opacity:.6"/></g></g><path d="M6.4 12.8v7M17.6 12.8v7M4.8 19.8h3.2M16 19.8h3.2"/>
 </svg>

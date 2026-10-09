@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .br{animation:mu-il-tired .9s steps(1)} @keyframes mu-il-tired{20%{opacity:.25}40%{opacity:1}60%{opacity:.25}80%{opacity:1}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .br{animation:mu-il-tired .9s steps(1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .br{animation:mu-il-tired .9s steps(1)}}@keyframes mu-il-tired{20%{opacity:.25}40%{opacity:1}60%{opacity:.25}80%{opacity:1}}}</style>
 <rect class="f" style="--duo:.06" x="3.2" y="7.4" width="15.6" height="9.2" rx="3"/><path d="M21 10.6v2.8"/><rect class="br s" x="5.8" y="10" width="2.6" height="4" rx="1"/>
 </svg>

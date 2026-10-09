@@ -55,6 +55,15 @@ else {
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }
 const ast = postcss.parse(css);
+// Icon.tsx and LifeIcon.tsx import the generated icon motion on their own, outside styles.input.css, so it
+// is read here too. An icon's act times are its authored timeline (docs/ICON-MOTION.md), not motion tokens.
+const ICON_SHEETS = ['packages/metalui/src/icons/icons.generated.css', 'packages/metalui/src/icons/life/icons-life.generated.css'];
+const iconRules = new WeakSet();
+if (!input) for (const sheet of ICON_SHEETS) {
+  const icons = postcss.parse(readFileSync(root(sheet), 'utf8'));
+  icons.walkRules((r) => iconRules.add(r));
+  ast.append(icons.nodes);
+}
 const selectors = new Map();
 const resolved = (r) => {
   if (selectors.has(r)) return selectors.get(r);
@@ -109,7 +118,7 @@ for (const { r, decls, sels } of rules) for (const s of sels) {
     if (hover) add('hover-gate', s, d);
     if (!utility(s) && (outline(d) && none(v) && !rings.has(s.replace(focus, '')) || shadow && p === 'box-shadow')) add('focus-outline', s, d);
     if (/^overflow(?:-[xy])?$/.test(p) && /(^|\s)(auto|scroll)($|\s)/i.test(v) && scroller && !/^\.overflow(-[xy])?-(auto|scroll)$/.test(s)) add('overscroll-contain', s, d);
-    if (!p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain.replace(/(?<![\w.])[-+]?0*\.?0+(?:ms|s)\b/g, ''))) add('motion-tokens', s, d);
+    if (!iconRules.has(r) && !p.startsWith('--') && /^(transition|animation)(-|$)|-(duration|timing-function)$/.test(p) && /(?<![\w.])[-+]?(?:\d*\.)?\d+(?:ms|s)\b|\bcubic-bezier\(/i.test(plain.replace(/(?<![\w.])[-+]?0*\.?0+(?:ms|s)\b/g, ''))) add('motion-tokens', s, d);
     if (/^transition(-property)?$/.test(p) && /(^|[\s,])all($|[\s,)])/i.test(v)) add('transition-all', s, d);
     if (/^(transition|animation)(-|$)/.test(p) && /(^|[\s,])ease-in($|[\s,])/i.test(v)) add('ease-in', s, d);
     // Centring on the middle (left: 50%, calc(50% …)) reads the same in either direction.

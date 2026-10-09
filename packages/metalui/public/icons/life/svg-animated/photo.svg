@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .ln{transform-origin:12px 13.2px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ln{animation:mu-il-photo .5s cubic-bezier(.3,0,.2,1)} svg.mu-life:is(:hover,[data-state~="hover"]) .fl{animation:mu-il-photo2 .4s steps(1)} @keyframes mu-il-photo{40%{transform:scale(.82)}} @keyframes mu-il-photo2{50%{opacity:.2}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .ln{animation:mu-il-photo .5s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ln{animation:mu-il-photo .5s cubic-bezier(.3,0,.2,1)}}svg.mu-life[data-state~="hover"] .fl{animation:mu-il-photo2 .4s steps(1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .fl{animation:mu-il-photo2 .4s steps(1)}}@keyframes mu-il-photo{40%{transform:scale(.82)}}@keyframes mu-il-photo2{50%{opacity:.2}}}</style>
 <path class="f" style="--duo:.08" d="M3.4 9.4a2.2 2.2 0 0 1 2.2-2.2h2.2l1.4-2.2h5.6l1.4 2.2h2.2a2.2 2.2 0 0 1 2.2 2.2v8.4a2.2 2.2 0 0 1-2.2 2.2H5.6a2.2 2.2 0 0 1-2.2-2.2Z"/><circle class="ln" cx="12" cy="13.2" r="3.6"/><circle class="fl s" cx="17.4" cy="10" r=".85"/>
 </svg>

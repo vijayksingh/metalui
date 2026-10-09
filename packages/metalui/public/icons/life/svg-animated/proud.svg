@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .pk{animation:mu-il-proud .6s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-proud{40%{transform:translateY(-1.6px)}70%{transform:translateY(.3px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .pk{animation:mu-il-proud .6s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .pk{animation:mu-il-proud .6s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-proud{40%{transform:translateY(-1.6px)}70%{transform:translateY(.3px)}}}</style>
 <circle class="v d" style="--duo:0.17" cx="12" cy="12" r="9.3"/><path d="M7 16.2h2.8v-3h2.8v-3h2.8"/><circle class="pk s" cx="15.6" cy="7.4" r="1.25"/>
 </svg>

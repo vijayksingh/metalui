@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .fk{transform-origin:4.4px 19.8px} svg.mu-life .kn{transform-origin:19.8px 19.8px;--dl:.05s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .fk{transform:translateY(-1px) rotate(-6deg)} svg.mu-life:is(:hover,[data-state~="hover"]) .kn{transform:translateY(-1px) rotate(6deg)}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .fk{transform:translateY(-1px) rotate(-6deg)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .fk{transform:translateY(-1px) rotate(-6deg)}}svg.mu-life[data-state~="hover"] .kn{transform:translateY(-1px) rotate(6deg)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .kn{transform:translateY(-1px) rotate(6deg)}}}</style>
 <circle class="f" style="--duo:.1" cx="12" cy="12" r="4.9"/><circle cx="12" cy="12" r="2.1" style="opacity:.5"/><g class="fk"><path d="M3.4 4.2v3.9a1 1 0 0 0 2 0V4.2M4.4 4.2v15.6"/></g><g class="kn"><path d="M19.8 19.8V4.2c-1.6.9-2.3 3.2-2.3 5.7 0 1.2.9 1.9 2.3 1.9"/></g>
 </svg>

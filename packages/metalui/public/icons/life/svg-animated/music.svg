@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .nt{transform-origin:12px 18px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .nt{animation:mu-il-music .8s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-music{30%{transform:rotate(-6deg) translateY(-.6px)}65%{transform:rotate(3deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .nt{animation:mu-il-music .8s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .nt{animation:mu-il-music .8s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-music{30%{transform:rotate(-6deg) translateY(-.6px)}65%{transform:rotate(3deg)}}}</style>
 <g class="nt"><path d="M9.6 17.4V6.6l9.2-2.2v10.8"/><path d="M9.6 9.4l9.2-2.2" style="opacity:.5"/><ellipse class="s" cx="7.4" cy="17.6" rx="2.4" ry="1.9" transform="rotate(-18 7.4 17.6)"/><ellipse class="s" cx="16.6" cy="15.4" rx="2.4" ry="1.9" transform="rotate(-18 16.6 15.4)"/></g>
 </svg>

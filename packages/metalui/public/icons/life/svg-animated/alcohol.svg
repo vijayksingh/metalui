@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .gl{transform-origin:12px 19.8px}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .gl{transform:rotate(-10deg)}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .gl{transform:rotate(-10deg)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .gl{transform:rotate(-10deg)}}}</style>
 <g class="gl"><path d="M7.4 3.8h9.2l.3 3.4a5 5 0 0 1-9.8 0Z"/><path class="d" style="--duo:.24" d="M7.3 7.4h9.4a4.7 4.7 0 0 1-9.4 0Z"/><path d="M12 12.4v7.2M8.8 19.8h6.4"/></g>
 </svg>

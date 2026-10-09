@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .d2{--dl:.12s} svg.mu-life .d3{--dl:.06s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .dp{animation:mu-il-rain .6s cubic-bezier(.5,0,.8,.6) var(--dl) 2} @keyframes mu-il-rain{0%{transform:none;opacity:1}70%{transform:translate(-.6px,1.6px);opacity:0}71%{transform:translate(.4px,-1px);opacity:0}100%{transform:none;opacity:1}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .dp{animation:mu-il-rain .6s cubic-bezier(.5,0,.8,.6) var(--dl) 2}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .dp{animation:mu-il-rain .6s cubic-bezier(.5,0,.8,.6) var(--dl) 2}}@keyframes mu-il-rain{0%{transform:none;opacity:1}70%{transform:translate(-.6px,1.6px);opacity:0}71%{transform:translate(.4px,-1px);opacity:0}100%{transform:none;opacity:1}}}</style>
 <path class="f" style="--duo:.12" d="M7.2 14.2h10a3.6 3.6 0 0 0 .5-7.2 5.4 5.4 0 0 0-10.4-.9A4.05 4.05 0 0 0 7.2 14.2Z"/><path class="dp d1" d="M8.4 17.2l-.8 1.8"/><path class="dp d2" d="M12.2 17.2l-.8 1.8"/><path class="dp d3" d="M16 17.2l-.8 1.8"/>
 </svg>

@@ -46,7 +46,7 @@ One source, three players:
 | Player | Where | Lifecycle |
 |---|---|---|
 | Web Animations | React `Icon` (`useActPlayback`) | plays once on pointer enter (not touch), focus-visible or click; finishes after the pointer leaves; ignores triggers mid-act |
-| CSS keyframes | standalone `svg-animated/*.svg`, and a page before hydration | plays while hovered or focused (or with `data-state="play"`); leaving cuts it short |
+| CSS keyframes | standalone `svg-animated/*.svg`, and a page before hydration | plays while hovered by a fine pointer, keyboard-focused, or with `data-state="play"`; a tap does not start it; leaving cuts it short |
 | SwiftUI | `MetalIcon` → `MetalIconActView` (data in `MetalIconActs.generated.swift`) | plays once when its host is hovered or pressed; finishes; ignores triggers mid-act; the same keyframes and curves, evaluated as Web Animations does |
 
 `Icon act={sequence}` (Swift `MetalIcon(..., act: sequence)`) plays the act when a host increments its sequence after a result. Repeated requests during playback are ignored. The SVG ref remains available for layout and focus; hosts do not dispatch synthetic clicks.

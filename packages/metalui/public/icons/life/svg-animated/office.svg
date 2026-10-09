@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .w2{--dl:.08s} svg.mu-life .w3{--dl:.16s} svg.mu-life .w4{--dl:.24s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .w{animation:mu-il-office .5s ease var(--dl) both} @keyframes mu-il-office{0%{fill-opacity:.15}100%{fill-opacity:1}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .w{animation:mu-il-office .5s ease var(--dl) both}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .w{animation:mu-il-office .5s ease var(--dl) both}}@keyframes mu-il-office{0%{fill-opacity:.15}100%{fill-opacity:1}}}</style>
 <rect class="f" style="--duo:.05" x="5.4" y="3.4" width="13.2" height="17" rx="2.2"/><rect class="w w1 d" style="--duo:.5" x="8.4" y="6.6" width="2.4" height="2.4" rx=".7"/><rect class="w w2 d" style="--duo:.5" x="13.2" y="6.6" width="2.4" height="2.4" rx=".7"/><rect class="w w3 d" style="--duo:.5" x="8.4" y="11" width="2.4" height="2.4" rx=".7"/><rect class="w w4 d" style="--duo:.5" x="13.2" y="11" width="2.4" height="2.4" rx=".7"/><path d="M10.6 20.4v-3.2h2.8v3.2"/>
 </svg>

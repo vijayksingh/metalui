@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .pl{transform:translateY(-1.3px)}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .pl{transform:translateY(-1.3px)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .pl{transform:translateY(-1.3px)}}}</style>
 <g transform="rotate(45 12 12)"><g class="pl"><path class="f" style="--duo:.12" d="M12 2.8c.9 0 1.6 1 1.6 2.4v4.2l6.4 3.8v1.9l-6.4-1.9v4.2l2 1.5v1.5L12 19.4l-3.6 1v-1.5l2-1.5v-4.2L4 15.1v-1.9l6.4-3.8V5.2c0-1.4.7-2.4 1.6-2.4Z"/></g></g>
 </svg>

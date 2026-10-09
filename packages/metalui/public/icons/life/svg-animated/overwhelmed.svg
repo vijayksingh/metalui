@@ -9,6 +9,6 @@
 @media (prefers-reduced-motion:no-preference){
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .ws{animation:mu-il-overwhelmed .9s cubic-bezier(.3,0,.2,1)} @keyframes mu-il-overwhelmed{40%{transform:translate(1px,-.8px)}70%{transform:translate(-.5px,-.3px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .ws{animation:mu-il-overwhelmed .9s cubic-bezier(.3,0,.2,1)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .ws{animation:mu-il-overwhelmed .9s cubic-bezier(.3,0,.2,1)}}@keyframes mu-il-overwhelmed{40%{transform:translate(1px,-.8px)}70%{transform:translate(-.5px,-.3px)}}}</style>
 <defs><clipPath id="mu-life-overwhelmed-in"><circle cx="12" cy="12" r="9.3"/></clipPath></defs><circle class="v d" style="--duo:0.1" cx="12" cy="12" r="9.3"/><g clip-path="url(#mu-life-overwhelmed-in)"><g class="ws"><path class="d" style="--duo:.3" d="M2 8.6c1.3-1.2 2.6-1.2 3.9 0s2.6 1.2 3.9 0 2.6-1.2 3.9 0 2.6 1.2 3.9 0 2.6-1.2 3.9 0V22H2Z"/><path d="M5.6 8.9c0.77 -1.46 1.37 -1.46 2.14 0c0.77 1.46 1.37 1.46 2.14 0c0.77 -1.46 1.37 -1.46 2.14 0c0.77 1.46 1.37 1.46 2.14 0c0.77 -1.46 1.37 -1.46 2.14 0c0.77 1.46 1.37 1.46 2.14 0"/><path d="M4.4 13.4c0.91 -1.33 1.62 -1.33 2.53 0c0.91 1.33 1.62 1.33 2.53 0c0.91 -1.33 1.62 -1.33 2.53 0c0.91 1.33 1.62 1.33 2.53 0c0.91 -1.33 1.62 -1.33 2.53 0c0.91 1.33 1.62 1.33 2.53 0" style="opacity:.5"/></g></g>
 </svg>

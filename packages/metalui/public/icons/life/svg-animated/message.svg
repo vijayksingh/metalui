@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .d2{--dl:.1s} svg.mu-life .d3{--dl:.2s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .d1,svg.mu-life:is(:hover,[data-state~="hover"]) .d2,svg.mu-life:is(:hover,[data-state~="hover"]) .d3{animation:mu-il-message .5s cubic-bezier(.3,0,.2,1) var(--dl) 2} @keyframes mu-il-message{40%{transform:translateY(-1.2px)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .d1,svg.mu-life[data-state~="hover"] .d2,svg.mu-life[data-state~="hover"] .d3{animation:mu-il-message .5s cubic-bezier(.3,0,.2,1) var(--dl) 2}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .d1,svg.mu-life:hover .d2,svg.mu-life:hover .d3{animation:mu-il-message .5s cubic-bezier(.3,0,.2,1) var(--dl) 2}}@keyframes mu-il-message{40%{transform:translateY(-1.2px)}}}</style>
 <path class="f" style="--duo:.1" d="M12 4.2c4.6 0 8.2 3 8.2 6.9S16.6 18 12 18c-1 0-2-.1-2.9-.4L5 19.4l.9-3.4c-1.3-1.3-2.1-3-2.1-4.9 0-3.9 3.6-6.9 8.2-6.9Z"/><circle class="s d1" cx="8.6" cy="11.1" r="1.05"/><circle class="s d2" cx="12" cy="11.1" r="1.05"/><circle class="s d3" cx="15.4" cy="11.1" r="1.05"/>
 </svg>

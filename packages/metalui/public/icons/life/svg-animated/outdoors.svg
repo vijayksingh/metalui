@@ -10,6 +10,6 @@
 .mu-life *{transition:transform var(--k-dur) var(--k-spring) var(--dl,0s),opacity .22s ease var(--dl,0s),fill-opacity .25s ease}
 }
 svg.mu-life .t1{transform-origin:9.4px 20.4px} svg.mu-life .t2{transform-origin:17.4px 20.4px;--dl:.08s}
-@media (prefers-reduced-motion:no-preference){svg.mu-life:is(:hover,[data-state~="hover"]) .t1,svg.mu-life:is(:hover,[data-state~="hover"]) .t2{animation:mu-il-outdoors 1s ease-in-out var(--dl)} @keyframes mu-il-outdoors{30%{transform:rotate(4deg)}65%{transform:rotate(-3deg)}}}</style>
+@media (prefers-reduced-motion:no-preference){svg.mu-life[data-state~="hover"] .t1,svg.mu-life[data-state~="hover"] .t2{animation:mu-il-outdoors 1s ease-in-out var(--dl)}@media (hover:hover) and (pointer:fine){svg.mu-life:hover .t1,svg.mu-life:hover .t2{animation:mu-il-outdoors 1s ease-in-out var(--dl)}}@keyframes mu-il-outdoors{30%{transform:rotate(4deg)}65%{transform:rotate(-3deg)}}}</style>
 <g class="t1"><path class="f" style="--duo:.14" d="M9.4 3.8 4.8 11.6h2.6l-3.2 5.6h10.4l-3.2-5.6H14Z"/><path d="M9.4 17.2v3.2"/></g><g class="t2"><circle class="f" style="--duo:.14" cx="17.4" cy="11.4" r="3"/><path d="M17.4 14.4v6"/></g>
 </svg>
