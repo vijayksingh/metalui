@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Field, Kbd, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
+import { Dial, Field, Kbd, Label, LinkCard, Mark, Switcher, SuggestionChip, Swatch, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { type XrayKind, type XrayPose, type XrayReseed, type XraySeed, type XraySeeds } from './xray';
 import { INITIAL as KBD, KbdFor, useKbdLook, type KbdConfig } from './xray/KbdXray';
@@ -154,6 +154,21 @@ function TableKbd({ config = KBD, open }: { config?: KbdConfig; open: () => void
   return <div onClick={open}><KbdFor m={config} look={look} /></div>;
 }
 
+/** The dial on the table: the real wound dial, live (turn it, scroll it, arrow it), with its readout engraved beside. */
+function TableDial() {
+  const [value, setValue] = React.useState(64);
+  return (
+    <div className="flex items-center gap-scrubber-readout-gap">
+      <Dial value={value} min={0} max={100} step={1} largeStep={10} curl={1} onValueChange={setValue}
+        marks={[0.25, 0.5, 0.75]} aria-label="Level" aria-valuetext={`${value}`} />
+      <span className="grid">
+        <Label variant="small">LEVEL</Label>
+        <Label variant="engraved">{String(value).padStart(2, '0')}</Label>
+      </span>
+    </div>
+  );
+}
+
 /** The suggestion chip on the table: the real chip set to its config, which its x-ray takes over and hands back. Its words open the x-ray; ✓ and × answer. */
 function TableChip({ config = CHIP, open, answered }: { config?: ChipConfig; open: () => void; answered: () => void }) {
   const look = useChipLook(config);
@@ -244,6 +259,11 @@ const ITEMS: Item[] = [
     // Centred: the floating button that sat beside it is off the front door (the call to action below is the way in).
     id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '42%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
     node: ({ openXray, seeds }) => <WordmarkObject m={seeds.wordmark ?? WORDMARK} onClick={() => openXray('wordmark')} />,
+  },
+  {
+    // the dial, under the brand: a real knob to turn, the hardware the name promises
+    id: 'dial', table: ['46%', '46%'], space: ['50%', '64%', -140, 6], dur: '25s', drift: ['-24px', '14px'], live: true, zoom: 1.5,
+    node: () => <TableDial />,
   },
   {
     // the button, beside the brand: click it and it flies onto its x-ray, which lands on the button itself
