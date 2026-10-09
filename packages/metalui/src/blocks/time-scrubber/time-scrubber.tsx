@@ -17,8 +17,9 @@ import { Dial } from '../../components/dial/dial';
  *   drag      the knob follows the pointer exactly; within 1 % of now it snaps to now
  *   jump      a click on the track, ← → (an hour), ⇧ ← → (a day): the knob rides the part spring
  *   past      the readout names the moment; NOW returns
- *   dial      where room is short the track winds into a Dial (oldest at seven, now at five) and
- *             the knob grows into its disc: turn it anticlockwise to go back. The readout stands
+ *   dial      where room is short the track winds into a Dial: it travels left onto a reel, its
+ *             oldest end curling up first and the rest following it in, and the knob grows into its
+ *             disc as the ring closes (oldest at five, now at seven): turn it clockwise to go back. The readout stands
  *             beside the knob, or above it where even that is short. Given room again it unwinds
  *             into the bar (the one track, on the surface spring) and the bar takes over
  * Scrubbing only looks: it changes nothing.
@@ -39,8 +40,10 @@ const BOX = 'mu-scrubber relative w-scrubber-width max-w-full h-scrubber-height'
 const READ = 'mu-scrubber-read pointer-events-none absolute z-1 left-0 top-0 flex items-center gap-scrubber-readout-gap';
 const GLYPH = 'mu-scrubber-glyph me-scrubber-glyph-gap';
 const SLIDER = 'mu-scrubber-slider !absolute inset-0';
-const COIL = 'mu-scrubber mu-scrubber-coil relative flex flex-wrap-reverse items-center gap-scrubber-readout-gap min-w-0 max-w-full';
-const COIL_READ = 'mu-scrubber-coil-read grid animate-sf-fade';
+/* The dial stands on the coil's foot (it keeps the bar's room under its line while it winds, so the
+ * line holds still); the readout is centred beside it. */
+const COIL = 'mu-scrubber mu-scrubber-coil relative flex flex-wrap-reverse items-end gap-scrubber-readout-gap min-w-0 max-w-full';
+const COIL_READ = 'mu-scrubber-coil-read grid self-center animate-sf-fade';
 
 export interface TimeScrubberProps {
   /** The first moment (ms): the start of the day of the oldest item. */

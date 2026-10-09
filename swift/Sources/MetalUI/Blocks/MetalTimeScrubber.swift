@@ -121,9 +121,10 @@ public struct MetalTimeScrubber: View {
                     .frame(width: MetalScrubberMetrics.width)
                 }
             }
-            // As a bar the track sits in a slot one dial knob tall: the dial at curl 0 is exactly
-            // that, its track centred, so the hand-off from slider to dial cannot move the line.
+            // As a bar the track sits in a slot one dial knob tall over the bar's room below its
+            // line: the dial at curl 0 is exactly that, so the hand-off cannot move the line.
             .frame(height: wound ? nil : MetalRecipes.dial.points("self.knob"))
+            .padding(.bottom, wound ? .zero : MetalTimeScrubberLayout.room)
             readoutView(readout, shape: shape)
         }
         .animation(MetalMotion.resolve(.surface, reduceMotion: reduceMotion).animation, value: shape)

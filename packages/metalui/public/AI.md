@@ -1341,6 +1341,7 @@ A slider wound into a ring: a value you turn. React: `Dial` from `@unlocalhosted
 ## Anatomy
 
 - One track carries the curl. `curl` 0 is a straight bar; 1 is a ring of `sweep` degrees with the gap at six o'clock, min at seven, max at five. `barLength` optionally supplies the unwound length; otherwise the length stays fixed.
+- With `barLength` (taking over from a bar) the wind is a reel, not an even bend: the bar's near end curls up onto a circle the size of the finished ring and the rest follows it in, the straight far end shortening; the knob stays the bar's knob until the ring closes, then grows into the disc; the bar's line holds still. That ring runs anticlockwise: min at five, max at seven.
 - Fill from min to the knob; marks across the track; ticks outside it (labels only while it is a bar).
 - The bar's slider knob travels to the centre and grows into a knurled disc; the disc and indicator dot face the value. The host places its readout beside the dial (there is no `children` slot).
 
@@ -4557,7 +4558,7 @@ Time as a dimension of the surface: drag or step back through what was written. 
 | a click on the track, ← →, ⇧ ← → | the knob jumps an hour, or a day | part spring (instant under Reduce Motion) |
 | past | the readout names the moment; `NOW` shows | – |
 | focus | the 2 pt focus ring around the knob | – |
-| dial | the same moments in a ring; readout beside disc, or above if narrow | winds/unwinds on surface; anticlockwise goes back |
+| dial | the same moments in a ring (oldest at five, now at seven); readout beside disc, or above if narrow | winds onto a reel (oldest end curls up first, the bar travels left into it) and unwinds back out, on surface; clockwise goes back |
 
 The knob is the one place the scrubber's own arrows win over selection nudges: the host must not nudge while it has focus.
 

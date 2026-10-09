@@ -203,8 +203,17 @@ extension MetalDial {
 }
 
 
-/// The web dial's constant-curvature construction, sampled for drawing and pointer projection.
+/// The dial's reel construction, sampled for drawing and pointer projection.
 /// Numbers here are mathematical fractions/sample counts; all physical dimensions are recipes.
+///
+/// Taking over from a bar (`barLength`), winding is a reel: the bar travels toward its near end
+/// and its near end meets a circle the size of the finished ring, curls up around it, and the
+/// rest of the bar follows it in, so what is left straight is always the bar's far end. Unwinding
+/// pays it back out. The bar eases from its own length to the ring's as it goes, so the last of it
+/// closes the ring exactly, and the reel turns as it fills so the ring's gap settles at the
+/// bottom. Nothing bends all at once; where the bar meets the reel is always the hinge. A bar
+/// coiling up over itself runs anticlockwise, so that ring reads min at five, max at seven.
+/// A dial with no bar bends its one track evenly and keeps the knob's clockwise ring.
 struct MetalDialGeometry {
     static let samples = 96
     let curl: Double
@@ -214,8 +223,41 @@ struct MetalDialGeometry {
     let track: Double
     let size: CGSize
     private let curvature: Double
+    private let reel: Reel
     private let origin: CGPoint
     var labelOpacity: Double { max(.zero, 1 - curl * 4) }
+
+    /// The bar's path at one moment: `wound` of its `length` is on a circle of `radius` above its
+    /// near end, the reel turned by `turn`.
+    private struct Reel {
+        let length: Double, wound: Double, radius: Double, turn: Double
+        /// A dial with no bar to take over from bends its whole track evenly instead, so a plain
+        /// knob keeps its clockwise ring (min at seven, max at five).
+        var bend: (curvature: Double, theta: Double)? = nil
+
+        func point(_ fraction: Double) -> CGPoint {
+            let distance = min(.one, max(.zero, fraction)) * length
+            if let bend {
+                guard bend.curvature > Double.ulpOfOne.squareRoot() else { return CGPoint(x: distance, y: .zero) }
+                let x = sin(bend.curvature * distance) / bend.curvature
+                let y = (1 - cos(bend.curvature * distance)) / bend.curvature
+                let turn = -bend.theta / 2
+                return CGPoint(x: x * cos(turn) - y * sin(turn), y: x * sin(turn) + y * cos(turn))
+            }
+            // The far end stays straight, leaving the reel's lowest point heading right.
+            let raw: CGPoint
+            if distance >= wound {
+                raw = CGPoint(x: distance - wound, y: .zero)
+            } else {
+                // Back from the hinge by `angle`: up the reel's near side and over.
+                let angle = (wound - distance) / radius
+                raw = CGPoint(x: -radius * sin(angle), y: -radius + radius * cos(angle))
+            }
+            // The reel turns about its centre (0, -radius).
+            let dx = raw.x, dy = raw.y + radius
+            return CGPoint(x: dx * cos(turn) - dy * sin(turn), y: dx * sin(turn) + dy * cos(turn) - radius)
+        }
+    }
 
     init(curl: Double, barLength: Double?) {
         let recipe = MetalRecipes.dial
@@ -223,39 +265,43 @@ struct MetalDialGeometry {
         let ring = recipe.points("self.length")
         let sweep = (Double(recipe.text("self.sweep")?.replacingOccurrences(of: "deg", with: "") ?? "") ?? .zero) * .pi / 180
         let length = (barLength ?? ring) + (ring - (barLength ?? ring)) * curl
-        let phase = min(Double.one, max(.zero, (curl - 0.15) / 0.85))
+        // The knob stays the bar's knob while the bar travels; it becomes the disc only as the ring
+        // closes around it.
+        let phase = min(Double.one, max(.zero, barLength == nil ? (curl - 0.15) / 0.85 : (curl - 0.55) / 0.45))
         let disc = phase * phase * (3 - 2 * phase)
         let track = recipe.points("self.track") + (recipe.points("self.groove") - recipe.points("self.track")) * disc
-        let curvature = sweep * curl / max(Double.leastNonzeroMagnitude, length)
+        let radius = ring / max(Double.leastNonzeroMagnitude, sweep)
+        // The gap ends centred at the bottom: the reel turns half of it as the last of the bar goes on.
+        let bend = barLength == nil ? (curvature: sweep * curl / max(Double.leastNonzeroMagnitude, length), theta: sweep * curl) : nil
+        let reel = Reel(length: length, wound: length * curl, radius: radius,
+                        turn: (2 * .pi - sweep) / 2 * curl * curl * curl, bend: bend)
         let knob = recipe.points("self.knob")
         let pad = knob / 2 + (track / 2 + recipe.points("self.tick-out") + recipe.points("self.tick") + MetalRecipes.slider.points("tick.w") - knob / 2) * disc
-        let points = (0...Self.samples).map { Self.raw(Double($0) / Double(Self.samples), length: length, curvature: curvature, theta: sweep * curl) }
+        let points = (0...Self.samples).map { reel.point(Double($0) / Double(Self.samples)) }
         let minX = points.map(\.x).min() ?? .zero, maxX = points.map(\.x).max() ?? .zero
         let minY = points.map(\.y).min() ?? .zero, maxY = points.map(\.y).max() ?? .zero
         origin = CGPoint(x: pad - minX, y: pad - minY)
-        size = CGSize(width: maxX - minX + pad * 2, height: maxY - minY + pad * 2)
-        self.curl = curl; self.length = length; self.sweep = sweep
-        self.disc = disc; self.track = track; self.curvature = curvature
-    }
-
-    private static func raw(_ fraction: Double, length: Double, curvature: Double, theta: Double) -> CGPoint {
-        let distance = min(.one, max(.zero, fraction)) * length
-        guard curvature > Double.ulpOfOne.squareRoot() else { return CGPoint(x: distance, y: .zero) }
-        let x = sin(curvature * distance) / curvature
-        let y = (1 - cos(curvature * distance)) / curvature
-        let turn = -theta / 2
-        return CGPoint(x: x * cos(turn) - y * sin(turn), y: x * sin(turn) + y * cos(turn))
+        // Taking over from a bar, the frame keeps the bar's room under its line, so the line holds
+        // still while the reel rises above it; the room goes as the disc settles into the ring.
+        let below = barLength == nil ? .zero : (MetalScrubberMetrics.height / 2 - knob / 2) * (1 - disc)
+        size = CGSize(width: maxX - minX + pad * 2, height: maxY - minY + pad * 2 + below)
+        self.curl = curl; self.length = length; self.sweep = sweep; self.reel = reel
+        self.disc = disc; self.track = track
+        self.curvature = bend?.curvature ?? (curl > .zero ? 1 / radius : .zero)
     }
 
     func at(_ fraction: Double) -> CGPoint {
-        let point = Self.raw(fraction, length: length, curvature: curvature, theta: sweep * curl)
+        let point = reel.point(fraction)
         return CGPoint(x: point.x + origin.x, y: point.y + origin.y)
     }
 
     var centre: CGPoint? {
         guard curvature > Double.ulpOfOne.squareRoot() else { return nil }
-        let turn = -sweep * curl / 2
-        return CGPoint(x: -sin(turn) / curvature + origin.x, y: cos(turn) / curvature + origin.y)
+        if let bend = reel.bend {
+            let turn = -bend.theta / 2
+            return CGPoint(x: -sin(turn) / curvature + origin.x, y: cos(turn) / curvature + origin.y)
+        }
+        return CGPoint(x: origin.x, y: origin.y - reel.radius)
     }
 
     func normal(at fraction: Double) -> CGVector {

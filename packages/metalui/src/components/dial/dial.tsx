@@ -21,7 +21,9 @@ import { motionReduced } from '../../motion/reduced';
  *   curl      a new curl winds or unwinds the one track on the surface spring (no overshoot):
  *             length and curvature move together so marks and ticks ride along, the track slims
  *             into the groove, and the bar's knob travels to the centre and grows into the disc
- *             (unwinding, it shrinks back onto the bar). Tick labels show only while it is a bar
+ *             (unwinding, it shrinks back onto the bar). Tick labels show only while it is a bar.
+ *             Taking over from a bar (`barLength`) it winds onto a reel instead (see shape()), and
+ *             that ring runs anticlockwise: min at five, max at seven
  * Reduce Motion: the curl resolves without travel.
  * ───────────────────────────────────────────────────────── */
 
@@ -63,16 +65,31 @@ function cssPx(el: Element | null, name: string, fallback: number) {
   return parseFloat(getComputedStyle(el).getPropertyValue(name)) || fallback;
 }
 
-/** The track at a curl: points by fraction, in a box padded by the knob's radius. */
-function shape(curl: number, bar: number, ring: number, sweep: number, pad: number) {
+/** The track at a curl: points by fraction, in a box padded by the knob's radius.
+ *  With no bar to take over from it bends evenly (the knob's clockwise ring). Taking over from a bar
+ *  (`reel`) it winds onto a reel: the bar's near end meets a circle the size of the finished ring,
+ *  curls up around it, and the rest follows it in, so what is left straight is always the far end;
+ *  the reel turns as it fills so the gap settles at six. A bar coiling up over itself runs
+ *  anticlockwise, so that ring reads min at five, max at seven. `below` keeps the bar's room under
+ *  its line so the line holds still while the reel rises. */
+function shape(curl: number, bar: number, ring: number, sweep: number, pad: number, reel: boolean, below = 0) {
   const length = bar + (ring - bar) * curl;
   const theta = sweep * curl;
-  const k = theta / length;
-  // the middle of the track sits level at twelve: the gap is centred at six
-  const turn = -theta / 2, cos = Math.cos(turn), sin = Math.sin(turn);
+  const R = ring / sweep;
+  const k = reel ? (curl > 0 ? 1 / R : 0) : theta / length;
+  const wound = length * curl;
+  // even bend: the middle of the track sits level at twelve, the gap centred at six
+  const turn = reel ? ((2 * Math.PI - sweep) / 2) * curl ** 3 : -theta / 2;
+  const cos = Math.cos(turn), sin = Math.sin(turn);
   const spin = (x: number, y: number): [number, number] => [x * cos - y * sin, x * sin + y * cos];
   const raw = (u: number): [number, number] => {
     const d = u * length;
+    if (reel) {
+      // straight from the hinge, or back from it round the reel (centre at (0, -R))
+      const [x, y] = d >= wound ? [d - wound, 0] : [-R * Math.sin((wound - d) / R), -R + R * Math.cos((wound - d) / R)];
+      const [rx, ry] = spin(x, y + R);
+      return [rx, ry - R];
+    }
     if (k < 1e-6) return [d, 0];
     return spin(Math.sin(k * d) / k, (1 - Math.cos(k * d)) / k);
   };
@@ -83,8 +100,8 @@ function shape(curl: number, bar: number, ring: number, sweep: number, pad: numb
   }
   const ox = pad - minX, oy = pad - minY;
   const at = (u: number): [number, number] => { const [x, y] = raw(Math.min(1, Math.max(0, u))); return [x + ox, y + oy]; };
-  const centre = k < 1e-6 ? null : ((): [number, number] => { const [x, y] = spin(0, 1 / k); return [x + ox, y + oy]; })();
-  return { at, centre, radius: k < 1e-6 ? Infinity : 1 / k, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2, length };
+  const centre = k < 1e-6 ? null : reel ? ([ox, oy - R] as [number, number]) : ((): [number, number] => { const [x, y] = spin(0, 1 / k); return [x + ox, y + oy]; })();
+  return { at, centre, radius: k < 1e-6 ? Infinity : 1 / k, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2 + below, length };
 }
 
 function normalAt(at: (u: number) => [number, number], u: number): [number, number] {
@@ -148,10 +165,13 @@ export function Dial({
   const tickOut = cssPx(root.current, '--mu-r-dial-self-tick-out', 3);
   const tickLen = cssPx(root.current, '--mu-r-dial-self-tick', 4);
   // how far the knob has become the disc: none while it is nearly a bar, all of it as the ring closes
-  const e0 = Math.min(1, Math.max(0, (curl - 0.15) / 0.85));
+  // (on a reel the knob stays the bar's knob while the bar travels, and grows as the ring closes)
+  const reel = barLength != null;
+  const e0 = Math.min(1, Math.max(0, reel ? (curl - 0.55) / 0.45 : (curl - 0.15) / 0.85));
   const disc = e0 * e0 * (3 - 2 * e0);
   const track = bar + (groove - bar) * disc;
-  const g = shape(curl, barLength ?? ring, ring, sweep, knob / 2 + (track / 2 + tickOut + tickLen + 1 - knob / 2) * disc);
+  const below = reel ? (cssPx(root.current, '--mu-scrubber-height', 50) / 2 - knob / 2) * (1 - disc) : 0;
+  const g = shape(curl, barLength ?? ring, ring, sweep, knob / 2 + (track / 2 + tickOut + tickLen + 1 - knob / 2) * disc, reel, below);
   const span = Math.max(Number.EPSILON, max - min);
   const fraction = Math.min(1, Math.max(0, (value - min) / span));
   const last = React.useRef(fraction);

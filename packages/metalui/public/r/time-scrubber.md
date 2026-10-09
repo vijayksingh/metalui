@@ -28,7 +28,7 @@ Time as a dimension of the surface: drag or step back through what was written. 
 | a click on the track, ← →, ⇧ ← → | the knob jumps an hour, or a day | part spring (instant under Reduce Motion) |
 | past | the readout names the moment; `NOW` shows | – |
 | focus | the 2 pt focus ring around the knob | – |
-| dial | the same moments in a ring; readout beside disc, or above if narrow | winds/unwinds on surface; anticlockwise goes back |
+| dial | the same moments in a ring (oldest at five, now at seven); readout beside disc, or above if narrow | winds onto a reel (oldest end curls up first, the bar travels left into it) and unwinds back out, on surface; clockwise goes back |
 
 The knob is the one place the scrubber's own arrows win over selection nudges: the host must not nudge while it has focus.
 
