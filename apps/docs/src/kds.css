@@ -205,7 +205,13 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
 .social-link { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--icon); background: var(--btn-bg); box-shadow: var(--btn-sh); transition: color .16s; }
 .social-link:hover, .social-link:focus-visible { color: var(--ink); }
 .social-list { display: none; }
-@media (prefers-reduced-motion: reduce) { .social-link { transition: none; } }
+/* The source mark grows into a pill once its star count arrives: mark, then the number in the readout face. */
+.social-stars { display: inline-flex; flex: none; gap: 6px; width: auto; padding-inline: 10px 11px; border-radius: 999px; }
+.social-link svg { flex: none; }
+.social-count { font: 500 12px/1 var(--mono); font-stretch: var(--mono-stretch); font-variant-numeric: tabular-nums; color: var(--ink2); animation: social-count-in var(--mu-spring-settle-d, .3s) ease-out both; }
+.social-list .social-count { margin-inline-start: auto; }
+@keyframes social-count-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .social-link { transition: none; } .social-count { animation: none; } }
 
 .shell { position: relative; z-index: 1; display: grid; grid-template-columns: 160px minmax(0, 1fr) 200px; gap: var(--mu-space-40); max-width: 1440px; margin: 0 auto; padding: 0 32px 96px; }
 .side { position: sticky; top: 64px; align-self: start; height: calc(100vh - 64px); overflow-y: auto; padding: 24px 4px 40px 2px; scrollbar-width: thin; }
@@ -653,6 +659,8 @@ html.rm .drift-item { animation: none; }
 .landing-foot { position: absolute; z-index: 5; left: 0; right: 0; bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; pointer-events: none; }
 .landing-foot > * { pointer-events: auto; }
 .landing-foot .mu-button { zoom: 1.25; }
+.landing-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.landing-corners-end { display: flex; align-items: center; gap: 10px; }
 /* The way in wears the wordmark's red enamel, grounded like a key on the table: no halo, no red
    bloom (a glow reads as a sticker, not an object). Light, not colour, marks it as the one thing to
    press: a warm glint travels its rim the way light slides over glossy plastic (a crisp line and a

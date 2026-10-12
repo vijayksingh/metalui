@@ -5,8 +5,24 @@ import tailwindcss from '@tailwindcss/vite';
 
 const pkg = (p: string) => fileURLToPath(new URL(`../../packages/metalui/${p}`, import.meta.url));
 
-export default defineConfig({
+/* The repository's star count, read once when the site is built so every visitor sees a number even
+ * when GitHub's anonymous API limit is spent on their address; the page refreshes it live when it can.
+ * GITHUB_TOKEN, when set, lifts the build's own limit. Any failure ships null and the mark shows alone. */
+async function githubStars(): Promise<number | null> {
+  try {
+    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    const r = await fetch('https://api.github.com/repos/vijayksingh/metalui', { headers, signal: AbortSignal.timeout(4000) });
+    const repo = r.ok ? await r.json() : null;
+    return typeof repo?.stargazers_count === 'number' ? repo.stargazers_count : null;
+  } catch {
+    return null;
+  }
+}
+
+export default defineConfig(async () => ({
   plugins: [react(), tailwindcss()],
+  define: { __GITHUB_STARS__: JSON.stringify(await githubStars()) },
   // The library's generated registry, icons and agent docs are served as the site's static files.
   publicDir: pkg('public'),
   resolve: {
@@ -28,4 +44,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
