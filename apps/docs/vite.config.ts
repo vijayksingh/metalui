@@ -7,12 +7,10 @@ const pkg = (p: string) => fileURLToPath(new URL(`../../packages/metalui/${p}`, 
 
 /* The repository's star count, read once when the site is built so every visitor sees a number even
  * when GitHub's anonymous API limit is spent on their address; the page refreshes it live when it can.
- * GITHUB_TOKEN, when set, lifts the build's own limit. Any failure ships null and the mark shows alone. */
+ * Any failure ships null and the page's live read fills it in. */
 async function githubStars(): Promise<number | null> {
   try {
-    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
-    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-    const r = await fetch('https://api.github.com/repos/vijayksingh/metalui', { headers, signal: AbortSignal.timeout(4000) });
+    const r = await fetch('https://api.github.com/repos/vijayksingh/metalui', { headers: { Accept: 'application/vnd.github+json' }, signal: AbortSignal.timeout(4000) });
     const repo = r.ok ? await r.json() : null;
     return typeof repo?.stargazers_count === 'number' ? repo.stargazers_count : null;
   } catch {

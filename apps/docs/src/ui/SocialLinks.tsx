@@ -6,15 +6,15 @@ import * as React from 'react';
 
 const REPO = 'vijayksingh/metalui';
 const STARS_KEY = 'metalui:github-stars';
-const STARS_TTL = 60 * 60 * 1000;
+const STARS_TTL = 15 * 60 * 1000;
 let starsRequest: Promise<number | null> | null = null;
 
 function readStars(): { count: number; at: number } | null {
   try { return JSON.parse(localStorage.getItem(STARS_KEY) ?? 'null'); } catch { return null; }
 }
 
-/* The count baked in at build time shows first; one live request per page load, at most one an hour
- * per visitor (the anonymous API allows 60 an hour per address), replaces it and is kept for next time. */
+/* The count baked in at build time shows first; one live request per page load, at most one every 15
+ * minutes per visitor (the anonymous API allows 60 an hour per address), replaces it and is kept for next time. */
 function fetchStars(): Promise<number | null> {
   starsRequest ??= fetch(`https://api.github.com/repos/${REPO}`, { headers: { Accept: 'application/vnd.github+json' } })
     .then((r) => (r.ok ? r.json() : null))
