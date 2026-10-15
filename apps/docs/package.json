@@ -22,7 +22,7 @@
     "@twinkleplop/typescript": "^0.1.4",
     "@unlocalhosted/metalui": "*",
     "dialkit": "1.4.3",
-    "motion": "^13.4.2",
+    "motion": "^14.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^8.4.0",
