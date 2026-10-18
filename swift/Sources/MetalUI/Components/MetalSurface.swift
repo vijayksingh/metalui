@@ -6,7 +6,10 @@ public enum MetalSurfaceMaterial: String, Sendable {
     case raise
     case raiseLite = "raise-lite"
     case raiseSm = "raise-sm"
-    case frost, plate, panel, pop, tip, lens, graphite
+    case frost, plate, panel, pop, tip, lens
+    /// A readout or an island in the colorway: graphite-deep on graphite, the brightest bone cap on bone.
+    case chrome
+    case graphite
     case graphitePlain = "graphite-plain"
     case graphiteStrip = "graphite-strip"
     case graphiteDeep = "graphite-deep"
@@ -23,7 +26,7 @@ public enum MetalSurfaceMaterial: String, Sendable {
         switch self {
         case .frost, .plate, .panel, .pop, .tip, .lens, .graphite, .graphiteGlass: return rawValue
         case .graphiteStrip: return "graphite-strip"
-        case .raise, .raiseLite, .raiseSm, .graphitePlain, .graphiteDeep: return nil
+        case .raise, .raiseLite, .raiseSm, .chrome, .graphitePlain, .graphiteDeep: return nil
         }
     }
 

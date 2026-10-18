@@ -5,8 +5,10 @@ import { Surface } from '../surface/surface';
 import { Led } from '../led/led';
 import { Label } from '../label/label';
 
-/* SIZE READOUT (the reference design's .readout): Surface(graphite-deep, pill) › Led(live) + Label(readout)
- * with its × and · in Label(readout-dim). A component, not a block: the Selection frame places one
+/* SIZE READOUT (the reference design's .readout): Surface(chrome, pill) › Led(live) + Label(readout)
+ * with its × and · in Label(readout-dim). Chrome follows the colorway: a graphite-deep pill on
+ * graphite, the brightest bone cap on bone, its figures in each colorway's readout ink.
+ * A component, not a block: the Selection frame places one
  * under its object, and blocks never import blocks.
  *   ● 320 × 214     an object's size
  *   ● 3 · 540 × 180 a multi-selection
@@ -43,7 +45,7 @@ export const SizeReadout = React.forwardRef<HTMLSpanElement, SizeReadoutProps>(f
 ) {
   const w = Math.round(width), h = Math.round(height);
   return (
-    <Surface ref={ref} as="span" material="graphite-deep" radius="pill" className={className ? `${READOUT} ${className}` : READOUT} {...props}>
+    <Surface ref={ref} as="span" material="chrome" radius="pill" className={className ? `${READOUT} ${className}` : READOUT} {...props}>
       {led && <Led kind="live" />}
       {value !== undefined ? <><V>{value}</V>{unit !== undefined && <Mark>{unit}</Mark>}</> : copied ? (
         <><V>COPIED</V><Mark>·</Mark><V>{copied} {w}</V><Mark>×</Mark><V>{h}</V></>

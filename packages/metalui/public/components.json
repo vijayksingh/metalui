@@ -1245,7 +1245,7 @@
       "name": "size-readout",
       "title": "Size readout",
       "status": "alpha",
-      "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(graphite-deep) with a live Led and the value in Label(readout).",
+      "description": "A pill in the colorway that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(chrome) with a live Led and the value in Label(readout).",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "SizeReadout",

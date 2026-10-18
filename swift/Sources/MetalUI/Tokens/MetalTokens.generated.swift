@@ -1666,7 +1666,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A raised plate or card from a material: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens, and three graphites (graphite, graphite-deep, graphite-glass). (reference style.css --raised, --raised-lite, --raised-sm, --graphite-bg, --graphite-sh; #empty, .gcard, #lensBar, .pal, #panel, #pop, .meta, .region.lensr, #toolbar, #selTools, #pastBanner, #tip, .readout, #toast)
+    /// A raised plate or card from a material: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens, chrome (a readout or an island in the colorway: graphite-deep on graphite, the brightest bone cap on bone), and three graphites (graphite, graphite-deep, graphite-glass). (reference style.css --raised, --raised-lite, --raised-sm, --graphite-bg, --graphite-sh; #empty, .gcard, #lensBar, .pal, #panel, #pop, .meta, .region.lensr, #toolbar, #selTools, #pastBanner, #tip, .readout, #toast)
     public static let surface = MetalObjectRecipe(
         name: "surface",
         layers: [
@@ -1832,14 +1832,30 @@ public enum MetalRecipes {
             .init(part: "self", state: "graphite-deep", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:surface:159 0 1px 2px rgba(0,0,0,.2)
             .init(part: "self", state: "graphite-deep", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:surface:160 0 12px 28px -10px rgba(0,0,0,.34)
             .init(part: "self", state: "graphite-deep", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:surface:161 0 30px 60px -24px rgba(0,0,0,.30)
-            .init(part: "self", state: "graphite-glass", colorway: nil, fill: .solid(.color(MetalRGBA(30.0, 30.0, 33.0, 0.92)))), // mu-recipe:surface:162 rgba(30,30,33,.92)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:surface:163 inset 0 0 6px 2px rgba(255,255,255,.055)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:surface:164 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:surface:165 inset -1px -3px 5px -2px rgba(0,0,0,.35)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:surface:166 0 0 0 .5px rgba(0,0,0,.45)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:surface:167 0 1px 2px rgba(0,0,0,.2)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:surface:168 0 12px 28px -10px rgba(0,0,0,.34)
-            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:surface:169 0 30px 60px -24px rgba(0,0,0,.30)
+            .init(part: "self", state: "chrome", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(242.0, 241.0, 238.0, 1.0)), 1.0)])), // mu-recipe:surface:162 linear-gradient(#FFFFFF, #F2F1EE)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:surface:163 inset 0 0 6px 2px rgba(255,255,255,.75)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:surface:164 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(110.0, 100.0, 80.0, 0.07)))), // mu-recipe:surface:165 inset -1px -3px 5px -2px rgba(110,100,80,.07)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:surface:166 0 0 0 .5px rgba(24,22,16,.07)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.06)))), // mu-recipe:surface:167 0 1px 2px rgba(24,22,16,.06)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.12)))), // mu-recipe:surface:168 0 12px 28px -10px rgba(24,22,16,.12)
+            .init(part: "self", state: "chrome", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.12)))), // mu-recipe:surface:169 0 30px 60px -24px rgba(24,22,16,.12)
+            .init(part: "self", state: "chrome", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(42.0, 42.0, 45.0, 1.0)), 0.0), .init(.color(MetalRGBA(27.0, 27.0, 29.0, 1.0)), 1.0)])), // mu-recipe:surface:170 linear-gradient(#2A2A2D, #1B1B1D)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:surface:171 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:surface:172 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:surface:173 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:surface:174 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:surface:175 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:surface:176 0 12px 28px -10px rgba(0,0,0,.34)
+            .init(part: "self", state: "chrome", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:surface:177 0 30px 60px -24px rgba(0,0,0,.30)
+            .init(part: "self", state: "graphite-glass", colorway: nil, fill: .solid(.color(MetalRGBA(30.0, 30.0, 33.0, 0.92)))), // mu-recipe:surface:178 rgba(30,30,33,.92)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:surface:179 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:surface:180 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:surface:181 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:surface:182 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:surface:183 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:surface:184 0 12px 28px -10px rgba(0,0,0,.34)
+            .init(part: "self", state: "graphite-glass", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:surface:185 0 30px 60px -24px rgba(0,0,0,.30)
         ],
         props: [
             "radius.pill": .number(99.0),
@@ -1949,7 +1965,7 @@ public enum MetalRecipes {
             "count.color": .perColorway(bone: "#6C6C6F", graphite: "#939397"),
             "readout.font": .text("500 10.5px/1 mono"),
             "readout.tracking": .text("0.04em"),
-            "readout.color": .text("#EDEDEF"),
+            "readout.color": .perColorway(bone: "#2A2A2D", graphite: "#EDEDEF"),
             "dark.color": .text("rgba(255,255,255,.4)"),
             "query.font": .text("620 13px/1 sans"),
             "query.tracking": .text("-0.01em"),
@@ -3242,7 +3258,7 @@ public enum MetalFrost: String, CaseIterable, Sendable {
     }
 }
 
-/// object sheet, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a graphite readout under the object reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and the native reference. While moving or resizing, snap guides explain each snap: guide-width lines in the guide colour, solid for aligned edges and guide-dash dashed for aligned centres, spanning every aligned object plus guide-overshoot at each end, the same width at every zoom; they clear when the drag ends. A drag starts after drag-threshold; a snap takes within snap-threshold screen points. The lasso is a lasso-width hairline over lasso-fill with a count readout under it.
+/// object sheet, the one selection for every kind of object, and the presence around a borderless one. The ring sits at ring.select-offset from the object (radius + offset), a flat collar outside it; eight handles sit on the ring line (round caps at the corners, capsules at the edge midpoints; on text, the n and s capsules are grips that move the object); a readout under the object, in the colorway (Surface chrome, Label readout), reads its measured frame. Hover shows only faint corner dots, and an edge light where the pointer enters the band. Values are the object sheet (Rev B, the precision pass) and the native reference. While moving or resizing, snap guides explain each snap: guide-width lines in the guide colour, solid for aligned edges and guide-dash dashed for aligned centres, spanning every aligned object plus guide-overshoot at each end, the same width at every zoom; they clear when the drag ends. A drag starts after drag-threshold; a snap takes within snap-threshold screen points. The lasso is a lasso-width hairline over lasso-fill with a count readout under it.
 public enum MetalPresence {
     public static let ringWidth: Double = 1.25
     public static let ring: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
@@ -3278,18 +3294,6 @@ public enum MetalPresence {
     public static let readoutPadStart: Double = 10.0
     public static let readoutPadEnd: Double = 10.0
     public static let readoutGapInner: Double = 6.0
-    public static let readoutBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(42, 42, 45, 1.0), 0.0), .init(MetalRGBA(27, 27, 29, 1.0), 1.0)])
-    public static let readoutSh: [MetalShadow] = [
-        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.055)),
-        MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.1)),
-        MetalShadow(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, color: MetalRGBA(0, 0, 0, 0.35)),
-        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.45)),
-        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.2)),
-        MetalShadow(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, color: MetalRGBA(0, 0, 0, 0.34)),
-        MetalShadow(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, color: MetalRGBA(0, 0, 0, 0.3)),
-    ]
-    public static let readoutInk: MetalRGBA = MetalRGBA(237, 237, 239, 1.0)
-    public static let readoutDim: MetalRGBA = MetalRGBA(124, 125, 130, 1.0)
     /// In em.
     public static let readoutTracking: Double = 0.04
     public static let readoutLed: Double = 5.0

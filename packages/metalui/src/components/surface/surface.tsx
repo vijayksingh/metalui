@@ -5,13 +5,14 @@ import * as React from 'react';
 /* SURFACE: a raised plate or card from a material recipe. The primitive every floating or raised
  * object is built on: pills, cards, panels, popovers, strips. It draws the material and its radius
  * and nothing else; content and layout are the caller's.
+ *   chrome           a readout or an island in the colorway: graphite-deep on graphite, the brightest bone cap on bone
  *   graphite         the dock's graphite, over a blur(22) saturate(1.6) backdrop
  *   graphite-plain   the same fill with no backdrop (a banner, a tip, a chip)
  *   graphite-strip   the same fill over a plain blur(22) (a tool strip over a selection)
  * Styled with the theme's utilities (the surface recipe); frosted materials turn opaque under
  * Reduce Transparency. */
 
-export type SurfaceMaterial = 'raise' | 'raise-lite' | 'raise-sm' | 'frost' | 'plate' | 'panel' | 'pop' | 'tip' | 'lens' | 'graphite' | 'graphite-plain' | 'graphite-strip' | 'graphite-deep' | 'graphite-glass';
+export type SurfaceMaterial = 'raise' | 'raise-lite' | 'raise-sm' | 'frost' | 'plate' | 'panel' | 'pop' | 'tip' | 'lens' | 'chrome' | 'graphite' | 'graphite-plain' | 'graphite-strip' | 'graphite-deep' | 'graphite-glass';
 export type SurfaceRadius = 'pill' | 'hero' | 'card' | 'plate' | 'strip' | 'region' | 'tip' | 'row';
 
 export interface SurfaceProps extends React.HTMLAttributes<HTMLElement> {
@@ -32,6 +33,7 @@ const MATERIALS: Record<SurfaceMaterial, string> = {
   pop: `recipe-surface-pop backdrop-surface-blur-pop ${OPAQUE}`,
   tip: `recipe-surface-tip backdrop-surface-blur-tip ${OPAQUE}`,
   lens: `recipe-surface-lens backdrop-surface-blur-lens ${OPAQUE}`,
+  chrome: 'recipe-surface-chrome',
   graphite: 'recipe-surface-graphite backdrop-surface-blur-graphite',
   'graphite-plain': 'recipe-surface-graphite',
   'graphite-strip': 'recipe-surface-graphite backdrop-surface-blur-graphite-strip',

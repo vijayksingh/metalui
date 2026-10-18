@@ -174,10 +174,6 @@
   --mu-presence-readout-pad-start: 10px;
   --mu-presence-readout-pad-end: 10px;
   --mu-presence-readout-gap-inner: 6px;
-  --mu-presence-readout-bg: linear-gradient(#2A2A2D, #1B1B1D);
-  --mu-presence-readout-sh: inset 0 0 6px 2px rgba(255,255,255,.055), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10), inset -1px -3px 5px -2px rgba(0,0,0,.35), 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.2), 0 12px 28px -10px rgba(0,0,0,.34), 0 30px 60px -24px rgba(0,0,0,.30);
-  --mu-presence-readout-ink: #EDEDEF;
-  --mu-presence-readout-dim: #7C7D82;
   --mu-presence-readout-tracking: 0.04em;
   --mu-presence-readout-led: 5px;
   --mu-presence-readout-writing: 0;
@@ -1506,15 +1502,15 @@
     /* mu-recipe:surface:160 */ 0 12px 28px -10px rgba(0,0,0,.34),
     /* mu-recipe:surface:161 */ 0 30px 60px -24px rgba(0,0,0,.30);
   --mu-r-surface-self-graphite-glass-background:
-    /* mu-recipe:surface:162 */ rgba(30,30,33,.92);
+    /* mu-recipe:surface:178 */ rgba(30,30,33,.92);
   --mu-r-surface-self-graphite-glass-shadow:
-    /* mu-recipe:surface:163 */ inset 0 0 6px 2px rgba(255,255,255,.055),
-    /* mu-recipe:surface:164 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
-    /* mu-recipe:surface:165 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
-    /* mu-recipe:surface:166 */ 0 0 0 .5px rgba(0,0,0,.45),
-    /* mu-recipe:surface:167 */ 0 1px 2px rgba(0,0,0,.2),
-    /* mu-recipe:surface:168 */ 0 12px 28px -10px rgba(0,0,0,.34),
-    /* mu-recipe:surface:169 */ 0 30px 60px -24px rgba(0,0,0,.30);
+    /* mu-recipe:surface:179 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:180 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:181 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:182 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:183 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:184 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:surface:185 */ 0 30px 60px -24px rgba(0,0,0,.30);
   --mu-r-surface-radius-pill: 99px;
   --mu-r-surface-radius-hero: 30px;
   --mu-r-surface-radius-card: 24px;
@@ -1569,7 +1565,6 @@
   --mu-r-label-count-tracking: -0.18px;
   --mu-r-label-readout-font: 500 10.5px/1 var(--mu-mono);
   --mu-r-label-readout-tracking: 0.04em;
-  --mu-r-label-readout-color: #EDEDEF;
   --mu-r-label-dark-color: rgba(255,255,255,.4);
   --mu-r-label-query-font: 620 13px/1 var(--mu-sans);
   --mu-r-label-query-tracking: -0.01em;
@@ -2437,6 +2432,16 @@
     /* mu-recipe:surface:136 */ 0 1px 2px rgba(24,22,16,.04),
     /* mu-recipe:surface:137 */ 0 8px 18px -8px rgba(24,22,16,.08),
     /* mu-recipe:surface:138 */ 0 22px 40px -18px rgba(24,22,16,.10);
+  --mu-r-surface-self-chrome-background:
+    /* mu-recipe:surface:162 */ linear-gradient(#FFFFFF, #F2F1EE);
+  --mu-r-surface-self-chrome-shadow:
+    /* mu-recipe:surface:163 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:surface:164 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:surface:165 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:surface:166 */ 0 0 0 .5px rgba(24,22,16,.07),
+    /* mu-recipe:surface:167 */ 0 1px 2px rgba(24,22,16,.06),
+    /* mu-recipe:surface:168 */ 0 12px 28px -10px rgba(24,22,16,.12),
+    /* mu-recipe:surface:169 */ 0 30px 60px -24px rgba(24,22,16,.12);
   --mu-r-well-self-field-background:
     /* mu-recipe:well:0 */ linear-gradient(#E6E5E1, #EDECE8);
   --mu-r-well-self-field-shadow:
@@ -2469,6 +2474,7 @@
   --mu-r-label-title-color: #1B1B1D;
   --mu-r-label-heading-color: #1B1B1D;
   --mu-r-label-count-color: #6C6C6F;
+  --mu-r-label-readout-color: #2A2A2D;
   --mu-r-label-query-color: #1B1B1D;
   --mu-r-label-value-color: #1B1B1D;
   --mu-r-label-value-small-color: #1B1B1D;
@@ -2937,6 +2943,16 @@
     /* mu-recipe:surface:143 */ 0 1px 2px rgba(0,0,0,.2),
     /* mu-recipe:surface:144 */ 0 8px 18px -8px rgba(0,0,0,.2),
     /* mu-recipe:surface:145 */ 0 22px 40px -18px rgba(0,0,0,.28);
+  --mu-r-surface-self-chrome-background:
+    /* mu-recipe:surface:170 */ linear-gradient(#2A2A2D, #1B1B1D);
+  --mu-r-surface-self-chrome-shadow:
+    /* mu-recipe:surface:171 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:surface:172 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:surface:173 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:surface:174 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:surface:175 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:surface:176 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:surface:177 */ 0 30px 60px -24px rgba(0,0,0,.30);
   --mu-r-well-self-field-background:
     /* mu-recipe:well:1 */ linear-gradient(#141415, #18181A);
   --mu-r-well-self-field-shadow:
@@ -2969,6 +2985,7 @@
   --mu-r-label-title-color: #F2F2F0;
   --mu-r-label-heading-color: #F2F2F0;
   --mu-r-label-count-color: #939397;
+  --mu-r-label-readout-color: #EDEDEF;
   --mu-r-label-query-color: #F2F2F0;
   --mu-r-label-value-color: #F2F2F0;
   --mu-r-label-value-small-color: #F2F2F0;
@@ -3438,6 +3455,16 @@
       0 1px 2px rgba(0,0,0,.2),
       0 8px 18px -8px rgba(0,0,0,.2),
       0 22px 40px -18px rgba(0,0,0,.28);
+    --mu-r-surface-self-chrome-background:
+      linear-gradient(#2A2A2D, #1B1B1D);
+    --mu-r-surface-self-chrome-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.2),
+      0 12px 28px -10px rgba(0,0,0,.34),
+      0 30px 60px -24px rgba(0,0,0,.30);
     --mu-r-well-self-field-background:
       linear-gradient(#141415, #18181A);
     --mu-r-well-self-field-shadow:
@@ -3470,6 +3497,7 @@
     --mu-r-label-title-color: #F2F2F0;
     --mu-r-label-heading-color: #F2F2F0;
     --mu-r-label-count-color: #939397;
+    --mu-r-label-readout-color: #EDEDEF;
     --mu-r-label-query-color: #F2F2F0;
     --mu-r-label-value-color: #F2F2F0;
     --mu-r-label-value-small-color: #F2F2F0;

@@ -2136,6 +2136,10 @@
   background: var(--mu-r-surface-self-graphite-deep-background);
   box-shadow: var(--mu-r-surface-self-graphite-deep-shadow);
 }
+@utility recipe-surface-chrome {
+  background: var(--mu-r-surface-self-chrome-background);
+  box-shadow: var(--mu-r-surface-self-chrome-shadow);
+}
 @utility recipe-surface-graphite-glass {
   background: var(--mu-r-surface-self-graphite-glass-background);
   box-shadow: var(--mu-r-surface-self-graphite-glass-shadow);
@@ -3482,8 +3486,6 @@
   --spacing-presence-readout-pad-start: var(--mu-presence-readout-pad-start);
   --spacing-presence-readout-pad-end: var(--mu-presence-readout-pad-end);
   --spacing-presence-readout-gap-inner: var(--mu-presence-readout-gap-inner);
-  --color-presence-readout-ink: var(--mu-presence-readout-ink);
-  --color-presence-readout-dim: var(--mu-presence-readout-dim);
   --spacing-presence-readout-led: var(--mu-presence-readout-led);
   --spacing-presence-guide-width: var(--mu-presence-guide-width);
   --color-presence-guide: var(--mu-presence-guide);

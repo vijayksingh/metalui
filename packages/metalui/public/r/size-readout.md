@@ -1,6 +1,6 @@
 # Size readout
 
-A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Built from `Surface`, `Led` and `Label`; a component rather than a block because the Selection frame block uses it.
+A pill in the colorway that reads a measured value: graphite-deep on graphite, the brightest bone cap on bone. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Built from `Surface`, `Led` and `Label`; a component rather than a block because the Selection frame block uses it.
 
 ## Use it for
 
@@ -12,7 +12,7 @@ A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocal
 
 ## Anatomy
 
-`Surface material="graphite-deep" radius="pill"`, 22 tall, padding 0 10, gap 6: `Led kind="live"` (5 pt), then the value in `Label variant="readout"` (10.5 mono at 1, tracked .04em, `#EDEDEF`); the `×` and `·` in `Label variant="readout-dim"` (`#7C7D82`).
+`Surface material="chrome" radius="pill"`, 22 tall, padding 0 10, gap 6: `Led kind="live"` (5 pt), then the value in `Label variant="readout"` (10.5 mono at 1, tracked .04em, `#2A2A2D` on bone, `#EDEDEF` on graphite); the `×` and `·` in `Label variant="readout-dim"` (`#7C7D82` on both, the same contrast on each pill).
 
 ## States and motion
 
@@ -46,4 +46,4 @@ Opacity changes ride settle. The value changes in place without motion; the pill
 
 ## Tokens
 
-`--mu-presence-readout-*`, `--mu-led-green`, `--mu-led-ring`, `--mu-type-readout`. Swift: `MetalPresence`.
+`--mu-presence-readout-*` (size), the surface recipe's `chrome` layers, the label recipe's `readout` colours, `--mu-led-green`, `--mu-led-ring`, `--mu-type-readout`. Swift: `MetalPresence`, `MetalSurfaceMaterial.chrome`, `MetalRecipes.label`.

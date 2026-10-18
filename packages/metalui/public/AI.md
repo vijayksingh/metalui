@@ -3650,7 +3650,7 @@ The native toggle's existing outer reduced transaction also settles a live label
 
 # Size readout
 
-A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Built from `Surface`, `Led` and `Label`; a component rather than a block because the Selection frame block uses it.
+A pill in the colorway that reads a measured value: graphite-deep on graphite, the brightest bone cap on bone. React: `SizeReadout` from `@unlocalhosted/metalui`. SwiftUI: `MetalSizeReadout`. The Selection frame places one under its object; this is the same readout on its own. Built from `Surface`, `Led` and `Label`; a component rather than a block because the Selection frame block uses it.
 
 ## Use it for
 
@@ -3662,7 +3662,7 @@ A graphite pill that reads a measured value. React: `SizeReadout` from `@unlocal
 
 ## Anatomy
 
-`Surface material="graphite-deep" radius="pill"`, 22 tall, padding 0 10, gap 6: `Led kind="live"` (5 pt), then the value in `Label variant="readout"` (10.5 mono at 1, tracked .04em, `#EDEDEF`); the `×` and `·` in `Label variant="readout-dim"` (`#7C7D82`).
+`Surface material="chrome" radius="pill"`, 22 tall, padding 0 10, gap 6: `Led kind="live"` (5 pt), then the value in `Label variant="readout"` (10.5 mono at 1, tracked .04em, `#2A2A2D` on bone, `#EDEDEF` on graphite); the `×` and `·` in `Label variant="readout-dim"` (`#7C7D82` on both, the same contrast on each pill).
 
 ## States and motion
 
@@ -3696,7 +3696,7 @@ Opacity changes ride settle. The value changes in place without motion; the pill
 
 ## Tokens
 
-`--mu-presence-readout-*`, `--mu-led-green`, `--mu-led-ring`, `--mu-type-readout`. Swift: `MetalPresence`.
+`--mu-presence-readout-*` (size), the surface recipe's `chrome` layers, the label recipe's `readout` colours, `--mu-led-green`, `--mu-led-ring`, `--mu-type-readout`. Swift: `MetalPresence`, `MetalSurfaceMaterial.chrome`, `MetalRecipes.label`.
 
 ---
 
@@ -4182,7 +4182,7 @@ A raised plate or card from a material. React: `Surface` from `@unlocalhosted/me
 
 ## Props
 
-- `material`: `raise` (a card), `raise-lite` (a lighter card), `raise-sm` (a pill), `frost` (a floating bar), `plate` (a palette), `panel` (a gathered panel), `pop` (a menu), `tip` (a hover label), `lens` (a pinned query plate), `graphite` (dark chrome over a blurred, saturated backdrop), `graphite-plain` (the same with no backdrop: a banner, a tip), `graphite-strip` (the same over a plain blur: a tool strip), `graphite-deep` (a readout), `graphite-glass` (a notice).
+- `material`: `raise` (a card), `raise-lite` (a lighter card), `raise-sm` (a pill), `frost` (a floating bar), `plate` (a palette), `panel` (a gathered panel), `pop` (a menu), `tip` (a hover label), `lens` (a pinned query plate), `chrome` (a readout or an island in the colorway: graphite-deep on graphite, the brightest bone cap on bone), `graphite` (dark chrome over a blurred, saturated backdrop), `graphite-plain` (the same with no backdrop: a banner, a tip), `graphite-strip` (the same over a plain blur: a tool strip), `graphite-deep` (graphite in both colorways), `graphite-glass` (a notice).
 - `radius`: `pill`, `hero` (30), `card` (24), `plate` (18), `strip` (16), `region` (26), `tip` (11), `row` (12).
 - `as`: the element (default `div`).
 

@@ -2,7 +2,7 @@ import SwiftUI
 
 // Size readout: the selection readout on its own. Mirrors components/size-readout from MetalPresence.
 
-/// A graphite pill that reads a measured value: "● 320 × 214", "● 3 · 540 × 180", "● COPIED · PNG 130 × 215", "● 100 %".
+/// A pill in the colorway (Surface chrome) that reads a measured value: "● 320 × 214", "● 3 · 540 × 180", "● COPIED · PNG 130 × 215", "● 100 %".
 public struct MetalSizeReadout: View {
     let size: CGSize
     let count: Int?
@@ -10,6 +10,7 @@ public struct MetalSizeReadout: View {
     let value: String?
     let unit: String?
     let led: Bool
+    @Environment(\.metalColorway) private var colorway
 
     public init(size: CGSize = .zero, count: Int? = nil, copied: String? = nil, value: String? = nil, unit: String? = nil, led: Bool = true) {
         self.size = size
@@ -22,7 +23,9 @@ public struct MetalSizeReadout: View {
 
     public var body: some View {
         let w = Int(size.width.rounded()), h = Int(size.height.rounded())
-        let dim = MetalPresence.readoutDim.color
+        let labels = MetalRecipes.label, cw = MetalRecipeColorway(colorway)
+        let ink = labels.color("readout.color", colorway: cw)?.color ?? .clear
+        let dim = labels.color("readout-dim.color", colorway: cw)?.color ?? .clear
         let role = MetalType.readout
         let label: Text = {
             if let value {
@@ -42,14 +45,14 @@ public struct MetalSizeReadout: View {
                 .font(.metal(role))
                 .tracking(MetalPresence.readoutTracking * role.size)
                 .monospacedDigit()
-                .foregroundColor(MetalPresence.readoutInk.color)
+                .foregroundColor(ink)
                 .lineLimit(1)
                 .fixedSize()
         }
         .padding(.leading, MetalPresence.readoutPadStart)
         .padding(.trailing, MetalPresence.readoutPadEnd)
         .frame(height: MetalPresence.readoutHeight)
-        .metalRecipe(MetalRecipe(fill: MetalPresence.readoutBg, shadows: MetalPresence.readoutSh), in: Capsule(style: .continuous))
+        .metalObjectRecipe(MetalRecipes.surface, part: "self", state: MetalSurfaceMaterial.chrome.rawValue, in: Capsule(style: .continuous))
         .fixedSize()
     }
 }
