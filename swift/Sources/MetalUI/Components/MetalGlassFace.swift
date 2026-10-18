@@ -5,8 +5,8 @@ import SwiftUI
 // its host; a code face shows numbered lines. Every value is the recipe's.
 
 /// Whether a glass face wears its bezel. `.bare` drops the rim and the glare: the screen fills the
-/// face's outline at the bezel's outer radius and keeps only the bezel's outer shadows, so it still
-/// floats. The face's outer size is the same either way.
+/// face's outline at the bezel's outer radius and keeps only the bezel's blurred outer shadows (no
+/// hairline ring), so it still floats. The face's outer size is the same either way.
 public enum MetalFaceFrame: Sendable, Equatable {
     case framed, bare
 }
@@ -53,7 +53,8 @@ private struct MetalFaceShell: ViewModifier {
                 .metalObjectRecipe(r, part: "self", in: outline)
         } else {
             content.background {
-                MetalOuterShadows(layers: r.shadows("self", colorway: MetalRecipeColorway(colorway)).filter { !$0.inset },
+                // The lift only: a hairline ring (no blur) would draw the rim's edge back.
+                MetalOuterShadows(layers: r.shadows("self", colorway: MetalRecipeColorway(colorway)).filter { !$0.inset && $0.blur > 0 },
                                   shape: outline, excludesInterior: true)
                     .allowsHitTesting(false)
             }
