@@ -1048,7 +1048,7 @@
       "name": "island",
       "type": "registry:ui",
       "title": "Island",
-      "description": "Where you are and how things stand, in one graphite capsule at the top of a place: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.",
+      "description": "Where you are and how things stand, in one capsule at the top of a place, in the colorway: a status LED, the place's name, one quiet fact and a chevron. It opens the place's menu; a passing event turns into the fact's place on the swap drum and the capsule follows it, then turns back.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",

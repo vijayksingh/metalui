@@ -5,7 +5,8 @@ import AppKit
 import UIKit
 #endif
 
-/// A place's status and choices in one graphite body, in either host colorway.
+/// A place's status and choices in one body in the host colorway: the brightest bone cap on bone,
+/// graphite-deep on graphite (Surface chrome).
 public struct MetalIsland: View {
     public enum Tone: String, Sendable {
         case live, working, offline, quiet
@@ -60,7 +61,7 @@ public struct MetalIsland: View {
         let recipe = MetalRecipes.island
         // One body in every state (MetalMorphShape): closed it is the capsule, open the capsule
         // lies flush as the panel's title row. Its outline, the row and the panel move on one spring.
-        MetalMorphShape(open: out, material: .graphiteDeep, from: .top,
+        MetalMorphShape(open: out, material: .chrome, from: .top,
                         closedRadius: MetalRecipes.button.points("graphite.height") / 2,
                         openRadius: MetalRecipes.surface.points("radius.card"),
                         openWidth: recipe.points("self.panel-width")) {
@@ -76,7 +77,6 @@ public struct MetalIsland: View {
                     .accessibilityLabel(title)
             }
         }
-        .metalColorway(.graphite)
         // A change made without a morph (a host setting the binding) still rides the right spring.
         .animation(MetalMotion.resolve(out ? .part : .release, reduceMotion: reduceMotion).animation, value: out)
         .onKeyPress(.escape) {
@@ -159,7 +159,7 @@ private struct MetalIslandFocus: ViewModifier {
     }
 }
 
-/// Island wears the web button's graphite cap, with no independent material recipe.
+/// Island wears the web button's graphite cap (its wash follows the colorway), with no independent material recipe.
 struct MetalIslandCapStyle: ButtonStyle {
     let focused: Bool
     /// Open, the capsule is the panel's title row: flush with the body, its cap only on hover.
@@ -176,6 +176,7 @@ private struct MetalIslandCapBody: View {
     let flush: Bool
     @State private var hovering = false
     @Environment(\.isEnabled) private var enabled
+    @Environment(\.metalColorway) private var colorway
     @MetalMotionPreference private var reduceMotion
 
     var body: some View {
@@ -183,7 +184,7 @@ private struct MetalIslandCapBody: View {
         let shape = Capsule(style: .continuous)
         configuration.label
             .font(recipe.font("graphite.font"))
-            .foregroundStyle(recipe.color("graphite.ink")?.color ?? .clear)
+            .foregroundStyle(recipe.color("graphite.ink", colorway: MetalRecipeColorway(colorway))?.color ?? .clear)
             .padding(.horizontal, recipe.points("graphite.pad"))
             .frame(height: recipe.points("graphite.height"))
             .fixedSize(horizontal: true, vertical: false)

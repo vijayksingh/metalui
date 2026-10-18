@@ -1391,29 +1391,23 @@
   --mu-r-status-lamp-bezel: 1px;
   --mu-r-status-ink-off: #242427;
   /* button: reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps */
-  --mu-r-button-graphite-background:
-    /* mu-recipe:button:36 */ rgba(255,255,255,.09);
-  --mu-r-button-strip-hover-background:
-    /* mu-recipe:button:37 */ rgba(255,255,255,.08);
-  --mu-r-button-strip-pressed-background:
-    /* mu-recipe:button:38 */ rgba(0,0,0,.35);
   --mu-r-button-destructive-background:
-    /* mu-recipe:button:48 */ linear-gradient(#E6594E,#D0433A);
+    /* mu-recipe:button:52 */ linear-gradient(#E6594E,#D0433A);
   --mu-r-button-destructive-shadow:
-    /* mu-recipe:button:49 */ inset 0 0 6px 1px rgba(255,255,255,.14),
-    /* mu-recipe:button:50 */ inset 1px 2px 2px -1px rgba(255,255,255,.32),
-    /* mu-recipe:button:51 */ 0 0 0 .5px rgba(120,20,10,.3),
-    /* mu-recipe:button:52 */ 0 1px 2px rgba(110,10,0,.14),
-    /* mu-recipe:button:53 */ 0 5px 12px -4px rgba(170,30,20,.24);
+    /* mu-recipe:button:53 */ inset 0 0 6px 1px rgba(255,255,255,.14),
+    /* mu-recipe:button:54 */ inset 1px 2px 2px -1px rgba(255,255,255,.32),
+    /* mu-recipe:button:55 */ 0 0 0 .5px rgba(120,20,10,.3),
+    /* mu-recipe:button:56 */ 0 1px 2px rgba(110,10,0,.14),
+    /* mu-recipe:button:57 */ 0 5px 12px -4px rgba(170,30,20,.24);
   --mu-r-button-destructive-pressed-background:
-    /* mu-recipe:button:54 */ linear-gradient(#BE352C,#CF4238);
+    /* mu-recipe:button:58 */ linear-gradient(#BE352C,#CF4238);
   --mu-r-button-destructive-pressed-shadow:
-    /* mu-recipe:button:55 */ inset 0 1px 3px rgba(80,0,0,.45),
-    /* mu-recipe:button:56 */ 0 0 0 .5px rgba(110,10,0,.55);
+    /* mu-recipe:button:59 */ inset 0 1px 3px rgba(80,0,0,.45),
+    /* mu-recipe:button:60 */ 0 0 0 .5px rgba(110,10,0,.55);
   --mu-r-button-strip-focus-shadow:
-    /* mu-recipe:button:57 */ 0 0 0 1.5px #3FB97A;
+    /* mu-recipe:button:61 */ 0 0 0 1.5px #3FB97A;
   --mu-r-button-hold-background:
-    /* mu-recipe:button:67 */ rgba(80,0,0,.25);
+    /* mu-recipe:button:71 */ rgba(80,0,0,.25);
   --mu-r-button-self-height: 32px;
   --mu-r-button-self-pad: 15px;
   --mu-r-button-self-gap: 6px;
@@ -1440,15 +1434,11 @@
   --mu-r-button-graphite-pad: 10px;
   --mu-r-button-graphite-font: 500 12px/1 var(--mu-sans);
   --mu-r-button-graphite-tracking: 0;
-  --mu-r-button-graphite-ink: #EDEDEF;
   --mu-r-button-strip-height: 28px;
   --mu-r-button-strip-pad: 10px;
   --mu-r-button-strip-radius: 11px;
   --mu-r-button-strip-font: 500 12px/1 var(--mu-sans);
   --mu-r-button-strip-tracking: 0;
-  --mu-r-button-strip-ink: #D6D6D8;
-  --mu-r-button-strip-ink-hover: #FFFFFF;
-  --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-destructive-ink: #FFFFFF;
   --mu-r-button-hold-duration: 800ms;
   --mu-r-button-waiting-delay: var(--mu-waiting-show-delay);
@@ -2310,19 +2300,31 @@
   --mu-r-button-compact-pressed-shadow:
     /* mu-recipe:button:32 */ inset 0 1px 2.5px rgba(0,0,0,.14),
     /* mu-recipe:button:33 */ inset 0 0 0 .5px rgba(0,0,0,.08);
+  --mu-r-button-graphite-background:
+    /* mu-recipe:button:37 */ rgba(255,255,255,.7);
+  --mu-r-button-graphite-shadow:
+    /* mu-recipe:button:38 */ inset 0 0 0 .5px rgba(24,22,16,.07);
+  --mu-r-button-strip-hover-background:
+    /* mu-recipe:button:40 */ rgba(40,38,32,.05);
+  --mu-r-button-strip-pressed-background:
+    /* mu-recipe:button:42 */ rgba(60,55,40,.10);
   --mu-r-button-primary-background:
-    /* mu-recipe:button:39 */ linear-gradient(#38383C,#252528);
+    /* mu-recipe:button:43 */ linear-gradient(#38383C,#252528);
   --mu-r-button-primary-shadow:
-    /* mu-recipe:button:40 */ inset 0 0 5px 1px rgba(255,255,255,.07),
-    /* mu-recipe:button:41 */ inset 1px 2px 2px -1px rgba(255,255,255,.18),
-    /* mu-recipe:button:42 */ 0 0 0 .5px rgba(0,0,0,.5),
-    /* mu-recipe:button:43 */ 0 1px 2px rgba(0,0,0,.15),
-    /* mu-recipe:button:44 */ 0 5px 12px -4px rgba(0,0,0,.22);
+    /* mu-recipe:button:44 */ inset 0 0 5px 1px rgba(255,255,255,.07),
+    /* mu-recipe:button:45 */ inset 1px 2px 2px -1px rgba(255,255,255,.18),
+    /* mu-recipe:button:46 */ 0 0 0 .5px rgba(0,0,0,.5),
+    /* mu-recipe:button:47 */ 0 1px 2px rgba(0,0,0,.15),
+    /* mu-recipe:button:48 */ 0 5px 12px -4px rgba(0,0,0,.22);
   --mu-r-button-primary-pressed-background:
-    /* mu-recipe:button:45 */ linear-gradient(#1C1C1E,#242427);
+    /* mu-recipe:button:49 */ linear-gradient(#1C1C1E,#242427);
   --mu-r-button-primary-pressed-shadow:
-    /* mu-recipe:button:46 */ inset 0 1px 3px rgba(0,0,0,.6),
-    /* mu-recipe:button:47 */ 0 0 0 .5px rgba(0,0,0,.7);
+    /* mu-recipe:button:50 */ inset 0 1px 3px rgba(0,0,0,.6),
+    /* mu-recipe:button:51 */ 0 0 0 .5px rgba(0,0,0,.7);
+  --mu-r-button-graphite-ink: #1B1B1D;
+  --mu-r-button-strip-ink: #3A3A3D;
+  --mu-r-button-strip-ink-hover: #1B1B1D;
+  --mu-r-button-strip-danger-ink: #B8352C;
   --mu-r-button-primary-ink: #FFFFFF;
   --mu-r-kbd-self-background:
     /* mu-recipe:kbd:0 */ linear-gradient(#FFFFFF, #F2F1EE);
@@ -2827,19 +2829,30 @@
   --mu-r-button-compact-pressed-shadow:
     /* mu-recipe:button:34 */ inset 0 1px 2.5px rgba(0,0,0,.6),
     /* mu-recipe:button:35 */ inset 0 0 0 .5px rgba(0,0,0,.5);
+  --mu-r-button-graphite-background:
+    /* mu-recipe:button:36 */ rgba(255,255,255,.09);
+  --mu-r-button-graphite-shadow:
+  --mu-r-button-strip-hover-background:
+    /* mu-recipe:button:39 */ rgba(255,255,255,.08);
+  --mu-r-button-strip-pressed-background:
+    /* mu-recipe:button:41 */ rgba(0,0,0,.35);
   --mu-r-button-primary-background:
-    /* mu-recipe:button:58 */ linear-gradient(#F4F3F0,#E4E3DF);
+    /* mu-recipe:button:62 */ linear-gradient(#F4F3F0,#E4E3DF);
   --mu-r-button-primary-shadow:
-    /* mu-recipe:button:59 */ inset 0 0 4px 1px rgba(255,255,255,.7),
-    /* mu-recipe:button:60 */ inset 1px 2px 2px -1px #FFFFFF,
-    /* mu-recipe:button:61 */ 0 0 0 .5px rgba(0,0,0,.6),
-    /* mu-recipe:button:62 */ 0 1px 2px rgba(0,0,0,.35),
-    /* mu-recipe:button:63 */ 0 5px 12px -4px rgba(0,0,0,.45);
+    /* mu-recipe:button:63 */ inset 0 0 4px 1px rgba(255,255,255,.7),
+    /* mu-recipe:button:64 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:button:65 */ 0 0 0 .5px rgba(0,0,0,.6),
+    /* mu-recipe:button:66 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:button:67 */ 0 5px 12px -4px rgba(0,0,0,.45);
   --mu-r-button-primary-pressed-background:
-    /* mu-recipe:button:64 */ linear-gradient(#DAD9D5,#E3E2DE);
+    /* mu-recipe:button:68 */ linear-gradient(#DAD9D5,#E3E2DE);
   --mu-r-button-primary-pressed-shadow:
-    /* mu-recipe:button:65 */ inset 0 1px 3px rgba(0,0,0,.28),
-    /* mu-recipe:button:66 */ 0 0 0 .5px rgba(0,0,0,.6);
+    /* mu-recipe:button:69 */ inset 0 1px 3px rgba(0,0,0,.28),
+    /* mu-recipe:button:70 */ 0 0 0 .5px rgba(0,0,0,.6);
+  --mu-r-button-graphite-ink: #EDEDEF;
+  --mu-r-button-strip-ink: #D6D6D8;
+  --mu-r-button-strip-ink-hover: #FFFFFF;
+  --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-primary-ink: #1B1B1D;
   --mu-r-kbd-self-background:
     /* mu-recipe:kbd:1 */ linear-gradient(#35353A,#2A2A2D);
@@ -3345,6 +3358,13 @@
     --mu-r-button-compact-pressed-shadow:
       inset 0 1px 2.5px rgba(0,0,0,.6),
       inset 0 0 0 .5px rgba(0,0,0,.5);
+    --mu-r-button-graphite-background:
+      rgba(255,255,255,.09);
+    --mu-r-button-graphite-shadow:
+    --mu-r-button-strip-hover-background:
+      rgba(255,255,255,.08);
+    --mu-r-button-strip-pressed-background:
+      rgba(0,0,0,.35);
     --mu-r-button-primary-background:
       linear-gradient(#F4F3F0,#E4E3DF);
     --mu-r-button-primary-shadow:
@@ -3358,6 +3378,10 @@
     --mu-r-button-primary-pressed-shadow:
       inset 0 1px 3px rgba(0,0,0,.28),
       0 0 0 .5px rgba(0,0,0,.6);
+    --mu-r-button-graphite-ink: #EDEDEF;
+    --mu-r-button-strip-ink: #D6D6D8;
+    --mu-r-button-strip-ink-hover: #FFFFFF;
+    --mu-r-button-strip-danger-ink: #FF8A7E;
     --mu-r-button-primary-ink: #1B1B1D;
     --mu-r-kbd-self-background:
       linear-gradient(#35353A,#2A2A2D);

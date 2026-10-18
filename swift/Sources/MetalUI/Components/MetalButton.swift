@@ -119,8 +119,8 @@ private struct MetalButtonBody: View {
         switch cap {
         case .standard: return (size == .compact && !hovering ? tokens.ink2 : tokens.ink).color
         case .primary: return (MetalRecipes.button.color("primary.ink", colorway: MetalRecipeColorway(colorway)) ?? MetalCaps.primary.ink).color
-        case .strip: return (MetalRecipes.button.color(hovering ? "strip.ink-hover" : "strip.ink") ?? tokens.ink).color
-        case .stripDanger: return (MetalRecipes.button.color("strip-danger.ink") ?? MetalCaps.destructive.ink).color
+        case .strip: return (MetalRecipes.button.color(hovering ? "strip.ink-hover" : "strip.ink", colorway: MetalRecipeColorway(colorway)) ?? tokens.ink).color
+        case .stripDanger: return (MetalRecipes.button.color("strip-danger.ink", colorway: MetalRecipeColorway(colorway)) ?? MetalCaps.destructive.ink).color
         case .destructive: return (MetalRecipes.button.color("destructive.ink") ?? MetalCaps.destructive.ink).color
         }
     }

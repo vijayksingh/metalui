@@ -2,6 +2,8 @@ import SwiftUI
 
 /// The material a morphing shape paints while it travels (the web's `mu-morph-<material>`).
 public enum MetalMorphMaterial: Sendable {
+    /// The chrome surface in the colorway (Island): the brightest bone cap on bone, graphite-deep on graphite.
+    case chrome
     /// The graphite-deep surface (Island).
     case graphiteDeep
     /// The tool cap (Fan trays).
@@ -79,6 +81,8 @@ public struct MetalMorphShape<Part: View, Contents: View>: View {
 
     @ViewBuilder private func paint(_ shape: RoundedRectangle) -> some View {
         switch material {
+        case .chrome:
+            Color.clear.metalObjectRecipe(MetalRecipes.surface, part: "self", state: MetalSurfaceMaterial.chrome.rawValue, in: shape)
         case .graphiteDeep:
             Color.clear.metalObjectRecipe(MetalRecipes.surface, part: "self", state: "graphite-deep", in: shape)
         case .tool:

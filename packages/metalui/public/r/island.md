@@ -1,6 +1,6 @@
 # Island
 
-Where you are and how things stand, in one graphite capsule. React: `Island` from `@unlocalhosted/metalui`. SwiftUI: `MetalIsland`. A composition of the graphite button cap, `Led` / `MetalLED`, `Label`, the detail swap and the chevron. It paints nothing of its own.
+Where you are and how things stand, in one capsule in the colorway: the brightest bone cap on bone, graphite-deep on graphite. React: `Island` from `@unlocalhosted/metalui`. SwiftUI: `MetalIsland`. A composition of a chrome Surface, the button's graphite cap (its wash follows the colorway), `Led` / `MetalLED`, `Label`, the detail swap and the chevron. It paints nothing of its own.
 
 ## Use it for
 
@@ -13,7 +13,7 @@ Where you are and how things stand, in one graphite capsule. React: `Island` fro
 
 ## Anatomy
 
-- LED · title · detail (mono, dim) · chevron, on the graphite cap.
+- LED · title · detail (mono, dim) · chevron, on the cap: a white wash with a faint .5 rim (`rgba(255,255,255,.7)`, `rgba(24,22,16,.07)`, ink `#1B1B1D`) on bone, a faint light wash (`rgba(255,255,255,.09)`, ink `#EDEDEF`) on graphite.
 - `tone` lights the LED: live (steady), working (breathes), offline (failed), quiet (off). Say it in words too with `toneLabel`; it joins the accessible name.
 
 ## States and motion
@@ -21,8 +21,8 @@ Where you are and how things stand, in one graphite capsule. React: `Island` fro
 | State | Look | Motion |
 |---|---|---|
 | rest | LED, title, detail, chevron | none |
-| hover, pressed, focus | the graphite cap's own | the cap's press travel |
-| open | capsule becomes one graphite-deep panel; row stays inside | outline travels on surface; row travels as a shared part; panel arrives one nest from top at popover enter-scale; chevron turns on part |
+| hover, pressed, focus | the cap's own | the cap's press travel |
+| open | capsule becomes one chrome panel (bone or graphite-deep); row stays inside | outline travels on surface; row travels as a shared part; panel arrives one nest from top at popover enter-scale; chevron turns on part |
 | close | panel becomes the original capsule | release spring; panel fades; Esc, outside press, or capsule closes it |
 | announce | the event in the detail's place | the swap drum turns; the capsule's footprint grows first and shrinks after; it turns back after `toast-plain-ms` |
 | condition | the condition is the detail (Offline, a past moment) | stays until it ends |

@@ -110,6 +110,8 @@ public struct MetalToolStrip: View {
         }
         .padding(MetalToolStripMetrics.pad)
         .fixedSize()
+        // Graphite in both colorways: its strip keys read the graphite finish.
+        .metalColorway(.graphite)
         .background { MetalSurface(.graphiteStrip, radius: .strip) { Color.clear }.scaleEffect(x: backingScale, anchor: .leading) }
         .background { GeometryReader { geometry in Color.clear.preference(key: MetalToolStripSizeKey.self, value: geometry.size) } }
         .onPreferenceChange(MetalToolStripSizeKey.self) { next in

@@ -2006,6 +2006,7 @@
 }
 @utility recipe-button-graphite {
   background: var(--mu-r-button-graphite-background);
+  box-shadow: var(--mu-r-button-graphite-shadow);
 }
 @utility recipe-button-strip-hover {
   background: var(--mu-r-button-strip-hover-background);
@@ -3378,6 +3379,12 @@
 }
 ::view-transition-group(.mu-morph-graphite-deep) {
   background: var(--mu-r-surface-self-graphite-deep-background); box-shadow: var(--mu-r-surface-self-graphite-deep-shadow);
+}
+::view-transition-group(.mu-morph-chrome), ::view-transition-image-pair(.mu-morph-chrome) {
+  border-radius: var(--mu-r-surface-radius-card);
+}
+::view-transition-group(.mu-morph-chrome) {
+  background: var(--mu-r-surface-self-chrome-background); box-shadow: var(--mu-r-surface-self-chrome-shadow);
 }
 ::view-transition-group(.mu-morph-tool), ::view-transition-image-pair(.mu-morph-tool) {
   border-radius: var(--mu-r-icon-button-tool-radius);

@@ -24,8 +24,8 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 ## Caps that set their own size
 
 - `link`: a mono word in green, 9 pt, tracked 0.1em, no cap and no press (READ ALL beside a readout).
-- `graphite`: a 24 tall quiet light cap on graphite chrome (a banner's Back to now).
-- `strip` / `strip-danger`: a 28 tall flat cap (radius 11) in a graphite tool strip; lights on hover, sinks into a dark well on press; focus is a 1.5 green ring. `strip-danger` is red.
+- `graphite`: a 24 tall quiet cap on chrome (a banner's Back to now, the Island's capsule): a faint light wash on graphite, a white wash with a .5 rim on bone. A graphite-only host (the past banner) pins `data-mu-colorway="graphite"`.
+- `strip` / `strip-danger`: a 28 tall flat cap (radius 11) on a strip or the Island's panel, in the colorway; a wash on hover, sinks into a well on press; focus is a 1.5 green ring. `strip-danger` is red (`#B8352C` on bone, `#FF8A7E` on graphite). The tool strip is graphite in both colorways and pins `data-mu-colorway="graphite"`.
 
 ## API
 

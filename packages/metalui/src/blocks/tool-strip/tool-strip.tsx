@@ -131,7 +131,7 @@ export function ToolStrip({ items, selection, verbSets, label, count = selection
     return () => clearTimeout(timer);
   }, [root, signature, reduced]);
 
-  const content = <TooltipProvider><Toolbar.Root ref={setRoot} aria-label={`Tools for ${label}`} className={[STRIP, className].filter(Boolean).join(' ')}>
+  const content = <TooltipProvider><Toolbar.Root ref={setRoot} aria-label={`Tools for ${label}`} data-mu-colorway="graphite" className={[STRIP, className].filter(Boolean).join(' ')}>
     <Surface ref={surface} material="graphite-strip" radius="strip" aria-hidden className="absolute inset-0 z-0 origin-left" />
     {count !== undefined && <Label data-count variant="on-graphite" className="relative z-1 px-toolstrip-gap tabular-nums" aria-label={`${count} selected`}><SwapText value={`${count} selected`} /></Label>}
     {displayed.flatMap((item) => [

@@ -26,7 +26,7 @@ import { flushSync } from 'react-dom';
  * transition with flushSync: nothing waits on another render, and no other render can cancel it.
  * ───────────────────────────────────────────────────────── */
 
-export type MorphMaterial = 'graphite-deep' | 'tool' | 'pop';
+export type MorphMaterial = 'chrome' | 'graphite-deep' | 'tool' | 'pop';
 export type MorphKind = 'open' | 'close';
 
 type Running = { finished: Promise<void>; skipTransition(): void };

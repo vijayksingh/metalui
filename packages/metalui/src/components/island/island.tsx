@@ -12,19 +12,19 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } from '../../motion/morph-shape';
 
 /* ─────────────────────────────────────────────────────────
- * ISLAND, where you are and how things stand, in one graphite capsule that opens
+ * ISLAND, where you are and how things stand, in one capsule that opens
  *
  * One pill at the top of a place: a status LED, the place's name, one quiet fact, a chevron.
- * With a panel (children) the capsule opens into it: the same graphite body grows down and out
+ * With a panel (children) the capsule opens into it: the same body grows down and out
  * from the capsule, so the top of the screen holds one object instead of a row of pills and a
  * menu that hangs off them.
  *
- *   rest       LED · title · detail · chevron, on the graphite cap
+ *   rest       LED · title · detail · chevron, on the island's cap
  *   hover      the cap's own hover
  *   pressed    the cap sinks by the press travel
  *   focus      the cap's focus ring
  *   open       one shape (docs/ONE-SHAPE.md, MorphShape): the capsule's outline travels to the
- *     0 ms     panel's on the surface spring, painted graphite, corners true; the capsule's row
+ *     0 ms     panel's on the surface spring, painted in its material, corners true; the capsule's row
  *              and the panel dissolve in inside it, pinned to the top; the chevron turns over;
  *              focus moves to the panel's first control
  *   close      Esc, a press outside, or the capsule again: the same shape travels back into the
@@ -36,8 +36,9 @@ import { MorphPart, MorphShape, afterMorph, morphTo, returnFocusAfterMorph } fro
  *   tone       the LED: live (steady), working (breathes), offline (failed), quiet (off).
  *              The tone is also said in words, never by colour alone
  * Reduce Motion: no travel, a cross-dissolve. Without View Transitions it simply opens.
- * Graphite hardware in both colorways: a graphite-deep Surface with the graphite cap on it, both
- * reading the graphite tokens. Open, it is one surface: the capsule lies flush as the panel's title
+ * Hardware in the colorway: a chrome Surface (the brightest bone cap on bone, graphite-deep on
+ * graphite) with the island's cap wash on it (Button cap graphite, which follows the colorway).
+ * Open, it is one surface: the capsule lies flush as the panel's title
  * row (its wash only on hover), and the panel's controls should be flat too (strip buttons, ghost
  * icons), never caps on caps. Without children it stays a capsule (a menu's trigger, say).
  * ───────────────────────────────────────────────────────── */
@@ -54,7 +55,7 @@ const lights: Record<IslandTone, { kind: LedKind; gesture: LedGesture }> = {
 const SHELL = 'mu-island inline-flex flex-col items-center';
 const SHELL_OPEN = 'mu-island inline-flex flex-col items-center w-island-panel-width pb-island-panel-pad';
 /* Open, the capsule is the panel's title row: flush with the body, its wash only on hover. */
-const CAP = 'mu-island-cap gap-island-gap data-flush:not-hover:bg-transparent';
+const CAP = 'mu-island-cap gap-island-gap data-flush:not-hover:bg-transparent data-flush:not-hover:shadow-none';
 const TITLE = 'mu-island-title max-w-island-title-max truncate';
 const DETAIL = 'mu-island-detail';
 const CHEVRON = 'mu-island-chevron select-chevron';
@@ -162,9 +163,8 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
     <Surface
       ref={body}
       as="span"
-      material="graphite-deep"
+      material="chrome"
       radius="card"
-      data-mu-colorway="graphite"
       data-open={out ? '' : undefined}
       className={className ? `${out ? SHELL_OPEN : SHELL} ${className}` : out ? SHELL_OPEN : SHELL}
     >
@@ -176,5 +176,5 @@ export const Island = React.forwardRef<HTMLButtonElement, IslandProps>(function 
       )}
     </Surface>
   );
-  return hasPanel ? <MorphShape material="graphite-deep">{surface}</MorphShape> : surface;
+  return hasPanel ? <MorphShape material="chrome">{surface}</MorphShape> : surface;
 });

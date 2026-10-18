@@ -30,7 +30,7 @@ export interface PastBannerProps {
 /** Says the canvas is showing the past, and brings it back. Shown only while scrubbed. */
 export function PastBanner({ moment, onBack, className }: PastBannerProps) {
   return (
-    <Surface material="graphite-plain" radius="pill" role="status" className={className ? `${BANNER} ${className}` : BANNER}>
+    <Surface material="graphite-plain" radius="pill" role="status" data-mu-colorway="graphite" className={className ? `${BANNER} ${className}` : BANNER}>
       <Label variant="dark">MEMORY</Label>
       <Label variant="on-graphite">{moment}</Label>
       <Button cap="graphite" icon={<Icon name="clock" />} className={BACK} onClick={onBack} aria-keyshortcuts="Escape">
