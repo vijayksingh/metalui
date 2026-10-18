@@ -1626,7 +1626,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A key's glyph on a small raised cap; dark on a graphite strip, sunk inside a toast's Undo. (reference style.css kbd, .tb-search kbd, #toast kbd)
+    /// A key's glyph on a small raised cap; dark on a graphite strip, sunk inside a toast's Undo (pressed bone on bone, deep graphite on graphite). (reference style.css kbd, .tb-search kbd, #toast kbd)
     public static let kbd = MetalObjectRecipe(
         name: "kbd",
         layers: [
@@ -1645,9 +1645,12 @@ public enum MetalRecipes {
             .init(part: "strip", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:kbd:12 linear-gradient(#303033, #262628)
             .init(part: "strip", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:kbd:13 inset 0 1px 0 rgba(255,255,255,.09)
             .init(part: "strip", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:kbd:14 0 0 0 .5px rgba(0,0,0,.8)
-            .init(part: "sunk", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(35.0, 35.0, 38.0, 1.0)), 0.0), .init(.color(MetalRGBA(28.0, 28.0, 30.0, 1.0)), 1.0)])), // mu-recipe:kbd:15 linear-gradient(#232326, #1C1C1E)
-            .init(part: "sunk", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:kbd:16 inset 0 1px 1.5px rgba(0,0,0,.5)
-            .init(part: "sunk", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:kbd:17 0 .5px 0 rgba(255,255,255,.06)
+            .init(part: "sunk", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(35.0, 35.0, 38.0, 1.0)), 0.0), .init(.color(MetalRGBA(28.0, 28.0, 30.0, 1.0)), 1.0)])), // mu-recipe:kbd:15 linear-gradient(#232326, #1C1C1E)
+            .init(part: "sunk", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:kbd:16 inset 0 1px 1.5px rgba(0,0,0,.5)
+            .init(part: "sunk", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:kbd:17 0 .5px 0 rgba(255,255,255,.06)
+            .init(part: "sunk", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(233.0, 232.0, 228.0, 1.0)), 0.0), .init(.color(MetalRGBA(239.0, 238.0, 234.0, 1.0)), 1.0)])), // mu-recipe:kbd:18 linear-gradient(#E9E8E4, #EFEEEA)
+            .init(part: "sunk", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.16)))), // mu-recipe:kbd:19 inset 0 1px 1.5px rgba(60,55,40,.16)
+            .init(part: "sunk", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:kbd:20 0 .5px 0 rgba(255,255,255,.9)
         ],
         props: [
             "self.height": .number(18.0),
@@ -1662,7 +1665,7 @@ public enum MetalRecipes {
             "small.pad": .number(4.0),
             "small.radius": .number(6.0),
             "strip.ink": .text("#A6A6A9"),
-            "sunk.ink": .text("#9A9A9E"),
+            "sunk.ink": .perColorway(bone: "#5C5C60", graphite: "#9A9A9E"),
         ]
     )
 
@@ -3637,7 +3640,7 @@ public enum MetalStatusMetrics {
     public static let badgeGap: Double = 7.0
 }
 
-/// A keycap: a key's glyph on a small raised cap, in the readout role, ink2. 20 tall on the height ladder (16 in a dense footer), radius key (6). On a graphite strip it is a dark cap; inside a toast's Undo it is sunk.
+/// A keycap: a key's glyph on a small raised cap, in the readout role, ink2. 20 tall on the height ladder (16 in a dense footer), radius key (6). On a graphite strip it is a dark cap; inside a toast's Undo it is sunk, in the colorway (recipes.kbd sunk).
 public enum MetalKbdMetrics {
     public static let height: Double = 20.0
     public static let small: Double = 16.0
@@ -3651,12 +3654,6 @@ public enum MetalKbdMetrics {
         MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.8)),
     ]
     public static let stripInk: MetalRGBA = MetalRGBA(166, 166, 169, 1.0)
-    public static let sunkBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(35, 35, 38, 1.0), 0.0), .init(MetalRGBA(28, 28, 30, 1.0), 1.0)])
-    public static let sunkSh: [MetalShadow] = [
-        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.5)),
-        MetalShadow(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.06)),
-    ]
-    public static let sunkInk: MetalRGBA = MetalRGBA(154, 154, 158, 1.0)
 }
 
 /// The selection tool strip's layout: padding 4, gap 2, 12 above the selection, a 16 tall separator, a rise of 4 on arrival. Its look is Surface(graphite-strip), Button(strip) and Rule(graphite); the ink, hover, active, danger and sep values stay only until the Swift port reads those recipes.

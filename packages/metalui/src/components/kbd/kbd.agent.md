@@ -13,7 +13,7 @@ A key's glyph on a small raised cap. React: `Kbd` from `@unlocalhosted/metalui`.
 
 ## Anatomy
 
-20 tall (16 `small` in a dense footer), min width 19, padding 0 5, radius 6 (`key`), the cap material (`cap-bg`, `cap-sh`), the `readout` role in ink2. On a graphite strip (`surface="strip"`): `#303033 → #262628` with a light top lip, ink `#A6A6A9`. Sunk in a toast's Undo (`surface="sunk"`): a dark inset pill, ink `#9A9A9E`.
+20 tall (16 `small` in a dense footer), min width 19, padding 0 5, radius 6 (`key`), the cap material (`cap-bg`, `cap-sh`), the `readout` role in ink2. On a graphite strip (`surface="strip"`): `#303033 → #262628` with a light top lip, ink `#A6A6A9`. Sunk in a toast's Undo (`surface="sunk"`): an inset pill in the colorway, pressed bone `#E9E8E4 → #EFEEEA` with ink `#5C5C60` on bone, `#232326 → #1C1C1E` with ink `#9A9A9E` on graphite.
 
 ## API
 

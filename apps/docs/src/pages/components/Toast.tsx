@@ -133,7 +133,7 @@ export default function ToastPage() {
   const ownCss = useOwnCss(cssSource);
   return (
     <ToastProvider>
-      <PageHeader title="Toast" lede="The result of a person's own action, with Undo: a smoked pill at the bottom centre. Toasts stack as a deck in depth: the newest rises into the front on the object spring and the older ones step back behind it, smaller and dimmer. Point at or focus the deck to fan it out and read it; swipe a card away. Toasts are for what you did, never for what the app recognised. Built on Base UI Toast." />
+      <PageHeader title="Toast" lede="The result of a person's own action, with Undo: a pill in the colorway at the bottom centre. Toasts stack as a deck in depth: the newest rises into the front on the object spring and the older ones step back behind it, smaller and dimmer. Point at or focus the deck to fan it out and read it; swipe a card away. Toasts are for what you did, never for what the app recognised. Built on Base UI Toast." />
       <Section title="Playground" lede="Each button does something and says so. Press a few in a row to build the deck; press the same one again and the front card counts instead of adding a card. Point at the deck (or F6 into it) to fan it out and pause the timers. Undoable toasts stay 5 seconds, plain ones 2.6; the error stays until you swipe it away or press its close key.">
         <Bench caption="a deck of 3 · bottom centre, 92 above the dock" className="min-h-[200px]">
           <Triggers />

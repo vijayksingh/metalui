@@ -399,9 +399,6 @@
   --mu-kbd-strip-bg: linear-gradient(#303033, #262628);
   --mu-kbd-strip-sh: inset 0 1px 0 rgba(255,255,255,.09), 0 0 0 .5px rgba(0,0,0,.8);
   --mu-kbd-strip-ink: #A6A6A9;
-  --mu-kbd-sunk-bg: linear-gradient(#232326, #1C1C1E);
-  --mu-kbd-sunk-sh: inset 0 1px 1.5px rgba(0,0,0,.5), 0 .5px 0 rgba(255,255,255,.06);
-  --mu-kbd-sunk-ink: #9A9A9E;
   --mu-status-led: 5px;
   --mu-status-led-small: 4px;
   --mu-status-bloom: 0 0 2px rgba(80,220,150,.55);
@@ -1462,11 +1459,6 @@
   --mu-r-kbd-strip-shadow:
     /* mu-recipe:kbd:13 */ inset 0 1px 0 rgba(255,255,255,.09),
     /* mu-recipe:kbd:14 */ 0 0 0 .5px rgba(0,0,0,.8);
-  --mu-r-kbd-sunk-background:
-    /* mu-recipe:kbd:15 */ linear-gradient(#232326, #1C1C1E);
-  --mu-r-kbd-sunk-shadow:
-    /* mu-recipe:kbd:16 */ inset 0 1px 1.5px rgba(0,0,0,.5),
-    /* mu-recipe:kbd:17 */ 0 .5px 0 rgba(255,255,255,.06);
   --mu-r-kbd-self-height: 18px;
   --mu-r-kbd-self-min: 19px;
   --mu-r-kbd-self-pad: 5px;
@@ -1479,7 +1471,6 @@
   --mu-r-kbd-small-pad: 4px;
   --mu-r-kbd-small-radius: 6px;
   --mu-r-kbd-strip-ink: #A6A6A9;
-  --mu-r-kbd-sunk-ink: #9A9A9E;
   /* surface: reference style.css --raised, --raised-lite, --raised-sm, --graphite-bg, --graphite-sh; #empty, .gcard, #lensBar, .pal, #panel, #pop, .meta, .region.lensr, #toolbar, #selTools, #pastBanner, #tip, .readout, #toast */
   --mu-r-surface-self-graphite-background:
     /* mu-recipe:surface:146 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -2341,6 +2332,12 @@
     /* mu-recipe:kbd:4 */ 0 0 0 .5px rgba(24,22,16,.05),
     /* mu-recipe:kbd:5 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:kbd:6 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-kbd-sunk-background:
+    /* mu-recipe:kbd:18 */ linear-gradient(#E9E8E4, #EFEEEA);
+  --mu-r-kbd-sunk-shadow:
+    /* mu-recipe:kbd:19 */ inset 0 1px 1.5px rgba(60,55,40,.16),
+    /* mu-recipe:kbd:20 */ 0 .5px 0 rgba(255,255,255,.9);
+  --mu-r-kbd-sunk-ink: #5C5C60;
   --mu-r-surface-self-raise-background:
     /* mu-recipe:surface:0 */ linear-gradient(#FCFBF9, #F6F5F2 55%, #F0EFEB);
   --mu-r-surface-self-raise-shadow:
@@ -2852,6 +2849,12 @@
     /* mu-recipe:kbd:9 */ 0 0 0 .5px rgba(0,0,0,.55),
     /* mu-recipe:kbd:10 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:kbd:11 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-kbd-sunk-background:
+    /* mu-recipe:kbd:15 */ linear-gradient(#232326, #1C1C1E);
+  --mu-r-kbd-sunk-shadow:
+    /* mu-recipe:kbd:16 */ inset 0 1px 1.5px rgba(0,0,0,.5),
+    /* mu-recipe:kbd:17 */ 0 .5px 0 rgba(255,255,255,.06);
+  --mu-r-kbd-sunk-ink: #9A9A9E;
   --mu-r-surface-self-raise-background:
     /* mu-recipe:surface:1 */ linear-gradient(#2C2C2F, #252527 55%, #202022);
   --mu-r-surface-self-raise-shadow:
@@ -3364,6 +3367,12 @@
       0 0 0 .5px rgba(0,0,0,.55),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-kbd-sunk-background:
+      linear-gradient(#232326, #1C1C1E);
+    --mu-r-kbd-sunk-shadow:
+      inset 0 1px 1.5px rgba(0,0,0,.5),
+      0 .5px 0 rgba(255,255,255,.06);
+    --mu-r-kbd-sunk-ink: #9A9A9E;
     --mu-r-surface-self-raise-background:
       linear-gradient(#2C2C2F, #252527 55%, #202022);
     --mu-r-surface-self-raise-shadow:

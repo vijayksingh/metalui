@@ -142,7 +142,7 @@ export default function KbdPage() {
             ['--mu-kbd-min', `${K.min}`, 'minimum width, so one glyph is a square'],
             ['--mu-kbd-pad', `${K.pad}`, 'side padding'],
             ['--mu-kbd-strip-bg · -sh · -ink', 'recipe', 'the dark cap on a graphite strip'],
-            ['--mu-kbd-sunk-bg · -sh · -ink', 'recipe', 'the sunk cap in a toast’s Undo'],
+            ['--mu-r-kbd-sunk-background · -shadow · -ink', 'recipe', 'the sunk cap in a toast’s Undo, in the colorway'],
           ]}
         />
       </Section>

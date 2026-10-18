@@ -23,21 +23,25 @@ public struct MetalKbd: View {
     public var body: some View {
         let t = colorway.tokens
         let small = size == .small
-        let recipe: MetalRecipe
+        let recipe: MetalRecipe?
         let ink: MetalRGBA
         switch surface {
         case .default: recipe = MetalRecipe(fill: t.capBg, shadows: t.capSh); ink = t.ink2
         case .strip: recipe = MetalRecipe(fill: MetalKbdMetrics.stripBg, shadows: MetalKbdMetrics.stripSh); ink = MetalKbdMetrics.stripInk
-        case .sunk: recipe = MetalRecipe(fill: MetalKbdMetrics.sunkBg, shadows: MetalKbdMetrics.sunkSh); ink = MetalKbdMetrics.sunkInk
+        // Sunk follows the colorway: pressed bone on bone, deep graphite on graphite.
+        case .sunk: recipe = nil; ink = MetalRecipes.kbd.color("sunk.ink", colorway: MetalRecipeColorway(colorway)) ?? t.ink2
         }
         let shape = RoundedRectangle(cornerRadius: surface == .sunk ? MetalRadius.pill : MetalRadius.key, style: .continuous)
-        return Text(key)
+        let cap = Text(key)
             .font(.metal(MetalType.readout)).tracking(MetalType.readout.trackingPoints).monospacedDigit()
             .foregroundColor(ink.color)
             .padding(.horizontal, small ? MetalKbdMetrics.padSmall : MetalKbdMetrics.pad)
             .frame(minWidth: small ? MetalKbdMetrics.minSmall : MetalKbdMetrics.min, minHeight: small ? MetalKbdMetrics.small : MetalKbdMetrics.height, maxHeight: small ? MetalKbdMetrics.small : MetalKbdMetrics.height)
-            .metalRecipe(recipe, in: shape)
-            .fixedSize()
-            .accessibilityLabel(label ?? key)
+        return Group {
+            if let recipe { cap.metalRecipe(recipe, in: shape) }
+            else { cap.metalObjectRecipe(MetalRecipes.kbd, part: "sunk", in: shape) }
+        }
+        .fixedSize()
+        .accessibilityLabel(label ?? key)
     }
 }
