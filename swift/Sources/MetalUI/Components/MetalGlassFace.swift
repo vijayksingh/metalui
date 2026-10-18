@@ -4,6 +4,63 @@ import SwiftUI
 // screen with a glare and a shaded rim, a tag with an LED. A link face glows in a hue taken from
 // its host; a code face shows numbered lines. Every value is the recipe's.
 
+/// Whether a glass face wears its bezel. `.bare` drops the rim and the glare: the screen fills the
+/// face's outline at the bezel's outer radius and keeps only the bezel's outer shadows, so it still
+/// floats. The face's outer size is the same either way.
+public enum MetalFaceFrame: Sendable, Equatable {
+    case framed, bare
+}
+
+private struct MetalFaceFrameKey: EnvironmentKey {
+    static let defaultValue: MetalFaceFrame = .framed
+}
+
+extension EnvironmentValues {
+    /// Whether glass faces below wear their bezel.
+    public var metalFaceFrame: MetalFaceFrame {
+        get { self[MetalFaceFrameKey.self] }
+        set { self[MetalFaceFrameKey.self] = newValue }
+    }
+}
+
+extension View {
+    /// Sets whether glass faces below wear their bezel.
+    public func metalFaceFrame(_ frame: MetalFaceFrame) -> some View {
+        environment(\.metalFaceFrame, frame)
+    }
+}
+
+extension MetalFaceFrame {
+    /// The screen's inset from the face's outline.
+    public var inset: CGFloat { self == .framed ? MetalRecipes.glassFace.points("self.pad") : .zero }
+    /// The screen's corner radius: inside the bezel, or the bezel's own outline when bare.
+    public var screenRadius: CGFloat {
+        MetalRecipes.glassFace.points(self == .framed ? "screen.radius" : "self.radius")
+    }
+}
+
+/// Around a screen: the bezel when framed; only the bezel's outer shadows when bare.
+private struct MetalFaceShell: ViewModifier {
+    let frame: MetalFaceFrame
+    @Environment(\.metalColorway) private var colorway
+
+    func body(content: Content) -> some View {
+        let r = MetalRecipes.glassFace
+        let outline = RoundedRectangle(cornerRadius: r.points("self.radius"), style: .continuous)
+        if frame == .framed {
+            content
+                .padding(frame.inset)
+                .metalObjectRecipe(r, part: "self", in: outline)
+        } else {
+            content.background {
+                MetalOuterShadows(layers: r.shadows("self", colorway: MetalRecipeColorway(colorway)).filter { !$0.inset },
+                                  shape: outline, excludesInterior: true)
+                    .allowsHitTesting(false)
+            }
+        }
+    }
+}
+
 /// The bezel and screen every glass face shares; `screen` names the screen's fill part.
 private struct MetalGlassBody<Content: View>: View {
     let screen: String
@@ -13,6 +70,7 @@ private struct MetalGlassBody<Content: View>: View {
     let underlayOpacity: Double
     let content: Content
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalFaceFrame) private var frame
 
     init(screen: String, own: MetalRGBA? = nil, screenRecipe: MetalObjectRecipe? = nil,
          underlay: Image? = nil, underlayOpacity: Double = .one, @ViewBuilder content: () -> Content) {
@@ -35,7 +93,7 @@ private struct MetalGlassBody<Content: View>: View {
 
     var body: some View {
         let r = MetalRecipes.glassFace
-        let screenShape = RoundedRectangle(cornerRadius: r.points("screen.radius"), style: .continuous)
+        let screenShape = RoundedRectangle(cornerRadius: frame.screenRadius, style: .continuous)
         ZStack {
             Color.clear.metalObjectRecipe(r, part: "screen", in: screenShape)
             if let glow {
@@ -65,12 +123,13 @@ private struct MetalGlassBody<Content: View>: View {
                         .clipped()
                 }
             }
-            Color.clear.metalObjectRecipe(r, part: "glare", in: screenShape)
+            if frame == .framed {
+                Color.clear.metalObjectRecipe(r, part: "glare", in: screenShape)
+            }
             content
         }
         .clipShape(screenShape)
-        .padding(r.points("self.pad"))
-        .metalObjectRecipe(r, part: "self", in: RoundedRectangle(cornerRadius: r.points("self.radius"), style: .continuous))
+        .modifier(MetalFaceShell(frame: frame))
     }
 }
 
@@ -79,6 +138,7 @@ private struct MetalGlassBody<Content: View>: View {
 public struct MetalImageFace<Content: View>: View {
     public let size: CGSize
     private let content: Content
+    @Environment(\.metalFaceFrame) private var frame
 
     public init(size: CGSize, @ViewBuilder content: () -> Content) {
         self.size = size
@@ -87,20 +147,21 @@ public struct MetalImageFace<Content: View>: View {
 
     public var body: some View {
         let recipe = MetalRecipes.glassFace
-        let pad = recipe.points("self.pad")
-        let screen = RoundedRectangle(cornerRadius: recipe.points("screen.radius"), style: .continuous)
+        let pad = frame.inset
+        let screen = RoundedRectangle(cornerRadius: frame.screenRadius, style: .continuous)
         ZStack {
             Color.clear.metalObjectRecipe(recipe, part: "screen", in: screen)
             content
                 .frame(width: max(.zero, size.width - pad - pad), height: max(.zero, size.height - pad - pad))
                 .clipped()
-            Color.clear.metalObjectRecipe(recipe, part: "glare", in: screen)
-                .allowsHitTesting(false)
+            if frame == .framed {
+                Color.clear.metalObjectRecipe(recipe, part: "glare", in: screen)
+                    .allowsHitTesting(false)
+            }
         }
         .frame(width: max(.zero, size.width - pad - pad), height: max(.zero, size.height - pad - pad))
         .clipShape(screen)
-        .padding(pad)
-        .metalObjectRecipe(recipe, part: "self", in: RoundedRectangle(cornerRadius: recipe.points("self.radius"), style: .continuous))
+        .modifier(MetalFaceShell(frame: frame))
         .frame(width: size.width, height: size.height)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Image")
