@@ -195,12 +195,15 @@ public struct MetalLinkFace: View {
     let openLabel: String
     let preview: MetalLinkPreview?
     let open: (() -> Void)?
+    /// The face's width; nil is the recipe's (`link-card.self.width`). The height stays the recipe's.
+    let width: CGFloat?
     @MetalMotionPreference private var reduceMotion
     @Environment(\.metalColorway) private var colorway
 
     public init(_ href: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
                 tag: String = "LINK", openLabel: String = "OPEN", preview: MetalLinkPreview? = nil,
-                open: (() -> Void)? = nil) {
+                width: CGFloat? = nil, open: (() -> Void)? = nil) {
+        self.width = width
         self.raw = href
         self.url = URL(string: href)
         self.suppliedHost = host
@@ -215,7 +218,7 @@ public struct MetalLinkFace: View {
     public init(url: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
                 tag: String = "LINK", openLabel: String = "OPEN", preview: MetalLinkPreview? = nil,
                 open: (() -> Void)? = nil) {
-        self.init(url, host: host, path: path, hue: hue, tag: tag, openLabel: openLabel, preview: preview, open: open)
+        self.init(url, host: host, path: path, hue: hue, tag: tag, openLabel: openLabel, preview: preview, width: nil, open: open)
     }
 
     public var body: some View {
@@ -281,7 +284,7 @@ public struct MetalLinkFace: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
-        .frame(width: r.points("self.width"), height: screenHeight + bezel + bezel)
+        .frame(width: width ?? r.points("self.width"), height: screenHeight + bezel + bezel)
         .animation(reduceMotion ? nil : MetalSprings.settle.animation, value: hasPreview)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Link \(title ?? host)")
@@ -312,9 +315,15 @@ public struct MetalLinkFace: View {
     }
 
     /// The face's size for layout.
-    public static var size: CGSize {
+    public static var size: CGSize { size(width: nil) }
+
+    /// The face's size at a host's width (nil: the recipe's). The height is the recipe's: the taller
+    /// preview screen once a title is known (`hasPreview`), else the bare one.
+    public static func size(width: CGFloat?, hasPreview: Bool = false) -> CGSize {
         let r = MetalRecipes.linkCard
-        return CGSize(width: r.points("self.width"), height: r.points("screen.height") + 2 * MetalRecipes.glassFace.points("self.pad"))
+        return CGSize(width: width ?? r.points("self.width"),
+                      height: r.points(hasPreview ? "preview.height" : "screen.height")
+                          + 2 * MetalRecipes.glassFace.points("self.pad"))
     }
 
     static func host(_ url: URL?, raw: String) -> String {
