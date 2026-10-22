@@ -71,16 +71,16 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@base-ui/react": "^1.8.0"
+    "@base-ui/react": "^1.9.0"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "postcss": "^8.5.28",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "postcss": "^8.5.31",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "tailwindcss": "^4.3.3",
     "tsup": "^8.0.0",
     "typescript": "^5.8.0"
