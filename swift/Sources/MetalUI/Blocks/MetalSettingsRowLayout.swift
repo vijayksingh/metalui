@@ -28,12 +28,24 @@ struct MetalSettingsRowLayout: Layout {
     }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        // A row whose control is absent for now (an `if` that is false) is its sentence alone.
+        if subviews.count == 1 {
+            let width = proposal.width.flatMap { $0.isFinite ? $0 : nil }
+            let text = subviews[0].sizeThatFits(ProposedViewSize(width: width, height: nil))
+            return CGSize(width: width ?? text.width, height: text.height)
+        }
         guard subviews.count == 2 else { return .zero }
         let measurement = measure(proposal, subviews)
         return CGSize(width: measurement.width, height: measurement.height)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        if subviews.count == 1 {
+            let text = subviews[0].sizeThatFits(ProposedViewSize(width: bounds.width, height: nil))
+            subviews[0].place(at: CGPoint(x: bounds.minX, y: bounds.minY + (bounds.height - text.height) / 2),
+                              anchor: .topLeading, proposal: ProposedViewSize(width: bounds.width, height: text.height))
+            return
+        }
         guard subviews.count == 2 else { return }
         let measurement = measure(ProposedViewSize(width: bounds.width, height: nil), subviews)
         let textWidth = measurement.stacked ? bounds.width
