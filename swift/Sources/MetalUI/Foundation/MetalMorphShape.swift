@@ -41,6 +41,7 @@ public struct MetalMorphShape<Part: View, Contents: View>: View {
     private let open: Bool
     private let material: MetalMorphMaterial
     private let edge: Edge
+    private let align: Alignment?
     private let closedRadius: CGFloat
     private let openRadius: CGFloat
     private let openWidth: CGFloat?
@@ -53,10 +54,12 @@ public struct MetalMorphShape<Part: View, Contents: View>: View {
     ///     `.top` (drops down) or `.leading` (opens sideways).
     ///   - closedRadius: the part's own radius (a capsule's half height); nil keeps `openRadius`.
     ///   - openWidth: the open body's width; nil lets the contents decide.
-    public init(open: Bool, material: MetalMorphMaterial, from: Edge = .top,
+    ///   - align: where the part sits across the growing edge (`.top` pins a part that opens
+    ///     sideways to the body's top corner, like a player's play button); nil centres it.
+    public init(open: Bool, material: MetalMorphMaterial, from: Edge = .top, align: Alignment? = nil,
                 closedRadius: CGFloat? = nil, openRadius: CGFloat, openWidth: CGFloat? = nil,
                 @ViewBuilder part: () -> Part, @ViewBuilder contents: () -> Contents) {
-        self.open = open; self.material = material; self.edge = from
+        self.open = open; self.material = material; self.edge = from; self.align = align
         self.closedRadius = closedRadius ?? openRadius; self.openRadius = openRadius
         self.openWidth = openWidth; self.part = part(); self.contents = contents()
     }
@@ -64,8 +67,8 @@ public struct MetalMorphShape<Part: View, Contents: View>: View {
     public var body: some View {
         let shape = RoundedRectangle(cornerRadius: open ? openRadius : closedRadius, style: .continuous)
         let layout = edge == .leading || edge == .trailing
-            ? AnyLayout(HStackLayout(alignment: .center, spacing: .zero))
-            : AnyLayout(VStackLayout(alignment: .center, spacing: .zero))
+            ? AnyLayout(HStackLayout(alignment: align?.vertical ?? .center, spacing: .zero))
+            : AnyLayout(VStackLayout(alignment: align?.horizontal ?? .center, spacing: .zero))
         layout {
             part
             if open {
