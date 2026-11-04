@@ -1,7 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+import type { UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+
+type OnWarn = NonNullable<NonNullable<NonNullable<UserConfig['build']>['rollupOptions']>['onwarn']>;
 
 const pkg = (p: string) => fileURLToPath(new URL(`../../packages/metalui/${p}`, import.meta.url));
 
@@ -36,10 +39,11 @@ export default defineConfig(async () => ({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      onwarn(warning, warn) {
+      // The async config loses contextual types here; take the handler's type from Vite itself.
+      onwarn: ((warning, warn) => {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || warning.code === 'SOURCEMAP_ERROR') return;
         warn(warning);
-      },
+      }) satisfies OnWarn,
     },
   },
 }));
