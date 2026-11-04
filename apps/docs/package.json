@@ -21,7 +21,7 @@
     "@twinkleplop/tsx": "^0.1.4",
     "@twinkleplop/typescript": "^0.1.4",
     "@unlocalhosted/metalui": "*",
-    "dialkit": "1.4.3",
+    "dialkit": "2.0.2",
     "motion": "^13.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
