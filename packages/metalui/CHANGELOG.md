@@ -2,10 +2,33 @@
 
 All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/) (while the package is `0.x`, a minor version may change behaviour, and every such change is listed under **Changed**).
 
-## Unreleased
+## 0.5.0 - 2026-11-04
+
+### Added
+
+- **Island.** A capsule that says where you are and how things stand. It opens into its panel as one shape, lies flush when open, follows the colorway, and takes events one at a time. SwiftUI: `MetalIsland`, which morphs as one body on the part spring.
+- **Dial.** A slider wound into a ring: a knurled disc in a slim groove. A bar winds onto a reel rather than bending, and the host says where the bar's line sits. SwiftUI: `MetalDial`, with `woundSize` for hosts laying out around the disc.
+- **One shape, many states.** A motion principle and primitive for anything that changes what it shows: the outline travels on the surface spring with true corners while the content dissolves inside it (`docs/ONE-SHAPE.md`). Morphs run on the platform's View Transitions and snapshot only their own shape. The Fan's tray and the Island use it. SwiftUI: `MetalMorphShape`, which can pin its part across the growing edge (`align`), and token springs.
+- **Time scrubber** folds to a pill where room is short, narrows with its slot up to 330 px, and winds into the Dial.
+- **Glass face** without the bezel: a bare face keeps only the blurred lift.
+- Colorway following for the Toast's Undo key, the size readout and the Island.
+- Tool keys lift under the pointer (web and SwiftUI).
+- Menu and command palette have a class of their own; the menu's gap is a prop. Link card: a host can set its width, and size reports the preview height.
+- The selection frame is quiet while you write (only the caret) and full while you select.
+- SwiftUI parity for wrapping labels, settings rows, quiet writing and a real `MetalEmptyState` (sunk well, arrival, compact).
+
+### Changed
+
+- **Every component inherits the CSS habits, linted on the shipped CSS** (`docs/CSS_HABITS.md`): hover looks only under a fine pointer; inline sides are logical, so a right-to-left page mirrors; overlays size against `svh`/`dvh`, never `vh`; stacking orders are named tokens; every duration and curve comes from the motion language; inner scrollers keep their scroll; a focus shown as a fill also carries a ring for forced colours; every ellipsis states its truncation; titles that wrap balance their lines; text entries never make iOS zoom the page.
+- Settings rows wrap their text and drop the control under it when narrow; a row without its control lays out its sentence.
 
 ### Fixed
 
+- Duration tokens are read in seconds.
+- Icon motion starts on hover only under a fine pointer, and the reduced-motion hover cancel sits behind the same gate.
+- Fan: folding by an outside click returns focus from a hidden option to its cap, and the picker focuses the chosen option once its morph lands.
+- SwiftUI: the mono role is SF Mono, not Courier; the time scrubber winds as one shape; `MetalEnumCue`'s body is split so Swift 6.2 type-checks it in time.
+- Slider measures the control by its layout box, not its screen box. The numeric cue's scrub scale holds its width while the value changes.
 - Toast: the deck folds again after you dismiss the card under the pointer. Removing that card meant the deck never heard the pointer leave, so it stayed fanned out until hovered again. While it is open, a pointer anywhere outside it now folds it (after any card still animating out); nothing listens while it is folded.
 
 ## 0.4.1 - 2026-10-06
