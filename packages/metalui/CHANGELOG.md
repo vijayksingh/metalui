@@ -2,7 +2,9 @@
 
 All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/) (while the package is `0.x`, a minor version may change behaviour, and every such change is listed under **Changed**).
 
-## 0.5.0 - 2026-11-04
+## 0.5.1 - 2026-11-04
+
+The first published release of this line. The `v0.5.0` tag was cut but never reached npm: its publish stopped on a type error in the docs site's build config, now fixed. Everything below is in 0.5.1.
 
 ### Added
 
